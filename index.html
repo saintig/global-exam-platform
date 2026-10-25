@@ -5,872 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101d3a">
-  <meta name="description" content="Global Examination Platform - online examinations, practice questions and learning resources for students around the world.">
-  <title>Global Examination Platform | Learn. Practice. Succeed.</title>
-
-  <style>
-    :root {
-      --navy: #101d3a;
-      --navy-light: #192c50;
-      --gold: #f4b942;
-      --gold-dark: #d99a1c;
-      --white: #ffffff;
-      --background: #f5f7fb;
-      --text: #26344b;
-      --muted: #718096;
-      --border: #e5eaf2;
-      --green: #168568;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 85px;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background: var(--white);
-      line-height: 1.65;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button, a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .container {
-      width: min(1120px, 91%);
-      margin: auto;
-    }
-
-    .topbar {
-      background: var(--navy);
-      color: #e4eaf5;
-      text-align: center;
-      padding: 8px 12px;
-      font-size: 12px;
-      letter-spacing: .3px;
-    }
-
-    header {
-      background: rgba(255,255,255,.97);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .navbar {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      flex-shrink: 0;
-    }
-
-    .brand-icon {
-      width: 45px;
-      height: 45px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      background: var(--navy);
-      color: var(--gold);
-      font-size: 24px;
-      font-weight: 900;
-    }
-
-    .brand-name {
-      color: var(--navy);
-      font-size: 17px;
-      line-height: 1.25;
-      font-weight: 800;
-    }
-
-    .brand-name span {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1.6px;
-      margin-top: 4px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .nav-links a:not(.btn):hover {
-      color: var(--gold-dark);
-    }
-
-    .btn {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      min-height: 46px;
-      padding: 12px 20px;
-      border: 0;
-      border-radius: 9px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: transform .2s, background .2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-gold {
-      color: var(--navy);
-      background: var(--gold);
-    }
-
-    .btn-gold:hover {
-      background: #ffd16c;
-    }
-
-    .btn-outline {
-      border: 1px solid #d5dce8;
-      color: var(--navy);
-      background: white;
-    }
-
-    .btn-outline:hover {
-      background: #f3f6fb;
-    }
-
-    .menu-toggle {
-      display: none;
-      width: 43px;
-      height: 43px;
-      border: 1px solid var(--border);
-      background: white;
-      color: var(--navy);
-      border-radius: 9px;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .hero {
-      background:
-        radial-gradient(ellipse at 90% 10%, rgba(244,185,66,.15), transparent 35%),
-        linear-gradient(125deg, #101d3a 0%, #192c50 72%, #23385d 100%);
-      color: white;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 48px;
-      align-items: center;
-      padding-top: 83px;
-      padding-bottom: 92px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 12px;
-      border: 1px solid rgba(244,185,66,.4);
-      border-radius: 30px;
-      color: #ffdb8d;
-      background: rgba(244,185,66,.08);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .eyebrow-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-
-    .hero h1 {
-      font-size: clamp(36px, 5.2vw, 60px);
-      line-height: 1.12;
-      letter-spacing: -1.8px;
-      margin: 23px 0 20px;
-      max-width: 620px;
-    }
-
-    .hero h1 span {
-      color: var(--gold);
-    }
-
-    .hero-copy {
-      color: #c7d1e3;
-      font-size: 15px;
-      max-width: 530px;
-      line-height: 1.9;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 29px;
-    }
-
-    .hero .btn-outline {
-      background: transparent;
-      border-color: #65748d;
-      color: white;
-    }
-
-    .hero .btn-outline:hover {
-      background: rgba(255,255,255,.08);
-    }
-
-    .hero-note {
-      margin-top: 24px;
-      color: #aebbd0;
-      font-size: 12px;
-    }
-
-    .hero-note span {
-      color: var(--gold);
-      margin-right: 6px;
-    }
-
-    .visual-card {
-      position: relative;
-      padding: 25px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.97);
-      color: var(--navy);
-      box-shadow: 0 25px 70px rgba(0,0,0,.2);
-      transform: rotate(1deg);
-    }
-
-    .visual-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 22px;
-    }
-
-    .visual-heading h3 {
-      font-size: 17px;
-    }
-
-    .live-tag {
-      font-size: 10px;
-      background: #e6f6ef;
-      color: var(--green);
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-weight: 800;
-    }
-
-    .sample-question {
-      padding: 19px;
-      background: var(--background);
-      border-radius: 13px;
-      margin-bottom: 15px;
-    }
-
-    .sample-question small {
-      display: block;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .8px;
-      margin-bottom: 9px;
-    }
-
-    .sample-question p {
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.6;
-    }
-
-    .sample-option {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      margin-top: 9px;
-      color: #536178;
-      font-size: 12px;
-    }
-
-    .sample-option b {
-      display: grid;
-      place-items: center;
-      width: 25px;
-      height: 25px;
-      border-radius: 7px;
-      background: #edf1f8;
-      color: var(--navy);
-    }
-
-    .sample-option.selected {
-      border-color: var(--green);
-      background: #edf9f4;
-      color: var(--green);
-    }
-
-    .sample-option.selected b {
-      background: var(--green);
-      color: white;
-    }
-
-    .visual-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 20px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .visual-footer strong {
-      color: var(--navy);
-    }
-
-    .benefit-strip {
-      background: white;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .benefit-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      padding: 26px 0;
-      gap: 20px;
-    }
-
-    .benefit {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-
-    .benefit-icon {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: #fff6e2;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .benefit strong {
-      display: block;
-      color: var(--navy);
-      font-size: 13px;
-    }
-
-    .benefit small {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    section {
-      padding: 83px 0;
-    }
-
-    .section-heading {
-      text-align: center;
-      max-width: 650px;
-      margin: 0 auto 42px;
-    }
-
-    .section-label {
-      color: var(--gold-dark);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 1.7px;
-      font-weight: 800;
-    }
-
-    .section-heading h2 {
-      color: var(--navy);
-      font-size: clamp(27px, 4vw, 39px);
-      line-height: 1.2;
-      letter-spacing: -.8px;
-      margin: 12px 0;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .education-section {
-      background: var(--background);
-    }
-
-    .education-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 21px;
-    }
-
-    .education-card {
-      background: white;
-      padding: 27px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      transition: transform .2s, box-shadow .2s;
-    }
-
-    .education-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(16,29,58,.07);
-    }
-
-    .education-icon {
-      width: 55px;
-      height: 55px;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: #fff4d9;
-      font-size: 26px;
-      margin-bottom: 20px;
-    }
-
-    .education-card:nth-child(2) .education-icon {
-      background: #e9efff;
-    }
-
-    .education-card:nth-child(3) .education-icon {
-      background: #e5f7ef;
-    }
-
-    .education-card h3 {
-      color: var(--navy);
-      font-size: 19px;
-      margin-bottom: 9px;
-    }
-
-    .education-card p {
-      color: var(--muted);
-      font-size: 13px;
-      min-height: 63px;
-    }
-
-    .text-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 19px;
-      color: var(--navy);
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .text-link span {
-      color: var(--gold-dark);
-      font-size: 17px;
-    }
-
-    .subject-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
-    }
-
-    .subject-card {
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 22px 12px;
-      text-align: center;
-      background: white;
-      transition: border .2s, transform .2s;
-    }
-
-    .subject-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-3px);
-    }
-
-    .subject-card .emoji {
-      font-size: 29px;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .subject-card h3 {
-      font-size: 13px;
-      color: var(--navy);
-    }
-
-    .subject-card p {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 5px;
-    }
-
-    .features-section {
-      background: var(--navy);
-      color: white;
-    }
-
-    .features-section .section-heading h2 {
-      color: white;
-    }
-
-    .features-section .section-heading p {
-      color: #bdc8da;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 27px;
-    }
-
-    .feature {
-      padding: 24px;
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 14px;
-      background: rgba(255,255,255,.035);
-    }
-
-    .feature-icon {
-      font-size: 27px;
-      margin-bottom: 15px;
-    }
-
-    .feature h3 {
-      font-size: 16px;
-      margin-bottom: 8px;
-    }
-
-    .feature p {
-      font-size: 12px;
-      line-height: 1.8;
-      color: #bdc8da;
-    }
-
-    .how-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-    }
-
-    .how-step {
-      text-align: center;
-      padding: 10px;
-    }
-
-    .step-number {
-      width: 54px;
-      height: 54px;
-      margin: 0 auto 18px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--navy);
-      color: var(--gold);
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .how-step h3 {
-      color: var(--navy);
-      font-size: 16px;
-      margin-bottom: 8px;
-    }
-
-    .how-step p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .cta-section {
-      padding-top: 10px;
-      padding-bottom: 85px;
-    }
-
-    .cta-panel {
-      background: linear-gradient(120deg, #fff4d9, #fffaf0);
-      border: 1px solid #f4e5c1;
-      border-radius: 20px;
-      padding: 48px 25px;
-      text-align: center;
-    }
-
-    .cta-panel h2 {
-      color: var(--navy);
-      font-size: clamp(26px, 4vw, 36px);
-      line-height: 1.25;
-      margin-bottom: 13px;
-    }
-
-    .cta-panel p {
-      max-width: 560px;
-      margin: 0 auto 24px;
-      color: #69758a;
-      font-size: 14px;
-    }
-
-    .cta-panel .btn {
-      min-width: 190px;
-    }
-
-    footer {
-      background: #0b152b;
-      color: #c0cadb;
-      padding: 46px 0 20px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 40px;
-      padding-bottom: 35px;
-    }
-
-    footer .brand-name {
-      color: white;
-    }
-
-    footer .brand-name span {
-      color: #a9b6ca;
-    }
-
-    .footer-description {
-      color: #a9b6ca;
-      font-size: 12px;
-      margin-top: 17px;
-      max-width: 340px;
-    }
-
-    .footer-column h4 {
-      color: white;
-      font-size: 13px;
-      margin-bottom: 15px;
-    }
-
-    .footer-column a {
-      display: block;
-      margin: 10px 0;
-      color: #a9b6ca;
-      font-size: 12px;
-    }
-
-    .footer-column a:hover {
-      color: var(--gold);
-    }
-
-    .copyright {
-      border-top: 1px solid rgba(255,255,255,.12);
-      padding-top: 20px;
-      text-align: center;
-      color: #8796ad;
-      font-size: 11px;
-    }
-
-    .notice {
-      display: none;
-      position: fixed;
-      left: 50%;
-      bottom: 22px;
-      transform: translateX(-50%);
-      width: min(92%, 420px);
-      padding: 16px 18px;
-      border-radius: 12px;
-      background: var(--navy);
-      color: white;
-      box-shadow: 0 12px 35px rgba(0,0,0,.25);
-      z-index: 200;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .notice.show {
-      display: block;
-    }
-
-    @media (max-width: 850px) {
-      .nav-links {
-        gap: 13px;
-      }
-
-      .hero-grid {
-        gap: 28px;
-        padding-top: 65px;
-        padding-bottom: 70px;
-      }
-
-      .visual-card {
-        padding: 18px;
-      }
-
-      .subject-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 650px) {
-      .navbar {
-        min-height: 68px;
-      }
-
-      .brand-icon {
-        width: 40px;
-        height: 40px;
-      }
-
-      .brand-name {
-        font-size: 15px;
-      }
-
-      .menu-toggle {
-        display: block;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 68px;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 20px 5%;
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 12px 20px rgba(16,29,58,.07);
-        align-items: stretch;
-        gap: 17px;
-        flex-direction: column;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links .btn {
-        width: 100%;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-        padding-top: 57px;
-        padding-bottom: 58px;
-      }
-
-      .hero h1 {
-        letter-spacing: -1px;
-      }
-
-      .hero-copy {
-        font-size: 14px;
-      }
-
-      .visual-card {
-        max-width: 440px;
-        width: 100%;
-        margin: 10px auto 0;
-        transform: none;
-      }
-
-      .benefit-grid {
-        grid-template-columns: 1fr;
-        gap: 17px;
-        padding: 23px 0;
-      }
-
-      .benefit {
-        justify-content: flex-start;
-      }
-
-      section {
-        padding: 63px 0;
-      }
-
-      .section-heading {
-        margin-bottom: 30px;
-      }
-
-      .education-grid,
-      .features-grid,
-      .how-grid {
-        grid-template-columns: 1fr;
-        gap: 17px;
-      }
-
-      .education-card p {
-        min-height: 0;
-      }
-
-      .subject-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 11px;
-      }
-
-      .subject-card {
-        padding: 18px 8px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 28px;
-      }
-
-      .footer-brand {
-        grid-column: 1 / -1;
-      }
-
-      .cta-panel {
-        padding: 35px 19px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *, *::before, *::after {
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+  <meta name="description" content="SAINTIG EXAMS helps students learn, practise and prepare for examinations.">
+  <title>SAINTIG EXAMS | Learn. Practice. Succeed.</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -880,11 +17,11 @@
 
   <header>
     <div class="container navbar">
-      <a href="#home" class="brand" aria-label="Global Examination Platform home">
-        <div class="brand-icon">G</div>
+      <a href="#home" class="brand" aria-label="SAINTIG EXAMS home">
+        <div class="brand-icon">S</div>
         <div class="brand-name">
-          GLOBAL EXAM
-          <span>EXAMINATION PLATFORM</span>
+          SAINTIG EXAMS
+          <span>LEARN. PRACTICE. SUCCEED.</span>
         </div>
       </a>
 
@@ -897,7 +34,7 @@
         <a href="#education">Education</a>
         <a href="#subjects">Subjects</a>
         <a href="#about">About</a>
-        <a href="#get-started" class="btn btn-gold">Explore Platform →</a>
+        <a href="#student-account" class="btn btn-gold">Student Account →</a>
       </nav>
     </div>
   </header>
@@ -936,7 +73,7 @@
           </p>
         </div>
 
-        <div class="visual-card" aria-label="Illustration of a practice examination">
+        <div class="visual-card" aria-label="Practice examination preview">
           <div class="visual-heading">
             <h3>Practice Preview</h3>
             <span class="live-tag">DEMO</span>
@@ -1002,8 +139,7 @@
           <span class="section-label">Choose Your Path</span>
           <h2>Learning for Every Stage</h2>
           <p>
-            Explore our planned education sections and find the learning
-            resources that match your educational journey.
+            Find the learning resources that match your educational journey.
           </p>
         </div>
 
@@ -1015,8 +151,8 @@
               Build a strong foundation with age-appropriate educational
               practice and learning resources.
             </p>
-            <a href="#get-started" class="text-link">
-              Explore section <span>→</span>
+            <a href="#student-account" class="text-link">
+              Get started <span>→</span>
             </a>
           </article>
 
@@ -1027,8 +163,8 @@
               Strengthen essential knowledge and practise key subjects
               as you progress in your education.
             </p>
-            <a href="#get-started" class="text-link">
-              Explore section <span>→</span>
+            <a href="#student-account" class="text-link">
+              Get started <span>→</span>
             </a>
           </article>
 
@@ -1039,8 +175,8 @@
               Prepare for important examinations with structured
               subject practice and exam preparation resources.
             </p>
-            <a href="#get-started" class="text-link">
-              Explore section <span>→</span>
+            <a href="#student-account" class="text-link">
+              Get started <span>→</span>
             </a>
           </article>
         </div>
@@ -1053,8 +189,7 @@
           <span class="section-label">Explore Knowledge</span>
           <h2>Subjects That Matter</h2>
           <p>
-            Our initial subject areas will provide a foundation for
-            building a broader question bank over time.
+            Start building your knowledge across our initial subject areas.
           </p>
         </div>
 
@@ -1098,8 +233,8 @@
           <span class="section-label">Our Vision</span>
           <h2>A Smarter Examination Experience</h2>
           <p>
-            We are building towards a secure, accessible and convenient
-            online learning and examination platform.
+            We are building a secure, accessible and convenient online
+            learning and examination platform.
           </p>
         </div>
 
@@ -1108,7 +243,7 @@
             <div class="feature-icon">🧠</div>
             <h3>Question Bank</h3>
             <p>
-              Organised questions by education section, subject and topic,
+              Organised questions by education level, subject and topic,
               with plans for AI-assisted question generation.
             </p>
           </article>
@@ -1117,7 +252,7 @@
             <div class="feature-icon">⏱️</div>
             <h3>Timed Examinations</h3>
             <p>
-              The planned examination system will support timed tests,
+              The examination system is planned to support timed tests,
               question navigation and automatic marking.
             </p>
           </article>
@@ -1126,8 +261,8 @@
             <div class="feature-icon">🔐</div>
             <h3>Secure Student Access</h3>
             <p>
-              We are designing secure student accounts and protected
-              examination data using a dedicated backend.
+              Secure student accounts and protected examination data
+              using a dedicated backend.
             </p>
           </article>
 
@@ -1135,8 +270,8 @@
             <div class="feature-icon">📊</div>
             <h3>Results &amp; Progress</h3>
             <p>
-              The planned results system will help students review
-              their performance after submitting an examination.
+              Students will be able to review their performance after
+              submitting examinations.
             </p>
           </article>
 
@@ -1153,8 +288,8 @@
             <div class="feature-icon">⭐</div>
             <h3>Free &amp; Premium Learning</h3>
             <p>
-              We plan to offer limited free question access alongside
-              a subscription option for broader question-bank access.
+              We plan to offer free question access alongside a
+              subscription option for broader question-bank access.
             </p>
           </article>
         </div>
@@ -1166,14 +301,14 @@
         <div class="section-heading">
           <span class="section-label">Getting Started</span>
           <h2>Your Journey Starts Here</h2>
-          <p>A simple vision for your future examination experience.</p>
+          <p>A simple path towards your future examination experience.</p>
         </div>
 
         <div class="how-grid">
           <article class="how-step">
             <div class="step-number">1</div>
             <h3>Choose Your Section</h3>
-            <p>Select the education section that matches your learning needs.</p>
+            <p>Select Primary, Junior Secondary or Senior Secondary.</p>
           </article>
 
           <article class="how-step">
@@ -1194,18 +329,100 @@
     <section class="cta-section" id="get-started">
       <div class="container">
         <div class="cta-panel">
-          <span class="section-label">Coming Together Step by Step</span>
+          <span class="section-label">SAINTIG EXAMS</span>
           <h2>Your Next Achievement Begins With Preparation.</h2>
           <p>
-            The platform is under development. We are working towards
-            secure accounts, examination access, question banks and
-            student results.
+            Create a student account to get started. Examination access,
+            question banks and student results are being developed.
           </p>
-          <button type="button" class="btn btn-gold" id="statusButton">
-            Platform in Development
-          </button>
+          <a href="#student-account" class="btn btn-gold">
+            Student Account →
+          </a>
         </div>
       </div>
+    </section>
+
+    <!-- STUDENT ACCOUNT SECTION -->
+    <section id="student-account" style="
+      max-width:600px;
+      margin:40px auto;
+      padding:24px;
+      background:#ffffff;
+      color:#172554;
+      border:1px solid #e5e7eb;
+      border-radius:16px;
+      font-family:Arial,sans-serif;
+      box-sizing:border-box;
+    ">
+      <h2 style="margin-top:0;">SAINTIG EXAMS Student Account</h2>
+      <p>Create an account or sign in to access your examination account.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+        <button type="button" id="show-register" style="
+          padding:12px 18px;background:#d4af37;color:#172554;
+          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+        ">Create Account</button>
+
+        <button type="button" id="show-login" style="
+          padding:12px 18px;background:#172554;color:white;
+          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+        ">Sign In</button>
+      </div>
+
+      <form id="register-form">
+        <h3>Create your student account</h3>
+
+        <label for="register-name">Full name</label>
+        <input id="register-name" type="text" autocomplete="name"
+          required minlength="2" maxlength="100"
+          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <label for="register-email">Email address</label>
+        <input id="register-email" type="email" autocomplete="email"
+          required maxlength="254"
+          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <label for="register-password">Password (at least 8 characters)</label>
+        <input id="register-password" type="password"
+          autocomplete="new-password" required minlength="8"
+          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <button type="submit" style="
+          width:100%;padding:13px;background:#d4af37;color:#172554;
+          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+        ">Create Account</button>
+      </form>
+
+      <form id="login-form" hidden>
+        <h3>Sign in to your account</h3>
+
+        <label for="login-email">Email address</label>
+        <input id="login-email" type="email" autocomplete="email"
+          required maxlength="254"
+          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password"
+          autocomplete="current-password" required
+          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+        <button type="submit" style="
+          width:100%;padding:13px;background:#172554;color:white;
+          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+        ">Sign In</button>
+      </form>
+
+      <div id="account-panel" hidden>
+        <h3>You're signed in</h3>
+        <p id="account-email" style="overflow-wrap:anywhere;"></p>
+        <button type="button" id="logout-button" style="
+          padding:12px 18px;background:#991b1b;color:white;
+          border:0;border-radius:8px;cursor:pointer;
+        ">Sign Out</button>
+      </div>
+
+      <p id="auth-message" role="status" aria-live="polite"
+        style="margin-bottom:0;overflow-wrap:anywhere;"></p>
     </section>
   </main>
 
@@ -1214,10 +431,10 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#home" class="brand">
-            <div class="brand-icon">G</div>
+            <div class="brand-icon">S</div>
             <div class="brand-name">
-              GLOBAL EXAM
-              <span>EXAMINATION PLATFORM</span>
+              SAINTIG EXAMS
+              <span>LEARN. PRACTICE. SUCCEED.</span>
             </div>
           </a>
           <p class="footer-description">
@@ -1235,31 +452,35 @@
 
         <div class="footer-column">
           <h4>Platform</h4>
-          <a href="#get-started">Development Status</a>
+          <a href="#student-account">Student Account</a>
           <a href="#about">Planned Features</a>
           <a href="#home">Back to Top ↑</a>
         </div>
       </div>
 
       <div class="copyright">
-        © <span id="year"></span> Global Examination Platform.
+        © <span id="year"></span> SAINTIG EXAMS.
         All rights reserved.
       </div>
     </div>
   </footer>
 
   <div class="notice" id="notice" role="status" aria-live="polite">
-    Student accounts and examinations are still being developed.
+    Examination features are still being developed.
   </div>
 
+  <!-- SUPABASE LIBRARY -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- PAGE INTERACTIONS -->
   <script>
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.getElementById("navLinks");
     const notice = document.getElementById("notice");
-    const statusButton = document.getElementById("statusButton");
 
     menuToggle.addEventListener("click", function () {
       const isOpen = navLinks.classList.toggle("open");
+
       menuToggle.setAttribute("aria-expanded", String(isOpen));
       menuToggle.setAttribute(
         "aria-label",
@@ -1277,264 +498,187 @@
       });
     });
 
-    statusButton.addEventListener("click", function () {
-      notice.classList.add("show");
-      window.setTimeout(function () {
-        notice.classList.remove("show");
-      }, 3500);
-    });
-
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
 
-<!-- SUPABASE STUDENT AUTHENTICATION -->
-<section id="student-account" style="
-  max-width:600px;
-  margin:40px auto;
-  padding:24px;
-  background:#ffffff;
-  color:#172554;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  font-family:Arial,sans-serif;
-  box-sizing:border-box;
-">
-  <h2 style="margin-top:0;">Student Account</h2>
-  <p>Create an account or sign in to access your examination account.</p>
+  <!-- SUPABASE STUDENT AUTHENTICATION -->
+  <script>
+  (() => {
+    "use strict";
 
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
-    <button type="button" id="show-register" style="
-      padding:12px 18px;background:#d4af37;color:#172554;
-      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-    ">Create Account</button>
+    const SUPABASE_URL =
+      "https://scuiswponnqyrbqjypkx.supabase.co";
 
-    <button type="button" id="show-login" style="
-      padding:12px 18px;background:#172554;color:white;
-      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-    ">Sign In</button>
-  </div>
+    // Use only your Supabase publishable/anon key here.
+    // Never put a service-role or secret key in frontend code.
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 
-  <form id="register-form">
-    <h3>Create your student account</h3>
+    const message = document.getElementById("auth-message");
+    const registerForm = document.getElementById("register-form");
+    const loginForm = document.getElementById("login-form");
+    const accountPanel = document.getElementById("account-panel");
+    const registerButton = document.getElementById("show-register");
+    const loginButton = document.getElementById("show-login");
+    const logoutButton = document.getElementById("logout-button");
 
-    <label for="register-name">Full name</label>
-    <input id="register-name" type="text" autocomplete="name"
-      required minlength="2" maxlength="100"
-      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-    <label for="register-email">Email address</label>
-    <input id="register-email" type="email" autocomplete="email"
-      required maxlength="254"
-      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-    <label for="register-password">Password (at least 8 characters)</label>
-    <input id="register-password" type="password"
-      autocomplete="new-password" required minlength="8"
-      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-    <button type="submit" style="
-      width:100%;padding:13px;background:#d4af37;color:#172554;
-      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-    ">Create Account</button>
-  </form>
-
-  <form id="login-form" hidden>
-    <h3>Sign in to your account</h3>
-
-    <label for="login-email">Email address</label>
-    <input id="login-email" type="email" autocomplete="email"
-      required maxlength="254"
-      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-    <label for="login-password">Password</label>
-    <input id="login-password" type="password"
-      autocomplete="current-password" required
-      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-    <button type="submit" style="
-      width:100%;padding:13px;background:#172554;color:white;
-      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-    ">Sign In</button>
-  </form>
-
-  <div id="account-panel" hidden>
-    <h3>You're signed in</h3>
-    <p id="account-email" style="overflow-wrap:anywhere;"></p>
-    <button type="button" id="logout-button" style="
-      padding:12px 18px;background:#991b1b;color:white;
-      border:0;border-radius:8px;cursor:pointer;
-    ">Sign Out</button>
-  </div>
-
-  <p id="auth-message" role="status" aria-live="polite"
-    style="margin-bottom:0;overflow-wrap:anywhere;"></p>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-(() => {
-  "use strict";
-
-  const SUPABASE_URL =
-    "https://scuiswponnqyrbqjypkx.supabase.co";
-
-  // Replace this placeholder with your Supabase anon/public key.
-  // Never put your service_role or secret key in this file.
-  const SUPABASE_ANON_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
-
-  const message = document.getElementById("auth-message");
-  const registerForm = document.getElementById("register-form");
-  const loginForm = document.getElementById("login-form");
-  const accountPanel = document.getElementById("account-panel");
-  const registerButton = document.getElementById("show-register");
-  const loginButton = document.getElementById("show-login");
-
-  if (!window.supabase ||
-      SUPABASE_ANON_KEY === "PASTE_YOUR_SUPABASE_ANON_KEY_HERE") {
-    message.textContent =
-      "Setup required: add your Supabase anon/public key to activate accounts.";
-    return;
-  }
-
-  const client = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-  function showMessage(text, isError = false) {
-    message.textContent = text;
-    message.style.color = isError ? "#b91c1c" : "#166534";
-  }
-
-  function showSignedOutForm(mode) {
-    registerForm.hidden = mode !== "register";
-    loginForm.hidden = mode !== "login";
-    accountPanel.hidden = true;
-    showMessage("");
-  }
-
-  function showAccount(user) {
-    registerForm.hidden = true;
-    loginForm.hidden = true;
-    accountPanel.hidden = false;
-
-    document.getElementById("account-email").textContent =
-      "Signed in as: " + (user.email || "Student");
-
-    showMessage("Your account session is active.");
-  }
-
-  registerButton.addEventListener("click", () => {
-    showSignedOutForm("register");
-  });
-
-  loginButton.addEventListener("click", () => {
-    showSignedOutForm("login");
-  });
-
-  registerForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const fullName = document.getElementById("register-name").value.trim();
-    const email = document.getElementById("register-email").value.trim();
-    const password = document.getElementById("register-password").value;
-
-    if (fullName.length < 2) {
-      showMessage("Please enter your full name.", true);
+    if (!window.supabase) {
+      message.textContent =
+        "The account service could not load. Check your internet connection and refresh.";
+      message.style.color = "#b91c1c";
       return;
     }
 
-    const submitButton = registerForm.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
-    showMessage("Creating your account...");
+    const client = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
 
-    try {
-      const { data, error } = await client.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: fullName }
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.session && data.user) {
-        showAccount(data.user);
-      } else {
-        showMessage(
-          "Registration submitted. Check your email for a confirmation link, then sign in."
-        );
-        showSignedOutForm("login");
-      }
-    } catch (error) {
-      showMessage(error.message || "Registration failed.", true);
-    } finally {
-      submitButton.disabled = false;
+    function showMessage(text, isError = false) {
+      message.textContent = text;
+      message.style.color = isError ? "#b91c1c" : "#166534";
     }
-  });
 
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const email = document.getElementById("login-email").value.trim();
-    const password = document.getElementById("login-password").value;
-    const submitButton = loginForm.querySelector('button[type="submit"]');
-
-    submitButton.disabled = true;
-    showMessage("Signing in...");
-
-    try {
-      const { data, error } = await client.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) throw error;
-
-      showAccount(data.user);
-    } catch (error) {
-      showMessage(error.message || "Sign-in failed.", true);
-    } finally {
-      submitButton.disabled = false;
+    function showSignedOutForm(mode) {
+      registerForm.hidden = mode !== "register";
+      loginForm.hidden = mode !== "login";
+      accountPanel.hidden = true;
+      showMessage("");
     }
-  });
 
-  document.getElementById("logout-button").addEventListener(
-    "click",
-    async () => {
-      const { error } = await client.auth.signOut();
+    function showAccount(user) {
+      registerForm.hidden = true;
+      loginForm.hidden = true;
+      accountPanel.hidden = false;
 
-      if (error) {
-        showMessage(error.message || "Sign-out failed.", true);
+      document.getElementById("account-email").textContent =
+        "Signed in as: " + (user.email || "Student");
+
+      showMessage("Your account session is active.");
+    }
+
+    registerButton.addEventListener("click", () => {
+      showSignedOutForm("register");
+    });
+
+    loginButton.addEventListener("click", () => {
+      showSignedOutForm("login");
+    });
+
+    registerForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const fullName =
+        document.getElementById("register-name").value.trim();
+      const email =
+        document.getElementById("register-email").value.trim();
+      const password =
+        document.getElementById("register-password").value;
+
+      if (fullName.length < 2) {
+        showMessage("Please enter your full name.", true);
         return;
       }
 
-      showSignedOutForm("login");
-      showMessage("You have signed out.");
-    }
-  );
+      const submitButton =
+        registerForm.querySelector('button[type="submit"]');
 
-  client.auth.onAuthStateChange((event, session) => {
-    if (session?.user) {
-      showAccount(session.user);
-    } else if (event === "SIGNED_OUT") {
-      showSignedOutForm("login");
-    }
-  });
+      submitButton.disabled = true;
+      showMessage("Creating your account...");
 
-  client.auth.getSession().then(({ data, error }) => {
-    if (error) {
-      showMessage("Could not check your session. Please refresh.", true);
-    } else if (data.session?.user) {
-      showAccount(data.session.user);
-    }
-  });
-})();
-</script>
-  
+      try {
+        const { data, error } = await client.auth.signUp({
+          email,
+          password,
+          options: {
+            data: { display_name: fullName }
+          }
+        });
+
+        if (error) throw error;
+
+        if (data.session && data.user) {
+          showAccount(data.user);
+        } else {
+          showSignedOutForm("login");
+          showMessage(
+            "Registration submitted. Check your email for a confirmation link, then sign in."
+          );
+        }
+      } catch (error) {
+        showMessage(error.message || "Registration failed.", true);
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email =
+        document.getElementById("login-email").value.trim();
+      const password =
+        document.getElementById("login-password").value;
+      const submitButton =
+        loginForm.querySelector('button[type="submit"]');
+
+      submitButton.disabled = true;
+      showMessage("Signing in...");
+
+      try {
+        const { data, error } =
+          await client.auth.signInWithPassword({
+            email,
+            password
+          });
+
+        if (error) throw error;
+
+        showAccount(data.user);
+      } catch (error) {
+        showMessage(error.message || "Sign-in failed.", true);
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    logoutButton.addEventListener("click", async () => {
+      logoutButton.disabled = true;
+
+      try {
+        const { error } = await client.auth.signOut();
+
+        if (error) throw error;
+
+        showSignedOutForm("login");
+        showMessage("You have signed out.");
+      } catch (error) {
+        showMessage(error.message || "Sign-out failed.", true);
+      } finally {
+        logoutButton.disabled = false;
+      }
+    });
+
+    client.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        showAccount(session.user);
+      } else if (event === "SIGNED_OUT") {
+        showSignedOutForm("login");
+      }
+    });
+
+    client.auth.getSession().then(({ data, error }) => {
+      if (error) {
+        showMessage(
+          "Could not check your session. Please refresh.",
+          true
+        );
+      } else if (data.session?.user) {
+        showAccount(data.session.user);
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
-
