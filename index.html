@@ -4,681 +4,537 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101d3a">
-  <meta name="description" content="SAINTIG EXAMS helps students learn, practise and prepare for examinations.">
+
   <title>SAINTIG EXAMS | Learn. Practice. Succeed.</title>
+
+  <meta name="description" content="Practise online examinations, test your knowledge and track your educational progress with SAINTIG EXAMS.">
+
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    :root {
+      --navy: #122746;
+      --navy-light: #203957;
+      --gold: #e4bf60;
+      --gold-dark: #a98228;
+      --white: #ffffff;
+      --background: #f7f8fb;
+      --text: #172b49;
+      --muted: #687589;
+      --border: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .topbar {
+      background: var(--navy);
+      color: white;
+      text-align: center;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .header {
+      background: var(--navy);
+      color: white;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 13px;
+      background: #f8edcf;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      font-size: 23px;
+      line-height: 1.25;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .brand p {
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: .5px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, var(--navy-light), var(--navy) 45%);
+      color: white;
+      padding: 25px 24px 32px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 17px;
+      margin-bottom: 24px;
+    }
+
+    .hero h2 {
+      font-size: clamp(30px, 7vw, 44px);
+      line-height: 1.22;
+      margin-bottom: 22px;
+      letter-spacing: -.7px;
+    }
+
+    .hero-text {
+      color: #e0e7f1;
+      font-size: 18px;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 13px 10px;
+      border-radius: 17px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+      border: 2px solid var(--gold);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: white;
+      border: 2px solid var(--gold-dark);
+    }
+
+    .section {
+      padding: 28px 20px;
+      background: white;
+    }
+
+    .section h2 {
+      font-size: 27px;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+
+    .levels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .level-card {
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 16px 10px;
+      min-height: 140px;
+      background: white;
+    }
+
+    .level-icon {
+      display: block;
+      color: var(--gold-dark);
+      font-size: 27px;
+      margin-bottom: 10px;
+    }
+
+    .level-card h3 {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .benefits {
+      border-top: 1px solid var(--border);
+      margin-top: 28px;
+      padding-top: 28px;
+    }
+
+    .benefits h2 {
+      font-size: 24px;
+      margin-bottom: 22px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 16px;
+    }
+
+    .benefit-icon {
+      color: var(--gold-dark);
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
+
+    .benefit h3 {
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .benefit p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .account-section {
+      background: #f2f5fa;
+      padding: 30px 20px;
+      scroll-margin-top: 20px;
+    }
+
+    .account-box {
+      max-width: 480px;
+      margin: auto;
+      padding: 24px 18px;
+      border-radius: 20px;
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .account-box h2 {
+      font-size: 25px;
+      margin-bottom: 8px;
+    }
+
+    .account-box > p {
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .account-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-button {
+      padding: 12px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .tab-button.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    .account-form label {
+      display: block;
+      font-weight: 700;
+      font-size: 14px;
+      margin: 13px 0 6px;
+    }
+
+    .account-form input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d8dee8;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 11px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .auth-message {
+      margin-top: 15px;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      background: var(--navy);
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    footer strong {
+      color: var(--gold);
+    }
+
+    footer p {
+      font-size: 13px;
+      color: #d4dceb;
+      margin-top: 8px;
+    }
+
+    @media (min-width: 700px) {
+      .header, .hero, .section, .account-section {
+        padding-left: max(7%, calc((100% - 1000px) / 2));
+        padding-right: max(7%, calc((100% - 1000px) / 2));
+      }
+
+      .hero {
+        padding-top: 50px;
+        padding-bottom: 50px;
+      }
+
+      .hero-text {
+        max-width: 650px;
+      }
+
+      .levels {
+        gap: 18px;
+      }
+
+      .level-card {
+        padding: 24px;
+      }
+
+      .benefit-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
 </head>
 
 <body>
+
   <div class="topbar">
-    YOUR LEARNING JOURNEY. YOUR NEXT ACHIEVEMENT.
+    Your journey to academic success starts here.
   </div>
 
-  <header>
-    <div class="container navbar">
-      <a href="#home" class="brand" aria-label="SAINTIG EXAMS home">
-        <div class="brand-icon">S</div>
-        <div class="brand-name">
-          SAINTIG EXAMS
-          <span>LEARN. PRACTICE. SUCCEED.</span>
-        </div>
-      </a>
+  <header class="header">
+    <div class="logo" aria-label="SAINTIG EXAMS logo">🎓</div>
 
-      <button class="menu-toggle" id="menuToggle"
-        aria-label="Open navigation menu" aria-expanded="false"
-        aria-controls="navLinks">☰</button>
-
-      <nav class="nav-links" id="navLinks">
-        <a href="#home">Home</a>
-        <a href="#education">Education</a>
-        <a href="#subjects">Subjects</a>
-        <a href="#about">About</a>
-        <a href="#student-account" class="btn btn-gold">Student Account →</a>
-      </nav>
+    <div class="brand">
+      <h1>SAINTIG EXAMS</h1>
+      <p>GLOBAL EXAMINATION PLATFORM</p>
     </div>
   </header>
 
   <main>
-    <section class="hero" id="home">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow">
-            <span class="eyebrow-dot"></span>
-            LEARNING WITHOUT BORDERS
-          </div>
+    <section class="hero">
+      <p class="eyebrow">LEARN. PRACTISE. SUCCEED.</p>
 
-          <h1>
-            Prepare Today.<br>
-            <span>Succeed Tomorrow.</span>
-          </h1>
+      <h2>Your next success starts here.</h2>
 
-          <p class="hero-copy">
-            Discover a smarter way to practise, learn and prepare for
-            examinations. Explore educational questions and build your
-            confidence, one question at a time.
-          </p>
+      <p class="hero-text">
+        Practise with online examinations designed for your educational
+        level. Test your knowledge and track your progress.
+      </p>
 
-          <div class="hero-actions">
-            <a href="#education" class="btn btn-gold">
-              Explore Education Levels →
-            </a>
-            <a href="#about" class="btn btn-outline">
-              Discover Our Platform
-            </a>
-          </div>
+      <div class="hero-buttons">
+        <a class="btn btn-gold" href="#student-account"
+           onclick="showRegister()">Create account</a>
 
-          <p class="hero-note">
-            <span>✦</span> Designed for learners. Built for progress.
-          </p>
-        </div>
-
-        <div class="visual-card" aria-label="Practice examination preview">
-          <div class="visual-heading">
-            <h3>Practice Preview</h3>
-            <span class="live-tag">DEMO</span>
-          </div>
-
-          <div class="sample-question">
-            <small>SAMPLE QUESTION · 01</small>
-            <p>Which institution is primarily responsible for making laws in a democracy?</p>
-
-            <div class="sample-option">
-              <b>A</b> The Legislature
-            </div>
-            <div class="sample-option">
-              <b>B</b> The Civil Service
-            </div>
-            <div class="sample-option selected">
-              <b>C</b> The Parliament
-            </div>
-            <div class="sample-option">
-              <b>D</b> The Judiciary
-            </div>
-          </div>
-
-          <div class="visual-footer">
-            <span>Example interface only</span>
-            <strong>Learn at your pace</strong>
-          </div>
-        </div>
+        <a class="btn btn-outline" href="#student-account"
+           onclick="showLogin()">Sign in</a>
       </div>
     </section>
 
-    <div class="benefit-strip">
-      <div class="container benefit-grid">
-        <div class="benefit">
-          <div class="benefit-icon">📚</div>
-          <div>
-            <strong>Educational Resources</strong>
-            <small>Explore subject-based questions</small>
-          </div>
-        </div>
+    <section class="section">
+      <h2>Choose your educational level</h2>
 
-        <div class="benefit">
-          <div class="benefit-icon">🎯</div>
-          <div>
-            <strong>Focused Practice</strong>
-            <small>Build confidence step by step</small>
-          </div>
-        </div>
+      <p class="section-intro">
+        Find examinations suitable for your stage of education.
+      </p>
 
-        <div class="benefit">
-          <div class="benefit-icon">🌍</div>
-          <div>
-            <strong>Global Vision</strong>
-            <small>Designed for future expansion</small>
-          </div>
-        </div>
+      <div class="levels">
+        <article class="level-card">
+          <span class="level-icon">▤</span>
+          <h3>Primary</h3>
+        </article>
+
+        <article class="level-card">
+          <span class="level-icon">🎓</span>
+          <h3>Junior Secondary</h3>
+        </article>
+
+        <article class="level-card">
+          <span class="level-icon">🏫</span>
+          <h3>Senior Secondary</h3>
+        </article>
       </div>
-    </div>
 
-    <section class="education-section" id="education">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-label">Choose Your Path</span>
-          <h2>Learning for Every Stage</h2>
-          <p>
-            Find the learning resources that match your educational journey.
-          </p>
-        </div>
+      <div class="benefits">
+        <h2>Why use SAINTIG EXAMS?</h2>
 
-        <div class="education-grid">
-          <article class="education-card">
-            <div class="education-icon">📖</div>
-            <h3>Primary</h3>
-            <p>
-              Build a strong foundation with age-appropriate educational
-              practice and learning resources.
-            </p>
-            <a href="#student-account" class="text-link">
-              Get started <span>→</span>
-            </a>
+        <div class="benefit-grid">
+          <article class="benefit">
+            <div class="benefit-icon">◷</div>
+            <h3>Timed exams</h3>
+            <p>Practise within an examination time limit.</p>
           </article>
 
-          <article class="education-card">
-            <div class="education-icon">🎓</div>
-            <h3>Junior Secondary</h3>
-            <p>
-              Strengthen essential knowledge and practise key subjects
-              as you progress in your education.
-            </p>
-            <a href="#student-account" class="text-link">
-              Get started <span>→</span>
-            </a>
+          <article class="benefit">
+            <div class="benefit-icon">✓</div>
+            <h3>Instant results</h3>
+            <p>See your results when your exam is marked.</p>
           </article>
 
-          <article class="education-card">
-            <div class="education-icon">🏆</div>
-            <h3>Senior Secondary</h3>
-            <p>
-              Prepare for important examinations with structured
-              subject practice and exam preparation resources.
-            </p>
-            <a href="#student-account" class="text-link">
-              Get started <span>→</span>
-            </a>
+          <article class="benefit">
+            <div class="benefit-icon">▣</div>
+            <h3>Mobile friendly</h3>
+            <p>Practise using your phone or computer.</p>
+          </article>
+
+          <article class="benefit">
+            <div class="benefit-icon">↗</div>
+            <h3>Track progress</h3>
+            <p>Review your performance and keep learning.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section id="subjects">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-label">Explore Knowledge</span>
-          <h2>Subjects That Matter</h2>
-          <p>
-            Start building your knowledge across our initial subject areas.
-          </p>
+    <section class="account-section" id="student-account">
+      <div class="account-box">
+        <h2 id="account-heading">Welcome to SAINTIG EXAMS</h2>
+
+        <p id="account-description">
+          Sign in or create an account to access your examinations.
+        </p>
+
+        <div class="account-tabs">
+          <button class="tab-button active" id="show-login"
+                  type="button" onclick="showLogin()">Sign in</button>
+
+          <button class="tab-button" id="show-register"
+                  type="button" onclick="showRegister()">Create account</button>
         </div>
 
-        <div class="subject-grid">
-          <article class="subject-card">
-            <span class="emoji">🏛️</span>
-            <h3>Government</h3>
-            <p>Politics &amp; governance</p>
-          </article>
+        <form id="register-form" class="account-form hidden">
+          <label for="register-name">Full name</label>
+          <input id="register-name" type="text" autocomplete="name"
+                 placeholder="Enter your full name" required>
 
-          <article class="subject-card">
-            <span class="emoji">📜</span>
-            <h3>History</h3>
-            <p>People &amp; events</p>
-          </article>
+          <label for="register-email">Email address</label>
+          <input id="register-email" type="email" autocomplete="email"
+                 placeholder="Enter your email" required>
 
-          <article class="subject-card">
-            <span class="emoji">🤝</span>
-            <h3>Civic Education</h3>
-            <p>Citizenship &amp; values</p>
-          </article>
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password"
+                 autocomplete="new-password"
+                 placeholder="Create a password (at least 8 characters)"
+                 minlength="8" required>
 
-          <article class="subject-card">
-            <span class="emoji">📈</span>
-            <h3>Economics</h3>
-            <p>Markets &amp; resources</p>
-          </article>
+          <button class="submit-button" type="submit">
+            Create account
+          </button>
+        </form>
 
-          <article class="subject-card">
-            <span class="emoji">✍️</span>
-            <h3>English</h3>
-            <p>Language &amp; communication</p>
-          </article>
-        </div>
+        <form id="login-form" class="account-form">
+          <label for="login-email">Email address</label>
+          <input id="login-email" type="email" autocomplete="email"
+                 placeholder="Enter your email" required>
+
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password"
+                 autocomplete="current-password"
+                 placeholder="Enter your password" required>
+
+          <button class="submit-button" type="submit">Sign in</button>
+        </form>
+
+        <p class="auth-message" id="auth-message" role="status"
+           aria-live="polite"></p>
       </div>
-    </section>
-
-    <section class="features-section" id="about">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-label">Our Vision</span>
-          <h2>A Smarter Examination Experience</h2>
-          <p>
-            We are building a secure, accessible and convenient online
-            learning and examination platform.
-          </p>
-        </div>
-
-        <div class="features-grid">
-          <article class="feature">
-            <div class="feature-icon">🧠</div>
-            <h3>Question Bank</h3>
-            <p>
-              Organised questions by education level, subject and topic,
-              with plans for AI-assisted question generation.
-            </p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">⏱️</div>
-            <h3>Timed Examinations</h3>
-            <p>
-              The examination system is planned to support timed tests,
-              question navigation and automatic marking.
-            </p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">🔐</div>
-            <h3>Secure Student Access</h3>
-            <p>
-              Secure student accounts and protected examination data
-              using a dedicated backend.
-            </p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">📊</div>
-            <h3>Results &amp; Progress</h3>
-            <p>
-              Students will be able to review their performance after
-              submitting examinations.
-            </p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">🌐</div>
-            <h3>International Reach</h3>
-            <p>
-              Our long-term vision includes education systems and
-              curriculum support for multiple countries.
-            </p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">⭐</div>
-            <h3>Free &amp; Premium Learning</h3>
-            <p>
-              We plan to offer free question access alongside a
-              subscription option for broader question-bank access.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-label">Getting Started</span>
-          <h2>Your Journey Starts Here</h2>
-          <p>A simple path towards your future examination experience.</p>
-        </div>
-
-        <div class="how-grid">
-          <article class="how-step">
-            <div class="step-number">1</div>
-            <h3>Choose Your Section</h3>
-            <p>Select Primary, Junior Secondary or Senior Secondary.</p>
-          </article>
-
-          <article class="how-step">
-            <div class="step-number">2</div>
-            <h3>Select a Subject</h3>
-            <p>Find the subject and examination you want to practise.</p>
-          </article>
-
-          <article class="how-step">
-            <div class="step-number">3</div>
-            <h3>Practise &amp; Improve</h3>
-            <p>Work through questions and use your results to guide your learning.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="cta-section" id="get-started">
-      <div class="container">
-        <div class="cta-panel">
-          <span class="section-label">SAINTIG EXAMS</span>
-          <h2>Your Next Achievement Begins With Preparation.</h2>
-          <p>
-            Create a student account to get started. Examination access,
-            question banks and student results are being developed.
-          </p>
-          <a href="#student-account" class="btn btn-gold">
-            Student Account →
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- STUDENT ACCOUNT SECTION -->
-    <section id="student-account" style="
-      max-width:600px;
-      margin:40px auto;
-      padding:24px;
-      background:#ffffff;
-      color:#172554;
-      border:1px solid #e5e7eb;
-      border-radius:16px;
-      font-family:Arial,sans-serif;
-      box-sizing:border-box;
-    ">
-      <h2 style="margin-top:0;">SAINTIG EXAMS Student Account</h2>
-      <p>Create an account or sign in to access your examination account.</p>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
-        <button type="button" id="show-register" style="
-          padding:12px 18px;background:#d4af37;color:#172554;
-          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-        ">Create Account</button>
-
-        <button type="button" id="show-login" style="
-          padding:12px 18px;background:#172554;color:white;
-          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-        ">Sign In</button>
-      </div>
-
-      <form id="register-form">
-        <h3>Create your student account</h3>
-
-        <label for="register-name">Full name</label>
-        <input id="register-name" type="text" autocomplete="name"
-          required minlength="2" maxlength="100"
-          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-        <label for="register-email">Email address</label>
-        <input id="register-email" type="email" autocomplete="email"
-          required maxlength="254"
-          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-        <label for="register-password">Password (at least 8 characters)</label>
-        <input id="register-password" type="password"
-          autocomplete="new-password" required minlength="8"
-          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-        <button type="submit" style="
-          width:100%;padding:13px;background:#d4af37;color:#172554;
-          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-        ">Create Account</button>
-      </form>
-
-      <form id="login-form" hidden>
-        <h3>Sign in to your account</h3>
-
-        <label for="login-email">Email address</label>
-        <input id="login-email" type="email" autocomplete="email"
-          required maxlength="254"
-          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-        <label for="login-password">Password</label>
-        <input id="login-password" type="password"
-          autocomplete="current-password" required
-          style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
-
-        <button type="submit" style="
-          width:100%;padding:13px;background:#172554;color:white;
-          border:0;border-radius:8px;font-weight:bold;cursor:pointer;
-        ">Sign In</button>
-      </form>
-
-      <div id="account-panel" hidden>
-        <h3>You're signed in</h3>
-        <p id="account-email" style="overflow-wrap:anywhere;"></p>
-        <button type="button" id="logout-button" style="
-          padding:12px 18px;background:#991b1b;color:white;
-          border:0;border-radius:8px;cursor:pointer;
-        ">Sign Out</button>
-      </div>
-
-      <p id="auth-message" role="status" aria-live="polite"
-        style="margin-bottom:0;overflow-wrap:anywhere;"></p>
     </section>
   </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="#home" class="brand">
-            <div class="brand-icon">S</div>
-            <div class="brand-name">
-              SAINTIG EXAMS
-              <span>LEARN. PRACTICE. SUCCEED.</span>
-            </div>
-          </a>
-          <p class="footer-description">
-            Building a more accessible way for students to practise,
-            prepare and progress through education.
-          </p>
-        </div>
-
-        <div class="footer-column">
-          <h4>Explore</h4>
-          <a href="#education">Education Sections</a>
-          <a href="#subjects">Subjects</a>
-          <a href="#about">Our Vision</a>
-        </div>
-
-        <div class="footer-column">
-          <h4>Platform</h4>
-          <a href="#student-account">Student Account</a>
-          <a href="#about">Planned Features</a>
-          <a href="#home">Back to Top ↑</a>
-        </div>
-      </div>
-
-      <div class="copyright">
-        © <span id="year"></span> SAINTIG EXAMS.
-        All rights reserved.
-      </div>
-    </div>
+    <strong>SAINTIG EXAMS</strong>
+    <p>Learn. Practise. Succeed.</p>
+    <p>© <span id="current-year"></span> SAINTIG EXAMS. All rights reserved.</p>
   </footer>
 
-  <div class="notice" id="notice" role="status" aria-live="polite">
-    Examination features are still being developed.
-  </div>
-
-  <!-- SUPABASE LIBRARY -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- PAGE INTERACTIONS -->
   <script>
-    const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
-    const notice = document.getElementById("notice");
-
-    menuToggle.addEventListener("click", function () {
-      const isOpen = navLinks.classList.toggle("open");
-
-      menuToggle.setAttribute("aria-expanded", String(isOpen));
-      menuToggle.setAttribute(
-        "aria-label",
-        isOpen ? "Close navigation menu" : "Open navigation menu"
-      );
-      menuToggle.textContent = isOpen ? "✕" : "☰";
-    });
-
-    navLinks.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        navLinks.classList.remove("open");
-        menuToggle.setAttribute("aria-expanded", "false");
-        menuToggle.setAttribute("aria-label", "Open navigation menu");
-        menuToggle.textContent = "☰";
-      });
-    });
-
-    document.getElementById("year").textContent =
+    document.getElementById("current-year").textContent =
       new Date().getFullYear();
+
+    function showLogin() {
+      document.getElementById("login-form").classList.remove("hidden");
+      document.getElementById("register-form").classList.add("hidden");
+      document.getElementById("show-login").classList.add("active");
+      document.getElementById("show-register").classList.remove("active");
+      document.getElementById("account-heading").textContent =
+        "Welcome back!";
+      document.getElementById("account-description").textContent =
+        "Sign in to continue to your examinations.";
+      document.getElementById("auth-message").textContent = "";
+    }
+
+    function showRegister() {
+      document.getElementById("register-form").classList.remove("hidden");
+      document.getElementById("login-form").classList.add("hidden");
+      document.getElementById("show-register").classList.add("active");
+      document.getElementById("show-login").classList.remove("active");
+      document.getElementById("account-heading").textContent =
+        "Create your account";
+      document.getElementById("account-description").textContent =
+        "Join SAINTIG EXAMS and begin your learning journey.";
+      document.getElementById("auth-message").textContent = "";
+    }
   </script>
 
-  <!-- SUPABASE STUDENT AUTHENTICATION -->
-  <script>
-  (() => {
-    "use strict";
-
-    const SUPABASE_URL =
-      "https://scuiswponnqyrbqjypkx.supabase.co";
-
-    // Use only your Supabase publishable/anon key here.
-    // Never put a service-role or secret key in frontend code.
-    const SUPABASE_ANON_KEY =
-      "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
-
-    const message = document.getElementById("auth-message");
-    const registerForm = document.getElementById("register-form");
-    const loginForm = document.getElementById("login-form");
-    const accountPanel = document.getElementById("account-panel");
-    const registerButton = document.getElementById("show-register");
-    const loginButton = document.getElementById("show-login");
-    const logoutButton = document.getElementById("logout-button");
-
-    if (!window.supabase) {
-      message.textContent =
-        "The account service could not load. Check your internet connection and refresh.";
-      message.style.color = "#b91c1c";
-      return;
-    }
-
-    const client = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
-
-    function showMessage(text, isError = false) {
-      message.textContent = text;
-      message.style.color = isError ? "#b91c1c" : "#166534";
-    }
-
-    function showSignedOutForm(mode) {
-      registerForm.hidden = mode !== "register";
-      loginForm.hidden = mode !== "login";
-      accountPanel.hidden = true;
-      showMessage("");
-    }
-
-    function showAccount(user) {
-      registerForm.hidden = true;
-      loginForm.hidden = true;
-      accountPanel.hidden = false;
-
-      document.getElementById("account-email").textContent =
-        "Signed in as: " + (user.email || "Student");
-
-      showMessage("Your account session is active.");
-    }
-
-    registerButton.addEventListener("click", () => {
-      showSignedOutForm("register");
-    });
-
-    loginButton.addEventListener("click", () => {
-      showSignedOutForm("login");
-    });
-
-    registerForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const fullName =
-        document.getElementById("register-name").value.trim();
-      const email =
-        document.getElementById("register-email").value.trim();
-      const password =
-        document.getElementById("register-password").value;
-
-      if (fullName.length < 2) {
-        showMessage("Please enter your full name.", true);
-        return;
-      }
-
-      const submitButton =
-        registerForm.querySelector('button[type="submit"]');
-
-      submitButton.disabled = true;
-      showMessage("Creating your account...");
-
-      try {
-        const { data, error } = await client.auth.signUp({
-          email,
-          password,
-          options: {
-            data: { display_name: fullName }
-          }
-        });
-
-        if (error) throw error;
-
-        if (data.session && data.user) {
-          showAccount(data.user);
-        } else {
-          showSignedOutForm("login");
-          showMessage(
-            "Registration submitted. Check your email for a confirmation link, then sign in."
-          );
-        }
-      } catch (error) {
-        showMessage(error.message || "Registration failed.", true);
-      } finally {
-        submitButton.disabled = false;
-      }
-    });
-
-    loginForm.addEventListener("submit", async (event) => {
-      event.preventDefault();
-
-      const email =
-        document.getElementById("login-email").value.trim();
-      const password =
-        document.getElementById("login-password").value;
-      const submitButton =
-        loginForm.querySelector('button[type="submit"]');
-
-      submitButton.disabled = true;
-      showMessage("Signing in...");
-
-      try {
-        const { data, error } =
-          await client.auth.signInWithPassword({
-            email,
-            password
-          });
-
-        if (error) throw error;
-
-        showAccount(data.user);
-      } catch (error) {
-        showMessage(error.message || "Sign-in failed.", true);
-      } finally {
-        submitButton.disabled = false;
-      }
-    });
-
-    logoutButton.addEventListener("click", async () => {
-      logoutButton.disabled = true;
-
-      try {
-        const { error } = await client.auth.signOut();
-
-        if (error) throw error;
-
-        showSignedOutForm("login");
-        showMessage("You have signed out.");
-      } catch (error) {
-        showMessage(error.message || "Sign-out failed.", true);
-      } finally {
-        logoutButton.disabled = false;
-      }
-    });
-
-    client.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
-        showAccount(session.user);
-      } else if (event === "SIGNED_OUT") {
-        showSignedOutForm("login");
-      }
-    });
-
-    client.auth.getSession().then(({ data, error }) => {
-      if (error) {
-        showMessage(
-          "Could not check your session. Please refresh.",
-          true
-        );
-      } else if (data.session?.user) {
-        showAccount(data.session.user);
-      }
-    });
-  })();
-  </script>
 </body>
 </html>
