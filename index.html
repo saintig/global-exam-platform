@@ -1287,6 +1287,254 @@
     document.getElementById("year").textContent =
       new Date().getFullYear();
   </script>
+
+<!-- SUPABASE STUDENT AUTHENTICATION -->
+<section id="student-account" style="
+  max-width:600px;
+  margin:40px auto;
+  padding:24px;
+  background:#ffffff;
+  color:#172554;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  font-family:Arial,sans-serif;
+  box-sizing:border-box;
+">
+  <h2 style="margin-top:0;">Student Account</h2>
+  <p>Create an account or sign in to access your examination account.</p>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+    <button type="button" id="show-register" style="
+      padding:12px 18px;background:#d4af37;color:#172554;
+      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+    ">Create Account</button>
+
+    <button type="button" id="show-login" style="
+      padding:12px 18px;background:#172554;color:white;
+      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+    ">Sign In</button>
+  </div>
+
+  <form id="register-form">
+    <h3>Create your student account</h3>
+
+    <label for="register-name">Full name</label>
+    <input id="register-name" type="text" autocomplete="name"
+      required minlength="2" maxlength="100"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+    <label for="register-email">Email address</label>
+    <input id="register-email" type="email" autocomplete="email"
+      required maxlength="254"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+    <label for="register-password">Password (at least 8 characters)</label>
+    <input id="register-password" type="password"
+      autocomplete="new-password" required minlength="8"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+    <button type="submit" style="
+      width:100%;padding:13px;background:#d4af37;color:#172554;
+      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+    ">Create Account</button>
+  </form>
+
+  <form id="login-form" hidden>
+    <h3>Sign in to your account</h3>
+
+    <label for="login-email">Email address</label>
+    <input id="login-email" type="email" autocomplete="email"
+      required maxlength="254"
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+    <label for="login-password">Password</label>
+    <input id="login-password" type="password"
+      autocomplete="current-password" required
+      style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;border:1px solid #cbd5e1;border-radius:8px;">
+
+    <button type="submit" style="
+      width:100%;padding:13px;background:#172554;color:white;
+      border:0;border-radius:8px;font-weight:bold;cursor:pointer;
+    ">Sign In</button>
+  </form>
+
+  <div id="account-panel" hidden>
+    <h3>You're signed in</h3>
+    <p id="account-email" style="overflow-wrap:anywhere;"></p>
+    <button type="button" id="logout-button" style="
+      padding:12px 18px;background:#991b1b;color:white;
+      border:0;border-radius:8px;cursor:pointer;
+    ">Sign Out</button>
+  </div>
+
+  <p id="auth-message" role="status" aria-live="polite"
+    style="margin-bottom:0;overflow-wrap:anywhere;"></p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+(() => {
+  "use strict";
+
+  const SUPABASE_URL =
+    "https://scuiswponnqyrbqjypkx.supabase.co";
+
+  // Replace this placeholder with your Supabase anon/public key.
+  // Never put your service_role or secret key in this file.
+  const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
+  const message = document.getElementById("auth-message");
+  const registerForm = document.getElementById("register-form");
+  const loginForm = document.getElementById("login-form");
+  const accountPanel = document.getElementById("account-panel");
+  const registerButton = document.getElementById("show-register");
+  const loginButton = document.getElementById("show-login");
+
+  if (!window.supabase ||
+      SUPABASE_ANON_KEY === "PASTE_YOUR_SUPABASE_ANON_KEY_HERE") {
+    message.textContent =
+      "Setup required: add your Supabase anon/public key to activate accounts.";
+    return;
+  }
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  function showMessage(text, isError = false) {
+    message.textContent = text;
+    message.style.color = isError ? "#b91c1c" : "#166534";
+  }
+
+  function showSignedOutForm(mode) {
+    registerForm.hidden = mode !== "register";
+    loginForm.hidden = mode !== "login";
+    accountPanel.hidden = true;
+    showMessage("");
+  }
+
+  function showAccount(user) {
+    registerForm.hidden = true;
+    loginForm.hidden = true;
+    accountPanel.hidden = false;
+
+    document.getElementById("account-email").textContent =
+      "Signed in as: " + (user.email || "Student");
+
+    showMessage("Your account session is active.");
+  }
+
+  registerButton.addEventListener("click", () => {
+    showSignedOutForm("register");
+  });
+
+  loginButton.addEventListener("click", () => {
+    showSignedOutForm("login");
+  });
+
+  registerForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const fullName = document.getElementById("register-name").value.trim();
+    const email = document.getElementById("register-email").value.trim();
+    const password = document.getElementById("register-password").value;
+
+    if (fullName.length < 2) {
+      showMessage("Please enter your full name.", true);
+      return;
+    }
+
+    const submitButton = registerForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    showMessage("Creating your account...");
+
+    try {
+      const { data, error } = await client.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { display_name: fullName }
+        }
+      });
+
+      if (error) throw error;
+
+      if (data.session && data.user) {
+        showAccount(data.user);
+      } else {
+        showMessage(
+          "Registration submitted. Check your email for a confirmation link, then sign in."
+        );
+        showSignedOutForm("login");
+      }
+    } catch (error) {
+      showMessage(error.message || "Registration failed.", true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("login-email").value.trim();
+    const password = document.getElementById("login-password").value;
+    const submitButton = loginForm.querySelector('button[type="submit"]');
+
+    submitButton.disabled = true;
+    showMessage("Signing in...");
+
+    try {
+      const { data, error } = await client.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      showAccount(data.user);
+    } catch (error) {
+      showMessage(error.message || "Sign-in failed.", true);
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+
+  document.getElementById("logout-button").addEventListener(
+    "click",
+    async () => {
+      const { error } = await client.auth.signOut();
+
+      if (error) {
+        showMessage(error.message || "Sign-out failed.", true);
+        return;
+      }
+
+      showSignedOutForm("login");
+      showMessage("You have signed out.");
+    }
+  );
+
+  client.auth.onAuthStateChange((event, session) => {
+    if (session?.user) {
+      showAccount(session.user);
+    } else if (event === "SIGNED_OUT") {
+      showSignedOutForm("login");
+    }
+  });
+
+  client.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      showMessage("Could not check your session. Please refresh.", true);
+    } else if (data.session?.user) {
+      showAccount(data.session.user);
+    }
+  });
+})();
+</script>
+  
 </body>
 </html>
 
