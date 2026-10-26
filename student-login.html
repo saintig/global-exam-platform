@@ -52,9 +52,7 @@
       letter-spacing: .5px;
     }
 
-    .brand span {
-      color: var(--gold);
-    }
+    .brand span { color: var(--gold); }
 
     .brand small {
       display: block;
@@ -123,13 +121,9 @@
       color: var(--white);
     }
 
-    .form-panel[hidden] {
-      display: none !important;
-    }
+    .form-panel[hidden] { display: none !important; }
 
-    .field {
-      margin-bottom: 17px;
-    }
+    .field { margin-bottom: 17px; }
 
     label {
       display: block;
@@ -155,13 +149,9 @@
       box-shadow: 0 0 0 3px rgba(24, 57, 99, .10);
     }
 
-    .password-wrap {
-      position: relative;
-    }
+    .password-wrap { position: relative; }
 
-    .password-wrap input {
-      padding-right: 76px;
-    }
+    .password-wrap input { padding-right: 76px; }
 
     .toggle-password {
       position: absolute;
@@ -183,9 +173,7 @@
       margin: -4px 0 19px;
     }
 
-    a {
-      color: var(--navy-light);
-    }
+    a { color: var(--navy-light); }
 
     .text-link {
       font-size: 13px;
@@ -193,9 +181,7 @@
       text-decoration: none;
     }
 
-    .text-link:hover {
-      text-decoration: underline;
-    }
+    .text-link:hover { text-decoration: underline; }
 
     .primary-btn {
       display: block;
@@ -211,9 +197,7 @@
       transition: background .2s;
     }
 
-    .primary-btn:hover {
-      background: var(--navy-light);
-    }
+    .primary-btn:hover { background: var(--navy-light); }
 
     .primary-btn:disabled {
       opacity: .65;
@@ -230,19 +214,9 @@
       overflow-wrap: anywhere;
     }
 
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      background: #fef3f2;
-      color: var(--danger);
-    }
-
-    .message.success {
-      background: #ecfdf3;
-      color: var(--success);
-    }
+    .message.show { display: block; }
+    .message.error { background: #fef3f2; color: var(--danger); }
+    .message.success { background: #ecfdf3; color: var(--success); }
 
     .back-home {
       text-align: center;
@@ -250,10 +224,7 @@
       font-size: 14px;
     }
 
-    .back-home a {
-      text-decoration: none;
-      font-weight: bold;
-    }
+    .back-home a { text-decoration: none; font-weight: bold; }
 
     .admin-link {
       text-align: center;
@@ -277,25 +248,17 @@
     }
 
     @media (max-width: 400px) {
-      .card {
-        padding: 23px 16px;
-      }
-
-      .intro h1 {
-        font-size: 23px;
-      }
-
-      .brand {
-        font-size: 20px;
-      }
+      .card { padding: 23px 16px; }
+      .intro h1 { font-size: 23px; }
+      .brand { font-size: 20px; }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <!-- Public page: the heading always returns to index.html -->
-    <a class="brand" href="index.html" aria-label="Return to SAINTIG EXAMS public homepage">
+    <a class="brand" href="index.html"
+       aria-label="Return to SAINTIG EXAMS public homepage">
       SAINTIG <span>EXAMS</span>
       <small>LEARN. PRACTICE. SUCCEED.</small>
     </a>
@@ -312,65 +275,62 @@
 
       <div class="tabs" id="tabs">
         <button type="button" class="tab active" id="login-tab"
-          aria-selected="true">Sign In</button>
+                aria-selected="true">Sign In</button>
         <button type="button" class="tab" id="register-tab"
-          aria-selected="false">Create Account</button>
+                aria-selected="false">Create Account</button>
       </div>
 
-      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <div id="message" class="message" role="status"
+           aria-live="polite"></div>
 
-      <!-- Student sign in -->
       <form id="login-form" class="form-panel">
         <div class="field">
           <label for="login-email">Email Address</label>
           <input id="login-email" type="email" autocomplete="email"
-            placeholder="Enter your email address" required>
+                 placeholder="Enter your email address" required>
         </div>
 
         <div class="field">
           <label for="login-password">Password</label>
           <div class="password-wrap">
             <input id="login-password" type="password"
-              autocomplete="current-password"
-              placeholder="Enter your password" required>
+                   autocomplete="current-password"
+                   placeholder="Enter your password" required>
             <button type="button" class="toggle-password"
-              data-target="login-password" aria-pressed="false">
-              Show
-            </button>
+                    data-target="login-password">Show</button>
           </div>
         </div>
 
         <div class="form-row">
-          <a href="#" id="forgot-link" class="text-link">Forgot Password?</a>
+          <a href="#" id="forgot-link" class="text-link">
+            Forgot Password?
+          </a>
         </div>
 
         <button class="primary-btn" type="submit">Sign In</button>
       </form>
 
-      <!-- Student registration -->
       <form id="register-form" class="form-panel" hidden>
         <div class="field">
           <label for="register-name">Full Name</label>
           <input id="register-name" type="text" autocomplete="name"
-            placeholder="Enter your full name" required>
+                 placeholder="Enter your full name" required>
         </div>
 
         <div class="field">
           <label for="register-email">Email Address</label>
           <input id="register-email" type="email" autocomplete="email"
-            placeholder="Enter your email address" required>
+                 placeholder="Enter your email address" required>
         </div>
 
         <div class="field">
           <label for="register-password">Create Password</label>
           <div class="password-wrap">
             <input id="register-password" type="password"
-              autocomplete="new-password" minlength="8"
-              placeholder="At least 8 characters" required>
+                   autocomplete="new-password" minlength="8"
+                   placeholder="At least 8 characters" required>
             <button type="button" class="toggle-password"
-              data-target="register-password" aria-pressed="false">
-              Show
-            </button>
+                    data-target="register-password">Show</button>
           </div>
         </div>
 
@@ -378,29 +338,25 @@
           <label for="confirm-password">Confirm Password</label>
           <div class="password-wrap">
             <input id="confirm-password" type="password"
-              autocomplete="new-password" minlength="8"
-              placeholder="Enter your password again" required>
+                   autocomplete="new-password" minlength="8"
+                   placeholder="Enter your password again" required>
             <button type="button" class="toggle-password"
-              data-target="confirm-password" aria-pressed="false">
-              Show
-            </button>
+                    data-target="confirm-password">Show</button>
           </div>
         </div>
 
         <button class="primary-btn" type="submit">Create Account</button>
       </form>
 
-      <!-- Password recovery -->
       <form id="reset-form" class="form-panel" hidden>
         <div class="field">
           <label for="reset-email">Registered Email Address</label>
           <input id="reset-email" type="email" autocomplete="email"
-            placeholder="Enter your registered email" required>
+                 placeholder="Enter your registered email" required>
         </div>
 
         <p style="font-size:13px;color:#667085;line-height:1.6;margin-bottom:18px">
-          If password recovery is configured, you can request a reset link
-          sent to your registered email address.
+          Request a password reset link using your registered email address.
         </p>
 
         <button class="primary-btn" type="submit">Send Reset Link</button>
@@ -425,7 +381,14 @@
     © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
   </footer>
 
-  <script>
+  <script type="module">
+    import {
+      supabase,
+      signInStudent,
+      registerStudent,
+      requestPasswordReset
+    } from "./auth.js";
+
     const loginTab = document.getElementById("login-tab");
     const registerTab = document.getElementById("register-tab");
     const tabs = document.getElementById("tabs");
@@ -449,6 +412,15 @@
     function clearMessage() {
       message.textContent = "";
       message.className = "message";
+    }
+
+    function setLoading(form, loading, label) {
+      const button = form.querySelector('button[type="submit"]');
+      if (!button.dataset.originalText) {
+        button.dataset.originalText = button.textContent;
+      }
+      button.disabled = loading;
+      button.textContent = loading ? label : button.dataset.originalText;
     }
 
     function showLogin() {
@@ -500,19 +472,18 @@
     loginTab.addEventListener("click", showLogin);
     registerTab.addEventListener("click", showRegister);
 
-    document.getElementById("forgot-link").addEventListener("click", function(event) {
+    document.getElementById("forgot-link").addEventListener("click", event => {
       event.preventDefault();
       showReset();
     });
 
-    document.getElementById("back-login").addEventListener("click", function(event) {
+    document.getElementById("back-login").addEventListener("click", event => {
       event.preventDefault();
       showLogin();
     });
 
-    // Show/hide every password field using its own button.
-    document.querySelectorAll(".toggle-password").forEach(function(button) {
-      button.addEventListener("click", function() {
+    document.querySelectorAll(".toggle-password").forEach(button => {
+      button.addEventListener("click", () => {
         const input = document.getElementById(button.dataset.target);
         const reveal = input.type === "password";
 
@@ -526,9 +497,12 @@
       });
     });
 
-    registerForm.addEventListener("submit", function(event) {
+    registerForm.addEventListener("submit", async event => {
       event.preventDefault();
+      clearMessage();
 
+      const name = document.getElementById("register-name").value.trim();
+      const email = document.getElementById("register-email").value.trim();
       const password = document.getElementById("register-password").value;
       const confirmation = document.getElementById("confirm-password").value;
 
@@ -537,35 +511,115 @@
         return;
       }
 
-      showMessage(
-        "Account registration is not connected yet. Supabase authentication must be connected before you can create an account.",
-        "error"
-      );
+      setLoading(registerForm, true, "Creating Account...");
+
+      try {
+        const { data, error } = await registerStudent(email, password);
+        if (error) throw error;
+
+        // Save the student's display name in Supabase Auth metadata.
+        // This does not grant administrator privileges.
+        const { error: profileError } = await supabase.auth.updateUser({
+          data: { full_name: name }
+        });
+
+        if (profileError && data.session) {
+          console.error("Could not save profile name:", profileError.message);
+        }
+
+        if (data.session) {
+          showMessage("Your account was created successfully. Opening your dashboard...", "success");
+          window.location.replace("dashboard.html");
+        } else {
+          showMessage(
+            "Registration received. Check your email for the confirmation link, then sign in.",
+            "success"
+          );
+          showLogin();
+          showMessage(
+            "Registration received. Check your email for the confirmation link, then sign in.",
+            "success"
+          );
+        }
+      } catch (error) {
+        showMessage(error.message || "We could not create your account. Please try again.", "error");
+      } finally {
+        setLoading(registerForm, false);
+      }
     });
 
-    loginForm.addEventListener("submit", function(event) {
+    loginForm.addEventListener("submit", async event => {
       event.preventDefault();
+      clearMessage();
 
-      showMessage(
-        "Student sign-in is not connected yet. Supabase authentication must be connected before you can sign in.",
-        "error"
-      );
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      setLoading(loginForm, true, "Signing In...");
+
+      try {
+        const { data, error } = await signInStudent(email, password);
+        if (error) throw error;
+
+        if (!data.session) {
+          throw new Error("Sign-in was not completed. Please try again.");
+        }
+
+        showMessage("Sign-in successful. Opening your dashboard...", "success");
+        window.location.replace("dashboard.html");
+      } catch (error) {
+        showMessage(error.message || "Sign-in failed. Check your details and try again.", "error");
+      } finally {
+        setLoading(loginForm, false);
+      }
     });
 
-    resetForm.addEventListener("submit", function(event) {
+    resetForm.addEventListener("submit", async event => {
       event.preventDefault();
+      clearMessage();
 
-      showMessage(
-        "Password recovery is not connected yet. Supabase password reset must be configured before a reset link can be sent.",
-        "error"
-      );
+      const email = document.getElementById("reset-email").value.trim();
+      setLoading(resetForm, true, "Sending Link...");
+
+      try {
+        const { error } = await requestPasswordReset(email);
+        if (error) throw error;
+
+        showMessage(
+          "If the address is registered, a password reset email will be sent. Check your inbox and spam folder.",
+          "success"
+        );
+      } catch (error) {
+        showMessage(
+          error.message || "We could not request a reset link. Please try again.",
+          "error"
+        );
+      } finally {
+        setLoading(resetForm, false);
+      }
     });
 
-    // Open the correct form when arriving from the public homepage.
+    // If an existing session is already active, send the user to the dashboard.
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
+
+      if (data.session) {
+        const mode = new URLSearchParams(location.search).get("mode");
+        if (mode !== "reset") {
+          window.location.replace("dashboard.html");
+        }
+      }
+    } catch (error) {
+      console.error("Session check failed:", error.message);
+    }
+
     const mode = new URLSearchParams(window.location.search).get("mode");
 
     if (mode === "register") {
       showRegister();
+    } else if (mode === "reset") {
+      showReset();
     } else {
       showLogin();
     }
