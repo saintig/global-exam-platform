@@ -19,6 +19,8 @@
       --border: #e2e7ef;
       --pale-gold: #fff5d8;
       --light-blue: #f0f4fa;
+      --success: #18794e;
+      --danger: #b42318;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -30,7 +32,7 @@
       line-height: 1.6;
     }
 
-    button, input, select { font: inherit; }
+    button, input { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; }
@@ -337,6 +339,99 @@
       font-size: 12px;
     }
 
+    .profile-settings {
+      margin-top: 18px;
+      padding: 22px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .profile-settings h3 {
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+
+    .settings-form {
+      display: grid;
+      gap: 13px;
+      max-width: 560px;
+    }
+
+    .settings-form label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .settings-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--navy);
+      background: white;
+    }
+
+    .settings-form input:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 1px;
+    }
+
+    .settings-form input[readonly] {
+      background: var(--light-blue);
+      color: var(--muted);
+    }
+
+    .settings-button {
+      width: fit-content;
+      padding: 11px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--navy);
+      color: white;
+      font-weight: bold;
+    }
+
+    .settings-button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .settings-message {
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .settings-message:empty { display: none; }
+    .settings-message.success { color: var(--success); }
+    .settings-message.error { color: var(--danger); }
+
+    .settings-divider {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    .password-wrap {
+      display: flex;
+      gap: 8px;
+    }
+
+    .password-wrap input { min-width: 0; }
+
+    .toggle-password {
+      flex-shrink: 0;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--light-blue);
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: bold;
+    }
+
     .bottom-nav {
       display: flex;
       flex-wrap: wrap;
@@ -398,6 +493,9 @@
       .section-title h2 { font-size: 19px; }
       .status-grid { grid-template-columns: 1fr; }
       .bottom-nav { gap: 8px; }
+      .profile-settings { padding: 17px; }
+      .password-wrap { flex-wrap: wrap; }
+      .password-wrap .toggle-password { min-height: 40px; }
     }
   </style>
 </head>
@@ -480,7 +578,7 @@
       <div class="section-title">
         <div>
           <h2>Available Examinations</h2>
-          <p id="exam-description">Published examinations will appear here when connected.</p>
+          <p id="exam-description">Published examinations will be connected in the next stage.</p>
         </div>
       </div>
 
@@ -546,7 +644,7 @@
       <div class="section-title">
         <div>
           <h2>My Account &amp; Access</h2>
-          <p>Account and examination access information.</p>
+          <p>Manage your profile and review your account information.</p>
         </div>
       </div>
 
@@ -562,6 +660,87 @@
           <div class="status-value" id="access-status">Not connected</div>
           <p class="status-note">Access depends on published examinations and applicable platform rules.</p>
         </article>
+      </div>
+
+      <div class="profile-settings">
+        <h3>Edit Student Profile</h3>
+
+        <form id="profile-form" class="settings-form">
+          <div>
+            <label for="edit-full-name">Full Name</label>
+            <input
+              type="text"
+              id="edit-full-name"
+              autocomplete="name"
+              maxlength="100"
+              required
+            >
+          </div>
+
+          <div>
+            <label for="registered-email">Registered Email Address</label>
+            <input
+              type="email"
+              id="registered-email"
+              readonly
+              aria-describedby="email-help"
+            >
+            <p class="status-note" id="email-help">Your registered email is read-only here.</p>
+          </div>
+
+          <button class="settings-button" id="save-profile-button" type="submit">
+            Save Profile
+          </button>
+
+          <p class="settings-message" id="profile-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <hr class="settings-divider">
+
+        <h3>Change Password</h3>
+        <p class="status-note" style="margin-bottom:14px">
+          Choose a new password with at least 8 characters. Use a password you do not use on other websites.
+        </p>
+
+        <form id="password-form" class="settings-form">
+          <div>
+            <label for="new-password">New Password</label>
+            <div class="password-wrap">
+              <input
+                type="password"
+                id="new-password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button class="toggle-password" type="button" data-toggle="new-password">
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="confirm-password">Confirm New Password</label>
+            <div class="password-wrap">
+              <input
+                type="password"
+                id="confirm-password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button class="toggle-password" type="button" data-toggle="confirm-password">
+                Show
+              </button>
+            </div>
+          </div>
+
+          <button class="settings-button" id="change-password-button" type="submit">
+            Update Password
+          </button>
+
+          <p class="settings-message" id="password-message" role="status" aria-live="polite"></p>
+        </form>
       </div>
 
       <div class="notice">
@@ -620,6 +799,8 @@
     const signoutButton = document.getElementById("signout-button");
 
     let redirecting = false;
+    let profileSaveInProgress = false;
+    let passwordUpdateInProgress = false;
 
     function redirectToLogin() {
       if (redirecting) return;
@@ -639,11 +820,9 @@
           ? metadata.name.trim()
           : "";
 
-      // Prefer the registered full name, not the email username.
       if (registeredName) return registeredName;
       if (otherName) return otherName;
 
-      // Fallback for older accounts that have no saved full name.
       return "Student";
     }
 
@@ -657,6 +836,13 @@
         parts[0].charAt(0) +
         parts[parts.length - 1].charAt(0)
       ).toUpperCase();
+    }
+
+    function showMessage(element, message, type = "") {
+      element.textContent = message;
+      element.classList.remove("success", "error");
+
+      if (type) element.classList.add(type);
     }
 
     function showError(message) {
@@ -677,6 +863,14 @@
 
       document.getElementById("profile-email").textContent =
         user.email || "Email address unavailable";
+
+      document.getElementById("registered-email").value =
+        user.email || "";
+
+      document.getElementById("edit-full-name").value =
+        user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        "";
 
       document.getElementById("profile-status").textContent = "Signed in";
       document.getElementById("access-status").textContent =
@@ -703,12 +897,145 @@
       }
     }
 
+    // Save the student's full name to their authenticated Supabase account.
+    document.getElementById("profile-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (profileSaveInProgress) return;
+
+      const button = document.getElementById("save-profile-button");
+      const message = document.getElementById("profile-message");
+      const input = document.getElementById("edit-full-name");
+      const fullName = input.value.trim();
+
+      if (!fullName) {
+        showMessage(message, "Please enter your full name.", "error");
+        input.focus();
+        return;
+      }
+
+      if (fullName.length > 100) {
+        showMessage(message, "Your name must be 100 characters or fewer.", "error");
+        return;
+      }
+
+      profileSaveInProgress = true;
+      button.disabled = true;
+      button.textContent = "Saving...";
+      showMessage(message, "");
+
+      try {
+        const { data, error } = await supabase.auth.updateUser({
+          data: { full_name: fullName }
+        });
+
+        if (error) throw error;
+        if (!data.user) throw new Error("We could not confirm your profile update.");
+
+        const savedName = data.user.user_metadata?.full_name;
+
+        if (!savedName) {
+          throw new Error("Your profile update could not be confirmed. Please refresh and check your name.");
+        }
+
+        document.getElementById("student-name").textContent = savedName;
+        document.getElementById("welcome-name").textContent = savedName;
+        document.getElementById("student-avatar").textContent =
+          getInitials(savedName);
+
+        showMessage(message, "Your full name has been saved successfully.", "success");
+      } catch (error) {
+        console.error("Profile update error:", error);
+        showMessage(
+          message,
+          error.message || "Unable to save your profile. Please try again.",
+          "error"
+        );
+      } finally {
+        profileSaveInProgress = false;
+        button.disabled = false;
+        button.textContent = "Save Profile";
+      }
+    });
+
+    // Change password for the currently authenticated student.
+    document.getElementById("password-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (passwordUpdateInProgress) return;
+
+      const button = document.getElementById("change-password-button");
+      const message = document.getElementById("password-message");
+      const newPasswordInput = document.getElementById("new-password");
+      const confirmPasswordInput = document.getElementById("confirm-password");
+      const newPassword = newPasswordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+
+      if (newPassword.length < 8) {
+        showMessage(message, "Your new password must contain at least 8 characters.", "error");
+        newPasswordInput.focus();
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        showMessage(message, "The passwords do not match.", "error");
+        confirmPasswordInput.focus();
+        return;
+      }
+
+      passwordUpdateInProgress = true;
+      button.disabled = true;
+      button.textContent = "Updating...";
+      showMessage(message, "");
+
+      try {
+        const { error } = await supabase.auth.updateUser({
+          password: newPassword
+        });
+
+        if (error) throw error;
+
+        document.getElementById("password-form").reset();
+
+        document.querySelectorAll("[data-toggle]").forEach(toggle => {
+          const input = document.getElementById(toggle.dataset.toggle);
+          input.type = "password";
+          toggle.textContent = "Show";
+        });
+
+        showMessage(message, "Your password has been updated successfully.", "success");
+      } catch (error) {
+        console.error("Password update error:", error);
+        showMessage(
+          message,
+          error.message || "Unable to update your password. Please try again.",
+          "error"
+        );
+      } finally {
+        passwordUpdateInProgress = false;
+        button.disabled = false;
+        button.textContent = "Update Password";
+      }
+    });
+
+    // Show or hide password fields.
+    document.querySelectorAll("[data-toggle]").forEach(button => {
+      button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.toggle);
+        const showPassword = input.type === "password";
+
+        input.type = showPassword ? "text" : "password";
+        button.textContent = showPassword ? "Hide" : "Show";
+      });
+    });
+
     signoutButton.addEventListener("click", async () => {
       signoutButton.disabled = true;
       signoutButton.textContent = "Signing Out...";
 
       try {
         await signOutUser();
+        redirectToLogin();
       } catch (error) {
         console.error("Sign-out error:", error);
         signoutButton.disabled = false;
@@ -725,9 +1052,10 @@
       });
     });
 
-    // React to an explicit sign-out without redirecting during initial loading.
+    // React to sign-out or loss of a valid session.
     supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || (!session && event === "TOKEN_REFRESHED")) {
+      if (event === "SIGNED_OUT" ||
+          (event === "TOKEN_REFRESHED" && !session)) {
         redirectToLogin();
       }
     });
