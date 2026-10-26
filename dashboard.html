@@ -10,492 +10,646 @@
 
   <style>
     :root {
-      --navy: #10264a;
-      --navy-light: #183963;
-      --gold: #e2b84b;
-      --cream: #faf8f2;
-      --white: #ffffff;
-      --muted: #667085;
-      --border: #e2e7ef;
-      --pale-gold: #fff5d8;
-      --light-blue: #f0f4fa;
-      --success: #18794e;
-      --danger: #b42318;
+      --navy:#10264a;
+      --navy-light:#183963;
+      --gold:#e2b84b;
+      --cream:#faf8f2;
+      --white:#fff;
+      --muted:#667085;
+      --border:#e2e7ef;
+      --pale-gold:#fff5d8;
+      --light-blue:#f0f4fa;
+      --success:#18794e;
+      --danger:#b42318;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing:border-box; margin:0; padding:0; }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--cream);
-      color: var(--navy);
-      line-height: 1.6;
+      font-family:Arial,Helvetica,sans-serif;
+      background:var(--cream);
+      color:var(--navy);
+      line-height:1.6;
     }
 
-    button, input { font: inherit; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    a { text-decoration: none; color: inherit; }
-    button { cursor: pointer; }
+    button,input,select { font:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    a { text-decoration:none; color:inherit; }
+    [hidden] { display:none !important; }
 
-    .container { width: min(1150px, 92%); margin: auto; }
+    .container { width:min(1150px,92%); margin:auto; }
 
     header {
-      background: var(--navy);
-      color: var(--white);
-      border-bottom: 4px solid var(--gold);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      background:var(--navy);
+      color:var(--white);
+      border-bottom:4px solid var(--gold);
+      position:sticky;
+      top:0;
+      z-index:20;
     }
 
     .header-inner {
-      min-height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
+      min-height:76px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
     }
 
     .brand {
-      display: inline-block;
-      font-size: 21px;
-      font-weight: 800;
-      line-height: 1.3;
-      letter-spacing: .4px;
+      display:inline-block;
+      font-size:21px;
+      font-weight:800;
+      line-height:1.3;
+      letter-spacing:.4px;
     }
 
-    .brand span { color: var(--gold); }
+    .brand span { color:var(--gold); }
 
     .brand small {
-      display: block;
-      font-size: 10px;
-      font-weight: normal;
-      letter-spacing: 1.4px;
-      color: #dce5f2;
-      margin-top: 4px;
+      display:block;
+      font-size:10px;
+      font-weight:normal;
+      letter-spacing:1.4px;
+      color:#dce5f2;
+      margin-top:4px;
     }
 
     .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .menu-button {
+      width:40px;
+      height:40px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      background:transparent;
+      border:1px solid rgba(255,255,255,.4);
+      border-radius:8px;
+      color:white;
+    }
+
+    .menu-button span {
+      display:block;
+      width:19px;
+      height:2px;
+      background:var(--gold);
     }
 
     .profile-chip {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--white);
-      font-size: 13px;
-      font-weight: bold;
-      min-width: 0;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      color:white;
+      font-size:13px;
+      font-weight:bold;
+      min-width:0;
     }
 
     .avatar {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: var(--gold);
-      color: var(--navy);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
+      width:38px;
+      height:38px;
+      flex-shrink:0;
+      border-radius:50%;
+      background:var(--gold);
+      color:var(--navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
     }
 
     .profile-name {
-      max-width: 190px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      max-width:150px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
 
     .signout {
-      padding: 9px 13px;
-      border: 1px solid rgba(255,255,255,.45);
-      border-radius: 8px;
-      background: transparent;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      flex-shrink: 0;
+      padding:9px 12px;
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:8px;
+      background:transparent;
+      color:white;
+      font-size:12px;
+      font-weight:bold;
+      flex-shrink:0;
     }
 
-    .signout:hover { background: rgba(255,255,255,.1); }
-    .signout:disabled { opacity: .6; cursor: wait; }
+    .signout:hover { background:rgba(255,255,255,.1); }
+    .signout:disabled { opacity:.6; cursor:wait; }
 
-    main { min-height: 75vh; }
+    .menu-panel {
+      background:var(--navy-light);
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+
+    .menu-links {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      padding:12px 0;
+    }
+
+    .menu-links a {
+      color:white;
+      padding:9px 12px;
+      border-radius:7px;
+      font-size:13px;
+    }
+
+    .menu-links a:hover { background:rgba(255,255,255,.1); }
+
+    main { min-height:75vh; }
 
     .welcome {
-      margin-top: 28px;
-      padding: 30px;
-      border-radius: 18px;
-      background: var(--navy);
-      color: var(--white);
-      position: relative;
-      overflow: hidden;
+      margin-top:28px;
+      padding:30px;
+      border-radius:18px;
+      background:var(--navy);
+      color:white;
+      position:relative;
+      overflow:hidden;
     }
 
     .welcome::after {
-      content: "";
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      border: 1px solid rgba(226,184,75,.25);
-      border-radius: 50%;
-      right: -65px;
-      top: -85px;
-      box-shadow: 0 0 0 28px rgba(226,184,75,.035),
-                  0 0 0 58px rgba(226,184,75,.025);
-      pointer-events: none;
+      content:"";
+      position:absolute;
+      width:200px;
+      height:200px;
+      border:1px solid rgba(226,184,75,.25);
+      border-radius:50%;
+      right:-65px;
+      top:-85px;
+      box-shadow:0 0 0 28px rgba(226,184,75,.035),
+                 0 0 0 58px rgba(226,184,75,.025);
+      pointer-events:none;
     }
 
-    .welcome-content { position: relative; z-index: 1; }
+    .welcome-content { position:relative; z-index:1; }
 
     .welcome-label {
-      color: var(--gold);
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      font-weight: bold;
-      margin-bottom: 8px;
+      color:var(--gold);
+      font-size:11px;
+      letter-spacing:1.5px;
+      font-weight:bold;
+      margin-bottom:8px;
     }
 
     .welcome h1 {
-      font-size: clamp(25px, 4vw, 34px);
-      line-height: 1.3;
-      margin-bottom: 8px;
-      overflow-wrap: anywhere;
+      font-size:clamp(25px,4vw,34px);
+      line-height:1.3;
+      margin-bottom:8px;
+      overflow-wrap:anywhere;
     }
 
     .welcome p {
-      color: #dce5f2;
-      font-size: 14px;
-      max-width: 650px;
+      color:#dce5f2;
+      font-size:14px;
+      max-width:650px;
     }
 
     .welcome-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 22px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:22px;
     }
 
     .btn {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 17px;
-      font-size: 13px;
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+      border:0;
+      border-radius:9px;
+      padding:12px 17px;
+      font-size:13px;
+      font-weight:bold;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
     }
 
-    .btn-gold { background: var(--gold); color: var(--navy); }
-    .btn-gold:hover { background: #f1cb6d; }
+    .btn-gold { background:var(--gold); color:var(--navy); }
+    .btn-gold:hover { background:#f1cb6d; }
 
     .btn-outline {
-      background: transparent;
-      color: var(--white);
-      border: 1px solid rgba(255,255,255,.5);
+      background:transparent;
+      color:white;
+      border:1px solid rgba(255,255,255,.5);
     }
 
-    .btn-outline:hover { background: rgba(255,255,255,.08); }
+    .btn-outline:hover { background:rgba(255,255,255,.08); }
 
-    .section { padding-top: 37px; }
+    .section { padding-top:37px; }
 
     .section-title {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
     }
 
-    .section-title h2 { font-size: 22px; line-height: 1.3; }
+    .section-title h2 { font-size:22px; line-height:1.3; }
 
     .section-title p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 4px;
+      color:var(--muted);
+      font-size:13px;
+      margin-top:4px;
     }
 
-    .text-link, .card-link {
-      color: #8a6712;
-      font-size: 13px;
-      font-weight: bold;
+    .text-link,.card-link {
+      color:#8a6712;
+      font-size:13px;
+      font-weight:bold;
     }
 
     .level-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 17px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:17px;
     }
 
     .level-card {
-      padding: 23px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      transition: transform .2s, box-shadow .2s;
+      padding:23px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:15px;
+      transition:transform .2s,box-shadow .2s;
     }
 
     .level-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(16,38,74,.07);
+      transform:translateY(-3px);
+      box-shadow:0 10px 25px rgba(16,38,74,.07);
     }
 
     .level-icon {
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--pale-gold);
-      border-radius: 12px;
-      font-size: 23px;
-      margin-bottom: 15px;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:var(--pale-gold);
+      border-radius:12px;
+      font-size:23px;
+      margin-bottom:15px;
     }
 
-    .level-card h3 { font-size: 17px; margin-bottom: 7px; }
+    .level-card h3 { font-size:17px; margin-bottom:7px; }
 
     .level-card p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 17px;
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:17px;
     }
 
-    .card-link:hover { text-decoration: underline; }
+    .card-link:hover { text-decoration:underline; }
 
     .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 15px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:15px;
     }
 
     .quick-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 13px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 19px;
+      display:flex;
+      align-items:flex-start;
+      gap:13px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:13px;
+      padding:19px;
     }
 
     .quick-icon {
-      flex-shrink: 0;
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      background: var(--light-blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
+      flex-shrink:0;
+      width:42px;
+      height:42px;
+      border-radius:11px;
+      background:var(--light-blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
     }
 
-    .quick-card h3 { font-size: 15px; margin-bottom: 4px; }
+    .quick-card h3 { font-size:15px; margin-bottom:4px; }
 
     .quick-card p {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 9px;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:9px;
     }
 
     .status-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
     }
 
     .status-card {
-      padding: 22px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--white);
+      padding:22px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:white;
+      min-width:0;
     }
 
-    .status-card h3 { font-size: 15px; margin-bottom: 8px; }
+    .status-card h3 { font-size:15px; margin-bottom:8px; }
 
     .status-value {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 5px;
-      overflow-wrap: anywhere;
+      font-size:20px;
+      font-weight:800;
+      margin-bottom:5px;
+      overflow-wrap:anywhere;
     }
 
-    .status-note { font-size: 12px; color: var(--muted); }
+    .status-note { font-size:12px; color:var(--muted); }
+    .status-note + .status-note { margin-top:5px; }
 
     .notice {
-      margin-top: 17px;
-      padding: 15px 17px;
-      background: #fff8e7;
-      border: 1px solid #f0dfad;
-      border-radius: 10px;
-      color: #765914;
-      font-size: 12px;
+      margin-top:17px;
+      padding:15px 17px;
+      background:#fff8e7;
+      border:1px solid #f0dfad;
+      border-radius:10px;
+      color:#765914;
+      font-size:12px;
+      overflow-wrap:anywhere;
     }
 
-    .profile-settings {
-      margin-top: 18px;
-      padding: 22px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+    .form-panel {
+      margin-top:18px;
+      padding:22px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:14px;
     }
 
-    .profile-settings h3 {
-      font-size: 16px;
-      margin-bottom: 14px;
+    .form-panel h3 { font-size:16px; margin-bottom:12px; }
+
+    .form-row {
+      display:flex;
+      gap:10px;
+      align-items:end;
+      flex-wrap:wrap;
     }
 
-    .settings-form {
-      display: grid;
-      gap: 13px;
-      max-width: 560px;
+    .field { flex:1; min-width:180px; }
+
+    .field label,.settings-form label {
+      display:block;
+      font-size:13px;
+      font-weight:bold;
+      margin-bottom:5px;
     }
 
-    .settings-form label {
-      display: block;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
+    .field input,.field select,
     .settings-form input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--navy);
-      background: white;
+      width:100%;
+      min-width:0;
+      padding:12px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--navy);
+      background:white;
     }
 
+    .field input:focus,.field select:focus,
     .settings-form input:focus {
-      outline: 2px solid var(--gold);
-      outline-offset: 1px;
+      outline:2px solid var(--gold);
+      outline-offset:1px;
     }
 
-    .settings-form input[readonly] {
-      background: var(--light-blue);
-      color: var(--muted);
+    .field input[readonly] {
+      background:var(--light-blue);
+      color:var(--muted);
     }
+
+    .settings-form { display:grid; gap:13px; max-width:560px; }
 
     .settings-button {
-      width: fit-content;
-      padding: 11px 16px;
-      border: 0;
-      border-radius: 8px;
-      background: var(--navy);
-      color: white;
-      font-weight: bold;
+      width:fit-content;
+      padding:11px 16px;
+      border:0;
+      border-radius:8px;
+      background:var(--navy);
+      color:white;
+      font-weight:bold;
     }
 
-    .settings-button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
+    .settings-button:disabled { opacity:.6; cursor:wait; }
 
     .settings-message {
-      font-size: 13px;
-      overflow-wrap: anywhere;
+      font-size:13px;
+      overflow-wrap:anywhere;
     }
 
-    .settings-message:empty { display: none; }
-    .settings-message.success { color: var(--success); }
-    .settings-message.error { color: var(--danger); }
+    .settings-message:empty { display:none; }
+    .settings-message.success { color:var(--success); }
+    .settings-message.error { color:var(--danger); }
 
     .settings-divider {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
+      border:0;
+      border-top:1px solid var(--border);
+      margin:24px 0;
     }
 
-    .password-wrap {
-      display: flex;
-      gap: 8px;
-    }
-
-    .password-wrap input { min-width: 0; }
+    .password-wrap { display:flex; gap:8px; }
+    .password-wrap input { min-width:0; }
 
     .toggle-password {
-      flex-shrink: 0;
-      padding: 0 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--light-blue);
-      color: var(--navy);
-      font-size: 12px;
-      font-weight: bold;
+      flex-shrink:0;
+      padding:0 12px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:var(--light-blue);
+      color:var(--navy);
+      font-size:12px;
+      font-weight:bold;
     }
 
+    /* Country selector */
+    .country-list { display:grid; gap:10px; }
+
+    .country-item {
+      background:white;
+      border:1px solid var(--border);
+      border-radius:12px;
+      overflow:hidden;
+    }
+
+    .country-toggle {
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:16px;
+      border:0;
+      background:var(--navy);
+      color:white;
+      text-align:left;
+      font-weight:bold;
+    }
+
+    .country-toggle:hover { background:var(--navy-light); }
+
+    .country-toggle .arrow {
+      color:var(--gold);
+      font-size:20px;
+      transition:transform .2s;
+    }
+
+    .country-toggle[aria-expanded="true"] .arrow {
+      transform:rotate(90deg);
+    }
+
+    .country-options {
+      padding:14px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      background:white;
+    }
+
+    .country-level {
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:9px;
+      background:var(--light-blue);
+      text-align:left;
+      color:var(--navy);
+    }
+
+    .country-level strong { display:block; font-size:13px; }
+    .country-level small { display:block; margin-top:4px; color:var(--muted); }
+
+    .country-level:hover,.country-level.selected {
+      border-color:var(--gold);
+      background:var(--pale-gold);
+    }
+
+    /* Results history */
+    .result-list { display:grid; gap:12px; margin-top:16px; }
+
+    .result-item {
+      padding:17px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:12px;
+    }
+
+    .result-item h3 { font-size:15px; margin-bottom:5px; }
+
+    .result-meta {
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px 15px;
+      color:var(--muted);
+      font-size:12px;
+      margin:8px 0;
+    }
+
+    .result-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+
+    .small-button {
+      padding:8px 11px;
+      border:1px solid var(--border);
+      border-radius:7px;
+      background:white;
+      color:var(--navy);
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .small-button:hover { background:var(--light-blue); }
+    .small-button.danger { color:var(--danger); }
+
     .bottom-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 30px 0 35px;
-      padding: 17px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 13px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:30px 0 35px;
+      padding:17px;
+      background:white;
+      border:1px solid var(--border);
+      border-radius:13px;
     }
 
     .nav-item {
-      flex: 1;
-      min-width: 110px;
-      text-align: center;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 11px 8px;
-      color: var(--navy);
-      font-size: 12px;
-      font-weight: bold;
-      background: white;
+      flex:1;
+      min-width:110px;
+      text-align:center;
+      border:1px solid var(--border);
+      border-radius:9px;
+      padding:11px 8px;
+      color:var(--navy);
+      font-size:12px;
+      font-weight:bold;
+      background:white;
     }
 
-    .nav-item:hover { background: var(--light-blue); }
+    .nav-item:hover { background:var(--light-blue); }
 
     footer {
-      margin-top: 35px;
-      background: #0b1b35;
-      color: #dce5f2;
-      text-align: center;
-      padding: 23px 12px;
-      font-size: 12px;
+      margin-top:35px;
+      background:#0b1b35;
+      color:#dce5f2;
+      text-align:center;
+      padding:23px 12px;
+      font-size:12px;
     }
 
     .footer-home {
-      display: inline-block;
-      color: var(--gold);
-      font-weight: bold;
-      margin-bottom: 8px;
+      display:inline-block;
+      color:var(--gold);
+      font-weight:bold;
+      margin-bottom:8px;
     }
 
-    .footer-home:hover { text-decoration: underline; }
+    .footer-home:hover { text-decoration:underline; }
 
-    @media (max-width: 760px) {
-      .level-grid, .quick-grid { grid-template-columns: 1fr; }
-      .level-card { padding: 20px; }
-      .welcome { padding: 24px 20px; }
+    @media(max-width:760px) {
+      .level-grid,.quick-grid { grid-template-columns:1fr; }
+      .level-card { padding:20px; }
+      .welcome { padding:24px 20px; }
     }
 
-    @media (max-width: 480px) {
-      .header-inner { min-height: 70px; }
-      .brand { font-size: 18px; }
-      .brand small { font-size: 8px; letter-spacing: 1px; }
-      .profile-name { display: none; }
-      .signout { padding: 8px 9px; font-size: 11px; }
-      .welcome-buttons { flex-direction: column; }
-      .welcome-buttons .btn { width: 100%; }
-      .section-title h2 { font-size: 19px; }
-      .status-grid { grid-template-columns: 1fr; }
-      .bottom-nav { gap: 8px; }
-      .profile-settings { padding: 17px; }
-      .password-wrap { flex-wrap: wrap; }
-      .password-wrap .toggle-password { min-height: 40px; }
+    @media(max-width:480px) {
+      .header-inner { min-height:70px; }
+      .brand { font-size:17px; }
+      .brand small { font-size:8px; letter-spacing:1px; }
+      .profile-name { display:none; }
+      .signout { padding:8px 9px; font-size:11px; }
+      .welcome-buttons { flex-direction:column; }
+      .welcome-buttons .btn { width:100%; }
+      .section-title h2 { font-size:19px; }
+      .status-grid,.country-options { grid-template-columns:1fr; }
+      .bottom-nav { gap:8px; }
+      .form-panel { padding:17px; }
+      .password-wrap { flex-wrap:wrap; }
+      .password-wrap .toggle-password { min-height:40px; }
+    }
+
+    @media print {
+      body { background:white; color:#111; }
+      header,footer,.welcome,.bottom-nav,
+      .no-print,#education-levels,#available-exams,
+      #account,.result-actions,.notice { display:none !important; }
+      main { width:100% !important; }
+      #results { padding-top:0; }
+      .result-item,.status-card {
+        border:1px solid #aaa;
+        break-inside:avoid;
+      }
     }
   </style>
 </head>
@@ -503,22 +657,39 @@
 <body>
   <header>
     <div class="container header-inner">
-      <a class="brand" href="dashboard.html"
-         aria-label="Return to student dashboard">
+      <a class="brand" href="dashboard.html" aria-label="Student dashboard">
         SAINTIG <span>EXAMS</span>
         <small>LEARN. PRACTICE. SUCCEED.</small>
       </a>
 
       <div class="header-actions">
+        <button class="menu-button" id="menu-button" type="button"
+                aria-label="Open navigation menu" aria-expanded="false"
+                aria-controls="menu-panel">
+          <span></span><span></span><span></span>
+        </button>
+
         <div class="profile-chip">
           <div class="avatar" id="student-avatar">S</div>
           <span class="profile-name" id="student-name">Loading...</span>
         </div>
+
         <button class="signout" id="signout-button" type="button">
           Sign Out
         </button>
       </div>
     </div>
+
+    <nav class="menu-panel" id="menu-panel" hidden>
+      <div class="container menu-links">
+        <a href="index.html">Homepage</a>
+        <a href="#education-levels">Education Levels</a>
+        <a href="#country-exams">Countries</a>
+        <a href="#exam-lookup">Find Exam</a>
+        <a href="#results">My Results</a>
+        <a href="#account">My Account</a>
+      </div>
+    </nav>
   </header>
 
   <main class="container" id="dashboard-content" hidden>
@@ -527,18 +698,39 @@
         <div class="welcome-label">YOUR STUDENT DASHBOARD</div>
         <h1>Welcome, <span id="welcome-name">Student</span>!</h1>
         <p>
-          Your learning journey continues here. Choose your education
-          level, find available examinations and review your progress.
+          Your learning journey continues here. Choose your country and
+          education level, find examinations and review your progress.
         </p>
 
         <div class="welcome-buttons">
-          <a href="#education-levels" class="btn btn-gold">
-            Start Examination →
-          </a>
-          <a href="#results" class="btn btn-outline">
-            View My Results
-          </a>
+          <a href="#country-exams" class="btn btn-gold">Find an Examination →</a>
+          <a href="#results" class="btn btn-outline">View My Results</a>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="student-information">
+      <div class="section-title">
+        <div>
+          <h2>My Student Information</h2>
+          <p>Your account identity and registered email.</p>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <article class="status-card">
+          <h3>Student ID</h3>
+          <div class="status-value" id="student-id">Checking...</div>
+          <p class="status-note" id="student-id-note">
+            Your assigned Student ID will appear here if it is available in your account.
+          </p>
+        </article>
+
+        <article class="status-card">
+          <h3>Registered Email</h3>
+          <div class="status-value" id="student-email-display">—</div>
+          <p class="status-note">This is the email attached to your signed-in account.</p>
+        </article>
       </div>
     </section>
 
@@ -546,31 +738,149 @@
       <div class="section-title">
         <div>
           <h2>Choose Your Education Level</h2>
-          <p>Select a level to explore its available examinations.</p>
+          <p>These quick choices are for Nigeria. You can select other countries below.</p>
         </div>
       </div>
 
       <div class="level-grid">
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">📚</div>
-          <h3>Primary Education</h3>
-          <p>Practise your subjects and build a strong foundation for your next assessment.</p>
-          <a class="card-link" href="#available-exams" data-level="Primary">Explore Primary →</a>
+          <h3>Primary School</h3>
+          <p>Practise school subjects and build a strong learning foundation.</p>
+          <a class="card-link" href="#exam-lookup" data-country="Nigeria"
+             data-level="Primary">Explore Primary →</a>
         </article>
 
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">🎓</div>
-          <h3>Junior Secondary</h3>
-          <p>Strengthen your subject knowledge and prepare for junior secondary examinations.</p>
-          <a class="card-link" href="#available-exams" data-level="Junior Secondary">Explore Junior Secondary →</a>
+          <h3>Junior Secondary School</h3>
+          <p>Strengthen your subject knowledge and prepare for assessments.</p>
+          <a class="card-link" href="#exam-lookup" data-country="Nigeria"
+             data-level="Junior Secondary">Explore Junior Secondary →</a>
         </article>
 
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">🏆</div>
-          <h3>Senior Secondary</h3>
-          <p>Practise senior secondary subjects and prepare for important school examinations.</p>
-          <a class="card-link" href="#available-exams" data-level="Senior Secondary">Explore Senior Secondary →</a>
+          <h3>Senior Secondary School</h3>
+          <p>Practise senior secondary subjects and prepare for examinations.</p>
+          <a class="card-link" href="#exam-lookup" data-country="Nigeria"
+             data-level="Senior Secondary">Explore Senior Secondary →</a>
         </article>
+      </div>
+    </section>
+
+    <section class="section" id="country-exams">
+      <div class="section-title">
+        <div>
+          <h2>Examinations by Country</h2>
+          <p>Open a country and select its education level.</p>
+        </div>
+      </div>
+
+      <div class="country-list">
+        <div class="country-item">
+          <button class="country-toggle" type="button" aria-expanded="false"
+                  aria-controls="country-nigeria">
+            <span>🇳🇬 Nigeria</span><span class="arrow">›</span>
+          </button>
+          <div class="country-options" id="country-nigeria" hidden>
+            <button class="country-level" type="button" data-country="Nigeria"
+                    data-level="Primary">
+              <strong>Primary School</strong><small>Primary education</small>
+            </button>
+            <button class="country-level" type="button" data-country="Nigeria"
+                    data-level="Junior Secondary">
+              <strong>Junior Secondary School</strong><small>Junior secondary education</small>
+            </button>
+            <button class="country-level" type="button" data-country="Nigeria"
+                    data-level="Senior Secondary">
+              <strong>Senior Secondary School</strong><small>Senior secondary education</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="country-item">
+          <button class="country-toggle" type="button" aria-expanded="false"
+                  aria-controls="country-usa">
+            <span>🇺🇸 United States</span><span class="arrow">›</span>
+          </button>
+          <div class="country-options" id="country-usa" hidden>
+            <button class="country-level" type="button" data-country="United States"
+                    data-level="Elementary School">
+              <strong>Elementary School</strong><small>Elementary education</small>
+            </button>
+            <button class="country-level" type="button" data-country="United States"
+                    data-level="Middle/High School">
+              <strong>Middle / High School</strong><small>Middle and high school</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="country-item">
+          <button class="country-toggle" type="button" aria-expanded="false"
+                  aria-controls="country-uk">
+            <span>🇬🇧 United Kingdom</span><span class="arrow">›</span>
+          </button>
+          <div class="country-options" id="country-uk" hidden>
+            <button class="country-level" type="button" data-country="United Kingdom"
+                    data-level="Primary Education">
+              <strong>Primary Education</strong><small>Primary-level learning</small>
+            </button>
+            <button class="country-level" type="button" data-country="United Kingdom"
+                    data-level="Secondary Education">
+              <strong>Secondary Education</strong><small>Secondary-level learning</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="country-item">
+          <button class="country-toggle" type="button" aria-expanded="false"
+                  aria-controls="country-canada">
+            <span>🇨🇦 Canada</span><span class="arrow">›</span>
+          </button>
+          <div class="country-options" id="country-canada" hidden>
+            <button class="country-level" type="button" data-country="Canada"
+                    data-level="Elementary School">
+              <strong>Elementary School</strong><small>Elementary education</small>
+            </button>
+            <button class="country-level" type="button" data-country="Canada"
+                    data-level="Middle/Secondary School">
+              <strong>Middle / Secondary School</strong><small>Middle and secondary education</small>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice" id="country-notice" role="status" aria-live="polite">
+        Choose a country and education level to prepare an examination search.
+        Available examinations depend on the records published by the platform.
+      </div>
+    </section>
+
+    <section class="section" id="exam-lookup">
+      <div class="section-title">
+        <div>
+          <h2>Find an Examination</h2>
+          <p>Enter an Exam ID to look for a published examination.</p>
+        </div>
+      </div>
+
+      <div class="form-panel">
+        <form id="exam-lookup-form">
+          <div class="form-row">
+            <div class="field">
+              <label for="exam-id-input">Exam ID</label>
+              <input id="exam-id-input" type="text" maxlength="100"
+                     placeholder="Enter your Exam ID" autocomplete="off" required>
+            </div>
+            <button class="settings-button" id="exam-lookup-button" type="submit">
+              Find Examination
+            </button>
+          </div>
+          <p class="settings-message" id="exam-lookup-message"
+             role="status" aria-live="polite" style="margin-top:12px"></p>
+        </form>
+        <div id="exam-lookup-result" hidden></div>
       </div>
     </section>
 
@@ -578,7 +888,7 @@
       <div class="section-title">
         <div>
           <h2>Available Examinations</h2>
-          <p id="exam-description">Published examinations will be connected in the next stage.</p>
+          <p id="exam-description">Choose a country and education level above.</p>
         </div>
       </div>
 
@@ -587,8 +897,8 @@
           <div class="quick-icon" aria-hidden="true">📝</div>
           <div>
             <h3>Start an Examination</h3>
-            <p>Find an available examination for your level and subject.</p>
-            <a class="card-link" href="#education-levels">Choose Level →</a>
+            <p>Find a published examination using its Exam ID.</p>
+            <a class="card-link" href="#exam-lookup">Find Exam →</a>
           </div>
         </article>
 
@@ -596,7 +906,7 @@
           <div class="quick-icon" aria-hidden="true">📊</div>
           <div>
             <h3>Examination History</h3>
-            <p>View your completed and submitted examination attempts.</p>
+            <p>Review submitted examination results when connected.</p>
             <a class="card-link" href="#results">View History →</a>
           </div>
         </article>
@@ -611,9 +921,9 @@
         </article>
       </div>
 
-      <div class="notice" id="demo-notice">
-        Your account is connected. Live examinations and results will
-        appear after their database features are connected.
+      <div class="notice" id="exam-system-notice">
+        Your account is connected. Examination availability depends on the
+        examination database and its access rules.
       </div>
     </section>
 
@@ -621,22 +931,43 @@
       <div class="section-title">
         <div>
           <h2>My Results &amp; Progress</h2>
-          <p>Your real scores and examination history will appear here.</p>
+          <p>Your examination history and available scores.</p>
         </div>
+        <button class="small-button no-print" id="refresh-results" type="button">
+          Refresh Results
+        </button>
       </div>
 
       <div class="status-grid">
         <article class="status-card">
           <h3>Completed Examinations</h3>
           <div class="status-value" id="completed-count">—</div>
-          <p class="status-note">Your completed attempts will appear here when connected.</p>
+          <p class="status-note">Count of results successfully loaded.</p>
         </article>
 
         <article class="status-card">
           <h3>Latest Result</h3>
           <div class="status-value" id="latest-result">—</div>
-          <p class="status-note">Your latest submitted examination result will appear here.</p>
+          <p class="status-note" id="latest-result-note">
+            Your latest result will appear when the result data is connected.
+          </p>
         </article>
+      </div>
+
+      <div class="form-panel">
+        <div class="section-title">
+          <div>
+            <h3>Examination History</h3>
+            <p>Hidden entries are hidden only from this browser's history view. Official records are not deleted.</p>
+          </div>
+          <button class="small-button no-print" id="print-results" type="button">
+            Print Results
+          </button>
+        </div>
+
+        <p class="settings-message" id="results-message" role="status"
+           aria-live="polite">Checking available result records...</p>
+        <div class="result-list" id="result-list"></div>
       </div>
     </section>
 
@@ -644,7 +975,7 @@
       <div class="section-title">
         <div>
           <h2>My Account &amp; Access</h2>
-          <p>Manage your profile and review your account information.</p>
+          <p>Manage your profile and account information.</p>
         </div>
       </div>
 
@@ -657,100 +988,80 @@
 
         <article class="status-card">
           <h3>Examination Access</h3>
-          <div class="status-value" id="access-status">Not connected</div>
-          <p class="status-note">Access depends on published examinations and applicable platform rules.</p>
+          <div class="status-value" id="access-status">Checking...</div>
+          <p class="status-note">Access depends on published examinations and platform rules.</p>
         </article>
       </div>
 
-      <div class="profile-settings">
+      <div class="form-panel">
         <h3>Edit Student Profile</h3>
 
         <form id="profile-form" class="settings-form">
           <div>
             <label for="edit-full-name">Full Name</label>
-            <input
-              type="text"
-              id="edit-full-name"
-              autocomplete="name"
-              maxlength="100"
-              required
-            >
+            <input type="text" id="edit-full-name" autocomplete="name"
+                   maxlength="100" required>
           </div>
 
           <div>
             <label for="registered-email">Registered Email Address</label>
-            <input
-              type="email"
-              id="registered-email"
-              readonly
-              aria-describedby="email-help"
-            >
+            <input type="email" id="registered-email" readonly
+                   aria-describedby="email-help">
             <p class="status-note" id="email-help">Your registered email is read-only here.</p>
           </div>
 
           <button class="settings-button" id="save-profile-button" type="submit">
             Save Profile
           </button>
-
-          <p class="settings-message" id="profile-message" role="status" aria-live="polite"></p>
+          <p class="settings-message" id="profile-message" role="status"
+             aria-live="polite"></p>
         </form>
 
         <hr class="settings-divider">
 
         <h3>Change Password</h3>
         <p class="status-note" style="margin-bottom:14px">
-          Choose a new password with at least 8 characters. Use a password you do not use on other websites.
+          Choose a new password with at least 8 characters.
         </p>
 
         <form id="password-form" class="settings-form">
           <div>
             <label for="new-password">New Password</label>
             <div class="password-wrap">
-              <input
-                type="password"
-                id="new-password"
-                autocomplete="new-password"
-                minlength="8"
-                required
-              >
-              <button class="toggle-password" type="button" data-toggle="new-password">
-                Show
-              </button>
+              <input type="password" id="new-password"
+                     autocomplete="new-password" minlength="8" required>
+              <button class="toggle-password" type="button"
+                      data-toggle="new-password">Show</button>
             </div>
           </div>
 
           <div>
             <label for="confirm-password">Confirm New Password</label>
             <div class="password-wrap">
-              <input
-                type="password"
-                id="confirm-password"
-                autocomplete="new-password"
-                minlength="8"
-                required
-              >
-              <button class="toggle-password" type="button" data-toggle="confirm-password">
-                Show
-              </button>
+              <input type="password" id="confirm-password"
+                     autocomplete="new-password" minlength="8" required>
+              <button class="toggle-password" type="button"
+                      data-toggle="confirm-password">Show</button>
             </div>
           </div>
 
           <button class="settings-button" id="change-password-button" type="submit">
             Update Password
           </button>
-
-          <p class="settings-message" id="password-message" role="status" aria-live="polite"></p>
+          <p class="settings-message" id="password-message" role="status"
+             aria-live="polite"></p>
         </form>
       </div>
 
       <div class="notice">
-        Subscription information will appear here when the subscription system is configured.
+        Subscription and payment information will appear here when the subscription system is configured.
       </div>
     </section>
 
     <nav class="bottom-nav" aria-label="Student dashboard navigation">
       <a class="nav-item" href="dashboard.html">⌂ Home</a>
-      <a class="nav-item" href="#education-levels">📝 Examinations</a>
+      <a class="nav-item" href="#country-exams">🌍 Countries</a>
+      <a class="nav-item" href="#exam-lookup">📝 Find Exam</a>
       <a class="nav-item" href="#results">📊 Results</a>
       <a class="nav-item" href="#account">👤 My Account</a>
     </nav>
@@ -768,15 +1079,13 @@
     <div class="notice" id="error-text"></div>
     <p style="margin-top:15px">
       <a href="student-login.html?mode=login"
-         style="font-weight:bold;color:#183963">
-        Go to Student Sign In
-      </a>
+         style="font-weight:bold;color:#183963">Go to Student Sign In</a>
     </p>
   </div>
 
   <footer>
     <div class="container">
-      <a class="footer-home" href="dashboard.html">← Back to Student Homepage</a>
+      <a class="footer-home" href="index.html">← Back to Homepage</a>
       <p>© <span id="year"></span> SAINTIG EXAMS. All rights reserved.</p>
       <p>Learn. Practice. Succeed.</p>
     </div>
@@ -789,18 +1098,22 @@
       signOutUser
     } from "./auth.js";
 
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+    const $ = id => document.getElementById(id);
 
-    const loadingMessage = document.getElementById("loading-message");
-    const dashboardContent = document.getElementById("dashboard-content");
-    const errorMessage = document.getElementById("error-message");
-    const errorText = document.getElementById("error-text");
-    const signoutButton = document.getElementById("signout-button");
+    $("year").textContent = new Date().getFullYear();
+
+    const loadingMessage = $("loading-message");
+    const dashboardContent = $("dashboard-content");
+    const errorMessage = $("error-message");
+    const errorText = $("error-text");
+    const signoutButton = $("signout-button");
 
     let redirecting = false;
     let profileSaveInProgress = false;
     let passwordUpdateInProgress = false;
+    let currentUser = null;
+    let currentSession = null;
+    let loadedResults = [];
 
     function redirectToLogin() {
       if (redirecting) return;
@@ -810,38 +1123,40 @@
 
     function getDisplayName(user) {
       const metadata = user.user_metadata || {};
-      const registeredName =
-        typeof metadata.full_name === "string"
-          ? metadata.full_name.trim()
-          : "";
+      const name = typeof metadata.full_name === "string"
+        ? metadata.full_name.trim() : "";
+      const other = typeof metadata.name === "string"
+        ? metadata.name.trim() : "";
 
-      const otherName =
-        typeof metadata.name === "string"
-          ? metadata.name.trim()
-          : "";
+      return name || other || "Student";
+    }
 
-      if (registeredName) return registeredName;
-      if (otherName) return otherName;
+    function getStudentId(user) {
+      const metadata = user.user_metadata || {};
 
-      return "Student";
+      // Read only possible existing metadata values; do not invent an ID.
+      const candidates = [
+        metadata.student_id,
+        metadata.studentId,
+        metadata.studentID,
+        metadata.student_number
+      ];
+
+      return candidates.find(value =>
+        typeof value === "string" && value.trim()
+      )?.trim() || "";
     }
 
     function getInitials(fullName) {
       const parts = fullName.trim().split(/\s+/).filter(Boolean);
-
-      if (parts.length === 0) return "S";
+      if (!parts.length) return "S";
       if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-
-      return (
-        parts[0].charAt(0) +
-        parts[parts.length - 1].charAt(0)
-      ).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
 
     function showMessage(element, message, type = "") {
       element.textContent = message;
       element.classList.remove("success", "error");
-
       if (type) element.classList.add(type);
     }
 
@@ -853,28 +1168,31 @@
     }
 
     function showDashboard(session) {
-      const user = session.user;
-      const fullName = getDisplayName(user);
+      currentSession = session;
+      currentUser = session.user;
 
-      document.getElementById("student-name").textContent = fullName;
-      document.getElementById("welcome-name").textContent = fullName;
-      document.getElementById("student-avatar").textContent =
-        getInitials(fullName);
+      const fullName = getDisplayName(currentUser);
+      const studentId = getStudentId(currentUser);
 
-      document.getElementById("profile-email").textContent =
-        user.email || "Email address unavailable";
+      $("student-name").textContent = fullName;
+      $("welcome-name").textContent = fullName;
+      $("student-avatar").textContent = getInitials(fullName);
 
-      document.getElementById("registered-email").value =
-        user.email || "";
+      $("profile-email").textContent =
+        currentUser.email || "Email address unavailable";
+      $("student-email-display").textContent =
+        currentUser.email || "Unavailable";
+      $("registered-email").value = currentUser.email || "";
+      $("edit-full-name").value =
+        currentUser.user_metadata?.full_name ||
+        currentUser.user_metadata?.name || "";
 
-      document.getElementById("edit-full-name").value =
-        user.user_metadata?.full_name ||
-        user.user_metadata?.name ||
-        "";
-
-      document.getElementById("profile-status").textContent = "Signed in";
-      document.getElementById("access-status").textContent =
-        "Awaiting exam setup";
+      $("profile-status").textContent = "Signed in";
+      $("access-status").textContent = "Checking database";
+      $("student-id").textContent = studentId || "Not available";
+      $("student-id-note").textContent = studentId
+        ? "Student ID found in account metadata."
+        : "No Student ID was found in account metadata. Its storage location must be confirmed before it can be displayed.";
 
       loadingMessage.hidden = true;
       errorMessage.hidden = true;
@@ -884,28 +1202,308 @@
     async function initializeDashboard() {
       try {
         const session = await getCurrentSession();
-
         if (!session) {
           redirectToLogin();
           return;
         }
 
         showDashboard(session);
+
+        // Load independently so an unavailable table doesn't break sign-in.
+        await Promise.allSettled([
+          loadExaminationsStatus(),
+          loadResults()
+        ]);
       } catch (error) {
         console.error("Dashboard authentication error:", error);
         showError("We could not verify your session. Please sign in again.");
       }
     }
 
-    // Save the student's full name to their authenticated Supabase account.
-    document.getElementById("profile-form").addEventListener("submit", async event => {
+    /* Navigation menu */
+    $("menu-button").addEventListener("click", () => {
+      const button = $("menu-button");
+      const panel = $("menu-panel");
+      const open = button.getAttribute("aria-expanded") !== "true";
+
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open
+        ? "Close navigation menu" : "Open navigation menu");
+      panel.hidden = !open;
+    });
+
+    $("menu-panel").querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        $("menu-panel").hidden = true;
+        $("menu-button").setAttribute("aria-expanded", "false");
+      });
+    });
+
+    /* Country accordions */
+    document.querySelectorAll(".country-toggle").forEach(button => {
+      button.addEventListener("click", () => {
+        const panel = $(button.getAttribute("aria-controls"));
+        const open = button.getAttribute("aria-expanded") !== "true";
+        button.setAttribute("aria-expanded", String(open));
+        panel.hidden = !open;
+      });
+    });
+
+    let selectedCountry = "";
+    let selectedLevel = "";
+
+    function selectEducation(country, level) {
+      selectedCountry = country;
+      selectedLevel = level;
+
+      document.querySelectorAll(".country-level").forEach(button => {
+        const selected = button.dataset.country === country &&
+          button.dataset.level === level;
+        button.classList.toggle("selected", selected);
+      });
+
+      $("exam-description").textContent =
+        "Selected: " + country + " — " + level + ".";
+
+      $("country-notice").textContent =
+        "Selected " + country + " / " + level +
+        ". Enter an Exam ID below to look for a matching published examination.";
+
+      $("exam-lookup-message").textContent = "";
+      $("exam-lookup-result").hidden = true;
+      $("exam-id-input").focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll("[data-country][data-level]").forEach(button => {
+      button.addEventListener("click", () => {
+        selectEducation(button.dataset.country, button.dataset.level);
+        location.hash = "exam-lookup";
+      });
+    });
+
+    /* Examination lookup.
+       Uses select('*') to avoid assuming unknown database column names.
+       A result is shown only when a matching ID field is found. */
+    function findField(row, names) {
+      const key = Object.keys(row || {}).find(item =>
+        names.includes(item.toLowerCase())
+      );
+      return key ? row[key] : undefined;
+    }
+
+    function normalize(value) {
+      return String(value ?? "").trim().toLowerCase();
+    }
+
+    async function loadExaminationsStatus() {
+      try {
+        const { data, error } = await supabase
+          .from("examinations")
+          .select("*")
+          .limit(1);
+
+        if (error) throw error;
+
+        $("access-status").textContent =
+          data && data.length ? "Database reachable" : "No records found";
+
+        $("exam-system-notice").textContent =
+          "The examinations table is reachable. Individual exam availability still depends on its published status, access rules and the examination-start workflow.";
+      } catch (error) {
+        console.warn("Examinations table check:", error);
+        $("access-status").textContent = "Not connected";
+        $("exam-system-notice").textContent =
+          "Examination records could not be loaded. Check the examinations table permissions and Row Level Security policies.";
+      }
+    }
+
+    $("exam-lookup-form").addEventListener("submit", async event => {
       event.preventDefault();
 
+      const button = $("exam-lookup-button");
+      const message = $("exam-lookup-message");
+      const resultBox = $("exam-lookup-result");
+      const examId = $("exam-id-input").value.trim();
+
+      if (!examId) {
+        showMessage(message, "Enter an Exam ID first.", "error");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Searching...";
+      resultBox.replaceChildren();
+      resultBox.hidden = true;
+      showMessage(message, "Searching available examination records...");
+
+      try {
+        const { data, error } = await supabase
+          .from("examinations")
+          .select("*")
+          .limit(500);
+
+        if (error) throw error;
+
+        const rows = data || [];
+        const matching = rows.find(row => {
+          const id = findField(row, [
+            "id", "exam_id", "examination_id", "exam_code", "code"
+          ]);
+          return id !== undefined && normalize(id) === normalize(examId);
+        });
+
+        if (!matching) {
+          showMessage(
+            message,
+            rows.length
+              ? "No examination with that ID was found in the records available to your account. Check the ID and try again."
+              : "No examinations are currently available to your account.",
+            "error"
+          );
+          return;
+        }
+
+        const title = findField(matching, [
+          "title", "name", "exam_name", "examination_name"
+        ]) || "Examination found";
+
+        const description = findField(matching, [
+          "description", "instructions"
+        ]) || "";
+
+        const status = findField(matching, [
+          "status", "publication_status", "is_published"
+        ]);
+
+        const country = findField(matching, [
+          "country", "country_name"
+        ]);
+        const level = findField(matching, [
+          "education_level", "level", "level_name"
+        ]);
+
+        const heading = document.createElement("h3");
+        heading.textContent = String(title);
+
+        const detail = document.createElement("p");
+        detail.className = "status-note";
+        detail.style.marginTop = "8px";
+        detail.textContent = [
+          "Exam ID: " + examId,
+          country ? "Country: " + country : "",
+          level ? "Level: " + level : "",
+          status !== undefined ? "Status: " + status : "",
+          description ? "Details: " + description : ""
+        ].filter(Boolean).join(" • ");
+
+        resultBox.append(heading, detail);
+        resultBox.hidden = false;
+
+        showMessage(
+          message,
+          "A matching examination record was found. Starting the exam requires the platform's verified start-exam workflow and its access checks.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Exam lookup error:", error);
+        showMessage(
+          message,
+          "The examination lookup could not be completed. Check the examinations table permissions and try again.",
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+        button.textContent = "Find Examination";
+      }
+    });
+
+    /* Result history.
+       Results are not fabricated if the actual attempt schema is unknown.
+       This intentionally does not delete or alter official attempts. */
+    function getHiddenResultIds() {
+      try {
+        const raw = localStorage.getItem(
+          "saintig_hidden_results_" + currentUser.id
+        );
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.map(String) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setHiddenResultIds(ids) {
+      localStorage.setItem(
+        "saintig_hidden_results_" + currentUser.id,
+        JSON.stringify(ids)
+      );
+    }
+
+    function resultField(row, names) {
+      return findField(row, names);
+    }
+
+    async function loadResults() {
+      const list = $("result-list");
+      list.replaceChildren();
+      showMessage($("results-message"), "Loading your examination history...");
+
+      $("completed-count").textContent = "—";
+      $("latest-result").textContent = "—";
+      $("latest-result-note").textContent =
+        "The result schema has not yet been verified.";
+
+      try {
+        /*
+          Do not guess the owner column in exam_attempts.
+          Reading a table without an owner filter could expose other
+          students' attempts. Therefore we stop until the schema is confirmed.
+        */
+        const { data: schemaSample, error } = await supabase
+          .from("exam_attempts")
+          .select("*")
+          .limit(0);
+
+        if (error) throw error;
+
+        // A zero-row schema check confirms access, not result ownership fields.
+        void schemaSample;
+
+        showMessage(
+          $("results-message"),
+          "The exam_attempts table is reachable, but your result history has not been loaded because its student-owner and completion columns must be confirmed first.",
+          "error"
+        );
+      } catch (error) {
+        console.warn("Result history is not available:", error);
+        showMessage(
+          $("results-message"),
+          "Your result history is not connected yet. Confirm the exam_attempts column names and its student-specific Row Level Security policy. No official records have been changed.",
+          "error"
+        );
+      }
+    }
+
+    $("refresh-results").addEventListener("click", loadResults);
+
+    $("print-results").addEventListener("click", () => {
+      window.print();
+    });
+
+    /*
+      Result hiding is deliberately not enabled until real, student-owned
+      result rows are safely loaded. The local hidden-ID helpers above are
+      ready for use after that query is connected.
+    */
+
+    // Save the student's full name to their authenticated Supabase account.
+    $("profile-form").addEventListener("submit", async event => {
+      event.preventDefault();
       if (profileSaveInProgress) return;
 
-      const button = document.getElementById("save-profile-button");
-      const message = document.getElementById("profile-message");
-      const input = document.getElementById("edit-full-name");
+      const button = $("save-profile-button");
+      const message = $("profile-message");
+      const input = $("edit-full-name");
       const fullName = input.value.trim();
 
       if (!fullName) {
@@ -933,24 +1531,20 @@
         if (!data.user) throw new Error("We could not confirm your profile update.");
 
         const savedName = data.user.user_metadata?.full_name;
-
         if (!savedName) {
-          throw new Error("Your profile update could not be confirmed. Please refresh and check your name.");
+          throw new Error("Your profile update could not be confirmed. Refresh and check your name.");
         }
 
-        document.getElementById("student-name").textContent = savedName;
-        document.getElementById("welcome-name").textContent = savedName;
-        document.getElementById("student-avatar").textContent =
-          getInitials(savedName);
+        currentUser = data.user;
+        $("student-name").textContent = savedName;
+        $("welcome-name").textContent = savedName;
+        $("student-avatar").textContent = getInitials(savedName);
 
         showMessage(message, "Your full name has been saved successfully.", "success");
       } catch (error) {
         console.error("Profile update error:", error);
-        showMessage(
-          message,
-          error.message || "Unable to save your profile. Please try again.",
-          "error"
-        );
+        showMessage(message, error.message ||
+          "Unable to save your profile. Please try again.", "error");
       } finally {
         profileSaveInProgress = false;
         button.disabled = false;
@@ -958,28 +1552,27 @@
       }
     });
 
-    // Change password for the currently authenticated student.
-    document.getElementById("password-form").addEventListener("submit", async event => {
+    // Change password for the authenticated student.
+    $("password-form").addEventListener("submit", async event => {
       event.preventDefault();
-
       if (passwordUpdateInProgress) return;
 
-      const button = document.getElementById("change-password-button");
-      const message = document.getElementById("password-message");
-      const newPasswordInput = document.getElementById("new-password");
-      const confirmPasswordInput = document.getElementById("confirm-password");
-      const newPassword = newPasswordInput.value;
-      const confirmPassword = confirmPasswordInput.value;
+      const button = $("change-password-button");
+      const message = $("password-message");
+      const newInput = $("new-password");
+      const confirmInput = $("confirm-password");
+      const newPassword = newInput.value;
+      const confirmPassword = confirmInput.value;
 
       if (newPassword.length < 8) {
         showMessage(message, "Your new password must contain at least 8 characters.", "error");
-        newPasswordInput.focus();
+        newInput.focus();
         return;
       }
 
       if (newPassword !== confirmPassword) {
         showMessage(message, "The passwords do not match.", "error");
-        confirmPasswordInput.focus();
+        confirmInput.focus();
         return;
       }
 
@@ -995,22 +1588,17 @@
 
         if (error) throw error;
 
-        document.getElementById("password-form").reset();
-
+        $("password-form").reset();
         document.querySelectorAll("[data-toggle]").forEach(toggle => {
-          const input = document.getElementById(toggle.dataset.toggle);
-          input.type = "password";
+          $(toggle.dataset.toggle).type = "password";
           toggle.textContent = "Show";
         });
 
         showMessage(message, "Your password has been updated successfully.", "success");
       } catch (error) {
         console.error("Password update error:", error);
-        showMessage(
-          message,
-          error.message || "Unable to update your password. Please try again.",
-          "error"
-        );
+        showMessage(message, error.message ||
+          "Unable to update your password. Please try again.", "error");
       } finally {
         passwordUpdateInProgress = false;
         button.disabled = false;
@@ -1021,11 +1609,10 @@
     // Show or hide password fields.
     document.querySelectorAll("[data-toggle]").forEach(button => {
       button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.toggle);
-        const showPassword = input.type === "password";
-
-        input.type = showPassword ? "text" : "password";
-        button.textContent = showPassword ? "Hide" : "Show";
+        const input = $(button.dataset.toggle);
+        const show = input.type === "password";
+        input.type = show ? "text" : "password";
+        button.textContent = show ? "Hide" : "Show";
       });
     });
 
@@ -1040,16 +1627,8 @@
         console.error("Sign-out error:", error);
         signoutButton.disabled = false;
         signoutButton.textContent = "Sign Out";
-        alert("Sign-out failed. Please check your internet connection and try again.");
+        alert("Sign-out failed. Check your internet connection and try again.");
       }
-    });
-
-    document.querySelectorAll("[data-level]").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("exam-description").textContent =
-          "Selected level: " + link.dataset.level +
-          ". Published examinations will be connected in the next stage.";
-      });
     });
 
     // React to sign-out or loss of a valid session.
