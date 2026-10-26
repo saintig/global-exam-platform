@@ -12,7 +12,7 @@ export const supabase = createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
-// Get the current signed-in user
+// Get the current signed-in user's session
 export async function getCurrentSession() {
   const { data, error } = await supabase.auth.getSession();
 
@@ -48,11 +48,20 @@ export async function signOutUser() {
   window.location.replace("student-login.html?mode=login");
 }
 
-// Register a student account
-export async function registerStudent(email, password) {
+// Register a student and save their full name
+export async function registerStudent(email, password, fullName) {
+  if (!fullName || !fullName.trim()) {
+    throw new Error("Please enter your full name.");
+  }
+
   return await supabase.auth.signUp({
     email: email.trim(),
-    password
+    password,
+    options: {
+      data: {
+        full_name: fullName.trim()
+      }
+    }
   });
 }
 
@@ -69,11 +78,13 @@ export async function requestPasswordReset(email) {
   return await supabase.auth.resetPasswordForEmail(
     email.trim(),
     {
-      redirectTo: window.location.origin +
+      redirectTo:
+        window.location.origin +
         window.location.pathname.replace(
           /[^/]*$/,
           "student-login.html"
-        ) + "?mode=reset"
+        ) +
+        "?mode=reset"
     }
   );
 }
