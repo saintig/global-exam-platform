@@ -27,6 +27,7 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: 20px;
     }
 
     body {
@@ -36,8 +37,22 @@
       line-height: 1.6;
     }
 
+    body.menu-open {
+      overflow: hidden;
+    }
+
     a {
       text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
     }
 
     .container {
@@ -45,10 +60,14 @@
       margin: auto;
     }
 
+    /* HEADER */
+
     header {
+      position: relative;
+      z-index: 100;
       background: var(--navy);
       border-bottom: 4px solid var(--gold);
-      padding: 18px 0;
+      padding: 16px 0;
     }
 
     .header-content {
@@ -80,19 +99,157 @@
       margin-top: 4px;
     }
 
-    .header-link {
-      color: var(--white);
-      font-size: 13px;
-      font-weight: bold;
+    .menu-toggle {
+      width: 47px;
+      height: 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
       border: 1px solid rgba(255,255,255,.45);
-      border-radius: 8px;
-      padding: 9px 13px;
-      white-space: nowrap;
+      border-radius: 9px;
+      cursor: pointer;
     }
 
-    .header-link:hover {
-      background: rgba(255,255,255,.1);
+    .menu-toggle span {
+      width: 22px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: transform .2s, opacity .2s;
     }
+
+    .menu-toggle[aria-expanded="true"] span:first-child {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"] span:last-child {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* HAMBURGER MENU */
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(4, 13, 29, .6);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .2s, visibility .2s;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+      z-index: 201;
+      top: 0;
+      right: 0;
+      width: min(340px, 88vw);
+      height: 100%;
+      height: 100dvh;
+      overflow-y: auto;
+      background: var(--cream);
+      box-shadow: -10px 0 35px rgba(0,0,0,.18);
+      transform: translateX(105%);
+      transition: transform .25s ease;
+      padding: 23px 19px 30px;
+    }
+
+    .side-menu.open {
+      transform: translateX(0);
+    }
+
+    .menu-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 19px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .menu-brand {
+      font-weight: 800;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .menu-brand span {
+      color: #9a7418;
+    }
+
+    .menu-brand small {
+      display: block;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: normal;
+      margin-top: 4px;
+    }
+
+    .menu-close {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      color: var(--navy);
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 10px;
+      margin-bottom: 5px;
+      border-radius: 8px;
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: bold;
+      transition: background .2s;
+    }
+
+    .menu-link:hover,
+    .menu-link:focus-visible {
+      background: #f0e7cf;
+    }
+
+    .menu-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 31px;
+      height: 31px;
+      border-radius: 8px;
+      background: #fff0c7;
+      color: #795b0d;
+      font-size: 17px;
+    }
+
+    .menu-divider {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 12px 0;
+    }
+
+    /* HERO */
 
     .hero {
       position: relative;
@@ -171,6 +328,8 @@
       border-radius: 9px;
       font-weight: bold;
       font-size: 14px;
+      border: 0;
+      cursor: pointer;
       transition: transform .2s, background .2s;
     }
 
@@ -190,11 +349,14 @@
     .btn-outline {
       color: var(--white);
       border: 1px solid rgba(255,255,255,.55);
+      background: transparent;
     }
 
     .btn-outline:hover {
       background: rgba(255,255,255,.1);
     }
+
+    /* GENERAL SECTIONS */
 
     .section {
       padding: 58px 0;
@@ -225,6 +387,8 @@
       color: var(--muted);
       font-size: 14px;
     }
+
+    /* EDUCATION LEVELS */
 
     .levels {
       display: grid;
@@ -281,6 +445,166 @@
       text-decoration: underline;
     }
 
+    /* TEACHER PORTAL */
+
+    .teacher-section {
+      background: #f0f3f8;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 27px;
+      box-shadow: 0 7px 24px rgba(16,38,74,.04);
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      border-radius: 13px;
+      background: #fff3cf;
+      font-size: 25px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 19px;
+      margin-bottom: 9px;
+    }
+
+    .feature-card > p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .feature-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn-small {
+      min-height: 43px;
+      padding: 11px 15px;
+      font-size: 13px;
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-light);
+    }
+
+    .btn-light {
+      background: #fff4d6;
+      color: var(--navy);
+      border: 1px solid #ecd18a;
+    }
+
+    .btn-light:hover {
+      background: #f9e9bc;
+    }
+
+    /* EXAM ACCESS AND RESULT FORMS */
+
+    .form-section {
+      background: var(--cream);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      align-items: start;
+    }
+
+    .access-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 27px;
+      box-shadow: 0 7px 24px rgba(16,38,74,.05);
+    }
+
+    .access-card h3 {
+      font-size: 20px;
+      margin-bottom: 9px;
+    }
+
+    .access-card .description {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 21px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      min-height: 47px;
+      padding: 11px 13px;
+      border: 1px solid #cfd6e2;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--navy);
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: #a98220;
+      box-shadow: 0 0 0 3px rgba(226,184,75,.18);
+    }
+
+    .form-button {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .form-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .form-status {
+      display: none;
+      margin-top: 13px;
+      padding: 11px;
+      border-radius: 8px;
+      background: #fff4d6;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .form-status.visible {
+      display: block;
+    }
+
+    /* BENEFITS */
+
     .benefits-section {
       background: #f0f3f8;
     }
@@ -311,6 +635,22 @@
       font-size: 14px;
     }
 
+    /* ABOUT */
+
+    .about-content {
+      max-width: 780px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .about-content p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    /* STUDENT CTA */
+
     .cta {
       padding: 55px 0;
     }
@@ -335,6 +675,8 @@
       font-size: 14px;
     }
 
+    /* FOOTER */
+
     footer {
       background: #0b1b35;
       color: #e1e8f2;
@@ -352,6 +694,24 @@
 
     .footer-brand span {
       color: var(--gold);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px 22px;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      color: #e1e8f2;
+      font-size: 13px;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold);
+      text-decoration: underline;
     }
 
     .footer-admin {
@@ -377,14 +737,18 @@
       margin-top: 4px;
     }
 
+    /* RESPONSIVE DESIGN */
+
     @media (max-width: 760px) {
       .hero {
         padding: 52px 0 57px;
       }
 
-      .levels {
+      .levels,
+      .benefits,
+      .feature-grid,
+      .form-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
       }
 
       .level-card {
@@ -396,7 +760,6 @@
       }
 
       .benefits {
-        grid-template-columns: 1fr;
         gap: 10px;
       }
 
@@ -406,6 +769,11 @@
 
       .section {
         padding: 45px 0;
+      }
+
+      .feature-card,
+      .access-card {
+        padding: 23px 20px;
       }
     }
 
@@ -419,11 +787,6 @@
         letter-spacing: 1px;
       }
 
-      .header-link {
-        padding: 8px 10px;
-        font-size: 12px;
-      }
-
       .hero p {
         font-size: 14px;
       }
@@ -435,6 +798,23 @@
       .hero-buttons .btn {
         width: 100%;
       }
+
+      .feature-actions {
+        flex-direction: column;
+      }
+
+      .feature-actions .btn {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
@@ -442,21 +822,111 @@
 <body>
   <header>
     <div class="container header-content">
-      <!-- Clicking the logo returns to the public homepage -->
       <a class="brand" href="index.html"
-        aria-label="SAINTIG EXAMS public homepage">
+        aria-label="SAINTIG EXAMS homepage">
         SAINTIG <span>EXAMS</span>
         <small>LEARN. PRACTICE. SUCCEED.</small>
       </a>
 
-      <a class="header-link" href="student-login.html?mode=login">
-        Student Sign In
-      </a>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-controls="sideMenu"
+        aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 
+  <!-- Mobile-friendly navigation menu -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <nav class="side-menu" id="sideMenu"
+    aria-label="Main navigation"
+    aria-hidden="true"
+    inert>
+
+    <div class="menu-heading">
+      <div class="menu-brand">
+        SAINTIG <span>EXAMS</span>
+        <small>LEARN. PRACTICE. SUCCEED.</small>
+      </div>
+
+      <button class="menu-close" id="menuClose"
+        type="button" aria-label="Close navigation menu">
+        &times;
+      </button>
+    </div>
+
+    <a class="menu-link" href="index.html">
+      <span class="menu-icon" aria-hidden="true">⌂</span>
+      Home
+    </a>
+
+    <a class="menu-link" href="student-login.html?mode=login">
+      <span class="menu-icon" aria-hidden="true">♙</span>
+      Student Sign In
+    </a>
+
+    <a class="menu-link" href="student-login.html?mode=register">
+      <span class="menu-icon" aria-hidden="true">＋</span>
+      Create Student Account
+    </a>
+
+    <hr class="menu-divider">
+
+    <a class="menu-link" href="teacher-login.html?mode=login">
+      <span class="menu-icon" aria-hidden="true">♟</span>
+      Teacher/School Sign In
+    </a>
+
+    <a class="menu-link" href="teacher-login.html?mode=register">
+      <span class="menu-icon" aria-hidden="true">＋</span>
+      Create Teacher/School Account
+    </a>
+
+    <a class="menu-link" href="#teacher-portal">
+      <span class="menu-icon" aria-hidden="true">▤</span>
+      Teacher/School Portal
+    </a>
+
+    <hr class="menu-divider">
+
+    <a class="menu-link" href="#exam-access">
+      <span class="menu-icon" aria-hidden="true">✓</span>
+      Take Teacher/School Exam
+    </a>
+
+    <a class="menu-link" href="#print-results">
+      <span class="menu-icon" aria-hidden="true">▧</span>
+      Check &amp; Print Results
+    </a>
+
+    <hr class="menu-divider">
+
+    <a class="menu-link" href="#about">
+      <span class="menu-icon" aria-hidden="true">ⓘ</span>
+      About Us
+    </a>
+
+    <a class="menu-link" href="#contact">
+      <span class="menu-icon" aria-hidden="true">✉</span>
+      Contact Us
+    </a>
+
+    <a class="menu-link" href="admin-login.html">
+      <span class="menu-icon" aria-hidden="true">♢</span>
+      Admin Sign In
+    </a>
+  </nav>
+
   <main>
-    <section class="hero">
+    <!-- HERO -->
+    <section class="hero" id="home">
       <div class="container hero-content">
         <div class="eyebrow">YOUR LEARNING JOURNEY STARTS HERE</div>
 
@@ -472,17 +942,20 @@
         </p>
 
         <div class="hero-buttons">
-          <a class="btn btn-gold" href="student-login.html?mode=register">
+          <a class="btn btn-gold"
+            href="student-login.html?mode=register">
             Create Student Account
           </a>
 
-          <a class="btn btn-outline" href="student-login.html?mode=login">
+          <a class="btn btn-outline"
+            href="student-login.html?mode=login">
             Student Sign In
           </a>
         </div>
       </div>
     </section>
 
+    <!-- EDUCATION LEVELS -->
     <section class="section" id="education-levels">
       <div class="container">
         <div class="section-heading">
@@ -502,7 +975,8 @@
               Build a strong academic foundation through practice and
               age-appropriate assessments.
             </p>
-            <a class="level-link" href="student-login.html?mode=register">
+            <a class="level-link"
+              href="student-login.html?mode=register">
               Get Started →
             </a>
           </article>
@@ -514,7 +988,8 @@
               Strengthen your knowledge, practise important subjects and
               prepare for school examinations.
             </p>
-            <a class="level-link" href="student-login.html?mode=register">
+            <a class="level-link"
+              href="student-login.html?mode=register">
               Get Started →
             </a>
           </article>
@@ -526,7 +1001,8 @@
               Prepare for important school assessments and develop
               confidence in your chosen subjects.
             </p>
-            <a class="level-link" href="student-login.html?mode=register">
+            <a class="level-link"
+              href="student-login.html?mode=register">
               Get Started →
             </a>
           </article>
@@ -534,7 +1010,215 @@
       </div>
     </section>
 
-    <section class="section benefits-section">
+    <!-- TEACHER/SCHOOL PORTAL -->
+    <section class="section teacher-section" id="teacher-portal">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">For Teachers and Schools</div>
+          <h2>Teacher &amp; School Portal</h2>
+          <p>
+            Prepare examinations, manage students and access examination
+            services through the teacher and school portal.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">👨‍🏫</div>
+            <h3>Already Have an Account?</h3>
+            <p>
+              Sign in to your teacher or school account to manage your
+              examination activities.
+            </p>
+            <div class="feature-actions">
+              <a class="btn btn-navy btn-small"
+                href="teacher-login.html?mode=login">
+                Teacher/School Sign In
+              </a>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">📝</div>
+            <h3>New to the Portal?</h3>
+            <p>
+              Create a teacher or school account to get started with
+              examination preparation and management.
+            </p>
+            <div class="feature-actions">
+              <a class="btn btn-light btn-small"
+                href="teacher-login.html?mode=register">
+                Create Account
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACHER EXAM ACCESS -->
+    <section class="section form-section" id="exam-access">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Student Examination Access</div>
+          <h2>Take a Teacher/School Exam</h2>
+          <p>
+            Enter the Exam ID and Student ID provided by your teacher
+            or school to access an assigned examination.
+          </p>
+        </div>
+
+        <div class="form-grid">
+          <div class="access-card">
+            <h3>Enter Your Examination Details</h3>
+            <p class="description">
+              Use the IDs issued to you by your teacher or school.
+            </p>
+
+            <form id="examAccessForm" action="teacher-exam-login.html"
+              method="get">
+              <div class="field">
+                <label for="examId">Exam ID</label>
+                <input
+                  type="text"
+                  id="examId"
+                  name="exam_id"
+                  placeholder="Enter your Exam ID"
+                  autocomplete="off"
+                  required>
+              </div>
+
+              <div class="field">
+                <label for="studentId">Student ID</label>
+                <input
+                  type="text"
+                  id="studentId"
+                  name="student_id"
+                  placeholder="Enter your Student ID"
+                  autocomplete="off"
+                  required>
+              </div>
+
+              <button class="btn btn-navy form-button" type="submit">
+                Access Exam →
+              </button>
+
+              <p class="form-note">
+                Access is subject to examination status, student
+                authorization and applicable attempt rules.
+              </p>
+
+              <div class="form-status" id="examAccessStatus"
+                role="status" aria-live="polite"></div>
+            </form>
+          </div>
+
+          <div class="access-card">
+            <h3>Need Help Accessing Your Exam?</h3>
+            <p class="description">
+              Make sure both IDs match the details provided by your
+              teacher or school.
+            </p>
+
+            <div class="feature-icon" aria-hidden="true">🔐</div>
+
+            <p class="description">
+              If your details are not accepted after the examination
+              service is connected, contact your teacher or school
+              to confirm your Exam ID and Student ID.
+            </p>
+
+            <a class="btn btn-light form-button" href="#contact">
+              Contact Information
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHECK AND PRINT RESULTS -->
+    <section class="section teacher-section" id="print-results">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Your Examination Performance</div>
+          <h2>Check &amp; Print Results</h2>
+          <p>
+            Enter your Exam ID and Student ID to look up an authorized,
+            released result. You will be able to print or save it as PDF
+            once result verification is connected.
+          </p>
+        </div>
+
+        <div class="form-grid">
+          <div class="access-card">
+            <h3>Find Your Result</h3>
+            <p class="description">
+              Enter the examination and student details supplied
+              by your teacher or school.
+            </p>
+
+            <form id="resultsForm" action="print-results.html" method="get">
+              <div class="field">
+                <label for="resultExamId">Exam ID</label>
+                <input
+                  type="text"
+                  id="resultExamId"
+                  name="exam_id"
+                  placeholder="Enter your Exam ID"
+                  autocomplete="off"
+                  required>
+              </div>
+
+              <div class="field">
+                <label for="resultStudentId">Student ID</label>
+                <input
+                  type="text"
+                  id="resultStudentId"
+                  name="student_id"
+                  placeholder="Enter your Student ID"
+                  autocomplete="off"
+                  required>
+              </div>
+
+              <button class="btn btn-navy form-button" type="submit">
+                View Result →
+              </button>
+
+              <p class="form-note">
+                Only results that pass verification and are released
+                for viewing should be displayed.
+              </p>
+
+              <div class="form-status" id="resultsStatus"
+                role="status" aria-live="polite"></div>
+            </form>
+          </div>
+
+          <div class="access-card">
+            <h3>Print or Save Your Result</h3>
+            <p class="description">
+              After your result has been securely verified and displayed,
+              you will be able to print it or save it as a PDF.
+            </p>
+
+            <div class="feature-icon" aria-hidden="true">🖨️</div>
+
+            <p class="description">
+              You do not need to open your student dashboard to use
+              this planned result lookup service. Keep your IDs private
+              and use only your own student details.
+            </p>
+
+            <a class="btn btn-light form-button" href="#exam-access">
+              Access an Examination
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="section benefits-section" id="about">
       <div class="container">
         <div class="section-heading">
           <div class="kicker">Why SAINTIG EXAMS?</div>
@@ -576,6 +1260,29 @@
       </div>
     </section>
 
+    <!-- ABOUT SAINTIG EXAMS -->
+    <section class="section">
+      <div class="container about-content">
+        <div class="section-heading">
+          <div class="kicker">About Our Platform</div>
+          <h2>About SAINTIG EXAMS</h2>
+        </div>
+
+        <p>
+          SAINTIG EXAMS is designed to support examination practice
+          for students while providing teachers and schools with tools
+          to prepare and manage examinations.
+        </p>
+
+        <p>
+          Our goal is to make learning, assessment and access to
+          examination results easier through a clear, mobile-friendly
+          online platform.
+        </p>
+      </div>
+    </section>
+
+    <!-- STUDENT CALL TO ACTION -->
     <section class="cta">
       <div class="container">
         <div class="cta-box">
@@ -585,7 +1292,8 @@
             start your learning journey with SAINTIG EXAMS.
           </p>
 
-          <a class="btn btn-gold" href="student-login.html?mode=register">
+          <a class="btn btn-gold"
+            href="student-login.html?mode=register">
             Create Your Account
           </a>
         </div>
@@ -593,13 +1301,28 @@
     </section>
   </main>
 
-  <footer>
+  <!-- FOOTER -->
+  <footer id="contact">
     <div class="container">
       <a class="footer-brand" href="index.html">
         SAINTIG <span>EXAMS</span>
       </a>
 
-      <!-- Admin Sign In appears before the copyright notice -->
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="index.html">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact Us</a>
+        <a href="#exam-access">Take an Exam</a>
+        <a href="#print-results">Print Results</a>
+        <a href="student-login.html?mode=login">Student Sign In</a>
+        <a href="teacher-login.html?mode=login">Teacher/School Portal</a>
+      </nav>
+
+      <p style="font-size:13px; margin-bottom:18px; color:#c8d1df;">
+        For examination or account assistance, contact your teacher
+        or school where applicable.
+      </p>
+
       <a class="footer-admin" href="admin-login.html">
         Admin Sign In
       </a>
@@ -612,8 +1335,95 @@
   </footer>
 
   <script>
+    // Automatic copyright year
     document.getElementById("year").textContent =
       new Date().getFullYear();
+
+    // Hamburger menu controls
+    const menuToggle = document.getElementById("menuToggle");
+    const sideMenu = document.getElementById("sideMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const menuClose = document.getElementById("menuClose");
+
+    function openMenu() {
+      sideMenu.classList.add("open");
+      menuOverlay.classList.add("open");
+      menuToggle.setAttribute("aria-expanded", "true");
+      menuToggle.setAttribute("aria-label", "Close navigation menu");
+      sideMenu.setAttribute("aria-hidden", "false");
+      sideMenu.inert = false;
+      document.body.classList.add("menu-open");
+      menuClose.focus();
+    }
+
+    function closeMenu() {
+      sideMenu.classList.remove("open");
+      menuOverlay.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open navigation menu");
+      sideMenu.setAttribute("aria-hidden", "true");
+      sideMenu.inert = true;
+      document.body.classList.remove("menu-open");
+    }
+
+    menuToggle.addEventListener("click", function () {
+      if (menuToggle.getAttribute("aria-expanded") === "true") {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    menuClose.addEventListener("click", closeMenu);
+    menuOverlay.addEventListener("click", closeMenu);
+
+    // Close the menu after choosing a navigation link.
+    sideMenu.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        closeMenu();
+      });
+    });
+
+    // Escape key closes the menu.
+    document.addEventListener("keydown", function (event) {
+      if (
+        event.key === "Escape" &&
+        menuToggle.getAttribute("aria-expanded") === "true"
+      ) {
+        closeMenu();
+        menuToggle.focus();
+      }
+    });
+
+    // These destinations are planned but are not built yet.
+    // Prevent submission until the actual verification pages exist.
+    function prepareFutureForm(formId, statusId, message) {
+      const form = document.getElementById(formId);
+      const status = document.getElementById(statusId);
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        if (!form.reportValidity()) {
+          return;
+        }
+
+        status.textContent = message;
+        status.classList.add("visible");
+      });
+    }
+
+    prepareFutureForm(
+      "examAccessForm",
+      "examAccessStatus",
+      "Exam access is not connected yet. The secure exam-access page and backend verification must be built before you can start an examination."
+    );
+
+    prepareFutureForm(
+      "resultsForm",
+      "resultsStatus",
+      "Result lookup is not connected yet. Secure result verification must be implemented before results can be displayed or printed."
+    );
   </script>
 </body>
 </html>
