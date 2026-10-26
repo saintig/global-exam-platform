@@ -10,16 +10,16 @@
   <style>
     :root {
       --navy: #101d35;
-      --navy-light: #1c2d4c;
+      --navy2: #1b2d4b;
       --gold: #d4af37;
       --gold-dark: #a98220;
-      --white: #ffffff;
-      --cream: #f8f6f0;
-      --text: #263247;
+      --cream: #fff9ed;
+      --white: #fff;
+      --text: #293548;
       --muted: #697386;
-      --border: #e4e7ec;
-      --danger: #c62828;
-      --success: #16794b;
+      --border: #e5e7eb;
+      --red: #b42318;
+      --green: #16794b;
     }
 
     * {
@@ -28,10 +28,15 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: var(--cream);
       color: var(--text);
+      background: #f7f7f4;
       line-height: 1.6;
     }
 
@@ -53,18 +58,18 @@
     }
 
     .topbar {
-      min-height: 72px;
-      padding: 12px 18px;
-      background: var(--navy);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 3px 12px #00000020;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 18px;
+      background: var(--navy);
+      color: white;
+      box-shadow: 0 3px 12px #0002;
     }
 
     .brand {
@@ -74,16 +79,16 @@
       min-width: 0;
     }
 
-    .brand-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
+    .brand-mark {
+      width: 43px;
+      height: 43px;
       display: grid;
       place-items: center;
-      color: var(--navy);
+      border-radius: 12px;
       background: var(--gold);
+      color: var(--navy);
+      font-size: 18px;
       font-weight: 900;
-      font-size: 17px;
       flex-shrink: 0;
     }
 
@@ -93,39 +98,50 @@
     }
 
     .brand p {
+      color: #e9d99f;
       font-size: 11px;
-      color: #e6d8a8;
+      letter-spacing: .4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
     }
 
     .menu-button {
-      width: 45px;
-      height: 45px;
-      border: 1px solid #ffffff40;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #ffffff50;
       border-radius: 10px;
       color: white;
       background: transparent;
       font-size: 25px;
-      flex-shrink: 0;
     }
 
-    .menu-button:hover {
-      background: var(--navy-light);
+    .signout-top {
+      padding: 10px 13px;
+      border: 1px solid #ffffff55;
+      border-radius: 9px;
+      color: white;
+      background: transparent;
+      font-size: 12px;
     }
 
     .menu-panel {
       display: none;
       position: fixed;
-      top: 72px;
+      top: 77px;
       right: 12px;
+      z-index: 200;
       width: min(330px, calc(100vw - 24px));
       max-height: calc(100dvh - 90px);
       overflow-y: auto;
-      background: white;
+      padding: 10px;
       border: 1px solid var(--border);
       border-radius: 14px;
-      box-shadow: 0 12px 35px #00000025;
-      z-index: 200;
-      padding: 10px;
+      background: white;
+      box-shadow: 0 12px 35px #0003;
     }
 
     .menu-panel.open {
@@ -134,16 +150,16 @@
 
     .menu-panel a,
     .menu-panel button {
-      width: 100%;
       display: flex;
       align-items: center;
       gap: 12px;
-      text-align: left;
+      width: 100%;
       padding: 12px;
       border: 0;
       border-radius: 9px;
       background: transparent;
       color: var(--text);
+      text-align: left;
       font-size: 14px;
     }
 
@@ -154,78 +170,86 @@
 
     .menu-icon {
       width: 24px;
-      text-align: center;
       color: var(--gold-dark);
+      text-align: center;
       font-size: 18px;
     }
 
     .menu-divider {
       height: 1px;
-      background: var(--border);
       margin: 7px 0;
+      background: var(--border);
     }
 
-    .signout-menu {
-      color: var(--danger) !important;
+    .menu-signout {
+      color: var(--red) !important;
     }
 
     .container {
       width: min(1120px, 100%);
-      padding: 22px 16px 100px;
       margin: auto;
+      padding: 22px 16px 100px;
     }
 
-    .welcome {
-      background: linear-gradient(125deg, var(--navy), #263e61);
-      color: white;
-      padding: 26px 22px;
-      border-radius: 18px;
+    .hero {
       position: relative;
       overflow: hidden;
-      margin-bottom: 22px;
+      padding: 28px 23px;
+      border-radius: 18px;
+      margin-bottom: 25px;
+      color: white;
+      background: linear-gradient(125deg, var(--navy), #293f60);
     }
 
-    .welcome::after {
+    .hero::after {
       content: "";
-      width: 180px;
-      height: 180px;
-      border: 22px solid #d4af3720;
-      border-radius: 50%;
       position: absolute;
-      right: -70px;
-      top: -80px;
+      top: -90px;
+      right: -65px;
+      width: 200px;
+      height: 200px;
+      border: 24px solid #d4af3720;
+      border-radius: 50%;
     }
 
-    .welcome h2 {
-      font-size: clamp(23px, 5vw, 32px);
-      margin-bottom: 5px;
+    .hero-label {
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+    }
+
+    .hero h2 {
       position: relative;
       z-index: 1;
+      margin-bottom: 8px;
+      font-size: clamp(24px, 5vw, 34px);
     }
 
-    .welcome p {
-      color: #e4e9f1;
-      font-size: 14px;
+    .hero p {
+      position: relative;
+      z-index: 1;
       max-width: 650px;
-      position: relative;
-      z-index: 1;
+      color: #e5eaf2;
+      font-size: 14px;
     }
 
-    .welcome .student-email {
+    #student-email {
+      margin-top: 8px;
       color: #f1d875;
       overflow-wrap: anywhere;
-      margin-top: 8px;
     }
 
     .section {
-      margin-top: 27px;
+      margin-top: 29px;
       scroll-margin-top: 90px;
     }
 
     .section-heading {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -236,8 +260,8 @@
     }
 
     .section-heading p {
-      font-size: 12px;
       color: var(--muted);
+      font-size: 12px;
     }
 
     .grid {
@@ -246,49 +270,81 @@
       gap: 15px;
     }
 
-    .card {
-      background: white;
+    .level-card,
+    .quick-card,
+    .status-card,
+    .panel {
+      min-width: 0;
+      padding: 18px;
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 18px;
-      min-width: 0;
-      box-shadow: 0 3px 10px #101d3508;
+      background: white;
+      box-shadow: 0 3px 12px #101d3508;
     }
 
-    .card h3 {
-      color: var(--navy);
-      font-size: 16px;
-      margin-bottom: 7px;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    .card-icon {
-      width: 43px;
-      height: 43px;
+    .level-icon,
+    .quick-icon {
       display: grid;
       place-items: center;
-      background: #fbf2d5;
-      border-radius: 12px;
-      font-size: 22px;
+      width: 44px;
+      height: 44px;
       margin-bottom: 12px;
+      border-radius: 12px;
+      background: #fbf1d2;
+      font-size: 22px;
+    }
+
+    .level-card h3,
+    .quick-card h3,
+    .status-card h3 {
+      margin-bottom: 7px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .level-card p,
+    .quick-card p,
+    .status-card p {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .card-link {
+      display: inline-block;
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    .quick-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .quick-card .quick-icon {
+      flex-shrink: 0;
+    }
+
+    .quick-card p {
+      margin-bottom: 8px;
     }
 
     .button {
       display: inline-flex;
-      align-items: center;
       justify-content: center;
-      gap: 7px;
+      align-items: center;
       min-height: 42px;
+      padding: 10px 14px;
       border: 0;
       border-radius: 9px;
-      padding: 10px 14px;
-      font-weight: 700;
       font-size: 13px;
+      font-weight: 700;
       text-align: center;
     }
 
@@ -297,44 +353,93 @@
       color: var(--navy);
     }
 
-    .button-gold:hover {
-      background: #e4c85e;
-    }
-
     .button-navy {
       background: var(--navy);
       color: white;
     }
 
     .button-outline {
+      border: 1px solid var(--border);
       background: white;
       color: var(--navy);
-      border: 1px solid var(--border);
     }
 
     .button-danger {
+      border: 1px solid #f0c7c7;
       background: #fff0f0;
-      color: var(--danger);
-      border: 1px solid #f2c6c6;
+      color: var(--red);
     }
 
     .button:disabled {
-      opacity: .55;
+      opacity: .6;
       cursor: not-allowed;
     }
 
     .country-box {
-      background: white;
+      padding: 18px;
       border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 15px;
+      border-radius: 14px;
+      background: white;
+    }
+
+    .country-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .country-card {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fffefa;
+    }
+
+    .country-card h3 {
+      margin-bottom: 4px;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .country-card > p {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .country-levels {
+      display: grid;
+      gap: 8px;
+    }
+
+    .country-levels a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 11px;
+      border: 1px solid #eadfbf;
+      border-radius: 8px;
+      background: white;
+      color: var(--navy);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .country-levels a:hover {
+      border-color: var(--gold-dark);
+      background: #fff8df;
+    }
+
+    .country-levels span {
+      color: var(--gold-dark);
+      font-size: 16px;
     }
 
     .field {
       display: block;
       width: 100%;
-      margin-top: 7px;
-      margin-bottom: 15px;
+      margin-top: 6px;
       padding: 12px;
       border: 1px solid #ccd2dc;
       border-radius: 9px;
@@ -347,39 +452,99 @@
       border-color: var(--gold-dark);
     }
 
-    .field-label {
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--navy);
       font-size: 13px;
       font-weight: 700;
-      color: var(--navy);
     }
 
-    .helper {
-      font-size: 12px;
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .status-note {
+      margin-top: 6px;
       color: var(--muted);
+      font-size: 12px;
     }
 
     .notice {
-      background: #fff8df;
-      border: 1px solid #eadca9;
-      color: #65521a;
-      border-radius: 10px;
-      padding: 12px;
-      font-size: 13px;
       margin-top: 12px;
-    }
-
-    .status {
-      margin: 12px 0;
+      padding: 12px;
+      border: 1px solid #eadca9;
+      border-radius: 10px;
+      background: #fff8df;
+      color: #65521a;
       font-size: 13px;
+    }
+
+    .settings-form {
+      display: grid;
+      gap: 14px;
+      max-width: 620px;
+      margin-top: 15px;
+    }
+
+    .settings-button {
+      justify-self: start;
+      min-height: 43px;
+      padding: 11px 17px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .settings-message,
+    .page-message {
+      margin-top: 10px;
       overflow-wrap: anywhere;
+      font-size: 13px;
     }
 
-    .status.error {
-      color: var(--danger);
+    .success {
+      color: var(--green);
     }
 
-    .status.success {
-      color: var(--success);
+    .error {
+      color: var(--red);
+    }
+
+    .settings-divider {
+      height: 1px;
+      margin: 25px 0;
+      border: 0;
+      background: var(--border);
+    }
+
+    .password-wrap {
+      display: flex;
+      gap: 7px;
+    }
+
+    .password-wrap input {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .toggle-password {
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: var(--navy);
+    }
+
+    .status-value {
+      margin-bottom: 6px;
+      color: var(--gold-dark);
+      font-size: 23px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
     }
 
     .result-item {
@@ -397,20 +562,21 @@
     }
 
     .result-item p {
+      margin-top: 3px;
       color: var(--muted);
       font-size: 12px;
-      margin: 3px 0;
     }
 
     .result-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 9px;
     }
 
-    .empty-state {
-      padding: 18px 0;
+    .empty-state,
+    .loading {
+      padding: 13px 0;
       color: var(--muted);
       font-size: 13px;
     }
@@ -422,17 +588,18 @@
     }
 
     .profile-value {
-      background: var(--cream);
-      padding: 12px;
+      min-height: 43px;
+      padding: 11px;
       border-radius: 9px;
+      background: #f7f7f4;
+      font-size: 13px;
       overflow-wrap: anywhere;
-      font-size: 14px;
     }
 
     .footer {
-      text-align: center;
+      padding: 26px 10px;
       color: var(--muted);
-      padding: 25px 10px;
+      text-align: center;
       font-size: 12px;
     }
 
@@ -442,62 +609,57 @@
 
     .bottom-nav {
       position: fixed;
+      right: 0;
       bottom: 0;
       left: 0;
-      right: 0;
       z-index: 80;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      background: white;
-      border-top: 1px solid var(--border);
-      box-shadow: 0 -3px 14px #00000008;
       padding: 7px 4px max(7px, env(safe-area-inset-bottom));
+      border-top: 1px solid var(--border);
+      background: white;
     }
 
     .bottom-nav a {
-      text-align: center;
       padding: 4px;
-      font-size: 10px;
       color: var(--muted);
+      text-align: center;
+      font-size: 10px;
     }
 
     .bottom-nav span {
       display: block;
-      font-size: 19px;
       color: var(--gold-dark);
-    }
-
-    .loading {
-      color: var(--muted);
-      font-size: 13px;
-      padding: 10px 0;
+      font-size: 19px;
     }
 
     @media (max-width: 760px) {
       .grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
-
-      .container {
-        padding-top: 16px;
-      }
     }
 
-    @media (max-width: 480px) {
-      .grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 500px) {
+      .container {
+        padding: 15px 12px 100px;
       }
 
-      .welcome {
+      .hero {
         padding: 23px 17px;
       }
 
-      .card {
-        padding: 16px;
-      }
-
+      .grid,
+      .country-grid,
       .profile-grid {
         grid-template-columns: 1fr;
+      }
+
+      .brand h1 {
+        font-size: 15px;
+      }
+
+      .signout-top {
+        display: none;
       }
 
       .section-heading h2 {
@@ -519,25 +681,19 @@
       }
 
       .container {
-        padding: 0;
         width: 100%;
+        padding: 0;
       }
 
-      .welcome {
+      .hero {
+        border: 1px solid #aaa;
         background: white;
         color: black;
-        border: 1px solid #999;
       }
 
-      .welcome p,
-      .welcome .student-email {
+      .hero p,
+      #student-email {
         color: #333;
-      }
-
-      .card,
-      .country-box {
-        box-shadow: none;
-        break-inside: avoid;
       }
     }
   </style>
@@ -545,232 +701,442 @@
 
 <body>
   <header class="topbar">
-    <a class="brand" href="dashboard.html" aria-label="SAINTIG EXAMS dashboard">
-      <div class="brand-logo">SE</div>
+    <a href="dashboard.html" class="brand" aria-label="SAINTIG EXAMS Home">
+      <div class="brand-mark">S</div>
       <div>
         <h1>SAINTIG EXAMS</h1>
-        <p>Global Examination Platform</p>
+        <p>LEARN. PRACTICE. SUCCEED.</p>
       </div>
     </a>
 
-    <button
-      class="menu-button"
-      id="menuButton"
-      aria-label="Open navigation menu"
-      aria-expanded="false"
-      aria-controls="menuPanel"
-    >☰</button>
+    <div class="header-actions">
+      <button type="button" class="signout-top" id="signout-button">
+        Sign Out
+      </button>
+      <button
+        type="button"
+        class="menu-button"
+        id="menu-button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="menu-panel"
+      >☰</button>
+    </div>
   </header>
 
-  <nav class="menu-panel" id="menuPanel" aria-label="Student navigation">
-    <a href="index.html"><span class="menu-icon">⌂</span>Home</a>
-    <a href="#availableExams"><span class="menu-icon">▣</span>Available Examinations</a>
-    <a href="#myHistory"><span class="menu-icon">◷</span>My Exam History</a>
-    <a href="#myResults"><span class="menu-icon">✓</span>My Results</a>
+  <nav class="menu-panel" id="menu-panel" aria-label="Student menu">
+    <a href="dashboard.html"><span class="menu-icon">⌂</span>Home</a>
+    <a href="#country-exams"><span class="menu-icon">🌍</span>Available Examinations</a>
+    <a href="#my-history"><span class="menu-icon">◷</span>My Exam History</a>
+    <a href="#my-results"><span class="menu-icon">✓</span>My Results</a>
+    <a href="#my-account"><span class="menu-icon">♙</span>My Account</a>
 
     <div class="menu-divider"></div>
 
-    <a href="take-school-exam.html">
-      <span class="menu-icon">▤</span>Take Teacher/School Exam
-    </a>
-    <a href="check-school-results.html">
-      <span class="menu-icon">▧</span>Check &amp; Print Teacher/School Results
-    </a>
+    <a href="#school-exams"><span class="menu-icon">🏫</span>Teacher/School Exams</a>
+    <a href="#school-results"><span class="menu-icon">🖨</span>Check &amp; Print School Results</a>
 
     <div class="menu-divider"></div>
 
-    <a href="#myAccount"><span class="menu-icon">♙</span>My Account</a>
     <a href="subscription.html"><span class="menu-icon">◇</span>Subscription Plans</a>
     <a href="notifications.html"><span class="menu-icon">♧</span>Notifications</a>
     <a href="about.html"><span class="menu-icon">ⓘ</span>About</a>
-    <a href="contact.html"><span class="menu-icon">✉</span>Contact — Help &amp; Support</a>
+    <a href="contact.html"><span class="menu-icon">✉</span>Contact / Help &amp; Support</a>
 
     <div class="menu-divider"></div>
 
-    <button class="signout-menu" id="signoutButton">
+    <button type="button" class="menu-signout" id="menu-signout-button">
       <span class="menu-icon">⇥</span>Sign Out
     </button>
   </nav>
 
   <main class="container">
-    <section class="welcome" id="home">
-      <h2>Welcome, <span id="studentName">Student</span>!</h2>
-      <p>Welcome to your SAINTIG EXAMS student dashboard. Choose your country and education level to explore your examination options.</p>
-      <p class="student-email" id="studentEmail">Loading your account...</p>
+    <section class="hero" id="home">
+      <div class="hero-label">YOUR STUDENT DASHBOARD</div>
+      <h2>Welcome, <span id="student-name">Student</span>!</h2>
+      <p>
+        Your learning journey continues here. Choose your country and education
+        level, explore available examinations and review your progress.
+      </p>
+      <p id="student-email">Loading account...</p>
+
+      <div class="result-actions no-print">
+        <a class="button button-gold" href="#country-exams">Start Examination →</a>
+        <a class="button button-outline" href="#my-results">View My Results</a>
+      </div>
     </section>
 
-    <div id="pageStatus" class="status" role="status" aria-live="polite"></div>
+    <div id="page-message" class="page-message" role="status" aria-live="polite"></div>
 
-    <section class="section" id="education">
+    <section class="section" id="country-exams">
       <div class="section-heading">
         <div>
-          <h2>Choose Your Education System</h2>
-          <p>Select your country and the appropriate education level.</p>
+          <h2>Choose Your Country and Education Level</h2>
+          <p>Select the education system you want to use for your examinations.</p>
         </div>
       </div>
 
       <div class="country-box">
-        <label class="field-label" for="countrySelect">Country</label>
-        <select class="field" id="countrySelect">
-          <option value="NG">Nigeria</option>
-          <option value="US">United States</option>
-          <option value="GB">United Kingdom</option>
-          <option value="CA">Canada</option>
-        </select>
+        <div class="country-grid">
 
-        <label class="field-label" for="levelSelect">Education Level</label>
-        <select class="field" id="levelSelect"></select>
+          <article class="country-card">
+            <h3>🇳🇬 Nigeria</h3>
+            <p>Choose a Nigerian education level.</p>
+            <div class="country-levels">
+              <a href="exams.html?country=NG&level=primary">
+                Primary Education <span>→</span>
+              </a>
+              <a href="exams.html?country=NG&level=junior-secondary">
+                Junior Secondary <span>→</span>
+              </a>
+              <a href="exams.html?country=NG&level=senior-secondary">
+                Senior Secondary <span>→</span>
+              </a>
+            </div>
+          </article>
 
-        <p class="helper" id="educationHelp">
-          Your selection will be used to guide your examination choices.
-        </p>
+          <article class="country-card">
+            <h3>🇺🇸 United States</h3>
+            <p>Choose a United States education level.</p>
+            <div class="country-levels">
+              <a href="exams.html?country=US&level=elementary">
+                Elementary School <span>→</span>
+              </a>
+              <a href="exams.html?country=US&level=middle">
+                Middle School <span>→</span>
+              </a>
+              <a href="exams.html?country=US&level=high">
+                High School <span>→</span>
+              </a>
+            </div>
+          </article>
 
-        <div class="notice">
-          Examination availability depends on the examinations published on the platform.
+          <article class="country-card">
+            <h3>🇬🇧 United Kingdom</h3>
+            <p>Choose a United Kingdom education level.</p>
+            <div class="country-levels">
+              <a href="exams.html?country=GB&level=primary">
+                Primary Education <span>→</span>
+              </a>
+              <a href="exams.html?country=GB&level=secondary">
+                Secondary Education <span>→</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="country-card">
+            <h3>🇨🇦 Canada</h3>
+            <p>Choose a Canadian education level.</p>
+            <div class="country-levels">
+              <a href="exams.html?country=CA&level=elementary">
+                Elementary School <span>→</span>
+              </a>
+              <a href="exams.html?country=CA&level=middle">
+                Middle School <span>→</span>
+              </a>
+              <a href="exams.html?country=CA&level=secondary">
+                Secondary School <span>→</span>
+              </a>
+            </div>
+          </article>
+
         </div>
+
+        <p class="notice">
+          The links identify the selected country and level. The examination
+          page must use these values to display the appropriate published exams.
+        </p>
       </div>
     </section>
 
-    <section class="section" id="quickAccess">
+    <section class="section" id="available-exams">
       <div class="section-heading">
         <div>
-          <h2>Quick Access</h2>
-          <p>Your main student services.</p>
+          <h2>Available Examinations</h2>
+          <p>Find an examination for your country, level and subject.</p>
         </div>
       </div>
 
       <div class="grid">
-        <article class="card">
-          <div class="card-icon">📝</div>
-          <h3>Available Examinations</h3>
-          <p>Explore platform examinations for your selected education system.</p>
-          <a class="button button-gold" href="#availableExams">Explore Exams</a>
+        <article class="level-card">
+          <div class="level-icon">📝</div>
+          <h3>Start an Examination</h3>
+          <p>Choose your country and education level to continue to the examination page.</p>
+          <a class="card-link" href="#country-exams">Choose Country →</a>
         </article>
 
-        <article class="card">
-          <div class="card-icon">📊</div>
-          <h3>My Results</h3>
-          <p>Review your own platform examination history and results.</p>
-          <a class="button button-navy" href="#myResults">View My Results</a>
+        <article class="level-card">
+          <div class="level-icon">📚</div>
+          <h3>Examination Subjects</h3>
+          <p>Explore subjects offered in the selected education system.</p>
+          <a class="card-link" href="#country-exams">Explore Levels →</a>
         </article>
 
-        <article class="card">
-          <div class="card-icon">🏫</div>
-          <h3>Teacher/School Exams</h3>
-          <p>Take an examination provided by your teacher or school.</p>
-          <a class="button button-gold" href="take-school-exam.html">Continue</a>
-        </article>
-
-        <article class="card">
-          <div class="card-icon">🖨️</div>
-          <h3>School Results</h3>
-          <p>Check or print results for a Teacher/School Exam.</p>
-          <a class="button button-navy" href="check-school-results.html">Check Results</a>
-        </article>
-
-        <article class="card">
-          <div class="card-icon">👤</div>
-          <h3>My Account</h3>
-          <p>Review your account details and profile.</p>
-          <a class="button button-outline" href="#myAccount">Open Account</a>
-        </article>
-
-        <article class="card">
-          <div class="card-icon">💳</div>
-          <h3>Subscription Plans</h3>
-          <p>View subscription information when plans are available.</p>
-          <a class="button button-outline" href="subscription.html">View Plans</a>
+        <article class="level-card">
+          <div class="level-icon">📊</div>
+          <h3>Examination History</h3>
+          <p>Review attempts recorded under your own signed-in account.</p>
+          <a class="card-link" href="#my-history">View History →</a>
         </article>
       </div>
     </section>
 
-    <section class="section" id="availableExams">
+    <section class="section" id="my-history">
       <div class="section-heading">
         <div>
-          <h2>Available Examinations</h2>
-          <p>Platform examinations for students.</p>
+          <h2>My Examination History</h2>
+          <p>Only your own SAINTIG EXAMS platform attempts appear here.</p>
         </div>
-        <button class="button button-outline no-print" id="refreshExams">Refresh</button>
+        <button type="button" class="button button-outline no-print" id="refresh-history">
+          Refresh
+        </button>
       </div>
 
-      <div class="card">
-        <div id="examList" class="loading">
-          Examination listings will appear here when connected to the published examination records.
+      <div class="panel">
+        <div id="history-list" class="loading">Loading examination history...</div>
+      </div>
+    </section>
+
+    <section class="section" id="my-results">
+      <div class="section-heading">
+        <div>
+          <h2>My Results &amp; Progress</h2>
+          <p>Results belonging to examinations taken through your account.</p>
+        </div>
+        <button type="button" class="button button-outline no-print" id="print-results">
+          Print My Results
+        </button>
+      </div>
+
+      <div class="grid">
+        <article class="status-card">
+          <h3>Completed Examinations</h3>
+          <div class="status-value" id="completed-count">—</div>
+          <p>Your submitted attempts recorded by the platform.</p>
+        </article>
+
+        <article class="status-card">
+          <h3>Latest Result</h3>
+          <div class="status-value" id="latest-result">—</div>
+          <p id="latest-result-note">Your latest available result will appear here.</p>
+        </article>
+
+        <article class="status-card">
+          <h3>Examination Access</h3>
+          <div class="status-value" id="access-status">Pending</div>
+          <p>Access depends on published examinations and platform rules.</p>
+        </article>
+      </div>
+
+      <div class="panel" style="margin-top:15px">
+        <div id="results-list" class="loading">Loading your results...</div>
+        <div class="notice">
+          These are your platform examination records. Teacher/School Exam
+          results are separate and must be checked in the section below.
         </div>
       </div>
     </section>
 
-    <section class="section" id="myHistory">
+    <section class="section" id="school-exams">
       <div class="section-heading">
         <div>
-          <h2>My Exam History</h2>
-          <p>Your platform examination attempts only.</p>
+          <h2>Teacher/School Examinations</h2>
+          <p>A separate service for examinations organised by teachers or schools.</p>
         </div>
-        <button class="button button-outline no-print" id="refreshHistory">Refresh</button>
       </div>
 
-      <div class="card">
-        <div id="historyList" class="loading">
-          Loading your examination history...
-        </div>
+      <div class="panel">
+        <div class="quick-icon">🏫</div>
+        <h3>Take a Teacher/School Exam</h3>
+        <p class="status-note">
+          Use the separate Teacher/School Exam service when it becomes available.
+          Its records must not be mixed with your SAINTIG EXAMS platform history.
+        </p>
+        <p class="notice">
+          This service is reserved for the future teacher/school examination workflow.
+        </p>
       </div>
     </section>
 
-    <section class="section" id="myResults">
+    <section class="section" id="school-results">
       <div class="section-heading">
         <div>
-          <h2>My Results</h2>
-          <p>Results from your own platform examination attempts.</p>
+          <h2>Check &amp; Print Teacher/School Results</h2>
+          <p>Enter the two identifiers provided for a school examination.</p>
         </div>
-        <button class="button button-outline no-print" id="printResults">Print</button>
       </div>
 
-      <div class="card">
-        <div id="resultsList" class="loading">
-          Your platform results will appear here when result data is available.
-        </div>
+      <div class="panel">
+        <form id="school-results-form">
+          <div class="form-group">
+            <label for="school-student-id">Student ID</label>
+            <input
+              class="field"
+              type="text"
+              id="school-student-id"
+              maxlength="100"
+              autocomplete="off"
+              placeholder="Enter your Student ID"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="school-exam-id">Exam ID</label>
+            <input
+              class="field"
+              type="text"
+              id="school-exam-id"
+              maxlength="100"
+              autocomplete="off"
+              placeholder="Enter the Teacher/School Exam ID"
+              required
+            >
+          </div>
+
+          <button class="button button-gold" type="submit" id="check-school-results">
+            Check &amp; Print Results
+          </button>
+
+          <p id="school-results-message" class="settings-message" role="status" aria-live="polite"></p>
+        </form>
 
         <div class="notice">
-          Teacher/School Exam results are managed separately. Use “Check &amp; Print Teacher/School Results” in the menu for those results.
+          This form is for Teacher/School Exams only. Results lookup and printing
+          will work after the separate school-results service is connected.
+          No school result is fetched or invented by this dashboard.
         </div>
       </div>
     </section>
 
-    <section class="section" id="myAccount">
+    <section class="section" id="my-account">
       <div class="section-heading">
         <div>
-          <h2>My Account</h2>
-          <p>Your signed-in account information.</p>
+          <h2>My Account &amp; Access</h2>
+          <p>Manage your profile and account information.</p>
         </div>
       </div>
 
-      <div class="card">
-        <div class="profile-grid">
-          <div>
-            <span class="field-label">Display Name</span>
-            <div class="profile-value" id="profileName">Loading...</div>
-          </div>
-          <div>
-            <span class="field-label">Email Address</span>
-            <div class="profile-value" id="profileEmail">Loading...</div>
-          </div>
-          <div>
-            <span class="field-label">Account ID</span>
-            <div class="profile-value" id="profileId">Loading...</div>
-          </div>
-          <div>
-            <span class="field-label">Selected Country</span>
-            <div class="profile-value" id="profileCountry">Nigeria</div>
-          </div>
-          <div>
-            <span class="field-label">Education Level</span>
-            <div class="profile-value" id="profileLevel">Primary School</div>
-          </div>
-        </div>
+      <div class="grid">
+        <article class="status-card">
+          <h3>Student Profile</h3>
+          <div class="status-value" id="profile-status">Loading</div>
+          <p id="profile-summary">Loading account information...</p>
+        </article>
 
-        <div class="notice">
-          Your profile information is read from your signed-in account and existing profile record. This page does not create a new Student ID or change your database structure.
-        </div>
+        <article class="status-card">
+          <h3>Registered Email</h3>
+          <div class="status-value" style="font-size:15px" id="account-email">—</div>
+          <p>Your registered email address.</p>
+        </article>
+
+        <article class="status-card">
+          <h3>Account ID</h3>
+          <div class="status-value" style="font-size:12px" id="account-id">—</div>
+          <p>Your authenticated account identifier.</p>
+        </article>
+      </div>
+
+      <div class="panel" style="margin-top:15px">
+        <h3>Edit Student Profile</h3>
+
+        <form id="profile-form" class="settings-form">
+          <div>
+            <label for="edit-full-name">Full Name</label>
+            <input
+              class="field"
+              type="text"
+              id="edit-full-name"
+              autocomplete="name"
+              maxlength="100"
+              required
+            >
+          </div>
+
+          <div>
+            <label for="registered-email">Registered Email Address</label>
+            <input
+              class="field"
+              type="email"
+              id="registered-email"
+              readonly
+              aria-describedby="email-help"
+            >
+            <p class="status-note" id="email-help">
+              Your registered email is read-only here.
+            </p>
+          </div>
+
+          <button class="settings-button" id="save-profile-button" type="submit">
+            Save Profile
+          </button>
+
+          <p class="settings-message" id="profile-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <hr class="settings-divider">
+
+        <h3>Change Password</h3>
+        <p class="status-note">
+          Choose a new password with at least 8 characters. Use a password
+          you do not use on other websites.
+        </p>
+
+        <form id="password-form" class="settings-form">
+          <div>
+            <label for="new-password">New Password</label>
+            <div class="password-wrap">
+              <input
+                class="field"
+                type="password"
+                id="new-password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button class="toggle-password" type="button" data-toggle="new-password">
+                Show
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="confirm-password">Confirm New Password</label>
+            <div class="password-wrap">
+              <input
+                class="field"
+                type="password"
+                id="confirm-password"
+                autocomplete="new-password"
+                minlength="8"
+                required
+              >
+              <button class="toggle-password" type="button" data-toggle="confirm-password">
+                Show
+              </button>
+            </div>
+          </div>
+
+          <button class="settings-button" id="change-password-button" type="submit">
+            Update Password
+          </button>
+
+          <p class="settings-message" id="password-message" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="subscription">
+      <div class="section-heading">
+        <h2>Subscription Plans</h2>
+      </div>
+      <div class="panel">
+        <h3>Examination Access Plans</h3>
+        <p class="status-note">
+          Subscription options will be available when the platform's plan and
+          payment features are connected.
+        </p>
+        <a class="card-link" href="subscription.html">View Subscription Information →</a>
       </div>
     </section>
 
@@ -778,36 +1144,41 @@
       <div class="section-heading">
         <h2>About SAINTIG EXAMS</h2>
       </div>
-      <div class="card">
-        <h3>Learning and Assessment Without Borders</h3>
-        <p>SAINTIG EXAMS is designed to help students access examinations through a global examination platform.</p>
-        <a class="button button-outline" href="about.html">Read More</a>
+      <div class="panel">
+        <h3>Learn. Practise. Succeed.</h3>
+        <p class="status-note">
+          SAINTIG EXAMS is designed to help students practise and take
+          examinations through a global examination platform.
+        </p>
+        <a class="card-link" href="about.html">Read More About Us →</a>
       </div>
     </section>
 
     <section class="section" id="contact">
       <div class="section-heading">
-        <h2>Contact &amp; Help</h2>
+        <h2>Contact &amp; Help &amp; Support</h2>
       </div>
-      <div class="card">
-        <h3>Need Help?</h3>
-        <p>Contact support if you need assistance with your account or examinations.</p>
+      <div class="panel">
+        <h3>Need Assistance?</h3>
+        <p class="status-note">
+          Contact the platform support team for help with your account or exams.
+        </p>
         <a class="button button-gold" href="contact.html">Contact Support</a>
       </div>
     </section>
 
     <footer class="footer">
       <strong>SAINTIG EXAMS</strong><br>
-      Global Examination Platform<br>
-      © <span id="currentYear"></span> SAINTIG DIGITAL
+      LEARN. PRACTICE. SUCCEED.<br>
+      © <span id="current-year"></span> SAINT IG DIGITAL
     </footer>
   </main>
 
-  <nav class="bottom-nav" aria-label="Quick navigation">
-    <a href="#home"><span>⌂</span>Home</a>
-    <a href="#availableExams"><span>▣</span>Exams</a>
-    <a href="#myResults"><span>✓</span>Results</a>
-    <a href="#myAccount"><span>♙</span>Account</a>
+  <nav class="bottom-nav no-print" aria-label="Quick navigation">
+    <a href="dashboard.html"><span>⌂</span>Home</a>
+    <a href="#country-exams"><span>▣</span>Exams</a>
+    <a href="#my-results"><span>✓</span>My Results</a>
+    <a href="#my-account"><span>♙</span>Account</a>
   </nav>
 
   <script type="module">
@@ -819,64 +1190,19 @@
 
     const $ = (id) => document.getElementById(id);
 
-    const menuButton = $("menuButton");
-    const menuPanel = $("menuPanel");
-    const countrySelect = $("countrySelect");
-    const levelSelect = $("levelSelect");
-
     let currentUser = null;
-    let currentSession = null;
-    let profile = null;
-    let historyLoaded = false;
+    let currentProfile = null;
 
-    /*
-      Country levels are presented separately.
-      The education-level values sent to the database must be
-      matched to the existing education_levels records before
-      filtering examinations by level.
-    */
-    const educationSystems = {
-      NG: {
-        name: "Nigeria",
-        levels: [
-          "Primary School",
-          "Junior Secondary School",
-          "Senior Secondary School"
-        ]
-      },
-      US: {
-        name: "United States",
-        levels: [
-          "Elementary School",
-          "Middle School",
-          "High School"
-        ]
-      },
-      GB: {
-        name: "United Kingdom",
-        levels: [
-          "Primary Education",
-          "Secondary Education"
-        ]
-      },
-      CA: {
-        name: "Canada",
-        levels: [
-          "Elementary School",
-          "Middle School",
-          "Secondary School"
-        ]
-      }
-    };
+    $("current-year").textContent = new Date().getFullYear();
 
-    function setStatus(message, type = "") {
-      const node = $("pageStatus");
-      node.textContent = message;
-      node.className = "status " + type;
+    function showMessage(id, message, type = "") {
+      const element = $(id);
+      element.textContent = message;
+      element.className = type;
     }
 
     function escapeHTML(value) {
-      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
@@ -885,104 +1211,75 @@
       })[char]);
     }
 
-    function setEmpty(nodeId, message) {
-      $(nodeId).innerHTML =
-        `<p class="empty-state">${escapeHTML(message)}</p>`;
+    function dateText(value) {
+      if (!value) return "Not recorded";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "Not recorded" : date.toLocaleString();
     }
 
-    function updateEducationLevels() {
-      const country = countrySelect.value;
-      const system = educationSystems[country];
-
-      levelSelect.replaceChildren();
-
-      for (const level of system.levels) {
-        const option = document.createElement("option");
-        option.value = level;
-        option.textContent = level;
-        levelSelect.appendChild(option);
-      }
-
-      $("profileCountry").textContent = system.name;
-      $("profileLevel").textContent = levelSelect.value;
-    }
-
-    function updateProfileSelection() {
-      $("profileCountry").textContent =
-        educationSystems[countrySelect.value].name;
-      $("profileLevel").textContent = levelSelect.value;
-    }
-
-    countrySelect.addEventListener("change", () => {
-      updateEducationLevels();
-      updateProfileSelection();
-
-      /*
-        The chosen country and level update the dashboard interface.
-        Persisting them requires matching existing profile columns.
-      */
-    });
-
-    levelSelect.addEventListener("change", updateProfileSelection);
+    const menuButton = $("menu-button");
+    const menuPanel = $("menu-panel");
 
     menuButton.addEventListener("click", () => {
-      const isOpen = menuPanel.classList.toggle("open");
-      menuButton.setAttribute("aria-expanded", String(isOpen));
-      menuButton.setAttribute(
-        "aria-label",
-        isOpen ? "Close navigation menu" : "Open navigation menu"
-      );
+      const open = menuPanel.classList.toggle("open");
+      menuButton.setAttribute("aria-expanded", String(open));
     });
 
-    menuPanel.querySelectorAll("a").forEach((link) => {
+    menuPanel.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", () => {
         menuPanel.classList.remove("open");
         menuButton.setAttribute("aria-expanded", "false");
       });
     });
 
-    document.addEventListener("click", (event) => {
-      if (
-        !menuPanel.contains(event.target) &&
-        !menuButton.contains(event.target)
-      ) {
+    document.addEventListener("click", event => {
+      if (!menuPanel.contains(event.target) && !menuButton.contains(event.target)) {
         menuPanel.classList.remove("open");
         menuButton.setAttribute("aria-expanded", "false");
       }
     });
 
-    $("currentYear").textContent = new Date().getFullYear();
+    document.querySelectorAll("[data-toggle]").forEach(button => {
+      button.addEventListener("click", () => {
+        const input = $(button.dataset.toggle);
+        const reveal = input.type === "password";
+        input.type = reveal ? "text" : "password";
+        button.textContent = reveal ? "Hide" : "Show";
+      });
+    });
+
+    async function getSessionUser() {
+      const result = await getCurrentSession();
+
+      return (
+        result?.data?.session?.user ??
+        result?.session?.user ??
+        result?.user ??
+        result?.data?.user ??
+        null
+      );
+    }
 
     async function loadAccount() {
       try {
-        currentSession = await getCurrentSession();
-
-        /*
-          Accommodate auth helpers that return either a session
-          directly or a Supabase-style { data: { session } } object.
-        */
-        const session =
-          currentSession?.data?.session ??
-          currentSession?.session ??
-          currentSession;
-
-        currentUser = session?.user ?? null;
+        currentUser = await getSessionUser();
 
         if (!currentUser) {
-          window.location.replace("index.html");
+          window.location.replace("student-login.html");
           return;
         }
 
-        const metadata = currentUser.user_metadata ?? {};
+        const metadata = currentUser.user_metadata || {};
+
         let displayName =
-          metadata.display_name ??
-          metadata.full_name ??
-          metadata.name ??
+          metadata.full_name ||
+          metadata.display_name ||
+          metadata.name ||
           "";
 
         /*
-          profiles columns confirmed previously:
-          id, display_name.
+          Existing profile columns confirmed in the earlier setup:
+          id and display_name.
         */
         const { data, error } = await supabase
           .from("profiles")
@@ -993,24 +1290,27 @@
         if (error) {
           console.warn("Profile lookup:", error.message);
         } else {
-          profile = data;
+          currentProfile = data;
           displayName = data?.display_name || displayName;
         }
 
         displayName = displayName || "Student";
 
-        $("studentName").textContent = displayName;
-        $("studentEmail").textContent = currentUser.email || "";
-        $("profileName").textContent = displayName;
-        $("profileEmail").textContent = currentUser.email || "Not available";
-        $("profileId").textContent = currentUser.id;
+        $("student-name").textContent = displayName;
+        $("student-email").textContent = currentUser.email || "";
+        $("account-email").textContent = currentUser.email || "Unavailable";
+        $("registered-email").value = currentUser.email || "";
+        $("account-id").textContent = currentUser.id;
+        $("edit-full-name").value = displayName === "Student" ? "" : displayName;
+        $("profile-status").textContent = "Connected";
+        $("profile-summary").textContent = displayName;
 
-        setStatus("");
         await loadHistory();
       } catch (error) {
         console.error(error);
-        setStatus(
-          "We could not load your account. Please sign in again.",
+        showMessage(
+          "page-message",
+          "Unable to load your account. Please sign in again.",
           "error"
         );
       }
@@ -1019,13 +1319,12 @@
     async function loadHistory() {
       if (!currentUser) return;
 
-      $("historyList").textContent = "Loading your examination history...";
-      $("resultsList").textContent = "Loading your results...";
+      $("history-list").textContent = "Loading your examination history...";
+      $("results-list").textContent = "Loading your results...";
 
       /*
-        Use only the confirmed exam_attempts columns:
-        id, user_id, examination_id, started_at, submitted_at, status.
-        Never load another student's attempts.
+        Only confirmed columns are queried.
+        Every request is scoped to the currently signed-in user.
       */
       const { data: attempts, error } = await supabase
         .from("exam_attempts")
@@ -1034,79 +1333,95 @@
         .order("started_at", { ascending: false });
 
       if (error) {
-        console.error("History lookup:", error.message);
-        setEmpty(
-          "historyList",
-          "We could not load your history. Check your database access policies."
-        );
-        setEmpty(
-          "resultsList",
-          "Your results could not be loaded at this time."
-        );
+        console.error("Attempt lookup:", error.message);
+        $("history-list").textContent =
+          "History could not be loaded. Please check your Supabase access policies.";
+        $("results-list").textContent =
+          "Results could not be loaded at this time.";
+        $("completed-count").textContent = "—";
+        $("latest-result").textContent = "—";
+        $("access-status").textContent = "Check access";
         return;
       }
 
-      historyLoaded = true;
-      renderHistory(attempts || []);
+      const records = attempts || [];
+      const completed = records.filter(item =>
+        item.submitted_at || String(item.status || "").toLowerCase() === "submitted"
+      );
+
+      $("completed-count").textContent = String(completed.length);
+      $("access-status").textContent = "Account connected";
+
+      const latest = completed[0];
+
+      if (latest) {
+        $("latest-result").textContent = "Submitted";
+        $("latest-result-note").textContent =
+          "Latest submission: " + dateText(latest.submitted_at);
+      } else {
+        $("latest-result").textContent = "—";
+        $("latest-result-note").textContent =
+          "No submitted examination result is available yet.";
+      }
+
+      renderAttempts(records);
     }
 
-    function renderHistory(attempts) {
-      const historyNode = $("historyList");
-      const resultsNode = $("resultsList");
+    function renderAttempts(records) {
+      const history = $("history-list");
+      const results = $("results-list");
 
-      if (!attempts.length) {
-        setEmpty("historyList", "You have no platform examination attempts yet.");
-        setEmpty("resultsList", "No platform results are available yet.");
+      if (!records.length) {
+        history.innerHTML =
+          '<p class="empty-state">Your examination history will appear here after you take a platform examination.</p>';
+        results.innerHTML =
+          '<p class="empty-state">No platform examination results are available yet.</p>';
         return;
       }
 
-      historyNode.replaceChildren();
-      resultsNode.replaceChildren();
+      history.replaceChildren();
+      results.replaceChildren();
 
-      for (const attempt of attempts) {
-        const started = attempt.started_at
-          ? new Date(attempt.started_at).toLocaleString()
-          : "Not recorded";
-
-        const submitted = attempt.submitted_at
-          ? new Date(attempt.submitted_at).toLocaleString()
-          : "Not submitted";
-
+      for (const attempt of records) {
+        const submitted = Boolean(attempt.submitted_at);
         const status = attempt.status || "Status unavailable";
 
         const historyItem = document.createElement("article");
         historyItem.className = "result-item";
         historyItem.innerHTML = `
           <h4>Examination #${escapeHTML(attempt.examination_id)}</h4>
-          <p>Attempt ID: ${escapeHTML(attempt.id)}</p>
-          <p>Started: ${escapeHTML(started)}</p>
-          <p>Submitted: ${escapeHTML(submitted)}</p>
+          <p>Started: ${escapeHTML(dateText(attempt.started_at))}</p>
+          <p>Submitted: ${escapeHTML(dateText(attempt.submitted_at))}</p>
           <p>Status: ${escapeHTML(status)}</p>
           <div class="result-actions no-print">
-            <button class="button button-danger"
-              data-delete-attempt="${escapeHTML(attempt.id)}">
+            <button type="button"
+              class="button button-danger"
+              data-delete-history="${escapeHTML(attempt.id)}">
               Delete History Entry
             </button>
           </div>
         `;
-        historyNode.appendChild(historyItem);
+        history.appendChild(historyItem);
 
-        const resultItem = document.createElement("article");
-        resultItem.className = "result-item";
-        resultItem.innerHTML = `
-          <h4>Examination #${escapeHTML(attempt.examination_id)}</h4>
-          <p>Submitted: ${escapeHTML(submitted)}</p>
-          <p>Status: ${escapeHTML(status)}</p>
-          <p>Attempt ID: ${escapeHTML(attempt.id)}</p>
-          <p>Score: Not available in the confirmed attempt columns.</p>
-        `;
-        resultsNode.appendChild(resultItem);
+        if (submitted) {
+          const resultItem = document.createElement("article");
+          resultItem.className = "result-item";
+          resultItem.innerHTML = `
+            <h4>Examination #${escapeHTML(attempt.examination_id)}</h4>
+            <p>Submission date: ${escapeHTML(dateText(attempt.submitted_at))}</p>
+            <p>Score: Not available in the confirmed attempt fields.</p>
+          `;
+          results.appendChild(resultItem);
+        }
       }
 
-      historyNode.querySelectorAll("[data-delete-attempt]").forEach((button) => {
-        button.addEventListener("click", () => {
-          deleteHistoryEntry(button.dataset.deleteAttempt);
-        });
+      if (!results.children.length) {
+        results.innerHTML =
+          '<p class="empty-state">You have no submitted platform examinations yet.</p>';
+      }
+
+      history.querySelectorAll("[data-delete-history]").forEach(button => {
+        button.addEventListener("click", () => deleteHistoryEntry(button.dataset.deleteHistory));
       });
     }
 
@@ -1114,17 +1429,16 @@
       if (!currentUser) return;
 
       const confirmed = window.confirm(
-        "Delete this examination history entry? This may be permanent. " +
-        "Only your own attempt will be targeted. Teacher/School Exam results " +
-        "are separate. Continue only if you understand that deleting an attempt " +
-        "may also affect saved answers."
+        "Delete this examination attempt from your history? " +
+        "This may permanently remove the attempt. Related saved answers or " +
+        "official records may be affected. Continue only if you understand."
       );
 
       if (!confirmed) return;
 
       /*
-        No unverified cascading delete is performed here.
-        First verify the attempt belongs to the signed-in student.
+        Verify ownership first. Do not delete shared exam questions.
+        Supabase foreign-key constraints and RLS must permit the deletion.
       */
       const { data: attempt, error: verifyError } = await supabase
         .from("exam_attempts")
@@ -1134,18 +1448,14 @@
         .maybeSingle();
 
       if (verifyError || !attempt) {
-        setStatus(
+        showMessage(
+          "page-message",
           "The history entry could not be verified. Nothing was deleted.",
           "error"
         );
         return;
       }
 
-      /*
-        The database foreign-key and RLS rules determine whether this
-        deletion is permitted. We do not delete answers/questions
-        independently or modify the shared question bank.
-      */
       const { error: deleteError } = await supabase
         .from("exam_attempts")
         .delete()
@@ -1153,46 +1463,184 @@
         .eq("user_id", currentUser.id);
 
       if (deleteError) {
-        console.error("Delete attempt:", deleteError.message);
-        setStatus(
-          "Supabase did not allow this history entry to be deleted. " +
-          "Your database policies or related-record constraints may need review.",
+        console.error("Delete history:", deleteError.message);
+        showMessage(
+          "page-message",
+          "Supabase rejected the deletion. The database policy or related records may prevent deleting this attempt.",
           "error"
         );
         return;
       }
 
-      setStatus("The history entry was deleted.", "success");
+      showMessage("page-message", "The history entry was deleted.", "success");
       await loadHistory();
     }
 
-    $("refreshHistory").addEventListener("click", loadHistory);
+    $("refresh-history").addEventListener("click", loadHistory);
 
-    $("printResults").addEventListener("click", () => {
+    $("print-results").addEventListener("click", () => {
       window.print();
     });
 
-    $("refreshExams").addEventListener("click", () => {
-      setStatus(
-        "The examination list needs to be connected to the confirmed published-examination fields.",
-        ""
-      );
+    $("profile-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (!currentUser) return;
+
+      const name = $("edit-full-name").value.trim();
+      const button = $("save-profile-button");
+
+      if (!name) {
+        showMessage("profile-message", "Please enter your full name.", "error");
+        return;
+      }
+
+      button.disabled = true;
+      showMessage("profile-message", "Saving profile...");
+
+      try {
+        /*
+          Update the known profile fields only. No new profile columns
+          are assumed. Auth metadata is updated as well.
+        */
+        const { error: authError } = await supabase.auth.updateUser({
+          data: { full_name: name }
+        });
+
+        if (authError) throw authError;
+
+        const { data: existingProfile, error: lookupError } = await supabase
+          .from("profiles")
+          .select("id, display_name")
+          .eq("id", currentUser.id)
+          .maybeSingle();
+
+        if (lookupError) throw lookupError;
+
+        if (existingProfile) {
+          const { error: updateError } = await supabase
+            .from("profiles")
+            .update({ display_name: name })
+            .eq("id", currentUser.id);
+
+          if (updateError) throw updateError;
+        } else {
+          /*
+            Uses only the confirmed id and display_name fields.
+            RLS must permit the signed-in user to create their profile.
+          */
+          const { error: insertError } = await supabase
+            .from("profiles")
+            .insert({ id: currentUser.id, display_name: name });
+
+          if (insertError) throw insertError;
+        }
+
+        $("student-name").textContent = name;
+        $("profile-summary").textContent = name;
+        $("profile-status").textContent = "Connected";
+
+        showMessage("profile-message", "Profile saved successfully.", "success");
+      } catch (error) {
+        console.error("Save profile:", error);
+        showMessage(
+          "profile-message",
+          "The profile could not be saved. Check your Supabase profile policies.",
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+      }
     });
 
-    $("signoutButton").addEventListener("click", async () => {
+    $("password-form").addEventListener("submit", async event => {
+      event.preventDefault();
+
+      if (!currentUser) return;
+
+      const password = $("new-password").value;
+      const confirmation = $("confirm-password").value;
+      const button = $("change-password-button");
+
+      if (password.length < 8) {
+        showMessage(
+          "password-message",
+          "Your password must contain at least 8 characters.",
+          "error"
+        );
+        return;
+      }
+
+      if (password !== confirmation) {
+        showMessage(
+          "password-message",
+          "The passwords do not match.",
+          "error"
+        );
+        return;
+      }
+
+      button.disabled = true;
+      showMessage("password-message", "Updating password...");
+
+      try {
+        const { error } = await supabase.auth.updateUser({
+          password: password
+        });
+
+        if (error) throw error;
+
+        $("password-form").reset();
+        document.querySelectorAll("#password-form input[type='password']").forEach(input => {
+          input.type = "password";
+        });
+        document.querySelectorAll("#password-form [data-toggle]").forEach(button => {
+          button.textContent = "Show";
+        });
+
+        showMessage(
+          "password-message",
+          "Your password was updated successfully.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Password update:", error);
+        showMessage(
+          "password-message",
+          "Password update failed. Please try again or sign in again if your session has expired.",
+          "error"
+        );
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    async function signOut() {
       const confirmed = window.confirm("Are you sure you want to sign out?");
       if (!confirmed) return;
 
       try {
         await signOutUser();
-        window.location.replace("index.html");
+        window.location.replace("student-login.html");
       } catch (error) {
         console.error("Sign out:", error);
-        setStatus("Sign out failed. Please try again.", "error");
+        showMessage("page-message", "Sign out failed. Please try again.", "error");
       }
+    }
+
+    $("signout-button").addEventListener("click", signOut);
+    $("menu-signout-button").addEventListener("click", signOut);
+
+    $("school-results-form").addEventListener("submit", event => {
+      event.preventDefault();
+
+      showMessage(
+        "school-results-message",
+        "Teacher/School Results lookup is not connected yet. Your IDs have not been submitted or checked.",
+        "error"
+      );
     });
 
-    updateEducationLevels();
     loadAccount();
   </script>
 </body>
