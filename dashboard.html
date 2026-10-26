@@ -86,11 +86,13 @@
       color: var(--white);
       font-size: 13px;
       font-weight: bold;
+      min-width: 0;
     }
 
     .avatar {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
       border-radius: 50%;
       background: var(--gold);
       color: var(--navy);
@@ -98,6 +100,13 @@
       align-items: center;
       justify-content: center;
       font-weight: 800;
+    }
+
+    .profile-name {
+      max-width: 190px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .signout {
@@ -108,6 +117,7 @@
       color: white;
       font-size: 12px;
       font-weight: bold;
+      flex-shrink: 0;
     }
 
     .signout:hover { background: rgba(255,255,255,.1); }
@@ -153,6 +163,7 @@
       font-size: clamp(25px, 4vw, 34px);
       line-height: 1.3;
       margin-bottom: 8px;
+      overflow-wrap: anywhere;
     }
 
     .welcome p {
@@ -416,7 +427,7 @@
     <section class="welcome">
       <div class="welcome-content">
         <div class="welcome-label">YOUR STUDENT DASHBOARD</div>
-        <h1>Welcome back, <span id="welcome-name">Student</span>!</h1>
+        <h1>Welcome, <span id="welcome-name">Student</span>!</h1>
         <p>
           Your learning journey continues here. Choose your education
           level, find available examinations and review your progress.
@@ -566,15 +577,19 @@
     </nav>
   </main>
 
-  <div class="container" id="loading-message" style="padding:50px 0;text-align:center">
+  <div class="container" id="loading-message"
+       style="padding:50px 0;text-align:center">
     <h2>Checking your account...</h2>
-    <p style="color:#667085;margin-top:8px">Please wait while we verify your sign-in.</p>
+    <p style="color:#667085;margin-top:8px">
+      Please wait while we verify your sign-in.
+    </p>
   </div>
 
   <div class="container" id="error-message" hidden style="padding:30px 0">
     <div class="notice" id="error-text"></div>
     <p style="margin-top:15px">
-      <a href="student-login.html?mode=login" style="font-weight:bold;color:#183963">
+      <a href="student-login.html?mode=login"
+         style="font-weight:bold;color:#183963">
         Go to Student Sign In
       </a>
     </p>
@@ -589,15 +604,60 @@
   </footer>
 
   <script type="module">
-    import { supabase, getCurrentSession, signOutUser } from "./auth.js";
+    import {
+      supabase,
+      getCurrentSession,
+      signOutUser
+    } from "./auth.js";
 
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
 
     const loadingMessage = document.getElementById("loading-message");
     const dashboardContent = document.getElementById("dashboard-content");
     const errorMessage = document.getElementById("error-message");
     const errorText = document.getElementById("error-text");
     const signoutButton = document.getElementById("signout-button");
+
+    let redirecting = false;
+
+    function redirectToLogin() {
+      if (redirecting) return;
+      redirecting = true;
+      window.location.replace("student-login.html?mode=login");
+    }
+
+    function getDisplayName(user) {
+      const metadata = user.user_metadata || {};
+      const registeredName =
+        typeof metadata.full_name === "string"
+          ? metadata.full_name.trim()
+          : "";
+
+      const otherName =
+        typeof metadata.name === "string"
+          ? metadata.name.trim()
+          : "";
+
+      // Prefer the registered full name, not the email username.
+      if (registeredName) return registeredName;
+      if (otherName) return otherName;
+
+      // Fallback for older accounts that have no saved full name.
+      return "Student";
+    }
+
+    function getInitials(fullName) {
+      const parts = fullName.trim().split(/\s+/).filter(Boolean);
+
+      if (parts.length === 0) return "S";
+      if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+
+      return (
+        parts[0].charAt(0) +
+        parts[parts.length - 1].charAt(0)
+      ).toUpperCase();
+    }
 
     function showError(message) {
       loadingMessage.hidden = true;
@@ -608,14 +668,12 @@
 
     function showDashboard(session) {
       const user = session.user;
-      const metadata = user.user_metadata || {};
-      const fullName = metadata.full_name || metadata.name ||
-        (user.email ? user.email.split("@")[0] : "Student");
+      const fullName = getDisplayName(user);
 
       document.getElementById("student-name").textContent = fullName;
       document.getElementById("welcome-name").textContent = fullName;
       document.getElementById("student-avatar").textContent =
-        fullName.trim().charAt(0).toUpperCase() || "S";
+        getInitials(fullName);
 
       document.getElementById("profile-email").textContent =
         user.email || "Email address unavailable";
@@ -634,7 +692,7 @@
         const session = await getCurrentSession();
 
         if (!session) {
-          window.location.replace("student-login.html?mode=login");
+          redirectToLogin();
           return;
         }
 
@@ -667,10 +725,10 @@
       });
     });
 
-    // Keep the page responsive if the session expires or the user signs out elsewhere.
+    // React to an explicit sign-out without redirecting during initial loading.
     supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.replace("student-login.html?mode=login");
+      if (event === "SIGNED_OUT" || (!session && event === "TOKEN_REFRESHED")) {
+        redirectToLogin();
       }
     });
 
