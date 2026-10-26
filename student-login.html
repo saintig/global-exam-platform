@@ -314,7 +314,8 @@
         <div class="field">
           <label for="register-name">Full Name</label>
           <input id="register-name" type="text" autocomplete="name"
-                 placeholder="Enter your full name" required>
+                 placeholder="Enter your full name"
+                 minlength="2" maxlength="100" required>
         </div>
 
         <div class="field">
@@ -416,9 +417,11 @@
 
     function setLoading(form, loading, label) {
       const button = form.querySelector('button[type="submit"]');
+
       if (!button.dataset.originalText) {
         button.dataset.originalText = button.textContent;
       }
+
       button.disabled = loading;
       button.textContent = loading ? label : button.dataset.originalText;
     }
@@ -497,6 +500,7 @@
       });
     });
 
+    // Register a student and save the full name during sign-up.
     registerForm.addEventListener("submit", async event => {
       event.preventDefault();
       clearMessage();
@@ -506,48 +510,56 @@
       const password = document.getElementById("register-password").value;
       const confirmation = document.getElementById("confirm-password").value;
 
+      if (name.length < 2) {
+        showMessage("Please enter your full name.", "error");
+        return;
+      }
+
       if (password !== confirmation) {
-        showMessage("Your passwords do not match. Please check and try again.", "error");
+        showMessage(
+          "Your passwords do not match. Please check and try again.",
+          "error"
+        );
         return;
       }
 
       setLoading(registerForm, true, "Creating Account...");
 
       try {
-        const { data, error } = await registerStudent(email, password);
+        const { data, error } = await registerStudent(
+          email,
+          password,
+          name
+        );
+
         if (error) throw error;
 
-        // Save the student's display name in Supabase Auth metadata.
-        // This does not grant administrator privileges.
-        const { error: profileError } = await supabase.auth.updateUser({
-          data: { full_name: name }
-        });
-
-        if (profileError && data.session) {
-          console.error("Could not save profile name:", profileError.message);
-        }
-
         if (data.session) {
-          showMessage("Your account was created successfully. Opening your dashboard...", "success");
-          window.location.replace("dashboard.html");
-        } else {
           showMessage(
-            "Registration received. Check your email for the confirmation link, then sign in.",
+            "Your account was created successfully. Opening your dashboard...",
             "success"
           );
+
+          window.location.replace("dashboard.html");
+        } else {
           showLogin();
+
           showMessage(
-            "Registration received. Check your email for the confirmation link, then sign in.",
+            "Registration received. Check your email for the confirmation link. After confirming, sign in with your email and password.",
             "success"
           );
         }
       } catch (error) {
-        showMessage(error.message || "We could not create your account. Please try again.", "error");
+        showMessage(
+          error.message || "We could not create your account. Please try again.",
+          "error"
+        );
       } finally {
         setLoading(registerForm, false);
       }
     });
 
+    // Sign in an existing student.
     loginForm.addEventListener("submit", async event => {
       event.preventDefault();
       clearMessage();
@@ -559,30 +571,41 @@
 
       try {
         const { data, error } = await signInStudent(email, password);
+
         if (error) throw error;
 
         if (!data.session) {
           throw new Error("Sign-in was not completed. Please try again.");
         }
 
-        showMessage("Sign-in successful. Opening your dashboard...", "success");
+        showMessage(
+          "Sign-in successful. Opening your dashboard...",
+          "success"
+        );
+
         window.location.replace("dashboard.html");
       } catch (error) {
-        showMessage(error.message || "Sign-in failed. Check your details and try again.", "error");
+        showMessage(
+          error.message || "Sign-in failed. Check your details and try again.",
+          "error"
+        );
       } finally {
         setLoading(loginForm, false);
       }
     });
 
+    // Request a password reset.
     resetForm.addEventListener("submit", async event => {
       event.preventDefault();
       clearMessage();
 
       const email = document.getElementById("reset-email").value.trim();
+
       setLoading(resetForm, true, "Sending Link...");
 
       try {
         const { error } = await requestPasswordReset(email);
+
         if (error) throw error;
 
         showMessage(
@@ -599,16 +622,17 @@
       }
     });
 
-    // If an existing session is already active, send the user to the dashboard.
+    // Redirect an already signed-in user to the dashboard,
+    // except when opening the password-reset screen.
     try {
       const { data, error } = await supabase.auth.getSession();
+
       if (error) throw error;
 
-      if (data.session) {
-        const mode = new URLSearchParams(location.search).get("mode");
-        if (mode !== "reset") {
-          window.location.replace("dashboard.html");
-        }
+      const mode = new URLSearchParams(window.location.search).get("mode");
+
+      if (data.session && mode !== "reset") {
+        window.location.replace("dashboard.html");
       }
     } catch (error) {
       console.error("Session check failed:", error.message);
