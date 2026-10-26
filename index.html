@@ -388,61 +388,177 @@
       font-size: 14px;
     }
 
-    /* EDUCATION LEVELS */
+    /* COUNTRY AND EDUCATION SELECTOR */
 
-    .levels {
+    .country-list {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      max-width: 850px;
+      margin: 0 auto;
     }
 
-    .level-card {
+    .country-item {
+      overflow: hidden;
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 27px 23px;
-      box-shadow: 0 7px 24px rgba(16,38,74,.045);
-      transition: transform .2s, box-shadow .2s;
+      border-radius: 13px;
+      box-shadow: 0 6px 20px rgba(16,38,74,.045);
     }
 
-    .level-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 13px 28px rgba(16,38,74,.09);
+    .country-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      width: 100%;
+      min-height: 72px;
+      padding: 17px 20px;
+      border: 0;
+      border-left: 5px solid var(--gold);
+      background: var(--navy);
+      color: var(--white);
+      text-align: left;
+      cursor: pointer;
+      transition: background .2s;
     }
 
-    .level-icon {
+    .country-toggle:hover,
+    .country-toggle:focus-visible {
+      background: var(--navy-light);
+    }
+
+    .country-toggle:focus-visible {
+      outline: 3px solid var(--gold);
+      outline-offset: -4px;
+    }
+
+    .country-heading {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .country-flag {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 13px;
-      background: #fff5d8;
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 9px;
+      background: rgba(255,255,255,.1);
+      font-size: 23px;
+    }
+
+    .country-name {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .country-subtitle {
+      display: block;
+      color: #d5deec;
+      font-size: 12px;
+      font-weight: normal;
+      margin-top: 2px;
+    }
+
+    .country-arrow {
+      flex-shrink: 0;
+      color: var(--gold);
+      font-size: 24px;
+      line-height: 1;
+      transform: rotate(0deg);
+      transition: transform .2s;
+    }
+
+    .country-toggle[aria-expanded="true"] .country-arrow {
+      transform: rotate(90deg);
+    }
+
+    .country-options {
+      padding: 13px;
+      background: #fffdf8;
+    }
+
+    .country-options[hidden] {
+      display: none;
+    }
+
+    .education-option {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-height: 70px;
+      padding: 14px 15px;
+      margin-bottom: 9px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--white);
       color: var(--navy);
-      font-size: 25px;
-      margin-bottom: 18px;
+      transition:
+        border-color .2s,
+        background .2s,
+        transform .2s,
+        box-shadow .2s;
     }
 
-    .level-card h3 {
-      font-size: 19px;
-      margin-bottom: 10px;
+    .education-option:last-child {
+      margin-bottom: 0;
     }
 
-    .level-card p {
+    .education-option:hover,
+    .education-option:focus-visible {
+      border-color: var(--gold);
+      background: #fff9e9;
+      box-shadow: 0 5px 14px rgba(16,38,74,.06);
+      transform: translateY(-1px);
+    }
+
+    .education-option:focus-visible {
+      outline: 2px solid #a98220;
+      outline-offset: 2px;
+    }
+
+    .education-option-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: #fff2ce;
+      font-size: 21px;
+    }
+
+    .education-option-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .education-option-text strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .education-option-text small {
+      display: block;
+      margin-top: 3px;
       color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 20px;
-      min-height: 67px;
+      font-size: 12px;
     }
 
-    .level-link {
+    .education-option-arrow {
+      flex-shrink: 0;
       color: #8a6712;
-      font-size: 13px;
+      font-size: 21px;
       font-weight: bold;
-    }
-
-    .level-link:hover {
-      text-decoration: underline;
     }
 
     /* TEACHER PORTAL */
@@ -744,19 +860,10 @@
         padding: 52px 0 57px;
       }
 
-      .levels,
       .benefits,
       .feature-grid,
       .form-grid {
         grid-template-columns: 1fr;
-      }
-
-      .level-card {
-        padding: 23px 20px;
-      }
-
-      .level-card p {
-        min-height: 0;
       }
 
       .benefits {
@@ -774,6 +881,31 @@
       .feature-card,
       .access-card {
         padding: 23px 20px;
+      }
+
+      .country-toggle {
+        min-height: 68px;
+        padding: 14px 15px;
+      }
+
+      .country-name {
+        font-size: 15px;
+      }
+
+      .country-subtitle {
+        font-size: 11px;
+      }
+
+      .country-options {
+        padding: 10px;
+      }
+
+      .education-option {
+        padding: 12px;
+      }
+
+      .education-option-text strong {
+        font-size: 14px;
       }
     }
 
@@ -805,6 +937,18 @@
 
       .feature-actions .btn {
         width: 100%;
+      }
+
+      .country-flag {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+      }
+
+      .education-option-icon {
+        width: 37px;
+        height: 37px;
+        font-size: 19px;
       }
     }
 
@@ -955,57 +1099,195 @@
       </div>
     </section>
 
-    <!-- EDUCATION LEVELS -->
+    <!-- EDUCATION LEVELS BY COUNTRY -->
     <section class="section" id="education-levels">
       <div class="container">
         <div class="section-heading">
           <div class="kicker">Explore Your Level</div>
-          <h2>Choose Your Education Level</h2>
+          <h2>Choose Your Country and Education Level</h2>
           <p>
-            Start from your education level and prepare for your next
-            examination with SAINTIG EXAMS.
+            Select your country to view its education levels.
+            Choose the level that matches your education system
+            to continue to student registration.
           </p>
         </div>
 
-        <div class="levels">
-          <article class="level-card">
-            <div class="level-icon" aria-hidden="true">📚</div>
-            <h3>Primary Education</h3>
-            <p>
-              Build a strong academic foundation through practice and
-              age-appropriate assessments.
-            </p>
-            <a class="level-link"
-              href="student-login.html?mode=register">
-              Get Started →
-            </a>
+        <div class="country-list">
+
+          <!-- NIGERIA -->
+          <article class="country-item">
+            <button
+              class="country-toggle"
+              id="toggle-nigeria"
+              type="button"
+              aria-expanded="false"
+              aria-controls="options-nigeria">
+              <span class="country-heading">
+                <span class="country-flag" aria-hidden="true">🇳🇬</span>
+                <span>
+                  <span class="country-name">Nigeria</span>
+                  <span class="country-subtitle">Choose your school level</span>
+                </span>
+              </span>
+              <span class="country-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div class="country-options" id="options-nigeria" hidden>
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Primary%20School">
+                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-text">
+                  <strong>Primary School</strong>
+                  <small>Build your academic foundation</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Junior%20Secondary%20School">
+                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-text">
+                  <strong>Junior Secondary School</strong>
+                  <small>Strengthen your subject knowledge</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Senior%20Secondary%20School">
+                <span class="education-option-icon" aria-hidden="true">🏆</span>
+                <span class="education-option-text">
+                  <strong>Senior Secondary School</strong>
+                  <small>Prepare for advanced school examinations</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
           </article>
 
-          <article class="level-card">
-            <div class="level-icon" aria-hidden="true">🎓</div>
-            <h3>Junior Secondary</h3>
-            <p>
-              Strengthen your knowledge, practise important subjects and
-              prepare for school examinations.
-            </p>
-            <a class="level-link"
-              href="student-login.html?mode=register">
-              Get Started →
-            </a>
+          <!-- UNITED STATES -->
+          <article class="country-item">
+            <button
+              class="country-toggle"
+              id="toggle-united-states"
+              type="button"
+              aria-expanded="false"
+              aria-controls="options-united-states">
+              <span class="country-heading">
+                <span class="country-flag" aria-hidden="true">🇺🇸</span>
+                <span>
+                  <span class="country-name">United States</span>
+                  <span class="country-subtitle">Choose your school level</span>
+                </span>
+              </span>
+              <span class="country-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div class="country-options" id="options-united-states" hidden>
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=United%20States&amp;level=Elementary%20School">
+                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-text">
+                  <strong>Elementary School</strong>
+                  <small>Build your academic foundation</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=United%20States&amp;level=Middle%2FHigh%20School">
+                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-text">
+                  <strong>Middle/High School</strong>
+                  <small>Practise and prepare for school assessments</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
           </article>
 
-          <article class="level-card">
-            <div class="level-icon" aria-hidden="true">🏆</div>
-            <h3>Senior Secondary</h3>
-            <p>
-              Prepare for important school assessments and develop
-              confidence in your chosen subjects.
-            </p>
-            <a class="level-link"
-              href="student-login.html?mode=register">
-              Get Started →
-            </a>
+          <!-- UNITED KINGDOM -->
+          <article class="country-item">
+            <button
+              class="country-toggle"
+              id="toggle-united-kingdom"
+              type="button"
+              aria-expanded="false"
+              aria-controls="options-united-kingdom">
+              <span class="country-heading">
+                <span class="country-flag" aria-hidden="true">🇬🇧</span>
+                <span>
+                  <span class="country-name">United Kingdom</span>
+                  <span class="country-subtitle">Choose your education level</span>
+                </span>
+              </span>
+              <span class="country-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div class="country-options" id="options-united-kingdom" hidden>
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Primary%20Education">
+                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-text">
+                  <strong>Primary Education</strong>
+                  <small>Build your academic foundation</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Secondary%20Education">
+                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-text">
+                  <strong>Secondary Education</strong>
+                  <small>Practise and prepare for school assessments</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
           </article>
+
+          <!-- CANADA -->
+          <article class="country-item">
+            <button
+              class="country-toggle"
+              id="toggle-canada"
+              type="button"
+              aria-expanded="false"
+              aria-controls="options-canada">
+              <span class="country-heading">
+                <span class="country-flag" aria-hidden="true">🇨🇦</span>
+                <span>
+                  <span class="country-name">Canada</span>
+                  <span class="country-subtitle">Choose your school level</span>
+                </span>
+              </span>
+              <span class="country-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div class="country-options" id="options-canada" hidden>
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Canada&amp;level=Elementary%20School">
+                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-text">
+                  <strong>Elementary School</strong>
+                  <small>Build your academic foundation</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Canada&amp;level=Middle%2FSecondary%20School">
+                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-text">
+                  <strong>Middle/Secondary School</strong>
+                  <small>Practise and prepare for school assessments</small>
+                </span>
+                <span class="education-option-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+
         </div>
       </div>
     </section>
@@ -1393,6 +1675,22 @@
         closeMenu();
         menuToggle.focus();
       }
+    });
+
+    // Country rows expand independently.
+    // More than one country can stay open at the same time.
+    document.querySelectorAll(".country-toggle").forEach(function (toggle) {
+      toggle.addEventListener("click", function () {
+        const options = document.getElementById(
+          toggle.getAttribute("aria-controls")
+        );
+
+        const isExpanded =
+          toggle.getAttribute("aria-expanded") === "true";
+
+        toggle.setAttribute("aria-expanded", String(!isExpanded));
+        options.hidden = isExpanded;
+      });
     });
 
     // These destinations are planned but are not built yet.
