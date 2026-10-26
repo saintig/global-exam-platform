@@ -21,11 +21,7 @@
       --light-blue: #f0f4fa;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -34,27 +30,12 @@
       line-height: 1.6;
     }
 
-    button, input, select {
-      font: inherit;
-    }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; }
 
-    button, a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1150px, 92%);
-      margin: auto;
-    }
+    .container { width: min(1150px, 92%); margin: auto; }
 
     header {
       background: var(--navy);
@@ -81,9 +62,7 @@
       letter-spacing: .4px;
     }
 
-    .brand span {
-      color: var(--gold);
-    }
+    .brand span { color: var(--gold); }
 
     .brand small {
       display: block;
@@ -131,13 +110,10 @@
       font-weight: bold;
     }
 
-    .signout:hover {
-      background: rgba(255,255,255,.1);
-    }
+    .signout:hover { background: rgba(255,255,255,.1); }
+    .signout:disabled { opacity: .6; cursor: wait; }
 
-    main {
-      min-height: 75vh;
-    }
+    main { min-height: 75vh; }
 
     .welcome {
       margin-top: 28px;
@@ -163,10 +139,7 @@
       pointer-events: none;
     }
 
-    .welcome-content {
-      position: relative;
-      z-index: 1;
-    }
+    .welcome-content { position: relative; z-index: 1; }
 
     .welcome-label {
       color: var(--gold);
@@ -207,14 +180,8 @@
       gap: 8px;
     }
 
-    .btn-gold {
-      background: var(--gold);
-      color: var(--navy);
-    }
-
-    .btn-gold:hover {
-      background: #f1cb6d;
-    }
+    .btn-gold { background: var(--gold); color: var(--navy); }
+    .btn-gold:hover { background: #f1cb6d; }
 
     .btn-outline {
       background: transparent;
@@ -222,13 +189,9 @@
       border: 1px solid rgba(255,255,255,.5);
     }
 
-    .btn-outline:hover {
-      background: rgba(255,255,255,.08);
-    }
+    .btn-outline:hover { background: rgba(255,255,255,.08); }
 
-    .section {
-      padding-top: 37px;
-    }
+    .section { padding-top: 37px; }
 
     .section-title {
       display: flex;
@@ -238,10 +201,7 @@
       margin-bottom: 18px;
     }
 
-    .section-title h2 {
-      font-size: 22px;
-      line-height: 1.3;
-    }
+    .section-title h2 { font-size: 22px; line-height: 1.3; }
 
     .section-title p {
       color: var(--muted);
@@ -249,11 +209,10 @@
       margin-top: 4px;
     }
 
-    .text-link {
+    .text-link, .card-link {
       color: #8a6712;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
-      white-space: nowrap;
     }
 
     .level-grid {
@@ -287,10 +246,7 @@
       margin-bottom: 15px;
     }
 
-    .level-card h3 {
-      font-size: 17px;
-      margin-bottom: 7px;
-    }
+    .level-card h3 { font-size: 17px; margin-bottom: 7px; }
 
     .level-card p {
       font-size: 13px;
@@ -298,16 +254,7 @@
       margin-bottom: 17px;
     }
 
-    .card-link {
-      display: inline-block;
-      color: #8a6712;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .card-link:hover {
-      text-decoration: underline;
-    }
+    .card-link:hover { text-decoration: underline; }
 
     .quick-grid {
       display: grid;
@@ -337,10 +284,7 @@
       font-size: 20px;
     }
 
-    .quick-card h3 {
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
+    .quick-card h3 { font-size: 15px; margin-bottom: 4px; }
 
     .quick-card p {
       font-size: 12px;
@@ -361,21 +305,16 @@
       background: var(--white);
     }
 
-    .status-card h3 {
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
+    .status-card h3 { font-size: 15px; margin-bottom: 8px; }
 
     .status-value {
       font-size: 20px;
       font-weight: 800;
       margin-bottom: 5px;
+      overflow-wrap: anywhere;
     }
 
-    .status-note {
-      font-size: 12px;
-      color: var(--muted);
-    }
+    .status-note { font-size: 12px; color: var(--muted); }
 
     .notice {
       margin-top: 17px;
@@ -411,9 +350,7 @@
       background: white;
     }
 
-    .nav-item:hover {
-      background: var(--light-blue);
-    }
+    .nav-item:hover { background: var(--light-blue); }
 
     footer {
       margin-top: 35px;
@@ -431,74 +368,25 @@
       margin-bottom: 8px;
     }
 
-    .footer-home:hover {
-      text-decoration: underline;
-    }
-
-    #demo-notice {
-      margin: 20px 0 0;
-    }
+    .footer-home:hover { text-decoration: underline; }
 
     @media (max-width: 760px) {
-      .level-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .quick-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .level-card {
-        padding: 20px;
-      }
-
-      .welcome {
-        padding: 24px 20px;
-      }
+      .level-grid, .quick-grid { grid-template-columns: 1fr; }
+      .level-card { padding: 20px; }
+      .welcome { padding: 24px 20px; }
     }
 
     @media (max-width: 480px) {
-      .header-inner {
-        min-height: 70px;
-      }
-
-      .brand {
-        font-size: 18px;
-      }
-
-      .brand small {
-        font-size: 8px;
-        letter-spacing: 1px;
-      }
-
-      .profile-name {
-        display: none;
-      }
-
-      .signout {
-        padding: 8px 9px;
-        font-size: 11px;
-      }
-
-      .welcome-buttons {
-        flex-direction: column;
-      }
-
-      .welcome-buttons .btn {
-        width: 100%;
-      }
-
-      .section-title h2 {
-        font-size: 19px;
-      }
-
-      .status-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-nav {
-        gap: 8px;
-      }
+      .header-inner { min-height: 70px; }
+      .brand { font-size: 18px; }
+      .brand small { font-size: 8px; letter-spacing: 1px; }
+      .profile-name { display: none; }
+      .signout { padding: 8px 9px; font-size: 11px; }
+      .welcome-buttons { flex-direction: column; }
+      .welcome-buttons .btn { width: 100%; }
+      .section-title h2 { font-size: 19px; }
+      .status-grid { grid-template-columns: 1fr; }
+      .bottom-nav { gap: 8px; }
     }
   </style>
 </head>
@@ -506,7 +394,6 @@
 <body>
   <header>
     <div class="container header-inner">
-      <!-- Student homepage heading always returns to dashboard.html -->
       <a class="brand" href="dashboard.html"
          aria-label="Return to student dashboard">
         SAINTIG <span>EXAMS</span>
@@ -516,7 +403,7 @@
       <div class="header-actions">
         <div class="profile-chip">
           <div class="avatar" id="student-avatar">S</div>
-          <span class="profile-name" id="student-name">Student</span>
+          <span class="profile-name" id="student-name">Loading...</span>
         </div>
         <button class="signout" id="signout-button" type="button">
           Sign Out
@@ -525,7 +412,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="dashboard-content" hidden>
     <section class="welcome">
       <div class="welcome-content">
         <div class="welcome-label">YOUR STUDENT DASHBOARD</div>
@@ -558,40 +445,22 @@
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">📚</div>
           <h3>Primary Education</h3>
-          <p>
-            Practise your subjects and build a strong foundation
-            for your next assessment.
-          </p>
-          <a class="card-link" href="#available-exams"
-             data-level="Primary">
-            Explore Primary →
-          </a>
+          <p>Practise your subjects and build a strong foundation for your next assessment.</p>
+          <a class="card-link" href="#available-exams" data-level="Primary">Explore Primary →</a>
         </article>
 
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">🎓</div>
           <h3>Junior Secondary</h3>
-          <p>
-            Strengthen your subject knowledge and prepare
-            for junior secondary examinations.
-          </p>
-          <a class="card-link" href="#available-exams"
-             data-level="Junior Secondary">
-            Explore Junior Secondary →
-          </a>
+          <p>Strengthen your subject knowledge and prepare for junior secondary examinations.</p>
+          <a class="card-link" href="#available-exams" data-level="Junior Secondary">Explore Junior Secondary →</a>
         </article>
 
         <article class="level-card">
           <div class="level-icon" aria-hidden="true">🏆</div>
           <h3>Senior Secondary</h3>
-          <p>
-            Practise senior secondary subjects and prepare
-            for important school examinations.
-          </p>
-          <a class="card-link" href="#available-exams"
-             data-level="Senior Secondary">
-            Explore Senior Secondary →
-          </a>
+          <p>Practise senior secondary subjects and prepare for important school examinations.</p>
+          <a class="card-link" href="#available-exams" data-level="Senior Secondary">Explore Senior Secondary →</a>
         </article>
       </div>
     </section>
@@ -600,7 +469,7 @@
       <div class="section-title">
         <div>
           <h2>Available Examinations</h2>
-          <p>Published examinations will appear here when connected.</p>
+          <p id="exam-description">Published examinations will appear here when connected.</p>
         </div>
       </div>
 
@@ -610,9 +479,7 @@
           <div>
             <h3>Start an Examination</h3>
             <p>Find an available examination for your level and subject.</p>
-            <a class="card-link" href="#education-levels">
-              Choose Level →
-            </a>
+            <a class="card-link" href="#education-levels">Choose Level →</a>
           </div>
         </article>
 
@@ -636,9 +503,8 @@
       </div>
 
       <div class="notice" id="demo-notice">
-        Your dashboard design is ready. Real examinations, student
-        information and results will appear after we connect this page
-        to your existing Supabase project.
+        Your account is connected. Live examinations and results will
+        appear after their database features are connected.
       </div>
     </section>
 
@@ -654,17 +520,13 @@
         <article class="status-card">
           <h3>Completed Examinations</h3>
           <div class="status-value" id="completed-count">—</div>
-          <p class="status-note">
-            Available after your examination history is connected.
-          </p>
+          <p class="status-note">Your completed attempts will appear here when connected.</p>
         </article>
 
         <article class="status-card">
           <h3>Latest Result</h3>
           <div class="status-value" id="latest-result">—</div>
-          <p class="status-note">
-            Your latest submitted examination result will appear here.
-          </p>
+          <p class="status-note">Your latest submitted examination result will appear here.</p>
         </article>
       </div>
     </section>
@@ -680,25 +542,19 @@
       <div class="status-grid">
         <article class="status-card">
           <h3>Student Profile</h3>
-          <div class="status-value" id="profile-status">Not connected</div>
-          <p class="status-note" id="profile-email">
-            Your account information will appear here after sign-in is connected.
-          </p>
+          <div class="status-value" id="profile-status">Connected</div>
+          <p class="status-note" id="profile-email">Loading account information...</p>
         </article>
 
         <article class="status-card">
           <h3>Examination Access</h3>
-          <div class="status-value" id="access-status">Checking setup</div>
-          <p class="status-note">
-            Access to examinations will depend on their publication
-            and any applicable platform rules.
-          </p>
+          <div class="status-value" id="access-status">Not connected</div>
+          <p class="status-note">Access depends on published examinations and applicable platform rules.</p>
         </article>
       </div>
 
       <div class="notice">
-        Subscription information will be displayed here when the
-        platform's subscription system is configured.
+        Subscription information will appear here when the subscription system is configured.
       </div>
     </section>
 
@@ -710,46 +566,115 @@
     </nav>
   </main>
 
+  <div class="container" id="loading-message" style="padding:50px 0;text-align:center">
+    <h2>Checking your account...</h2>
+    <p style="color:#667085;margin-top:8px">Please wait while we verify your sign-in.</p>
+  </div>
+
+  <div class="container" id="error-message" hidden style="padding:30px 0">
+    <div class="notice" id="error-text"></div>
+    <p style="margin-top:15px">
+      <a href="student-login.html?mode=login" style="font-weight:bold;color:#183963">
+        Go to Student Sign In
+      </a>
+    </p>
+  </div>
+
   <footer>
     <div class="container">
-      <a class="footer-home" href="dashboard.html">
-        ← Back to Student Homepage
-      </a>
+      <a class="footer-home" href="dashboard.html">← Back to Student Homepage</a>
       <p>© <span id="year"></span> SAINTIG EXAMS. All rights reserved.</p>
       <p>Learn. Practice. Succeed.</p>
     </div>
   </footer>
 
-  <script>
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+  <script type="module">
+    import { supabase, getCurrentSession, signOutUser } from "./auth.js";
 
-    /*
-      DESIGN STAGE ONLY
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-      Supabase authentication and live database information
-      have not been connected in this file yet.
+    const loadingMessage = document.getElementById("loading-message");
+    const dashboardContent = document.getElementById("dashboard-content");
+    const errorMessage = document.getElementById("error-message");
+    const errorText = document.getElementById("error-text");
+    const signoutButton = document.getElementById("signout-button");
 
-      The next step is to connect this page to the existing
-      Supabase project and verify the signed-in student's session.
-    */
+    function showError(message) {
+      loadingMessage.hidden = true;
+      dashboardContent.hidden = true;
+      errorMessage.hidden = false;
+      errorText.textContent = message;
+    }
 
-    document.querySelectorAll("[data-level]").forEach(function(link) {
-      link.addEventListener("click", function() {
-        const level = link.dataset.level;
+    function showDashboard(session) {
+      const user = session.user;
+      const metadata = user.user_metadata || {};
+      const fullName = metadata.full_name || metadata.name ||
+        (user.email ? user.email.split("@")[0] : "Student");
 
-        document.querySelector("#available-exams .section-title p")
-          .textContent =
-          "Selected level: " + level +
-          ". Available examinations will appear here after connection.";
+      document.getElementById("student-name").textContent = fullName;
+      document.getElementById("welcome-name").textContent = fullName;
+      document.getElementById("student-avatar").textContent =
+        fullName.trim().charAt(0).toUpperCase() || "S";
+
+      document.getElementById("profile-email").textContent =
+        user.email || "Email address unavailable";
+
+      document.getElementById("profile-status").textContent = "Signed in";
+      document.getElementById("access-status").textContent =
+        "Awaiting exam setup";
+
+      loadingMessage.hidden = true;
+      errorMessage.hidden = true;
+      dashboardContent.hidden = false;
+    }
+
+    async function initializeDashboard() {
+      try {
+        const session = await getCurrentSession();
+
+        if (!session) {
+          window.location.replace("student-login.html?mode=login");
+          return;
+        }
+
+        showDashboard(session);
+      } catch (error) {
+        console.error("Dashboard authentication error:", error);
+        showError("We could not verify your session. Please sign in again.");
+      }
+    }
+
+    signoutButton.addEventListener("click", async () => {
+      signoutButton.disabled = true;
+      signoutButton.textContent = "Signing Out...";
+
+      try {
+        await signOutUser();
+      } catch (error) {
+        console.error("Sign-out error:", error);
+        signoutButton.disabled = false;
+        signoutButton.textContent = "Sign Out";
+        alert("Sign-out failed. Please check your internet connection and try again.");
+      }
+    });
+
+    document.querySelectorAll("[data-level]").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("exam-description").textContent =
+          "Selected level: " + link.dataset.level +
+          ". Published examinations will be connected in the next stage.";
       });
     });
 
-    document.getElementById("signout-button").addEventListener("click", function() {
-      alert(
-        "Sign-out will be enabled when Supabase authentication is connected."
-      );
+    // Keep the page responsive if the session expires or the user signs out elsewhere.
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        window.location.replace("student-login.html?mode=login");
+      }
     });
+
+    initializeDashboard();
   </script>
 </body>
 </html>
