@@ -1,1 +1,151 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | SAINTIG EXAMS</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      background: #f4f6fb;
+      font-family: Arial, sans-serif;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 28px;
+      box-sizing: border-box;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+    h1 { color: #142b52; margin-bottom: 8px; }
+    .subtitle { color: #657086; margin-bottom: 24px; }
+    label { display: block; margin: 16px 0 7px; font-weight: bold; }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px;
+      border: 1px solid #ccd3df;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .password-row { display: flex; gap: 8px; }
+    .password-row input { flex: 1; min-width: 0; }
+    .show-btn {
+      border: 1px solid #ccd3df;
+      border-radius: 8px;
+      padding: 0 12px;
+      background: #f5f6fa;
+    }
+    .login-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #142b52;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #message { margin-top: 16px; line-height: 1.5; }
+    .back-link { display: block; margin-top: 20px; text-align: center; }
+  </style>
+</head>
+<body>
+  <main class="login-card">
+    <h1>SAINTIG EXAMS</h1>
+    <p class="subtitle">Administrator Sign In</p>
+
+    <form id="adminLoginForm">
+      <label for="email">Administrator email</label>
+      <input id="email" type="email" autocomplete="username"
+             required placeholder="Enter your email">
+
+      <label for="password">Password</label>
+      <div class="password-row">
+        <input id="password" type="password"
+               autocomplete="current-password"
+               required placeholder="Enter your password">
+        <button class="show-btn" type="button" id="togglePassword">
+          Show
+        </button>
+      </div>
+
+      <button class="login-btn" type="submit" id="loginButton">
+        Sign In
+      </button>
+      <p id="message" role="status" aria-live="polite"></p>
+    </form>
+
+    <a class="back-link" href="index.html">Back to homepage</a>
+  </main>
+
+  <script type="module">
+    import { supabase } from "./auth.js";
+
+    const form = document.getElementById("adminLoginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("message");
+    const loginButton = document.getElementById("loginButton");
+
+    document.getElementById("togglePassword").addEventListener("click", () => {
+      const showing = passwordInput.type === "text";
+      passwordInput.type = showing ? "password" : "text";
+      document.getElementById("togglePassword").textContent =
+        showing ? "Show" : "Hide";
+    });
+
+    async function verifyAdmin(userId) {
+      const { data, error } = await supabase
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (error) throw error;
+      return Boolean(data);
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      message.textContent = "";
+      loginButton.disabled = true;
+      loginButton.textContent = "Verifying...";
+
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: emailInput.value.trim(),
+          password: passwordInput.value
+        });
+
+        if (error) throw error;
+
+        const allowed = await verifyAdmin(data.user.id);
+
+        if (!allowed) {
+          await supabase.auth.signOut();
+          throw new Error("This account is not authorized to access the admin dashboard.");
+        }
+
+        window.location.replace("admin.html");
+      } catch (error) {
+        message.textContent = error.message ||
+          "Sign-in failed. Please try again.";
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "Sign In";
+      }
+    });
+  </script>
+</body>
+</html>
