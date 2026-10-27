@@ -1,1 +1,568 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start Examination | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy: #10264a;
+  --navy-light: #183963;
+  --gold: #e2b84b;
+  --white: #ffffff;
+  --cream: #faf8f2;
+  --muted: #667085;
+  --border: #e5e8ef;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: #243047;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+button, input { font: inherit; }
+
+.container {
+  width: min(960px, 92%);
+  margin: auto;
+}
+
+header {
+  background: var(--navy);
+  color: white;
+  border-bottom: 4px solid var(--gold);
+}
+
+.header-inner {
+  padding: 14px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.brand span { color: var(--gold); }
+
+.tagline {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: #e4e8f0;
+}
+
+.back {
+  color: var(--gold);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.hero {
+  background: var(--navy);
+  color: white;
+  text-align: center;
+  padding: 36px 0 43px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: bold;
+  letter-spacing: 1.6px;
+}
+
+h1 {
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.2;
+  margin: 10px 0;
+}
+
+.hero p {
+  color: #e4e8f0;
+  margin: 0 auto;
+  max-width: 650px;
+}
+
+main { padding: 30px 0 50px; }
+
+.summary {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.summary label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+
+.summary strong {
+  display: block;
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 22px;
+}
+
+h2 {
+  color: var(--navy);
+  font-size: 24px;
+  margin: 0 0 5px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.subject-count {
+  display: inline-block;
+  margin: 12px 0 3px;
+  padding: 5px 11px;
+  background: #fff5d8;
+  color: var(--navy);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.subjects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin: 18px 0 25px;
+}
+
+.subject {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: white;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.subject:hover {
+  border-color: var(--gold);
+  background: #fffdf7;
+}
+
+.subject:has(input:checked) {
+  border: 2px solid var(--gold);
+  background: #fffaf0;
+  padding: 12px;
+}
+
+.subject input {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  accent-color: var(--navy);
+}
+
+.subject span {
+  font-weight: bold;
+  color: var(--navy);
+  font-size: 14px;
+}
+
+.start-button {
+  width: 100%;
+  padding: 17px;
+  background: var(--gold);
+  color: var(--navy);
+  border: 0;
+  border-radius: 9px;
+  font-size: 17px;
+  font-weight: 800;
+  box-shadow: 0 4px 0 #b38d2c;
+  cursor: pointer;
+}
+
+.start-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b38d2c;
+}
+
+.start-button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.status {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  background: #f1f4f8;
+  color: var(--navy);
+  font-size: 14px;
+}
+
+.status:empty { display: none; }
+
+.notice {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 15px;
+}
+
+footer {
+  background: #0b1b35;
+  color: white;
+  text-align: center;
+  padding: 22px 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 520px) {
+  .subjects { grid-template-columns: 1fr; }
+  .card { padding: 17px; }
+  .summary-grid { grid-template-columns: 1fr; }
+  .brand { font-size: 19px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a class="brand" href="dashboard.html">
+      SAINTIG <span>EXAMS</span>
+      <div class="tagline">LEARN. PRACTICE. SUCCEED.</div>
+    </a>
+    <a class="back" href="dashboard.html">← Dashboard</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow">YOUR NEXT STEP</div>
+    <h1>Select Your Examination Subject</h1>
+    <p>Choose a subject for your examination practice. Check your education level before continuing.</p>
+  </div>
+</section>
+
+<main class="container">
+
+  <section class="summary" aria-label="Selected education system">
+    <div class="summary-grid">
+      <div>
+        <label>Country</label>
+        <strong id="countryName">Loading…</strong>
+      </div>
+      <div>
+        <label>Education Level</label>
+        <strong id="levelName">Loading…</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Senior Secondary School Subjects</h2>
+    <p class="muted">
+      Select the subject you want to practise. Only one subject can be selected at a time.
+    </p>
+
+    <div class="subject-count">25 SUBJECTS AVAILABLE</div>
+
+    <form id="subjectForm">
+      <div class="subjects" id="subjectList">
+
+        <label class="subject">
+          <input type="radio" name="subject" value="English Language" required>
+          <span>English Language</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="General Mathematics">
+          <span>General Mathematics</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Civic Education">
+          <span>Civic Education</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Biology">
+          <span>Biology</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Chemistry">
+          <span>Chemistry</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Physics">
+          <span>Physics</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Further Mathematics">
+          <span>Further Mathematics</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Agricultural Science">
+          <span>Agricultural Science</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Computer Studies">
+          <span>Computer Studies</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Digital Technology">
+          <span>Digital Technology</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Geography">
+          <span>Geography</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Food and Nutrition">
+          <span>Food and Nutrition</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Literature in English">
+          <span>Literature in English</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Government">
+          <span>Government</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="History">
+          <span>History</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Christian Religious Studies">
+          <span>Christian Religious Studies</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Islamic Studies">
+          <span>Islamic Studies</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Yoruba">
+          <span>Yoruba</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Igbo">
+          <span>Igbo</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Hausa">
+          <span>Hausa</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="French">
+          <span>French</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Economics">
+          <span>Economics</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Financial Accounting">
+          <span>Financial Accounting</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Commerce">
+          <span>Commerce</span>
+        </label>
+
+        <label class="subject">
+          <input type="radio" name="subject" value="Marketing">
+          <span>Marketing</span>
+        </label>
+
+      </div>
+
+      <button class="start-button" id="startButton" type="submit">
+        START EXAMINATION →
+      </button>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </form>
+
+    <p class="notice">
+      Your examination must be verified by the secure examination service before questions can be opened.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
+</footer>
+
+<script type="module">
+import { getCurrentSession } from "./auth.js";
+
+const params = new URLSearchParams(location.search);
+const country = params.get("country") || "NG";
+const level = params.get("level") || "senior-secondary";
+
+const countryNames = {
+  NG: "Nigeria",
+  US: "United States",
+  UK: "United Kingdom",
+  CA: "Canada"
+};
+
+const levelNames = {
+  NG: {
+    primary: "Primary School",
+    "junior-secondary": "Junior Secondary School",
+    "senior-secondary": "Senior Secondary School"
+  },
+  US: {
+    elementary: "Elementary School",
+    "middle-high": "Middle/High School"
+  },
+  UK: {
+    primary: "Primary Education",
+    secondary: "Secondary Education"
+  },
+  CA: {
+    elementary: "Elementary School",
+    "middle-secondary": "Middle/Secondary School"
+  }
+};
+
+document.getElementById("countryName").textContent =
+  countryNames[country] || "Unknown country";
+
+document.getElementById("levelName").textContent =
+  levelNames[country]?.[level] || "Unknown education level";
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+const form = document.getElementById("subjectForm");
+const status = document.getElementById("status");
+const startButton = document.getElementById("startButton");
+const subjectList = document.getElementById("subjectList");
+
+/* This initial subject bank is for Nigerian Senior Secondary School. */
+if (country !== "NG" || level !== "senior-secondary") {
+  subjectList.innerHTML =
+    '<p class="muted">The 25-subject list is currently configured for Nigerian Senior Secondary School. Please return to the dashboard and choose Nigeria → Senior Secondary School.</p>';
+
+  startButton.disabled = true;
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+  status.textContent = "";
+
+  const selected = document.querySelector(
+    'input[name="subject"]:checked'
+  );
+
+  if (!selected) {
+    status.textContent = "Please select a subject first.";
+    return;
+  }
+
+  if (country !== "NG" || level !== "senior-secondary") {
+    status.textContent =
+      "This subject list is configured for Nigerian Senior Secondary School.";
+    return;
+  }
+
+  startButton.disabled = true;
+  startButton.textContent = "CHECKING YOUR SESSION…";
+
+  try {
+    const result = await getCurrentSession();
+
+    let session = null;
+
+    if (result?.user) {
+      session = result;
+    } else if (result?.data?.session) {
+      session = result.data.session;
+    }
+
+    if (!session) {
+      status.textContent = "Please sign in to continue.";
+      location.href = "student-login.html?mode=login";
+      return;
+    }
+
+    /*
+      The subject selection is ready.
+      Connect this button to the existing start-exam Edge Function
+      using its actual request and response format before launching.
+      Do not create attempts directly in the browser.
+    */
+    status.textContent =
+      "Selected subject: " + selected.value +
+      ". Your sign-in session was checked, but the secure examination-start service must be connected before questions can open.";
+
+  } catch (error) {
+    console.error("Session verification error:", error);
+
+    status.textContent =
+      "We could not verify your session. Please sign in again.";
+  } finally {
+    startButton.disabled = false;
+    startButton.textContent = "START EXAMINATION →";
+  }
+});
+</script>
+
+</body>
+</html>
