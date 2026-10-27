@@ -1,9 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142b52">
   <title>Admin Dashboard | SAINTIG EXAMS</title>
   <link rel="stylesheet" href="style.css">
 
@@ -17,6 +17,7 @@
       --muted: #6d7890;
       --border: #e1e6ef;
       --red: #b42318;
+      --green: #18794e;
     }
 
     * { box-sizing: border-box; }
@@ -28,7 +29,9 @@
       font-family: Arial, sans-serif;
     }
 
-    button, input, select { font: inherit; }
+    button, input, select, textarea { font: inherit; }
+
+    button { cursor: pointer; }
 
     .topbar {
       background: var(--navy);
@@ -41,8 +44,8 @@
       flex-wrap: wrap;
     }
 
-    .brand { font-size: 19px; font-weight: 700; }
-    .topbar small { display: block; margin-top: 5px; opacity: .8; }
+    .brand { font-size: 20px; font-weight: 700; }
+    .topbar small { display: block; margin-top: 5px; opacity: .85; }
 
     .logout {
       border: 1px solid #ffffff70;
@@ -50,7 +53,6 @@
       color: white;
       padding: 10px 14px;
       border-radius: 7px;
-      cursor: pointer;
     }
 
     .layout {
@@ -69,7 +71,7 @@
       font-size: 11px;
       font-weight: bold;
       color: var(--muted);
-      padding: 10px 12px;
+      padding: 12px;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
@@ -84,7 +86,7 @@
       padding: 12px;
       border-radius: 8px;
       margin-bottom: 4px;
-      cursor: pointer;
+      text-decoration: none;
     }
 
     .nav-btn:hover, .nav-btn.active {
@@ -94,9 +96,15 @@
     }
 
     main { padding: 24px; min-width: 0; }
+
     h1 { font-size: 26px; margin: 0 0 8px; }
-    h2 { font-size: 19px; margin: 0 0 16px; }
+    h2 { font-size: 19px; margin: 0 0 15px; }
+    h3 { font-size: 16px; margin: 0 0 12px; }
+
     .muted { color: var(--muted); line-height: 1.5; }
+
+    .section { display: none; }
+    .section.active { display: block; }
 
     .stats {
       display: grid;
@@ -106,36 +114,76 @@
     }
 
     .card {
-      background: var(--white);
+      background: white;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 18px;
       min-width: 0;
+      margin-bottom: 16px;
     }
 
     .stat-name { color: var(--muted); font-size: 13px; }
     .stat-value { font-size: 27px; font-weight: 700; margin: 12px 0 7px; }
     .stat-note { color: var(--muted); font-size: 12px; }
 
-    .section { display: none; }
-    .section.active { display: block; }
-
     .toolbar {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 18px 0;
+      margin: 16px 0;
     }
 
-    .primary, .secondary {
+    .primary, .secondary, .danger {
       border: 0;
       border-radius: 8px;
-      padding: 11px 15px;
-      cursor: pointer;
+      padding: 11px 14px;
     }
 
     .primary { background: var(--blue); color: white; }
     .secondary { background: #e8edf5; color: var(--navy); }
+    .danger { background: #fde9e7; color: var(--red); }
+
+    .primary:disabled, .secondary:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field { min-width: 0; }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 11px;
+      border: 1px solid #ccd4e2;
+      border-radius: 8px;
+      background: white;
+      color: var(--text);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: 2px solid #b7cef5;
+      border-color: var(--blue);
+    }
 
     .notice {
       background: white;
@@ -143,23 +191,72 @@
       border-radius: 10px;
       padding: 15px;
       line-height: 1.6;
-      margin-top: 16px;
+      margin: 16px 0;
     }
 
-    .status { margin-top: 12px; color: var(--muted); font-size: 14px; }
-    .error { color: var(--red); }
+    .status {
+      margin: 12px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
 
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; background: white; }
+    .error { color: var(--red); }
+    .success { color: var(--green); }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
     th, td {
       text-align: left;
       padding: 12px;
       border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 13px;
+    }
+
+    th {
+      color: var(--muted);
+      background: #f8faff;
       white-space: nowrap;
     }
-    th { font-size: 13px; color: var(--muted); }
+
+    td { overflow-wrap: anywhere; }
+    tr:last-child td { border-bottom: 0; }
+
+    td .secondary, td .danger {
+      padding: 7px 9px;
+      margin: 2px;
+      white-space: nowrap;
+    }
+
+    .empty {
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+    }
 
     .mobile-menu { display: none; }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+
+    .check-row input { width: auto; }
 
     @media (max-width: 950px) {
       .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -169,18 +266,28 @@
 
     @media (max-width: 650px) {
       .layout { display: block; }
+
       .sidebar {
         display: none;
         border-right: 0;
         border-bottom: 1px solid var(--border);
       }
+
       .sidebar.open { display: block; }
-      .mobile-menu { display: inline-block; margin-top: 16px; }
-      main { padding: 18px 14px; }
-      .stats { gap: 9px; }
+
+      .mobile-menu {
+        display: inline-block;
+        margin: 0 0 18px;
+      }
+
+      main { padding: 16px 12px; }
+      .stats { gap: 9px; margin: 17px 0; }
       .card { padding: 13px; }
       .stat-value { font-size: 23px; }
       h1 { font-size: 23px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .topbar { padding: 14px; }
     }
   </style>
 </head>
@@ -211,7 +318,7 @@
 
       <div class="nav-label">Other</div>
       <button class="nav-btn" data-section="settings">Platform Settings</button>
-      <a class="nav-btn" href="index.html" style="text-decoration:none">View Public Website</a>
+      <a class="nav-btn" href="index.html">View Public Website</a>
     </aside>
 
     <main>
@@ -221,125 +328,454 @@
 
       <section class="section active" id="overview">
         <h1>Dashboard Overview</h1>
-        <p class="muted">Welcome to the SAINTIG EXAMS administration area.</p>
+        <p class="muted">Manage your examination platform from one place.</p>
 
         <div class="stats">
           <article class="card">
             <div class="stat-name">Registered Users</div>
             <div class="stat-value" id="usersCount">—</div>
-            <div class="stat-note">Students and teachers</div>
+            <div class="stat-note">Not yet connected</div>
           </article>
+
           <article class="card">
             <div class="stat-name">Paid Subscribers</div>
             <div class="stat-value" id="subscribersCount">—</div>
-            <div class="stat-note">Awaiting subscription integration</div>
+            <div class="stat-note">Requires subscription records</div>
           </article>
+
           <article class="card">
             <div class="stat-name">Examinations</div>
             <div class="stat-value" id="examsCount">—</div>
-            <div class="stat-note">Records in the database</div>
+            <div class="stat-note">Database records</div>
           </article>
+
           <article class="card">
             <div class="stat-name">Question Bank</div>
             <div class="stat-value" id="questionsCount">—</div>
-            <div class="stat-note">Questions in the database</div>
+            <div class="stat-note">Database records</div>
           </article>
         </div>
 
         <div class="card">
           <h2>System status</h2>
           <p id="systemStatus" class="status">Verifying administrator access...</p>
-          <p class="muted">
-            Statistics will display actual values only after the required database
-            permissions and analytics sources are connected.
-          </p>
+          <button class="secondary" id="refreshStats" type="button">
+            Refresh statistics
+          </button>
         </div>
 
         <div class="notice">
-          <strong>Important:</strong> This is the initial dashboard interface.
-          User management, subscriptions, visitor tracking and editing forms
-          must be connected to secure backend operations before they become functional.
+          <strong>Security:</strong> This page checks administrator membership.
+          Database Row Level Security must also enforce administrator permissions.
+          Never place a Supabase service-role key in this file.
         </div>
       </section>
 
       <section class="section" id="education">
         <h1>Countries & Education</h1>
-        <p class="muted">Manage countries, education systems, levels and classes.</p>
-        <div class="notice">
-          This section will connect to the existing education tables after their
-          relationships and permissions have been checked.
+        <p class="muted">Manage countries, education levels and classes.</p>
+
+        <div class="card">
+          <h2>Education system / country</h2>
+          <form id="countryForm">
+            <input type="hidden" id="countryId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="countryName">Country name</label>
+                <input id="countryName" required maxlength="100"
+                  placeholder="e.g. Nigeria">
+              </div>
+              <div class="field">
+                <label for="countryActive">Status</label>
+                <select id="countryActive">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save country</button>
+              <button class="secondary" id="cancelCountry" type="button">Clear</button>
+            </div>
+            <p class="status" id="countryStatus" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Education levels</h2>
+          <form id="levelForm">
+            <input type="hidden" id="levelId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="levelCountry">Country</label>
+                <select id="levelCountry" required></select>
+              </div>
+              <div class="field">
+                <label for="levelName">Level name</label>
+                <input id="levelName" required maxlength="120"
+                  placeholder="e.g. Senior Secondary School">
+              </div>
+              <div class="field full">
+                <label for="levelDescription">Description (optional)</label>
+                <textarea id="levelDescription"></textarea>
+              </div>
+              <div class="field">
+                <label for="levelActive">Status</label>
+                <select id="levelActive">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save level</button>
+              <button class="secondary" id="cancelLevel" type="button">Clear</button>
+            </div>
+            <p class="status" id="levelStatus" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Classes</h2>
+          <form id="classForm">
+            <input type="hidden" id="classId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="classLevel">Education level</label>
+                <select id="classLevel" required></select>
+              </div>
+              <div class="field">
+                <label for="className">Class name</label>
+                <input id="className" required maxlength="100"
+                  placeholder="e.g. Primary School">
+              </div>
+              <div class="field">
+                <label for="classActive">Status</label>
+                <select id="classActive">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save class</button>
+              <button class="secondary" id="cancelClass" type="button">Clear</button>
+            </div>
+            <p class="status" id="classStatus" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Countries</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Country</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="countriesTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Education levels</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Level</th><th>Country</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="levelsTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Classes</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Class</th><th>Education level</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="classesTable"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
       <section class="section" id="subjects">
         <h1>Subject Management</h1>
-        <p class="muted">Add and maintain subjects for each education system.</p>
-        <div class="notice">
-          The subject management form will be connected to the existing
-          <code>subjects</code> table in the next implementation step.
+        <p class="muted">Add and maintain the platform's subject catalogue.</p>
+
+        <div class="card">
+          <h2>Add or edit subject</h2>
+          <form id="subjectForm">
+            <input type="hidden" id="subjectId">
+            <div class="form-grid">
+              <div class="field">
+                <label for="subjectName">Subject name</label>
+                <input id="subjectName" required maxlength="120"
+                  placeholder="e.g. Biology">
+              </div>
+              <div class="field">
+                <label for="subjectActive">Status</label>
+                <select id="subjectActive">
+                  <option value="true">Active</option>
+                  <option value="false">Inactive</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="subjectDescription">Description (optional)</label>
+                <textarea id="subjectDescription"></textarea>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save subject</button>
+              <button class="secondary" id="cancelSubject" type="button">Clear</button>
+            </div>
+            <p class="status" id="subjectStatus" aria-live="polite"></p>
+          </form>
         </div>
+
+        <div class="card">
+          <h2>Subject catalogue</h2>
+          <div class="toolbar">
+            <button class="secondary" id="refreshSubjects" type="button">
+              Refresh subjects
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Subject</th><th>Description</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="subjectsTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="notice">
+          Subjects are currently a shared catalogue. Assigning individual subjects
+          to specific countries or levels requires a separate relationship in the database.
+        </p>
       </section>
 
       <section class="section" id="examinations">
         <h1>Examination Management</h1>
-        <p class="muted">Create examinations, configure access and manage publication.</p>
-        <div class="notice">
-          Examination creation must be connected to the existing
-          <code>examinations</code> table and its subject relationships.
+        <p class="muted">Create examinations and manage their access and publication.</p>
+
+        <div class="card">
+          <h2>Create or edit examination</h2>
+          <form id="examForm">
+            <input type="hidden" id="examId">
+            <div class="form-grid">
+              <div class="field full">
+                <label for="examTitle">Examination title</label>
+                <input id="examTitle" required maxlength="200"
+                  placeholder="e.g. SS2 Government Practice Exam">
+              </div>
+              <div class="field">
+                <label for="examSubject">Subject</label>
+                <select id="examSubject" required></select>
+              </div>
+              <div class="field">
+                <label for="examDuration">Duration (minutes)</label>
+                <input id="examDuration" type="number" min="1" max="600"
+                  value="45" required>
+              </div>
+              <div class="field full">
+                <label for="examDescription">Description (optional)</label>
+                <textarea id="examDescription"></textarea>
+              </div>
+              <div class="field">
+                <label for="examAccess">Access type</label>
+                <select id="examAccess">
+                  <option value="free">Free</option>
+                  <option value="paid">Paid</option>
+                </select>
+              </div>
+              <div class="field" id="examPriceField">
+                <label for="examPrice">Price</label>
+                <input id="examPrice" type="number" min="0" step="0.01" value="0">
+              </div>
+            </div>
+            <label class="check-row">
+              <input type="checkbox" id="examPublished">
+              Publish examination
+            </label>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save examination</button>
+              <button class="secondary" id="cancelExam" type="button">Clear</button>
+            </div>
+            <p class="status" id="examStatus" aria-live="polite"></p>
+          </form>
         </div>
+
+        <div class="card">
+          <h2>Examinations</h2>
+          <div class="toolbar">
+            <button class="secondary" id="refreshExams" type="button">
+              Refresh examinations
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th><th>Subject</th><th>Duration</th>
+                  <th>Access</th><th>Published</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="examsTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="notice">
+          This form uses the current examination fields. Country, education level
+          and class assignment must be added to the schema before those filters can
+          be saved here. Publishing should also be protected by backend checks
+          requiring the minimum number of questions.
+        </p>
       </section>
 
       <section class="section" id="questions">
         <h1>Question Bank</h1>
         <p class="muted">Create and maintain multiple-choice questions.</p>
-        <div class="notice">
-          The question form will support question text, options A–D, correct answer,
-          explanation, marks and image/diagram uploads using secured storage.
+
+        <div class="card">
+          <h2>Add or edit question</h2>
+          <form id="questionForm">
+            <input type="hidden" id="questionId">
+            <div class="form-grid">
+              <div class="field full">
+                <label for="questionExam">Examination</label>
+                <select id="questionExam" required></select>
+              </div>
+              <div class="field full">
+                <label for="questionText">Question text</label>
+                <textarea id="questionText" required></textarea>
+              </div>
+              <div class="field">
+                <label for="optionA">Option A</label>
+                <input id="optionA" required>
+              </div>
+              <div class="field">
+                <label for="optionB">Option B</label>
+                <input id="optionB" required>
+              </div>
+              <div class="field">
+                <label for="optionC">Option C</label>
+                <input id="optionC" required>
+              </div>
+              <div class="field">
+                <label for="optionD">Option D</label>
+                <input id="optionD" required>
+              </div>
+              <div class="field">
+                <label for="correctOption">Correct option</label>
+                <select id="correctOption" required>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="questionMarks">Marks</label>
+                <input id="questionMarks" type="number" min="1" value="1" required>
+              </div>
+              <div class="field">
+                <label for="questionOrder">Question order</label>
+                <input id="questionOrder" type="number" min="1" value="1" required>
+              </div>
+              <div class="field full">
+                <label for="questionExplanation">Explanation (optional)</label>
+                <textarea id="questionExplanation"></textarea>
+              </div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" type="submit">Save question</button>
+              <button class="secondary" id="cancelQuestion" type="button">Clear</button>
+            </div>
+            <p class="status" id="questionStatus" aria-live="polite"></p>
+          </form>
         </div>
+
+        <div class="card">
+          <h2>Existing questions</h2>
+          <div class="field">
+            <label for="questionFilter">Filter by examination</label>
+            <select id="questionFilter">
+              <option value="">All examinations</option>
+            </select>
+          </div>
+          <div class="toolbar">
+            <button class="secondary" id="refreshQuestions" type="button">
+              Refresh questions
+            </button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Question</th><th>Examination</th><th>Correct option</th>
+                  <th>Marks</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="questionsTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <p class="notice">
+          Correct answers are displayed only inside the administrator area.
+          The public exam interface must never receive correct answers before submission.
+        </p>
       </section>
 
       <section class="section" id="users">
         <h1>Students & Teachers</h1>
-        <p class="muted">Review registered accounts and account activity.</p>
+        <p class="muted">Registered accounts and account activity.</p>
         <div class="notice">
-          User listing and account actions will be implemented using secure,
-          authorized backend operations.
+          User listing and account administration require a secure backend function.
+          Do not expose the Supabase service-role key in this page.
         </div>
       </section>
 
       <section class="section" id="subscriptions">
         <h1>Paid Subscribers</h1>
-        <p class="muted">Review subscription plans, payment status and expiry.</p>
+        <p class="muted">Subscription plans, payment status and expiry.</p>
         <div class="notice">
-          A subscription data source and verified payment records are required
-          before real subscriber figures can be displayed.
+          Subscription management is not connected yet. A subscription table and
+          server-verified payment records are required before actual subscriber
+          figures or account entitlements can be displayed.
         </div>
       </section>
 
       <section class="section" id="visitors">
         <h1>Visitor Analytics</h1>
-        <p class="muted">Review daily, weekly, monthly and yearly visitor activity.</p>
+        <p class="muted">Daily, weekly, monthly and yearly visitor activity.</p>
         <div class="notice">
-          Visitor counts require a visitor-tracking system. Registered users and
-          examination attempts are not a substitute for visitor analytics.
+          Visitor analytics are not connected yet. A privacy-conscious tracking
+          source is required to measure visits and unique visitors accurately.
         </div>
       </section>
 
       <section class="section" id="results">
         <h1>Results & Attempts</h1>
-        <p class="muted">Review examination activity and student performance.</p>
+        <p class="muted">Examination activity and student performance.</p>
         <div class="notice">
-          Result access will be connected to the existing examination-attempt
-          tables after permissions and scoring rules are verified.
+          Results and attempts are not connected to this dashboard yet. The
+          existing attempt tables and scoring rules must be verified before
+          showing student records.
         </div>
       </section>
 
       <section class="section" id="settings">
         <h1>Platform Settings</h1>
-        <p class="muted">Manage platform-wide access and configuration.</p>
+        <p class="muted">Platform-wide configuration.</p>
         <div class="notice">
-          Settings that affect security, registration or examination access must
-          be enforced on the backend, not just in this page.
+          Security-sensitive settings must be enforced on the backend. This page
+          does not provide an unsafe shortcut for changing administrator access.
         </div>
       </section>
     </main>
@@ -348,8 +784,63 @@
   <script type="module">
     import { supabase, getCurrentSession } from "./auth.js";
 
-    const status = document.getElementById("systemStatus");
+    const $ = id => document.getElementById(id);
+    const status = $("systemStatus");
+
     let activeUser = null;
+    let countries = [];
+    let levels = [];
+    let classes = [];
+    let subjects = [];
+    let exams = [];
+    let questions = [];
+
+    function setStatus(id, message, type = "") {
+      const element = $(id);
+      element.textContent = message;
+      element.classList.remove("error", "success");
+      if (type) element.classList.add(type);
+    }
+
+    function makeCell(value) {
+      const td = document.createElement("td");
+      td.textContent = value == null || value === "" ? "—" : String(value);
+      return td;
+    }
+
+    function makeButton(label, className, handler) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = className;
+      button.textContent = label;
+      button.addEventListener("click", handler);
+      return button;
+    }
+
+    function addActionCell(row, actions) {
+      const td = document.createElement("td");
+      for (const action of actions) {
+        td.appendChild(makeButton(action.label, action.className, action.handler));
+      }
+      row.appendChild(td);
+    }
+
+    function renderRows(id, rows, columnCount) {
+      const tbody = $(id);
+      tbody.replaceChildren();
+
+      if (!rows.length) {
+        const tr = document.createElement("tr");
+        const td = makeCell("No records found.");
+        td.colSpan = columnCount;
+        td.className = "empty";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      rows.forEach(row => tbody.appendChild(row));
+    }
 
     async function verifyAdministrator() {
       const session = await getCurrentSession();
@@ -379,32 +870,811 @@
         return false;
       }
 
-      status.textContent = "Administrator access verified. Dashboard connected.";
+      status.textContent = "Administrator access verified.";
+      status.classList.remove("error");
+      status.classList.add("success");
       return true;
     }
 
-    async function loadBasicStatistics() {
-      const requests = [
-        ["examsCount", "examinations"],
-        ["questionsCount", "exam_questions"]
-      ];
+    async function countTable(table, elementId) {
+      const { count, error } = await supabase
+        .from(table)
+        .select("*", { count: "exact", head: true });
 
-      for (const [elementId, table] of requests) {
+      $(elementId).textContent =
+        !error && count !== null ? count.toLocaleString() : "—";
+    }
+
+    async function loadStatistics() {
+      await Promise.all([
+        countTable("examinations", "examsCount"),
+        countTable("exam_questions", "questionsCount")
+      ]);
+
+      $("usersCount").textContent = "—";
+      $("subscribersCount").textContent = "—";
+    }
+
+    function resetForm(formId, hiddenId) {
+      $(formId).reset();
+      $(hiddenId).value = "";
+    }
+
+    function fillSelect(selectId, items, getId, getLabel, placeholder) {
+      const select = $(selectId);
+      const previous = select.value;
+      select.replaceChildren();
+
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      items.forEach(item => {
+        const option = document.createElement("option");
+        option.value = getId(item);
+        option.textContent = getLabel(item);
+        select.appendChild(option);
+      });
+
+      if ([...select.options].some(option => option.value === previous)) {
+        select.value = previous;
+      }
+    }
+
+    function countryName(id) {
+      return countries.find(item => String(item.id) === String(id))?.country_name || "—";
+    }
+
+    function levelName(id) {
+      return levels.find(item => String(item.id) === String(id))?.level_name || "—";
+    }
+
+    function subjectName(id) {
+      return subjects.find(item => String(item.id) === String(id))?.name || "—";
+    }
+
+    function examName(id) {
+      return exams.find(item => String(item.id) === String(id))?.title || "—";
+    }
+
+    async function loadCountries() {
+      const { data, error } = await supabase
+        .from("education_systems")
+        .select("id,country_name,is_active,created_at")
+        .order("country_name");
+
+      if (error) throw error;
+      countries = data || [];
+
+      fillSelect("levelCountry", countries,
+        item => item.id, item => item.country_name, "Select a country");
+
+      renderRows("countriesTable", countries.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.country_name),
+          makeCell(item.is_active ? "Active" : "Inactive")
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("countryId").value = item.id;
+              $("countryName").value = item.country_name;
+              $("countryActive").value = String(item.is_active);
+              $("countryName").focus();
+            }
+          },
+          {
+            label: item.is_active ? "Deactivate" : "Activate",
+            className: "secondary",
+            handler: () => saveCountryStatus(item)
+          }
+        ]);
+
+        return tr;
+      }), 3);
+    }
+
+    async function saveCountryStatus(item) {
+      const { error } = await supabase
+        .from("education_systems")
+        .update({ is_active: !item.is_active })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not change country status: " + error.message);
+        return;
+      }
+
+      await reloadEducation();
+    }
+
+    $("countryForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("countryStatus", "Saving...");
+
+      const id = $("countryId").value;
+      const record = {
+        country_name: $("countryName").value.trim(),
+        is_active: $("countryActive").value === "true"
+      };
+
+      if (!record.country_name) {
+        setStatus("countryStatus", "Enter a country name.", "error");
+        return;
+      }
+
+      const request = id
+        ? supabase.from("education_systems").update(record).eq("id", id)
+        : supabase.from("education_systems").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("countryStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("countryForm", "countryId");
+      setStatus("countryStatus", "Country saved.", "success");
+      await reloadEducation();
+    });
+
+    $("cancelCountry").addEventListener("click", () => {
+      resetForm("countryForm", "countryId");
+      setStatus("countryStatus", "");
+    });
+
+    async function loadLevels() {
+      const { data, error } = await supabase
+        .from("education_levels")
+        .select("id,education_system_id,level_name,description,is_active,created_at")
+        .order("level_name");
+
+      if (error) throw error;
+      levels = data || [];
+
+      fillSelect("classLevel", levels,
+        item => item.id,
+        item => `${item.level_name} — ${countryName(item.education_system_id)}`,
+        "Select an education level");
+
+      renderRows("levelsTable", levels.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.level_name),
+          makeCell(countryName(item.education_system_id)),
+          makeCell(item.is_active ? "Active" : "Inactive")
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("levelId").value = item.id;
+              $("levelCountry").value = String(item.education_system_id);
+              $("levelName").value = item.level_name;
+              $("levelDescription").value = item.description || "";
+              $("levelActive").value = String(item.is_active);
+              $("levelName").focus();
+            }
+          },
+          {
+            label: item.is_active ? "Deactivate" : "Activate",
+            className: "secondary",
+            handler: () => saveLevelStatus(item)
+          }
+        ]);
+
+        return tr;
+      }), 4);
+    }
+
+    async function saveLevelStatus(item) {
+      const { error } = await supabase
+        .from("education_levels")
+        .update({ is_active: !item.is_active })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not change level status: " + error.message);
+        return;
+      }
+
+      await reloadEducation();
+    }
+
+    $("levelForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("levelStatus", "Saving...");
+
+      const id = $("levelId").value;
+      const record = {
+        education_system_id: Number($("levelCountry").value),
+        level_name: $("levelName").value.trim(),
+        description: $("levelDescription").value.trim() || null,
+        is_active: $("levelActive").value === "true"
+      };
+
+      if (!record.education_system_id || !record.level_name) {
+        setStatus("levelStatus", "Choose a country and enter a level name.", "error");
+        return;
+      }
+
+      const request = id
+        ? supabase.from("education_levels").update(record).eq("id", id)
+        : supabase.from("education_levels").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("levelStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("levelForm", "levelId");
+      setStatus("levelStatus", "Education level saved.", "success");
+      await reloadEducation();
+    });
+
+    $("cancelLevel").addEventListener("click", () => {
+      resetForm("levelForm", "levelId");
+      setStatus("levelStatus", "");
+    });
+
+    async function loadClasses() {
+      const { data, error } = await supabase
+        .from("education_classes")
+        .select("id,education_level_id,class_name,is_active,created_at")
+        .order("class_name");
+
+      if (error) throw error;
+      classes = data || [];
+
+      renderRows("classesTable", classes.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.class_name),
+          makeCell(levelName(item.education_level_id)),
+          makeCell(item.is_active ? "Active" : "Inactive")
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("classId").value = item.id;
+              $("classLevel").value = String(item.education_level_id);
+              $("className").value = item.class_name;
+              $("classActive").value = String(item.is_active);
+              $("className").focus();
+            }
+          },
+          {
+            label: item.is_active ? "Deactivate" : "Activate",
+            className: "secondary",
+            handler: () => saveClassStatus(item)
+          }
+        ]);
+
+        return tr;
+      }), 4);
+    }
+
+    async function saveClassStatus(item) {
+      const { error } = await supabase
+        .from("education_classes")
+        .update({ is_active: !item.is_active })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not change class status: " + error.message);
+        return;
+      }
+
+      await reloadEducation();
+    }
+
+    $("classForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("classStatus", "Saving...");
+
+      const id = $("classId").value;
+      const record = {
+        education_level_id: Number($("classLevel").value),
+        class_name: $("className").value.trim(),
+        is_active: $("classActive").value === "true"
+      };
+
+      if (!record.education_level_id || !record.class_name) {
+        setStatus("classStatus", "Choose a level and enter a class name.", "error");
+        return;
+      }
+
+      const request = id
+        ? supabase.from("education_classes").update(record).eq("id", id)
+        : supabase.from("education_classes").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("classStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("classForm", "classId");
+      setStatus("classStatus", "Class saved.", "success");
+      await reloadEducation();
+    });
+
+    $("cancelClass").addEventListener("click", () => {
+      resetForm("classForm", "classId");
+      setStatus("classStatus", "");
+    });
+
+    async function reloadEducation() {
+      await loadCountries();
+      await loadLevels();
+      await loadClasses();
+    }
+
+    async function loadSubjects() {
+      const { data, error } = await supabase
+        .from("subjects")
+        .select("id,name,description,is_active,created_at")
+        .order("name");
+
+      if (error) throw error;
+      subjects = data || [];
+
+      fillSelect("examSubject", subjects.filter(item => item.is_active),
+        item => item.id, item => item.name, "Select a subject");
+
+      renderRows("subjectsTable", subjects.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.name),
+          makeCell(item.description),
+          makeCell(item.is_active ? "Active" : "Inactive")
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("subjectId").value = item.id;
+              $("subjectName").value = item.name;
+              $("subjectDescription").value = item.description || "";
+              $("subjectActive").value = String(item.is_active);
+              $("subjectName").focus();
+            }
+          },
+          {
+            label: item.is_active ? "Deactivate" : "Activate",
+            className: "secondary",
+            handler: () => saveSubjectStatus(item)
+          }
+        ]);
+
+        return tr;
+      }), 4);
+    }
+
+    async function saveSubjectStatus(item) {
+      const { error } = await supabase
+        .from("subjects")
+        .update({ is_active: !item.is_active })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not change subject status: " + error.message);
+        return;
+      }
+
+      await loadSubjects();
+    }
+
+    $("subjectForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("subjectStatus", "Saving...");
+
+      const id = $("subjectId").value;
+      const record = {
+        name: $("subjectName").value.trim(),
+        description: $("subjectDescription").value.trim() || null,
+        is_active: $("subjectActive").value === "true"
+      };
+
+      if (!record.name) {
+        setStatus("subjectStatus", "Enter a subject name.", "error");
+        return;
+      }
+
+      const request = id
+        ? supabase.from("subjects").update(record).eq("id", id)
+        : supabase.from("subjects").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("subjectStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("subjectForm", "subjectId");
+      setStatus("subjectStatus", "Subject saved.", "success");
+      await loadSubjects();
+      await loadExams();
+    });
+
+    $("cancelSubject").addEventListener("click", () => {
+      resetForm("subjectForm", "subjectId");
+      setStatus("subjectStatus", "");
+    });
+
+    $("refreshSubjects").addEventListener("click", async () => {
+      try {
+        await loadSubjects();
+        setStatus("subjectStatus", "Subjects refreshed.", "success");
+      } catch (error) {
+        setStatus("subjectStatus", error.message, "error");
+      }
+    });
+
+    function updatePriceVisibility() {
+      const paid = $("examAccess").value === "paid";
+      $("examPriceField").style.display = paid ? "" : "none";
+      if (!paid) $("examPrice").value = "0";
+    }
+
+    $("examAccess").addEventListener("change", updatePriceVisibility);
+
+    async function loadExams() {
+      const { data, error } = await supabase
+        .from("examinations")
+        .select("id,subject_id,title,description,duration_minutes,access_type,price,is_published,created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      exams = data || [];
+
+      fillSelect("questionExam", exams,
+        item => item.id, item => item.title, "Select an examination");
+
+      fillSelect("questionFilter", exams,
+        item => item.id, item => item.title, "All examinations");
+
+      renderRows("examsTable", exams.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.title),
+          makeCell(subjectName(item.subject_id)),
+          makeCell(`${item.duration_minutes} min`),
+          makeCell(item.access_type),
+          makeCell(item.is_published ? "Yes" : "No")
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("examId").value = item.id;
+              $("examTitle").value = item.title;
+              $("examSubject").value = String(item.subject_id);
+              $("examDuration").value = item.duration_minutes;
+              $("examDescription").value = item.description || "";
+              $("examAccess").value = item.access_type || "free";
+              $("examPrice").value = item.price ?? 0;
+              $("examPublished").checked = !!item.is_published;
+              updatePriceVisibility();
+              $("examTitle").focus();
+            }
+          },
+          {
+            label: item.is_published ? "Unpublish" : "Publish",
+            className: "secondary",
+            handler: () => changeExamPublication(item)
+          }
+        ]);
+
+        return tr;
+      }), 6);
+
+      await loadQuestions();
+    }
+
+    async function changeExamPublication(item) {
+      const publish = !item.is_published;
+
+      if (publish) {
         const { count, error } = await supabase
-          .from(table)
-          .select("*", { count: "exact", head: true });
+          .from("exam_questions")
+          .select("*", { count: "exact", head: true })
+          .eq("examination_id", item.id);
 
-        if (!error && count !== null) {
-          document.getElementById(elementId).textContent = count.toLocaleString();
-        } else {
-          document.getElementById(elementId).textContent = "—";
+        if (error) {
+          alert("Could not verify the question count: " + error.message);
+          return;
+        }
+
+        if (!count) {
+          alert("This examination has no questions. Add questions before publishing.");
+          return;
+        }
+
+        if (!confirm(`Publish "${item.title}" with ${count} question(s)?`)) return;
+      } else if (!confirm(`Unpublish "${item.title}"?`)) {
+        return;
+      }
+
+      const { error } = await supabase
+        .from("examinations")
+        .update({ is_published: publish })
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not change publication status: " + error.message);
+        return;
+      }
+
+      await loadExams();
+      await loadStatistics();
+    }
+
+    $("examForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("examStatus", "Saving...");
+
+      const id = $("examId").value;
+      const access = $("examAccess").value;
+      const duration = Number($("examDuration").value);
+      const price = Number($("examPrice").value);
+
+      if (!Number.isInteger(duration) || duration < 1 || duration > 600) {
+        setStatus("examStatus", "Duration must be between 1 and 600 minutes.", "error");
+        return;
+      }
+
+      if (!Number.isFinite(price) || price < 0) {
+        setStatus("examStatus", "Enter a valid price.", "error");
+        return;
+      }
+
+      const record = {
+        title: $("examTitle").value.trim(),
+        subject_id: Number($("examSubject").value),
+        description: $("examDescription").value.trim() || null,
+        duration_minutes: duration,
+        access_type: access,
+        price: access === "paid" ? price : 0,
+        is_published: $("examPublished").checked
+      };
+
+      if (!record.title || !record.subject_id) {
+        setStatus("examStatus", "Enter a title and select a subject.", "error");
+        return;
+      }
+
+      if (record.is_published && !id) {
+        setStatus("examStatus",
+          "Save this examination as unpublished first, add its questions, then publish it.",
+          "error");
+        return;
+      }
+
+      if (record.is_published && id) {
+        const { count, error } = await supabase
+          .from("exam_questions")
+          .select("*", { count: "exact", head: true })
+          .eq("examination_id", id);
+
+        if (error) {
+          setStatus("examStatus", error.message, "error");
+          return;
+        }
+
+        if (!count) {
+          setStatus("examStatus",
+            "Add at least one question before publishing this examination.",
+            "error");
+          return;
         }
       }
 
-      // User and subscription statistics are intentionally not guessed.
-      document.getElementById("usersCount").textContent = "—";
-      document.getElementById("subscribersCount").textContent = "—";
+      const request = id
+        ? supabase.from("examinations").update(record).eq("id", id)
+        : supabase.from("examinations").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("examStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("examForm", "examId");
+      $("examDuration").value = "45";
+      $("examPrice").value = "0";
+      updatePriceVisibility();
+      setStatus("examStatus", "Examination saved.", "success");
+      await loadExams();
+      await loadStatistics();
+    });
+
+    $("cancelExam").addEventListener("click", () => {
+      resetForm("examForm", "examId");
+      $("examDuration").value = "45";
+      $("examPrice").value = "0";
+      updatePriceVisibility();
+      setStatus("examStatus", "");
+    });
+
+    $("refreshExams").addEventListener("click", async () => {
+      try {
+        await loadExams();
+        setStatus("examStatus", "Examinations refreshed.", "success");
+      } catch (error) {
+        setStatus("examStatus", error.message, "error");
+      }
+    });
+
+    async function loadQuestions() {
+      const examId = $("questionFilter").value;
+
+      let query = supabase
+        .from("exam_questions")
+        .select("id,examination_id,question_text,option_a,option_b,option_c,option_d,correct_option,explanation,marks,question_order,image_path,created_at")
+        .order("question_order", { ascending: true });
+
+      if (examId) query = query.eq("examination_id", Number(examId));
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      questions = data || [];
+
+      renderRows("questionsTable", questions.map(item => {
+        const tr = document.createElement("tr");
+        tr.append(
+          makeCell(item.question_text),
+          makeCell(examName(item.examination_id)),
+          makeCell(item.correct_option),
+          makeCell(item.marks)
+        );
+
+        addActionCell(tr, [
+          {
+            label: "Edit",
+            className: "secondary",
+            handler: () => {
+              $("questionId").value = item.id;
+              $("questionExam").value = String(item.examination_id);
+              $("questionText").value = item.question_text || "";
+              $("optionA").value = item.option_a || "";
+              $("optionB").value = item.option_b || "";
+              $("optionC").value = item.option_c || "";
+              $("optionD").value = item.option_d || "";
+              $("correctOption").value = item.correct_option;
+              $("questionMarks").value = item.marks ?? 1;
+              $("questionOrder").value = item.question_order ?? 1;
+              $("questionExplanation").value = item.explanation || "";
+              $("questionText").focus();
+            }
+          },
+          {
+            label: "Delete",
+            className: "danger",
+            handler: () => deleteQuestion(item)
+          }
+        ]);
+
+        return tr;
+      }), 5);
     }
+
+    async function deleteQuestion(item) {
+      if (!confirm("Delete this question permanently?")) return;
+
+      const { error } = await supabase
+        .from("exam_questions")
+        .delete()
+        .eq("id", item.id);
+
+      if (error) {
+        alert("Could not delete question: " + error.message);
+        return;
+      }
+
+      await loadQuestions();
+      await loadStatistics();
+    }
+
+    $("questionForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      setStatus("questionStatus", "Saving...");
+
+      const id = $("questionId").value;
+      const marks = Number($("questionMarks").value);
+      const order = Number($("questionOrder").value);
+      const examId = Number($("questionExam").value);
+
+      if (!examId || !Number.isInteger(marks) || marks < 1 ||
+          !Number.isInteger(order) || order < 1) {
+        setStatus("questionStatus",
+          "Select an examination and enter valid positive marks and question order.",
+          "error");
+        return;
+      }
+
+      const record = {
+        examination_id: examId,
+        question_text: $("questionText").value.trim(),
+        option_a: $("optionA").value.trim(),
+        option_b: $("optionB").value.trim(),
+        option_c: $("optionC").value.trim(),
+        option_d: $("optionD").value.trim(),
+        correct_option: $("correctOption").value,
+        explanation: $("questionExplanation").value.trim() || null,
+        marks,
+        question_order: order
+      };
+
+      if (!record.question_text || !record.option_a || !record.option_b ||
+          !record.option_c || !record.option_d) {
+        setStatus("questionStatus", "Complete the question and all four options.", "error");
+        return;
+      }
+
+      const request = id
+        ? supabase.from("exam_questions").update(record).eq("id", id)
+        : supabase.from("exam_questions").insert(record);
+
+      const { error } = await request;
+
+      if (error) {
+        setStatus("questionStatus", error.message, "error");
+        return;
+      }
+
+      resetForm("questionForm", "questionId");
+      $("questionMarks").value = "1";
+      $("questionOrder").value = String(questions.length + 1);
+      setStatus("questionStatus", "Question saved.", "success");
+      await loadQuestions();
+      await loadStatistics();
+    });
+
+    $("cancelQuestion").addEventListener("click", () => {
+      resetForm("questionForm", "questionId");
+      $("questionMarks").value = "1";
+      $("questionOrder").value = String(questions.length + 1);
+      setStatus("questionStatus", "");
+    });
+
+    $("questionFilter").addEventListener("change", async () => {
+      try {
+        await loadQuestions();
+      } catch (error) {
+        setStatus("questionStatus", error.message, "error");
+      }
+    });
+
+    $("refreshQuestions").addEventListener("click", async () => {
+      try {
+        await loadQuestions();
+        setStatus("questionStatus", "Questions refreshed.", "success");
+      } catch (error) {
+        setStatus("questionStatus", error.message, "error");
+      }
+    });
 
     document.querySelectorAll(".nav-btn[data-section]").forEach(button => {
       button.addEventListener("click", () => {
@@ -416,38 +1686,68 @@
 
         button.classList.add("active");
 
-        const section = document.getElementById(button.dataset.section);
+        const section = $(button.dataset.section);
         if (section) section.classList.add("active");
 
-        document.getElementById("sidebar").classList.remove("open");
+        $("sidebar").classList.remove("open");
       });
     });
 
-    document.getElementById("menuBtn").addEventListener("click", () => {
-      document.getElementById("sidebar").classList.toggle("open");
+    $("menuBtn").addEventListener("click", () => {
+      $("sidebar").classList.toggle("open");
     });
 
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
+    $("logoutBtn").addEventListener("click", async () => {
+      $("logoutBtn").disabled = true;
+
       const { error } = await supabase.auth.signOut();
 
       if (error) {
+        $("logoutBtn").disabled = false;
         status.textContent = "Sign-out failed. Please try again.";
+        status.classList.add("error");
         return;
       }
 
       window.location.replace("admin-login.html");
     });
 
-    try {
-      const authorized = await verifyAdministrator();
-
-      if (authorized) {
-        await loadBasicStatistics();
+    $("refreshStats").addEventListener("click", async () => {
+      try {
+        await loadStatistics();
+        status.textContent = "Statistics refreshed.";
+        status.classList.remove("error");
+        status.classList.add("success");
+      } catch (error) {
+        status.textContent = error.message || "Unable to refresh statistics.";
+        status.classList.add("error");
       }
-    } catch (error) {
-      status.textContent = error.message || "Unable to verify administrator access.";
-      status.classList.add("error");
+    });
+
+    async function initializeDashboard() {
+      const authorized = await verifyAdministrator();
+      if (!authorized) return;
+
+      try {
+        await loadStatistics();
+        await reloadEducation();
+        await loadSubjects();
+        await loadExams();
+        updatePriceVisibility();
+
+        status.textContent = "Administrator verified. Dashboard data loaded.";
+        status.classList.remove("error");
+        status.classList.add("success");
+      } catch (error) {
+        console.error("Dashboard initialization failed:", error);
+        status.textContent =
+          "Administrator verified, but some data could not load. Check table permissions and the error details in the browser console.";
+        status.classList.remove("success");
+        status.classList.add("error");
+      }
     }
+
+    initializeDashboard();
   </script>
 </body>
 </html>
