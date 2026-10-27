@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -229,9 +228,20 @@ h2 {
   background: #f1f4f8;
   color: var(--navy);
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 .status:empty { display: none; }
+
+.status.error {
+  background: #fff0f0;
+  color: #9b1c1c;
+}
+
+.status.success {
+  background: #eaf8ef;
+  color: #176534;
+}
 
 .notice {
   font-size: 12px;
@@ -302,130 +312,31 @@ footer {
     <form id="subjectForm">
       <div class="subjects" id="subjectList">
 
-        <label class="subject">
-          <input type="radio" name="subject" value="English Language" required>
-          <span>English Language</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="General Mathematics">
-          <span>General Mathematics</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Civic Education">
-          <span>Civic Education</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Biology">
-          <span>Biology</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Chemistry">
-          <span>Chemistry</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Physics">
-          <span>Physics</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Further Mathematics">
-          <span>Further Mathematics</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Agricultural Science">
-          <span>Agricultural Science</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Computer Studies">
-          <span>Computer Studies</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Digital Technology">
-          <span>Digital Technology</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Geography">
-          <span>Geography</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Food and Nutrition">
-          <span>Food and Nutrition</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Literature in English">
-          <span>Literature in English</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Government">
-          <span>Government</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="History">
-          <span>History</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Christian Religious Studies">
-          <span>Christian Religious Studies</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Islamic Studies">
-          <span>Islamic Studies</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Yoruba">
-          <span>Yoruba</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Igbo">
-          <span>Igbo</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Hausa">
-          <span>Hausa</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="French">
-          <span>French</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Economics">
-          <span>Economics</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Financial Accounting">
-          <span>Financial Accounting</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Commerce">
-          <span>Commerce</span>
-        </label>
-
-        <label class="subject">
-          <input type="radio" name="subject" value="Marketing">
-          <span>Marketing</span>
-        </label>
+        <label class="subject"><input type="radio" name="subject" value="English Language" required><span>English Language</span></label>
+        <label class="subject"><input type="radio" name="subject" value="General Mathematics"><span>General Mathematics</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Civic Education"><span>Civic Education</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Biology"><span>Biology</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Chemistry"><span>Chemistry</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Physics"><span>Physics</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Further Mathematics"><span>Further Mathematics</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Agricultural Science"><span>Agricultural Science</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Computer Studies"><span>Computer Studies</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Digital Technology"><span>Digital Technology</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Geography"><span>Geography</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Food and Nutrition"><span>Food and Nutrition</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Literature in English"><span>Literature in English</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Government"><span>Government</span></label>
+        <label class="subject"><input type="radio" name="subject" value="History"><span>History</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Christian Religious Studies"><span>Christian Religious Studies</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Islamic Studies"><span>Islamic Studies</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Yoruba"><span>Yoruba</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Igbo"><span>Igbo</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Hausa"><span>Hausa</span></label>
+        <label class="subject"><input type="radio" name="subject" value="French"><span>French</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Economics"><span>Economics</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Financial Accounting"><span>Financial Accounting</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Commerce"><span>Commerce</span></label>
+        <label class="subject"><input type="radio" name="subject" value="Marketing"><span>Marketing</span></label>
 
       </div>
 
@@ -437,7 +348,7 @@ footer {
     </form>
 
     <p class="notice">
-      Your examination must be verified by the secure examination service before questions can be opened.
+      The secure examination service verifies your examination before opening the questions.
     </p>
   </section>
 
@@ -448,7 +359,7 @@ footer {
 </footer>
 
 <script type="module">
-import { getCurrentSession } from "./auth.js";
+import { supabase, getCurrentSession } from "./auth.js";
 
 const params = new URLSearchParams(location.search);
 const country = params.get("country") || "NG";
@@ -481,82 +392,274 @@ const levelNames = {
   }
 };
 
-document.getElementById("countryName").textContent =
-  countryNames[country] || "Unknown country";
-
-document.getElementById("levelName").textContent =
-  levelNames[country]?.[level] || "Unknown education level";
-
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-
 const form = document.getElementById("subjectForm");
-const status = document.getElementById("status");
+const statusBox = document.getElementById("status");
 const startButton = document.getElementById("startButton");
 const subjectList = document.getElementById("subjectList");
 
-/* This initial subject bank is for Nigerian Senior Secondary School. */
+document.getElementById("countryName").textContent =
+  countryNames[country] || country;
+
+document.getElementById("levelName").textContent =
+  levelNames[country]?.[level] || level;
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+function showStatus(message, type = "") {
+  statusBox.textContent = message;
+  statusBox.className = "status" + (type ? " " + type : "");
+}
+
+function normalize(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]/g, "");
+}
+
+function getSessionObject(result) {
+  if (result?.data?.session) return result.data.session;
+  if (result?.session) return result.session;
+
+  // Some auth helpers return the session directly.
+  if (result?.access_token && result?.user) return result;
+
+  return null;
+}
+
+function isPublished(row) {
+  return row?.is_published === true;
+}
+
+function getSubjectName(row) {
+  return row?.name ??
+         row?.subject_name ??
+         row?.title ??
+         row?.subject ??
+         "";
+}
+
+function getExaminationSubjectId(row) {
+  return row?.subject_id ??
+         row?.subjectId ??
+         row?.subject?.id ??
+         null;
+}
+
+function getExaminationLevel(row) {
+  return row?.education_level_id ??
+         row?.level_id ??
+         row?.education_level ??
+         row?.level ??
+         null;
+}
+
+function isLevelCompatible(exam, requestedLevel) {
+  const examLevel = getExaminationLevel(exam);
+
+  // If no level field is exposed in the row, do not invent one.
+  // The existing Edge Function must still enforce its own rules.
+  if (examLevel === null || examLevel === undefined || examLevel === "") {
+    return true;
+  }
+
+  const requested = normalize(requestedLevel);
+  const actual = normalize(examLevel);
+
+  return actual === requested ||
+         actual.includes(requested) ||
+         requested.includes(actual);
+}
+
+async function findPublishedExamination(subjectName) {
+  /*
+   * Read existing rows only. This does not create or alter tables.
+   * Matching is performed against the existing subject and examination rows.
+   */
+  const { data: subjects, error: subjectError } =
+    await supabase.from("subjects").select("*");
+
+  if (subjectError) throw subjectError;
+
+  const matchingSubject = (subjects || []).find(row =>
+    normalize(getSubjectName(row)) === normalize(subjectName)
+  );
+
+  if (!matchingSubject) {
+    throw new Error(
+      `The subject "${subjectName}" was not found in the Supabase subjects table.`
+    );
+  }
+
+  const subjectId = matchingSubject.id;
+
+  if (!subjectId) {
+    throw new Error(
+      `The subject "${subjectName}" has no readable ID in the subjects table.`
+    );
+  }
+
+  const { data: examinations, error: examinationError } =
+    await supabase.from("examinations").select("*");
+
+  if (examinationError) throw examinationError;
+
+  const matches = (examinations || []).filter(exam =>
+    isPublished(exam) &&
+    String(getExaminationSubjectId(exam) ?? "") === String(subjectId) &&
+    isLevelCompatible(exam, level)
+  );
+
+  if (matches.length === 0) {
+    throw new Error(
+      `No published examination was found for ${subjectName} at the selected education level. An administrator may need to publish it first.`
+    );
+  }
+
+  // Prefer the first matching published examination.
+  return matches[0];
+}
+
 if (country !== "NG" || level !== "senior-secondary") {
   subjectList.innerHTML =
-    '<p class="muted">The 25-subject list is currently configured for Nigerian Senior Secondary School. Please return to the dashboard and choose Nigeria → Senior Secondary School.</p>';
+    '<p class="muted">This subject list is currently configured for Nigerian Senior Secondary School. Please return to the dashboard and choose Nigeria → Senior Secondary School.</p>';
 
   startButton.disabled = true;
 }
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
-  status.textContent = "";
+
+  if (startButton.disabled) return;
 
   const selected = document.querySelector(
     'input[name="subject"]:checked'
   );
 
   if (!selected) {
-    status.textContent = "Please select a subject first.";
+    showStatus("Please select a subject first.", "error");
     return;
   }
 
   if (country !== "NG" || level !== "senior-secondary") {
-    status.textContent =
-      "This subject list is configured for Nigerian Senior Secondary School.";
+    showStatus(
+      "Please select Nigeria → Senior Secondary School to use this subject list.",
+      "error"
+    );
     return;
   }
 
   startButton.disabled = true;
-  startButton.textContent = "CHECKING YOUR SESSION…";
+  startButton.textContent = "PREPARING EXAMINATION…";
+  showStatus("Checking your sign-in and finding a published examination…");
 
   try {
     const result = await getCurrentSession();
+    const session = getSessionObject(result);
 
-    let session = null;
-
-    if (result?.user) {
-      session = result;
-    } else if (result?.data?.session) {
-      session = result.data.session;
-    }
-
-    if (!session) {
-      status.textContent = "Please sign in to continue.";
+    if (!session?.access_token || !session?.user?.id) {
+      showStatus("Your session has expired. Please sign in again.", "error");
       location.href = "student-login.html?mode=login";
       return;
     }
 
+    // Refresh the session when possible so the request uses a valid token.
+    const { data: refreshed, error: refreshError } =
+      await supabase.auth.getSession();
+
+    if (refreshError) throw refreshError;
+
+    const activeSession = refreshed?.session || session;
+
+    if (!activeSession?.access_token || !activeSession?.user?.id) {
+      showStatus("Please sign in again to continue.", "error");
+      location.href = "student-login.html?mode=login";
+      return;
+    }
+
+    showStatus(
+      `Finding a published examination for ${selected.value}…`
+    );
+
+    const examination = await findPublishedExamination(selected.value);
+
+    startButton.textContent = "STARTING EXAMINATION…";
+
     /*
-      The subject selection is ready.
-      Connect this button to the existing start-exam Edge Function
-      using its actual request and response format before launching.
-      Do not create attempts directly in the browser.
-    */
-    status.textContent =
-      "Selected subject: " + selected.value +
-      ". Your sign-in session was checked, but the secure examination-start service must be connected before questions can open.";
+     * Call the already-deployed Edge Function.
+     * Do not create exam_attempts or attempt_questions in browser code.
+     */
+    const { data, error } = await supabase.functions.invoke(
+      "start-exam",
+      {
+        body: {
+          examination_id: examination.id,
+          question_count: 50
+        },
+        headers: {
+          Authorization: `Bearer ${activeSession.access_token}`
+        }
+      }
+    );
+
+    if (error) {
+      console.error("start-exam function error:", error, data);
+
+      const serverMessage =
+        data?.error ||
+        data?.message ||
+        error.message ||
+        "The examination service returned an error.";
+
+      throw new Error(serverMessage);
+    }
+
+    if (!data) {
+      throw new Error(
+        "The examination service returned no response. Please try again."
+      );
+    }
+
+    const attemptId =
+      data?.attempt?.id ??
+      data?.attempt_id ??
+      data?.attemptId;
+
+    if (!attemptId) {
+      console.error("Unexpected start-exam response:", data);
+
+      throw new Error(
+        data?.message ||
+        "The service responded, but no attempt ID was returned. Check the start-exam function response."
+      );
+    }
+
+    showStatus(
+      "Examination started. Opening your questions…",
+      "success"
+    );
+
+    const destination = new URL("exam.html", location.href);
+    destination.searchParams.set("attempt_id", attemptId);
+    destination.searchParams.set("country", country);
+    destination.searchParams.set("level", level);
+
+    location.assign(destination.toString());
 
   } catch (error) {
-    console.error("Session verification error:", error);
+    console.error("Unable to start examination:", error);
 
-    status.textContent =
-      "We could not verify your session. Please sign in again.";
+    let message = error?.message ||
+      "We could not start the examination. Please try again.";
+
+    if (/fetch|network|failed to send|edge function/i.test(message)) {
+      message +=
+        " Check your internet connection and confirm the deployed start-exam function is available.";
+    }
+
+    showStatus(message, "error");
+
   } finally {
     startButton.disabled = false;
     startButton.textContent = "START EXAMINATION →";
