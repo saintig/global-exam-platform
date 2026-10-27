@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -302,45 +303,18 @@ footer {
   </section>
 
   <section class="card">
-    <h2>Senior Secondary School Subjects</h2>
+    <h2 id="subjectHeading">Available Subjects</h2>
+
     <p class="muted">
       Select the subject you want to practise. Only one subject can be selected at a time.
     </p>
 
-    <div class="subject-count">25 SUBJECTS AVAILABLE</div>
+    <div class="subject-count" id="subjectCount">Loading subjects…</div>
 
     <form id="subjectForm">
-      <div class="subjects" id="subjectList">
+      <div class="subjects" id="subjectList"></div>
 
-        <label class="subject"><input type="radio" name="subject" value="English Language" required><span>English Language</span></label>
-        <label class="subject"><input type="radio" name="subject" value="General Mathematics"><span>General Mathematics</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Civic Education"><span>Civic Education</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Biology"><span>Biology</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Chemistry"><span>Chemistry</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Physics"><span>Physics</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Further Mathematics"><span>Further Mathematics</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Agricultural Science"><span>Agricultural Science</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Computer Studies"><span>Computer Studies</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Digital Technology"><span>Digital Technology</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Geography"><span>Geography</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Food and Nutrition"><span>Food and Nutrition</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Literature in English"><span>Literature in English</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Government"><span>Government</span></label>
-        <label class="subject"><input type="radio" name="subject" value="History"><span>History</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Christian Religious Studies"><span>Christian Religious Studies</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Islamic Studies"><span>Islamic Studies</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Yoruba"><span>Yoruba</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Igbo"><span>Igbo</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Hausa"><span>Hausa</span></label>
-        <label class="subject"><input type="radio" name="subject" value="French"><span>French</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Economics"><span>Economics</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Financial Accounting"><span>Financial Accounting</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Commerce"><span>Commerce</span></label>
-        <label class="subject"><input type="radio" name="subject" value="Marketing"><span>Marketing</span></label>
-
-      </div>
-
-      <button class="start-button" id="startButton" type="submit">
+      <button class="start-button" id="startButton" type="submit" disabled>
         START EXAMINATION →
       </button>
 
@@ -348,7 +322,7 @@ footer {
     </form>
 
     <p class="notice">
-      The secure examination service verifies your examination before opening the questions.
+      The examination service verifies your examination before opening the questions.
     </p>
   </section>
 
@@ -362,6 +336,7 @@ footer {
 import { supabase, getCurrentSession } from "./auth.js";
 
 const params = new URLSearchParams(location.search);
+
 const country = params.get("country") || "NG";
 const level = params.get("level") || "senior-secondary";
 
@@ -392,10 +367,23 @@ const levelNames = {
   }
 };
 
+/*
+ * Actual Nigerian education-level IDs from Supabase.
+ * Other countries require their education levels and subject
+ * assignments to be configured before this page can display them.
+ */
+const nigeriaLevelIds = {
+  primary: 1,
+  "junior-secondary": 2,
+  "senior-secondary": 3
+};
+
 const form = document.getElementById("subjectForm");
 const statusBox = document.getElementById("status");
 const startButton = document.getElementById("startButton");
 const subjectList = document.getElementById("subjectList");
+const subjectCount = document.getElementById("subjectCount");
+const subjectHeading = document.getElementById("subjectHeading");
 
 document.getElementById("countryName").textContent =
   countryNames[country] || country;
@@ -403,7 +391,11 @@ document.getElementById("countryName").textContent =
 document.getElementById("levelName").textContent =
   levelNames[country]?.[level] || level;
 
-document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+subjectHeading.textContent =
+  (levelNames[country]?.[level] || level) + " Subjects";
 
 function showStatus(message, type = "") {
   statusBox.textContent = message;
@@ -422,118 +414,160 @@ function getSessionObject(result) {
   if (result?.data?.session) return result.data.session;
   if (result?.session) return result.session;
 
-  // Some auth helpers return the session directly.
   if (result?.access_token && result?.user) return result;
 
   return null;
 }
 
-function isPublished(row) {
-  return row?.is_published === true;
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[character]);
 }
 
-function getSubjectName(row) {
-  return row?.name ??
-         row?.subject_name ??
-         row?.title ??
-         row?.subject ??
-         "";
-}
+function setSubjectMessage(message) {
+  subjectList.replaceChildren();
 
-function getExaminationSubjectId(row) {
-  return row?.subject_id ??
-         row?.subjectId ??
-         row?.subject?.id ??
-         null;
-}
+  const paragraph = document.createElement("p");
+  paragraph.className = "muted";
+  paragraph.textContent = message;
 
-function getExaminationLevel(row) {
-  return row?.education_level_id ??
-         row?.level_id ??
-         row?.education_level ??
-         row?.level ??
-         null;
-}
-
-function isLevelCompatible(exam, requestedLevel) {
-  const examLevel = getExaminationLevel(exam);
-
-  // If no level field is exposed in the row, do not invent one.
-  // The existing Edge Function must still enforce its own rules.
-  if (examLevel === null || examLevel === undefined || examLevel === "") {
-    return true;
-  }
-
-  const requested = normalize(requestedLevel);
-  const actual = normalize(examLevel);
-
-  return actual === requested ||
-         actual.includes(requested) ||
-         requested.includes(actual);
-}
-
-async function findPublishedExamination(subjectName) {
-  /*
-   * Read existing rows only. This does not create or alter tables.
-   * Matching is performed against the existing subject and examination rows.
-   */
-  const { data: subjects, error: subjectError } =
-    await supabase.from("subjects").select("*");
-
-  if (subjectError) throw subjectError;
-
-  const matchingSubject = (subjects || []).find(row =>
-    normalize(getSubjectName(row)) === normalize(subjectName)
-  );
-
-  if (!matchingSubject) {
-    throw new Error(
-      `The subject "${subjectName}" was not found in the Supabase subjects table.`
-    );
-  }
-
-  const subjectId = matchingSubject.id;
-
-  if (!subjectId) {
-    throw new Error(
-      `The subject "${subjectName}" has no readable ID in the subjects table.`
-    );
-  }
-
-  const { data: examinations, error: examinationError } =
-    await supabase.from("examinations").select("*");
-
-  if (examinationError) throw examinationError;
-
-  const matches = (examinations || []).filter(exam =>
-    isPublished(exam) &&
-    String(getExaminationSubjectId(exam) ?? "") === String(subjectId) &&
-    isLevelCompatible(exam, level)
-  );
-
-  if (matches.length === 0) {
-    throw new Error(
-      `No published examination was found for ${subjectName} at the selected education level. An administrator may need to publish it first.`
-    );
-  }
-
-  // Prefer the first matching published examination.
-  return matches[0];
-}
-
-if (country !== "NG" || level !== "senior-secondary") {
-  subjectList.innerHTML =
-    '<p class="muted">This subject list is currently configured for Nigerian Senior Secondary School. Please return to the dashboard and choose Nigeria → Senior Secondary School.</p>';
-
+  subjectList.appendChild(paragraph);
+  subjectCount.textContent = "0 SUBJECTS AVAILABLE";
   startButton.disabled = true;
+}
+
+async function loadSubjects() {
+  startButton.disabled = true;
+  subjectCount.textContent = "Loading subjects…";
+
+  if (country !== "NG") {
+    setSubjectMessage(
+      "Subjects have not yet been configured for this country. Please choose Nigeria or contact the administrator."
+    );
+    return;
+  }
+
+  const levelId = nigeriaLevelIds[level];
+
+  if (!levelId) {
+    setSubjectMessage(
+      "The selected education level is not recognised. Please return to the dashboard and choose an education level."
+    );
+    return;
+  }
+
+  try {
+    /*
+     * Fetch active subject assignments and their related subject rows.
+     * This uses the relationship table created in Supabase.
+     */
+    const { data, error } = await supabase
+      .from("education_level_subjects")
+      .select(`
+        subject_id,
+        subjects (
+          id,
+          name,
+          is_active
+        )
+      `)
+      .eq("education_level_id", levelId)
+      .eq("is_active", true);
+
+    if (error) throw error;
+
+    const subjects = (data || [])
+      .map(row => row.subjects)
+      .filter(subject =>
+        subject &&
+        subject.is_active === true &&
+        subject.id !== null &&
+        subject.name
+      )
+      .filter((subject, index, list) =>
+        list.findIndex(item => String(item.id) === String(subject.id)) === index
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    subjectList.replaceChildren();
+
+    if (subjects.length === 0) {
+      setSubjectMessage(
+        "No active subjects have been assigned to this education level yet. Please contact the administrator."
+      );
+      return;
+    }
+
+    subjects.forEach((subject, index) => {
+      const label = document.createElement("label");
+      label.className = "subject";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "subject";
+      radio.value = String(subject.id);
+      radio.dataset.subjectName = subject.name;
+      radio.required = index === 0;
+
+      const name = document.createElement("span");
+      name.textContent = subject.name;
+
+      label.append(radio, name);
+      subjectList.appendChild(label);
+    });
+
+    subjectCount.textContent =
+      `${subjects.length} SUBJECT${subjects.length === 1 ? "" : "S"} AVAILABLE`;
+
+    startButton.disabled = false;
+
+  } catch (error) {
+    console.error("Unable to load subjects:", error);
+
+    setSubjectMessage(
+      "We couldn't load subjects. Check your connection and Supabase permissions, then refresh the page."
+    );
+
+    showStatus(
+      error?.message || "Unable to load subjects from Supabase.",
+      "error"
+    );
+  }
+}
+
+async function findPublishedExamination(subjectId) {
+  const { data, error } = await supabase
+    .from("examinations")
+    .select("id, subject_id, title, is_published")
+    .eq("subject_id", subjectId)
+    .eq("is_published", true)
+    .limit(1);
+
+  if (error) throw error;
+
+  if (!data || data.length === 0) {
+    throw new Error(
+      "No published examination was found for this subject. The administrator must create and publish an examination first."
+    );
+  }
+
+  /*
+   * The current examinations table has no education_level_id column.
+   * Therefore this confirms publication for the subject, but cannot
+   * independently confirm that the exam belongs to the selected level.
+   */
+  return data[0];
 }
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
 
-  if (startButton.disabled) return;
-
-  const selected = document.querySelector(
+  const selected = form.querySelector(
     'input[name="subject"]:checked'
   );
 
@@ -542,29 +576,25 @@ form.addEventListener("submit", async event => {
     return;
   }
 
-  if (country !== "NG" || level !== "senior-secondary") {
-    showStatus(
-      "Please select Nigeria → Senior Secondary School to use this subject list.",
-      "error"
-    );
-    return;
-  }
-
   startButton.disabled = true;
   startButton.textContent = "PREPARING EXAMINATION…";
-  showStatus("Checking your sign-in and finding a published examination…");
 
   try {
+    showStatus("Checking your sign-in…");
+
     const result = await getCurrentSession();
     const session = getSessionObject(result);
 
     if (!session?.access_token || !session?.user?.id) {
-      showStatus("Your session has expired. Please sign in again.", "error");
+      showStatus(
+        "Your session has expired. Please sign in again.",
+        "error"
+      );
+
       location.href = "student-login.html?mode=login";
       return;
     }
 
-    // Refresh the session when possible so the request uses a valid token.
     const { data: refreshed, error: refreshError } =
       await supabase.auth.getSession();
 
@@ -573,23 +603,21 @@ form.addEventListener("submit", async event => {
     const activeSession = refreshed?.session || session;
 
     if (!activeSession?.access_token || !activeSession?.user?.id) {
-      showStatus("Please sign in again to continue.", "error");
       location.href = "student-login.html?mode=login";
       return;
     }
 
+    const subjectId = selected.value;
+    const subjectName = selected.dataset.subjectName || "selected subject";
+
     showStatus(
-      `Finding a published examination for ${selected.value}…`
+      `Finding a published examination for ${subjectName}…`
     );
 
-    const examination = await findPublishedExamination(selected.value);
+    const examination = await findPublishedExamination(subjectId);
 
     startButton.textContent = "STARTING EXAMINATION…";
 
-    /*
-     * Call the already-deployed Edge Function.
-     * Do not create exam_attempts or attempt_questions in browser code.
-     */
     const { data, error } = await supabase.functions.invoke(
       "start-exam",
       {
@@ -606,13 +634,12 @@ form.addEventListener("submit", async event => {
     if (error) {
       console.error("start-exam function error:", error, data);
 
-      const serverMessage =
+      throw new Error(
         data?.error ||
         data?.message ||
         error.message ||
-        "The examination service returned an error.";
-
-      throw new Error(serverMessage);
+        "The examination service returned an error."
+      );
     }
 
     if (!data) {
@@ -631,7 +658,7 @@ form.addEventListener("submit", async event => {
 
       throw new Error(
         data?.message ||
-        "The service responded, but no attempt ID was returned. Check the start-exam function response."
+        "The service did not return an attempt ID. Check the deployed start-exam function."
       );
     }
 
@@ -641,6 +668,7 @@ form.addEventListener("submit", async event => {
     );
 
     const destination = new URL("exam.html", location.href);
+
     destination.searchParams.set("attempt_id", attemptId);
     destination.searchParams.set("country", country);
     destination.searchParams.set("level", level);
@@ -655,16 +683,21 @@ form.addEventListener("submit", async event => {
 
     if (/fetch|network|failed to send|edge function/i.test(message)) {
       message +=
-        " Check your internet connection and confirm the deployed start-exam function is available.";
+        " Check your internet connection and confirm the start-exam function is deployed.";
     }
 
     showStatus(message, "error");
 
   } finally {
-    startButton.disabled = false;
     startButton.textContent = "START EXAMINATION →";
+
+    if (subjectList.querySelector('input[name="subject"]')) {
+      startButton.disabled = false;
+    }
   }
 });
+
+loadSubjects();
 </script>
 
 </body>
