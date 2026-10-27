@@ -1,1 +1,916 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10264a">
+  <title>Examination | SAINTIG EXAMS</title>
+
+  <style>
+    :root {
+      --navy: #10264a;
+      --gold: #e2b84b;
+      --cream: #faf8f2;
+      --white: #ffffff;
+      --green: #197647;
+      --red: #b42318;
+      --border: #e5e7eb;
+      --muted: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: #1f2937;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 17px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .header-inner {
+      max-width: 1050px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .exam-label {
+      font-size: 12px;
+      color: #e5e7eb;
+      text-align: right;
+    }
+
+    main {
+      width: min(100% - 24px, 900px);
+      margin: 24px auto;
+    }
+
+    .status-card,
+    .question-card,
+    .navigator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(16, 38, 74, .04);
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .exam-title {
+      margin: 0;
+      color: var(--navy);
+      font-size: 21px;
+    }
+
+    .timer-box {
+      background: #fff7df;
+      color: var(--navy);
+      border: 1px solid #f0d98e;
+      border-radius: 10px;
+      padding: 10px 15px;
+      min-width: 125px;
+      text-align: center;
+    }
+
+    .timer-box small {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    #timer {
+      font-size: 25px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: #e8edf3;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 18px;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background: var(--gold);
+      transition: width .2s;
+    }
+
+    .question-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    #questionText {
+      font-size: 19px;
+      line-height: 1.65;
+      font-weight: 600;
+      color: var(--navy);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin: 0 0 22px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border: 1px solid #d9e0e8;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--navy);
+      background: #f0f4fa;
+    }
+
+    .option input {
+      margin-top: 5px;
+      accent-color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .option-letter {
+      font-weight: 800;
+      color: var(--navy);
+      min-width: 20px;
+    }
+
+    .option-text {
+      overflow-wrap: anywhere;
+    }
+
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 17px;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
+    .btn-secondary {
+      background: #e8edf3;
+      color: var(--navy);
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: white;
+    }
+
+    .btn-submit {
+      background: var(--green);
+      color: white;
+    }
+
+    .btn-danger {
+      background: var(--red);
+      color: white;
+    }
+
+    .navigator-title {
+      color: var(--navy);
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .question-number {
+      padding: 9px 0;
+      border: 1px solid #d9e0e8;
+      border-radius: 7px;
+      background: white;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
+    .question-number.answered {
+      background: #e6f5eb;
+      border-color: #75bc8c;
+    }
+
+    .question-number.current {
+      outline: 2px solid var(--navy);
+      outline-offset: 1px;
+      font-weight: 800;
+    }
+
+    .legend {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .legend span {
+      display: inline-block;
+      margin: 3px 10px 3px 0;
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border: 1px solid #d9e0e8;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .legend .green {
+      background: #e6f5eb;
+    }
+
+    .legend .blue {
+      background: #f0f4fa;
+      border-color: var(--navy);
+    }
+
+    .message {
+      padding: 13px 15px;
+      margin-bottom: 15px;
+      border-radius: 9px;
+      background: #eef4ff;
+      color: var(--navy);
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      background: #fff0ef;
+      color: var(--red);
+    }
+
+    .message.success {
+      background: #e6f5eb;
+      color: #14532d;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .submit-area {
+      text-align: center;
+      padding: 10px 0 28px;
+    }
+
+    .submit-area p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 22px 12px;
+      background: var(--navy);
+      color: #e5e7eb;
+      font-size: 12px;
+      border-top: 3px solid var(--gold);
+    }
+
+    #loading {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--navy);
+    }
+
+    #fatalError {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      border: 1px solid #f1b6b2;
+    }
+
+    @media (max-width: 480px) {
+      main {
+        width: calc(100% - 16px);
+        margin-top: 12px;
+      }
+
+      .status-card,
+      .question-card,
+      .navigator-card {
+        padding: 15px;
+      }
+
+      .question-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      #questionText {
+        font-size: 17px;
+      }
+
+      .navigation button {
+        padding: 11px 12px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">SAINTIG <span>EXAMS</span></div>
+      <div class="exam-label">Secure Online Examination</div>
+    </div>
+  </header>
+
+  <main>
+    <div id="loading">
+      <h2>Loading examination...</h2>
+      <p>Please wait. Do not refresh the page.</p>
+    </div>
+
+    <div id="fatalError" class="hidden">
+      <h2>Unable to load examination</h2>
+      <p id="fatalMessage"></p>
+      <p>Check your internet connection and sign-in status. If the problem continues, contact support.</p>
+    </div>
+
+    <section id="examInterface" class="hidden">
+      <div id="message" class="message hidden" role="status" aria-live="polite"></div>
+
+      <section class="status-card">
+        <div class="status-row">
+          <div>
+            <h1 class="exam-title" id="examTitle">Examination</h1>
+            <div id="examMeta">Loading exam details...</div>
+          </div>
+
+          <div class="timer-box">
+            <small>Time remaining</small>
+            <div id="timer">--:--</div>
+          </div>
+        </div>
+
+        <div class="progress-track">
+          <div id="progressBar"></div>
+        </div>
+        <p id="progressText">Answered 0 of 0 questions</p>
+      </section>
+
+      <section class="question-card">
+        <div class="question-top">
+          <span id="questionCounter">Question 1</span>
+          <span id="questionMarks"></span>
+        </div>
+
+        <h2 id="questionText"></h2>
+
+        <div id="options" class="options"></div>
+
+        <div class="navigation">
+          <button type="button" id="previousButton" class="btn-secondary">
+            ← Previous
+          </button>
+
+          <button type="button" id="nextButton" class="btn-primary">
+            Next →
+          </button>
+        </div>
+      </section>
+
+      <section class="navigator-card">
+        <h2 class="navigator-title">Question Navigator</h2>
+        <div id="questionGrid" class="question-grid"></div>
+
+        <div class="legend">
+          <span><i class="green"></i> Answered</span>
+          <span><i class="blue"></i> Current question</span>
+          <span><i></i> Not answered</span>
+        </div>
+      </section>
+
+      <section class="submit-area">
+        <button type="button" id="submitButton" class="btn-submit">
+          Submit Examination
+        </button>
+        <p>Review your answers before submitting. Submission may be final.</p>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> SAINTIG EXAMS. All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { supabase, getCurrentSession } from "./auth.js";
+
+    const $ = (id) => document.getElementById(id);
+
+    $("year").textContent = new Date().getFullYear();
+
+    const params = new URLSearchParams(window.location.search);
+    const attemptId = params.get("attempt_id") || params.get("attempt");
+
+    let currentUser = null;
+    let attempt = null;
+    let questions = [];
+    let answers = {};
+    let currentIndex = 0;
+    let remainingSeconds = 0;
+    let timerHandle = null;
+    let saving = false;
+    let submitted = false;
+
+    function showMessage(text, type = "") {
+      const el = $("message");
+      el.textContent = text;
+      el.className = "message" + (type ? " " + type : "");
+    }
+
+    function hideMessage() {
+      $("message").className = "message hidden";
+      $("message").textContent = "";
+    }
+
+    function showFatal(text) {
+      $("loading").classList.add("hidden");
+      $("examInterface").classList.add("hidden");
+      $("fatalError").classList.remove("hidden");
+      $("fatalMessage").textContent = text;
+    }
+
+    function normalizeSession(result) {
+      return result?.data?.session
+        || result?.session
+        || result?.data
+        || null;
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return String(mins).padStart(2, "0") + ":" +
+             String(secs).padStart(2, "0");
+    }
+
+    function safeText(value) {
+      return value == null ? "" : String(value);
+    }
+
+    function getQuestionText(q) {
+      return q.question ?? q.question_text ?? q.text ?? "";
+    }
+
+    function getOptionText(q, letter) {
+      const key = "option_" + letter.toLowerCase();
+      return q[key] ?? q["option" + letter] ?? "";
+    }
+
+    function getQuestionId(row) {
+      return row.question_id ?? row.exam_questions?.id ?? row.id;
+    }
+
+    function getQuestionData(row) {
+      return row.exam_questions ?? row.question_data ?? row;
+    }
+
+    async function loadExam() {
+      try {
+        if (!attemptId) {
+          throw new Error(
+            "The examination attempt ID is missing from the URL. Return to the subject page and start the examination again."
+          );
+        }
+
+        const sessionResult = await getCurrentSession();
+        const session = normalizeSession(sessionResult);
+
+        currentUser = session?.user ?? null;
+
+        if (!currentUser) {
+          const { data } = await supabase.auth.getSession();
+          currentUser = data?.session?.user ?? null;
+        }
+
+        if (!currentUser) {
+          throw new Error("Your login session has expired. Please sign in again.");
+        }
+
+        const { data: attemptRow, error: attemptError } = await supabase
+          .from("exam_attempts")
+          .select("id, user_id, examination_id, started_at, submitted_at, status, question_count, duration_minutes")
+          .eq("id", attemptId)
+          .eq("user_id", currentUser.id)
+          .maybeSingle();
+
+        if (attemptError) throw attemptError;
+        if (!attemptRow) {
+          throw new Error("This examination attempt was not found for your account.");
+        }
+
+        if (attemptRow.status !== "in_progress" || attemptRow.submitted_at) {
+          throw new Error("This attempt is no longer active. Check your examination history or results.");
+        }
+
+        attempt = attemptRow;
+
+        const { data: assignments, error: assignmentError } = await supabase
+          .from("attempt_questions")
+          .select("question_id, question_position")
+          .eq("attempt_id", attemptId)
+          .order("question_position", { ascending: true });
+
+        if (assignmentError) throw assignmentError;
+        if (!assignments?.length) {
+          throw new Error("No questions have been assigned to this examination attempt.");
+        }
+
+        const questionIds = assignments.map(row => row.question_id);
+
+        const { data: questionRows, error: questionError } = await supabase
+          .from("exam_questions")
+          .select("id, question, option_a, option_b, option_c, option_d, marks")
+          .in("id", questionIds);
+
+        if (questionError) throw questionError;
+
+        const questionMap = new Map(
+          (questionRows || []).map(q => [String(q.id), q])
+        );
+
+        questions = assignments.map((row, index) => {
+          const q = questionMap.get(String(row.question_id));
+
+          if (!q) {
+            throw new Error(
+              "A question assigned to this attempt could not be loaded. Please contact support."
+            );
+          }
+
+          return {
+            ...q,
+            question_position: row.question_position ?? index + 1
+          };
+        });
+
+        // Never select correct_option for the student-facing page.
+        const { data: examination, error: examError } = await supabase
+          .from("examinations")
+          .select("id, title")
+          .eq("id", attempt.examination_id)
+          .maybeSingle();
+
+        if (examError) throw examError;
+
+        $("examTitle").textContent = examination?.title || "Online Examination";
+        $("examMeta").textContent =
+          questions.length + " questions • " +
+          Number(attempt.duration_minutes || 45) + " minutes";
+
+        // Calculate remaining time using the server-created start timestamp.
+        const duration = Number(attempt.duration_minutes || 45) * 60;
+        const startTime = new Date(attempt.started_at).getTime();
+
+        if (!Number.isFinite(startTime)) {
+          throw new Error("The attempt start time is invalid.");
+        }
+
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        remainingSeconds = Math.max(0, duration - elapsed);
+
+        // Load any answers already saved for this attempt.
+        // Expected schema: attempt_id, question_id, selected_option.
+        const { data: savedAnswers, error: savedError } = await supabase
+          .from("attempt_answers")
+          .select("question_id, selected_option")
+          .eq("attempt_id", attemptId);
+
+        if (savedError) {
+          throw new Error(
+            "Could not load saved answers. Confirm the attempt_answers column names and permissions. " +
+            savedError.message
+          );
+        }
+
+        for (const row of savedAnswers || []) {
+          if (row.selected_option != null) {
+            answers[String(row.question_id)] = String(row.selected_option).toUpperCase();
+          }
+        }
+
+        $("loading").classList.add("hidden");
+        $("examInterface").classList.remove("hidden");
+
+        renderQuestion();
+        renderNavigator();
+        updateProgress();
+        startTimer();
+
+        if (remainingSeconds <= 0) {
+          await submitExam(true);
+        }
+      } catch (error) {
+        console.error("Exam loading error:", error);
+        showFatal(error?.message || "An unexpected error occurred while loading the examination.");
+      }
+    }
+
+    function renderQuestion() {
+      if (!questions.length) return;
+
+      const q = questions[currentIndex];
+      const qid = String(q.id);
+
+      $("questionCounter").textContent =
+        "Question " + (currentIndex + 1) + " of " + questions.length;
+
+      $("questionText").textContent = getQuestionText(q);
+      $("questionMarks").textContent =
+        q.marks != null ? safeText(q.marks) + " mark(s)" : "";
+
+      const optionsContainer = $("options");
+      optionsContainer.replaceChildren();
+
+      for (const letter of ["A", "B", "C", "D"]) {
+        const optionText = getOptionText(q, letter);
+
+        const label = document.createElement("label");
+        label.className = "option";
+
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "answer";
+        radio.value = letter;
+        radio.checked = answers[qid] === letter;
+        radio.disabled = submitted;
+
+        radio.addEventListener("change", async () => {
+          if (submitted) return;
+
+          answers[qid] = letter;
+          renderNavigator();
+          updateProgress();
+
+          const saveResult = await saveAnswer(qid, letter);
+          if (!saveResult) {
+            showMessage(
+              "Your answer could not be saved. Please check your connection before continuing.",
+              "error"
+            );
+          } else {
+            hideMessage();
+          }
+        });
+
+        const letterSpan = document.createElement("span");
+        letterSpan.className = "option-letter";
+        letterSpan.textContent = letter + ".";
+
+        const textSpan = document.createElement("span");
+        textSpan.className = "option-text";
+        textSpan.textContent = safeText(optionText);
+
+        label.append(radio, letterSpan, textSpan);
+        optionsContainer.appendChild(label);
+      }
+
+      $("previousButton").disabled = currentIndex === 0 || submitted;
+      $("nextButton").disabled =
+        currentIndex === questions.length - 1 || submitted;
+
+      $("progressBar").style.width =
+        ((currentIndex + 1) / questions.length * 100) + "%";
+    }
+
+    function renderNavigator() {
+      const grid = $("questionGrid");
+      grid.replaceChildren();
+
+      questions.forEach((q, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "question-number";
+        button.textContent = String(index + 1);
+        button.setAttribute("aria-label", "Go to question " + (index + 1));
+
+        if (answers[String(q.id)]) button.classList.add("answered");
+        if (index === currentIndex) button.classList.add("current");
+
+        button.disabled = submitted;
+        button.addEventListener("click", () => {
+          currentIndex = index;
+          renderQuestion();
+          renderNavigator();
+        });
+
+        grid.appendChild(button);
+      });
+    }
+
+    function updateProgress() {
+      const answeredCount = questions.filter(
+        q => Boolean(answers[String(q.id)])
+      ).length;
+
+      $("progressText").textContent =
+        "Answered " + answeredCount + " of " + questions.length + " questions";
+    }
+
+    async function saveAnswer(questionId, selectedOption) {
+      if (submitted || saving) return false;
+
+      saving = true;
+
+      try {
+        // This upsert assumes a unique constraint on attempt_id + question_id
+        // and a selected_option column in attempt_answers.
+        const { error } = await supabase
+          .from("attempt_answers")
+          .upsert(
+            {
+              attempt_id: attemptId,
+              question_id: questionId,
+              selected_option: selectedOption
+            },
+            {
+              onConflict: "attempt_id,question_id"
+            }
+          );
+
+        if (error) throw error;
+        return true;
+      } catch (error) {
+        console.error("Answer save error:", error);
+        return false;
+      } finally {
+        saving = false;
+      }
+    }
+
+    function startTimer() {
+      $("timer").textContent = formatTime(remainingSeconds);
+
+      timerHandle = window.setInterval(async () => {
+        if (submitted) {
+          clearInterval(timerHandle);
+          return;
+        }
+
+        remainingSeconds = Math.max(0, remainingSeconds - 1);
+        $("timer").textContent = formatTime(remainingSeconds);
+
+        if (remainingSeconds <= 0) {
+          clearInterval(timerHandle);
+          await submitExam(true);
+        }
+      }, 1000);
+    }
+
+    async function submitExam(automatic = false) {
+      if (submitted) return;
+
+      if (!automatic) {
+        const unanswered = questions.filter(
+          q => !answers[String(q.id)]
+        ).length;
+
+        const message = unanswered
+          ? "You have " + unanswered + " unanswered question(s). Submit anyway?"
+          : "Are you sure you want to submit your examination?";
+
+        if (!window.confirm(message)) return;
+      }
+
+      if (saving) {
+        showMessage("Please wait while your answer is being saved.", "error");
+        return;
+      }
+
+      const submitButton = $("submitButton");
+      submitButton.disabled = true;
+      showMessage(
+        automatic
+          ? "Time is up. Preparing to submit your examination..."
+          : "Preparing to submit your examination..."
+      );
+
+      try {
+        // First verify that answers currently held on this page are saved.
+        for (const q of questions) {
+          const selected = answers[String(q.id)];
+          if (!selected) continue;
+
+          const saved = await saveAnswer(String(q.id), selected);
+          if (!saved) {
+            throw new Error(
+              "An answer could not be saved. Your attempt has not been marked as submitted. Please contact support."
+            );
+          }
+        }
+
+        // Intentionally do not mark the attempt submitted directly from the
+        // browser. A trusted server-side submission function must calculate
+        // the score and update exam_attempts securely.
+        showMessage(
+          "Your answers have been saved, but final submission is not connected yet. " +
+          "A secure server-side submission function is required to calculate your score and finalize this attempt.",
+          "error"
+        );
+
+        submitButton.disabled = false;
+      } catch (error) {
+        console.error("Submission error:", error);
+        showMessage(error?.message || "Submission failed. Please contact support.", "error");
+        submitButton.disabled = false;
+      }
+    }
+
+    $("previousButton").addEventListener("click", () => {
+      if (currentIndex > 0 && !submitted) {
+        currentIndex--;
+        renderQuestion();
+        renderNavigator();
+      }
+    });
+
+    $("nextButton").addEventListener("click", () => {
+      if (currentIndex < questions.length - 1 && !submitted) {
+        currentIndex++;
+        renderQuestion();
+        renderNavigator();
+      }
+    });
+
+    $("submitButton").addEventListener("click", () => submitExam(false));
+
+    // Warn students before accidentally leaving the active examination.
+    window.addEventListener("beforeunload", (event) => {
+      if (!submitted && questions.length) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    });
+
+    loadExam();
+  </script>
+</body>
+</html>
