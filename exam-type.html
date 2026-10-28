@@ -13,155 +13,125 @@
       --green-light: #1d5b40;
       --gold: #d4af37;
       --cream: #f7f5ed;
+      --white: #ffffff;
       --text: #202820;
       --muted: #68736b;
-      --white: #ffffff;
       --border: #dce4dc;
       --red: #a52a2a;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: var(--cream);
-      color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--cream);
       line-height: 1.5;
     }
 
     header {
       background: var(--green);
-      color: var(--white);
+      color: white;
       padding: 22px 16px;
       border-bottom: 4px solid var(--gold);
     }
 
-    .header-inner,
-    main {
-      width: min(100% - 32px, 760px);
-      margin: 0 auto;
+    .header-inner, main {
+      width: min(100% - 32px, 800px);
+      margin: auto;
     }
 
     .brand {
       margin: 0;
       font-size: 23px;
       font-weight: 800;
-      letter-spacing: 0.5px;
     }
 
-    .brand span {
-      color: var(--gold);
-    }
+    .brand span { color: var(--gold); }
 
     .tagline {
       margin: 3px 0 0;
-      color: #e3e9e3;
       font-size: 13px;
+      color: #e3e9e3;
     }
 
-    main {
-      padding: 28px 0 45px;
-    }
+    main { padding: 28px 0 45px; }
 
     .back-link {
       display: inline-block;
+      margin-bottom: 20px;
       color: var(--green);
       text-decoration: none;
-      font-weight: 700;
-      margin-bottom: 20px;
+      font-weight: bold;
     }
 
-    .back-link:hover {
-      text-decoration: underline;
-    }
-
-    .intro {
-      margin-bottom: 22px;
-    }
-
-    .intro h1 {
-      margin: 0 0 8px;
+    h1 {
       font-size: clamp(25px, 6vw, 34px);
       line-height: 1.2;
+      margin: 0 0 8px;
     }
 
-    .intro p {
-      margin: 0;
-      color: var(--muted);
-    }
+    .intro p { color: var(--muted); }
 
     .subject-panel {
-      background: var(--white);
+      background: white;
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
-      margin-bottom: 22px;
+      margin: 22px 0;
     }
 
     .subject-panel small {
       display: block;
       color: var(--muted);
-      margin-bottom: 3px;
     }
 
     .subject-panel strong {
+      display: block;
       color: var(--green);
-      font-size: 17px;
+      font-size: 18px;
     }
 
     .options {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 18px;
     }
 
     .exam-card {
-      background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: 14px;
-      padding: 21px;
       display: flex;
       flex-direction: column;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
     }
 
-    .exam-card.selected {
-      border-color: var(--green-light);
-      box-shadow: 0 0 0 2px #1d5b4014;
-    }
+    .exam-card.premium { border-color: #d6bd69; }
 
-    .exam-card.premium {
-      border-color: #d6bd69;
-    }
-
-    .plan-label {
-      display: inline-block;
+    .badge {
       align-self: flex-start;
-      background: #e9f2e9;
-      color: var(--green);
       border-radius: 20px;
       padding: 5px 11px;
+      background: #e9f2e9;
+      color: var(--green);
       font-size: 12px;
       font-weight: 800;
       margin-bottom: 12px;
     }
 
-    .premium .plan-label {
+    .premium .badge {
       background: #fbf1ce;
       color: #745600;
     }
 
-    .exam-card h2 {
-      margin: 0 0 7px;
-      font-size: 22px;
-    }
+    h2 { margin: 0 0 7px; font-size: 23px; }
 
     .description {
       color: var(--muted);
-      margin: 0 0 16px;
       font-size: 14px;
+      margin: 0 0 18px;
     }
 
     .stats {
@@ -172,8 +142,8 @@
     }
 
     .stat {
+      padding: 13px;
       background: #f5f7f3;
-      padding: 12px;
       border-radius: 9px;
     }
 
@@ -185,77 +155,71 @@
 
     .stat strong {
       display: block;
-      font-size: 18px;
-      margin-top: 2px;
+      font-size: 20px;
+      margin-top: 3px;
     }
 
-    .plan-note {
+    .note {
       color: var(--muted);
       font-size: 13px;
       margin: 0 0 18px;
     }
 
-    .choose-button {
+    button {
       width: 100%;
       margin-top: auto;
-      padding: 13px 16px;
+      padding: 14px;
       border: none;
       border-radius: 8px;
       background: var(--green);
-      color: var(--white);
+      color: white;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .choose-button:hover {
-      background: var(--green-light);
-    }
+    button:hover { background: var(--green-light); }
 
-    .premium .choose-button {
-      background: #8a6b00;
-    }
+    .premium button { background: #8a6b00; }
+    .premium button:hover { background: #705700; }
 
-    .choose-button:disabled {
+    button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
     }
 
     .message {
       display: none;
-      padding: 13px 15px;
+      padding: 13px;
+      margin-bottom: 18px;
       border-radius: 8px;
-      margin: 0 0 18px;
       overflow-wrap: anywhere;
     }
 
     .message.error {
       display: block;
-      color: var(--red);
       background: #fff0f0;
+      color: var(--red);
       border: 1px solid #efcccc;
     }
 
     .message.info {
       display: block;
-      color: var(--green);
       background: #e9f2e9;
+      color: var(--green);
       border: 1px solid var(--border);
     }
 
     .loading {
-      text-align: center;
-      color: var(--muted);
       padding: 18px 0;
+      color: var(--muted);
     }
 
-    .hidden {
-      display: none !important;
-    }
+    .hidden { display: none !important; }
 
     footer {
-      text-align: center;
       padding: 20px 16px;
+      text-align: center;
       color: var(--muted);
       font-size: 12px;
     }
@@ -264,10 +228,6 @@
       .options {
         grid-template-columns: 1fr 1fr;
         align-items: stretch;
-      }
-
-      .exam-card {
-        padding: 22px;
       }
     }
   </style>
@@ -288,70 +248,72 @@
 
     <section class="intro">
       <h1>Choose Your Examination Type</h1>
-      <p>Select an exam option to continue to your examination.</p>
+      <p>Select the examination that suits your access plan.</p>
     </section>
 
     <section class="subject-panel">
       <small>Selected subject</small>
       <strong id="subjectName">Loading subject...</strong>
-      <div id="levelName" style="color:#68736b;font-size:13px;margin-top:4px"></div>
+      <div id="levelName"></div>
     </section>
 
     <div id="message" class="message" role="alert"></div>
-    <div id="loading" class="loading">Checking your examination options...</div>
+    <div id="loading" class="loading">
+      Verifying your examination details...
+    </div>
 
     <section id="options" class="options hidden">
-      <article class="exam-card" id="freeCard">
-        <span class="plan-label">FREE ACCESS</span>
-        <h2>Free Exam</h2>
+      <article class="exam-card">
+        <span class="badge">FREE ACCESS</span>
+        <h2>Free Examination</h2>
         <p class="description">
-          Practise and test your knowledge with the free examination option.
+          Practise your knowledge with the free examination.
         </p>
 
         <div class="stats">
           <div class="stat">
-            <span>Questions</span>
+            <span>Total questions</span>
             <strong>50</strong>
           </div>
           <div class="stat">
-            <span>Duration</span>
+            <span>Time allowed</span>
             <strong>45 min</strong>
           </div>
         </div>
 
-        <p class="plan-note">
-          Limited to one free attempt per day, subject to server verification.
+        <p class="note">
+          One free attempt per day.
         </p>
 
-        <button class="choose-button" id="freeButton" type="button">
-          Start Free Exam
+        <button id="freeButton" type="button">
+          Select Free Exam
         </button>
       </article>
 
       <article class="exam-card premium hidden" id="premiumCard">
-        <span class="plan-label">PREMIUM ACCESS</span>
-        <h2>Premium Exam</h2>
+        <span class="badge">PREMIUM ACCESS</span>
+        <h2>Premium Examination</h2>
         <p class="description">
-          Take the extended examination with more questions and more time.
+          Access the extended examination with more questions and more time.
         </p>
 
         <div class="stats">
           <div class="stat">
-            <span>Questions</span>
+            <span>Total questions</span>
             <strong>100</strong>
           </div>
           <div class="stat">
-            <span>Duration</span>
+            <span>Time allowed</span>
             <strong>90 min</strong>
           </div>
         </div>
 
-        <p class="plan-note">
-          Available to eligible subscribers while their subscription is active.
+        <p class="note">
+          Unlimited attempts while your paid subscription is active.
         </p>
 
-        <button class="choose-button" id="premiumButton" type="button">
-          Start Premium Exam
+        <button id="premiumButton" type="button">
+          Select Premium Exam
         </button>
       </article>
     </section>
@@ -364,8 +326,7 @@
   <script type="module">
     import { supabase, getCurrentSession } from "./auth.js";
 
-    const params = new URLSearchParams(window.location.search);
-
+    const params = new URLSearchParams(location.search);
     const countryId = params.get("country_id");
     const levelId = params.get("level_id");
     const subjectId = params.get("subject_id");
@@ -375,7 +336,6 @@
     const loading = document.getElementById("loading");
     const options = document.getElementById("options");
     const message = document.getElementById("message");
-    const freeCard = document.getElementById("freeCard");
     const premiumCard = document.getElementById("premiumCard");
     const freeButton = document.getElementById("freeButton");
     const premiumButton = document.getElementById("premiumButton");
@@ -390,43 +350,48 @@
       message.className = `message ${type}`;
     }
 
+    function validateIds() {
+      const ids = [countryId, levelId, subjectId];
+
+      if (!ids.every(id => id && /^\d+$/.test(id))) {
+        throw new Error(
+          "Examination details are missing. Return to subject selection and try again."
+        );
+      }
+    }
+
     function setBusy(value) {
       busy = value;
       freeButton.disabled = value;
       premiumButton.disabled = value;
-      freeButton.textContent = value ? "Starting..." : "Start Free Exam";
+
+      freeButton.textContent = value
+        ? "Please wait..."
+        : "Select Free Exam";
+
       premiumButton.textContent = value
-        ? "Starting..."
-        : "Start Premium Exam";
-    }
-
-    function validateParameters() {
-      if (!countryId || !levelId || !subjectId) {
-        throw new Error(
-          "The examination details are incomplete. Return to subject selection and try again."
-        );
-      }
-
-      if (![countryId, levelId, subjectId].every(
-        value => /^\d+$/.test(value)
-      )) {
-        throw new Error("The examination details are invalid.");
-      }
+        ? "Please wait..."
+        : "Select Premium Exam";
     }
 
     async function loadPage() {
       try {
-        validateParameters();
+        validateIds();
 
         backLink.href =
           `start-exam.html?country_id=${encodeURIComponent(countryId)}` +
           `&level_id=${encodeURIComponent(levelId)}`;
 
-        session = await getCurrentSession();
+        const result = await getCurrentSession();
+        const { data: authData, error: authError } =
+          await supabase.auth.getSession();
 
-        if (!session) {
-          const returnUrl = encodeURIComponent(window.location.href);
-          window.location.href = `login.html?return_to=${returnUrl}`;
+        if (authError) throw authError;
+
+        session = authData?.session || result?.session || result;
+
+        if (!session?.access_token || !session?.user?.id) {
+          location.href = "student-login.html?mode=login";
           return;
         }
 
@@ -440,24 +405,21 @@
 
         if (levelError) throw levelError;
         if (!level) {
-          throw new Error("This education level is unavailable.");
+          throw new Error("The selected education level is unavailable.");
         }
 
-        const { data: assignment, error: assignmentError } = await supabase
-          .from("education_level_subjects")
-          .select("subject_id,is_active,subjects(id,name,is_active)")
-          .eq("education_level_id", Number(levelId))
-          .eq("subject_id", Number(subjectId))
-          .eq("is_active", true)
-          .maybeSingle();
+        const { data: assignment, error: assignmentError } =
+          await supabase
+            .from("education_level_subjects")
+            .select("subject_id,is_active,subjects(id,name,is_active)")
+            .eq("education_level_id", Number(levelId))
+            .eq("subject_id", Number(subjectId))
+            .eq("is_active", true)
+            .maybeSingle();
 
         if (assignmentError) throw assignmentError;
 
-        if (
-          !assignment ||
-          !assignment.subjects ||
-          !assignment.subjects.is_active
-        ) {
+        if (!assignment?.subjects?.is_active) {
           throw new Error(
             "This subject is not available for the selected education level."
           );
@@ -468,7 +430,7 @@
 
         const { data: exams, error: examError } = await supabase
           .from("examinations")
-          .select("id,subject_id,education_level_id,title,is_published")
+          .select("id,title,subject_id,education_level_id,is_published")
           .eq("subject_id", Number(subjectId))
           .eq("education_level_id", Number(levelId))
           .eq("is_published", true)
@@ -477,7 +439,7 @@
 
         if (examError) throw examError;
 
-        if (!exams || exams.length === 0) {
+        if (!exams?.length) {
           throw new Error(
             "No published examination is available for this subject and level yet."
           );
@@ -486,14 +448,15 @@
         examination = exams[0];
 
         /*
-         * Premium access must be confirmed by the server.
-         * Until the subscription-checking Edge Function is implemented,
-         * do not expose the Premium option to students.
+         * Premium remains hidden until the existing backend can
+         * verify an active subscription. We must not infer eligibility
+         * from a URL parameter or browser-only value.
          */
         premiumCard.classList.add("hidden");
 
         loading.classList.add("hidden");
         options.classList.remove("hidden");
+
       } catch (error) {
         loading.classList.add("hidden");
         showMessage(error.message || "Unable to load examination options.");
@@ -503,26 +466,26 @@
     async function startExam(type) {
       if (busy || !session || !examination) return;
 
-      if (type !== "free" && type !== "premium") return;
+      if (type === "premium") {
+        showMessage(
+          "Premium access must be verified by the subscription service before this examination can start."
+        );
+        return;
+      }
+
+      if (type !== "free") return;
 
       setBusy(true);
       message.className = "message";
 
       try {
-        /*
-         * The Edge Function must enforce the selected plan,
-         * subscription eligibility and daily free-attempt limit.
-         * The browser cannot enforce these rules securely.
-         */
-        const questionCount = type === "free" ? 50 : 100;
-
         const { data, error } = await supabase.functions.invoke(
           "start-exam",
           {
             body: {
               examination_id: examination.id,
-              question_count: questionCount,
-              exam_type: type
+              question_count: 50,
+              exam_type: "free"
             },
             headers: {
               Authorization: `Bearer ${session.access_token}`
@@ -531,22 +494,20 @@
         );
 
         if (error) {
-          let detail = error.message || "The examination could not be started.";
+          let detail = error.message ||
+            "The examination could not be started.";
 
-          if (error.context && typeof error.context.json === "function") {
+          if (error.context?.json) {
             try {
               const body = await error.context.json();
-              if (body.message) detail = body.message;
-              else if (body.error) detail = body.error;
+              detail = body.message || body.error || detail;
             } catch (_) {}
           }
 
           throw new Error(detail);
         }
 
-        if (data && data.error) {
-          throw new Error(data.error);
-        }
+        if (data?.error) throw new Error(data.error);
 
         const attemptId =
           data?.attempt?.id ??
@@ -555,18 +516,22 @@
 
         if (!attemptId) {
           throw new Error(
-            "The server did not return an examination attempt ID."
+            "The examination service did not return an attempt ID."
           );
         }
 
-        const destination = new URL("exam.html", window.location.href);
+        const destination = new URL("exam.html", location.href);
         destination.searchParams.set("attempt_id", attemptId);
         destination.searchParams.set("country_id", countryId);
         destination.searchParams.set("level_id", levelId);
         destination.searchParams.set("subject_id", subjectId);
-        window.location.href = destination.toString();
+
+        location.assign(destination.toString());
+
       } catch (error) {
-        showMessage(error.message || "Unable to start the examination.");
+        showMessage(
+          error.message || "Unable to start the examination."
+        );
         setBusy(false);
       }
     }
