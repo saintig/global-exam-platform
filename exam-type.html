@@ -1,1 +1,580 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#123b2a">
+  <title>Choose Examination Type | SAINTIG EXAMS</title>
+
+  <style>
+    :root {
+      --green: #123b2a;
+      --green-light: #1d5b40;
+      --gold: #d4af37;
+      --cream: #f7f5ed;
+      --text: #202820;
+      --muted: #68736b;
+      --white: #ffffff;
+      --border: #dce4dc;
+      --red: #a52a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--green);
+      color: var(--white);
+      padding: 22px 16px;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .header-inner,
+    main {
+      width: min(100% - 32px, 760px);
+      margin: 0 auto;
+    }
+
+    .brand {
+      margin: 0;
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .brand span {
+      color: var(--gold);
+    }
+
+    .tagline {
+      margin: 3px 0 0;
+      color: #e3e9e3;
+      font-size: 13px;
+    }
+
+    main {
+      padding: 28px 0 45px;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .intro {
+      margin-bottom: 22px;
+    }
+
+    .intro h1 {
+      margin: 0 0 8px;
+      font-size: clamp(25px, 6vw, 34px);
+      line-height: 1.2;
+    }
+
+    .intro p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .subject-panel {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+
+    .subject-panel small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .subject-panel strong {
+      color: var(--green);
+      font-size: 17px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .exam-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 21px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exam-card.selected {
+      border-color: var(--green-light);
+      box-shadow: 0 0 0 2px #1d5b4014;
+    }
+
+    .exam-card.premium {
+      border-color: #d6bd69;
+    }
+
+    .plan-label {
+      display: inline-block;
+      align-self: flex-start;
+      background: #e9f2e9;
+      color: var(--green);
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .premium .plan-label {
+      background: #fbf1ce;
+      color: #745600;
+    }
+
+    .exam-card h2 {
+      margin: 0 0 7px;
+      font-size: 22px;
+    }
+
+    .description {
+      color: var(--muted);
+      margin: 0 0 16px;
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: #f5f7f3;
+      padding: 12px;
+      border-radius: 9px;
+    }
+
+    .stat span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    .plan-note {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 18px;
+    }
+
+    .choose-button {
+      width: 100%;
+      margin-top: auto;
+      padding: 13px 16px;
+      border: none;
+      border-radius: 8px;
+      background: var(--green);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .choose-button:hover {
+      background: var(--green-light);
+    }
+
+    .premium .choose-button {
+      background: #8a6b00;
+    }
+
+    .choose-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 13px 15px;
+      border-radius: 8px;
+      margin: 0 0 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      display: block;
+      color: var(--red);
+      background: #fff0f0;
+      border: 1px solid #efcccc;
+    }
+
+    .message.info {
+      display: block;
+      color: var(--green);
+      background: #e9f2e9;
+      border: 1px solid var(--border);
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--muted);
+      padding: 18px 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (min-width: 620px) {
+      .options {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+
+      .exam-card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <p class="brand">SAINTIG <span>EXAMS</span></p>
+      <p class="tagline">Your examination platform</p>
+    </div>
+  </header>
+
+  <main>
+    <a class="back-link" id="backLink" href="start-exam.html">
+      ← Back to subjects
+    </a>
+
+    <section class="intro">
+      <h1>Choose Your Examination Type</h1>
+      <p>Select an exam option to continue to your examination.</p>
+    </section>
+
+    <section class="subject-panel">
+      <small>Selected subject</small>
+      <strong id="subjectName">Loading subject...</strong>
+      <div id="levelName" style="color:#68736b;font-size:13px;margin-top:4px"></div>
+    </section>
+
+    <div id="message" class="message" role="alert"></div>
+    <div id="loading" class="loading">Checking your examination options...</div>
+
+    <section id="options" class="options hidden">
+      <article class="exam-card" id="freeCard">
+        <span class="plan-label">FREE ACCESS</span>
+        <h2>Free Exam</h2>
+        <p class="description">
+          Practise and test your knowledge with the free examination option.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <span>Questions</span>
+            <strong>50</strong>
+          </div>
+          <div class="stat">
+            <span>Duration</span>
+            <strong>45 min</strong>
+          </div>
+        </div>
+
+        <p class="plan-note">
+          Limited to one free attempt per day, subject to server verification.
+        </p>
+
+        <button class="choose-button" id="freeButton" type="button">
+          Start Free Exam
+        </button>
+      </article>
+
+      <article class="exam-card premium hidden" id="premiumCard">
+        <span class="plan-label">PREMIUM ACCESS</span>
+        <h2>Premium Exam</h2>
+        <p class="description">
+          Take the extended examination with more questions and more time.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <span>Questions</span>
+            <strong>100</strong>
+          </div>
+          <div class="stat">
+            <span>Duration</span>
+            <strong>90 min</strong>
+          </div>
+        </div>
+
+        <p class="plan-note">
+          Available to eligible subscribers while their subscription is active.
+        </p>
+
+        <button class="choose-button" id="premiumButton" type="button">
+          Start Premium Exam
+        </button>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    SAINTIG EXAMS · Learn, practise and achieve.
+  </footer>
+
+  <script type="module">
+    import { supabase, getCurrentSession } from "./auth.js";
+
+    const params = new URLSearchParams(window.location.search);
+
+    const countryId = params.get("country_id");
+    const levelId = params.get("level_id");
+    const subjectId = params.get("subject_id");
+
+    const subjectName = document.getElementById("subjectName");
+    const levelName = document.getElementById("levelName");
+    const loading = document.getElementById("loading");
+    const options = document.getElementById("options");
+    const message = document.getElementById("message");
+    const freeCard = document.getElementById("freeCard");
+    const premiumCard = document.getElementById("premiumCard");
+    const freeButton = document.getElementById("freeButton");
+    const premiumButton = document.getElementById("premiumButton");
+    const backLink = document.getElementById("backLink");
+
+    let session = null;
+    let examination = null;
+    let busy = false;
+
+    function showMessage(text, type = "error") {
+      message.textContent = text;
+      message.className = `message ${type}`;
+    }
+
+    function setBusy(value) {
+      busy = value;
+      freeButton.disabled = value;
+      premiumButton.disabled = value;
+      freeButton.textContent = value ? "Starting..." : "Start Free Exam";
+      premiumButton.textContent = value
+        ? "Starting..."
+        : "Start Premium Exam";
+    }
+
+    function validateParameters() {
+      if (!countryId || !levelId || !subjectId) {
+        throw new Error(
+          "The examination details are incomplete. Return to subject selection and try again."
+        );
+      }
+
+      if (![countryId, levelId, subjectId].every(
+        value => /^\d+$/.test(value)
+      )) {
+        throw new Error("The examination details are invalid.");
+      }
+    }
+
+    async function loadPage() {
+      try {
+        validateParameters();
+
+        backLink.href =
+          `start-exam.html?country_id=${encodeURIComponent(countryId)}` +
+          `&level_id=${encodeURIComponent(levelId)}`;
+
+        session = await getCurrentSession();
+
+        if (!session) {
+          const returnUrl = encodeURIComponent(window.location.href);
+          window.location.href = `login.html?return_to=${returnUrl}`;
+          return;
+        }
+
+        const { data: level, error: levelError } = await supabase
+          .from("education_levels")
+          .select("id,name,education_system_id,is_active")
+          .eq("id", Number(levelId))
+          .eq("education_system_id", Number(countryId))
+          .eq("is_active", true)
+          .maybeSingle();
+
+        if (levelError) throw levelError;
+        if (!level) {
+          throw new Error("This education level is unavailable.");
+        }
+
+        const { data: assignment, error: assignmentError } = await supabase
+          .from("education_level_subjects")
+          .select("subject_id,is_active,subjects(id,name,is_active)")
+          .eq("education_level_id", Number(levelId))
+          .eq("subject_id", Number(subjectId))
+          .eq("is_active", true)
+          .maybeSingle();
+
+        if (assignmentError) throw assignmentError;
+
+        if (
+          !assignment ||
+          !assignment.subjects ||
+          !assignment.subjects.is_active
+        ) {
+          throw new Error(
+            "This subject is not available for the selected education level."
+          );
+        }
+
+        subjectName.textContent = assignment.subjects.name;
+        levelName.textContent = level.name;
+
+        const { data: exams, error: examError } = await supabase
+          .from("examinations")
+          .select("id,subject_id,education_level_id,title,is_published")
+          .eq("subject_id", Number(subjectId))
+          .eq("education_level_id", Number(levelId))
+          .eq("is_published", true)
+          .order("created_at", { ascending: false })
+          .limit(1);
+
+        if (examError) throw examError;
+
+        if (!exams || exams.length === 0) {
+          throw new Error(
+            "No published examination is available for this subject and level yet."
+          );
+        }
+
+        examination = exams[0];
+
+        /*
+         * Premium access must be confirmed by the server.
+         * Until the subscription-checking Edge Function is implemented,
+         * do not expose the Premium option to students.
+         */
+        premiumCard.classList.add("hidden");
+
+        loading.classList.add("hidden");
+        options.classList.remove("hidden");
+      } catch (error) {
+        loading.classList.add("hidden");
+        showMessage(error.message || "Unable to load examination options.");
+      }
+    }
+
+    async function startExam(type) {
+      if (busy || !session || !examination) return;
+
+      if (type !== "free" && type !== "premium") return;
+
+      setBusy(true);
+      message.className = "message";
+
+      try {
+        /*
+         * The Edge Function must enforce the selected plan,
+         * subscription eligibility and daily free-attempt limit.
+         * The browser cannot enforce these rules securely.
+         */
+        const questionCount = type === "free" ? 50 : 100;
+
+        const { data, error } = await supabase.functions.invoke(
+          "start-exam",
+          {
+            body: {
+              examination_id: examination.id,
+              question_count: questionCount,
+              exam_type: type
+            },
+            headers: {
+              Authorization: `Bearer ${session.access_token}`
+            }
+          }
+        );
+
+        if (error) {
+          let detail = error.message || "The examination could not be started.";
+
+          if (error.context && typeof error.context.json === "function") {
+            try {
+              const body = await error.context.json();
+              if (body.message) detail = body.message;
+              else if (body.error) detail = body.error;
+            } catch (_) {}
+          }
+
+          throw new Error(detail);
+        }
+
+        if (data && data.error) {
+          throw new Error(data.error);
+        }
+
+        const attemptId =
+          data?.attempt?.id ??
+          data?.attempt_id ??
+          data?.attemptId;
+
+        if (!attemptId) {
+          throw new Error(
+            "The server did not return an examination attempt ID."
+          );
+        }
+
+        const destination = new URL("exam.html", window.location.href);
+        destination.searchParams.set("attempt_id", attemptId);
+        destination.searchParams.set("country_id", countryId);
+        destination.searchParams.set("level_id", levelId);
+        destination.searchParams.set("subject_id", subjectId);
+        window.location.href = destination.toString();
+      } catch (error) {
+        showMessage(error.message || "Unable to start the examination.");
+        setBusy(false);
+      }
+    }
+
+    freeButton.addEventListener("click", () => startExam("free"));
+    premiumButton.addEventListener("click", () => startExam("premium"));
+
+    loadPage();
+  </script>
+</body>
+</html>
