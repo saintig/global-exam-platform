@@ -12,7 +12,6 @@
       --green-light: #1d5b40;
       --gold: #d4af37;
       --cream: #f7f5ed;
-      --white: #ffffff;
       --text: #202820;
       --muted: #68736b;
       --border: #dce4dc;
@@ -177,20 +176,25 @@
       cursor: pointer;
     }
 
-    button:hover { background: var(--green-light); }
+    button:hover:not(:disabled) {
+      background: var(--green-light);
+    }
 
     .premium button { background: #8a6b00; }
-    .premium button:hover { background: #705700; }
+
+    .premium button:hover:not(:disabled) {
+      background: #705700;
+    }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.55;
       cursor: not-allowed;
     }
 
     .message {
       display: none;
       padding: 13px;
-      margin-bottom: 18px;
+      margin: 18px 0;
       border-radius: 8px;
       overflow-wrap: anywhere;
     }
@@ -209,9 +213,14 @@
       border: 1px solid var(--border);
     }
 
-    .loading {
-      padding: 18px 0;
-      color: var(--muted);
+    .status-note {
+      margin: 18px 0;
+      padding: 14px;
+      border-radius: 8px;
+      background: #fff8df;
+      border: 1px solid #eadba0;
+      color: #705700;
+      font-size: 14px;
     }
 
     .hidden { display: none !important; }
@@ -258,11 +267,12 @@
 
     <div id="message" class="message" role="alert"></div>
 
-    <div id="loading" class="loading">
-      Verifying your examination details...
+    <div id="availabilityMessage" class="status-note hidden">
+      Checking examination availability...
     </div>
 
-    <section id="options" class="options hidden">
+    <!-- The options are displayed independently of exam availability. -->
+    <section id="options" class="options">
 
       <article class="exam-card">
         <span class="badge">FREE ACCESS</span>
@@ -277,7 +287,6 @@
             <span>Total questions</span>
             <strong>50</strong>
           </div>
-
           <div class="stat">
             <span>Time allowed</span>
             <strong>45 min</strong>
@@ -288,12 +297,12 @@
           One free attempt per day.
         </p>
 
-        <button id="freeButton" type="button">
-          Select Free Exam
+        <button id="freeButton" type="button" disabled>
+          Checking availability...
         </button>
       </article>
 
-      <article class="exam-card premium hidden" id="premiumCard">
+      <article class="exam-card premium">
         <span class="badge">PREMIUM ACCESS</span>
         <h2>Premium Examination</h2>
 
@@ -306,7 +315,6 @@
             <span>Total questions</span>
             <strong>100</strong>
           </div>
-
           <div class="stat">
             <span>Time allowed</span>
             <strong>90 min</strong>
@@ -317,8 +325,8 @@
           Unlimited attempts while your paid subscription is active.
         </p>
 
-        <button id="premiumButton" type="button">
-          Select Premium Exam
+        <button id="premiumButton" type="button" disabled>
+          Premium verification pending
         </button>
       </article>
 
@@ -343,10 +351,9 @@
 
     const subjectName = document.getElementById("subjectName");
     const levelName = document.getElementById("levelName");
-    const loading = document.getElementById("loading");
-    const options = document.getElementById("options");
     const message = document.getElementById("message");
-    const premiumCard = document.getElementById("premiumCard");
+    const availabilityMessage =
+      document.getElementById("availabilityMessage");
     const freeButton = document.getElementById("freeButton");
     const premiumButton = document.getElementById("premiumButton");
     const backLink = document.getElementById("backLink");
@@ -358,6 +365,15 @@
     function showMessage(text, type = "error") {
       message.textContent = text;
       message.className = `message ${type}`;
+    }
+
+    function showAvailability(text) {
+      availabilityMessage.textContent = text;
+      availabilityMessage.classList.remove("hidden");
+    }
+
+    function hideAvailability() {
+      availabilityMessage.classList.add("hidden");
     }
 
     function validateIds() {
@@ -372,19 +388,26 @@
 
     function setBusy(value) {
       busy = value;
-      freeButton.disabled = value;
-      premiumButton.disabled = value;
+
+      freeButton.disabled = value || !examination;
+      premiumButton.disabled = true;
 
       freeButton.textContent = value
         ? "Please wait..."
-        : "Select Free Exam";
+        : examination
+          ? "Start Free Exam"
+          : "Exam not available yet";
 
       premiumButton.textContent = value
         ? "Please wait..."
-        : "Select Premium Exam";
+        : "Premium verification pending";
     }
 
     async function loadPage() {
+      /*
+       * The options are already visible.
+       * Loading data only controls whether an exam can start.
+       */
       try {
         validateIds();
 
@@ -411,11 +434,6 @@
           return;
         }
 
-        /*
-         * IMPORTANT:
-         * The correct education-level column is level_name,
-         * not name.
-         */
         const {
           data: level,
           error: levelError
@@ -473,32 +491,49 @@
 
         if (examError) throw examError;
 
-        if (!exams?.length) {
-          throw new Error(
-            "No published examination is available for this subject and level yet."
+        if (!exams || exams.length === 0) {
+          examination = null;
+
+          freeButton.disabled = true;
+          freeButton.textContent = "Exam not available yet";
+
+          premiumButton.disabled = true;
+          premiumButton.textContent = "Premium verification pending";
+
+          showAvailability(
+            "Examination options are shown below, but this subject does not have a published examination yet. You cannot start until an examination is published."
           );
+
+          return;
         }
 
         examination = exams[0];
 
-        /*
-         * Premium stays hidden until a trusted backend
-         * verifies the student's active subscription.
-         */
-        premiumCard.classList.add("hidden");
+        freeButton.disabled = false;
+        freeButton.textContent = "Start Free Exam";
 
-        loading.classList.add("hidden");
-        options.classList.remove("hidden");
+        /*
+         * Premium remains disabled until the backend can verify
+         * an active subscription and enforce premium exam limits.
+         */
+        premiumButton.disabled = true;
+        premiumButton.textContent = "Premium verification pending";
+
+        hideAvailability();
 
       } catch (error) {
-        loading.classList.add("hidden");
+        console.error("Unable to load examination details:", error);
+
+        freeButton.disabled = true;
+        freeButton.textContent = "Unable to verify exam";
+
+        premiumButton.disabled = true;
+        premiumButton.textContent = "Premium verification pending";
 
         showMessage(
           error?.message ||
-          "Unable to load examination options."
+          "Unable to verify examination details."
         );
-
-        console.error("Unable to load examination options:", error);
       }
     }
 
@@ -507,7 +542,7 @@
 
       if (type === "premium") {
         showMessage(
-          "Premium access must be verified by the subscription service before this examination can start."
+          "Premium access is not enabled yet. Subscription verification and server-side premium limits must be implemented first."
         );
         return;
       }
@@ -576,20 +611,9 @@
           attemptId
         );
 
-        destination.searchParams.set(
-          "country_id",
-          countryId
-        );
-
-        destination.searchParams.set(
-          "level_id",
-          levelId
-        );
-
-        destination.searchParams.set(
-          "subject_id",
-          subjectId
-        );
+        destination.searchParams.set("country_id", countryId);
+        destination.searchParams.set("level_id", levelId);
+        destination.searchParams.set("subject_id", subjectId);
 
         location.assign(destination.toString());
 
