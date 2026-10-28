@@ -332,101 +332,40 @@ footer {
   © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
 </footer>
 
+
+
+
 <script type="module">
 import { supabase, getCurrentSession } from "./auth.js";
 
 const params = new URLSearchParams(location.search);
 
-const country = params.get("country") || "NG";
-const level = params.get("level") || "senior-secondary";
+// Use the real Supabase IDs passed by dashboard.html.
+const countryId = params.get("country_id");
+const levelId = params.get("level_id");
 
-const countryNames = {
-  NG: "Nigeria",
-  US: "United States",
-  UK: "United Kingdom",
-  CA: "Canada"
-};
+// Support the previous URL format for compatibility, if used elsewhere.
+const legacyCountry = params.get("country") || "";
+const legacyLevel = params.get("level") || "";
 
-const levelNames = {
-  NG: {
-    primary: "Primary School",
-    "junior-secondary": "Junior Secondary School",
-    "senior-secondary": "Senior Secondary School"
-  },
-  US: {
-    elementary: "Elementary School",
-    "middle-high": "Middle/High School"
-  },
-  UK: {
-    primary: "Primary Education",
-    secondary: "Secondary Education"
-  },
-  CA: {
-    elementary: "Elementary School",
-    "middle-secondary": "Middle/Secondary School"
-  }
-};
+const $ = id => document.getElementById(id);
 
-/*
- * Actual Nigerian education-level IDs from Supabase.
- * Other countries require their education levels and subject
- * assignments to be configured before this page can display them.
- */
-const nigeriaLevelIds = {
-  primary: 1,
-  "junior-secondary": 2,
-  "senior-secondary": 3
-};
+const form = $("subjectForm");
+const statusBox = $("status");
+const startButton = $("startButton");
+const subjectList = $("subjectList");
+const subjectCount = $("subjectCount");
+const subjectHeading = $("subjectHeading");
 
-const form = document.getElementById("subjectForm");
-const statusBox = document.getElementById("status");
-const startButton = document.getElementById("startButton");
-const subjectList = document.getElementById("subjectList");
-const subjectCount = document.getElementById("subjectCount");
-const subjectHeading = document.getElementById("subjectHeading");
+let selectedCountry = null;
+let selectedLevel = null;
+let loadedSubjects = [];
 
-document.getElementById("countryName").textContent =
-  countryNames[country] || country;
-
-document.getElementById("levelName").textContent =
-  levelNames[country]?.[level] || level;
-
-document.getElementById("year").textContent =
-  new Date().getFullYear();
-
-subjectHeading.textContent =
-  (levelNames[country]?.[level] || level) + " Subjects";
+$("year").textContent = new Date().getFullYear();
 
 function showStatus(message, type = "") {
   statusBox.textContent = message;
   statusBox.className = "status" + (type ? " " + type : "");
-}
-
-function normalize(value) {
-  return String(value ?? "")
-    .trim()
-    .toLowerCase()
-    .replace(/&/g, "and")
-    .replace(/[^a-z0-9]/g, "");
-}
-
-function getSessionObject(result) {
-  if (result?.data?.session) return result.data.session;
-  if (result?.session) return result.session;
-
-  if (result?.access_token && result?.user) return result;
-
-  return null;
-}
-
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[character]);
 }
 
 function setSubjectMessage(message) {
@@ -435,53 +374,121 @@ function setSubjectMessage(message) {
   const paragraph = document.createElement("p");
   paragraph.className = "muted";
   paragraph.textContent = message;
-
   subjectList.appendChild(paragraph);
+
   subjectCount.textContent = "0 SUBJECTS AVAILABLE";
   startButton.disabled = true;
+}
+
+function getSessionObject(result) {
+  if (result?.data?.session) return result.data.session;
+  if (result?.session) return result.session;
+  if (result?.access_token && result?.user) return result;
+  return null;
+}
+
+function displayEducationDetails() {
+  $("countryName").textContent =
+    selectedCountry?.country_name || legacyCountry || "Not selected";
+
+  $("levelName").textContent =
+    selectedLevel?.level_name || legacyLevel || "Not selected";
+
+  subjectHeading.textContent =
+    (selectedLevel?.level_name || "Education") + " Subjects";
+}
+
+async function loadSelectedEducation() {
+  if (!countryId || !levelId) {
+    setSubjectMessage(
+      "Your country or education level was not provided. Return to the student dashboard and select your country and education level again."
+    );
+    showStatus("Missing country or education-level selection.", "error");
+    displayEducationDetails();
+    return false;
+  }
+
+  const [countryResult, levelResult] = await Promise.all([
+    supabase
+      .from("education_systems")
+      .select("id,country_name,is_active")
+      .eq("id", countryId)
+      .eq("is_active", true)
+      .maybeSingle(),
+
+    supabase
+      .from("education_levels")
+      .select("id,education_system_id,level_name,is_active")
+      .eq("id", levelId)
+      .eq("is_active", true)
+      .maybeSingle()
+  ]);
+
+  if (countryResult.error) throw countryResult.error;
+  if (levelResult.error) throw levelResult.error;
+
+  selectedCountry = countryResult.data;
+  selectedLevel = levelResult.data;
+
+  if (!selectedCountry) {
+    setSubjectMessage(
+      "This country is unavailable or inactive. Please return to the dashboard."
+    );
+    showStatus("The selected country could not be found.", "error");
+    displayEducationDetails();
+    return false;
+  }
+
+  if (!selectedLevel) {
+    setSubjectMessage(
+      "This education level is unavailable or inactive. Please return to the dashboard."
+    );
+    showStatus("The selected education level could not be found.", "error");
+    displayEducationDetails();
+    return false;
+  }
+
+  // Prevent a level from another country being used with this country.
+  if (String(selectedLevel.education_system_id) !== String(selectedCountry.id)) {
+    setSubjectMessage(
+      "The selected education level does not belong to this country. Return to the dashboard and choose again."
+    );
+    showStatus("Country and education level do not match.", "error");
+    displayEducationDetails();
+    return false;
+  }
+
+  displayEducationDetails();
+  return true;
 }
 
 async function loadSubjects() {
   startButton.disabled = true;
   subjectCount.textContent = "Loading subjects…";
-
-  if (country !== "NG") {
-    setSubjectMessage(
-      "Subjects have not yet been configured for this country. Please choose Nigeria or contact the administrator."
-    );
-    return;
-  }
-
-  const levelId = nigeriaLevelIds[level];
-
-  if (!levelId) {
-    setSubjectMessage(
-      "The selected education level is not recognised. Please return to the dashboard and choose an education level."
-    );
-    return;
-  }
+  subjectList.replaceChildren();
 
   try {
-    /*
-     * Fetch active subject assignments and their related subject rows.
-     * This uses the relationship table created in Supabase.
-     */
+    const validSelection = await loadSelectedEducation();
+    if (!validSelection) return;
+
+    // Load active subject assignments for the actual selected level.
     const { data, error } = await supabase
       .from("education_level_subjects")
       .select(`
         subject_id,
+        is_active,
         subjects (
           id,
           name,
           is_active
         )
       `)
-      .eq("education_level_id", levelId)
+      .eq("education_level_id", selectedLevel.id)
       .eq("is_active", true);
 
     if (error) throw error;
 
-    const subjects = (data || [])
+    loadedSubjects = (data || [])
       .map(row => row.subjects)
       .filter(subject =>
         subject &&
@@ -489,21 +496,21 @@ async function loadSubjects() {
         subject.id !== null &&
         subject.name
       )
-      .filter((subject, index, list) =>
-        list.findIndex(item => String(item.id) === String(subject.id)) === index
+      .filter((subject, index, subjects) =>
+        subjects.findIndex(item =>
+          String(item.id) === String(subject.id)
+        ) === index
       )
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    subjectList.replaceChildren();
-
-    if (subjects.length === 0) {
+    if (!loadedSubjects.length) {
       setSubjectMessage(
         "No active subjects have been assigned to this education level yet. Please contact the administrator."
       );
       return;
     }
 
-    subjects.forEach((subject, index) => {
+    loadedSubjects.forEach(subject => {
       const label = document.createElement("label");
       label.className = "subject";
 
@@ -512,7 +519,7 @@ async function loadSubjects() {
       radio.name = "subject";
       radio.value = String(subject.id);
       radio.dataset.subjectName = subject.name;
-      radio.required = index === 0;
+      radio.required = true;
 
       const name = document.createElement("span");
       name.textContent = subject.name;
@@ -522,15 +529,15 @@ async function loadSubjects() {
     });
 
     subjectCount.textContent =
-      `${subjects.length} SUBJECT${subjects.length === 1 ? "" : "S"} AVAILABLE`;
+      `${loadedSubjects.length} SUBJECT${loadedSubjects.length === 1 ? "" : "S"} AVAILABLE`;
 
     startButton.disabled = false;
 
   } catch (error) {
-    console.error("Unable to load subjects:", error);
+    console.error("Unable to load education subjects:", error);
 
     setSubjectMessage(
-      "We couldn't load subjects. Check your connection and Supabase permissions, then refresh the page."
+      "We couldn't load the subjects. Check your internet connection and Supabase read permissions, then refresh."
     );
 
     showStatus(
@@ -543,24 +550,20 @@ async function loadSubjects() {
 async function findPublishedExamination(subjectId) {
   const { data, error } = await supabase
     .from("examinations")
-    .select("id, subject_id, title, is_published")
+    .select("id,subject_id,title,is_published")
     .eq("subject_id", subjectId)
     .eq("is_published", true)
+    .order("created_at", { ascending: false })
     .limit(1);
 
   if (error) throw error;
 
-  if (!data || data.length === 0) {
+  if (!data?.length) {
     throw new Error(
-      "No published examination was found for this subject. The administrator must create and publish an examination first."
+      "There is no published examination for this subject yet. Please contact the administrator."
     );
   }
 
-  /*
-   * The current examinations table has no education_level_id column.
-   * Therefore this confirms publication for the subject, but cannot
-   * independently confirm that the exam belongs to the selected level.
-   */
   return data[0];
 }
 
@@ -582,27 +585,17 @@ form.addEventListener("submit", async event => {
   try {
     showStatus("Checking your sign-in…");
 
-    const result = await getCurrentSession();
-    const session = getSessionObject(result);
+    const sessionResult = await getCurrentSession();
+    let session = getSessionObject(sessionResult);
 
-    if (!session?.access_token || !session?.user?.id) {
-      showStatus(
-        "Your session has expired. Please sign in again.",
-        "error"
-      );
-
-      location.href = "student-login.html?mode=login";
-      return;
-    }
-
-    const { data: refreshed, error: refreshError } =
+    const { data: sessionData, error: sessionError } =
       await supabase.auth.getSession();
 
-    if (refreshError) throw refreshError;
+    if (sessionError) throw sessionError;
 
-    const activeSession = refreshed?.session || session;
+    session = sessionData?.session || session;
 
-    if (!activeSession?.access_token || !activeSession?.user?.id) {
+    if (!session?.access_token || !session?.user?.id) {
       location.href = "student-login.html?mode=login";
       return;
     }
@@ -610,9 +603,24 @@ form.addEventListener("submit", async event => {
     const subjectId = selected.value;
     const subjectName = selected.dataset.subjectName || "selected subject";
 
-    showStatus(
-      `Finding a published examination for ${subjectName}…`
-    );
+    showStatus(`Finding a published examination for ${subjectName}…`);
+
+    // Reconfirm that the selected subject is still assigned to this level.
+    const { data: assignment, error: assignmentError } = await supabase
+      .from("education_level_subjects")
+      .select("subject_id")
+      .eq("education_level_id", selectedLevel.id)
+      .eq("subject_id", subjectId)
+      .eq("is_active", true)
+      .maybeSingle();
+
+    if (assignmentError) throw assignmentError;
+
+    if (!assignment) {
+      throw new Error(
+        "This subject is no longer assigned to the selected education level. Refresh the page and try again."
+      );
+    }
 
     const examination = await findPublishedExamination(subjectId);
 
@@ -626,14 +634,13 @@ form.addEventListener("submit", async event => {
           question_count: 50
         },
         headers: {
-          Authorization: `Bearer ${activeSession.access_token}`
+          Authorization: `Bearer ${session.access_token}`
         }
       }
     );
 
     if (error) {
       console.error("start-exam function error:", error, data);
-
       throw new Error(
         data?.error ||
         data?.message ||
@@ -643,9 +650,7 @@ form.addEventListener("submit", async event => {
     }
 
     if (!data) {
-      throw new Error(
-        "The examination service returned no response. Please try again."
-      );
+      throw new Error("The examination service returned no response.");
     }
 
     const attemptId =
@@ -655,23 +660,20 @@ form.addEventListener("submit", async event => {
 
     if (!attemptId) {
       console.error("Unexpected start-exam response:", data);
-
       throw new Error(
         data?.message ||
-        "The service did not return an attempt ID. Check the deployed start-exam function."
+        "The examination service did not return an attempt ID."
       );
     }
 
-    showStatus(
-      "Examination started. Opening your questions…",
-      "success"
-    );
+    showStatus("Examination started. Opening your questions…", "success");
 
     const destination = new URL("exam.html", location.href);
 
     destination.searchParams.set("attempt_id", attemptId);
-    destination.searchParams.set("country", country);
-    destination.searchParams.set("level", level);
+    destination.searchParams.set("country_id", selectedCountry.id);
+    destination.searchParams.set("level_id", selectedLevel.id);
+    destination.searchParams.set("subject_id", subjectId);
 
     location.assign(destination.toString());
 
@@ -691,7 +693,7 @@ form.addEventListener("submit", async event => {
   } finally {
     startButton.textContent = "START EXAMINATION →";
 
-    if (subjectList.querySelector('input[name="subject"]')) {
+    if (loadedSubjects.length) {
       startButton.disabled = false;
     }
   }
@@ -700,5 +702,4 @@ form.addEventListener("submit", async event => {
 loadSubjects();
 </script>
 
-</body>
-</html>
+  
