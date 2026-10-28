@@ -33,7 +33,6 @@
 
     button, input { font: inherit; }
     a { color: inherit; text-decoration: none; }
-
     button, a { -webkit-tap-highlight-color: transparent; }
 
     .topbar {
@@ -124,8 +123,20 @@
     }
 
     .welcome { margin-bottom: 22px; }
-    .welcome h1 { margin: 0 0 5px; font-size: 26px; }
+    .welcome h1 { margin: 0 0 5px; font-size: 26px; font-weight: 800; }
     .welcome p { margin: 0; color: var(--muted); }
+
+    .student-name {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 7px 13px;
+      border-radius: 8px;
+      background: #eaf0f9;
+      color: var(--primary);
+      font-size: 17px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
 
     .section { display: none; }
     .section.active { display: block; }
@@ -371,10 +382,11 @@
 
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html">SAINTIG <span>EXAMS</span></a>
+    <!-- Signed-in students return to their dashboard by clicking the logo. -->
+    <a class="brand" href="dashboard.html">SAINTIG <span>EXAMS</span></a>
 
     <div class="top-actions">
-      <a class="top-link" href="index.html">Homepage</a>
+      <a class="top-link" href="dashboard.html">Return Home</a>
       <a class="top-link" href="dashboard.html">Dashboard</a>
       <button class="menu-button" id="menuButton" type="button"
         aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
@@ -408,6 +420,7 @@
       <div class="welcome">
         <h1 id="welcomeTitle">Welcome to SAINTIG EXAMS</h1>
         <p id="welcomeSubtitle">Your learning and examination dashboard.</p>
+        <div id="studentDisplayName" class="student-name" hidden></div>
       </div>
 
       <section class="section active" id="home">
@@ -476,7 +489,6 @@
         <p class="section-description">
           Enter the examination details supplied by your school.
         </p>
-
         <div class="card">
           <form id="schoolExamForm">
             <div class="form-group">
@@ -484,13 +496,11 @@
               <input id="schoolExamId" name="exam_id" type="text"
                 placeholder="Enter Exam ID" required autocomplete="off">
             </div>
-
             <div class="form-group">
               <label for="schoolStudentId">Student ID</label>
               <input id="schoolStudentId" name="student_id" type="text"
                 placeholder="Enter Student ID" required autocomplete="off">
             </div>
-
             <button class="button full" type="submit">Take Exam</button>
             <div id="schoolExamMessage" class="status-message" role="status"></div>
           </form>
@@ -502,7 +512,6 @@
         <p class="section-description">
           Enter your school examination ID and student ID to look up a result.
         </p>
-
         <div class="card">
           <form id="schoolResultForm">
             <div class="form-group">
@@ -510,13 +519,11 @@
               <input id="resultExamId" name="exam_id" type="text"
                 placeholder="Enter Exam ID" required autocomplete="off">
             </div>
-
             <div class="form-group">
               <label for="resultStudentId">Student ID</label>
               <input id="resultStudentId" name="student_id" type="text"
                 placeholder="Enter Student ID" required autocomplete="off">
             </div>
-
             <button class="button full" type="submit">View Results</button>
             <div id="schoolResultMessage" class="status-message" role="status"></div>
             <div id="schoolResultOutput"></div>
@@ -566,12 +573,10 @@
               <input id="displayName" type="text" maxlength="100"
                 placeholder="Enter your name" required>
             </div>
-
             <div class="form-group">
               <label for="accountEmail">Email address</label>
               <input id="accountEmail" type="email" readonly>
             </div>
-
             <button class="button" type="submit">Save Profile</button>
             <div id="profileMessage" class="status-message" role="status"></div>
           </form>
@@ -580,20 +585,17 @@
         <div class="card">
           <h3>Change Password</h3>
           <p class="muted">Choose a new password for your account.</p>
-
           <form id="passwordForm">
             <div class="form-group">
               <label for="newPassword">New password</label>
               <input id="newPassword" type="password" minlength="8"
                 autocomplete="new-password" placeholder="At least 8 characters" required>
             </div>
-
             <div class="form-group">
               <label for="confirmPassword">Confirm new password</label>
               <input id="confirmPassword" type="password" minlength="8"
                 autocomplete="new-password" placeholder="Enter the new password again" required>
             </div>
-
             <button class="button" type="submit">Update Password</button>
             <div id="passwordMessage" class="status-message" role="status"></div>
           </form>
@@ -625,8 +627,10 @@
 
       <footer class="footer">
         © <span id="currentYear"></span> SAINTIG EXAMS · SAINT IG DIGITAL
-        <p><a href="index.html">Return to Homepage</a> ·
-          <a href="dashboard.html">Return to Dashboard</a></p>
+        <p>
+          <a href="dashboard.html">Return Home</a> ·
+          <a href="dashboard.html">Return to Dashboard</a>
+        </p>
       </footer>
     </main>
   </div>
@@ -680,7 +684,7 @@
     }
 
     function openSection(sectionId) {
-      if (!$ (sectionId)) return;
+      if (!$(sectionId)) return;
 
       document.querySelectorAll(".section").forEach((section) => {
         section.classList.toggle("active", section.id === sectionId);
@@ -739,6 +743,16 @@
       return data?.session?.user || null;
     }
 
+    function updateDisplayedName(name) {
+      const cleanName = String(name || "").trim();
+      $("welcomeTitle").textContent = cleanName
+        ? "Welcome to SAINTIG EXAMS"
+        : "Welcome to SAINTIG EXAMS";
+
+      $("studentDisplayName").textContent = cleanName;
+      $("studentDisplayName").hidden = !cleanName;
+    }
+
     async function loadProfile() {
       $("accountEmail").value = currentUser.email || "";
 
@@ -750,14 +764,15 @@
 
       if (error) {
         console.warn("Profile query:", error.message);
-        return;
       }
 
-      const name = data?.display_name || "";
+      const name = data?.display_name
+        || currentUser.user_metadata?.display_name
+        || currentUser.user_metadata?.full_name
+        || "";
+
       $("displayName").value = name;
-      $("welcomeTitle").textContent = name
-        ? `Welcome, ${name}`
-        : "Welcome to SAINTIG EXAMS";
+      updateDisplayedName(name);
     }
 
     $("profileForm").addEventListener("submit", async (event) => {
@@ -782,7 +797,7 @@
 
         if (error) throw error;
 
-        $("welcomeTitle").textContent = `Welcome, ${name}`;
+        updateDisplayedName(name);
         showMessage($("profileMessage"), "Profile updated successfully.", "success");
       } catch (error) {
         showMessage(
@@ -817,10 +832,7 @@
       button.textContent = "Updating…";
 
       try {
-        const { error } = await supabase.auth.updateUser({
-          password: password
-        });
-
+        const { error } = await supabase.auth.updateUser({ password });
         if (error) throw error;
 
         $("passwordForm").reset();
@@ -837,13 +849,6 @@
       }
     });
 
-    /*
-      Expected database relationship:
-      education_systems.id
-      education_levels.education_system_id
-
-      This is the schema used by the existing admin code.
-    */
     async function loadEducationOptions() {
       const list = $("countryList");
       list.innerHTML = '<div class="empty-state">Loading education options…</div>';
@@ -1023,13 +1028,8 @@
         : '<div class="empty-state">You have not attempted any examinations yet.</div>';
     }
 
-    /*
-      These school-exam forms are intentionally display-only until the
-      school examinations, student registrations and results tables exist.
-    */
     $("schoolExamForm").addEventListener("submit", (event) => {
       event.preventDefault();
-
       showMessage(
         $("schoolExamMessage"),
         "School examination login is not active yet. The school exam database will be connected in a later stage.",
@@ -1039,13 +1039,11 @@
 
     $("schoolResultForm").addEventListener("submit", (event) => {
       event.preventDefault();
-
       showMessage(
         $("schoolResultMessage"),
         "School results are not available for lookup yet. The results database will be connected in a later stage.",
         "error"
       );
-
       $("schoolResultOutput").replaceChildren();
     });
 
@@ -1061,12 +1059,14 @@
       }
 
       try {
-        await supabase.auth.signOut();
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
       } catch (error) {
-        console.warn("Supabase sign-out:", error);
+        console.error("Supabase sign-out:", error);
       }
 
-      window.location.replace("login.html");
+      // After signing out, return to the public homepage.
+      window.location.replace("index.html");
     });
 
     async function initializeDashboard() {
