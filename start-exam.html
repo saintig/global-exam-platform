@@ -576,8 +576,6 @@ async function findPublishedExamination(subjectId) {
 }
 
 
-
-
 form.addEventListener("submit", async event => {
   event.preventDefault();
 
@@ -590,8 +588,16 @@ form.addEventListener("submit", async event => {
     return;
   }
 
+  if (!selectedCountry?.id || !selectedLevel?.id) {
+    showStatus(
+      "Your country or education level could not be verified. Return to the dashboard and try again.",
+      "error"
+    );
+    return;
+  }
+
   startButton.disabled = true;
-  startButton.textContent = "PREPARING EXAMINATION…";
+  startButton.textContent = "OPENING EXAM OPTIONS…";
 
   try {
     showStatus("Checking your sign-in…");
@@ -612,18 +618,18 @@ form.addEventListener("submit", async event => {
     }
 
     const subjectId = selected.value;
-    const subjectName = selected.dataset.subjectName || "selected subject";
 
-    showStatus(`Finding a published examination for ${subjectName}…`);
+    showStatus("Verifying your selected subject…");
 
-    // Reconfirm that the selected subject is still assigned to this level.
-    const { data: assignment, error: assignmentError } = await supabase
-      .from("education_level_subjects")
-      .select("subject_id")
-      .eq("education_level_id", selectedLevel.id)
-      .eq("subject_id", subjectId)
-      .eq("is_active", true)
-      .maybeSingle();
+    // Confirm that the subject is still assigned to this level.
+    const { data: assignment, error: assignmentError } =
+      await supabase
+        .from("education_level_subjects")
+        .select("subject_id")
+        .eq("education_level_id", selectedLevel.id)
+        .eq("subject_id", subjectId)
+        .eq("is_active", true)
+        .maybeSingle();
 
     if (assignmentError) throw assignmentError;
 
@@ -633,73 +639,39 @@ form.addEventListener("submit", async event => {
       );
     }
 
-    const examination = await findPublishedExamination(subjectId);
-
-    startButton.textContent = "STARTING EXAMINATION…";
-
-    const { data, error } = await supabase.functions.invoke(
-      "start-exam",
-      {
-        body: {
-          examination_id: examination.id,
-          question_count: 50
-        },
-        headers: {
-          Authorization: `Bearer ${session.access_token}`
-        }
-      }
+    // Open exam-type.html instead of starting the examination here.
+    const destination = new URL(
+      "exam-type.html",
+      window.location.href
     );
 
-    if (error) {
-      console.error("start-exam function error:", error, data);
-      throw new Error(
-        data?.error ||
-        data?.message ||
-        error.message ||
-        "The examination service returned an error."
-      );
-    }
+    destination.searchParams.set(
+      "country_id",
+      selectedCountry.id
+    );
 
-    if (!data) {
-      throw new Error("The examination service returned no response.");
-    }
+    destination.searchParams.set(
+      "level_id",
+      selectedLevel.id
+    );
 
-    const attemptId =
-      data?.attempt?.id ??
-      data?.attempt_id ??
-      data?.attemptId;
+    destination.searchParams.set(
+      "subject_id",
+      subjectId
+    );
 
-    if (!attemptId) {
-      console.error("Unexpected start-exam response:", data);
-      throw new Error(
-        data?.message ||
-        "The examination service did not return an attempt ID."
-      );
-    }
+    showStatus("Opening Free and Premium examination options…", "success");
 
-    showStatus("Examination started. Opening your questions…", "success");
-
-    const destination = new URL("exam.html", location.href);
-
-    destination.searchParams.set("attempt_id", attemptId);
-    destination.searchParams.set("country_id", selectedCountry.id);
-    destination.searchParams.set("level_id", selectedLevel.id);
-    destination.searchParams.set("subject_id", subjectId);
-
-    location.assign(destination.toString());
+    window.location.assign(destination.toString());
 
   } catch (error) {
-    console.error("Unable to start examination:", error);
+    console.error("Unable to open examination options:", error);
 
-    let message = error?.message ||
-      "We could not start the examination. Please try again.";
-
-    if (/fetch|network|failed to send|edge function/i.test(message)) {
-      message +=
-        " Check your internet connection and confirm the start-exam function is deployed.";
-    }
-
-    showStatus(message, "error");
+    showStatus(
+      error?.message ||
+      "Unable to open examination options. Please try again.",
+      "error"
+    );
 
   } finally {
     startButton.textContent = "START EXAMINATION →";
