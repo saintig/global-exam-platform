@@ -547,11 +547,19 @@ async function loadSubjects() {
   }
 }
 
+
 async function findPublishedExamination(subjectId) {
+  if (!selectedLevel?.id) {
+    throw new Error(
+      "Your education level could not be verified. Return to the dashboard and select your level again."
+    );
+  }
+
   const { data, error } = await supabase
     .from("examinations")
-    .select("id,subject_id,title,is_published")
+    .select("id,subject_id,education_level_id,title,is_published")
     .eq("subject_id", subjectId)
+    .eq("education_level_id", selectedLevel.id)
     .eq("is_published", true)
     .order("created_at", { ascending: false })
     .limit(1);
@@ -560,12 +568,15 @@ async function findPublishedExamination(subjectId) {
 
   if (!data?.length) {
     throw new Error(
-      "There is no published examination for this subject yet. Please contact the administrator."
+      "There is no published examination for this subject and education level yet. Please contact the administrator."
     );
   }
 
   return data[0];
 }
+
+
+
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
