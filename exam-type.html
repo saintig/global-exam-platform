@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -258,14 +257,17 @@
     </section>
 
     <div id="message" class="message" role="alert"></div>
+
     <div id="loading" class="loading">
       Verifying your examination details...
     </div>
 
     <section id="options" class="options hidden">
+
       <article class="exam-card">
         <span class="badge">FREE ACCESS</span>
         <h2>Free Examination</h2>
+
         <p class="description">
           Practise your knowledge with the free examination.
         </p>
@@ -275,6 +277,7 @@
             <span>Total questions</span>
             <strong>50</strong>
           </div>
+
           <div class="stat">
             <span>Time allowed</span>
             <strong>45 min</strong>
@@ -293,6 +296,7 @@
       <article class="exam-card premium hidden" id="premiumCard">
         <span class="badge">PREMIUM ACCESS</span>
         <h2>Premium Examination</h2>
+
         <p class="description">
           Access the extended examination with more questions and more time.
         </p>
@@ -302,6 +306,7 @@
             <span>Total questions</span>
             <strong>100</strong>
           </div>
+
           <div class="stat">
             <span>Time allowed</span>
             <strong>90 min</strong>
@@ -316,6 +321,7 @@
           Select Premium Exam
         </button>
       </article>
+
     </section>
   </main>
 
@@ -324,9 +330,13 @@
   </footer>
 
   <script type="module">
-    import { supabase, getCurrentSession } from "./auth.js";
+    import {
+      supabase,
+      getCurrentSession
+    } from "./auth.js";
 
     const params = new URLSearchParams(location.search);
+
     const countryId = params.get("country_id");
     const levelId = params.get("level_id");
     const subjectId = params.get("subject_id");
@@ -382,40 +392,59 @@
           `start-exam.html?country_id=${encodeURIComponent(countryId)}` +
           `&level_id=${encodeURIComponent(levelId)}`;
 
-        const result = await getCurrentSession();
-        const { data: authData, error: authError } =
-          await supabase.auth.getSession();
+        const sessionResult = await getCurrentSession();
+
+        const {
+          data: authData,
+          error: authError
+        } = await supabase.auth.getSession();
 
         if (authError) throw authError;
 
-        session = authData?.session || result?.session || result;
+        session =
+          authData?.session ||
+          sessionResult?.session ||
+          sessionResult;
 
         if (!session?.access_token || !session?.user?.id) {
           location.href = "student-login.html?mode=login";
           return;
         }
 
-        const { data: level, error: levelError } = await supabase
+        /*
+         * IMPORTANT:
+         * The correct education-level column is level_name,
+         * not name.
+         */
+        const {
+          data: level,
+          error: levelError
+        } = await supabase
           .from("education_levels")
-          .select("id,name,education_system_id,is_active")
+          .select("id,level_name,education_system_id,is_active")
           .eq("id", Number(levelId))
           .eq("education_system_id", Number(countryId))
           .eq("is_active", true)
           .maybeSingle();
 
         if (levelError) throw levelError;
+
         if (!level) {
-          throw new Error("The selected education level is unavailable.");
+          throw new Error(
+            "The selected education level is unavailable."
+          );
         }
 
-        const { data: assignment, error: assignmentError } =
-          await supabase
-            .from("education_level_subjects")
-            .select("subject_id,is_active,subjects(id,name,is_active)")
-            .eq("education_level_id", Number(levelId))
-            .eq("subject_id", Number(subjectId))
-            .eq("is_active", true)
-            .maybeSingle();
+        const {
+          data: assignment,
+          error: assignmentError
+        } = await supabase
+          .from("education_level_subjects")
+          .select("subject_id,is_active,subjects(id,name,is_active)")
+          .eq("education_level_id", Number(levelId))
+          .eq("subject_id", Number(subjectId))
+          .eq("is_active", true)
+          .maybeSingle();
 
         if (assignmentError) throw assignmentError;
 
@@ -426,11 +455,16 @@
         }
 
         subjectName.textContent = assignment.subjects.name;
-        levelName.textContent = level.name;
+        levelName.textContent = level.level_name;
 
-        const { data: exams, error: examError } = await supabase
+        const {
+          data: exams,
+          error: examError
+        } = await supabase
           .from("examinations")
-          .select("id,title,subject_id,education_level_id,is_published")
+          .select(
+            "id,title,subject_id,education_level_id,is_published"
+          )
           .eq("subject_id", Number(subjectId))
           .eq("education_level_id", Number(levelId))
           .eq("is_published", true)
@@ -448,9 +482,8 @@
         examination = exams[0];
 
         /*
-         * Premium remains hidden until the existing backend can
-         * verify an active subscription. We must not infer eligibility
-         * from a URL parameter or browser-only value.
+         * Premium stays hidden until a trusted backend
+         * verifies the student's active subscription.
          */
         premiumCard.classList.add("hidden");
 
@@ -459,7 +492,13 @@
 
       } catch (error) {
         loading.classList.add("hidden");
-        showMessage(error.message || "Unable to load examination options.");
+
+        showMessage(
+          error?.message ||
+          "Unable to load examination options."
+        );
+
+        console.error("Unable to load examination options:", error);
       }
     }
 
@@ -479,35 +518,42 @@
       message.className = "message";
 
       try {
-        const { data, error } = await supabase.functions.invoke(
-          "start-exam",
-          {
-            body: {
-              examination_id: examination.id,
-              question_count: 50,
-              exam_type: "free"
-            },
-            headers: {
-              Authorization: `Bearer ${session.access_token}`
-            }
+        const {
+          data,
+          error
+        } = await supabase.functions.invoke("start-exam", {
+          body: {
+            examination_id: examination.id,
+            question_count: 50,
+            exam_type: "free"
+          },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`
           }
-        );
+        });
 
         if (error) {
-          let detail = error.message ||
+          let detail =
+            error.message ||
             "The examination could not be started.";
 
           if (error.context?.json) {
             try {
               const body = await error.context.json();
-              detail = body.message || body.error || detail;
+
+              detail =
+                body.message ||
+                body.error ||
+                detail;
             } catch (_) {}
           }
 
           throw new Error(detail);
         }
 
-        if (data?.error) throw new Error(data.error);
+        if (data?.error) {
+          throw new Error(data.error);
+        }
 
         const attemptId =
           data?.attempt?.id ??
@@ -520,24 +566,54 @@
           );
         }
 
-        const destination = new URL("exam.html", location.href);
-        destination.searchParams.set("attempt_id", attemptId);
-        destination.searchParams.set("country_id", countryId);
-        destination.searchParams.set("level_id", levelId);
-        destination.searchParams.set("subject_id", subjectId);
+        const destination = new URL(
+          "exam.html",
+          location.href
+        );
+
+        destination.searchParams.set(
+          "attempt_id",
+          attemptId
+        );
+
+        destination.searchParams.set(
+          "country_id",
+          countryId
+        );
+
+        destination.searchParams.set(
+          "level_id",
+          levelId
+        );
+
+        destination.searchParams.set(
+          "subject_id",
+          subjectId
+        );
 
         location.assign(destination.toString());
 
       } catch (error) {
+        console.error("Unable to start examination:", error);
+
         showMessage(
-          error.message || "Unable to start the examination."
+          error?.message ||
+          "Unable to start the examination."
         );
+
         setBusy(false);
       }
     }
 
-    freeButton.addEventListener("click", () => startExam("free"));
-    premiumButton.addEventListener("click", () => startExam("premium"));
+    freeButton.addEventListener(
+      "click",
+      () => startExam("free")
+    );
+
+    premiumButton.addEventListener(
+      "click",
+      () => startExam("premium")
+    );
 
     loadPage();
   </script>
