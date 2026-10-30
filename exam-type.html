@@ -601,22 +601,14 @@
           );
         }
 
-        const destination = new URL(
-          "exam.html",
-          location.href
-        );
+const destination = new URL("take-exam.html", location.href);
+destination.searchParams.set("attempt_id", attemptId);
+destination.searchParams.set("country_id", countryId);
+destination.searchParams.set("level_id", levelId);
+destination.searchParams.set("subject_id", subjectId);
+location.assign(destination.toString());
 
-        destination.searchParams.set(
-          "attempt_id",
-          attemptId
-        );
-
-        destination.searchParams.set("country_id", countryId);
-        destination.searchParams.set("level_id", levelId);
-        destination.searchParams.set("subject_id", subjectId);
-
-        location.assign(destination.toString());
-
+        
       } catch (error) {
         console.error("Unable to start examination:", error);
 
