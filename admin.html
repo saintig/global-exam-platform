@@ -75,7 +75,7 @@ header {
   color:white;
   padding:18px 12px;
   flex-shrink:0;
-  transition:.25s;
+  transition:left .25s;
 }
 
 .sidebar a {
@@ -179,6 +179,7 @@ header {
   text-decoration:none;
   font-weight:bold;
   font-size:14px;
+  transition:.2s;
 }
 
 .quick-links a:hover {
@@ -231,6 +232,17 @@ header {
   }
 }
 
+@media(min-width:901px) {
+  .sidebar {
+    position:relative;
+    left:0;
+  }
+
+  .sidebar-overlay {
+    display:none !important;
+  }
+}
+
 @media(max-width:650px) {
   .stats {
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -267,7 +279,12 @@ header {
 
 <header>
   <div class="brand">SAINTIG <span>EXAMS</span></div>
-  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <button
+    class="menu-btn"
+    id="menuBtn"
+    aria-label="Open menu"
+    aria-expanded="false"
+  >☰</button>
 </header>
 
 <div class="layout">
@@ -309,6 +326,12 @@ header {
         <div class="stat-name">Registered Users</div>
         <div class="stat-value" id="usersCount">—</div>
         <div class="stat-note">All registered accounts</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Total Administrators</div>
+        <div class="stat-value" id="adminsCount">—</div>
+        <div class="stat-note">Administrator accounts</div>
       </article>
 
       <article class="card">
@@ -375,17 +398,31 @@ const $ = id => document.getElementById(id);
 
 const sidebar = $("sidebar");
 const overlay = $("overlay");
+const menuBtn = $("menuBtn");
 
-$("menuBtn").addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-  overlay.classList.toggle("show");
-});
-
-overlay.addEventListener("click", () => {
+// Mobile menu
+function closeMenu() {
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
+  menuBtn.setAttribute("aria-expanded", "false");
+}
+
+menuBtn.addEventListener("click", () => {
+  const isOpen = sidebar.classList.toggle("open");
+  overlay.classList.toggle("show", isOpen);
+  menuBtn.setAttribute("aria-expanded", String(isOpen));
 });
 
+overlay.addEventListener("click", closeMenu);
+
+// Close menu after selecting a navigation link
+sidebar.querySelectorAll("a[href]").forEach(link => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 900) closeMenu();
+  });
+});
+
+// Verify administrator
 async function verifyAdministrator() {
   const session = await getCurrentSession();
 
@@ -413,37 +450,52 @@ async function verifyAdministrator() {
   return true;
 }
 
+// Display statistics safely
 function displayCount(id, count, error) {
-  $(id).textContent =
+  const element = $(id);
+
+  if (!element) return;
+
+  element.textContent =
     !error && count !== null && count !== undefined
       ? Number(count).toLocaleString()
       : "—";
 }
 
+// Load dashboard statistics
 async function loadStatistics() {
 
-  
-async function loadStatistics() {
   const [
     totalExamsResult,
     publishedExamsResult,
+    adminCountResult,
     userCountResult
   ] = await Promise.all([
-    supabase
-      .from("examinations")
-      .select("*", { count: "exact", head: true }),
 
+    // All examinations
     supabase
       .from("examinations")
-      .select("id", { count: "exact" })
+      .select("*", { count:"exact", head:true }),
+
+    // Published examinations
+    supabase
+      .from("examinations")
+      .select("id", { count:"exact" })
       .eq("is_published", true),
 
+    // Total administrators
+    supabase
+      .from("admin_users")
+      .select("*", { count:"exact", head:true }),
+
+    // All Supabase Authentication accounts
     supabase.functions.invoke("admin-user-count", {
       body: {}
     })
+
   ]);
 
-  // Count all Supabase Authentication accounts
+  // Registered Users
   const userData = userCountResult.data;
   const userError = userCountResult.error;
 
@@ -452,47 +504,63 @@ async function loadStatistics() {
       ? Number(userData.totalUsers).toLocaleString()
       : "—";
 
-  // Count all examinations
+  // Total Administrators
+  displayCount(
+    "adminsCount",
+    adminCountResult.count,
+    adminCountResult.error
+  );
+
+  // Total Examinations
   displayCount(
     "totalExamsCount",
     totalExamsResult.count,
     totalExamsResult.error
   );
 
-  // Count published examinations
+  // Published Examinations
   displayCount(
     "examsCount",
     publishedExamsResult.count,
     publishedExamsResult.error
   );
 
-  // Count questions belonging to published examinations
+  // Published Questions
   if (!publishedExamsResult.error) {
+
     const publishedIds = (publishedExamsResult.data || [])
       .map(exam => exam.id);
 
     if (publishedIds.length === 0) {
+
       $("questionsCount").textContent = "0";
+
     } else {
+
       const { count, error } = await supabase
         .from("exam_questions")
-        .select("*", { count: "exact", head: true })
+        .select("*", { count:"exact", head:true })
         .in("examination_id", publishedIds);
 
       displayCount("questionsCount", count, error);
     }
+
   } else {
+
     $("questionsCount").textContent = "—";
+
   }
 
-  // These require their own database records
+  // Awaiting subscription and analytics database implementation
   $("subscribersCount").textContent = "—";
   $("viewsCount").textContent = "—";
 }
 
-
+// Initialize dashboard
 async function initializeDashboard() {
+
   try {
+
     const authorized = await verifyAdministrator();
 
     if (!authorized) return;
@@ -503,18 +571,27 @@ async function initializeDashboard() {
       "Administrator access verified. Dashboard loaded.";
 
   } catch (error) {
+
     console.error("Dashboard error:", error);
 
-    $("statusMessage").innerHTML =
-      '<span class="error">Unable to load dashboard. Check your connection and database permissions.</span>';
+    $("statusMessage").textContent =
+      "Unable to load dashboard. Check your connection and database permissions.";
+
+    $("statusMessage").classList.add("error");
   }
 }
 
+// Sign out
 $("logoutBtn").addEventListener("click", async event => {
+
   event.preventDefault();
 
-  await supabase.auth.signOut();
-  location.replace("admin-login.html");
+  try {
+    await supabase.auth.signOut();
+  } finally {
+    location.replace("admin-login.html");
+  }
+
 });
 
 initializeDashboard();
