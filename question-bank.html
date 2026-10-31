@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -258,127 +257,120 @@ footer {
 
 <main>
 
-  <!-- EXAMINATION SELECTION -->
-  <section class="card">
-    <h3>Select Examination</h3>
+<section class="card">
+  <h3>Select Examination</h3>
 
-    <div class="selection-grid">
-      <div>
-        <label for="countrySelect">1. Select Country</label>
-        <select id="countrySelect">
-          <option value="">Loading countries...</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="levelSelect">2. Select Education Level</label>
-        <select id="levelSelect" disabled>
-          <option value="">Select country first</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="subjectSelect">3. Select Subject</label>
-        <select id="subjectSelect" disabled>
-          <option value="">Select education level first</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="examSelect">4. Select Examination</label>
-        <select id="examSelect" disabled>
-          <option value="">Select subject first</option>
-        </select>
-      </div>
+  <div class="selection-grid">
+    <div>
+      <label for="countrySelect">1. Select Country</label>
+      <select id="countrySelect">
+        <option value="">Loading countries...</option>
+      </select>
     </div>
 
-    <div class="action-row">
-      <button class="primary" id="viewExamButton">View Examination</button>
-      <button class="secondary" id="resetButton">Clear Selection</button>
+    <div>
+      <label for="levelSelect">2. Select Education Level</label>
+      <select id="levelSelect" disabled>
+        <option value="">Select country first</option>
+      </select>
     </div>
 
-    <div id="selectionMessage" class="message"></div>
-  </section>
-
-  <!-- EXAMINATION MANAGEMENT -->
-  <section class="card hidden" id="examPanel">
-    <h3 id="examHeading">Examination Details</h3>
-    <div id="examDetails" class="meta"></div>
-
-    <div class="action-row">
-      <button class="success" id="examPublishButton">Publish Examination</button>
-      <button class="gold" id="editExamButton">Edit Examination</button>
-      <button class="danger" id="deleteExamButton">Delete Examination</button>
+    <div>
+      <label for="subjectSelect">3. Select Subject</label>
+      <select id="subjectSelect" disabled>
+        <option value="">Select education level first</option>
+      </select>
     </div>
 
-    <div class="notice">
-      Publishing or unpublishing this examination will also publish or
-      unpublish all questions belonging to it.
+    <div>
+      <label for="examSelect">4. Select Examination</label>
+      <select id="examSelect" disabled>
+        <option value="">Select subject first</option>
+      </select>
     </div>
-  </section>
+  </div>
 
-  <!-- QUESTION MANAGEMENT -->
-  <section class="card hidden" id="questionsPanel">
-    <h3>Questions in This Examination</h3>
+  <div class="action-row">
+    <button class="primary" id="viewExamButton">View Examination</button>
+    <button class="secondary" id="resetButton">Clear Selection</button>
+  </div>
 
-    <div class="selection-grid">
-      <div>
-        <label for="questionSearch">Search Questions in This Examination</label>
-        <input
-          id="questionSearch"
-          type="search"
-          placeholder="Search by question text, number or answer..."
-        >
-      </div>
+  <div id="selectionMessage" class="message"></div>
+</section>
 
-      <div>
-        <label for="rowsPerPage">Rows per page</label>
-        <select id="rowsPerPage">
-          <option value="10">10 rows</option>
-          <option value="20">20 rows</option>
-          <option value="50">50 rows</option>
-          <option value="100">100 rows</option>
-        </select>
-      </div>
-    </div>
+<section class="card hidden" id="examPanel">
+  <h3 id="examHeading">Examination Details</h3>
+  <div id="examDetails" class="meta"></div>
 
-    <p class="meta" id="questionCount"></p>
+  <div class="action-row">
+    <button class="success" id="examPublishButton">Publish Examination</button>
+    <button class="gold" id="editExamButton">Edit Examination</button>
+    <button class="danger" id="deleteExamButton">Delete Examination</button>
+  </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Question No.</th>
-            <th>Question</th>
-            <th>Correct Option</th>
-            <th>Marks</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="questionsTable">
-          <tr>
-            <td colspan="6">Select an examination to view questions.</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="notice">
+    Publishing or unpublishing this examination will also publish or
+    unpublish all questions belonging to it.
+  </div>
+</section>
+
+<section class="card hidden" id="questionsPanel">
+  <h3>Questions in This Examination</h3>
+
+  <div class="selection-grid">
+    <div>
+      <label for="questionSearch">Search Questions in This Examination</label>
+      <input id="questionSearch" type="search"
+        placeholder="Search by question text, number or answer...">
     </div>
 
-    <div class="pagination">
-      <span class="meta" id="pageInformation"></span>
-      <div class="pagination-buttons">
-        <button class="secondary" id="previousPage">Previous</button>
-        <button class="secondary" id="nextPage">Next</button>
-      </div>
+    <div>
+      <label for="rowsPerPage">Rows per page</label>
+      <select id="rowsPerPage">
+        <option value="10">10 rows</option>
+        <option value="20">20 rows</option>
+        <option value="50">50 rows</option>
+        <option value="100">100 rows</option>
+      </select>
     </div>
-  </section>
+  </div>
 
-  <div id="pageMessage" class="message"></div>
+  <p class="meta" id="questionCount"></p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Question No.</th>
+          <th>Question</th>
+          <th>Correct Option</th>
+          <th>Marks</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="questionsTable">
+        <tr>
+          <td colspan="6">Select an examination to view questions.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <span class="meta" id="pageInformation"></span>
+    <div class="pagination-buttons">
+      <button class="secondary" id="previousPage">Previous</button>
+      <button class="secondary" id="nextPage">Next</button>
+    </div>
+  </div>
+</section>
+
+<div id="pageMessage" class="message"></div>
 </main>
 
 <footer>SAINTIG EXAMS — Learn. Practice. Succeed.</footer>
 
-<!-- EDIT EXAMINATION -->
 <div class="modal" id="examModal">
   <div class="modal-content">
     <h3>Edit Examination</h3>
@@ -420,7 +412,6 @@ footer {
   </div>
 </div>
 
-<!-- EDIT QUESTION -->
 <div class="modal" id="questionModal">
   <div class="modal-content">
     <h3 id="questionModalHeading">Edit Question</h3>
@@ -637,7 +628,7 @@ async function loadLevels() {
   );
 }
 
-/* LOAD SUBJECTS */
+/* LOAD SUBJECTS — USE THE ACTUAL subjects.name COLUMN */
 async function loadSubjects() {
   const levelId = $("levelSelect").value;
 
@@ -659,21 +650,16 @@ async function loadSubjects() {
   const subjectIds = (links || []).map(row => row.subject_id);
 
   if (!subjectIds.length) {
-    setOptions(
-      $("subjectSelect"),
-      [],
-      "id",
-      "subject_name",
-      "No subjects available"
-    );
+    resetSelect($("subjectSelect"), "No subjects available");
     return;
   }
 
   const { data, error } = await supabase
     .from("subjects")
-    .select("*")
+    .select("id,name")
     .in("id", subjectIds)
-    .order("subject_name");
+    .eq("is_active", true)
+    .order("name");
 
   if (error) throw error;
 
@@ -681,7 +667,7 @@ async function loadSubjects() {
     $("subjectSelect"),
     data || [],
     "id",
-    "subject_name",
+    "name",
     "Choose subject"
   );
 }
@@ -692,7 +678,6 @@ async function loadExaminations() {
   const subjectId = $("subjectSelect").value;
 
   resetSelect($("examSelect"), "Choose examination");
-  hideExamPanels();
 
   if (!levelId || !subjectId) return;
 
@@ -733,6 +718,9 @@ function hideExamPanels() {
   $("questionSearch").value = "";
   $("questionsTable").innerHTML =
     '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
+
+  $("questionCount").textContent = "";
+  $("pageInformation").textContent = "";
 }
 
 /* VIEW SELECTED EXAMINATION */
@@ -754,6 +742,7 @@ async function viewExamination() {
   }
 
   clearMessage("selectionMessage");
+  clearMessage("pageMessage");
 
   const { data, error } = await supabase
     .from("examinations")
@@ -784,6 +773,8 @@ async function viewExamination() {
 /* DISPLAY EXAMINATION DETAILS */
 function renderExamDetails() {
   const exam = currentExam;
+  if (!exam) return;
+
   const isPublished = !!exam.is_published;
 
   $("examHeading").textContent = exam.title;
@@ -820,7 +811,7 @@ function renderExamDetails() {
     isPublished ? "danger" : "success";
 }
 
-/* LOAD ALL QUESTIONS FOR THE SELECTED EXAMINATION */
+/* LOAD QUESTIONS */
 async function loadQuestions() {
   if (!currentExam) return;
 
@@ -838,17 +829,10 @@ async function loadQuestions() {
   }
 
   questions = data || [];
-
   renderQuestions();
 }
 
-/*
-  QUESTION NUMBERING
-
-  Numbering starts at 1 for each examination.
-  The number follows the saved question order.
-  It does not restart on the next pagination page.
-*/
+/* SEARCH QUESTIONS */
 function getFilteredQuestions() {
   const search = $("questionSearch").value.trim().toLowerCase();
 
@@ -872,6 +856,8 @@ function getFilteredQuestions() {
 
 /* DISPLAY QUESTIONS AND PAGINATION */
 function renderQuestions() {
+  if (!currentExam) return;
+
   const filtered = getFilteredQuestions();
   const rowsPerPage = Number($("rowsPerPage").value);
 
@@ -905,10 +891,6 @@ function renderQuestions() {
   }
 
   visible.forEach(question => {
-    /*
-      The question's number is its position in the complete
-      examination list, not its position on the current page.
-    */
     const questionNumber = questions.findIndex(
       item => String(item.id) === String(question.id)
     ) + 1;
@@ -966,6 +948,7 @@ function renderQuestions() {
 async function toggleExamPublication() {
   if (!currentExam) return;
 
+  const examId = currentExam.id;
   const newStatus = !currentExam.is_published;
   const action = newStatus ? "publish" : "unpublish";
 
@@ -978,7 +961,7 @@ async function toggleExamPublication() {
   const { error: examError } = await supabase
     .from("examinations")
     .update({ is_published:newStatus })
-    .eq("id", currentExam.id);
+    .eq("id", examId);
 
   if (examError) {
     showMessage("pageMessage", examError.message, "error");
@@ -988,12 +971,12 @@ async function toggleExamPublication() {
   const { error: questionError } = await supabase
     .from("exam_questions")
     .update({ is_published:newStatus })
-    .eq("examination_id", currentExam.id);
+    .eq("examination_id", examId);
 
   if (questionError) {
     showMessage(
       "pageMessage",
-      "The examination status was changed, but the question statuses could not be updated. Please check the database and try again. " +
+      "The examination status changed, but the question statuses could not be updated. Please check the database. " +
       questionError.message,
       "error"
     );
@@ -1010,8 +993,7 @@ async function toggleExamPublication() {
   renderQuestions();
 
   await loadExaminations();
-
-  $("examSelect").value = currentExam.id;
+  $("examSelect").value = examId;
 
   showMessage(
     "pageMessage",
@@ -1041,7 +1023,6 @@ async function toggleQuestion(id) {
   }
 
   question.is_published = newStatus;
-
   renderQuestions();
 
   showMessage("pageMessage", "Question status updated successfully.");
@@ -1066,6 +1047,8 @@ function openQuestionEditor(question) {
 
 /* SAVE QUESTION EDITS */
 async function saveQuestion() {
+  if (!currentExam || !editingQuestionId) return;
+
   const questionText = $("editQuestionText").value.trim();
   const optionA = $("editOptionA").value.trim();
   const optionB = $("editOptionB").value.trim();
@@ -1117,6 +1100,7 @@ async function saveQuestion() {
   }
 
   $("questionModal").classList.remove("show");
+  editingQuestionId = null;
 
   await loadQuestions();
 
@@ -1160,6 +1144,9 @@ function openExamEditor() {
 
 /* SAVE EXAMINATION EDITS */
 async function saveExam() {
+  if (!currentExam) return;
+
+  const examId = currentExam.id;
   const title = $("editExamTitle").value.trim();
   const duration = Number($("editDuration").value);
   const accessType = $("editAccessType").value;
@@ -1181,10 +1168,6 @@ async function saveExam() {
     return;
   }
 
-  /*
-    Keep the existing Free/Paid category unchanged.
-    Changing the category could mix the separate question banks.
-  */
   if (accessType !== currentExam.access_type) {
     alert(
       "The Free/Premium category cannot be changed here. Register a separate examination for the other category."
@@ -1203,7 +1186,7 @@ async function saveExam() {
   const { error } = await supabase
     .from("examinations")
     .update(updates)
-    .eq("id", currentExam.id);
+    .eq("id", examId);
 
   if (error) {
     showMessage("pageMessage", error.message, "error");
@@ -1217,8 +1200,7 @@ async function saveExam() {
   renderExamDetails();
 
   await loadExaminations();
-
-  $("examSelect").value = currentExam.id;
+  $("examSelect").value = examId;
 
   showMessage("pageMessage", "Examination updated successfully.");
 }
@@ -1227,41 +1209,32 @@ async function saveExam() {
 async function deleteExam() {
   if (!currentExam) return;
 
+  const examId = currentExam.id;
   const title = currentExam.title;
 
   if (
     !confirm(
-      `Delete "${title}" and all its questions permanently? This cannot be undone.`
+      `Delete "${title}" permanently? The database may prevent deletion if other records depend on this examination.`
     )
   ) {
     return;
   }
 
   /*
-    Questions are deleted first.
-    If related attempts or other records prevent deletion,
-    the database may reject the operation.
+    Attempt to delete the examination first.
+    If related records prevent deletion, the operation stops.
+    Questions are not deleted separately beforehand.
   */
-  const { error: questionError } = await supabase
-    .from("exam_questions")
-    .delete()
-    .eq("examination_id", currentExam.id);
-
-  if (questionError) {
-    showMessage("pageMessage", questionError.message, "error");
-    return;
-  }
-
-  const { error: examError } = await supabase
+  const { error } = await supabase
     .from("examinations")
     .delete()
-    .eq("id", currentExam.id);
+    .eq("id", examId);
 
-  if (examError) {
+  if (error) {
     showMessage(
       "pageMessage",
-      "The questions were deleted, but the examination could not be deleted: " +
-      examError.message,
+      "The examination could not be deleted. Related records may depend on it. No separate question deletion was attempted. " +
+      error.message,
       "error"
     );
     return;
@@ -1273,7 +1246,7 @@ async function deleteExam() {
 
   showMessage(
     "pageMessage",
-    "Examination and its questions deleted successfully."
+    "Examination deletion completed successfully."
   );
 }
 
@@ -1281,6 +1254,7 @@ async function deleteExam() {
 $("countrySelect").addEventListener("change", async () => {
   try {
     await loadLevels();
+    clearMessage("selectionMessage");
   } catch (error) {
     showMessage("selectionMessage", error.message, "error");
   }
@@ -1290,6 +1264,7 @@ $("countrySelect").addEventListener("change", async () => {
 $("levelSelect").addEventListener("change", async () => {
   try {
     await loadSubjects();
+    clearMessage("selectionMessage");
   } catch (error) {
     showMessage("selectionMessage", error.message, "error");
   }
@@ -1297,8 +1272,11 @@ $("levelSelect").addEventListener("change", async () => {
 
 /* SUBJECT CHANGE */
 $("subjectSelect").addEventListener("change", async () => {
+  hideExamPanels();
+
   try {
     await loadExaminations();
+    clearMessage("selectionMessage");
   } catch (error) {
     showMessage("selectionMessage", error.message, "error");
   }
@@ -1339,6 +1317,7 @@ $("saveQuestionButton").addEventListener("click", saveQuestion);
 
 $("closeQuestionModal").addEventListener("click", () => {
   $("questionModal").classList.remove("show");
+  editingQuestionId = null;
 });
 
 /* SEARCH QUESTIONS */
