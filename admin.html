@@ -303,6 +303,7 @@ header {
     <a href="visitor-analytics.html">Visitor Analytics</a>
     <a href="ai-question-generator.html">AI Question Generator</a>
     <a href="settings-security.html">Settings & Security</a>
+    <a href="archived-records.html">Archived Records</a>
 
     <div class="public-link">
       <a href="index.html">View Public Website ↗</a>
@@ -349,13 +350,25 @@ header {
       <article class="card">
         <div class="stat-name">Published Examinations</div>
         <div class="stat-value" id="examsCount">—</div>
-        <div class="stat-note">Examinations available to students</div>
+        <div class="stat-note">Published, non-archived examinations</div>
       </article>
 
       <article class="card">
         <div class="stat-name">Published Questions</div>
         <div class="stat-value" id="questionsCount">—</div>
-        <div class="stat-note">Questions in published examinations</div>
+        <div class="stat-note">Published questions in available examinations</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Archived Examinations</div>
+        <div class="stat-value" id="archivedExamsCount">—</div>
+        <div class="stat-note">Examinations moved to archive</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Archived Questions</div>
+        <div class="stat-value" id="archivedQuestionsCount">—</div>
+        <div class="stat-note">Questions moved to archive</div>
       </article>
 
       <article class="card">
@@ -381,6 +394,7 @@ header {
         <a href="visitor-analytics.html">Visitor Analytics →</a>
         <a href="ai-question-generator.html">AI Question Generator →</a>
         <a href="settings-security.html">Settings & Security →</a>
+        <a href="archived-records.html">Archived Records →</a>
       </div>
     </section>
 
@@ -415,7 +429,6 @@ menuBtn.addEventListener("click", () => {
 
 overlay.addEventListener("click", closeMenu);
 
-// Close menu after selecting a navigation link
 sidebar.querySelectorAll("a[href]").forEach(link => {
   link.addEventListener("click", () => {
     if (window.innerWidth <= 900) closeMenu();
@@ -468,20 +481,35 @@ async function loadStatistics() {
   const [
     totalExamsResult,
     publishedExamsResult,
+    archivedExamsResult,
+    archivedQuestionsResult,
     adminCountResult,
     userCountResult
   ] = await Promise.all([
 
-    // All examinations
+    // All examinations, including archived records
     supabase
       .from("examinations")
       .select("*", { count:"exact", head:true }),
 
-    // Published examinations
+    // Published examinations excluding archived records
     supabase
       .from("examinations")
       .select("id", { count:"exact" })
-      .eq("is_published", true),
+      .eq("is_published", true)
+      .eq("is_archived", false),
+
+    // Archived examinations
+    supabase
+      .from("examinations")
+      .select("*", { count:"exact", head:true })
+      .eq("is_archived", true),
+
+    // Archived questions
+    supabase
+      .from("exam_questions")
+      .select("*", { count:"exact", head:true })
+      .eq("is_archived", true),
 
     // Total administrators
     supabase
@@ -525,6 +553,20 @@ async function loadStatistics() {
     publishedExamsResult.error
   );
 
+  // Archived Examinations
+  displayCount(
+    "archivedExamsCount",
+    archivedExamsResult.count,
+    archivedExamsResult.error
+  );
+
+  // Archived Questions
+  displayCount(
+    "archivedQuestionsCount",
+    archivedQuestionsResult.count,
+    archivedQuestionsResult.error
+  );
+
   // Published Questions
   if (!publishedExamsResult.error) {
 
@@ -540,7 +582,9 @@ async function loadStatistics() {
       const { count, error } = await supabase
         .from("exam_questions")
         .select("*", { count:"exact", head:true })
-        .in("examination_id", publishedIds);
+        .in("examination_id", publishedIds)
+        .eq("is_published", true)
+        .eq("is_archived", false);
 
       displayCount("questionsCount", count, error);
     }
