@@ -1,1 +1,1641 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Examination | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy: #142b52;
+  --blue: #2457a7;
+  --gold: #d4af37;
+  --bg: #f4f6fa;
+  --white: #fff;
+  --text: #25334a;
+  --muted: #718096;
+  --border: #dfe5ee;
+  --green: #16834a;
+  --red: #c0392b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  height: 65px;
+  background: var(--navy);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.menu-btn {
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 27px;
+  cursor: pointer;
+}
+.brand { font-size: 18px; font-weight: bold; }
+.brand span { color: var(--gold); }
+.admin-label {
+  margin-left: auto;
+  font-size: 13px;
+  color: #e8edf7;
+}
+.layout { display: flex; min-height: calc(100vh - 65px); }
+.sidebar {
+  width: 255px;
+  background: var(--navy);
+  color: white;
+  padding: 18px 12px;
+  flex-shrink: 0;
+}
+.sidebar h3 {
+  color: var(--gold);
+  font-size: 12px;
+  padding: 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.sidebar a {
+  display: block;
+  padding: 12px;
+  margin: 4px 0;
+  border-radius: 6px;
+  color: #e9eef8;
+  text-decoration: none;
+  font-size: 14px;
+}
+.sidebar a:hover, .sidebar a.active {
+  background: #2457a7;
+  border-left: 4px solid var(--gold);
+}
+main { flex: 1; padding: 24px; min-width: 0; }
+.page-title { margin: 0 0 7px; color: var(--navy); }
+.subtitle { color: var(--muted); margin-bottom: 22px; font-size: 14px; }
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 7px rgba(0,0,0,.035);
+}
+.card h2 {
+  margin: 0 0 17px;
+  font-size: 18px;
+  color: var(--navy);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 15px;
+}
+.field { margin-bottom: 14px; min-width: 0; }
+.field label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+input, select, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd4e1;
+  border-radius: 6px;
+  background: white;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+textarea { min-height: 85px; resize: vertical; }
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #c9d9f5;
+  border-color: var(--blue);
+}
+small, .help { color: var(--muted); font-size: 12px; }
+button {
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+}
+button:disabled { opacity: .55; cursor: not-allowed; }
+.primary { background: var(--blue); color: white; }
+.gold { background: var(--gold); color: var(--navy); }
+.success { background: var(--green); color: white; }
+.danger { background: var(--red); color: white; }
+.secondary { background: #e9edf4; color: var(--navy); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.notice {
+  padding: 12px;
+  border-radius: 7px;
+  background: #eef4ff;
+  border-left: 4px solid var(--blue);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+.warning {
+  background: #fff7e3;
+  border-left-color: var(--gold);
+}
+.status {
+  margin-top: 12px;
+  padding: 11px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: none;
+  white-space: pre-wrap;
+}
+.status.ok { display: block; background: #e8f7ee; color: #17683b; }
+.status.error { display: block; background: #fdecea; color: #a5281c; }
+.status.info { display: block; background: #edf3ff; color: #214e91; }
+.hidden { display: none !important; }
+.pill {
+  display: inline-block;
+  padding: 5px 9px;
+  background: #edf1f7;
+  border-radius: 20px;
+  font-size: 12px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #f3f6fb; color: var(--navy); }
+.table-wrap { overflow-x: auto; }
+.question-preview {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 13px;
+  margin: 10px 0;
+  background: #fff;
+  font-size: 13px;
+}
+.question-preview strong { color: var(--navy); }
+.preview-options { margin: 8px 0; line-height: 1.7; }
+.preview-error { color: var(--red); font-weight: bold; }
+.preview-ok { color: var(--green); }
+hr { border: 0; border-top: 1px solid var(--border); margin: 20px 0; }
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 65px 0 0;
+  background: rgba(0,0,0,.4);
+  z-index: 14;
+}
+@media(max-width:800px) {
+  .sidebar {
+    position: fixed;
+    z-index: 15;
+    top: 65px;
+    bottom: 0;
+    left: -270px;
+    overflow-y: auto;
+    transition: left .2s;
+  }
+  .sidebar.open { left: 0; }
+  #overlay.show { display: block; }
+  main { padding: 15px; }
+}
+@media(max-width:600px) {
+  .grid { grid-template-columns: 1fr; }
+  .card { padding: 15px; }
+  .brand { font-size: 15px; }
+  .admin-label { font-size: 11px; }
+  .actions button { flex: 1 1 100%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <div class="admin-label">Administrator</div>
+</header>
+
+<div id="overlay"></div>
+
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <h3>Administration</h3>
+  <a href="admin.html">Dashboard Overview</a>
+  <a href="countries.html">Countries</a>
+  <a href="education-levels.html">Education Levels</a>
+  <a href="subjects.html">Subjects</a>
+  <a href="question-bank.html">Question Bank</a>
+  <a href="register-exam.html" class="active">Register Examination</a>
+  <a href="register-users.html">Register Users</a>
+  <a href="paid-subscribers.html">Paid Subscribers</a>
+  <a href="results-reports.html">Results & Reports</a>
+  <a href="visitor-analytics.html">Visitor Analytics</a>
+  <a href="ai-question-generator.html">AI Question Generator</a>
+  <a href="settings-security.html">Settings & Security</a>
+  <hr>
+  <a href="#" id="logoutBtn">Logout</a>
+</aside>
+
+<main>
+  <h1 class="page-title">Register Examination</h1>
+  <div class="subtitle">
+    Create examinations, add questions, upload images and manage publication.
+  </div>
+
+  <div class="notice">
+    <strong>Important:</strong> Saving questions does not publish the examination.
+    Questions are stored under the selected examination. Students can access them
+    only after the examination is published.
+  </div>
+
+  <!-- EXAMINATION DETAILS -->
+  <section class="card">
+    <h2>1. Examination Details</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label for="country">Country</label>
+        <select id="country">
+          <option value="">Loading countries...</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="level">Education Level</label>
+        <select id="level" disabled>
+          <option value="">Select country first</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <select id="subject" disabled>
+          <option value="">Select education level first</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="examType">Examination Access Type</label>
+        <select id="examType">
+          <option value="free">Free</option>
+          <option value="premium">Premium</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="examTitle">Examination Title</label>
+        <input id="examTitle" type="text" placeholder="e.g. SS1 Government Practice Examination">
+      </div>
+
+      <div class="field">
+        <label for="duration">Duration</label>
+        <input id="duration" type="text" value="45 minutes" readonly>
+        <small>Free: 45 minutes. Premium: 90 minutes.</small>
+      </div>
+
+      <div class="field hidden" id="priceField">
+        <label for="price">Premium Price</label>
+        <input id="price" type="number" min="0" step="0.01" placeholder="Enter price">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="description">Examination Description</label>
+      <textarea id="description" placeholder="Enter examination instructions or description"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="saveExamBtn">Save Examination Draft</button>
+      <button class="secondary" id="resetExamBtn">Clear Form</button>
+    </div>
+
+    <div id="examStatus" class="status"></div>
+  </section>
+
+  <!-- EXISTING EXAMINATION -->
+  <section class="card">
+    <h2>2. Select an Existing Examination</h2>
+    <p class="help">
+      Select an unpublished examination if you want to continue adding questions to it.
+    </p>
+
+    <div class="field">
+      <label for="existingExam">Examination</label>
+      <select id="existingExam">
+        <option value="">Loading examinations...</option>
+      </select>
+    </div>
+
+    <div id="selectedExamInfo" class="notice hidden"></div>
+    <div id="existingStatus" class="status"></div>
+  </section>
+
+  <!-- QUESTION ENTRY -->
+  <section class="card">
+    <h2>3. Add Individual Questions</h2>
+
+    <div class="notice">
+      Questions must have four options (A–D), one correct option, and valid marks.
+      Images are optional. Maximum image size: 5 MB.
+    </div>
+
+    <div class="field">
+      <label for="questionText">Question</label>
+      <textarea id="questionText" placeholder="Enter your question"></textarea>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label for="optionA">Option A</label>
+        <input id="optionA" type="text">
+      </div>
+      <div class="field">
+        <label for="optionB">Option B</label>
+        <input id="optionB" type="text">
+      </div>
+      <div class="field">
+        <label for="optionC">Option C</label>
+        <input id="optionC" type="text">
+      </div>
+      <div class="field">
+        <label for="optionD">Option D</label>
+        <input id="optionD" type="text">
+      </div>
+      <div class="field">
+        <label for="correctOption">Correct Option</label>
+        <select id="correctOption">
+          <option value="">Select answer</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="marks">Marks</label>
+        <input id="marks" type="number" min="1" step="1" value="1">
+      </div>
+      <div class="field">
+        <label for="questionOrder">Question Order</label>
+        <input id="questionOrder" type="number" min="1" step="1" value="1">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="explanation">Explanation (Optional)</label>
+      <textarea id="explanation" placeholder="Explain the correct answer"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="questionImage">Question Image (Optional)</label>
+      <input id="questionImage" type="file" accept="image/*">
+      <small>Maximum 5 MB. The image will be uploaded to the exam-images bucket.</small>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="addQuestionBtn">Add to Question Queue</button>
+      <button class="secondary" id="clearQuestionBtn">Clear Question</button>
+    </div>
+
+    <div id="individualStatus" class="status"></div>
+  </section>
+
+  <!-- CSV UPLOAD -->
+  <section class="card">
+    <h2>4. Bulk Question Upload (CSV)</h2>
+
+    <div class="notice">
+      Upload a CSV file containing multiple questions. You can download the prepared
+      template below. For image questions, upload the images separately and enter
+      their exact filenames in the <strong>image_filename</strong> column.
+    </div>
+
+    <div class="actions">
+      <button class="gold" id="downloadTemplateBtn">Download CSV Template</button>
+    </div>
+
+    <div class="field">
+      <label for="csvFile">Select CSV File</label>
+      <input id="csvFile" type="file" accept=".csv,text/csv">
+    </div>
+
+    <div class="field">
+      <label for="bulkImages">Select Images for CSV Questions (Optional)</label>
+      <input id="bulkImages" type="file" accept="image/*" multiple>
+      <small>
+        Image filenames must match the CSV image_filename values.
+        Each image must be 5 MB or smaller.
+      </small>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="previewCsvBtn">Preview CSV Questions</button>
+      <button class="secondary" id="clearCsvBtn">Clear CSV Selection</button>
+    </div>
+
+    <div id="csvStatus" class="status"></div>
+    <div id="csvPreview"></div>
+  </section>
+
+  <!-- QUESTION QUEUE -->
+  <section class="card">
+    <h2>5. Question Upload Queue</h2>
+    <div class="notice">
+      Review your questions before saving them. The queue is temporary and will
+      be cleared when you leave or refresh this page.
+    </div>
+
+    <div class="grid">
+      <div>
+        <span class="pill">Questions in queue: <strong id="queueCount">0</strong></span>
+      </div>
+      <div>
+        <span class="pill">Saved questions: <strong id="savedCount">0</strong></span>
+      </div>
+    </div>
+
+    <div id="queuePreview"></div>
+
+    <div class="actions">
+      <button class="success" id="publishQuestionsBtn">
+        Publish Uploaded Questions
+      </button>
+      <button class="danger" id="clearQueueBtn">Clear Queue</button>
+    </div>
+
+    <div id="uploadStatus" class="status"></div>
+  </section>
+
+  <!-- PUBLISH EXAM -->
+  <section class="card">
+    <h2>6. Publish Examination to Students</h2>
+
+    <div class="notice warning">
+      <strong>Publication requirements:</strong><br>
+      Free examinations require at least 50 saved questions.<br>
+      Premium examinations require at least 100 saved questions.<br>
+      Publishing questions does not automatically publish the examination.
+    </div>
+
+    <div id="publicationInfo" class="notice">
+      Select an examination to view its publication status.
+    </div>
+
+    <div class="actions">
+      <button class="gold" id="publishExamBtn">
+        Publish Examination to Students
+      </button>
+      <button class="secondary" id="refreshExamBtn">Refresh Examination Details</button>
+    </div>
+
+    <div id="publishStatus" class="status"></div>
+  </section>
+
+</main>
+</div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+/* =====================================================
+   ELEMENTS AND STATE
+===================================================== */
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let queue = [];
+let csvRows = [];
+let csvImageFiles = [];
+let selectedExam = null;
+let savedQuestionCount = 0;
+let duplicateTexts = new Set();
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+const PAGE_LINKS = [
+  "admin.html",
+  "countries.html",
+  "education-levels.html",
+  "subjects.html",
+  "question-bank.html",
+  "register-exam.html",
+  "register-users.html",
+  "paid-subscribers.html",
+  "results-reports.html",
+  "visitor-analytics.html",
+  "ai-question-generator.html",
+  "settings-security.html"
+];
+
+/* =====================================================
+   GENERAL HELPERS
+===================================================== */
+
+function showStatus(id, message, type = "info") {
+  const el = $(id);
+  el.textContent = message;
+  el.className = "status " + type;
+}
+
+function hideStatus(id) {
+  $(id).className = "status";
+  $(id).textContent = "";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function normalizeQuestion(text) {
+  return String(text || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function requiredExamCount() {
+  return $("examType").value === "premium" ? 100 : 50;
+}
+
+function getDuration() {
+  return $("examType").value === "premium" ? 90 : 45;
+}
+
+function updateExamType() {
+  const premium = $("examType").value === "premium";
+  $("duration").value = getDuration() + " minutes";
+  $("priceField").classList.toggle("hidden", !premium);
+}
+
+function validateImage(file) {
+  if (!file) return null;
+
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Please select a valid image file.");
+  }
+
+  if (file.size > MAX_IMAGE_SIZE) {
+    throw new Error("Image exceeds the 5 MB upload limit.");
+  }
+
+  return file;
+}
+
+function safeFileName(name) {
+  return String(name).split(/[\\/]/).pop().trim();
+}
+
+function makeImagePath(file) {
+  const extension = file.name.includes(".")
+    ? file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "")
+    : "jpg";
+
+  return `question-images/${crypto.randomUUID()}.${extension}`;
+}
+
+/* =====================================================
+   ADMIN AUTHENTICATION
+===================================================== */
+
+async function verifyAdministrator() {
+  try {
+    const session = await getCurrentSession();
+
+    if (!session) {
+      location.replace("admin-login.html");
+      return false;
+    }
+
+    const user = session.user || session;
+
+    if (!user.id) {
+      location.replace("admin-login.html");
+      return false;
+    }
+
+    const { data: admin, error } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error || !admin) {
+      alert("Administrator access required.");
+      await supabase.auth.signOut();
+      location.replace("admin-login.html");
+      return false;
+    }
+
+    currentUser = user;
+    return true;
+
+  } catch (error) {
+    console.error(error);
+    location.replace("admin-login.html");
+    return false;
+  }
+}
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
+
+$("menuBtn").addEventListener("click", () => {
+  $("sidebar").classList.toggle("open");
+  $("overlay").classList.toggle("show");
+});
+
+$("overlay").addEventListener("click", closeMenu);
+
+function closeMenu() {
+  $("sidebar").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
+
+$("sidebar").querySelectorAll("a").forEach(link => {
+  if (link.id !== "logoutBtn") {
+    link.addEventListener("click", closeMenu);
+  }
+});
+
+$("logoutBtn").addEventListener("click", async event => {
+  event.preventDefault();
+  if (!confirm("Are you sure you want to log out?")) return;
+
+  await supabase.auth.signOut();
+  location.replace("admin-login.html");
+});
+
+/* =====================================================
+   LOAD COUNTRY, LEVEL AND SUBJECT DATA
+===================================================== */
+
+async function loadCountries() {
+  const { data, error } = await supabase
+    .from("education_systems")
+    .select("id,country_name")
+    .eq("is_active", true)
+    .order("country_name");
+
+  if (error) throw error;
+
+  $("country").innerHTML =
+    '<option value="">Select country</option>' +
+    (data || []).map(item =>
+      `<option value="${escapeHTML(item.id)}">${escapeHTML(item.country_name)}</option>`
+    ).join("");
+}
+
+async function loadLevels() {
+  const countryId = $("country").value;
+
+  $("level").innerHTML = '<option value="">Select education level</option>';
+  $("subject").innerHTML = '<option value="">Select education level first</option>';
+  $("level").disabled = true;
+  $("subject").disabled = true;
+
+  if (!countryId) return;
+
+  const { data, error } = await supabase
+    .from("education_levels")
+    .select("id,level_name")
+    .eq("education_system_id", countryId)
+    .eq("is_active", true)
+    .order("level_name");
+
+  if (error) throw error;
+
+  $("level").innerHTML += (data || []).map(item =>
+    `<option value="${escapeHTML(item.id)}">${escapeHTML(item.level_name)}</option>`
+  ).join("");
+
+  $("level").disabled = false;
+}
+
+async function loadSubjects() {
+  const levelId = $("level").value;
+
+  $("subject").innerHTML = '<option value="">Select subject</option>';
+  $("subject").disabled = true;
+
+  if (!levelId) return;
+
+  const { data: relations, error: relationError } = await supabase
+    .from("education_level_subjects")
+    .select("subject_id")
+    .eq("education_level_id", levelId)
+    .eq("is_active", true);
+
+  if (relationError) throw relationError;
+
+  const subjectIds = [...new Set((relations || []).map(item => item.subject_id))];
+
+  if (!subjectIds.length) {
+    $("subject").innerHTML = '<option value="">No subjects assigned to this level</option>';
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("subjects")
+    .select("id,name")
+    .eq("is_active", true)
+    .in("id", subjectIds)
+    .order("name");
+
+  if (error) throw error;
+
+  $("subject").innerHTML += (data || []).map(item =>
+    `<option value="${escapeHTML(item.id)}">${escapeHTML(item.name)}</option>`
+  ).join("");
+
+  $("subject").disabled = false;
+}
+
+$("country").addEventListener("change", async () => {
+  try {
+    await loadLevels();
+  } catch (error) {
+    showStatus("examStatus", error.message, "error");
+  }
+});
+
+$("level").addEventListener("change", async () => {
+  try {
+    await loadSubjects();
+  } catch (error) {
+    showStatus("examStatus", error.message, "error");
+  }
+});
+
+$("examType").addEventListener("change", updateExamType);
+
+/* =====================================================
+   EXAMINATION DRAFT CREATION
+===================================================== */
+
+function getExamFormData() {
+  const title = $("examTitle").value.trim();
+  const subjectId = $("subject").value;
+  const levelId = $("level").value;
+  const accessType = $("examType").value;
+
+  if (!title || !subjectId || !levelId) {
+    throw new Error("Select the country, education level, subject and enter the examination title.");
+  }
+
+  let price = null;
+
+  if (accessType === "premium") {
+    price = Number($("price").value);
+
+    if (!Number.isFinite(price) || price < 0) {
+      throw new Error("Enter a valid premium examination price.");
+    }
+  }
+
+  return {
+    subject_id: subjectId,
+    education_level_id: levelId,
+    title,
+    description: $("description").value.trim(),
+    duration_minutes: getDuration(),
+    access_type: accessType,
+    price,
+    is_published: false
+  };
+}
+
+async function saveExamDraft() {
+  try {
+    hideStatus("examStatus");
+
+    const payload = getExamFormData();
+
+    $("saveExamBtn").disabled = true;
+    $("saveExamBtn").textContent = "Saving...";
+
+    if (selectedExam && selectedExam.is_published) {
+      throw new Error("This examination is already published. Create a new draft to make changes.");
+    }
+
+    let result;
+
+    if (selectedExam) {
+      result = await supabase
+        .from("examinations")
+        .update(payload)
+        .eq("id", selectedExam.id)
+        .eq("is_published", false)
+        .select()
+        .single();
+    } else {
+      result = await supabase
+        .from("examinations")
+        .insert(payload)
+        .select()
+        .single();
+    }
+
+    if (result.error) throw result.error;
+
+    selectedExam = result.data;
+
+    showStatus(
+      "examStatus",
+      "Examination draft saved successfully. You can now add questions.",
+      "ok"
+    );
+
+    await loadExistingExams();
+    $("existingExam").value = selectedExam.id;
+    await refreshSelectedExam();
+
+  } catch (error) {
+    showStatus("examStatus", error.message, "error");
+  } finally {
+    $("saveExamBtn").disabled = false;
+    $("saveExamBtn").textContent = "Save Examination Draft";
+  }
+}
+
+$("saveExamBtn").addEventListener("click", saveExamDraft);
+
+$("resetExamBtn").addEventListener("click", () => {
+  if (!confirm("Clear the examination form?")) return;
+
+  selectedExam = null;
+  $("country").value = "";
+  $("level").innerHTML = '<option value="">Select country first</option>';
+  $("level").disabled = true;
+  $("subject").innerHTML = '<option value="">Select education level first</option>';
+  $("subject").disabled = true;
+  $("examTitle").value = "";
+  $("description").value = "";
+  $("examType").value = "free";
+  $("price").value = "";
+  updateExamType();
+
+  $("existingExam").value = "";
+  $("selectedExamInfo").classList.add("hidden");
+  $("publicationInfo").textContent = "Select an examination to view its publication status.";
+  savedQuestionCount = 0;
+  $("savedCount").textContent = "0";
+
+  hideStatus("examStatus");
+  hideStatus("existingStatus");
+  hideStatus("publishStatus");
+});
+
+/* =====================================================
+   EXISTING EXAMINATIONS
+===================================================== */
+
+async function loadExistingExams() {
+  const { data, error } = await supabase
+    .from("examinations")
+    .select("id,title,access_type,is_published,duration_minutes")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  $("existingExam").innerHTML =
+    '<option value="">Select an examination</option>' +
+    (data || []).map(item => {
+      const status = item.is_published ? "Published" : "Draft";
+      return `<option value="${escapeHTML(item.id)}">
+        ${escapeHTML(item.title)} — ${status}
+      </option>`;
+    }).join("");
+}
+
+async function refreshSelectedExam() {
+  const examId = $("existingExam").value;
+
+  if (!examId) {
+    selectedExam = null;
+    $("selectedExamInfo").classList.add("hidden");
+    $("publicationInfo").textContent = "Select an examination to view its publication status.";
+    savedQuestionCount = 0;
+    $("savedCount").textContent = "0";
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("examinations")
+    .select("id,title,subject_id,education_level_id,access_type,price,duration_minutes,is_published")
+    .eq("id", examId)
+    .single();
+
+  if (error) throw error;
+
+  selectedExam = data;
+
+  const { count, error: countError } = await supabase
+    .from("exam_questions")
+    .select("id", { count: "exact", head: true })
+    .eq("examination_id", examId);
+
+  if (countError) throw countError;
+
+  savedQuestionCount = count || 0;
+  $("savedCount").textContent = savedQuestionCount;
+
+  const needed = data.access_type === "premium" ? 100 : 50;
+
+  $("selectedExamInfo").classList.remove("hidden");
+  $("selectedExamInfo").textContent =
+    `Selected: ${data.title} | ${data.access_type.toUpperCase()} | ` +
+    `${data.duration_minutes} minutes | ${data.is_published ? "PUBLISHED" : "DRAFT"}`;
+
+  $("publicationInfo").textContent =
+    `Examination: ${data.title}\n` +
+    `Saved questions: ${savedQuestionCount}\n` +
+    `Minimum required: ${needed}\n` +
+    `Status: ${data.is_published ? "Published to students" : "Not yet published"}`;
+
+  await loadDuplicateQuestions(examId);
+}
+
+async function loadDuplicateQuestions(examId) {
+  const { data, error } = await supabase
+    .from("exam_questions")
+    .select("question_text")
+    .eq("examination_id", examId);
+
+  if (error) throw error;
+
+  duplicateTexts = new Set(
+    (data || []).map(item => normalizeQuestion(item.question_text))
+  );
+}
+
+$("existingExam").addEventListener("change", async () => {
+  try {
+    await refreshSelectedExam();
+    showStatus("existingStatus", "Examination selected.", "ok");
+  } catch (error) {
+    showStatus("existingStatus", error.message, "error");
+  }
+});
+
+$("refreshExamBtn").addEventListener("click", async () => {
+  try {
+    await refreshSelectedExam();
+    showStatus("publishStatus", "Examination information refreshed.", "ok");
+  } catch (error) {
+    showStatus("publishStatus", error.message, "error");
+  }
+});
+
+/* =====================================================
+   QUESTION VALIDATION AND QUEUE
+===================================================== */
+
+function validateQuestion(q) {
+  if (!q.question_text?.trim()) {
+    throw new Error("Question text is required.");
+  }
+
+  for (const field of ["option_a", "option_b", "option_c", "option_d"]) {
+    if (!q[field]?.trim()) {
+      throw new Error("All four options (A–D) are required.");
+    }
+  }
+
+  if (!["A", "B", "C", "D"].includes(q.correct_option)) {
+    throw new Error("Select a valid correct option.");
+  }
+
+  const marks = Number(q.marks);
+  const order = Number(q.question_order);
+
+  if (!Number.isInteger(marks) || marks < 1) {
+    throw new Error("Marks must be a whole number of at least 1.");
+  }
+
+  if (!Number.isInteger(order) || order < 1) {
+    throw new Error("Question order must be a whole number of at least 1.");
+  }
+
+  if (!selectedExam) {
+    throw new Error("Save or select an examination first.");
+  }
+
+  if (selectedExam.is_published) {
+    throw new Error("Questions cannot be added to an already published examination.");
+  }
+}
+
+function addToQueue(q) {
+  validateQuestion(q);
+
+  const normalized = normalizeQuestion(q.question_text);
+
+  if (duplicateTexts.has(normalized)) {
+    throw new Error("This question already exists in the selected examination.");
+  }
+
+  if (queue.some(item => normalizeQuestion(item.question_text) === normalized)) {
+    throw new Error("This question is already in the upload queue.");
+  }
+
+  queue.push(q);
+  renderQueue();
+}
+
+function renderQueue() {
+  $("queueCount").textContent = queue.length;
+
+  if (!queue.length) {
+    $("queuePreview").innerHTML = '<p class="help">No questions in the queue yet.</p>';
+    return;
+  }
+
+  $("queuePreview").innerHTML = queue.map((q, index) => `
+    <div class="question-preview">
+      <strong>Question ${index + 1}:</strong>
+      ${escapeHTML(q.question_text)}
+      <div class="preview-options">
+        A. ${escapeHTML(q.option_a)}<br>
+        B. ${escapeHTML(q.option_b)}<br>
+        C. ${escapeHTML(q.option_c)}<br>
+        D. ${escapeHTML(q.option_d)}
+      </div>
+      <div>Correct answer: <strong>${escapeHTML(q.correct_option)}</strong></div>
+      <div>Marks: ${escapeHTML(q.marks)} | Order: ${escapeHTML(q.question_order)}</div>
+      <div>Image: ${q.imageFile ? escapeHTML(q.imageFile.name) : "None"}</div>
+      <button class="danger remove-queue" data-index="${index}">Remove</button>
+    </div>
+  `).join("");
+
+  document.querySelectorAll(".remove-queue").forEach(button => {
+    button.addEventListener("click", () => {
+      queue.splice(Number(button.dataset.index), 1);
+      renderQueue();
+    });
+  });
+}
+
+function clearQuestionForm() {
+  $("questionText").value = "";
+  $("optionA").value = "";
+  $("optionB").value = "";
+  $("optionC").value = "";
+  $("optionD").value = "";
+  $("correctOption").value = "";
+  $("marks").value = "1";
+  $("questionOrder").value = String(queue.length + 1);
+  $("explanation").value = "";
+  $("questionImage").value = "";
+}
+
+$("addQuestionBtn").addEventListener("click", () => {
+  try {
+    const imageFile = validateImage($("questionImage").files[0]);
+
+    const question = {
+      question_text: $("questionText").value.trim(),
+      option_a: $("optionA").value.trim(),
+      option_b: $("optionB").value.trim(),
+      option_c: $("optionC").value.trim(),
+      option_d: $("optionD").value.trim(),
+      correct_option: $("correctOption").value,
+      marks: Number($("marks").value),
+      question_order: Number($("questionOrder").value),
+      explanation: $("explanation").value.trim() || null,
+      imageFile
+    };
+
+    addToQueue(question);
+    clearQuestionForm();
+
+    showStatus("individualStatus", "Question added to the upload queue.", "ok");
+
+  } catch (error) {
+    showStatus("individualStatus", error.message, "error");
+  }
+});
+
+$("clearQuestionBtn").addEventListener("click", clearQuestionForm);
+
+$("clearQueueBtn").addEventListener("click", () => {
+  if (!queue.length) return;
+
+  if (!confirm("Remove all unsaved questions from the queue?")) return;
+
+  queue = [];
+  renderQueue();
+  hideStatus("uploadStatus");
+});
+
+/* =====================================================
+   CSV PARSER
+===================================================== */
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [];
+  let value = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"') {
+      if (insideQuotes && next === '"') {
+        value += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+    } else if (char === "," && !insideQuotes) {
+      row.push(value);
+      value = "";
+    } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+      if (char === "\r" && next === "\n") i++;
+
+      row.push(value);
+      if (row.some(cell => cell.trim() !== "")) rows.push(row);
+
+      row = [];
+      value = "";
+    } else {
+      value += char;
+    }
+  }
+
+  if (insideQuotes) {
+    throw new Error("The CSV file contains an unclosed quotation mark.");
+  }
+
+  row.push(value);
+  if (row.some(cell => cell.trim() !== "")) rows.push(row);
+
+  return rows;
+}
+
+function parseCSVQuestions(text) {
+  const rows = parseCSV(text);
+
+  if (rows.length < 2) {
+    throw new Error("The CSV file does not contain question rows.");
+  }
+
+  const headers = rows[0].map(header =>
+    header.trim().toLowerCase().replace(/^\uFEFF/, "")
+  );
+
+  const required = [
+    "question_text",
+    "option_a",
+    "option_b",
+    "option_c",
+    "option_d",
+    "correct_option",
+    "marks",
+    "question_order"
+  ];
+
+  for (const name of required) {
+    if (!headers.includes(name)) {
+      throw new Error(`Missing CSV column: ${name}`);
+    }
+  }
+
+  const output = [];
+
+  rows.slice(1).forEach((cells, index) => {
+    const record = {};
+
+    headers.forEach((header, columnIndex) => {
+      record[header] = (cells[columnIndex] || "").trim();
+    });
+
+    const question = {
+      question_text: record.question_text,
+      option_a: record.option_a,
+      option_b: record.option_b,
+      option_c: record.option_c,
+      option_d: record.option_d,
+      correct_option: record.correct_option.toUpperCase(),
+      explanation: record.explanation || null,
+      marks: Number(record.marks),
+      question_order: Number(record.question_order),
+      imageFilename: record.image_filename || "",
+      imageFile: null,
+      csvRow: index + 2
+    };
+
+    validateQuestion(question);
+    output.push(question);
+  });
+
+  return output;
+}
+
+$("downloadTemplateBtn").addEventListener("click", () => {
+  const header = [
+    "question_text",
+    "option_a",
+    "option_b",
+    "option_c",
+    "option_d",
+    "correct_option",
+    "explanation",
+    "marks",
+    "question_order",
+    "image_filename"
+  ];
+
+  const example = [
+    "What is the capital of Nigeria?",
+    "Lagos",
+    "Abuja",
+    "Kano",
+    "Enugu",
+    "B",
+    "Abuja is the capital of Nigeria.",
+    "1",
+    "1",
+    ""
+  ];
+
+  const csv = [header, example]
+    .map(row => row.map(value =>
+      `"${String(value).replace(/"/g, '""')}"`
+    ).join(","))
+    .join("\r\n");
+
+  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "saintig-exams-question-template.csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
+});
+
+$("previewCsvBtn").addEventListener("click", async () => {
+  try {
+    hideStatus("csvStatus");
+    $("csvPreview").innerHTML = "";
+
+    const file = $("csvFile").files[0];
+
+    if (!file) throw new Error("Select a CSV file first.");
+
+    const text = await file.text();
+    csvRows = parseCSVQuestions(text);
+
+    csvImageFiles = Array.from($("bulkImages").files || []);
+
+    const imageMap = new Map();
+
+    for (const image of csvImageFiles) {
+      validateImage(image);
+
+      const name = safeFileName(image.name).toLowerCase();
+
+      if (imageMap.has(name)) {
+        throw new Error(`Duplicate image filename: ${image.name}`);
+      }
+
+      imageMap.set(name, image);
+    }
+
+    const usedNames = new Set();
+
+    csvRows.forEach(question => {
+      if (question.imageFilename) {
+        const filename = safeFileName(question.imageFilename).toLowerCase();
+        question.imageFile = imageMap.get(filename) || null;
+
+        if (!question.imageFile) {
+          throw new Error(
+            `CSV row ${question.csvRow}: image "${question.imageFilename}" was not selected.`
+          );
+        }
+
+        usedNames.add(filename);
+      }
+    });
+
+    const duplicateSet = new Set();
+    const previewErrors = [];
+
+    csvRows.forEach(question => {
+      const normalized = normalizeQuestion(question.question_text);
+
+      if (duplicateTexts.has(normalized) || duplicateSet.has(normalized)) {
+        previewErrors.push(`CSV row ${question.csvRow}: duplicate question.`);
+      }
+
+      duplicateSet.add(normalized);
+    });
+
+    if (previewErrors.length) {
+      throw new Error(previewErrors.join("\n"));
+    }
+
+    $("csvPreview").innerHTML = csvRows.map((q, index) => `
+      <div class="question-preview">
+        <strong>CSV Question ${index + 1}</strong><br>
+        ${escapeHTML(q.question_text)}
+        <div class="preview-options">
+          A. ${escapeHTML(q.option_a)}<br>
+          B. ${escapeHTML(q.option_b)}<br>
+          C. ${escapeHTML(q.option_c)}<br>
+          D. ${escapeHTML(q.option_d)}
+        </div>
+        Correct: ${escapeHTML(q.correct_option)} |
+        Marks: ${escapeHTML(q.marks)} |
+        Order: ${escapeHTML(q.question_order)}<br>
+        Image: ${q.imageFile ? escapeHTML(q.imageFile.name) : "None"}
+      </div>
+    `).join("");
+
+    showStatus(
+      "csvStatus",
+      `${csvRows.length} questions validated successfully. Click Add CSV Questions to Queue below.`,
+      "ok"
+    );
+
+    const addButton = document.createElement("button");
+    addButton.className = "success";
+    addButton.id = "addCsvQueueBtn";
+    addButton.textContent = "Add CSV Questions to Queue";
+
+    $("csvPreview").appendChild(addButton);
+
+    addButton.addEventListener("click", () => {
+      try {
+        for (const question of csvRows) {
+          addToQueue(question);
+        }
+
+        csvRows = [];
+        $("csvPreview").innerHTML = "";
+        $("csvFile").value = "";
+        $("bulkImages").value = "";
+
+        showStatus("csvStatus", "CSV questions added to the upload queue.", "ok");
+
+      } catch (error) {
+        showStatus("csvStatus", error.message, "error");
+      }
+    });
+
+  } catch (error) {
+    showStatus("csvStatus", error.message, "error");
+  }
+});
+
+$("clearCsvBtn").addEventListener("click", () => {
+  $("csvFile").value = "";
+  $("bulkImages").value = "";
+  csvRows = [];
+  csvImageFiles = [];
+  $("csvPreview").innerHTML = "";
+  hideStatus("csvStatus");
+});
+
+/* =====================================================
+   UPLOAD IMAGES TO SUPABASE STORAGE
+===================================================== */
+
+async function uploadQuestionImage(file) {
+  if (!file) return null;
+
+  validateImage(file);
+
+  const path = makeImagePath(file);
+
+  const { error } = await supabase.storage
+    .from("exam-images")
+    .upload(path, file, {
+      contentType: file.type,
+      upsert: false
+    });
+
+  if (error) {
+    throw new Error(
+      `Image upload failed for ${file.name}: ${error.message}`
+    );
+  }
+
+  return path;
+}
+
+/* =====================================================
+   SAVE QUEUED QUESTIONS
+===================================================== */
+
+async function publishQueuedQuestions() {
+  try {
+    hideStatus("uploadStatus");
+
+    if (!selectedExam) {
+      throw new Error("Save or select an examination first.");
+    }
+
+    if (selectedExam.is_published) {
+      throw new Error("This examination is already published.");
+    }
+
+    if (!queue.length) {
+      throw new Error("There are no questions in the upload queue.");
+    }
+
+    $("publishQuestionsBtn").disabled = true;
+    $("publishQuestionsBtn").textContent = "Uploading...";
+
+    const prepared = [];
+
+    for (const question of queue) {
+      validateQuestion(question);
+
+      const normalized = normalizeQuestion(question.question_text);
+
+      if (duplicateTexts.has(normalized)) {
+        throw new Error("A duplicate question was detected. Remove it before uploading.");
+      }
+
+      let imagePath = null;
+
+      if (question.imageFile) {
+        imagePath = await uploadQuestionImage(question.imageFile);
+      }
+
+      prepared.push({
+        examination_id: selectedExam.id,
+        question_text: question.question_text,
+        option_a: question.option_a,
+        option_b: question.option_b,
+        option_c: question.option_c,
+        option_d: question.option_d,
+        correct_option: question.correct_option,
+        explanation: question.explanation,
+        marks: Number(question.marks),
+        question_order: Number(question.question_order),
+        image_path: imagePath
+      });
+    }
+
+    const { error } = await supabase
+      .from("exam_questions")
+      .insert(prepared);
+
+    if (error) throw error;
+
+    const uploadedCount = prepared.length;
+
+    queue = [];
+    renderQueue();
+
+    await refreshSelectedExam();
+
+    showStatus(
+      "uploadStatus",
+      `${uploadedCount} questions saved successfully to the selected examination.`,
+      "ok"
+    );
+
+  } catch (error) {
+    showStatus("uploadStatus", error.message, "error");
+  } finally {
+    $("publishQuestionsBtn").disabled = false;
+    $("publishQuestionsBtn").textContent = "Publish Uploaded Questions";
+  }
+}
+
+$("publishQuestionsBtn").addEventListener("click", async () => {
+  if (!confirm("Save all questions in the queue to the selected examination?")) return;
+  await publishQueuedQuestions();
+});
+
+/* =====================================================
+   PUBLISH EXAMINATION
+===================================================== */
+
+async function publishExamination() {
+  try {
+    hideStatus("publishStatus");
+
+    if (!selectedExam) {
+      throw new Error("Select an examination first.");
+    }
+
+    if (selectedExam.is_published) {
+      throw new Error("This examination is already published.");
+    }
+
+    const requiredCount = selectedExam.access_type === "premium" ? 100 : 50;
+
+    const { count, error: countError } = await supabase
+      .from("exam_questions")
+      .select("id", { count: "exact", head: true })
+      .eq("examination_id", selectedExam.id);
+
+    if (countError) throw countError;
+
+    if ((count || 0) < requiredCount) {
+      throw new Error(
+        `This ${selectedExam.access_type} examination has ${count || 0} questions. ` +
+        `At least ${requiredCount} questions are required before publication.`
+      );
+    }
+
+    const confirmation = confirm(
+      `You are about to publish "${selectedExam.title}" to students.\n\n` +
+      `Questions: ${count}\n` +
+      `Duration: ${selectedExam.duration_minutes} minutes\n\n` +
+      `Continue?`
+    );
+
+    if (!confirmation) return;
+
+    $("publishExamBtn").disabled = true;
+    $("publishExamBtn").textContent = "Publishing...";
+
+    const { data, error } = await supabase
+      .from("examinations")
+      .update({ is_published: true })
+      .eq("id", selectedExam.id)
+      .eq("is_published", false)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    selectedExam = data;
+
+    await loadExistingExams();
+    $("existingExam").value = selectedExam.id;
+    await refreshSelectedExam();
+
+    showStatus(
+      "publishStatus",
+      "Examination successfully published to students.",
+      "ok"
+    );
+
+  } catch (error) {
+    showStatus("publishStatus", error.message, "error");
+  } finally {
+    $("publishExamBtn").disabled = false;
+    $("publishExamBtn").textContent = "Publish Examination to Students";
+  }
+}
+
+$("publishExamBtn").addEventListener("click", publishExamination);
+
+/* =====================================================
+   INITIALIZE PAGE
+===================================================== */
+
+async function initializePage() {
+  try {
+    const isAdmin = await verifyAdministrator();
+    if (!isAdmin) return;
+
+    await loadCountries();
+    await loadExistingExams();
+
+    updateExamType();
+    renderQueue();
+
+  } catch (error) {
+    console.error(error);
+    alert("Unable to load the examination registration page: " + error.message);
+  }
+}
+
+initializePage();
+
+</script>
+</body>
+</html>
