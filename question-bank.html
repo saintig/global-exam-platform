@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,113 +8,29 @@
 
 <style>
 :root {
-  --navy:#142b52;
-  --blue:#2457a7;
-  --gold:#d4af37;
-  --bg:#f4f6fa;
-  --white:#fff;
-  --text:#243047;
-  --muted:#68758a;
-  --danger:#c62828;
-  --green:#198754;
+  --navy:#142b52; --blue:#2457a7; --gold:#d4af37;
+  --bg:#f4f6fa; --white:#fff; --text:#243047;
+  --muted:#68758a; --danger:#c62828; --green:#198754;
 }
 * { box-sizing:border-box; }
-body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-header {
-  background:var(--navy);
-  color:white;
-  padding:15px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
+body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); }
+header { background:var(--navy); color:white; padding:15px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
 header h2 { margin:0; font-size:18px; }
-.menu-btn {
-  background:transparent;
-  color:white;
-  font-size:27px;
-  padding:2px 8px;
-}
-.sidebar {
-  position:fixed;
-  top:0;
-  left:-290px;
-  width:270px;
-  height:100%;
-  background:var(--navy);
-  padding:20px;
-  overflow-y:auto;
-  z-index:20;
-  transition:.25s;
-}
+.menu-btn { background:transparent; color:white; font-size:27px; padding:2px 8px; }
+.sidebar { position:fixed; top:0; left:-290px; width:270px; height:100%; background:var(--navy); padding:20px; overflow-y:auto; z-index:20; transition:.25s; }
 .sidebar.open { left:0; }
 .sidebar h3 { color:var(--gold); }
-.sidebar a {
-  display:block;
-  color:white;
-  text-decoration:none;
-  padding:12px 10px;
-  border-bottom:1px solid #ffffff20;
-  font-size:14px;
-}
+.sidebar a { display:block; color:white; text-decoration:none; padding:12px 10px; border-bottom:1px solid #ffffff20; font-size:14px; }
 .sidebar a:hover { background:#ffffff18; }
-.overlay {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#0008;
-  z-index:15;
-}
+.overlay { display:none; position:fixed; inset:0; background:#0008; z-index:15; }
 .overlay.show { display:block; }
-main {
-  width:min(1200px,96%);
-  margin:22px auto;
-}
-.card {
-  background:white;
-  border-radius:10px;
-  padding:19px;
-  margin-bottom:18px;
-  box-shadow:0 2px 10px #142b5210;
-}
-.card h3 {
-  color:var(--navy);
-  margin:0 0 15px;
-  font-size:17px;
-}
-.selection-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
-}
-label {
-  display:block;
-  font-weight:bold;
-  font-size:13px;
-  margin-bottom:7px;
-}
-select,input,textarea {
-  width:100%;
-  padding:11px;
-  border:1px solid #ccd3df;
-  border-radius:6px;
-  font:inherit;
-  background:white;
-}
-button {
-  border:0;
-  border-radius:6px;
-  padding:10px 14px;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:13px;
-}
+main { width:min(1200px,96%); margin:22px auto; }
+.card { background:white; border-radius:10px; padding:19px; margin-bottom:18px; box-shadow:0 2px 10px #142b5210; }
+.card h3 { color:var(--navy); margin:0 0 15px; font-size:17px; }
+.selection-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+label { display:block; font-weight:bold; font-size:13px; margin-bottom:7px; }
+select,input,textarea { width:100%; padding:11px; border:1px solid #ccd3df; border-radius:6px; font:inherit; background:white; }
+button { border:0; border-radius:6px; padding:10px 14px; cursor:pointer; font-weight:bold; font-size:13px; }
 button:disabled { opacity:.5; cursor:not-allowed; }
 .primary { background:var(--blue); color:white; }
 .gold { background:var(--gold); color:#17243b; }
@@ -121,105 +38,31 @@ button:disabled { opacity:.5; cursor:not-allowed; }
 .danger { background:var(--danger); color:white; }
 .secondary { background:#e8edf5; color:var(--navy); }
 .small { padding:7px 9px; margin:2px; }
-.action-row {
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px;
-}
+.action-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
 .hidden { display:none !important; }
-.status {
-  padding:6px 10px;
-  border-radius:20px;
-  display:inline-block;
-  font-size:12px;
-  font-weight:bold;
-}
+.status { padding:6px 10px; border-radius:20px; display:inline-block; font-size:12px; font-weight:bold; }
 .published { background:#d9f3e4; color:#126b3c; }
 .unpublished { background:#ffe4e4; color:#a21b1b; }
-.meta {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
-}
+.meta { color:var(--muted); font-size:13px; line-height:1.7; }
 .table-wrap { overflow-x:auto; }
-table {
-  width:100%;
-  border-collapse:collapse;
-  min-width:800px;
-  font-size:13px;
-}
-th,td {
-  padding:11px 9px;
-  text-align:left;
-  border-bottom:1px solid #e5e9f0;
-  vertical-align:top;
-}
+table { width:100%; border-collapse:collapse; min-width:800px; font-size:13px; }
+th,td { padding:11px 9px; text-align:left; border-bottom:1px solid #e5e9f0; vertical-align:top; }
 th { background:#edf1f7; color:var(--navy); }
 .question-text { max-width:340px; white-space:normal; }
-.question-number {
-  font-weight:bold;
-  color:var(--navy);
-  text-align:center;
-}
-.pagination {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:15px;
-}
+.question-number { font-weight:bold; color:var(--navy); text-align:center; }
+.pagination { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:15px; }
 .pagination-buttons { display:flex; gap:5px; flex-wrap:wrap; }
-.notice {
-  padding:12px;
-  border-radius:6px;
-  background:#fff8df;
-  color:#6d5410;
-  font-size:13px;
-  margin-top:12px;
-}
-.message {
-  padding:11px;
-  border-radius:6px;
-  margin:12px 0;
-  font-size:13px;
-  display:none;
-}
+.notice { padding:12px; border-radius:6px; background:#fff8df; color:#6d5410; font-size:13px; margin-top:12px; }
+.message { padding:11px; border-radius:6px; margin:12px 0; font-size:13px; display:none; }
 .message.error { background:#ffe4e4; color:#9c1717; }
 .message.ok { background:#d9f3e4; color:#126b3c; }
-.modal {
-  position:fixed;
-  inset:0;
-  background:#0009;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:40;
-  padding:15px;
-}
+.modal { position:fixed; inset:0; background:#0009; display:none; align-items:center; justify-content:center; z-index:40; padding:15px; }
 .modal.show { display:flex; }
-.modal-content {
-  background:white;
-  width:min(650px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:20px;
-  border-radius:10px;
-}
+.modal-content { background:white; width:min(650px,100%); max-height:90vh; overflow:auto; padding:20px; border-radius:10px; }
 .modal-content h3 { color:var(--navy); }
-.modal-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
+.modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .modal-grid .full { grid-column:1/-1; }
-footer {
-  text-align:center;
-  padding:20px;
-  color:var(--muted);
-  font-size:12px;
-}
+footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
 @media(max-width:650px) {
   .selection-grid,.modal-grid { grid-template-columns:1fr; }
   .modal-grid .full { grid-column:auto; }
@@ -263,30 +106,19 @@ footer {
   <div class="selection-grid">
     <div>
       <label for="countrySelect">1. Select Country</label>
-      <select id="countrySelect">
-        <option value="">Loading countries...</option>
-      </select>
+      <select id="countrySelect"><option value="">Loading countries...</option></select>
     </div>
-
     <div>
       <label for="levelSelect">2. Select Education Level</label>
-      <select id="levelSelect" disabled>
-        <option value="">Select country first</option>
-      </select>
+      <select id="levelSelect" disabled><option value="">Select country first</option></select>
     </div>
-
     <div>
       <label for="subjectSelect">3. Select Subject</label>
-      <select id="subjectSelect" disabled>
-        <option value="">Select education level first</option>
-      </select>
+      <select id="subjectSelect" disabled><option value="">Select education level first</option></select>
     </div>
-
     <div>
       <label for="examSelect">4. Select Examination</label>
-      <select id="examSelect" disabled>
-        <option value="">Select subject first</option>
-      </select>
+      <select id="examSelect" disabled><option value="">Select subject first</option></select>
     </div>
   </div>
 
@@ -294,7 +126,6 @@ footer {
     <button class="primary" id="viewExamButton">View Examination</button>
     <button class="secondary" id="resetButton">Clear Selection</button>
   </div>
-
   <div id="selectionMessage" class="message"></div>
 </section>
 
@@ -309,8 +140,7 @@ footer {
   </div>
 
   <div class="notice">
-    Publishing or unpublishing this examination will also publish or
-    unpublish all questions belonging to it.
+    Publishing or unpublishing this examination will also publish or unpublish all questions belonging to it.
   </div>
 </section>
 
@@ -320,10 +150,8 @@ footer {
   <div class="selection-grid">
     <div>
       <label for="questionSearch">Search Questions in This Examination</label>
-      <input id="questionSearch" type="search"
-        placeholder="Search by question text, number or answer...">
+      <input id="questionSearch" type="search" placeholder="Search by question text, number or answer...">
     </div>
-
     <div>
       <label for="rowsPerPage">Rows per page</label>
       <select id="rowsPerPage">
@@ -341,18 +169,12 @@ footer {
     <table>
       <thead>
         <tr>
-          <th>Question No.</th>
-          <th>Question</th>
-          <th>Correct Option</th>
-          <th>Marks</th>
-          <th>Status</th>
-          <th>Actions</th>
+          <th>Question No.</th><th>Question</th><th>Correct Option</th>
+          <th>Marks</th><th>Status</th><th>Actions</th>
         </tr>
       </thead>
       <tbody id="questionsTable">
-        <tr>
-          <td colspan="6">Select an examination to view questions.</td>
-        </tr>
+        <tr><td colspan="6">Select an examination to view questions.</td></tr>
       </tbody>
     </table>
   </div>
@@ -380,28 +202,20 @@ footer {
         <label for="editExamTitle">Examination Title</label>
         <input id="editExamTitle" type="text">
       </div>
-
       <div class="full">
         <label for="editExamDescription">Description</label>
         <textarea id="editExamDescription" rows="3"></textarea>
       </div>
-
-      <div>
+      <div class="full">
         <label for="editDuration">Duration (minutes)</label>
         <input id="editDuration" type="number" min="1">
       </div>
-
-      <div>
+      <div class="full">
         <label for="editAccessType">Examination Type</label>
         <select id="editAccessType">
           <option value="free">Free</option>
           <option value="paid">Premium</option>
         </select>
-      </div>
-
-      <div class="full">
-        <label for="editPrice">Price</label>
-        <input id="editPrice" type="number" min="0" step="0.01">
       </div>
     </div>
 
@@ -421,48 +235,20 @@ footer {
         <label for="editQuestionText">Question</label>
         <textarea id="editQuestionText" rows="4"></textarea>
       </div>
-
-      <div>
-        <label for="editOptionA">Option A</label>
-        <input id="editOptionA">
-      </div>
-
-      <div>
-        <label for="editOptionB">Option B</label>
-        <input id="editOptionB">
-      </div>
-
-      <div>
-        <label for="editOptionC">Option C</label>
-        <input id="editOptionC">
-      </div>
-
-      <div>
-        <label for="editOptionD">Option D</label>
-        <input id="editOptionD">
-      </div>
-
+      <div><label for="editOptionA">Option A</label><input id="editOptionA"></div>
+      <div><label for="editOptionB">Option B</label><input id="editOptionB"></div>
+      <div><label for="editOptionC">Option C</label><input id="editOptionC"></div>
+      <div><label for="editOptionD">Option D</label><input id="editOptionD"></div>
       <div>
         <label for="editCorrectOption">Correct Option</label>
         <select id="editCorrectOption">
           <option value="">Select answer</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
+          <option value="A">A</option><option value="B">B</option>
+          <option value="C">C</option><option value="D">D</option>
         </select>
       </div>
-
-      <div>
-        <label for="editMarks">Marks</label>
-        <input id="editMarks" type="number" min="1" step="0.5">
-      </div>
-
-      <div>
-        <label for="editQuestionOrder">Question Order</label>
-        <input id="editQuestionOrder" type="number" min="1">
-      </div>
-
+      <div><label for="editMarks">Marks</label><input id="editMarks" type="number" min="1" step="0.5"></div>
+      <div><label for="editQuestionOrder">Question Order</label><input id="editQuestionOrder" type="number" min="1"></div>
       <div class="full">
         <label for="editExplanation">Explanation</label>
         <textarea id="editExplanation" rows="3"></textarea>
@@ -499,7 +285,6 @@ function closeMenu() {
   sidebar.classList.remove("open");
   overlay.classList.remove("show");
 }
-
 overlay.addEventListener("click", closeMenu);
 
 /* MESSAGES */
@@ -509,26 +294,18 @@ function showMessage(id, message, type = "ok") {
   el.className = "message " + type;
   el.style.display = "block";
 }
-
-function clearMessage(id) {
-  $(id).style.display = "none";
-}
+function clearMessage(id) { $(id).style.display = "none"; }
 
 /* SAFE HTML */
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
   })[char]);
 }
 
 /* DROPDOWN HELPERS */
 function setOptions(select, rows, valueField, labelField, placeholder) {
   select.innerHTML = "";
-
   const first = document.createElement("option");
   first.value = "";
   first.textContent = placeholder;
@@ -540,17 +317,13 @@ function setOptions(select, rows, valueField, labelField, placeholder) {
     option.textContent = row[labelField];
     select.appendChild(option);
   });
-
   select.disabled = rows.length === 0;
 }
-
 function resetSelect(select, placeholder) {
   select.innerHTML = "";
-
   const option = document.createElement("option");
   option.value = "";
   option.textContent = placeholder;
-
   select.appendChild(option);
   select.disabled = true;
 }
@@ -558,7 +331,6 @@ function resetSelect(select, placeholder) {
 /* ADMIN VERIFICATION */
 async function checkAdmin() {
   const session = await getCurrentSession();
-
   if (!session) {
     location.href = "admin-login.html";
     return false;
@@ -575,7 +347,6 @@ async function checkAdmin() {
     location.href = "admin-login.html";
     return false;
   }
-
   return true;
 }
 
@@ -586,26 +357,17 @@ async function loadCountries() {
     .select("id,country_name")
     .eq("is_active", true)
     .order("country_name");
-
   if (error) throw error;
 
-  setOptions(
-    $("countrySelect"),
-    data || [],
-    "id",
-    "country_name",
-    "Choose country"
-  );
+  setOptions($("countrySelect"), data || [], "id", "country_name", "Choose country");
 }
 
 /* LOAD EDUCATION LEVELS */
 async function loadLevels() {
   const countryId = $("countrySelect").value;
-
   resetSelect($("levelSelect"), "Choose education level");
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
-
   hideExamPanels();
 
   if (!countryId) return;
@@ -616,25 +378,16 @@ async function loadLevels() {
     .eq("education_system_id", countryId)
     .eq("is_active", true)
     .order("level_name");
-
   if (error) throw error;
 
-  setOptions(
-    $("levelSelect"),
-    data || [],
-    "id",
-    "level_name",
-    "Choose education level"
-  );
+  setOptions($("levelSelect"), data || [], "id", "level_name", "Choose education level");
 }
 
-/* LOAD SUBJECTS — USE THE ACTUAL subjects.name COLUMN */
+/* LOAD SUBJECTS */
 async function loadSubjects() {
   const levelId = $("levelSelect").value;
-
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
-
   hideExamPanels();
 
   if (!levelId) return;
@@ -644,11 +397,9 @@ async function loadSubjects() {
     .select("subject_id")
     .eq("education_level_id", levelId)
     .eq("is_active", true);
-
   if (linkError) throw linkError;
 
   const subjectIds = (links || []).map(row => row.subject_id);
-
   if (!subjectIds.length) {
     resetSelect($("subjectSelect"), "No subjects available");
     return;
@@ -660,23 +411,15 @@ async function loadSubjects() {
     .in("id", subjectIds)
     .eq("is_active", true)
     .order("name");
-
   if (error) throw error;
 
-  setOptions(
-    $("subjectSelect"),
-    data || [],
-    "id",
-    "name",
-    "Choose subject"
-  );
+  setOptions($("subjectSelect"), data || [], "id", "name", "Choose subject");
 }
 
 /* LOAD EXAMINATIONS */
 async function loadExaminations() {
   const levelId = $("levelSelect").value;
   const subjectId = $("subjectSelect").value;
-
   resetSelect($("examSelect"), "Choose examination");
 
   if (!levelId || !subjectId) return;
@@ -687,7 +430,6 @@ async function loadExaminations() {
     .eq("education_level_id", levelId)
     .eq("subject_id", subjectId)
     .order("title");
-
   if (error) throw error;
 
   const select = $("examSelect");
@@ -696,14 +438,11 @@ async function loadExaminations() {
   (data || []).forEach(exam => {
     const option = document.createElement("option");
     option.value = exam.id;
-
     const type = exam.access_type === "paid" ? "PREMIUM" : "FREE";
     const status = exam.is_published ? "Published" : "Unpublished";
-
     option.textContent = `${exam.title} — ${type} — ${status}`;
     select.appendChild(option);
   });
-
   select.disabled = !data?.length;
 }
 
@@ -711,14 +450,10 @@ async function loadExaminations() {
 function hideExamPanels() {
   $("examPanel").classList.add("hidden");
   $("questionsPanel").classList.add("hidden");
-
   currentExam = null;
   questions = [];
-
   $("questionSearch").value = "";
-  $("questionsTable").innerHTML =
-    '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
-
+  $("questionsTable").innerHTML = '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
   $("questionCount").textContent = "";
   $("pageInformation").textContent = "";
 }
@@ -727,17 +462,9 @@ function hideExamPanels() {
 async function viewExamination() {
   const examId = $("examSelect").value;
 
-  if (
-    !$("countrySelect").value ||
-    !$("levelSelect").value ||
-    !$("subjectSelect").value ||
-    !examId
-  ) {
-    showMessage(
-      "selectionMessage",
-      "Please select the country, education level, subject and examination.",
-      "error"
-    );
+  if (!$("countrySelect").value || !$("levelSelect").value ||
+      !$("subjectSelect").value || !examId) {
+    showMessage("selectionMessage", "Please select the country, education level, subject and examination.", "error");
     return;
   }
 
@@ -758,57 +485,35 @@ async function viewExamination() {
   }
 
   currentExam = data;
-
   renderExamDetails();
-
   $("examPanel").classList.remove("hidden");
   $("questionsPanel").classList.remove("hidden");
-
   $("questionSearch").value = "";
   currentPage = 1;
-
   await loadQuestions();
 }
 
-/* DISPLAY EXAMINATION DETAILS */
+/* DISPLAY EXAMINATION DETAILS — PRICE REMOVED */
 function renderExamDetails() {
   const exam = currentExam;
   if (!exam) return;
 
   const isPublished = !!exam.is_published;
-
   $("examHeading").textContent = exam.title;
 
   $("examDetails").innerHTML = `
-    <div><strong>Type:</strong>
-      ${exam.access_type === "paid" ? "Premium" : "Free"}
-    </div>
-
-    <div><strong>Duration:</strong>
-      ${Number(exam.duration_minutes) || 0} minutes
-    </div>
-
-    <div><strong>Price:</strong>
-      ${Number(exam.price) || 0}
-    </div>
-
+    <div><strong>Type:</strong> ${exam.access_type === "paid" ? "Premium" : "Free"}</div>
+    <div><strong>Duration:</strong> ${Number(exam.duration_minutes) || 0} minutes</div>
     <div><strong>Status:</strong>
       <span class="status ${isPublished ? "published" : "unpublished"}">
         ${isPublished ? "Published" : "Unpublished"}
       </span>
     </div>
-
-    <div><strong>Description:</strong>
-      ${escapeHTML(exam.description || "No description")}
-    </div>
+    <div><strong>Description:</strong> ${escapeHTML(exam.description || "No description")}</div>
   `;
 
-  $("examPublishButton").textContent = isPublished
-    ? "Unpublish Examination"
-    : "Publish Examination";
-
-  $("examPublishButton").className =
-    isPublished ? "danger" : "success";
+  $("examPublishButton").textContent = isPublished ? "Unpublish Examination" : "Publish Examination";
+  $("examPublishButton").className = isPublished ? "danger" : "success";
 }
 
 /* LOAD QUESTIONS */
@@ -827,7 +532,6 @@ async function loadQuestions() {
     showMessage("pageMessage", error.message, "error");
     return;
   }
-
   questions = data || [];
   renderQuestions();
 }
@@ -835,21 +539,13 @@ async function loadQuestions() {
 /* SEARCH QUESTIONS */
 function getFilteredQuestions() {
   const search = $("questionSearch").value.trim().toLowerCase();
-
   return questions.filter((question, index) => {
     const number = String(index + 1);
-
     const searchableText = [
-      number,
-      question.question_text,
-      question.option_a,
-      question.option_b,
-      question.option_c,
-      question.option_d,
-      question.correct_option,
-      question.explanation
+      number, question.question_text, question.option_a,
+      question.option_b, question.option_c, question.option_d,
+      question.correct_option, question.explanation
     ].join(" ").toLowerCase();
-
     return searchableText.includes(search);
   });
 }
@@ -860,24 +556,15 @@ function renderQuestions() {
 
   const filtered = getFilteredQuestions();
   const rowsPerPage = Number($("rowsPerPage").value);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filtered.length / rowsPerPage)
-  );
-
+  const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
   if (currentPage > totalPages) currentPage = totalPages;
 
   const start = (currentPage - 1) * rowsPerPage;
   const visible = filtered.slice(start, start + rowsPerPage);
 
   $("questionCount").textContent =
-    `${filtered.length} question(s) found in ${currentExam.title}. ` +
-    `Total questions in this examination: ${questions.length}.`;
-
-  $("pageInformation").textContent =
-    `Page ${currentPage} of ${totalPages}`;
-
+    `${filtered.length} question(s) found in ${currentExam.title}. Total questions in this examination: ${questions.length}.`;
+  $("pageInformation").textContent = `Page ${currentPage} of ${totalPages}`;
   $("previousPage").disabled = currentPage <= 1;
   $("nextPage").disabled = currentPage >= totalPages;
 
@@ -885,61 +572,29 @@ function renderQuestions() {
   tbody.innerHTML = "";
 
   if (!visible.length) {
-    tbody.innerHTML =
-      '<tr><td colspan="6">No questions found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6">No questions found.</td></tr>';
     return;
   }
 
   visible.forEach(question => {
-    const questionNumber = questions.findIndex(
-      item => String(item.id) === String(question.id)
-    ) + 1;
-
+    const questionNumber = questions.findIndex(item => String(item.id) === String(question.id)) + 1;
     const isPublished = question.is_published !== false;
-
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
       <td class="question-number">${questionNumber}</td>
-
-      <td class="question-text">
-        ${escapeHTML(question.question_text)}
-      </td>
-
+      <td class="question-text">${escapeHTML(question.question_text)}</td>
       <td>${escapeHTML(question.correct_option || "")}</td>
-
       <td>${escapeHTML(question.marks ?? "")}</td>
-
+      <td><span class="status ${isPublished ? "published" : "unpublished"}">${isPublished ? "Published" : "Unpublished"}</span></td>
       <td>
-        <span class="status ${isPublished ? "published" : "unpublished"}">
-          ${isPublished ? "Published" : "Unpublished"}
-        </span>
-      </td>
-
-      <td>
-        <button
-          class="small ${isPublished ? "danger" : "success"}"
-          data-action="toggle"
-          data-id="${question.id}">
+        <button class="small ${isPublished ? "danger" : "success"}" data-action="toggle" data-id="${question.id}">
           ${isPublished ? "Unpublish" : "Publish"}
         </button>
-
-        <button
-          class="small gold"
-          data-action="edit"
-          data-id="${question.id}">
-          Edit
-        </button>
-
-        <button
-          class="small danger"
-          data-action="delete"
-          data-id="${question.id}">
-          Delete
-        </button>
+        <button class="small gold" data-action="edit" data-id="${question.id}">Edit</button>
+        <button class="small danger" data-action="delete" data-id="${question.id}">Delete</button>
       </td>
     `;
-
     tbody.appendChild(tr);
   });
 }
@@ -952,11 +607,7 @@ async function toggleExamPublication() {
   const newStatus = !currentExam.is_published;
   const action = newStatus ? "publish" : "unpublish";
 
-  const confirmed = confirm(
-    `Are you sure you want to ${action} this examination and ALL its questions?`
-  );
-
-  if (!confirmed) return;
+  if (!confirm(`Are you sure you want to ${action} this examination and ALL its questions?`)) return;
 
   const { error: examError } = await supabase
     .from("examinations")
@@ -974,39 +625,24 @@ async function toggleExamPublication() {
     .eq("examination_id", examId);
 
   if (questionError) {
-    showMessage(
-      "pageMessage",
-      "The examination status changed, but the question statuses could not be updated. Please check the database. " +
-      questionError.message,
-      "error"
-    );
+    showMessage("pageMessage", "The examination status changed, but the question statuses could not be updated. Please check the database. " + questionError.message, "error");
     return;
   }
 
   currentExam.is_published = newStatus;
-
-  questions.forEach(question => {
-    question.is_published = newStatus;
-  });
+  questions.forEach(question => { question.is_published = newStatus; });
 
   renderExamDetails();
   renderQuestions();
-
   await loadExaminations();
   $("examSelect").value = examId;
 
-  showMessage(
-    "pageMessage",
-    `The examination and all its questions have been ${action}ed successfully.`
-  );
+  showMessage("pageMessage", `The examination and all its questions have been ${action}ed successfully.`);
 }
 
 /* INDIVIDUAL QUESTION PUBLISHING */
 async function toggleQuestion(id) {
-  const question = questions.find(
-    item => String(item.id) === String(id)
-  );
-
+  const question = questions.find(item => String(item.id) === String(id));
   if (!question) return;
 
   const newStatus = question.is_published === false;
@@ -1024,14 +660,12 @@ async function toggleQuestion(id) {
 
   question.is_published = newStatus;
   renderQuestions();
-
   showMessage("pageMessage", "Question status updated successfully.");
 }
 
 /* OPEN QUESTION EDITOR */
 function openQuestionEditor(question) {
   editingQuestionId = question.id;
-
   $("editQuestionText").value = question.question_text || "";
   $("editOptionA").value = question.option_a || "";
   $("editOptionB").value = question.option_b || "";
@@ -1041,7 +675,6 @@ function openQuestionEditor(question) {
   $("editMarks").value = question.marks ?? 1;
   $("editQuestionOrder").value = question.question_order ?? 1;
   $("editExplanation").value = question.explanation || "";
-
   $("questionModal").classList.add("show");
 }
 
@@ -1058,21 +691,10 @@ async function saveQuestion() {
   const marks = Number($("editMarks").value);
   const order = Number($("editQuestionOrder").value);
 
-  if (
-    !questionText ||
-    !optionA ||
-    !optionB ||
-    !optionC ||
-    !optionD ||
-    !correct ||
-    !Number.isFinite(marks) ||
-    marks <= 0 ||
-    !Number.isInteger(order) ||
-    order <= 0
-  ) {
-    alert(
-      "Complete the question, all four options, correct answer, marks and valid question order."
-    );
+  if (!questionText || !optionA || !optionB || !optionC || !optionD ||
+      !correct || !Number.isFinite(marks) || marks <= 0 ||
+      !Number.isInteger(order) || order <= 0) {
+    alert("Complete the question, all four options, correct answer, marks and valid question order.");
     return;
   }
 
@@ -1101,17 +723,13 @@ async function saveQuestion() {
 
   $("questionModal").classList.remove("show");
   editingQuestionId = null;
-
   await loadQuestions();
-
   showMessage("pageMessage", "Question updated successfully.");
 }
 
 /* DELETE INDIVIDUAL QUESTION */
 async function deleteQuestion(id) {
-  if (!confirm("Delete this question permanently? This cannot be undone.")) {
-    return;
-  }
+  if (!confirm("Delete this question permanently? This cannot be undone.")) return;
 
   const { error } = await supabase
     .from("exam_questions")
@@ -1125,11 +743,10 @@ async function deleteQuestion(id) {
   }
 
   await loadQuestions();
-
   showMessage("pageMessage", "Question deleted successfully.");
 }
 
-/* OPEN EXAMINATION EDITOR */
+/* OPEN EXAMINATION EDITOR — NO PRICE FIELD */
 function openExamEditor() {
   if (!currentExam) return;
 
@@ -1137,12 +754,11 @@ function openExamEditor() {
   $("editExamDescription").value = currentExam.description || "";
   $("editDuration").value = currentExam.duration_minutes || "";
   $("editAccessType").value = currentExam.access_type || "free";
-  $("editPrice").value = currentExam.price || 0;
 
   $("examModal").classList.add("show");
 }
 
-/* SAVE EXAMINATION EDITS */
+/* SAVE EXAMINATION EDITS — PRICE NOT CHANGED */
 async function saveExam() {
   if (!currentExam) return;
 
@@ -1150,28 +766,14 @@ async function saveExam() {
   const title = $("editExamTitle").value.trim();
   const duration = Number($("editDuration").value);
   const accessType = $("editAccessType").value;
-  const price = Number($("editPrice").value);
 
-  if (
-    !title ||
-    !Number.isFinite(duration) ||
-    duration <= 0 ||
-    !Number.isFinite(price) ||
-    price < 0
-  ) {
-    alert("Enter a valid examination title, duration and price.");
-    return;
-  }
-
-  if (accessType === "paid" && price <= 0) {
-    alert("Enter a price greater than zero for a Premium examination.");
+  if (!title || !Number.isFinite(duration) || duration <= 0) {
+    alert("Enter a valid examination title and duration.");
     return;
   }
 
   if (accessType !== currentExam.access_type) {
-    alert(
-      "The Free/Premium category cannot be changed here. Register a separate examination for the other category."
-    );
+    alert("The Free/Premium category cannot be changed here. Register a separate examination for the other category.");
     $("editAccessType").value = currentExam.access_type;
     return;
   }
@@ -1179,8 +781,7 @@ async function saveExam() {
   const updates = {
     title,
     description:$("editExamDescription").value.trim(),
-    duration_minutes:duration,
-    price
+    duration_minutes:duration
   };
 
   const { error } = await supabase
@@ -1194,9 +795,7 @@ async function saveExam() {
   }
 
   currentExam = { ...currentExam, ...updates };
-
   $("examModal").classList.remove("show");
-
   renderExamDetails();
 
   await loadExaminations();
@@ -1212,42 +811,21 @@ async function deleteExam() {
   const examId = currentExam.id;
   const title = currentExam.title;
 
-  if (
-    !confirm(
-      `Delete "${title}" permanently? The database may prevent deletion if other records depend on this examination.`
-    )
-  ) {
-    return;
-  }
+  if (!confirm(`Delete "${title}" permanently? The database may prevent deletion if other records depend on this examination.`)) return;
 
-  /*
-    Attempt to delete the examination first.
-    If related records prevent deletion, the operation stops.
-    Questions are not deleted separately beforehand.
-  */
   const { error } = await supabase
     .from("examinations")
     .delete()
     .eq("id", examId);
 
   if (error) {
-    showMessage(
-      "pageMessage",
-      "The examination could not be deleted. Related records may depend on it. No separate question deletion was attempted. " +
-      error.message,
-      "error"
-    );
+    showMessage("pageMessage", "The examination could not be deleted. Related records may depend on it. No separate question deletion was attempted. " + error.message, "error");
     return;
   }
 
   hideExamPanels();
-
   await loadExaminations();
-
-  showMessage(
-    "pageMessage",
-    "Examination deletion completed successfully."
-  );
+  showMessage("pageMessage", "Examination deletion completed successfully.");
 }
 
 /* COUNTRY CHANGE */
@@ -1273,7 +851,6 @@ $("levelSelect").addEventListener("change", async () => {
 /* SUBJECT CHANGE */
 $("subjectSelect").addEventListener("change", async () => {
   hideExamPanels();
-
   try {
     await loadExaminations();
     clearMessage("selectionMessage");
@@ -1284,20 +861,15 @@ $("subjectSelect").addEventListener("change", async () => {
 
 /* EXAMINATION CHANGE */
 $("examSelect").addEventListener("change", hideExamPanels);
-
-/* VIEW BUTTON */
 $("viewExamButton").addEventListener("click", viewExamination);
 
 /* CLEAR SELECTION */
 $("resetButton").addEventListener("click", () => {
   $("countrySelect").value = "";
-
   resetSelect($("levelSelect"), "Choose education level");
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
-
   hideExamPanels();
-
   clearMessage("selectionMessage");
   clearMessage("pageMessage");
 });
@@ -1307,14 +879,10 @@ $("examPublishButton").addEventListener("click", toggleExamPublication);
 $("editExamButton").addEventListener("click", openExamEditor);
 $("deleteExamButton").addEventListener("click", deleteExam);
 $("saveExamButton").addEventListener("click", saveExam);
-
-$("closeExamModal").addEventListener("click", () => {
-  $("examModal").classList.remove("show");
-});
+$("closeExamModal").addEventListener("click", () => $("examModal").classList.remove("show"));
 
 /* QUESTION BUTTONS */
 $("saveQuestionButton").addEventListener("click", saveQuestion);
-
 $("closeQuestionModal").addEventListener("click", () => {
   $("questionModal").classList.remove("show");
   editingQuestionId = null;
@@ -1343,12 +911,7 @@ $("previousPage").addEventListener("click", () => {
 /* NEXT PAGE */
 $("nextPage").addEventListener("click", () => {
   const filtered = getFilteredQuestions();
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filtered.length / Number($("rowsPerPage").value))
-  );
-
+  const totalPages = Math.max(1, Math.ceil(filtered.length / Number($("rowsPerPage").value)));
   if (currentPage < totalPages) {
     currentPage++;
     renderQuestions();
@@ -1358,25 +921,15 @@ $("nextPage").addEventListener("click", () => {
 /* QUESTION TABLE ACTIONS */
 $("questionsTable").addEventListener("click", async event => {
   const button = event.target.closest("button[data-action]");
-
   if (!button) return;
 
   const id = button.dataset.id;
   const action = button.dataset.action;
-
-  const question = questions.find(
-    item => String(item.id) === String(id)
-  );
+  const question = questions.find(item => String(item.id) === String(id));
 
   if (action === "toggle") await toggleQuestion(id);
-
-  if (action === "edit" && question) {
-    openQuestionEditor(question);
-  }
-
-  if (action === "delete") {
-    await deleteQuestion(id);
-  }
+  if (action === "edit" && question) openQuestionEditor(question);
+  if (action === "delete") await deleteQuestion(id);
 });
 
 /* LOGOUT */
@@ -1389,22 +942,14 @@ $("logoutButton").addEventListener("click", async () => {
 async function initialise() {
   try {
     const allowed = await checkAdmin();
-
     if (!allowed) return;
-
     await loadCountries();
-
   } catch (error) {
-    showMessage(
-      "selectionMessage",
-      error.message || "Unable to load the Question Bank.",
-      "error"
-    );
+    showMessage("selectionMessage", error.message || "Unable to load the Question Bank.", "error");
   }
 }
 
 initialise();
-
 </script>
 </body>
 </html>
