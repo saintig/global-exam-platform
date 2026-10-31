@@ -8,61 +8,220 @@
 
 <style>
 :root {
-  --navy:#142b52; --blue:#2457a7; --gold:#d4af37;
-  --bg:#f4f6fa; --white:#fff; --text:#243047;
-  --muted:#68758a; --danger:#c62828; --green:#198754;
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#243047;
+  --muted:#68758a;
+  --danger:#c62828;
+  --green:#198754;
+  --orange:#b76b00;
 }
 * { box-sizing:border-box; }
-body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); }
-header { background:var(--navy); color:white; padding:15px 18px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  background:var(--navy);
+  color:white;
+  padding:15px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 header h2 { margin:0; font-size:18px; }
-.menu-btn { background:transparent; color:white; font-size:27px; padding:2px 8px; }
-.sidebar { position:fixed; top:0; left:-290px; width:270px; height:100%; background:var(--navy); padding:20px; overflow-y:auto; z-index:20; transition:.25s; }
+.menu-btn {
+  background:transparent;
+  color:white;
+  font-size:27px;
+  padding:2px 8px;
+}
+.sidebar {
+  position:fixed;
+  top:0;
+  left:-290px;
+  width:270px;
+  height:100%;
+  background:var(--navy);
+  padding:20px;
+  overflow-y:auto;
+  z-index:20;
+  transition:.25s;
+}
 .sidebar.open { left:0; }
 .sidebar h3 { color:var(--gold); }
-.sidebar a { display:block; color:white; text-decoration:none; padding:12px 10px; border-bottom:1px solid #ffffff20; font-size:14px; }
+.sidebar a {
+  display:block;
+  color:white;
+  text-decoration:none;
+  padding:12px 10px;
+  border-bottom:1px solid #ffffff20;
+  font-size:14px;
+}
 .sidebar a:hover { background:#ffffff18; }
-.overlay { display:none; position:fixed; inset:0; background:#0008; z-index:15; }
+.overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:15;
+}
 .overlay.show { display:block; }
-main { width:min(1200px,96%); margin:22px auto; }
-.card { background:white; border-radius:10px; padding:19px; margin-bottom:18px; box-shadow:0 2px 10px #142b5210; }
-.card h3 { color:var(--navy); margin:0 0 15px; font-size:17px; }
-.selection-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-label { display:block; font-weight:bold; font-size:13px; margin-bottom:7px; }
-select,input,textarea { width:100%; padding:11px; border:1px solid #ccd3df; border-radius:6px; font:inherit; background:white; }
-button { border:0; border-radius:6px; padding:10px 14px; cursor:pointer; font-weight:bold; font-size:13px; }
+main {
+  width:min(1200px,96%);
+  margin:22px auto;
+}
+.card {
+  background:white;
+  border-radius:10px;
+  padding:19px;
+  margin-bottom:18px;
+  box-shadow:0 2px 10px #142b5210;
+}
+.card h3 {
+  color:var(--navy);
+  margin:0 0 15px;
+  font-size:17px;
+}
+.selection-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+label {
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:7px;
+}
+select,input,textarea {
+  width:100%;
+  padding:11px;
+  border:1px solid #ccd3df;
+  border-radius:6px;
+  font:inherit;
+  background:white;
+}
+button {
+  border:0;
+  border-radius:6px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:13px;
+}
 button:disabled { opacity:.5; cursor:not-allowed; }
 .primary { background:var(--blue); color:white; }
 .gold { background:var(--gold); color:#17243b; }
 .success { background:var(--green); color:white; }
 .danger { background:var(--danger); color:white; }
 .secondary { background:#e8edf5; color:var(--navy); }
+.archive-btn { background:#fff0d8; color:#8a4b00; }
 .small { padding:7px 9px; margin:2px; }
-.action-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.action-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
 .hidden { display:none !important; }
-.status { padding:6px 10px; border-radius:20px; display:inline-block; font-size:12px; font-weight:bold; }
+.status {
+  padding:6px 10px;
+  border-radius:20px;
+  display:inline-block;
+  font-size:12px;
+  font-weight:bold;
+}
 .published { background:#d9f3e4; color:#126b3c; }
 .unpublished { background:#ffe4e4; color:#a21b1b; }
+.archived { background:#fff0d8; color:#8a4b00; }
 .meta { color:var(--muted); font-size:13px; line-height:1.7; }
 .table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:800px; font-size:13px; }
-th,td { padding:11px 9px; text-align:left; border-bottom:1px solid #e5e9f0; vertical-align:top; }
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px;
+  font-size:13px;
+}
+th,td {
+  padding:11px 9px;
+  text-align:left;
+  border-bottom:1px solid #e5e9f0;
+  vertical-align:top;
+}
 th { background:#edf1f7; color:var(--navy); }
 .question-text { max-width:340px; white-space:normal; }
-.question-number { font-weight:bold; color:var(--navy); text-align:center; }
-.pagination { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-top:15px; }
+.question-number {
+  font-weight:bold;
+  color:var(--navy);
+  text-align:center;
+}
+.pagination {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
 .pagination-buttons { display:flex; gap:5px; flex-wrap:wrap; }
-.notice { padding:12px; border-radius:6px; background:#fff8df; color:#6d5410; font-size:13px; margin-top:12px; }
-.message { padding:11px; border-radius:6px; margin:12px 0; font-size:13px; display:none; }
+.notice {
+  padding:12px;
+  border-radius:6px;
+  background:#fff8df;
+  color:#6d5410;
+  font-size:13px;
+  margin-top:12px;
+}
+.message {
+  padding:11px;
+  border-radius:6px;
+  margin:12px 0;
+  font-size:13px;
+  display:none;
+}
 .message.error { background:#ffe4e4; color:#9c1717; }
 .message.ok { background:#d9f3e4; color:#126b3c; }
-.modal { position:fixed; inset:0; background:#0009; display:none; align-items:center; justify-content:center; z-index:40; padding:15px; }
+.message.warning { background:#fff0d8; color:#8a4b00; }
+.modal {
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+  padding:15px;
+}
 .modal.show { display:flex; }
-.modal-content { background:white; width:min(650px,100%); max-height:90vh; overflow:auto; padding:20px; border-radius:10px; }
+.modal-content {
+  background:white;
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:20px;
+  border-radius:10px;
+}
 .modal-content h3 { color:var(--navy); }
-.modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.modal-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
 .modal-grid .full { grid-column:1/-1; }
-footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
+.archive-row { background:#fffaf1; }
+footer {
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+  font-size:12px;
+}
 @media(max-width:650px) {
   .selection-grid,.modal-grid { grid-template-columns:1fr; }
   .modal-grid .full { grid-column:auto; }
@@ -106,19 +265,27 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
   <div class="selection-grid">
     <div>
       <label for="countrySelect">1. Select Country</label>
-      <select id="countrySelect"><option value="">Loading countries...</option></select>
+      <select id="countrySelect">
+        <option value="">Loading countries...</option>
+      </select>
     </div>
     <div>
       <label for="levelSelect">2. Select Education Level</label>
-      <select id="levelSelect" disabled><option value="">Select country first</option></select>
+      <select id="levelSelect" disabled>
+        <option value="">Select country first</option>
+      </select>
     </div>
     <div>
       <label for="subjectSelect">3. Select Subject</label>
-      <select id="subjectSelect" disabled><option value="">Select education level first</option></select>
+      <select id="subjectSelect" disabled>
+        <option value="">Select education level first</option>
+      </select>
     </div>
     <div>
       <label for="examSelect">4. Select Examination</label>
-      <select id="examSelect" disabled><option value="">Select subject first</option></select>
+      <select id="examSelect" disabled>
+        <option value="">Select subject first</option>
+      </select>
     </div>
   </div>
 
@@ -126,6 +293,7 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
     <button class="primary" id="viewExamButton">View Examination</button>
     <button class="secondary" id="resetButton">Clear Selection</button>
   </div>
+
   <div id="selectionMessage" class="message"></div>
 </section>
 
@@ -136,11 +304,14 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
   <div class="action-row">
     <button class="success" id="examPublishButton">Publish Examination</button>
     <button class="gold" id="editExamButton">Edit Examination</button>
+    <button class="archive-btn" id="archiveExamButton">Archive Examination</button>
     <button class="danger" id="deleteExamButton">Delete Examination</button>
   </div>
 
   <div class="notice">
-    Publishing or unpublishing this examination will also publish or unpublish all questions belonging to it.
+    Archiving preserves examination records and student history.
+    Archived examinations cannot be used for new student attempts.
+    Publishing or unpublishing an examination also updates all its questions.
   </div>
 </section>
 
@@ -150,7 +321,8 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
   <div class="selection-grid">
     <div>
       <label for="questionSearch">Search Questions in This Examination</label>
-      <input id="questionSearch" type="search" placeholder="Search by question text, number or answer...">
+      <input id="questionSearch" type="search"
+        placeholder="Search by question text, number or answer...">
     </div>
     <div>
       <label for="rowsPerPage">Rows per page</label>
@@ -169,8 +341,12 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
     <table>
       <thead>
         <tr>
-          <th>Question No.</th><th>Question</th><th>Correct Option</th>
-          <th>Marks</th><th>Status</th><th>Actions</th>
+          <th>Question No.</th>
+          <th>Question</th>
+          <th>Correct Option</th>
+          <th>Marks</th>
+          <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="questionsTable">
@@ -243,12 +419,20 @@ footer { text-align:center; padding:20px; color:var(--muted); font-size:12px; }
         <label for="editCorrectOption">Correct Option</label>
         <select id="editCorrectOption">
           <option value="">Select answer</option>
-          <option value="A">A</option><option value="B">B</option>
-          <option value="C">C</option><option value="D">D</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
         </select>
       </div>
-      <div><label for="editMarks">Marks</label><input id="editMarks" type="number" min="1" step="0.5"></div>
-      <div><label for="editQuestionOrder">Question Order</label><input id="editQuestionOrder" type="number" min="1"></div>
+      <div>
+        <label for="editMarks">Marks</label>
+        <input id="editMarks" type="number" min="1" step="0.5">
+      </div>
+      <div>
+        <label for="editQuestionOrder">Question Order</label>
+        <input id="editQuestionOrder" type="number" min="1">
+      </div>
       <div class="full">
         <label for="editExplanation">Explanation</label>
         <textarea id="editExplanation" rows="3"></textarea>
@@ -294,18 +478,25 @@ function showMessage(id, message, type = "ok") {
   el.className = "message " + type;
   el.style.display = "block";
 }
-function clearMessage(id) { $(id).style.display = "none"; }
+function clearMessage(id) {
+  $(id).style.display = "none";
+}
 
 /* SAFE HTML */
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   })[char]);
 }
 
-/* DROPDOWN HELPERS */
+/* DROPDOWNS */
 function setOptions(select, rows, valueField, labelField, placeholder) {
   select.innerHTML = "";
+
   const first = document.createElement("option");
   first.value = "";
   first.textContent = placeholder;
@@ -317,20 +508,25 @@ function setOptions(select, rows, valueField, labelField, placeholder) {
     option.textContent = row[labelField];
     select.appendChild(option);
   });
+
   select.disabled = rows.length === 0;
 }
+
 function resetSelect(select, placeholder) {
   select.innerHTML = "";
+
   const option = document.createElement("option");
   option.value = "";
   option.textContent = placeholder;
   select.appendChild(option);
+
   select.disabled = true;
 }
 
 /* ADMIN VERIFICATION */
 async function checkAdmin() {
   const session = await getCurrentSession();
+
   if (!session) {
     location.href = "admin-login.html";
     return false;
@@ -347,6 +543,7 @@ async function checkAdmin() {
     location.href = "admin-login.html";
     return false;
   }
+
   return true;
 }
 
@@ -357,17 +554,26 @@ async function loadCountries() {
     .select("id,country_name")
     .eq("is_active", true)
     .order("country_name");
+
   if (error) throw error;
 
-  setOptions($("countrySelect"), data || [], "id", "country_name", "Choose country");
+  setOptions(
+    $("countrySelect"),
+    data || [],
+    "id",
+    "country_name",
+    "Choose country"
+  );
 }
 
-/* LOAD EDUCATION LEVELS */
+/* LOAD LEVELS */
 async function loadLevels() {
   const countryId = $("countrySelect").value;
+
   resetSelect($("levelSelect"), "Choose education level");
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
+
   hideExamPanels();
 
   if (!countryId) return;
@@ -378,14 +584,22 @@ async function loadLevels() {
     .eq("education_system_id", countryId)
     .eq("is_active", true)
     .order("level_name");
+
   if (error) throw error;
 
-  setOptions($("levelSelect"), data || [], "id", "level_name", "Choose education level");
+  setOptions(
+    $("levelSelect"),
+    data || [],
+    "id",
+    "level_name",
+    "Choose education level"
+  );
 }
 
 /* LOAD SUBJECTS */
 async function loadSubjects() {
   const levelId = $("levelSelect").value;
+
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
   hideExamPanels();
@@ -397,9 +611,11 @@ async function loadSubjects() {
     .select("subject_id")
     .eq("education_level_id", levelId)
     .eq("is_active", true);
+
   if (linkError) throw linkError;
 
   const subjectIds = (links || []).map(row => row.subject_id);
+
   if (!subjectIds.length) {
     resetSelect($("subjectSelect"), "No subjects available");
     return;
@@ -411,25 +627,34 @@ async function loadSubjects() {
     .in("id", subjectIds)
     .eq("is_active", true)
     .order("name");
+
   if (error) throw error;
 
-  setOptions($("subjectSelect"), data || [], "id", "name", "Choose subject");
+  setOptions(
+    $("subjectSelect"),
+    data || [],
+    "id",
+    "name",
+    "Choose subject"
+  );
 }
 
-/* LOAD EXAMINATIONS */
+/* LOAD EXAMINATIONS INCLUDING ARCHIVED RECORDS */
 async function loadExaminations() {
   const levelId = $("levelSelect").value;
   const subjectId = $("subjectSelect").value;
+
   resetSelect($("examSelect"), "Choose examination");
 
   if (!levelId || !subjectId) return;
 
   const { data, error } = await supabase
     .from("examinations")
-    .select("id,title,access_type,is_published")
+    .select("id,title,access_type,is_published,is_archived")
     .eq("education_level_id", levelId)
     .eq("subject_id", subjectId)
     .order("title");
+
   if (error) throw error;
 
   const select = $("examSelect");
@@ -438,33 +663,51 @@ async function loadExaminations() {
   (data || []).forEach(exam => {
     const option = document.createElement("option");
     option.value = exam.id;
+
     const type = exam.access_type === "paid" ? "PREMIUM" : "FREE";
-    const status = exam.is_published ? "Published" : "Unpublished";
-    option.textContent = `${exam.title} — ${type} — ${status}`;
+    const publication = exam.is_published ? "Published" : "Unpublished";
+    const archive = exam.is_archived ? "ARCHIVED" : "Active";
+
+    option.textContent =
+      `${exam.title} — ${type} — ${publication} — ${archive}`;
+
     select.appendChild(option);
   });
+
   select.disabled = !data?.length;
 }
 
-/* HIDE EXAMINATION AND QUESTION PANELS */
+/* HIDE PANELS */
 function hideExamPanels() {
   $("examPanel").classList.add("hidden");
   $("questionsPanel").classList.add("hidden");
+
   currentExam = null;
   questions = [];
+
   $("questionSearch").value = "";
-  $("questionsTable").innerHTML = '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
+  $("questionsTable").innerHTML =
+    '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
+
   $("questionCount").textContent = "";
   $("pageInformation").textContent = "";
 }
 
-/* VIEW SELECTED EXAMINATION */
+/* VIEW EXAMINATION */
 async function viewExamination() {
   const examId = $("examSelect").value;
 
-  if (!$("countrySelect").value || !$("levelSelect").value ||
-      !$("subjectSelect").value || !examId) {
-    showMessage("selectionMessage", "Please select the country, education level, subject and examination.", "error");
+  if (
+    !$("countrySelect").value ||
+    !$("levelSelect").value ||
+    !$("subjectSelect").value ||
+    !examId
+  ) {
+    showMessage(
+      "selectionMessage",
+      "Please select the country, education level, subject and examination.",
+      "error"
+    );
     return;
   }
 
@@ -485,35 +728,69 @@ async function viewExamination() {
   }
 
   currentExam = data;
+
   renderExamDetails();
+
   $("examPanel").classList.remove("hidden");
   $("questionsPanel").classList.remove("hidden");
+
   $("questionSearch").value = "";
   currentPage = 1;
+
   await loadQuestions();
 }
 
-/* DISPLAY EXAMINATION DETAILS — PRICE REMOVED */
+/* EXAMINATION DETAILS */
 function renderExamDetails() {
-  const exam = currentExam;
-  if (!exam) return;
+  if (!currentExam) return;
 
-  const isPublished = !!exam.is_published;
-  $("examHeading").textContent = exam.title;
+  const isPublished = !!currentExam.is_published;
+  const isArchived = !!currentExam.is_archived;
+
+  $("examHeading").textContent = currentExam.title;
 
   $("examDetails").innerHTML = `
-    <div><strong>Type:</strong> ${exam.access_type === "paid" ? "Premium" : "Free"}</div>
-    <div><strong>Duration:</strong> ${Number(exam.duration_minutes) || 0} minutes</div>
-    <div><strong>Status:</strong>
+    <div><strong>Type:</strong>
+      ${currentExam.access_type === "paid" ? "Premium" : "Free"}
+    </div>
+
+    <div><strong>Duration:</strong>
+      ${Number(currentExam.duration_minutes) || 0} minutes
+    </div>
+
+    <div><strong>Publication:</strong>
       <span class="status ${isPublished ? "published" : "unpublished"}">
         ${isPublished ? "Published" : "Unpublished"}
       </span>
     </div>
-    <div><strong>Description:</strong> ${escapeHTML(exam.description || "No description")}</div>
+
+    <div><strong>Archive status:</strong>
+      <span class="status ${isArchived ? "archived" : "published"}">
+        ${isArchived ? "Archived" : "Active"}
+      </span>
+    </div>
+
+    <div><strong>Description:</strong>
+      ${escapeHTML(currentExam.description || "No description")}
+    </div>
   `;
 
-  $("examPublishButton").textContent = isPublished ? "Unpublish Examination" : "Publish Examination";
-  $("examPublishButton").className = isPublished ? "danger" : "success";
+  $("examPublishButton").textContent =
+    isPublished ? "Unpublish Examination" : "Publish Examination";
+
+  $("examPublishButton").className =
+    isPublished ? "danger" : "success";
+
+  $("examPublishButton").disabled = isArchived;
+  $("editExamButton").disabled = isArchived;
+
+  $("archiveExamButton").textContent =
+    isArchived ? "Restore Examination" : "Archive Examination";
+
+  $("archiveExamButton").className =
+    isArchived ? "success" : "archive-btn";
+
+  $("deleteExamButton").disabled = isArchived;
 }
 
 /* LOAD QUESTIONS */
@@ -532,39 +809,52 @@ async function loadQuestions() {
     showMessage("pageMessage", error.message, "error");
     return;
   }
+
   questions = data || [];
   renderQuestions();
 }
 
-/* SEARCH QUESTIONS */
+/* SEARCH */
 function getFilteredQuestions() {
   const search = $("questionSearch").value.trim().toLowerCase();
+
   return questions.filter((question, index) => {
     const number = String(index + 1);
+
     const searchableText = [
-      number, question.question_text, question.option_a,
-      question.option_b, question.option_c, question.option_d,
-      question.correct_option, question.explanation
+      number,
+      question.question_text,
+      question.option_a,
+      question.option_b,
+      question.option_c,
+      question.option_d,
+      question.correct_option,
+      question.explanation
     ].join(" ").toLowerCase();
+
     return searchableText.includes(search);
   });
 }
 
-/* DISPLAY QUESTIONS AND PAGINATION */
+/* DISPLAY QUESTIONS */
 function renderQuestions() {
   if (!currentExam) return;
 
   const filtered = getFilteredQuestions();
   const rowsPerPage = Number($("rowsPerPage").value);
   const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+
   if (currentPage > totalPages) currentPage = totalPages;
 
   const start = (currentPage - 1) * rowsPerPage;
   const visible = filtered.slice(start, start + rowsPerPage);
 
   $("questionCount").textContent =
-    `${filtered.length} question(s) found in ${currentExam.title}. Total questions in this examination: ${questions.length}.`;
-  $("pageInformation").textContent = `Page ${currentPage} of ${totalPages}`;
+    `${filtered.length} question(s) found. Total questions: ${questions.length}.`;
+
+  $("pageInformation").textContent =
+    `Page ${currentPage} of ${totalPages}`;
+
   $("previousPage").disabled = currentPage <= 1;
   $("nextPage").disabled = currentPage >= totalPages;
 
@@ -572,42 +862,97 @@ function renderQuestions() {
   tbody.innerHTML = "";
 
   if (!visible.length) {
-    tbody.innerHTML = '<tr><td colspan="6">No questions found.</td></tr>';
+    tbody.innerHTML =
+      '<tr><td colspan="6">No questions found.</td></tr>';
     return;
   }
 
   visible.forEach(question => {
-    const questionNumber = questions.findIndex(item => String(item.id) === String(question.id)) + 1;
+    const questionNumber =
+      questions.findIndex(item => String(item.id) === String(question.id)) + 1;
+
     const isPublished = question.is_published !== false;
+    const isArchived = !!question.is_archived;
+
+    let statusHTML = "";
+
+    if (isArchived) {
+      statusHTML = '<span class="status archived">Archived</span>';
+    } else {
+      statusHTML = `
+        <span class="status ${isPublished ? "published" : "unpublished"}">
+          ${isPublished ? "Published" : "Unpublished"}
+        </span>
+      `;
+    }
+
     const tr = document.createElement("tr");
+
+    if (isArchived) tr.classList.add("archive-row");
 
     tr.innerHTML = `
       <td class="question-number">${questionNumber}</td>
-      <td class="question-text">${escapeHTML(question.question_text)}</td>
+
+      <td class="question-text">
+        ${escapeHTML(question.question_text)}
+      </td>
+
       <td>${escapeHTML(question.correct_option || "")}</td>
+
       <td>${escapeHTML(question.marks ?? "")}</td>
-      <td><span class="status ${isPublished ? "published" : "unpublished"}">${isPublished ? "Published" : "Unpublished"}</span></td>
+
+      <td>${statusHTML}</td>
+
       <td>
-        <button class="small ${isPublished ? "danger" : "success"}" data-action="toggle" data-id="${question.id}">
-          ${isPublished ? "Unpublish" : "Publish"}
-        </button>
-        <button class="small gold" data-action="edit" data-id="${question.id}">Edit</button>
-        <button class="small danger" data-action="delete" data-id="${question.id}">Delete</button>
+        ${
+          isArchived
+          ? `
+            <button class="small success"
+              data-action="restore"
+              data-id="${question.id}">
+              Restore
+            </button>
+          `
+          : `
+            <button class="small ${isPublished ? "danger" : "success"}"
+              data-action="toggle"
+              data-id="${question.id}"
+              ${currentExam.is_archived ? "disabled" : ""}>
+              ${isPublished ? "Unpublish" : "Publish"}
+            </button>
+
+            <button class="small gold"
+              data-action="edit"
+              data-id="${question.id}"
+              ${currentExam.is_archived ? "disabled" : ""}>
+              Edit
+            </button>
+
+            <button class="small archive-btn"
+              data-action="delete"
+              data-id="${question.id}">
+              Delete
+            </button>
+          `
+        }
       </td>
     `;
+
     tbody.appendChild(tr);
   });
 }
 
-/* PUBLISH OR UNPUBLISH EXAMINATION AND ALL ITS QUESTIONS */
+/* PUBLISH OR UNPUBLISH EXAMINATION AND QUESTIONS */
 async function toggleExamPublication() {
-  if (!currentExam) return;
+  if (!currentExam || currentExam.is_archived) return;
 
   const examId = currentExam.id;
   const newStatus = !currentExam.is_published;
   const action = newStatus ? "publish" : "unpublish";
 
-  if (!confirm(`Are you sure you want to ${action} this examination and ALL its questions?`)) return;
+  if (!confirm(
+    `Are you sure you want to ${action} this examination and ALL its questions?`
+  )) return;
 
   const { error: examError } = await supabase
     .from("examinations")
@@ -625,25 +970,42 @@ async function toggleExamPublication() {
     .eq("examination_id", examId);
 
   if (questionError) {
-    showMessage("pageMessage", "The examination status changed, but the question statuses could not be updated. Please check the database. " + questionError.message, "error");
+    showMessage(
+      "pageMessage",
+      "Examination status changed, but question statuses could not be updated. " +
+      questionError.message,
+      "error"
+    );
     return;
   }
 
   currentExam.is_published = newStatus;
-  questions.forEach(question => { question.is_published = newStatus; });
+
+  questions.forEach(question => {
+    question.is_published = newStatus;
+  });
 
   renderExamDetails();
   renderQuestions();
+
   await loadExaminations();
   $("examSelect").value = examId;
 
-  showMessage("pageMessage", `The examination and all its questions have been ${action}ed successfully.`);
+  showMessage(
+    "pageMessage",
+    `The examination and all its questions have been ${action}ed successfully.`
+  );
 }
 
-/* INDIVIDUAL QUESTION PUBLISHING */
+/* INDIVIDUAL QUESTION PUBLICATION */
 async function toggleQuestion(id) {
-  const question = questions.find(item => String(item.id) === String(id));
-  if (!question) return;
+  if (!currentExam || currentExam.is_archived) return;
+
+  const question = questions.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!question || question.is_archived) return;
 
   const newStatus = question.is_published === false;
 
@@ -651,7 +1013,8 @@ async function toggleQuestion(id) {
     .from("exam_questions")
     .update({ is_published:newStatus })
     .eq("id", id)
-    .eq("examination_id", currentExam.id);
+    .eq("examination_id", currentExam.id)
+    .eq("is_archived", false);
 
   if (error) {
     showMessage("pageMessage", error.message, "error");
@@ -659,13 +1022,18 @@ async function toggleQuestion(id) {
   }
 
   question.is_published = newStatus;
+
   renderQuestions();
+
   showMessage("pageMessage", "Question status updated successfully.");
 }
 
-/* OPEN QUESTION EDITOR */
+/* QUESTION EDITOR */
 function openQuestionEditor(question) {
+  if (question.is_archived || currentExam?.is_archived) return;
+
   editingQuestionId = question.id;
+
   $("editQuestionText").value = question.question_text || "";
   $("editOptionA").value = question.option_a || "";
   $("editOptionB").value = question.option_b || "";
@@ -675,12 +1043,13 @@ function openQuestionEditor(question) {
   $("editMarks").value = question.marks ?? 1;
   $("editQuestionOrder").value = question.question_order ?? 1;
   $("editExplanation").value = question.explanation || "";
+
   $("questionModal").classList.add("show");
 }
 
-/* SAVE QUESTION EDITS */
+/* SAVE QUESTION */
 async function saveQuestion() {
-  if (!currentExam || !editingQuestionId) return;
+  if (!currentExam || !editingQuestionId || currentExam.is_archived) return;
 
   const questionText = $("editQuestionText").value.trim();
   const optionA = $("editOptionA").value.trim();
@@ -691,9 +1060,11 @@ async function saveQuestion() {
   const marks = Number($("editMarks").value);
   const order = Number($("editQuestionOrder").value);
 
-  if (!questionText || !optionA || !optionB || !optionC || !optionD ||
-      !correct || !Number.isFinite(marks) || marks <= 0 ||
-      !Number.isInteger(order) || order <= 0) {
+  if (
+    !questionText || !optionA || !optionB || !optionC || !optionD ||
+    !correct || !Number.isFinite(marks) || marks <= 0 ||
+    !Number.isInteger(order) || order <= 0
+  ) {
     alert("Complete the question, all four options, correct answer, marks and valid question order.");
     return;
   }
@@ -714,7 +1085,8 @@ async function saveQuestion() {
     .from("exam_questions")
     .update(updates)
     .eq("id", editingQuestionId)
-    .eq("examination_id", currentExam.id);
+    .eq("examination_id", currentExam.id)
+    .eq("is_archived", false);
 
   if (error) {
     showMessage("pageMessage", error.message, "error");
@@ -723,17 +1095,106 @@ async function saveQuestion() {
 
   $("questionModal").classList.remove("show");
   editingQuestionId = null;
+
   await loadQuestions();
+
   showMessage("pageMessage", "Question updated successfully.");
 }
 
-/* DELETE INDIVIDUAL QUESTION */
+/* CHECK WHETHER A QUESTION HAS STUDENT HISTORY */
+async function questionHasAttempts(questionId) {
+  const [questionAttempts, answers] = await Promise.all([
+    supabase
+      .from("attempt_questions")
+      .select("id")
+      .eq("question_id", questionId)
+      .limit(1),
+
+    supabase
+      .from("attempt_answers")
+      .select("id")
+      .eq("question_id", questionId)
+      .limit(1)
+  ]);
+
+  if (questionAttempts.error) throw questionAttempts.error;
+  if (answers.error) throw answers.error;
+
+  return (
+    (questionAttempts.data || []).length > 0 ||
+    (answers.data || []).length > 0
+  );
+}
+
+/* ARCHIVE OR PERMANENTLY DELETE QUESTION */
 async function deleteQuestion(id) {
-  if (!confirm("Delete this question permanently? This cannot be undone.")) return;
+  if (!currentExam) return;
+
+  const question = questions.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!question || question.is_archived) return;
+
+  if (!confirm(
+    "Check this question's student history and proceed with safe deletion or archiving?"
+  )) return;
+
+  try {
+    const hasAttempts = await questionHasAttempts(id);
+
+    if (hasAttempts) {
+      const { error } = await supabase
+        .from("exam_questions")
+        .update({ is_archived:true })
+        .eq("id", id)
+        .eq("examination_id", currentExam.id);
+
+      if (error) throw error;
+
+      showMessage(
+        "pageMessage",
+        "This question has student attempt history. It has been archived instead of permanently deleted.",
+        "warning"
+      );
+    } else {
+      const { error } = await supabase
+        .from("exam_questions")
+        .delete()
+        .eq("id", id)
+        .eq("examination_id", currentExam.id);
+
+      if (error) throw error;
+
+      showMessage(
+        "pageMessage",
+        "Question permanently deleted successfully."
+      );
+    }
+
+    await loadQuestions();
+
+  } catch (error) {
+    showMessage("pageMessage", error.message, "error");
+  }
+}
+
+/* RESTORE INDIVIDUAL QUESTION */
+async function restoreQuestion(id) {
+  if (!currentExam || currentExam.is_archived) {
+    showMessage(
+      "pageMessage",
+      "Restore the examination first before restoring its questions.",
+      "warning"
+    );
+    return;
+  }
+
+  if (!confirm("Restore this question?")) return;
 
   const { error } = await supabase
     .from("exam_questions")
-    .delete()
+    .update({ is_archived:false })
     .eq("id", id)
     .eq("examination_id", currentExam.id);
 
@@ -743,12 +1204,13 @@ async function deleteQuestion(id) {
   }
 
   await loadQuestions();
-  showMessage("pageMessage", "Question deleted successfully.");
+
+  showMessage("pageMessage", "Question restored successfully.");
 }
 
-/* OPEN EXAMINATION EDITOR — NO PRICE FIELD */
+/* EXAMINATION EDITOR */
 function openExamEditor() {
-  if (!currentExam) return;
+  if (!currentExam || currentExam.is_archived) return;
 
   $("editExamTitle").value = currentExam.title || "";
   $("editExamDescription").value = currentExam.description || "";
@@ -758,9 +1220,9 @@ function openExamEditor() {
   $("examModal").classList.add("show");
 }
 
-/* SAVE EXAMINATION EDITS — PRICE NOT CHANGED */
+/* SAVE EXAMINATION */
 async function saveExam() {
-  if (!currentExam) return;
+  if (!currentExam || currentExam.is_archived) return;
 
   const examId = currentExam.id;
   const title = $("editExamTitle").value.trim();
@@ -787,7 +1249,8 @@ async function saveExam() {
   const { error } = await supabase
     .from("examinations")
     .update(updates)
-    .eq("id", examId);
+    .eq("id", examId)
+    .eq("is_archived", false);
 
   if (error) {
     showMessage("pageMessage", error.message, "error");
@@ -795,7 +1258,9 @@ async function saveExam() {
   }
 
   currentExam = { ...currentExam, ...updates };
+
   $("examModal").classList.remove("show");
+
   renderExamDetails();
 
   await loadExaminations();
@@ -804,28 +1269,153 @@ async function saveExam() {
   showMessage("pageMessage", "Examination updated successfully.");
 }
 
-/* DELETE EXAMINATION */
-async function deleteExam() {
+/* CHECK WHETHER EXAMINATION HAS STUDENT ATTEMPTS */
+async function examinationHasAttempts(examId) {
+  const { data, error } = await supabase
+    .from("exam_attempts")
+    .select("id")
+    .eq("examination_id", examId)
+    .limit(1);
+
+  if (error) throw error;
+
+  return (data || []).length > 0;
+}
+
+/* ARCHIVE OR RESTORE EXAMINATION AND ITS QUESTIONS */
+async function toggleExamArchive() {
   if (!currentExam) return;
+
+  const examId = currentExam.id;
+  const wasArchived = !!currentExam.is_archived;
+  const newArchivedStatus = !wasArchived;
+
+  if (wasArchived) {
+    if (!confirm(
+      "Restore this examination and all its questions?"
+    )) return;
+  } else {
+    if (!confirm(
+      "Archive this examination and all its questions? Student history will be preserved."
+    )) return;
+  }
+
+  try {
+    const { error: examError } = await supabase
+      .from("examinations")
+      .update({ is_archived:newArchivedStatus })
+      .eq("id", examId);
+
+    if (examError) throw examError;
+
+    const { error: questionError } = await supabase
+      .from("exam_questions")
+      .update({ is_archived:newArchivedStatus })
+      .eq("examination_id", examId);
+
+    if (questionError) {
+      showMessage(
+        "pageMessage",
+        "Examination archive status changed, but question archive status could not be updated. Please check the database. " +
+        questionError.message,
+        "error"
+      );
+      return;
+    }
+
+    currentExam.is_archived = newArchivedStatus;
+
+    questions.forEach(question => {
+      question.is_archived = newArchivedStatus;
+    });
+
+    renderExamDetails();
+    renderQuestions();
+
+    await loadExaminations();
+    $("examSelect").value = examId;
+
+    showMessage(
+      "pageMessage",
+      newArchivedStatus
+        ? "Examination and all its questions have been archived. Student history is preserved."
+        : "Examination and all its questions have been restored.",
+      "ok"
+    );
+
+  } catch (error) {
+    showMessage("pageMessage", error.message, "error");
+  }
+}
+
+/* PERMANENT DELETE OR ARCHIVE EXAMINATION */
+async function deleteExam() {
+  if (!currentExam || currentExam.is_archived) return;
 
   const examId = currentExam.id;
   const title = currentExam.title;
 
-  if (!confirm(`Delete "${title}" permanently? The database may prevent deletion if other records depend on this examination.`)) return;
+  if (!confirm(
+    `Check student history for "${title}" and proceed with safe deletion or archiving?`
+  )) return;
 
-  const { error } = await supabase
-    .from("examinations")
-    .delete()
-    .eq("id", examId);
+  try {
+    const hasAttempts = await examinationHasAttempts(examId);
 
-  if (error) {
-    showMessage("pageMessage", "The examination could not be deleted. Related records may depend on it. No separate question deletion was attempted. " + error.message, "error");
-    return;
+    if (hasAttempts) {
+      const { error: examError } = await supabase
+        .from("examinations")
+        .update({ is_archived:true })
+        .eq("id", examId);
+
+      if (examError) throw examError;
+
+      const { error: questionError } = await supabase
+        .from("exam_questions")
+        .update({ is_archived:true })
+        .eq("examination_id", examId);
+
+      if (questionError) {
+        showMessage(
+          "pageMessage",
+          "Examination archived, but some questions could not be archived. " +
+          questionError.message,
+          "error"
+        );
+        return;
+      }
+
+      hideExamPanels();
+      await loadExaminations();
+
+      $("examSelect").value = examId;
+
+      showMessage(
+        "pageMessage",
+        "This examination has student history. It and its questions have been archived instead of permanently deleted.",
+        "warning"
+      );
+
+    } else {
+      const { error } = await supabase
+        .from("examinations")
+        .delete()
+        .eq("id", examId);
+
+      if (error) throw error;
+
+      hideExamPanels();
+      await loadExaminations();
+
+      showMessage(
+        "pageMessage",
+        "Examination permanently deleted successfully."
+      );
+    }
+
+  } catch (error) {
+    showMessage("pageMessage", error.message, "error");
   }
-
-  hideExamPanels();
-  await loadExaminations();
-  showMessage("pageMessage", "Examination deletion completed successfully.");
 }
 
 /* COUNTRY CHANGE */
@@ -838,7 +1428,7 @@ $("countrySelect").addEventListener("change", async () => {
   }
 });
 
-/* EDUCATION LEVEL CHANGE */
+/* LEVEL CHANGE */
 $("levelSelect").addEventListener("change", async () => {
   try {
     await loadSubjects();
@@ -851,6 +1441,7 @@ $("levelSelect").addEventListener("change", async () => {
 /* SUBJECT CHANGE */
 $("subjectSelect").addEventListener("change", async () => {
   hideExamPanels();
+
   try {
     await loadExaminations();
     clearMessage("selectionMessage");
@@ -866,10 +1457,13 @@ $("viewExamButton").addEventListener("click", viewExamination);
 /* CLEAR SELECTION */
 $("resetButton").addEventListener("click", () => {
   $("countrySelect").value = "";
+
   resetSelect($("levelSelect"), "Choose education level");
   resetSelect($("subjectSelect"), "Choose subject");
   resetSelect($("examSelect"), "Choose examination");
+
   hideExamPanels();
+
   clearMessage("selectionMessage");
   clearMessage("pageMessage");
 });
@@ -877,18 +1471,23 @@ $("resetButton").addEventListener("click", () => {
 /* EXAMINATION BUTTONS */
 $("examPublishButton").addEventListener("click", toggleExamPublication);
 $("editExamButton").addEventListener("click", openExamEditor);
+$("archiveExamButton").addEventListener("click", toggleExamArchive);
 $("deleteExamButton").addEventListener("click", deleteExam);
 $("saveExamButton").addEventListener("click", saveExam);
-$("closeExamModal").addEventListener("click", () => $("examModal").classList.remove("show"));
+
+$("closeExamModal").addEventListener("click", () => {
+  $("examModal").classList.remove("show");
+});
 
 /* QUESTION BUTTONS */
 $("saveQuestionButton").addEventListener("click", saveQuestion);
+
 $("closeQuestionModal").addEventListener("click", () => {
   $("questionModal").classList.remove("show");
   editingQuestionId = null;
 });
 
-/* SEARCH QUESTIONS */
+/* SEARCH */
 $("questionSearch").addEventListener("input", () => {
   currentPage = 1;
   renderQuestions();
@@ -911,7 +1510,12 @@ $("previousPage").addEventListener("click", () => {
 /* NEXT PAGE */
 $("nextPage").addEventListener("click", () => {
   const filtered = getFilteredQuestions();
-  const totalPages = Math.max(1, Math.ceil(filtered.length / Number($("rowsPerPage").value)));
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / Number($("rowsPerPage").value))
+  );
+
   if (currentPage < totalPages) {
     currentPage++;
     renderQuestions();
@@ -921,15 +1525,25 @@ $("nextPage").addEventListener("click", () => {
 /* QUESTION TABLE ACTIONS */
 $("questionsTable").addEventListener("click", async event => {
   const button = event.target.closest("button[data-action]");
+
   if (!button) return;
 
   const id = button.dataset.id;
   const action = button.dataset.action;
-  const question = questions.find(item => String(item.id) === String(id));
+
+  const question = questions.find(
+    item => String(item.id) === String(id)
+  );
 
   if (action === "toggle") await toggleQuestion(id);
-  if (action === "edit" && question) openQuestionEditor(question);
+
+  if (action === "edit" && question) {
+    openQuestionEditor(question);
+  }
+
   if (action === "delete") await deleteQuestion(id);
+
+  if (action === "restore") await restoreQuestion(id);
 });
 
 /* LOGOUT */
@@ -938,18 +1552,26 @@ $("logoutButton").addEventListener("click", async () => {
   location.href = "admin-login.html";
 });
 
-/* INITIALISE PAGE */
+/* INITIALISE */
 async function initialise() {
   try {
     const allowed = await checkAdmin();
+
     if (!allowed) return;
+
     await loadCountries();
+
   } catch (error) {
-    showMessage("selectionMessage", error.message || "Unable to load the Question Bank.", "error");
+    showMessage(
+      "selectionMessage",
+      error.message || "Unable to load the Question Bank.",
+      "error"
+    );
   }
 }
 
 initialise();
 </script>
+
 </body>
 </html>
