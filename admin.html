@@ -421,43 +421,52 @@ function displayCount(id, count, error) {
 }
 
 async function loadStatistics() {
+
+  
+async function loadStatistics() {
   const [
-    usersResult,
     totalExamsResult,
-    publishedExamsResult
+    publishedExamsResult,
+    userCountResult
   ] = await Promise.all([
     supabase
-      .from("profiles")
-      .select("*", { count:"exact", head:true }),
+      .from("examinations")
+      .select("*", { count: "exact", head: true }),
 
     supabase
       .from("examinations")
-      .select("*", { count:"exact", head:true }),
+      .select("id", { count: "exact" })
+      .eq("is_published", true),
 
-    supabase
-      .from("examinations")
-      .select("id", { count:"exact" })
-      .eq("is_published", true)
+    supabase.functions.invoke("admin-user-count", {
+      body: {}
+    })
   ]);
 
-  displayCount(
-    "usersCount",
-    usersResult.count,
-    usersResult.error
-  );
+  // Count all Supabase Authentication accounts
+  const userData = userCountResult.data;
+  const userError = userCountResult.error;
 
+  $("usersCount").textContent =
+    !userError && userData?.totalUsers !== undefined
+      ? Number(userData.totalUsers).toLocaleString()
+      : "—";
+
+  // Count all examinations
   displayCount(
     "totalExamsCount",
     totalExamsResult.count,
     totalExamsResult.error
   );
 
+  // Count published examinations
   displayCount(
     "examsCount",
     publishedExamsResult.count,
     publishedExamsResult.error
   );
 
+  // Count questions belonging to published examinations
   if (!publishedExamsResult.error) {
     const publishedIds = (publishedExamsResult.data || [])
       .map(exam => exam.id);
@@ -467,7 +476,7 @@ async function loadStatistics() {
     } else {
       const { count, error } = await supabase
         .from("exam_questions")
-        .select("*", { count:"exact", head:true })
+        .select("*", { count: "exact", head: true })
         .in("examination_id", publishedIds);
 
       displayCount("questionsCount", count, error);
@@ -476,11 +485,11 @@ async function loadStatistics() {
     $("questionsCount").textContent = "—";
   }
 
-  // These two figures remain unavailable until their
-  // corresponding database records are implemented.
+  // These require their own database records
   $("subscribersCount").textContent = "—";
   $("viewsCount").textContent = "—";
 }
+
 
 async function initializeDashboard() {
   try {
