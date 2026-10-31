@@ -140,6 +140,11 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
+      margin: 5px;
+    }
+
+    #downloadPrintBtn {
+      background: #16834a;
     }
 
     .error {
@@ -164,6 +169,87 @@
         font-size: 34px;
       }
     }
+
+    /* PRINT ONLY THE RESULT SUMMARY */
+    @media print {
+      @page {
+        size: A4;
+        margin: 15mm;
+      }
+
+      body {
+        background: white !important;
+        color: #172033 !important;
+        font-family: Arial, sans-serif;
+      }
+
+      header {
+        background: white !important;
+        color: #102b50 !important;
+        border-bottom: 2px solid #d4af37;
+        padding: 10px 0;
+      }
+
+      header h2 {
+        font-size: 22px;
+      }
+
+      main {
+        max-width: 100%;
+        margin: 15px 0;
+        padding: 0;
+      }
+
+      #loading,
+      #answerReview,
+      #actionButtons {
+        display: none !important;
+      }
+
+      #resultArea {
+        display: block !important;
+      }
+
+      #printableSummary {
+        display: block !important;
+      }
+
+      .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        padding: 18px;
+        break-inside: avoid;
+      }
+
+      .score-card {
+        border-top: 4px solid #d4af37 !important;
+      }
+
+      .score {
+        font-size: 38px;
+        color: #102b50 !important;
+      }
+
+      .percentage {
+        color: #16834a !important;
+      }
+
+      .details {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .detail {
+        background: #f4f6f8 !important;
+        border: 1px solid #e5e7eb;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
   </style>
 </head>
 
@@ -182,61 +268,68 @@
 
   <div id="resultArea" hidden>
 
-    <section class="card score-card">
-      <h2 id="examTitle">Examination Result</h2>
-      <p>YOUR SCORE</p>
+    <!-- THIS SECTION IS THE ONLY CONTENT TO BE PRINTED -->
+    <div id="printableSummary">
 
-      <div class="score" id="score">0 / 0</div>
+      <section class="card score-card">
+        <h2 id="examTitle">Examination Result</h2>
+        <p>YOUR SCORE</p>
 
-      <div class="percentage" id="percentage">0%</div>
+        <div class="score" id="score">0 / 0</div>
 
-      <p id="resultMessage"></p>
-    </section>
+        <div class="percentage" id="percentage">0%</div>
 
-    <section class="card">
-      <h3>Result Details</h3>
+        <p id="resultMessage"></p>
+      </section>
 
-      <div class="details">
-        <div class="detail">
-          <small>Questions</small>
-          <strong id="questionCount">-</strong>
+      <section class="card">
+        <h3>Result Details</h3>
+
+        <div class="details">
+          <div class="detail">
+            <small>Questions</small>
+            <strong id="questionCount">-</strong>
+          </div>
+
+          <div class="detail">
+            <small>Duration</small>
+            <strong id="duration">-</strong>
+          </div>
+
+          <div class="detail">
+            <small>Started</small>
+            <strong id="startedAt">-</strong>
+          </div>
+
+          <div class="detail">
+            <small>Submitted</small>
+            <strong id="submittedAt">-</strong>
+          </div>
+
+          <div class="detail">
+            <small>Correct Answers</small>
+            <strong id="correctCount">-</strong>
+          </div>
+
+          <div class="detail">
+            <small>Wrong or Unanswered</small>
+            <strong id="wrongCount">-</strong>
+          </div>
         </div>
+      </section>
 
-        <div class="detail">
-          <small>Duration</small>
-          <strong id="duration">-</strong>
-        </div>
+    </div>
 
-        <div class="detail">
-          <small>Started</small>
-          <strong id="startedAt">-</strong>
-        </div>
-
-        <div class="detail">
-          <small>Submitted</small>
-          <strong id="submittedAt">-</strong>
-        </div>
-
-        <div class="detail">
-          <small>Correct Answers</small>
-          <strong id="correctCount">-</strong>
-        </div>
-
-        <div class="detail">
-          <small>Wrong or Unanswered</small>
-          <strong id="wrongCount">-</strong>
-        </div>
-      </div>
-    </section>
-
-    <section class="card">
+    <!-- ANSWER REVIEW REMAINS ON THE WEBSITE -->
+    <section class="card" id="answerReview">
       <h3>Answer Review</h3>
       <p>Review your selected answers and the correct answers below.</p>
 
       <div id="reviewContainer"></div>
     </section>
 
-    <div style="text-align:center; margin-bottom:30px;">
+    <div id="actionButtons" style="text-align:center; margin-bottom:30px;">
+      <button id="downloadPrintBtn">Download / Print Result</button>
       <button id="homeBtn">Return to Dashboard</button>
     </div>
 
@@ -426,8 +519,11 @@ async function loadResult() {
     const score = Number(result.score || 0);
     const totalMarks = Number(result.total_marks || 0);
 
-    if (!Number.isFinite(score) || !Number.isFinite(totalMarks) ||
-        totalMarks <= 0) {
+    if (
+      !Number.isFinite(score) ||
+      !Number.isFinite(totalMarks) ||
+      totalMarks <= 0
+    ) {
       throw new Error("The examination score is unavailable.");
     }
 
@@ -480,6 +576,12 @@ async function loadResult() {
   }
 }
 
+/* DOWNLOAD / PRINT RESULT SUMMARY */
+document.getElementById("downloadPrintBtn").addEventListener("click", () => {
+  window.print();
+});
+
+/* RETURN TO STUDENT DASHBOARD */
 document.getElementById("homeBtn").addEventListener("click", () => {
   location.assign("dashboard.html");
 });
