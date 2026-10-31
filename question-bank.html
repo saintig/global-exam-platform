@@ -8,519 +8,347 @@
 
 <style>
 :root {
-  --navy: #142b52;
-  --blue: #2457a7;
-  --gold: #d4af37;
-  --ivory: #fff9ed;
-  --bg: #f4f6fa;
-  --white: #ffffff;
-  --text: #253247;
-  --muted: #718096;
-  --border: #e2e8f0;
-  --green: #16834a;
-  --red: #c0392b;
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#243047;
+  --muted:#68758a;
+  --danger:#c62828;
+  --green:#198754;
 }
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing:border-box; }
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
 }
-
-button, input, select, textarea {
-  font: inherit;
+header {
+  background:var(--navy);
+  color:white;
+  padding:15px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
-
-button {
-  cursor: pointer;
-}
-
-.layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-.sidebar {
-  width: 255px;
-  background: var(--navy);
-  color: white;
-  padding: 22px 15px;
-  position: fixed;
-  inset: 0 auto 0 0;
-  overflow-y: auto;
-  z-index: 1000;
-  transition: transform .25s;
-}
-
-.brand {
-  padding: 8px 12px 22px;
-  border-bottom: 1px solid #ffffff25;
-  margin-bottom: 18px;
-}
-
-.brand h2 {
-  margin: 0;
-  color: var(--gold);
-  font-size: 21px;
-}
-
-.brand p {
-  margin: 7px 0 0;
-  font-size: 12px;
-  color: #d8e0ed;
-}
-
-.menu-label {
-  color: #b8c6dc;
-  font-size: 11px;
-  font-weight: bold;
-  padding: 10px 12px;
-  text-transform: uppercase;
-}
-
-.nav-link {
-  display: block;
-  padding: 12px;
-  color: #e5eaf3;
-  text-decoration: none;
-  border-radius: 7px;
-  margin-bottom: 4px;
-  font-size: 13px;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  background: var(--blue);
-  color: white;
-}
-
-.main {
-  margin-left: 255px;
-  width: calc(100% - 255px);
-  padding: 25px;
-}
-
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.topbar h1 {
-  margin: 0;
-  font-size: 23px;
-  color: var(--navy);
-}
-
+header h2 { margin:0; font-size:18px; }
 .menu-btn {
-  display: none;
-  border: 0;
-  background: var(--navy);
-  color: white;
-  padding: 9px 13px;
-  border-radius: 6px;
-  font-size: 20px;
+  background:transparent;
+  color:white;
+  font-size:27px;
+  padding:2px 8px;
 }
-
-.card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 12px #142b5208;
+.sidebar {
+  position:fixed;
+  top:0;
+  left:-290px;
+  width:270px;
+  height:100%;
+  background:var(--navy);
+  padding:20px;
+  overflow-y:auto;
+  z-index:20;
+  transition:.25s;
 }
-
-.card h2 {
-  font-size: 17px;
-  color: var(--navy);
-  margin: 0 0 16px;
+.sidebar.open { left:0; }
+.sidebar h3 { color:var(--gold); }
+.sidebar a {
+  display:block;
+  color:white;
+  text-decoration:none;
+  padding:12px 10px;
+  border-bottom:1px solid #ffffff20;
+  font-size:14px;
 }
-
-.filters {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-}
-
-label {
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 7px;
-  color: var(--navy);
-}
-
-input, select, textarea {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid #ccd5e2;
-  border-radius: 7px;
-  background: white;
-  color: var(--text);
-  outline: none;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--blue);
-}
-
-.btn {
-  border: 0;
-  padding: 10px 14px;
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 3px;
-}
-
-.primary {
-  background: var(--blue);
-  color: white;
-}
-
-.gold {
-  background: var(--gold);
-  color: var(--navy);
-}
-
-.success {
-  background: #e5f5eb;
-  color: var(--green);
-}
-
-.danger {
-  background: #fdecea;
-  color: var(--red);
-}
-
-.neutral {
-  background: #edf1f7;
-  color: var(--navy);
-}
-
-.btn:disabled {
-  opacity: .5;
-  cursor: not-allowed;
-}
-
-.exam-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.exam-heading h2 {
-  margin-bottom: 7px;
-}
-
-.meta {
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.badge {
-  display: inline-block;
-  padding: 5px 9px;
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: bold;
-  margin: 3px;
-}
-
-.free {
-  background: #e4f1ff;
-  color: #2457a7;
-}
-
-.paid {
-  background: #fff1c8;
-  color: #80600b;
-}
-
-.published {
-  background: #e5f5eb;
-  color: var(--green);
-}
-
-.unpublished {
-  background: #fdecea;
-  color: var(--red);
-}
-
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 720px;
-}
-
-th, td {
-  text-align: left;
-  padding: 12px 10px;
-  border-bottom: 1px solid var(--border);
-  font-size: 12px;
-  vertical-align: top;
-}
-
-th {
-  background: #f6f8fc;
-  color: var(--navy);
-}
-
-.question-text {
-  max-width: 300px;
-  line-height: 1.5;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: end;
-  margin-bottom: 15px;
-}
-
-.toolbar > div {
-  flex: 1;
-  min-width: 180px;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-top: 15px;
-  font-size: 12px;
-}
-
-.status {
-  padding: 12px;
-  border-radius: 7px;
-  background: #edf3fb;
-  color: var(--navy);
-  font-size: 12px;
-  margin-bottom: 15px;
-  display: none;
-}
-
-.status.error {
-  display: block;
-  background: #fdecea;
-  color: var(--red);
-}
-
-.status.ok {
-  display: block;
-  background: #e5f5eb;
-  color: var(--green);
-}
-
-.empty {
-  padding: 25px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #07152dcc;
-  z-index: 2000;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-.modal-box {
-  max-width: 650px;
-  margin: 30px auto;
-  background: white;
-  border-radius: 12px;
-  padding: 22px;
-}
-
-.modal-box h2 {
-  color: var(--navy);
-  margin-top: 0;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 13px;
-}
-
-.full {
-  grid-column: 1 / -1;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  margin-top: 17px;
-}
-
+.sidebar a:hover { background:#ffffff18; }
 .overlay {
-  display: none;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:15;
 }
-
-@media(max-width: 800px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .main {
-    margin-left: 0;
-    width: 100%;
-    padding: 16px;
-  }
-
-  .menu-btn {
-    display: block;
-  }
-
-  .overlay.show {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: #0008;
-    z-index: 900;
-  }
-
-  .filters {
-    grid-template-columns: 1fr;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .topbar h1 {
-    font-size: 19px;
-  }
+.overlay.show { display:block; }
+main {
+  width:min(1200px,96%);
+  margin:22px auto;
+}
+.card {
+  background:white;
+  border-radius:10px;
+  padding:19px;
+  margin-bottom:18px;
+  box-shadow:0 2px 10px #142b5210;
+}
+.card h3 {
+  color:var(--navy);
+  margin:0 0 15px;
+  font-size:17px;
+}
+.selection-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+label {
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:7px;
+}
+select,input,textarea {
+  width:100%;
+  padding:11px;
+  border:1px solid #ccd3df;
+  border-radius:6px;
+  font:inherit;
+  background:white;
+}
+button {
+  border:0;
+  border-radius:6px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:13px;
+}
+button:disabled { opacity:.5; cursor:not-allowed; }
+.primary { background:var(--blue); color:white; }
+.gold { background:var(--gold); color:#17243b; }
+.success { background:var(--green); color:white; }
+.danger { background:var(--danger); color:white; }
+.secondary { background:#e8edf5; color:var(--navy); }
+.small { padding:7px 9px; margin:2px; }
+.action-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.hidden { display:none !important; }
+.status {
+  padding:6px 10px;
+  border-radius:20px;
+  display:inline-block;
+  font-size:12px;
+  font-weight:bold;
+}
+.published { background:#d9f3e4; color:#126b3c; }
+.unpublished { background:#ffe4e4; color:#a21b1b; }
+.meta {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+.table-wrap { overflow-x:auto; }
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px;
+  font-size:13px;
+}
+th,td {
+  padding:11px 9px;
+  text-align:left;
+  border-bottom:1px solid #e5e9f0;
+  vertical-align:top;
+}
+th { background:#edf1f7; color:var(--navy); }
+.question-text { max-width:340px; white-space:normal; }
+.question-number {
+  font-weight:bold;
+  color:var(--navy);
+  text-align:center;
+}
+.pagination {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+.pagination-buttons { display:flex; gap:5px; flex-wrap:wrap; }
+.notice {
+  padding:12px;
+  border-radius:6px;
+  background:#fff8df;
+  color:#6d5410;
+  font-size:13px;
+  margin-top:12px;
+}
+.message {
+  padding:11px;
+  border-radius:6px;
+  margin:12px 0;
+  font-size:13px;
+  display:none;
+}
+.message.error { background:#ffe4e4; color:#9c1717; }
+.message.ok { background:#d9f3e4; color:#126b3c; }
+.modal {
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:40;
+  padding:15px;
+}
+.modal.show { display:flex; }
+.modal-content {
+  background:white;
+  width:min(650px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:20px;
+  border-radius:10px;
+}
+.modal-content h3 { color:var(--navy); }
+.modal-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.modal-grid .full { grid-column:1/-1; }
+footer {
+  text-align:center;
+  padding:20px;
+  color:var(--muted);
+  font-size:12px;
+}
+@media(max-width:650px) {
+  .selection-grid,.modal-grid { grid-template-columns:1fr; }
+  .modal-grid .full { grid-column:auto; }
+  header h2 { font-size:15px; }
+  .card { padding:14px; }
 }
 </style>
 </head>
 
 <body>
 
+<header>
+  <button class="menu-btn" id="menuButton" aria-label="Open menu">☰</button>
+  <h2>SAINTIG EXAMS — Question Bank</h2>
+  <button class="secondary" id="logoutButton">Logout</button>
+</header>
+
 <div class="overlay" id="overlay"></div>
 
-<div class="layout">
+<nav class="sidebar" id="sidebar">
+  <h3>ADMIN MENU</h3>
+  <a href="admin.html">Dashboard Overview</a>
+  <a href="countries.html">Countries</a>
+  <a href="education-levels.html">Education Levels</a>
+  <a href="subjects.html">Subjects</a>
+  <a href="question-bank.html">Question Bank</a>
+  <a href="register-exam.html">Register Examination</a>
+  <a href="register-users.html">Register Users</a>
+  <a href="paid-subscribers.html">Paid Subscribers</a>
+  <a href="results-reports.html">Results &amp; Reports</a>
+  <a href="visitor-analytics.html">Visitor Analytics</a>
+  <a href="ai-question-generator.html">AI Question Generator</a>
+  <a href="settings-security.html">Settings &amp; Security</a>
+</nav>
 
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <h2>SAINTIG EXAMS</h2>
-    <p>ADMINISTRATION PANEL</p>
-  </div>
+<main>
 
-  <div class="menu-label">Main Menu</div>
-
-  <a class="nav-link" href="admin.html">Dashboard Overview</a>
-  <a class="nav-link" href="countries.html">Countries</a>
-  <a class="nav-link" href="education-levels.html">Education Levels</a>
-  <a class="nav-link" href="subjects.html">Subjects</a>
-  <a class="nav-link active" href="question-bank.html">Question Bank</a>
-  <a class="nav-link" href="register-exam.html">Register Examination</a>
-  <a class="nav-link" href="register-users.html">Register Users</a>
-  <a class="nav-link" href="paid-subscribers.html">Paid Subscribers</a>
-  <a class="nav-link" href="results-reports.html">Results & Reports</a>
-  <a class="nav-link" href="visitor-analytics.html">Visitor Analytics</a>
-  <a class="nav-link" href="ai-question-generator.html">AI Question Generator</a>
-  <a class="nav-link" href="settings-security.html">Settings & Security</a>
-</aside>
-
-<main class="main">
-
-  <div class="topbar">
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <h1>Question Bank Management</h1>
-  </div>
-
-  <div id="message" class="status"></div>
-
+  <!-- EXAMINATION SELECTION -->
   <section class="card">
-    <h2>Select Examination Category</h2>
+    <h3>Select Examination</h3>
 
-    <div class="filters">
+    <div class="selection-grid">
       <div>
-        <label for="category">Examination Type</label>
-        <select id="category">
-          <option value="free">Free Examination</option>
-          <option value="paid">Paid / Premium Examination</option>
+        <label for="countrySelect">1. Select Country</label>
+        <select id="countrySelect">
+          <option value="">Loading countries...</option>
         </select>
       </div>
 
       <div>
-        <label for="examSelect">Select Examination</label>
-        <select id="examSelect">
-          <option value="">Loading examinations...</option>
+        <label for="levelSelect">2. Select Education Level</label>
+        <select id="levelSelect" disabled>
+          <option value="">Select country first</option>
         </select>
       </div>
+
+      <div>
+        <label for="subjectSelect">3. Select Subject</label>
+        <select id="subjectSelect" disabled>
+          <option value="">Select education level first</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="examSelect">4. Select Examination</label>
+        <select id="examSelect" disabled>
+          <option value="">Select subject first</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="primary" id="viewExamButton">View Examination</button>
+      <button class="secondary" id="resetButton">Clear Selection</button>
+    </div>
+
+    <div id="selectionMessage" class="message"></div>
+  </section>
+
+  <!-- EXAMINATION MANAGEMENT -->
+  <section class="card hidden" id="examPanel">
+    <h3 id="examHeading">Examination Details</h3>
+    <div id="examDetails" class="meta"></div>
+
+    <div class="action-row">
+      <button class="success" id="examPublishButton">Publish Examination</button>
+      <button class="gold" id="editExamButton">Edit Examination</button>
+      <button class="danger" id="deleteExamButton">Delete Examination</button>
+    </div>
+
+    <div class="notice">
+      Publishing or unpublishing this examination will also publish or
+      unpublish all questions belonging to it.
     </div>
   </section>
 
-  <section class="card" id="examCard" style="display:none">
-    <div class="exam-heading">
+  <!-- QUESTION MANAGEMENT -->
+  <section class="card hidden" id="questionsPanel">
+    <h3>Questions in This Examination</h3>
+
+    <div class="selection-grid">
       <div>
-        <h2 id="examTitle">Examination</h2>
-        <div class="meta" id="examMeta"></div>
-        <div id="examBadges"></div>
+        <label for="questionSearch">Search Questions in This Examination</label>
+        <input
+          id="questionSearch"
+          type="search"
+          placeholder="Search by question text, number or answer..."
+        >
       </div>
 
       <div>
-        <button class="btn success" id="publishExamBtn">Publish Examination</button>
-        <button class="btn danger" id="unpublishExamBtn">Unpublish Examination</button>
-        <button class="btn neutral" id="editExamBtn">Edit Examination</button>
-        <button class="btn danger" id="deleteExamBtn">Delete Examination</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="card" id="questionsCard" style="display:none">
-    <h2>Questions in Selected Examination</h2>
-
-    <div class="toolbar">
-      <div>
-        <label for="questionSearch">Search Questions</label>
-        <input id="questionSearch" type="search"
-          placeholder="Search question text...">
-      </div>
-
-      <div>
-        <label for="questionStatus">Publishing Status</label>
-        <select id="questionStatus">
-          <option value="all">All Questions</option>
-          <option value="published">Published</option>
-          <option value="unpublished">Unpublished</option>
+        <label for="rowsPerPage">Rows per page</label>
+        <select id="rowsPerPage">
+          <option value="10">10 rows</option>
+          <option value="20">20 rows</option>
+          <option value="50">50 rows</option>
+          <option value="100">100 rows</option>
         </select>
       </div>
     </div>
+
+    <p class="meta" id="questionCount"></p>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>No.</th>
+            <th>Question No.</th>
             <th>Question</th>
             <th>Correct Option</th>
             <th>Marks</th>
@@ -528,126 +356,132 @@ th {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="questionsBody">
-          <tr><td colspan="6" class="empty">Select an examination.</td></tr>
+        <tbody id="questionsTable">
+          <tr>
+            <td colspan="6">Select an examination to view questions.</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
     <div class="pagination">
-      <span id="pageInfo">Page 1</span>
-      <div>
-        <button class="btn neutral" id="prevBtn">Previous</button>
-        <button class="btn neutral" id="nextBtn">Next</button>
+      <span class="meta" id="pageInformation"></span>
+      <div class="pagination-buttons">
+        <button class="secondary" id="previousPage">Previous</button>
+        <button class="secondary" id="nextPage">Next</button>
       </div>
     </div>
   </section>
 
+  <div id="pageMessage" class="message"></div>
 </main>
-</div>
 
-<!-- Question editor -->
-<div class="modal" id="questionModal">
-  <div class="modal-box">
-    <h2>Edit Question</h2>
+<footer>SAINTIG EXAMS — Learn. Practice. Succeed.</footer>
 
-    <form id="questionForm">
-      <input type="hidden" id="questionId">
+<!-- EDIT EXAMINATION -->
+<div class="modal" id="examModal">
+  <div class="modal-content">
+    <h3>Edit Examination</h3>
 
-      <div class="form-grid">
-        <div class="full">
-          <label for="qText">Question</label>
-          <textarea id="qText" rows="3" required></textarea>
-        </div>
-
-        <div>
-          <label for="optionA">Option A</label>
-          <input id="optionA" required>
-        </div>
-
-        <div>
-          <label for="optionB">Option B</label>
-          <input id="optionB" required>
-        </div>
-
-        <div>
-          <label for="optionC">Option C</label>
-          <input id="optionC" required>
-        </div>
-
-        <div>
-          <label for="optionD">Option D</label>
-          <input id="optionD" required>
-        </div>
-
-        <div>
-          <label for="correctOption">Correct Option</label>
-          <select id="correctOption" required>
-            <option value="">Choose</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="marks">Marks</label>
-          <input id="marks" type="number" min="1" step="1" required>
-        </div>
-
-        <div>
-          <label for="questionOrder">Question Order</label>
-          <input id="questionOrder" type="number" min="1" step="1" required>
-        </div>
-
-        <div class="full">
-          <label for="explanation">Explanation</label>
-          <textarea id="explanation" rows="3"></textarea>
-        </div>
+    <div class="modal-grid">
+      <div class="full">
+        <label for="editExamTitle">Examination Title</label>
+        <input id="editExamTitle" type="text">
       </div>
 
-      <div class="modal-actions">
-        <button type="button" class="btn neutral" id="cancelQuestion">Cancel</button>
-        <button type="submit" class="btn primary" id="saveQuestionBtn">Save Changes</button>
+      <div class="full">
+        <label for="editExamDescription">Description</label>
+        <textarea id="editExamDescription" rows="3"></textarea>
       </div>
-    </form>
+
+      <div>
+        <label for="editDuration">Duration (minutes)</label>
+        <input id="editDuration" type="number" min="1">
+      </div>
+
+      <div>
+        <label for="editAccessType">Examination Type</label>
+        <select id="editAccessType">
+          <option value="free">Free</option>
+          <option value="paid">Premium</option>
+        </select>
+      </div>
+
+      <div class="full">
+        <label for="editPrice">Price</label>
+        <input id="editPrice" type="number" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="success" id="saveExamButton">Save Changes</button>
+      <button class="secondary" id="closeExamModal">Cancel</button>
+    </div>
   </div>
 </div>
 
-<!-- Examination editor -->
-<div class="modal" id="examModal">
-  <div class="modal-box">
-    <h2>Edit Examination</h2>
+<!-- EDIT QUESTION -->
+<div class="modal" id="questionModal">
+  <div class="modal-content">
+    <h3 id="questionModalHeading">Edit Question</h3>
 
-    <form id="examForm">
-      <div class="form-grid">
-        <div class="full">
-          <label for="editExamTitle">Examination Title</label>
-          <input id="editExamTitle" required>
-        </div>
-
-        <div class="full">
-          <label for="editExamDescription">Description</label>
-          <textarea id="editExamDescription" rows="3"></textarea>
-        </div>
-
-        <div>
-          <label for="editDuration">Duration (minutes)</label>
-          <input id="editDuration" type="number" min="1" required>
-        </div>
-
-        <div>
-          <label for="editPrice">Price</label>
-          <input id="editPrice" type="number" min="0" step="0.01">
-        </div>
+    <div class="modal-grid">
+      <div class="full">
+        <label for="editQuestionText">Question</label>
+        <textarea id="editQuestionText" rows="4"></textarea>
       </div>
 
-      <div class="modal-actions">
-        <button type="button" class="btn neutral" id="cancelExam">Cancel</button>
-        <button type="submit" class="btn primary" id="saveExamBtn">Save Changes</button>
+      <div>
+        <label for="editOptionA">Option A</label>
+        <input id="editOptionA">
       </div>
-    </form>
+
+      <div>
+        <label for="editOptionB">Option B</label>
+        <input id="editOptionB">
+      </div>
+
+      <div>
+        <label for="editOptionC">Option C</label>
+        <input id="editOptionC">
+      </div>
+
+      <div>
+        <label for="editOptionD">Option D</label>
+        <input id="editOptionD">
+      </div>
+
+      <div>
+        <label for="editCorrectOption">Correct Option</label>
+        <select id="editCorrectOption">
+          <option value="">Select answer</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="D">D</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="editMarks">Marks</label>
+        <input id="editMarks" type="number" min="1" step="0.5">
+      </div>
+
+      <div>
+        <label for="editQuestionOrder">Question Order</label>
+        <input id="editQuestionOrder" type="number" min="1">
+      </div>
+
+      <div class="full">
+        <label for="editExplanation">Explanation</label>
+        <textarea id="editExplanation" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="success" id="saveQuestionButton">Save Changes</button>
+      <button class="secondary" id="closeQuestionModal">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -656,39 +490,85 @@ import { supabase, getCurrentSession } from "./auth.js";
 
 const $ = id => document.getElementById(id);
 
-let currentAdmin = null;
-let examinations = [];
-let selectedExam = null;
+let currentExam = null;
 let questions = [];
 let currentPage = 1;
-const pageSize = 10;
+let editingQuestionId = null;
 
-function showMessage(message, type = "ok") {
-  const box = $("message");
-  box.textContent = message;
-  box.className = "status " + type;
-  box.style.display = "block";
-  window.scrollTo({ top: 0, behavior: "smooth" });
+const sidebar = $("sidebar");
+const overlay = $("overlay");
+
+/* MENU */
+$("menuButton").addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
 }
 
-function hideMessage() {
-  $("message").style.display = "none";
+overlay.addEventListener("click", closeMenu);
+
+/* MESSAGES */
+function showMessage(id, message, type = "ok") {
+  const el = $(id);
+  el.textContent = message;
+  el.className = "message " + type;
+  el.style.display = "block";
 }
 
+function clearMessage(id) {
+  $(id).style.display = "none";
+}
+
+/* SAFE HTML */
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   })[char]);
 }
 
-async function verifyAdmin() {
+/* DROPDOWN HELPERS */
+function setOptions(select, rows, valueField, labelField, placeholder) {
+  select.innerHTML = "";
+
+  const first = document.createElement("option");
+  first.value = "";
+  first.textContent = placeholder;
+  select.appendChild(first);
+
+  rows.forEach(row => {
+    const option = document.createElement("option");
+    option.value = row[valueField];
+    option.textContent = row[labelField];
+    select.appendChild(option);
+  });
+
+  select.disabled = rows.length === 0;
+}
+
+function resetSelect(select, placeholder) {
+  select.innerHTML = "";
+
+  const option = document.createElement("option");
+  option.value = "";
+  option.textContent = placeholder;
+
+  select.appendChild(option);
+  select.disabled = true;
+}
+
+/* ADMIN VERIFICATION */
+async function checkAdmin() {
   const session = await getCurrentSession();
 
-  if (!session?.user) {
+  if (!session) {
     location.href = "admin-login.html";
     return false;
   }
@@ -705,559 +585,789 @@ async function verifyAdmin() {
     return false;
   }
 
-  currentAdmin = session.user;
   return true;
 }
 
-function updateExamSelect() {
-  const category = $("category").value;
+/* LOAD COUNTRIES */
+async function loadCountries() {
+  const { data, error } = await supabase
+    .from("education_systems")
+    .select("id,country_name")
+    .eq("is_active", true)
+    .order("country_name");
 
-  const matching = examinations.filter(
-    exam => exam.access_type === category
+  if (error) throw error;
+
+  setOptions(
+    $("countrySelect"),
+    data || [],
+    "id",
+    "country_name",
+    "Choose country"
   );
-
-  $("examSelect").innerHTML =
-    '<option value="">Choose an examination</option>' +
-    matching.map(exam => `
-      <option value="${escapeHTML(exam.id)}">
-        ${escapeHTML(exam.title)}
-        ${exam.is_published ? " — Published" : " — Unpublished"}
-      </option>
-    `).join("");
-
-  $("examCard").style.display = "none";
-  $("questionsCard").style.display = "none";
-  selectedExam = null;
 }
 
-async function loadExaminations() {
-  hideMessage();
+/* LOAD EDUCATION LEVELS */
+async function loadLevels() {
+  const countryId = $("countrySelect").value;
 
-  $("examSelect").innerHTML =
-    '<option value="">Loading...</option>';
+  resetSelect($("levelSelect"), "Choose education level");
+  resetSelect($("subjectSelect"), "Choose subject");
+  resetSelect($("examSelect"), "Choose examination");
+
+  hideExamPanels();
+
+  if (!countryId) return;
+
+  const { data, error } = await supabase
+    .from("education_levels")
+    .select("id,level_name")
+    .eq("education_system_id", countryId)
+    .eq("is_active", true)
+    .order("level_name");
+
+  if (error) throw error;
+
+  setOptions(
+    $("levelSelect"),
+    data || [],
+    "id",
+    "level_name",
+    "Choose education level"
+  );
+}
+
+/* LOAD SUBJECTS */
+async function loadSubjects() {
+  const levelId = $("levelSelect").value;
+
+  resetSelect($("subjectSelect"), "Choose subject");
+  resetSelect($("examSelect"), "Choose examination");
+
+  hideExamPanels();
+
+  if (!levelId) return;
+
+  const { data: links, error: linkError } = await supabase
+    .from("education_level_subjects")
+    .select("subject_id")
+    .eq("education_level_id", levelId)
+    .eq("is_active", true);
+
+  if (linkError) throw linkError;
+
+  const subjectIds = (links || []).map(row => row.subject_id);
+
+  if (!subjectIds.length) {
+    setOptions(
+      $("subjectSelect"),
+      [],
+      "id",
+      "subject_name",
+      "No subjects available"
+    );
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("subjects")
+    .select("*")
+    .in("id", subjectIds)
+    .order("subject_name");
+
+  if (error) throw error;
+
+  setOptions(
+    $("subjectSelect"),
+    data || [],
+    "id",
+    "subject_name",
+    "Choose subject"
+  );
+}
+
+/* LOAD EXAMINATIONS */
+async function loadExaminations() {
+  const levelId = $("levelSelect").value;
+  const subjectId = $("subjectSelect").value;
+
+  resetSelect($("examSelect"), "Choose examination");
+  hideExamPanels();
+
+  if (!levelId || !subjectId) return;
 
   const { data, error } = await supabase
     .from("examinations")
-    .select("id,title,description,duration_minutes,access_type,price,is_published,subject_id,education_level_id,created_at")
-    .order("created_at", { ascending: false });
+    .select("id,title,access_type,is_published")
+    .eq("education_level_id", levelId)
+    .eq("subject_id", subjectId)
+    .order("title");
 
-  if (error) {
-    showMessage("Unable to load examinations: " + error.message, "error");
-    return;
-  }
+  if (error) throw error;
 
-  examinations = data || [];
-  updateExamSelect();
+  const select = $("examSelect");
+  select.innerHTML = '<option value="">Choose examination</option>';
+
+  (data || []).forEach(exam => {
+    const option = document.createElement("option");
+    option.value = exam.id;
+
+    const type = exam.access_type === "paid" ? "PREMIUM" : "FREE";
+    const status = exam.is_published ? "Published" : "Unpublished";
+
+    option.textContent = `${exam.title} — ${type} — ${status}`;
+    select.appendChild(option);
+  });
+
+  select.disabled = !data?.length;
 }
 
-async function selectExamination(id) {
-  hideMessage();
+/* HIDE EXAMINATION AND QUESTION PANELS */
+function hideExamPanels() {
+  $("examPanel").classList.add("hidden");
+  $("questionsPanel").classList.add("hidden");
 
-  selectedExam = examinations.find(exam => exam.id === id);
+  currentExam = null;
+  questions = [];
 
-  if (!selectedExam) {
-    $("examCard").style.display = "none";
-    $("questionsCard").style.display = "none";
+  $("questionSearch").value = "";
+  $("questionsTable").innerHTML =
+    '<tr><td colspan="6">Select an examination to view questions.</td></tr>';
+}
+
+/* VIEW SELECTED EXAMINATION */
+async function viewExamination() {
+  const examId = $("examSelect").value;
+
+  if (
+    !$("countrySelect").value ||
+    !$("levelSelect").value ||
+    !$("subjectSelect").value ||
+    !examId
+  ) {
+    showMessage(
+      "selectionMessage",
+      "Please select the country, education level, subject and examination.",
+      "error"
+    );
     return;
   }
 
-  $("examCard").style.display = "block";
-  $("questionsCard").style.display = "block";
+  clearMessage("selectionMessage");
+
+  const { data, error } = await supabase
+    .from("examinations")
+    .select("*")
+    .eq("id", examId)
+    .eq("education_level_id", $("levelSelect").value)
+    .eq("subject_id", $("subjectSelect").value)
+    .single();
+
+  if (error) {
+    showMessage("selectionMessage", error.message, "error");
+    return;
+  }
+
+  currentExam = data;
 
   renderExamDetails();
+
+  $("examPanel").classList.remove("hidden");
+  $("questionsPanel").classList.remove("hidden");
+
+  $("questionSearch").value = "";
   currentPage = 1;
+
   await loadQuestions();
 }
 
+/* DISPLAY EXAMINATION DETAILS */
 function renderExamDetails() {
-  if (!selectedExam) return;
+  const exam = currentExam;
+  const isPublished = !!exam.is_published;
 
-  $("examTitle").textContent = selectedExam.title;
+  $("examHeading").textContent = exam.title;
 
-  $("examMeta").textContent =
-    `Duration: ${selectedExam.duration_minutes} minutes | ` +
-    `Price: ${selectedExam.price ?? 0}`;
+  $("examDetails").innerHTML = `
+    <div><strong>Type:</strong>
+      ${exam.access_type === "paid" ? "Premium" : "Free"}
+    </div>
 
-  $("examBadges").innerHTML = `
-    <span class="badge ${selectedExam.access_type === "free" ? "free" : "paid"}">
-      ${selectedExam.access_type === "free" ? "FREE" : "PREMIUM"}
-    </span>
-    <span class="badge ${selectedExam.is_published ? "published" : "unpublished"}">
-      ${selectedExam.is_published ? "PUBLISHED" : "UNPUBLISHED"}
-    </span>
+    <div><strong>Duration:</strong>
+      ${Number(exam.duration_minutes) || 0} minutes
+    </div>
+
+    <div><strong>Price:</strong>
+      ${Number(exam.price) || 0}
+    </div>
+
+    <div><strong>Status:</strong>
+      <span class="status ${isPublished ? "published" : "unpublished"}">
+        ${isPublished ? "Published" : "Unpublished"}
+      </span>
+    </div>
+
+    <div><strong>Description:</strong>
+      ${escapeHTML(exam.description || "No description")}
+    </div>
   `;
 
-  $("publishExamBtn").disabled = !!selectedExam.is_published;
-  $("unpublishExamBtn").disabled = !selectedExam.is_published;
+  $("examPublishButton").textContent = isPublished
+    ? "Unpublish Examination"
+    : "Publish Examination";
+
+  $("examPublishButton").className =
+    isPublished ? "danger" : "success";
 }
 
+/* LOAD ALL QUESTIONS FOR THE SELECTED EXAMINATION */
 async function loadQuestions() {
-  if (!selectedExam) return;
-
-  $("questionsBody").innerHTML =
-    '<tr><td colspan="6" class="empty">Loading questions...</td></tr>';
+  if (!currentExam) return;
 
   const { data, error } = await supabase
     .from("exam_questions")
-    .select("id,examination_id,question_text,option_a,option_b,option_c,option_d,correct_option,explanation,marks,question_order,image_path,is_published")
-    .eq("examination_id", selectedExam.id)
-    .order("question_order", { ascending: true });
+    .select("*")
+    .eq("examination_id", currentExam.id)
+    .order("question_order", { ascending:true })
+    .order("created_at", { ascending:true })
+    .order("id", { ascending:true });
 
   if (error) {
-    showMessage("Unable to load questions: " + error.message, "error");
+    showMessage("pageMessage", error.message, "error");
     return;
   }
 
   questions = data || [];
-  currentPage = 1;
+
   renderQuestions();
 }
 
+/*
+  QUESTION NUMBERING
+
+  Numbering starts at 1 for each examination.
+  The number follows the saved question order.
+  It does not restart on the next pagination page.
+*/
 function getFilteredQuestions() {
   const search = $("questionSearch").value.trim().toLowerCase();
-  const status = $("questionStatus").value;
 
-  return questions.filter(question => {
-    const matchesSearch =
-      !search || (question.question_text || "").toLowerCase().includes(search);
+  return questions.filter((question, index) => {
+    const number = String(index + 1);
 
-    const matchesStatus =
-      status === "all" ||
-      (status === "published" && question.is_published) ||
-      (status === "unpublished" && !question.is_published);
+    const searchableText = [
+      number,
+      question.question_text,
+      question.option_a,
+      question.option_b,
+      question.option_c,
+      question.option_d,
+      question.correct_option,
+      question.explanation
+    ].join(" ").toLowerCase();
 
-    return matchesSearch && matchesStatus;
+    return searchableText.includes(search);
   });
 }
 
+/* DISPLAY QUESTIONS AND PAGINATION */
 function renderQuestions() {
   const filtered = getFilteredQuestions();
-  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const rowsPerPage = Number($("rowsPerPage").value);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / rowsPerPage)
+  );
 
   if (currentPage > totalPages) currentPage = totalPages;
 
-  const start = (currentPage - 1) * pageSize;
-  const pageQuestions = filtered.slice(start, start + pageSize);
+  const start = (currentPage - 1) * rowsPerPage;
+  const visible = filtered.slice(start, start + rowsPerPage);
 
-  if (!pageQuestions.length) {
-    $("questionsBody").innerHTML =
-      '<tr><td colspan="6" class="empty">No questions found.</td></tr>';
-  } else {
-    $("questionsBody").innerHTML = pageQuestions.map((question, index) => `
-      <tr>
-        <td>${start + index + 1}</td>
-        <td class="question-text">${escapeHTML(question.question_text)}</td>
-        <td>${escapeHTML(question.correct_option)}</td>
-        <td>${escapeHTML(question.marks)}</td>
-        <td>
-          <span class="badge ${question.is_published ? "published" : "unpublished"}">
-            ${question.is_published ? "Published" : "Unpublished"}
-          </span>
-        </td>
-        <td>
-          <button class="btn neutral" data-action="edit"
-            data-id="${escapeHTML(question.id)}">Edit</button>
+  $("questionCount").textContent =
+    `${filtered.length} question(s) found in ${currentExam.title}. ` +
+    `Total questions in this examination: ${questions.length}.`;
 
-          <button class="btn ${question.is_published ? "danger" : "success"}"
-            data-action="toggle" data-id="${escapeHTML(question.id)}">
-            ${question.is_published ? "Unpublish" : "Publish"}
-          </button>
+  $("pageInformation").textContent =
+    `Page ${currentPage} of ${totalPages}`;
 
-          <button class="btn danger" data-action="delete"
-            data-id="${escapeHTML(question.id)}">Delete</button>
-        </td>
-      </tr>
-    `).join("");
+  $("previousPage").disabled = currentPage <= 1;
+  $("nextPage").disabled = currentPage >= totalPages;
+
+  const tbody = $("questionsTable");
+  tbody.innerHTML = "";
+
+  if (!visible.length) {
+    tbody.innerHTML =
+      '<tr><td colspan="6">No questions found.</td></tr>';
+    return;
   }
 
-  $("pageInfo").textContent =
-    `Page ${currentPage} of ${totalPages} | ${filtered.length} questions`;
+  visible.forEach(question => {
+    /*
+      The question's number is its position in the complete
+      examination list, not its position on the current page.
+    */
+    const questionNumber = questions.findIndex(
+      item => String(item.id) === String(question.id)
+    ) + 1;
 
-  $("prevBtn").disabled = currentPage <= 1;
-  $("nextBtn").disabled = currentPage >= totalPages;
+    const isPublished = question.is_published !== false;
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td class="question-number">${questionNumber}</td>
+
+      <td class="question-text">
+        ${escapeHTML(question.question_text)}
+      </td>
+
+      <td>${escapeHTML(question.correct_option || "")}</td>
+
+      <td>${escapeHTML(question.marks ?? "")}</td>
+
+      <td>
+        <span class="status ${isPublished ? "published" : "unpublished"}">
+          ${isPublished ? "Published" : "Unpublished"}
+        </span>
+      </td>
+
+      <td>
+        <button
+          class="small ${isPublished ? "danger" : "success"}"
+          data-action="toggle"
+          data-id="${question.id}">
+          ${isPublished ? "Unpublish" : "Publish"}
+        </button>
+
+        <button
+          class="small gold"
+          data-action="edit"
+          data-id="${question.id}">
+          Edit
+        </button>
+
+        <button
+          class="small danger"
+          data-action="delete"
+          data-id="${question.id}">
+          Delete
+        </button>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+  });
 }
 
-async function changeQuestionStatus(id) {
-  const question = questions.find(item => item.id === id);
-  if (!question) return;
+/* PUBLISH OR UNPUBLISH EXAMINATION AND ALL ITS QUESTIONS */
+async function toggleExamPublication() {
+  if (!currentExam) return;
 
-  const nextStatus = !question.is_published;
+  const newStatus = !currentExam.is_published;
+  const action = newStatus ? "publish" : "unpublish";
 
   const confirmed = confirm(
-    `${nextStatus ? "Publish" : "Unpublish"} this question?`
+    `Are you sure you want to ${action} this examination and ALL its questions?`
   );
 
   if (!confirmed) return;
 
+  const { error: examError } = await supabase
+    .from("examinations")
+    .update({ is_published:newStatus })
+    .eq("id", currentExam.id);
+
+  if (examError) {
+    showMessage("pageMessage", examError.message, "error");
+    return;
+  }
+
+  const { error: questionError } = await supabase
+    .from("exam_questions")
+    .update({ is_published:newStatus })
+    .eq("examination_id", currentExam.id);
+
+  if (questionError) {
+    showMessage(
+      "pageMessage",
+      "The examination status was changed, but the question statuses could not be updated. Please check the database and try again. " +
+      questionError.message,
+      "error"
+    );
+    return;
+  }
+
+  currentExam.is_published = newStatus;
+
+  questions.forEach(question => {
+    question.is_published = newStatus;
+  });
+
+  renderExamDetails();
+  renderQuestions();
+
+  await loadExaminations();
+
+  $("examSelect").value = currentExam.id;
+
+  showMessage(
+    "pageMessage",
+    `The examination and all its questions have been ${action}ed successfully.`
+  );
+}
+
+/* INDIVIDUAL QUESTION PUBLISHING */
+async function toggleQuestion(id) {
+  const question = questions.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!question) return;
+
+  const newStatus = question.is_published === false;
+
   const { error } = await supabase
     .from("exam_questions")
-    .update({ is_published: nextStatus })
+    .update({ is_published:newStatus })
     .eq("id", id)
-    .eq("examination_id", selectedExam.id);
+    .eq("examination_id", currentExam.id);
 
   if (error) {
-    showMessage("Unable to update question: " + error.message, "error");
+    showMessage("pageMessage", error.message, "error");
     return;
   }
 
-  showMessage("Question publishing status updated.");
-  await loadQuestions();
+  question.is_published = newStatus;
+
+  renderQuestions();
+
+  showMessage("pageMessage", "Question status updated successfully.");
 }
 
+/* OPEN QUESTION EDITOR */
 function openQuestionEditor(question) {
-  $("questionId").value = question.id;
-  $("qText").value = question.question_text || "";
-  $("optionA").value = question.option_a || "";
-  $("optionB").value = question.option_b || "";
-  $("optionC").value = question.option_c || "";
-  $("optionD").value = question.option_d || "";
-  $("correctOption").value = question.correct_option || "";
-  $("marks").value = question.marks ?? 1;
-  $("questionOrder").value = question.question_order ?? 1;
-  $("explanation").value = question.explanation || "";
+  editingQuestionId = question.id;
 
-  $("questionModal").style.display = "block";
+  $("editQuestionText").value = question.question_text || "";
+  $("editOptionA").value = question.option_a || "";
+  $("editOptionB").value = question.option_b || "";
+  $("editOptionC").value = question.option_c || "";
+  $("editOptionD").value = question.option_d || "";
+  $("editCorrectOption").value = question.correct_option || "";
+  $("editMarks").value = question.marks ?? 1;
+  $("editQuestionOrder").value = question.question_order ?? 1;
+  $("editExplanation").value = question.explanation || "";
+
+  $("questionModal").classList.add("show");
 }
 
-async function saveQuestion(event) {
-  event.preventDefault();
-
-  const id = $("questionId").value;
-
-  const updates = {
-    question_text: $("qText").value.trim(),
-    option_a: $("optionA").value.trim(),
-    option_b: $("optionB").value.trim(),
-    option_c: $("optionC").value.trim(),
-    option_d: $("optionD").value.trim(),
-    correct_option: $("correctOption").value,
-    marks: Number($("marks").value),
-    question_order: Number($("questionOrder").value),
-    explanation: $("explanation").value.trim()
-  };
+/* SAVE QUESTION EDITS */
+async function saveQuestion() {
+  const questionText = $("editQuestionText").value.trim();
+  const optionA = $("editOptionA").value.trim();
+  const optionB = $("editOptionB").value.trim();
+  const optionC = $("editOptionC").value.trim();
+  const optionD = $("editOptionD").value.trim();
+  const correct = $("editCorrectOption").value;
+  const marks = Number($("editMarks").value);
+  const order = Number($("editQuestionOrder").value);
 
   if (
-    !updates.question_text ||
-    !updates.option_a ||
-    !updates.option_b ||
-    !updates.option_c ||
-    !updates.option_d ||
-    !updates.correct_option ||
-    !Number.isInteger(updates.marks) ||
-    updates.marks < 1 ||
-    !Number.isInteger(updates.question_order) ||
-    updates.question_order < 1
+    !questionText ||
+    !optionA ||
+    !optionB ||
+    !optionC ||
+    !optionD ||
+    !correct ||
+    !Number.isFinite(marks) ||
+    marks <= 0 ||
+    !Number.isInteger(order) ||
+    order <= 0
   ) {
-    showMessage("Please complete all required fields correctly.", "error");
+    alert(
+      "Complete the question, all four options, correct answer, marks and valid question order."
+    );
     return;
   }
 
-  $("saveQuestionBtn").disabled = true;
+  const updates = {
+    question_text:questionText,
+    option_a:optionA,
+    option_b:optionB,
+    option_c:optionC,
+    option_d:optionD,
+    correct_option:correct,
+    marks,
+    question_order:order,
+    explanation:$("editExplanation").value.trim()
+  };
 
   const { error } = await supabase
     .from("exam_questions")
     .update(updates)
-    .eq("id", id)
-    .eq("examination_id", selectedExam.id);
-
-  $("saveQuestionBtn").disabled = false;
+    .eq("id", editingQuestionId)
+    .eq("examination_id", currentExam.id);
 
   if (error) {
-    showMessage("Unable to save question: " + error.message, "error");
+    showMessage("pageMessage", error.message, "error");
     return;
   }
 
-  $("questionModal").style.display = "none";
-  showMessage("Question updated successfully.");
+  $("questionModal").classList.remove("show");
+
   await loadQuestions();
+
+  showMessage("pageMessage", "Question updated successfully.");
 }
 
+/* DELETE INDIVIDUAL QUESTION */
 async function deleteQuestion(id) {
-  const confirmed = confirm(
-    "Delete this question permanently? This action cannot be undone."
-  );
-
-  if (!confirmed) return;
+  if (!confirm("Delete this question permanently? This cannot be undone.")) {
+    return;
+  }
 
   const { error } = await supabase
     .from("exam_questions")
     .delete()
     .eq("id", id)
-    .eq("examination_id", selectedExam.id);
+    .eq("examination_id", currentExam.id);
 
   if (error) {
-    showMessage("Unable to delete question: " + error.message, "error");
+    showMessage("pageMessage", error.message, "error");
     return;
   }
 
-  showMessage("Question deleted successfully.");
   await loadQuestions();
+
+  showMessage("pageMessage", "Question deleted successfully.");
 }
 
-async function changeExamPublishing(publish) {
-  if (!selectedExam) return;
-
-  const action = publish ? "publish" : "unpublish";
-
-  const confirmed = confirm(
-    `${action.toUpperCase()} "${selectedExam.title}"?\n\n` +
-    `This will also ${action} ALL questions belonging to this examination.`
-  );
-
-  if (!confirmed) return;
-
-  $("publishExamBtn").disabled = true;
-  $("unpublishExamBtn").disabled = true;
-
-  try {
-    if (publish) {
-      // Publish questions first. Students still cannot access them
-      // until the examination itself is published.
-      const { error: questionsError } = await supabase
-        .from("exam_questions")
-        .update({ is_published: true })
-        .eq("examination_id", selectedExam.id);
-
-      if (questionsError) throw questionsError;
-
-      const { error: examError } = await supabase
-        .from("examinations")
-        .update({ is_published: true })
-        .eq("id", selectedExam.id);
-
-      if (examError) {
-        // Keep the examination unpublished if its update fails.
-        await supabase
-          .from("exam_questions")
-          .update({ is_published: false })
-          .eq("examination_id", selectedExam.id);
-
-        throw examError;
-      }
-    } else {
-      // Unpublish the examination first to immediately block access.
-      const { error: examError } = await supabase
-        .from("examinations")
-        .update({ is_published: false })
-        .eq("id", selectedExam.id);
-
-      if (examError) throw examError;
-
-      const { error: questionsError } = await supabase
-        .from("exam_questions")
-        .update({ is_published: false })
-        .eq("examination_id", selectedExam.id);
-
-      if (questionsError) {
-        throw new Error(
-          "The examination is unpublished, but some question statuses " +
-          "could not be updated. Please retry. " + questionsError.message
-        );
-      }
-    }
-
-    showMessage(
-      `Examination and its questions ${publish ? "published" : "unpublished"} successfully.`
-    );
-
-    await loadExaminations();
-
-    const updated = examinations.find(item => item.id === selectedExam.id);
-    if (updated) {
-      selectedExam = updated;
-      $("examSelect").value = updated.id;
-      renderExamDetails();
-      await loadQuestions();
-    }
-
-  } catch (error) {
-    showMessage("Publishing update failed: " + error.message, "error");
-    await loadExaminations();
-    if (selectedExam) {
-      const refreshed = examinations.find(item => item.id === selectedExam.id);
-      if (refreshed) {
-        selectedExam = refreshed;
-        $("examSelect").value = refreshed.id;
-        renderExamDetails();
-        await loadQuestions();
-      }
-    }
-  } finally {
-    $("publishExamBtn").disabled = !!selectedExam?.is_published;
-    $("unpublishExamBtn").disabled = !selectedExam?.is_published;
-  }
-}
-
+/* OPEN EXAMINATION EDITOR */
 function openExamEditor() {
-  if (!selectedExam) return;
+  if (!currentExam) return;
 
-  $("editExamTitle").value = selectedExam.title || "";
-  $("editExamDescription").value = selectedExam.description || "";
-  $("editDuration").value = selectedExam.duration_minutes || 45;
-  $("editPrice").value = selectedExam.price ?? 0;
+  $("editExamTitle").value = currentExam.title || "";
+  $("editExamDescription").value = currentExam.description || "";
+  $("editDuration").value = currentExam.duration_minutes || "";
+  $("editAccessType").value = currentExam.access_type || "free";
+  $("editPrice").value = currentExam.price || 0;
 
-  $("examModal").style.display = "block";
+  $("examModal").classList.add("show");
 }
 
-async function saveExam(event) {
-  event.preventDefault();
-  if (!selectedExam) return;
-
+/* SAVE EXAMINATION EDITS */
+async function saveExam() {
   const title = $("editExamTitle").value.trim();
-  const description = $("editExamDescription").value.trim();
   const duration = Number($("editDuration").value);
-  const price = Number($("editPrice").value || 0);
+  const accessType = $("editAccessType").value;
+  const price = Number($("editPrice").value);
 
-  if (!title || !Number.isInteger(duration) || duration < 1 || price < 0) {
-    showMessage("Enter a valid title, duration and price.", "error");
+  if (
+    !title ||
+    !Number.isFinite(duration) ||
+    duration <= 0 ||
+    !Number.isFinite(price) ||
+    price < 0
+  ) {
+    alert("Enter a valid examination title, duration and price.");
     return;
   }
 
-  if (selectedExam.access_type === "paid" && price <= 0) {
-    showMessage("A Premium examination must have a price greater than zero.", "error");
+  if (accessType === "paid" && price <= 0) {
+    alert("Enter a price greater than zero for a Premium examination.");
     return;
   }
 
-  $("saveExamBtn").disabled = true;
+  /*
+    Keep the existing Free/Paid category unchanged.
+    Changing the category could mix the separate question banks.
+  */
+  if (accessType !== currentExam.access_type) {
+    alert(
+      "The Free/Premium category cannot be changed here. Register a separate examination for the other category."
+    );
+    $("editAccessType").value = currentExam.access_type;
+    return;
+  }
+
+  const updates = {
+    title,
+    description:$("editExamDescription").value.trim(),
+    duration_minutes:duration,
+    price
+  };
 
   const { error } = await supabase
     .from("examinations")
-    .update({
-      title,
-      description,
-      duration_minutes: duration,
-      price
-    })
-    .eq("id", selectedExam.id);
-
-  $("saveExamBtn").disabled = false;
+    .update(updates)
+    .eq("id", currentExam.id);
 
   if (error) {
-    showMessage("Unable to update examination: " + error.message, "error");
+    showMessage("pageMessage", error.message, "error");
     return;
   }
 
-  $("examModal").style.display = "none";
-  showMessage("Examination updated successfully.");
+  currentExam = { ...currentExam, ...updates };
 
-  const oldId = selectedExam.id;
+  $("examModal").classList.remove("show");
+
+  renderExamDetails();
+
   await loadExaminations();
-  $("examSelect").value = oldId;
-  await selectExamination(oldId);
+
+  $("examSelect").value = currentExam.id;
+
+  showMessage("pageMessage", "Examination updated successfully.");
 }
 
-async function deleteExamination() {
-  if (!selectedExam) return;
+/* DELETE EXAMINATION */
+async function deleteExam() {
+  if (!currentExam) return;
 
-  const title = selectedExam.title;
+  const title = currentExam.title;
 
-  const confirmed = confirm(
-    `PERMANENTLY DELETE "${title}"?\n\n` +
-    "This will delete all questions belonging to this examination first. " +
-    "Existing exam attempts may prevent deletion. This action cannot be undone."
-  );
+  if (
+    !confirm(
+      `Delete "${title}" and all its questions permanently? This cannot be undone.`
+    )
+  ) {
+    return;
+  }
 
-  if (!confirmed) return;
-
-  const examId = selectedExam.id;
-
-  // Remove child questions before deleting the examination.
-  const { error: questionsError } = await supabase
+  /*
+    Questions are deleted first.
+    If related attempts or other records prevent deletion,
+    the database may reject the operation.
+  */
+  const { error: questionError } = await supabase
     .from("exam_questions")
     .delete()
-    .eq("examination_id", examId);
+    .eq("examination_id", currentExam.id);
 
-  if (questionsError) {
-    showMessage(
-      "Could not delete examination questions: " + questionsError.message,
-      "error"
-    );
+  if (questionError) {
+    showMessage("pageMessage", questionError.message, "error");
     return;
   }
 
   const { error: examError } = await supabase
     .from("examinations")
     .delete()
-    .eq("id", examId);
+    .eq("id", currentExam.id);
 
   if (examError) {
     showMessage(
-      "Questions were deleted, but the examination could not be deleted. " +
-      "It may have existing exam attempts or related records. " +
+      "pageMessage",
+      "The questions were deleted, but the examination could not be deleted: " +
       examError.message,
       "error"
     );
-    await loadExaminations();
     return;
   }
 
-  selectedExam = null;
-  $("examCard").style.display = "none";
-  $("questionsCard").style.display = "none";
+  hideExamPanels();
 
-  showMessage("Examination and its questions deleted.");
   await loadExaminations();
+
+  showMessage(
+    "pageMessage",
+    "Examination and its questions deleted successfully."
+  );
 }
 
-$("category").addEventListener("change", updateExamSelect);
-
-$("examSelect").addEventListener("change", event => {
-  selectExamination(event.target.value);
+/* COUNTRY CHANGE */
+$("countrySelect").addEventListener("change", async () => {
+  try {
+    await loadLevels();
+  } catch (error) {
+    showMessage("selectionMessage", error.message, "error");
+  }
 });
 
-$("publishExamBtn").addEventListener("click", () => changeExamPublishing(true));
-$("unpublishExamBtn").addEventListener("click", () => changeExamPublishing(false));
+/* EDUCATION LEVEL CHANGE */
+$("levelSelect").addEventListener("change", async () => {
+  try {
+    await loadSubjects();
+  } catch (error) {
+    showMessage("selectionMessage", error.message, "error");
+  }
+});
 
-$("editExamBtn").addEventListener("click", openExamEditor);
-$("deleteExamBtn").addEventListener("click", deleteExamination);
+/* SUBJECT CHANGE */
+$("subjectSelect").addEventListener("change", async () => {
+  try {
+    await loadExaminations();
+  } catch (error) {
+    showMessage("selectionMessage", error.message, "error");
+  }
+});
 
+/* EXAMINATION CHANGE */
+$("examSelect").addEventListener("change", hideExamPanels);
+
+/* VIEW BUTTON */
+$("viewExamButton").addEventListener("click", viewExamination);
+
+/* CLEAR SELECTION */
+$("resetButton").addEventListener("click", () => {
+  $("countrySelect").value = "";
+
+  resetSelect($("levelSelect"), "Choose education level");
+  resetSelect($("subjectSelect"), "Choose subject");
+  resetSelect($("examSelect"), "Choose examination");
+
+  hideExamPanels();
+
+  clearMessage("selectionMessage");
+  clearMessage("pageMessage");
+});
+
+/* EXAMINATION BUTTONS */
+$("examPublishButton").addEventListener("click", toggleExamPublication);
+$("editExamButton").addEventListener("click", openExamEditor);
+$("deleteExamButton").addEventListener("click", deleteExam);
+$("saveExamButton").addEventListener("click", saveExam);
+
+$("closeExamModal").addEventListener("click", () => {
+  $("examModal").classList.remove("show");
+});
+
+/* QUESTION BUTTONS */
+$("saveQuestionButton").addEventListener("click", saveQuestion);
+
+$("closeQuestionModal").addEventListener("click", () => {
+  $("questionModal").classList.remove("show");
+});
+
+/* SEARCH QUESTIONS */
 $("questionSearch").addEventListener("input", () => {
   currentPage = 1;
   renderQuestions();
 });
 
-$("questionStatus").addEventListener("change", () => {
+/* ROWS PER PAGE */
+$("rowsPerPage").addEventListener("change", () => {
   currentPage = 1;
   renderQuestions();
 });
 
-$("questionsBody").addEventListener("click", event => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const id = button.dataset.id;
-  const action = button.dataset.action;
-  const question = questions.find(item => item.id === id);
-
-  if (!question) return;
-
-  if (action === "edit") openQuestionEditor(question);
-  if (action === "toggle") changeQuestionStatus(id);
-  if (action === "delete") deleteQuestion(id);
-});
-
-$("questionForm").addEventListener("submit", saveQuestion);
-$("examForm").addEventListener("submit", saveExam);
-
-$("cancelQuestion").addEventListener("click", () => {
-  $("questionModal").style.display = "none";
-});
-
-$("cancelExam").addEventListener("click", () => {
-  $("examModal").style.display = "none";
-});
-
-$("prevBtn").addEventListener("click", () => {
+/* PREVIOUS PAGE */
+$("previousPage").addEventListener("click", () => {
   if (currentPage > 1) {
     currentPage--;
     renderQuestions();
   }
 });
 
-$("nextBtn").addEventListener("click", () => {
+/* NEXT PAGE */
+$("nextPage").addEventListener("click", () => {
+  const filtered = getFilteredQuestions();
+
   const totalPages = Math.max(
     1,
-    Math.ceil(getFilteredQuestions().length / pageSize)
+    Math.ceil(filtered.length / Number($("rowsPerPage").value))
   );
 
   if (currentPage < totalPages) {
@@ -1266,28 +1376,56 @@ $("nextBtn").addEventListener("click", () => {
   }
 });
 
-// Mobile navigation
-function closeMenu() {
-  $("sidebar").classList.remove("open");
-  $("overlay").classList.remove("show");
-}
+/* QUESTION TABLE ACTIONS */
+$("questionsTable").addEventListener("click", async event => {
+  const button = event.target.closest("button[data-action]");
 
-$("menuBtn").addEventListener("click", () => {
-  $("sidebar").classList.toggle("open");
-  $("overlay").classList.toggle("show");
+  if (!button) return;
+
+  const id = button.dataset.id;
+  const action = button.dataset.action;
+
+  const question = questions.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (action === "toggle") await toggleQuestion(id);
+
+  if (action === "edit" && question) {
+    openQuestionEditor(question);
+  }
+
+  if (action === "delete") {
+    await deleteQuestion(id);
+  }
 });
 
-$("overlay").addEventListener("click", closeMenu);
-
-$("sidebar").querySelectorAll(".nav-link").forEach(link => {
-  link.addEventListener("click", closeMenu);
+/* LOGOUT */
+$("logoutButton").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  location.href = "admin-login.html";
 });
 
-// Start page
-if (await verifyAdmin()) {
-  await loadExaminations();
+/* INITIALISE PAGE */
+async function initialise() {
+  try {
+    const allowed = await checkAdmin();
+
+    if (!allowed) return;
+
+    await loadCountries();
+
+  } catch (error) {
+    showMessage(
+      "selectionMessage",
+      error.message || "Unable to load the Question Bank.",
+      "error"
+    );
+  }
 }
+
+initialise();
+
 </script>
-
 </body>
 </html>
