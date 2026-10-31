@@ -94,6 +94,26 @@ th{color:var(--muted);background:#f8faff}
 .empty-state{text-align:center;color:var(--muted);padding:25px 12px}
 .result-link{display:inline-block;color:var(--primary);font-weight:700;text-decoration:underline}
 
+/* RECENT ATTEMPTS */
+.recent-attempts-preview{
+  max-height:300px;
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:white;
+}
+.recent-attempts-preview.expanded{
+  max-height:420px;
+}
+.recent-attempts-preview table{
+  min-width:650px;
+}
+.recent-attempts-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:12px;
+}
+
 /* COMPACT RESULTS */
 .results-preview{
   max-height:300px;
@@ -131,6 +151,8 @@ th{color:var(--muted);background:#f8faff}
 @media(max-width:600px){
   .results-preview{max-height:260px}
   .results-preview.expanded{max-height:360px}
+  .recent-attempts-preview{max-height:260px}
+  .recent-attempts-preview.expanded{max-height:360px}
   .results-actions .button{width:100%}
 }
 </style>
@@ -202,6 +224,7 @@ th{color:var(--muted);background:#f8faff}
   <div class="card">
     <h3>Recently Attempted Exams</h3>
     <div id="recentAttempts" class="empty-state">Loading exam history…</div>
+    <div id="recentAttemptsToggle" class="recent-attempts-actions"></div>
   </div>
 
   <div class="card">
@@ -392,6 +415,7 @@ let attemptsCache = [];
 let completedCache = [];
 let examinationTitles = {};
 let showAllResults = false;
+let showAllRecentAttempts = false;
 
 $("currentYear").textContent = new Date().getFullYear();
 
@@ -752,12 +776,7 @@ async function loadAttempts() {
   $("attemptCount").textContent = attemptsCache.length;
   $("completedCount").textContent = completedCache.length;
 
-  const recent = attemptsCache.slice(0,5);
-
-  $("recentAttempts").innerHTML = recent.length
-    ? renderAttemptsTable(recent,false)
-    : '<div class="empty-state">You have not attempted any examinations yet.</div>';
-
+  renderRecentAttempts();
   renderAttempts("history");
   renderAttempts("results");
   renderHomeResults();
@@ -804,6 +823,50 @@ function renderAttemptsTable(attempts,showScore=true) {
         </tbody>
       </table>
     </div>`;
+}
+
+/* RECENTLY ATTEMPTED EXAMS: LATEST 5 / VIEW ALL */
+
+function renderRecentAttempts() {
+  const container = $("recentAttempts");
+  const toggle = $("recentAttemptsToggle");
+
+  if (!container || !toggle) return;
+
+  const total = attemptsCache.length;
+
+  const visible = showAllRecentAttempts
+    ? attemptsCache
+    : attemptsCache.slice(0,5);
+
+  if (!total) {
+    container.innerHTML =
+      '<div class="empty-state">You have not attempted any examinations yet.</div>';
+
+    toggle.innerHTML = "";
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="recent-attempts-preview ${showAllRecentAttempts ? "expanded" : ""}">
+      ${renderAttemptsTable(visible,false)}
+    </div>`;
+
+  if (total > 5) {
+    toggle.innerHTML = `
+      <button class="button secondary" type="button" id="toggleRecentAttempts">
+        ${showAllRecentAttempts ? "Show Less" : "View All"}
+      </button>
+    `;
+
+    $("toggleRecentAttempts").addEventListener("click",() => {
+      showAllRecentAttempts = !showAllRecentAttempts;
+      renderRecentAttempts();
+    });
+
+  } else {
+    toggle.innerHTML = "";
+  }
 }
 
 /* HOME RESULTS PREVIEW */
@@ -948,6 +1011,7 @@ async function initializeDashboard() {
 
         if (index === 2) {
           $("recentAttempts").textContent = "Could not load exam history.";
+          $("recentAttemptsToggle").innerHTML = "";
           $("historyContent").textContent = "Could not load exam history.";
           $("resultsContent").textContent = "Could not load results.";
           $("homeResultsContent").textContent = "Could not load results.";
