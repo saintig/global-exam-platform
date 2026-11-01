@@ -1578,10 +1578,50 @@ async function initializePage() {
 
     if (!session) return;
 
-    await Promise.all([
-      loadAdministrators(),
-      loadExamSettings()
-    ]);
+    if (!pageIsSuperAdmin) {
+
+      // Hide all Super Administrator navigation options.
+      panelButtons.forEach(button => {
+
+        const allowed =
+          button.dataset.panel === "activity" ||
+          button.dataset.panel === "records";
+
+        button.style.display = allowed ? "block" : "none";
+
+      });
+
+      // Hide all Super Administrator panels.
+      panels.forEach(panel => {
+
+        const allowed =
+          panel.id === "activity" ||
+          panel.id === "records";
+
+        panel.classList.remove("active");
+        panel.style.display = allowed ? "block" : "none";
+
+      });
+
+      // Open Activity Logs by default.
+      panelButtons.forEach(button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.panel === "activity"
+        );
+      });
+
+      document.getElementById("activity").classList.add("active");
+
+    } else {
+
+      // Super Administrators retain full Settings access.
+      await Promise.all([
+        loadAdministrators(),
+        loadExamSettings()
+      ]);
+
+    }
 
   } catch (error) {
 
