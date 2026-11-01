@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -406,7 +405,7 @@ th{color:var(--muted);background:#f8faff}
 </div>
 
 <script type="module">
-import { supabase, getCurrentSession } from "./auth.js";
+import { supabase, requireStudentSession } from "./auth.js";
 
 const $ = id => document.getElementById(id);
 
@@ -509,27 +508,6 @@ document.querySelectorAll(".nav-link[data-section]").forEach(button => {
 document.querySelectorAll("[data-go]").forEach(button => {
   button.addEventListener("click",() => openSection(button.dataset.go));
 });
-
-/* AUTHENTICATION */
-
-async function getSessionUser() {
-  try {
-    const result = await getCurrentSession();
-
-    if (result?.user) return result.user;
-    if (result?.session?.user) return result.session.user;
-    if (result?.data?.user) return result.data.user;
-    if (result?.data?.session?.user) return result.data.session.user;
-
-  } catch(error) {
-    console.warn("Session helper:",error.message);
-  }
-
-  const {data,error} = await supabase.auth.getSession();
-  if (error) throw error;
-
-  return data?.session?.user || null;
-}
 
 /* PROFILE */
 
@@ -981,12 +959,11 @@ $("signOutButton").addEventListener("click",async () => {
 
 async function initializeDashboard() {
   try {
-    currentUser = await getSessionUser();
+    const session = await requireStudentSession();
 
-    if (!currentUser) {
-      window.location.replace("student-login.html?mode=login");
-      return;
-    }
+    if (!session) return;
+
+    currentUser = session.user;
 
     const results = await Promise.allSettled([
       loadProfile(),
