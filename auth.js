@@ -26,14 +26,34 @@ export async function getCurrentSession() {
 
 // Protect pages that require student sign-in
 export async function requireStudentSession() {
-  const session = await getCurrentSession();
+  // Verify the user's identity with Supabase Auth.
+  const { data, error } = await supabase.auth.getUser();
 
-  if (!session) {
-    window.location.replace("student-login.html?mode=login");
+  if (error || !data.user) {
+    await supabase.auth.signOut();
+
+    window.location.replace(
+      "student-login.html?mode=login"
+    );
+
     return null;
   }
 
-  return session;
+  // Retrieve the current session after verification.
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    await supabase.auth.signOut();
+
+    window.location.replace(
+      "student-login.html?mode=login"
+    );
+
+    return null;
+  }
+
+  return sessionData.session;
 }
 
 // Sign out the current user
@@ -45,7 +65,9 @@ export async function signOutUser() {
     throw error;
   }
 
-  window.location.replace("student-login.html?mode=login");
+  window.location.replace(
+    "student-login.html?mode=login"
+  );
 }
 
 // Register a student and save their full name
