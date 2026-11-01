@@ -20,13 +20,16 @@
   --green:#16794b;
   --red:#b42318;
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
+
 .topbar{
   background:var(--navy);
   color:white;
@@ -36,8 +39,10 @@ body{
   align-items:center;
   gap:12px;
 }
+
 .brand{font-size:19px;font-weight:800}
 .brand span{color:var(--gold)}
+
 .topbar a{
   color:white;
   text-decoration:none;
@@ -46,30 +51,38 @@ body{
   border-radius:7px;
   font-size:13px;
 }
+
 .container{
   max-width:1250px;
   margin:auto;
   padding:25px 18px;
 }
+
 .page-heading{margin-bottom:22px}
+
 .page-heading h1{
   margin:0 0 6px;
   color:var(--navy);
   font-size:27px;
 }
+
 .page-heading p{margin:0;color:var(--muted)}
+
 .layout{
   display:grid;
   grid-template-columns:245px minmax(0,1fr);
   gap:20px;
   align-items:start;
 }
+
 .sidebar,.content-card{
   background:white;
   border:1px solid var(--border);
   border-radius:12px;
 }
+
 .sidebar{padding:12px}
+
 .sidebar-title{
   padding:10px;
   font-size:12px;
@@ -77,6 +90,7 @@ body{
   color:var(--muted);
   text-transform:uppercase;
 }
+
 .side-link{
   display:block;
   width:100%;
@@ -90,73 +104,63 @@ body{
   color:var(--text);
   font-size:14px;
 }
+
 .side-link:hover,.side-link.active{
   background:#edf2fa;
   color:var(--navy);
   font-weight:700;
 }
+
 .content-card{
   padding:22px;
   margin-bottom:18px;
 }
+
 .panel{display:none}
 .panel.active{display:block}
+
 .panel h2{
   margin:0 0 7px;
   color:var(--navy);
   font-size:21px;
 }
+
 .description{
   color:var(--muted);
   margin:0 0 22px;
   font-size:14px;
   line-height:1.6;
 }
+
 .setting-box{
   border:1px solid var(--border);
   border-radius:10px;
   padding:18px;
   margin-bottom:16px;
 }
+
 .setting-box h3{
   margin:0 0 8px;
   color:var(--navy);
   font-size:16px;
 }
+
 .setting-box p{
   margin:0 0 14px;
   color:var(--muted);
   font-size:13px;
   line-height:1.6;
 }
-.limit-options{
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:9px;
-  margin:15px 0;
-}
-.limit-button{
-  border:1px solid var(--border);
-  background:#f8faff;
-  color:var(--navy);
-  padding:13px 7px;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-}
-.limit-button:hover{border-color:var(--blue)}
-.limit-button.selected{
-  background:var(--navy);
-  color:white;
-  border-color:var(--navy);
-}
+
 .form-group{margin:14px 0}
+
 .form-group label{
   display:block;
   font-size:13px;
   font-weight:700;
   margin-bottom:7px;
 }
+
 .form-group input,.form-group select{
   width:100%;
   padding:12px;
@@ -165,6 +169,12 @@ body{
   background:white;
   font:inherit;
 }
+
+.form-group input:focus{
+  outline:2px solid #2457a733;
+  border-color:var(--blue);
+}
+
 .button{
   display:inline-block;
   padding:11px 16px;
@@ -175,14 +185,25 @@ body{
   font-weight:700;
   cursor:pointer;
 }
+
 .button.gold{background:var(--gold);color:#202938}
 .button.secondary{background:#edf1f7;color:var(--navy)}
-.button:disabled{opacity:.6;cursor:not-allowed}
+
+.button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
 .status{
   margin-top:12px;
   font-size:13px;
   color:var(--muted);
+  line-height:1.6;
 }
+
+.status.success{color:var(--green)}
+.status.error{color:var(--red)}
+
 .notice{
   background:#fff8e5;
   border:1px solid #f0dfa8;
@@ -192,26 +213,31 @@ body{
   line-height:1.6;
   margin-top:15px;
 }
+
 .info-grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
+
 .info-item{
   padding:16px;
   background:#f8faff;
   border:1px solid var(--border);
   border-radius:9px;
 }
+
 .info-item strong{
   display:block;
   color:var(--navy);
   margin-bottom:6px;
 }
+
 .info-item span{
   color:var(--muted);
   font-size:13px;
 }
+
 .coming{
   padding:15px;
   border-radius:8px;
@@ -220,21 +246,37 @@ body{
   font-size:13px;
   line-height:1.6;
 }
+
 .footer{
   text-align:center;
   color:var(--muted);
   font-size:12px;
   padding:20px;
 }
+
+.config-summary{
+  background:#f8faff;
+  border:1px solid var(--border);
+  padding:14px;
+  border-radius:9px;
+  margin-top:15px;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.config-summary strong{color:var(--navy)}
+
 @media(max-width:800px){
   .layout{grid-template-columns:1fr}
+
   .sidebar{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
+
   .sidebar-title{grid-column:1/-1}
-  .limit-options{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+
 @media(max-width:480px){
   .topbar{padding:13px}
   .container{padding:17px 11px}
@@ -299,6 +341,7 @@ body{
       <section class="panel active" id="permissions">
         <div class="content-card">
           <h2>Administrator Permissions</h2>
+
           <p class="description">
             Manage administrative roles and the permissions assigned to platform administrators.
           </p>
@@ -308,6 +351,7 @@ body{
               <strong>Super Administrator</strong>
               <span>Full administrative control, including platform configuration.</span>
             </div>
+
             <div class="info-item">
               <strong>Administrator</strong>
               <span>Access according to assigned administrative permissions.</span>
@@ -324,137 +368,224 @@ body{
       <!-- 2. PLATFORM CONFIGURATION -->
       <section class="panel" id="configuration">
         <div class="content-card">
+
           <h2>Platform Configuration</h2>
+
           <p class="description">
             Configure general platform settings and examination limits.
           </p>
 
+          <!-- FREE SETTINGS -->
           <div class="setting-box">
-            <h3>Free Student Question Limit</h3>
+
+            <h3>Free Examination Configuration</h3>
+
             <p>
-              Choose how many questions a Free student receives when starting
-              a new examination. This setting will not change Premium students'
-              question limits.
+              Control the number of questions and examination duration
+              available to Free students.
             </p>
 
-            <div class="limit-options">
-              <button class="limit-button selected" data-limit="10">10</button>
-              <button class="limit-button" data-limit="20">20</button>
-              <button class="limit-button" data-limit="30">30</button>
-              <button class="limit-button" data-limit="50">50</button>
-              <button class="limit-button" data-limit="100">100</button>
-            </div>
-
             <div class="form-group">
-              <label for="customLimit">Custom question limit</label>
+              <label for="freeQuestionLimit">
+                Free Student Question Limit
+              </label>
+
               <input
                 type="number"
-                id="customLimit"
+                id="freeQuestionLimit"
                 min="1"
                 max="500"
-                placeholder="Enter a custom number"
+                value="30"
+                required
               >
             </div>
 
-            <p id="selectedLimitText">
-              Selected Free student limit: 10 questions
-            </p>
+            <div class="form-group">
+              <label for="freeDuration">
+                Free Examination Duration (Minutes)
+              </label>
 
-            <button class="button gold" id="saveFreeLimit" type="button">
-              Save Free Student Limit
-            </button>
-
-            <div class="status" id="limitMessage" role="status">
-              Interface only: the setting has not yet been saved to Supabase.
+              <input
+                type="number"
+                id="freeDuration"
+                min="1"
+                max="600"
+                value="45"
+                required
+              >
             </div>
+
           </div>
 
+          <!-- PREMIUM SETTINGS -->
           <div class="setting-box">
+
             <h3>Premium Examination Configuration</h3>
+
             <p>
-              Premium question limits and examination duration remain under
-              the existing Premium examination configuration. The Free
-              student setting will not modify them.
+              Control the number of questions and examination duration
+              available to Premium students.
             </p>
+
+            <div class="form-group">
+              <label for="premiumQuestionLimit">
+                Premium Student Question Limit
+              </label>
+
+              <input
+                type="number"
+                id="premiumQuestionLimit"
+                min="1"
+                max="500"
+                value="100"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="premiumDuration">
+                Premium Examination Duration (Minutes)
+              </label>
+
+              <input
+                type="number"
+                id="premiumDuration"
+                min="1"
+                max="600"
+                value="90"
+                required
+              >
+            </div>
+
           </div>
 
-          <div class="setting-box">
+          <button
+            class="button gold"
+            id="saveExamSettings"
+            type="button"
+            disabled
+          >
+            Save All Examination Settings
+          </button>
+
+          <div
+            class="status"
+            id="examSettingsMessage"
+            role="status"
+            aria-live="polite"
+          >
+            Loading examination settings...
+          </div>
+
+          <div class="config-summary">
+            <strong>Initial configuration</strong><br>
+            Free: 30 questions / 45 minutes<br>
+            Premium: 100 questions / 90 minutes
+          </div>
+
+          <div class="notice">
+            Changes are intended for newly started examinations.
+            Existing attempts should retain their original question counts
+            and durations.
+          </div>
+
+          <div class="setting-box" style="margin-top:18px">
             <h3>General Platform Information</h3>
+
             <p>
               Platform-wide configuration options will be added here when
               their database settings are connected.
             </p>
           </div>
+
         </div>
       </section>
 
       <!-- 3. LOGIN PROTECTION -->
       <section class="panel" id="login">
         <div class="content-card">
+
           <h2>Login Protection</h2>
+
           <p class="description">
             Manage account authentication and protection against unauthorized access.
           </p>
 
           <div class="info-grid">
+
             <div class="info-item">
               <strong>Student Authentication</strong>
               <span>Require valid student authentication before accessing protected pages.</span>
             </div>
+
             <div class="info-item">
               <strong>Administrator Authentication</strong>
               <span>Verify administrator identity and permissions on protected operations.</span>
             </div>
+
             <div class="info-item">
               <strong>Session Protection</strong>
               <span>Control access when a user session expires or becomes invalid.</span>
             </div>
+
             <div class="info-item">
               <strong>Login Monitoring</strong>
               <span>Record relevant authentication events for security review.</span>
             </div>
+
           </div>
 
           <div class="notice">
             These protections must be enforced through Supabase authentication,
             database policies and server-side functions.
           </div>
+
         </div>
       </section>
 
       <!-- 4. ACCESS RESTRICTIONS -->
       <section class="panel" id="restrictions">
         <div class="content-card">
+
           <h2>Access Restrictions</h2>
+
           <p class="description">
             Manage which categories of users can access platform features.
           </p>
 
           <div class="info-grid">
+
             <div class="info-item">
               <strong>Students</strong>
               <span>Control student access and examination eligibility.</span>
             </div>
+
             <div class="info-item">
               <strong>Teachers</strong>
               <span>Control teacher account access and permitted activities.</span>
             </div>
+
             <div class="info-item">
               <strong>Administrators</strong>
               <span>Restrict administrative access according to assigned roles.</span>
             </div>
+
             <div class="info-item">
               <strong>Premium Access</strong>
               <span>Verify active subscription status before allowing paid features.</span>
             </div>
+
           </div>
+
         </div>
       </section>
 
       <!-- 5. ACTIVITY LOGS -->
       <section class="panel" id="activity">
         <div class="content-card">
+
           <h2>Activity Logs</h2>
+
           <p class="description">
             Review important activities performed on the platform.
           </p>
@@ -463,42 +594,53 @@ body{
             Activity records will be displayed here after the activity-log
             data source and access policies have been established.
           </div>
+
         </div>
       </section>
 
       <!-- 6. SECURITY SETTINGS -->
       <section class="panel" id="security">
         <div class="content-card">
+
           <h2>Security Settings</h2>
+
           <p class="description">
             Configure and monitor the security measures protecting SAINTIG EXAMS.
           </p>
 
           <div class="info-grid">
+
             <div class="info-item">
               <strong>Database Protection</strong>
               <span>Use Row Level Security and restricted database permissions.</span>
             </div>
+
             <div class="info-item">
               <strong>Backend Protection</strong>
               <span>Validate sensitive actions through trusted server-side functions.</span>
             </div>
+
             <div class="info-item">
               <strong>Session Validation</strong>
               <span>Verify user identity before protected operations.</span>
             </div>
+
             <div class="info-item">
               <strong>Administrative Monitoring</strong>
               <span>Keep records of important administrative changes.</span>
             </div>
+
           </div>
+
         </div>
       </section>
 
       <!-- 7. ADMINISTRATIVE ACTION RECORDS -->
       <section class="panel" id="records">
         <div class="content-card">
+
           <h2>Administrative Action Records</h2>
+
           <p class="description">
             Maintain an audit trail of important administrative actions.
           </p>
@@ -508,6 +650,7 @@ body{
             affected record and date/time. The audit trail will be stored
             securely in the database.
           </div>
+
         </div>
       </section>
 
@@ -520,9 +663,12 @@ body{
 
 </div>
 
-
 <script type="module">
 import { supabase } from "./auth.js";
+
+// =====================================
+// PANEL NAVIGATION
+// =====================================
 
 const panelButtons = document.querySelectorAll("[data-panel]");
 const panels = document.querySelectorAll(".panel");
@@ -531,48 +677,87 @@ panelButtons.forEach(button => {
   button.addEventListener("click", () => {
     const target = button.dataset.panel;
 
-    panelButtons.forEach(item =>
-      item.classList.toggle("active", item === button)
-    );
+    panelButtons.forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
 
-    panels.forEach(panel =>
-      panel.classList.toggle("active", panel.id === target)
-    );
+    panels.forEach(panel => {
+      panel.classList.toggle("active", panel.id === target);
+    });
   });
 });
 
 document.getElementById("year").textContent =
   new Date().getFullYear();
 
-let selectedLimit = null;
 
-const limitButtons = document.querySelectorAll("[data-limit]");
-const customInput = document.getElementById("customLimit");
-const selectedText = document.getElementById("selectedLimitText");
-const limitMessage = document.getElementById("limitMessage");
-const saveButton = document.getElementById("saveFreeLimit");
+// =====================================
+// EXAMINATION SETTINGS
+// =====================================
 
-function updateLimit(value) {
-  selectedLimit = Number(value);
+const settingDefinitions = {
+  free_student_question_limit: {
+    inputId: "freeQuestionLimit",
+    minimum: 1,
+    maximum: 500,
+    label: "Free question limit"
+  },
 
-  limitButtons.forEach(button => {
-    button.classList.toggle(
-      "selected",
-      Number(button.dataset.limit) === selectedLimit
-    );
-  });
+  free_student_duration_minutes: {
+    inputId: "freeDuration",
+    minimum: 1,
+    maximum: 600,
+    label: "Free examination duration"
+  },
 
-  selectedText.textContent =
-    "Selected Free student limit: " + selectedLimit + " questions";
+  premium_student_question_limit: {
+    inputId: "premiumQuestionLimit",
+    minimum: 1,
+    maximum: 500,
+    label: "Premium question limit"
+  },
 
-  limitMessage.textContent = "Ready to save.";
+  premium_student_duration_minutes: {
+    inputId: "premiumDuration",
+    minimum: 1,
+    maximum: 600,
+    label: "Premium examination duration"
+  }
+};
+
+const saveButton =
+  document.getElementById("saveExamSettings");
+
+const message =
+  document.getElementById("examSettingsMessage");
+
+
+// =====================================
+// STATUS MESSAGE
+// =====================================
+
+function showMessage(text, type = "") {
+  message.textContent = text;
+  message.className = "status";
+
+  if (type) {
+    message.classList.add(type);
+  }
 }
 
+
+// =====================================
+// ADMIN VERIFICATION
+// =====================================
+
 async function verifyAdmin() {
+
   const { data: sessionData, error: sessionError } =
     await supabase.auth.getSession();
 
-  if (sessionError) throw sessionError;
+  if (sessionError) {
+    throw sessionError;
+  }
 
   const session = sessionData?.session;
 
@@ -581,13 +766,16 @@ async function verifyAdmin() {
     return null;
   }
 
-  const { data: admin, error: adminError } = await supabase
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", session.user.id)
-    .maybeSingle();
+  const { data: admin, error: adminError } =
+    await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
 
-  if (adminError) throw adminError;
+  if (adminError) {
+    throw adminError;
+  }
 
   if (!admin) {
     location.replace("admin-login.html");
@@ -597,140 +785,214 @@ async function verifyAdmin() {
   return session;
 }
 
-async function initializeSettings() {
+
+// =====================================
+// LOAD SAVED SETTINGS
+// =====================================
+
+async function loadExamSettings() {
+
   saveButton.disabled = true;
 
+  showMessage("Loading examination settings...");
+
   try {
+
     const session = await verifyAdmin();
 
     if (!session) return;
 
+    const settingKeys =
+      Object.keys(settingDefinitions);
+
     const { data, error } = await supabase
       .from("platform_settings")
-      .select("setting_value")
-      .eq("setting_key", "free_student_question_limit")
-      .single();
+      .select("setting_key, setting_value")
+      .in("setting_key", settingKeys);
 
-    if (error) throw error;
-
-    const savedLimit = Number(data?.setting_value);
-
-    if (
-      !Number.isInteger(savedLimit) ||
-      savedLimit < 1 ||
-      savedLimit > 500
-    ) {
-      throw new Error("Saved question limit is invalid.");
+    if (error) {
+      throw error;
     }
 
-    customInput.value = "";
+    if (!data || data.length !== settingKeys.length) {
+      throw new Error(
+        "One or more examination settings are missing from Supabase."
+      );
+    }
 
-    updateLimit(savedLimit);
+    for (const key of settingKeys) {
 
-    limitMessage.textContent =
-      "Loaded successfully from Supabase.";
+      const row = data.find(item =>
+        item.setting_key === key
+      );
+
+      if (!row) {
+        throw new Error("Missing setting: " + key);
+      }
+
+      const definition = settingDefinitions[key];
+      const value = Number(row.setting_value);
+
+      if (
+        !Number.isInteger(value) ||
+        value < definition.minimum ||
+        value > definition.maximum
+      ) {
+        throw new Error(
+          "Invalid saved value for " + definition.label
+        );
+      }
+
+      document.getElementById(
+        definition.inputId
+      ).value = value;
+    }
+
+    showMessage(
+      "All four examination settings loaded successfully from Supabase.",
+      "success"
+    );
 
   } catch (error) {
+
     console.error("Settings loading error:", error);
 
-    limitMessage.textContent =
-      "Unable to load settings: " + error.message;
+    showMessage(
+      "Unable to load settings: " + error.message,
+      "error"
+    );
+
   } finally {
+
     saveButton.disabled = false;
   }
 }
 
-limitButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    customInput.value = "";
-    updateLimit(button.dataset.limit);
-  });
-});
 
-customInput.addEventListener("input", () => {
-  const rawValue = customInput.value;
-  const value = Number(rawValue);
+// =====================================
+// VALIDATE SETTINGS
+// =====================================
 
-  if (
-    rawValue.trim() === "" ||
-    !Number.isInteger(value) ||
-    value < 1 ||
-    value > 500
-  ) {
-    selectedLimit = null;
+function collectSettings() {
 
-    limitButtons.forEach(button =>
-      button.classList.remove("selected")
+  const updates = [];
+
+  for (const [key, definition] of
+    Object.entries(settingDefinitions)) {
+
+    const input = document.getElementById(
+      definition.inputId
     );
 
-    selectedText.textContent =
-      "Enter a valid custom question limit.";
+    const rawValue = input.value.trim();
+    const value = Number(rawValue);
 
-    limitMessage.textContent =
-      "Enter a whole number between 1 and 500.";
+    if (
+      rawValue === "" ||
+      !Number.isInteger(value) ||
+      value < definition.minimum ||
+      value > definition.maximum
+    ) {
 
-    return;
+      input.focus();
+
+      throw new Error(
+        definition.label +
+        " must be a whole number between " +
+        definition.minimum +
+        " and " +
+        definition.maximum +
+        "."
+      );
+    }
+
+    updates.push({
+      setting_key: key,
+      setting_value: value
+    });
   }
 
-  updateLimit(value);
-  limitButtons.forEach(button =>
-    button.classList.remove("selected")
-  );
-});
+  return updates;
+}
+
+
+// =====================================
+// SAVE ALL FOUR SETTINGS
+// =====================================
 
 saveButton.addEventListener("click", async () => {
-  if (
-    !Number.isInteger(selectedLimit) ||
-    selectedLimit < 1 ||
-    selectedLimit > 500
-  ) {
-    limitMessage.textContent =
-      "Enter a valid whole number between 1 and 500.";
-    return;
-  }
 
   saveButton.disabled = true;
-  limitMessage.textContent = "Saving...";
+
+  showMessage("Saving examination settings...");
 
   try {
+
     const session = await verifyAdmin();
 
     if (!session) return;
 
-    const { data, error } = await supabase
-      .from("platform_settings")
-      .update({
-        setting_value: selectedLimit,
-        updated_by: session.user.id,
-        updated_at: new Date().toISOString()
-      })
-      .eq("setting_key", "free_student_question_limit")
-      .select("setting_value")
-      .single();
+    const updates = collectSettings();
 
-    if (error) throw error;
+    const updatedAt = new Date().toISOString();
 
-    if (Number(data?.setting_value) !== selectedLimit) {
-      throw new Error("The saved value could not be confirmed.");
+    for (const item of updates) {
+
+      const { data, error } = await supabase
+        .from("platform_settings")
+        .update({
+          setting_value: item.setting_value,
+          updated_by: session.user.id,
+          updated_at: updatedAt
+        })
+        .eq("setting_key", item.setting_key)
+        .select("setting_key, setting_value")
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (
+        !data ||
+        data.setting_key !== item.setting_key ||
+        Number(data.setting_value) !== item.setting_value
+      ) {
+        throw new Error(
+          "Unable to confirm saved setting: " +
+          item.setting_key
+        );
+      }
     }
 
-    limitMessage.textContent =
-      "Successfully saved " + selectedLimit +
-      " questions to Supabase.";
+    showMessage(
+      "All four examination settings saved and confirmed successfully.",
+      "success"
+    );
 
   } catch (error) {
+
     console.error("Settings save error:", error);
 
-    limitMessage.textContent =
-      "Save failed: " + error.message;
+    showMessage(
+      "Save failed: " + error.message,
+      "error"
+    );
+
   } finally {
+
     saveButton.disabled = false;
   }
 });
 
-initializeSettings();
-</script>
 
+// =====================================
+// INITIALIZE PAGE
+// =====================================
+
+loadExamSettings();
+
+</script>
 
 </body>
 </html>
