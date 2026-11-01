@@ -686,11 +686,8 @@ async function verifyAdmin() {
   const session = sessionData?.session;
 
   if (!session?.user?.id) {
-
     location.replace("admin-login.html");
-
     return null;
-
   }
 
   const { data: admin, error: adminError } =
@@ -703,30 +700,31 @@ async function verifyAdmin() {
   if (adminError) throw adminError;
 
   if (!admin || admin.is_suspended) {
-
     await supabase.auth.signOut();
-
     location.replace("admin-login.html");
-
     return null;
-
-  }
-
-  if (admin.role !== "super_admin") {
-
-    alert("This page is restricted to active Super Administrators.");
-
-    location.replace("admin.html");
-
-    return null;
-
   }
 
   currentSession = session;
-  pageIsSuperAdmin = true;
+  pageIsSuperAdmin = admin.role === "super_admin";
+
+  if (!pageIsSuperAdmin) {
+
+    const { data: canViewLogs, error: permissionError } =
+      await supabase.rpc("has_admin_permission", {
+        p_permission: "view_activity_logs"
+      });
+
+    if (permissionError) throw permissionError;
+
+    if (!canViewLogs) {
+      alert("You do not have permission to access Settings & Security.");
+      location.replace("admin.html");
+      return null;
+    }
+  }
 
   return session;
-
 }
 
 
