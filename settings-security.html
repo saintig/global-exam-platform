@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -188,17 +187,15 @@ body{
 
 .button.gold{background:var(--gold);color:#202938}
 .button.secondary{background:#edf1f7;color:var(--navy)}
-
-.button:disabled{
-  opacity:.6;
-  cursor:not-allowed;
-}
+.button.danger{background:var(--red);color:white}
+.button:disabled{opacity:.6;cursor:not-allowed}
 
 .status{
   margin-top:12px;
   font-size:13px;
   color:var(--muted);
   line-height:1.6;
+  overflow-wrap:anywhere;
 }
 
 .status.success{color:var(--green)}
@@ -266,6 +263,113 @@ body{
 
 .config-summary strong{color:var(--navy)}
 
+.permission-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+
+.permission-option{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#f8faff;
+  font-size:13px;
+  line-height:1.5;
+}
+
+.permission-option input{
+  margin-top:2px;
+  accent-color:var(--navy);
+}
+
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+  margin-top:15px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+  font-size:13px;
+}
+
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  vertical-align:top;
+}
+
+th{
+  background:#f3f6fb;
+  color:var(--navy);
+}
+
+td{overflow-wrap:anywhere}
+
+.role-label{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:5px;
+  font-size:11px;
+  font-weight:700;
+  background:#edf2fa;
+  color:var(--navy);
+}
+
+.role-label.super{background:#fff4d1;color:#725400}
+.role-label.suspended{background:#fdebea;color:var(--red)}
+.role-label.active{background:#e7f6ed;color:var(--green)}
+
+.action-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.small-button{
+  border:0;
+  border-radius:6px;
+  padding:7px 9px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  background:#edf1f7;
+  color:var(--navy);
+}
+
+.small-button.danger{
+  background:#fdebea;
+  color:var(--red);
+}
+
+.small-button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.empty-state{
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  background:#f8faff;
+  border-radius:8px;
+}
+
+.record-details{
+  white-space:pre-wrap;
+  max-width:300px;
+  font-size:12px;
+}
+
 @media(max-width:800px){
   .layout{grid-template-columns:1fr}
 
@@ -282,7 +386,7 @@ body{
   .container{padding:17px 11px}
   .content-card{padding:15px}
   .sidebar{grid-template-columns:1fr}
-  .info-grid{grid-template-columns:1fr}
+  .info-grid,.permission-list{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -339,34 +443,107 @@ body{
 
       <!-- 1. ADMINISTRATOR PERMISSIONS -->
       <section class="panel active" id="permissions">
+
         <div class="content-card">
+
           <h2>Administrator Permissions</h2>
 
           <p class="description">
-            Manage administrative roles and the permissions assigned to platform administrators.
+            Create administrators, assign permissions and manage administrator accounts.
           </p>
 
           <div class="info-grid">
+
             <div class="info-item">
               <strong>Super Administrator</strong>
-              <span>Full administrative control, including platform configuration.</span>
+              <span>Full administrative control, including administrator management and platform configuration.</span>
             </div>
 
             <div class="info-item">
               <strong>Administrator</strong>
-              <span>Access according to assigned administrative permissions.</span>
+              <span>Access according to permissions assigned by a Super Administrator.</span>
             </div>
+
+          </div>
+
+          <div class="setting-box" style="margin-top:18px">
+
+            <h3>Add Administrator</h3>
+
+            <p>
+              Enter the Supabase Auth user UUID of an existing account.
+              The account must already exist in Authentication.
+            </p>
+
+            <div class="form-group">
+              <label for="newAdminUserId">Supabase User UUID</label>
+              <input
+                type="text"
+                id="newAdminUserId"
+                placeholder="Enter user UUID"
+                autocomplete="off"
+              >
+            </div>
+
+            <button class="button gold" id="addAdminBtn" type="button">
+              Add Administrator
+            </button>
+
+            <div class="status" id="addAdminMessage" role="status" aria-live="polite"></div>
+
+          </div>
+
+          <div class="setting-box">
+
+            <h3>Administrator Accounts</h3>
+
+            <p>
+              View administrator accounts and manage ordinary administrator
+              permissions and status.
+            </p>
+
+            <button class="button secondary" id="refreshAdminsBtn" type="button">
+              Refresh Administrator List
+            </button>
+
+            <div class="status" id="adminListMessage" role="status" aria-live="polite">
+              Loading administrator accounts...
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Permissions</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                  <tr>
+                    <td colspan="5">Loading...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
           </div>
 
           <div class="notice">
-            Administrator role management will be connected to the existing
-            administrator records and backend permission checks.
+            Super Administrator accounts cannot be suspended, demoted or have
+            their permissions changed through this dashboard. Exceptional
+            changes must be performed securely through backend/database administration.
           </div>
+
         </div>
       </section>
 
+
       <!-- 2. PLATFORM CONFIGURATION -->
       <section class="panel" id="configuration">
+
         <div class="content-card">
 
           <h2>Platform Configuration</h2>
@@ -375,7 +552,6 @@ body{
             Configure general platform settings and examination limits.
           </p>
 
-          <!-- FREE SETTINGS -->
           <div class="setting-box">
 
             <h3>Free Examination Configuration</h3>
@@ -386,38 +562,17 @@ body{
             </p>
 
             <div class="form-group">
-              <label for="freeQuestionLimit">
-                Free Student Question Limit
-              </label>
-
-              <input
-                type="number"
-                id="freeQuestionLimit"
-                min="1"
-                max="500"
-                value="30"
-                required
-              >
+              <label for="freeQuestionLimit">Free Student Question Limit</label>
+              <input type="number" id="freeQuestionLimit" min="1" max="500" value="30" required>
             </div>
 
             <div class="form-group">
-              <label for="freeDuration">
-                Free Examination Duration (Minutes)
-              </label>
-
-              <input
-                type="number"
-                id="freeDuration"
-                min="1"
-                max="600"
-                value="45"
-                required
-              >
+              <label for="freeDuration">Free Examination Duration (Minutes)</label>
+              <input type="number" id="freeDuration" min="1" max="600" value="45" required>
             </div>
 
           </div>
 
-          <!-- PREMIUM SETTINGS -->
           <div class="setting-box">
 
             <h3>Premium Examination Configuration</h3>
@@ -428,52 +583,22 @@ body{
             </p>
 
             <div class="form-group">
-              <label for="premiumQuestionLimit">
-                Premium Student Question Limit
-              </label>
-
-              <input
-                type="number"
-                id="premiumQuestionLimit"
-                min="1"
-                max="500"
-                value="100"
-                required
-              >
+              <label for="premiumQuestionLimit">Premium Student Question Limit</label>
+              <input type="number" id="premiumQuestionLimit" min="1" max="500" value="100" required>
             </div>
 
             <div class="form-group">
-              <label for="premiumDuration">
-                Premium Examination Duration (Minutes)
-              </label>
-
-              <input
-                type="number"
-                id="premiumDuration"
-                min="1"
-                max="600"
-                value="90"
-                required
-              >
+              <label for="premiumDuration">Premium Examination Duration (Minutes)</label>
+              <input type="number" id="premiumDuration" min="1" max="600" value="90" required>
             </div>
 
           </div>
 
-          <button
-            class="button gold"
-            id="saveExamSettings"
-            type="button"
-            disabled
-          >
+          <button class="button gold" id="saveExamSettings" type="button" disabled>
             Save All Examination Settings
           </button>
 
-          <div
-            class="status"
-            id="examSettingsMessage"
-            role="status"
-            aria-live="polite"
-          >
+          <div class="status" id="examSettingsMessage" role="status" aria-live="polite">
             Loading examination settings...
           </div>
 
@@ -491,18 +616,19 @@ body{
 
           <div class="setting-box" style="margin-top:18px">
             <h3>General Platform Information</h3>
-
             <p>
-              Platform-wide configuration options will be added here when
-              their database settings are connected.
+              Additional platform-wide configuration options will be added
+              when their database settings are connected.
             </p>
           </div>
 
         </div>
       </section>
 
+
       <!-- 3. LOGIN PROTECTION -->
       <section class="panel" id="login">
+
         <div class="content-card">
 
           <h2>Login Protection</h2>
@@ -543,8 +669,10 @@ body{
         </div>
       </section>
 
+
       <!-- 4. ACCESS RESTRICTIONS -->
       <section class="panel" id="restrictions">
+
         <div class="content-card">
 
           <h2>Access Restrictions</h2>
@@ -580,8 +708,10 @@ body{
         </div>
       </section>
 
+
       <!-- 5. ACTIVITY LOGS -->
       <section class="panel" id="activity">
+
         <div class="content-card">
 
           <h2>Activity Logs</h2>
@@ -591,15 +721,17 @@ body{
           </p>
 
           <div class="coming">
-            Activity records will be displayed here after the activity-log
-            data source and access policies have been established.
+            General platform activity records will be displayed here after
+            the activity-log data source and access policies have been established.
           </div>
 
         </div>
       </section>
 
+
       <!-- 6. SECURITY SETTINGS -->
       <section class="panel" id="security">
+
         <div class="content-card">
 
           <h2>Security Settings</h2>
@@ -635,20 +767,51 @@ body{
         </div>
       </section>
 
+
       <!-- 7. ADMINISTRATIVE ACTION RECORDS -->
       <section class="panel" id="records">
+
         <div class="content-card">
 
           <h2>Administrative Action Records</h2>
 
           <p class="description">
-            Maintain an audit trail of important administrative actions.
+            Review the audit trail of important administrator actions.
           </p>
 
-          <div class="coming">
-            Records will include the administrator, action performed,
-            affected record and date/time. The audit trail will be stored
-            securely in the database.
+          <button class="button secondary" id="refreshLogsBtn" type="button">
+            Refresh Action Records
+          </button>
+
+          <div class="status" id="logsMessage" role="status" aria-live="polite">
+            Loading administrative records...
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Administrator ID</th>
+                  <th>Target User ID</th>
+                  <th>Action</th>
+                  <th>Previous Values</th>
+                  <th>New Values</th>
+                </tr>
+              </thead>
+
+              <tbody id="logsTableBody">
+                <tr>
+                  <td colspan="6">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="notice">
+            These records are retrieved through the protected
+            get_admin_action_logs database function. Direct table access
+            remains restricted.
           </div>
 
         </div>
@@ -663,8 +826,89 @@ body{
 
 </div>
 
+
+<!-- PERMISSION EDITOR -->
+<div id="permissionModal"
+     style="display:none;position:fixed;inset:0;background:#0008;z-index:1000;padding:15px;overflow:auto">
+
+  <div style="max-width:550px;background:white;margin:40px auto;padding:22px;border-radius:12px">
+
+    <h2 style="color:#142b52;margin-top:0">Edit Administrator Permissions</h2>
+
+    <p id="permissionAdminEmail" style="font-size:13px;color:#6b7789"></p>
+
+    <div class="permission-list">
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_examinations">
+        Manage examinations
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_questions">
+        Manage questions
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_students">
+        Manage students
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_teachers">
+        Manage teachers
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="view_activity_logs">
+        View activity logs
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_platform_settings">
+        Manage platform settings
+      </label>
+
+    </div>
+
+    <div class="action-buttons" style="margin-top:20px">
+      <button class="button gold" id="savePermissionsBtn" type="button">
+        Save Permissions
+      </button>
+
+      <button class="button secondary" id="closePermissionModal" type="button">
+        Cancel
+      </button>
+    </div>
+
+    <div class="status" id="permissionMessage" role="status" aria-live="polite"></div>
+
+  </div>
+</div>
+
+
 <script type="module">
 import { supabase } from "./auth.js";
+
+
+// =====================================
+// GLOBAL VARIABLES
+// =====================================
+
+let currentSession = null;
+let administratorList = [];
+let selectedAdminId = null;
+let pageIsSuperAdmin = false;
+
+const permissionKeys = [
+  "manage_examinations",
+  "manage_questions",
+  "manage_students",
+  "manage_teachers",
+  "view_activity_logs",
+  "manage_platform_settings"
+];
+
 
 // =====================================
 // PANEL NAVIGATION
@@ -675,6 +919,7 @@ const panels = document.querySelectorAll(".panel");
 
 panelButtons.forEach(button => {
   button.addEventListener("click", () => {
+
     const target = button.dataset.panel;
 
     panelButtons.forEach(item => {
@@ -684,6 +929,15 @@ panelButtons.forEach(button => {
     panels.forEach(panel => {
       panel.classList.toggle("active", panel.id === target);
     });
+
+    if (target === "permissions") {
+      loadAdministrators();
+    }
+
+    if (target === "records") {
+      loadAdministrativeLogs();
+    }
+
   });
 });
 
@@ -692,10 +946,650 @@ document.getElementById("year").textContent =
 
 
 // =====================================
+// MESSAGE HELPERS
+// =====================================
+
+function setStatus(elementId, text, type = "") {
+
+  const element = document.getElementById(elementId);
+
+  element.textContent = text;
+  element.className = "status";
+
+  if (type) {
+    element.classList.add(type);
+  }
+}
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+
+// =====================================
+// ADMIN VERIFICATION
+// =====================================
+
+async function verifyAdmin() {
+
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+
+  if (sessionError) {
+    throw sessionError;
+  }
+
+  const session = sessionData?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return null;
+  }
+
+  const { data: admin, error: adminError } =
+    await supabase
+      .from("admin_users")
+      .select("user_id, role, is_suspended")
+      .eq("user_id", session.user.id)
+      .maybeSingle();
+
+  if (adminError) {
+    throw adminError;
+  }
+
+  if (!admin || admin.is_suspended) {
+
+    await supabase.auth.signOut();
+
+    location.replace("admin-login.html");
+
+    return null;
+  }
+
+  if (admin.role !== "super_admin") {
+
+    alert("This page is restricted to active Super Administrators.");
+
+    location.replace("admin.html");
+
+    return null;
+  }
+
+  currentSession = session;
+  pageIsSuperAdmin = true;
+
+  return session;
+}
+
+
+// =====================================
+// ADMINISTRATOR LIST
+// =====================================
+
+async function loadAdministrators() {
+
+  if (!pageIsSuperAdmin) return;
+
+  const refreshButton =
+    document.getElementById("refreshAdminsBtn");
+
+  const tableBody =
+    document.getElementById("adminTableBody");
+
+  refreshButton.disabled = true;
+
+  setStatus("adminListMessage", "Loading administrator accounts...");
+
+  try {
+
+    const { data, error } = await supabase.rpc(
+      "get_platform_administrators"
+    );
+
+    if (error) throw error;
+
+    administratorList = data || [];
+
+    renderAdministrators();
+
+    setStatus(
+      "adminListMessage",
+      administratorList.length +
+      " administrator account(s) found.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error("Administrator list error:", error);
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">Unable to load administrator accounts.</td>
+      </tr>
+    `;
+
+    setStatus(
+      "adminListMessage",
+      "Error: " + error.message,
+      "error"
+    );
+
+  } finally {
+
+    refreshButton.disabled = false;
+  }
+}
+
+
+function renderAdministrators() {
+
+  const tableBody =
+    document.getElementById("adminTableBody");
+
+  if (!administratorList.length) {
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5">No administrator accounts found.</td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tableBody.innerHTML = administratorList.map(admin => {
+
+    const isSuper = admin.role === "super_admin";
+
+    const permissions = admin.permissions || {};
+
+    const permissionNames = permissionKeys
+      .filter(key => permissions[key] === true)
+      .map(key => key.replaceAll("_", " "));
+
+    const permissionText = isSuper
+      ? "Full access"
+      : permissionNames.length
+        ? permissionNames.join(", ")
+        : "No permissions assigned";
+
+    const roleHTML = isSuper
+      ? '<span class="role-label super">SUPER ADMIN</span>'
+      : '<span class="role-label">ADMINISTRATOR</span>';
+
+    const statusHTML = admin.is_suspended
+      ? '<span class="role-label suspended">SUSPENDED</span>'
+      : '<span class="role-label active">ACTIVE</span>';
+
+    let actionsHTML = "";
+
+    if (!isSuper) {
+
+      actionsHTML = `
+        <div class="action-buttons">
+
+          <button
+            class="small-button"
+            data-action="permissions"
+            data-id="${escapeHTML(admin.user_id)}">
+            Permissions
+          </button>
+
+          <button
+            class="small-button"
+            data-action="promote"
+            data-id="${escapeHTML(admin.user_id)}">
+            Promote
+          </button>
+
+          ${
+            admin.is_suspended
+              ? `<button
+                   class="small-button"
+                   data-action="restore"
+                   data-id="${escapeHTML(admin.user_id)}">
+                   Restore
+                 </button>`
+              : `<button
+                   class="small-button danger"
+                   data-action="suspend"
+                   data-id="${escapeHTML(admin.user_id)}">
+                   Suspend
+                 </button>`
+          }
+
+        </div>
+      `;
+
+    } else {
+
+      actionsHTML = `
+        <span style="font-size:12px;color:#6b7789">
+          Protected account
+        </span>
+      `;
+
+    }
+
+    return `
+      <tr>
+
+        <td>${escapeHTML(admin.email || "Email unavailable")}</td>
+
+        <td>${roleHTML}</td>
+
+        <td>${statusHTML}</td>
+
+        <td>${escapeHTML(permissionText)}</td>
+
+        <td>${actionsHTML}</td>
+
+      </tr>
+    `;
+
+  }).join("");
+}
+
+
+// =====================================
+// ADD ADMINISTRATOR
+// =====================================
+
+document.getElementById("addAdminBtn")
+.addEventListener("click", async () => {
+
+  const button = document.getElementById("addAdminBtn");
+
+  const userId =
+    document.getElementById("newAdminUserId").value.trim();
+
+  if (!pageIsSuperAdmin) return;
+
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+
+    setStatus(
+      "addAdminMessage",
+      "Enter a valid Supabase user UUID.",
+      "error"
+    );
+
+    return;
+  }
+
+  button.disabled = true;
+
+  setStatus("addAdminMessage", "Adding administrator...");
+
+  try {
+
+    const { data, error } = await supabase.rpc(
+      "add_platform_administrator",
+      {
+        p_user_id: userId
+      }
+    );
+
+    if (error) throw error;
+
+    setStatus(
+      "addAdminMessage",
+      data || "Administrator added successfully.",
+      "success"
+    );
+
+    document.getElementById("newAdminUserId").value = "";
+
+    await loadAdministrators();
+
+  } catch (error) {
+
+    console.error("Add administrator error:", error);
+
+    setStatus(
+      "addAdminMessage",
+      "Unable to add administrator: " + error.message,
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+  }
+
+});
+
+
+// =====================================
+// ADMINISTRATOR ACTION BUTTONS
+// =====================================
+
+document.getElementById("adminTableBody")
+.addEventListener("click", async event => {
+
+  const button = event.target.closest("[data-action]");
+
+  if (!button || !pageIsSuperAdmin) return;
+
+  const action = button.dataset.action;
+  const userId = button.dataset.id;
+
+  if (!userId) return;
+
+  if (action === "permissions") {
+
+    openPermissionEditor(userId);
+
+    return;
+  }
+
+  const admin = administratorList.find(item =>
+    item.user_id === userId
+  );
+
+  if (!admin || admin.role === "super_admin") {
+
+    alert("Super Administrator accounts are protected.");
+
+    return;
+  }
+
+  let functionName = "";
+  let confirmation = "";
+
+  if (action === "promote") {
+
+    functionName = "promote_to_super_admin";
+
+    confirmation =
+      "Promote this administrator to Super Administrator?";
+
+  } else if (action === "suspend") {
+
+    functionName = "suspend_platform_administrator";
+
+    confirmation =
+      "Suspend this administrator account?";
+
+  } else if (action === "restore") {
+
+    functionName = "restore_platform_administrator";
+
+    confirmation =
+      "Restore this administrator account?";
+
+  } else {
+
+    return;
+  }
+
+  if (!confirm(confirmation)) return;
+
+  button.disabled = true;
+
+  try {
+
+    const { data, error } = await supabase.rpc(
+      functionName,
+      {
+        p_user_id: userId
+      }
+    );
+
+    if (error) throw error;
+
+    alert(data || "Administrator account updated successfully.");
+
+    await loadAdministrators();
+
+  } catch (error) {
+
+    console.error("Administrator action error:", error);
+
+    alert("Action failed: " + error.message);
+
+    button.disabled = false;
+  }
+
+});
+
+
+// =====================================
+// PERMISSION EDITOR
+// =====================================
+
+function openPermissionEditor(userId) {
+
+  const admin = administratorList.find(item =>
+    item.user_id === userId
+  );
+
+  if (!admin || admin.role === "super_admin") return;
+
+  selectedAdminId = userId;
+
+  document.getElementById("permissionAdminEmail").textContent =
+    admin.email || userId;
+
+  const permissions = admin.permissions || {};
+
+  document.querySelectorAll("[data-permission]")
+  .forEach(checkbox => {
+
+    const key = checkbox.dataset.permission;
+
+    checkbox.checked = permissions[key] === true;
+
+  });
+
+  setStatus("permissionMessage", "");
+
+  document.getElementById("permissionModal").style.display = "block";
+}
+
+
+function closePermissionEditor() {
+
+  document.getElementById("permissionModal").style.display = "none";
+
+  selectedAdminId = null;
+}
+
+
+document.getElementById("closePermissionModal")
+.addEventListener("click", closePermissionEditor);
+
+
+document.getElementById("savePermissionsBtn")
+.addEventListener("click", async () => {
+
+  if (!selectedAdminId || !pageIsSuperAdmin) return;
+
+  const button = document.getElementById("savePermissionsBtn");
+
+  const permissions = {};
+
+  document.querySelectorAll("[data-permission]")
+  .forEach(checkbox => {
+
+    permissions[checkbox.dataset.permission] =
+      checkbox.checked;
+
+  });
+
+  button.disabled = true;
+
+  setStatus("permissionMessage", "Saving permissions...");
+
+  try {
+
+    const { data, error } = await supabase.rpc(
+      "set_administrator_permissions",
+      {
+        p_user_id: selectedAdminId,
+        p_permissions: permissions
+      }
+    );
+
+    if (error) throw error;
+
+    setStatus(
+      "permissionMessage",
+      data || "Permissions saved successfully.",
+      "success"
+    );
+
+    await loadAdministrators();
+
+    setTimeout(closePermissionEditor, 900);
+
+  } catch (error) {
+
+    console.error("Permission update error:", error);
+
+    setStatus(
+      "permissionMessage",
+      "Unable to save permissions: " + error.message,
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+  }
+
+});
+
+
+// =====================================
+// REFRESH ADMINISTRATORS
+// =====================================
+
+document.getElementById("refreshAdminsBtn")
+.addEventListener("click", loadAdministrators);
+
+
+// =====================================
+// ADMINISTRATIVE ACTION RECORDS
+// =====================================
+
+async function loadAdministrativeLogs() {
+
+  if (!pageIsSuperAdmin) return;
+
+  const button =
+    document.getElementById("refreshLogsBtn");
+
+  const tableBody =
+    document.getElementById("logsTableBody");
+
+  button.disabled = true;
+
+  setStatus("logsMessage", "Loading administrative records...");
+
+  try {
+
+    const { data, error } = await supabase.rpc(
+      "get_admin_action_logs",
+      {
+        p_limit: 100
+      }
+    );
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="6">No administrative actions have been recorded yet.</td>
+        </tr>
+      `;
+
+    } else {
+
+      tableBody.innerHTML = data.map(log => {
+
+        const formattedDate = log.created_at
+          ? new Date(log.created_at).toLocaleString()
+          : "Unknown";
+
+        return `
+          <tr>
+
+            <td>${escapeHTML(formattedDate)}</td>
+
+            <td>${escapeHTML(log.actor_user_id)}</td>
+
+            <td>${escapeHTML(log.target_user_id || "N/A")}</td>
+
+            <td>${escapeHTML(log.action_type)}</td>
+
+            <td>
+              <div class="record-details">${escapeHTML(
+                JSON.stringify(log.previous_values ?? {}, null, 2)
+              )}</div>
+            </td>
+
+            <td>
+              <div class="record-details">${escapeHTML(
+                JSON.stringify(log.new_values ?? {}, null, 2)
+              )}</div>
+            </td>
+
+          </tr>
+        `;
+
+      }).join("");
+
+    }
+
+    setStatus(
+      "logsMessage",
+      (data?.length || 0) + " administrative record(s) retrieved.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error("Administrative records error:", error);
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6">Unable to retrieve administrative records.</td>
+      </tr>
+    `;
+
+    setStatus(
+      "logsMessage",
+      "Error: " + error.message,
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+  }
+}
+
+
+document.getElementById("refreshLogsBtn")
+.addEventListener("click", loadAdministrativeLogs);
+
+
+// =====================================
 // EXAMINATION SETTINGS
 // =====================================
 
 const settingDefinitions = {
+
   free_student_question_limit: {
     inputId: "freeQuestionLimit",
     minimum: 1,
@@ -723,6 +1617,7 @@ const settingDefinitions = {
     maximum: 600,
     label: "Premium examination duration"
   }
+
 };
 
 const saveButton =
@@ -732,57 +1627,15 @@ const message =
   document.getElementById("examSettingsMessage");
 
 
-// =====================================
-// STATUS MESSAGE
-// =====================================
+function showExamMessage(text, type = "") {
 
-function showMessage(text, type = "") {
   message.textContent = text;
+
   message.className = "status";
 
   if (type) {
     message.classList.add(type);
   }
-}
-
-
-// =====================================
-// ADMIN VERIFICATION
-// =====================================
-
-async function verifyAdmin() {
-
-  const { data: sessionData, error: sessionError } =
-    await supabase.auth.getSession();
-
-  if (sessionError) {
-    throw sessionError;
-  }
-
-  const session = sessionData?.session;
-
-  if (!session?.user?.id) {
-    location.replace("admin-login.html");
-    return null;
-  }
-
-  const { data: admin, error: adminError } =
-    await supabase
-      .from("admin_users")
-      .select("user_id")
-      .eq("user_id", session.user.id)
-      .maybeSingle();
-
-  if (adminError) {
-    throw adminError;
-  }
-
-  if (!admin) {
-    location.replace("admin-login.html");
-    return null;
-  }
-
-  return session;
 }
 
 
@@ -794,7 +1647,7 @@ async function loadExamSettings() {
 
   saveButton.disabled = true;
 
-  showMessage("Loading examination settings...");
+  showExamMessage("Loading examination settings...");
 
   try {
 
@@ -810,14 +1663,14 @@ async function loadExamSettings() {
       .select("setting_key, setting_value")
       .in("setting_key", settingKeys);
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     if (!data || data.length !== settingKeys.length) {
+
       throw new Error(
         "One or more examination settings are missing from Supabase."
       );
+
     }
 
     for (const key of settingKeys) {
@@ -831,6 +1684,7 @@ async function loadExamSettings() {
       }
 
       const definition = settingDefinitions[key];
+
       const value = Number(row.setting_value);
 
       if (
@@ -838,34 +1692,41 @@ async function loadExamSettings() {
         value < definition.minimum ||
         value > definition.maximum
       ) {
+
         throw new Error(
           "Invalid saved value for " + definition.label
         );
+
       }
 
       document.getElementById(
         definition.inputId
       ).value = value;
+
     }
 
-    showMessage(
+    showExamMessage(
       "All four examination settings loaded successfully from Supabase.",
       "success"
     );
+
+    saveButton.disabled = false;
+
+    await loadAdministrators();
 
   } catch (error) {
 
     console.error("Settings loading error:", error);
 
-    showMessage(
+    showExamMessage(
       "Unable to load settings: " + error.message,
       "error"
     );
 
-  } finally {
+    saveButton.disabled = true;
 
-    saveButton.disabled = false;
   }
+
 }
 
 
@@ -885,6 +1746,7 @@ function collectSettings() {
     );
 
     const rawValue = input.value.trim();
+
     const value = Number(rawValue);
 
     if (
@@ -904,12 +1766,14 @@ function collectSettings() {
         definition.maximum +
         "."
       );
+
     }
 
     updates.push({
       setting_key: key,
       setting_value: value
     });
+
   }
 
   return updates;
@@ -924,7 +1788,7 @@ saveButton.addEventListener("click", async () => {
 
   saveButton.disabled = true;
 
-  showMessage("Saving examination settings...");
+  showExamMessage("Saving examination settings...");
 
   try {
 
@@ -949,23 +1813,24 @@ saveButton.addEventListener("click", async () => {
         .select("setting_key, setting_value")
         .single();
 
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
 
       if (
         !data ||
         data.setting_key !== item.setting_key ||
         Number(data.setting_value) !== item.setting_value
       ) {
+
         throw new Error(
           "Unable to confirm saved setting: " +
           item.setting_key
         );
+
       }
+
     }
 
-    showMessage(
+    showExamMessage(
       "All four examination settings saved and confirmed successfully.",
       "success"
     );
@@ -974,15 +1839,19 @@ saveButton.addEventListener("click", async () => {
 
     console.error("Settings save error:", error);
 
-    showMessage(
+    showExamMessage(
       "Save failed: " + error.message,
       "error"
     );
 
   } finally {
 
-    saveButton.disabled = false;
+    if (pageIsSuperAdmin) {
+      saveButton.disabled = false;
+    }
+
   }
+
 });
 
 
@@ -990,7 +1859,31 @@ saveButton.addEventListener("click", async () => {
 // INITIALIZE PAGE
 // =====================================
 
-loadExamSettings();
+async function initializePage() {
+
+  try {
+
+    const session = await verifyAdmin();
+
+    if (!session) return;
+
+    await loadAdministrators();
+
+    await loadExamSettings();
+
+  } catch (error) {
+
+    console.error("Page initialization error:", error);
+
+    alert("Unable to initialize Settings & Security: " + error.message);
+
+    location.replace("admin-login.html");
+
+  }
+
+}
+
+initializePage();
 
 </script>
 
