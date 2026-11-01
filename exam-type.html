@@ -287,9 +287,10 @@
             <span>Total questions</span>
             <strong id="freeQuestionCount">Loading...</strong>
           </div>
+
           <div class="stat">
             <span>Time allowed</span>
-            <strong>45 min</strong>
+            <strong id="freeDuration">Loading...</strong>
           </div>
         </div>
 
@@ -311,11 +312,12 @@
         <div class="stats">
           <div class="stat">
             <span>Total questions</span>
-            <strong>100</strong>
+            <strong id="premiumQuestionCount">Loading...</strong>
           </div>
+
           <div class="stat">
             <span>Time allowed</span>
-            <strong>90 min</strong>
+            <strong id="premiumDuration">Loading...</strong>
           </div>
         </div>
 
@@ -350,18 +352,38 @@
     const subjectName = document.getElementById("subjectName");
     const levelName = document.getElementById("levelName");
     const message = document.getElementById("message");
+
     const availabilityMessage =
       document.getElementById("availabilityMessage");
+
     const freeButton = document.getElementById("freeButton");
     const premiumButton = document.getElementById("premiumButton");
+
     const freeQuestionCount =
       document.getElementById("freeQuestionCount");
+
+    const freeDuration =
+      document.getElementById("freeDuration");
+
+    const premiumQuestionCount =
+      document.getElementById("premiumQuestionCount");
+
+    const premiumDuration =
+      document.getElementById("premiumDuration");
+
     const backLink = document.getElementById("backLink");
 
     let session = null;
     let examination = null;
-    let freeQuestionLimit = null;
+    let settingsLoaded = false;
     let busy = false;
+
+    let examSettings = {
+      free_student_question_limit: null,
+      free_student_duration_minutes: null,
+      premium_student_question_limit: null,
+      premium_student_duration_minutes: null
+    };
 
     function showMessage(text, type = "error") {
       message.textContent = text;
@@ -392,45 +414,122 @@
       }
     }
 
+    function validateSetting(value, name, minimum, maximum) {
+      const number = Number(value);
+
+      if (
+        !Number.isInteger(number) ||
+        number < minimum ||
+        number > maximum
+      ) {
+        throw new Error(
+          `The ${name} saved in platform settings is invalid. Please contact the administrator.`
+        );
+      }
+
+      return number;
+    }
+
+    function formatMinutes(minutes) {
+      return `${minutes} min`;
+    }
+
+    function updateSettingsDisplay() {
+      freeQuestionCount.textContent =
+        examSettings.free_student_question_limit;
+
+      freeDuration.textContent =
+        formatMinutes(examSettings.free_student_duration_minutes);
+
+      premiumQuestionCount.textContent =
+        examSettings.premium_student_question_limit;
+
+      premiumDuration.textContent =
+        formatMinutes(examSettings.premium_student_duration_minutes);
+    }
+
     function setBusy(value) {
       busy = value;
 
       freeButton.disabled =
-        value || !examination || freeQuestionLimit === null;
+        value || !examination || !settingsLoaded;
 
+      // Premium is intentionally disabled until payment verification
+      // and Premium exam-start authorization are implemented.
       premiumButton.disabled = true;
 
       freeButton.textContent = value
         ? "Please wait..."
-        : examination && freeQuestionLimit !== null
+        : examination && settingsLoaded
           ? "Start Free Exam"
           : "Exam not available yet";
 
-      premiumButton.textContent =
-        value ? "Please wait..." : "Premium verification pending";
+      premiumButton.textContent = value
+        ? "Please wait..."
+        : "Premium verification pending";
     }
 
-    async function loadFreeQuestionLimit() {
+    async function loadExamSettings() {
+      const settingKeys = [
+        "free_student_question_limit",
+        "free_student_duration_minutes",
+        "premium_student_question_limit",
+        "premium_student_duration_minutes"
+      ];
+
       const { data, error } = await supabase
         .from("platform_settings")
-        .select("setting_value")
-        .eq("setting_key", "free_student_question_limit")
-        .single();
+        .select("setting_key,setting_value")
+        .in("setting_key", settingKeys);
 
-      if (error) throw error;
-
-      const value = Number(data?.setting_value);
-
-      if (
-        !Number.isInteger(value) ||
-        value < 1 ||
-        value > 500
-      ) {
-        throw new Error("The saved Free question limit is invalid.");
+      if (error) {
+        console.error("Settings loading error:", error);
+        throw new Error(
+          "Unable to load examination settings. Check the platform settings permissions."
+        );
       }
 
-      freeQuestionLimit = value;
-      freeQuestionCount.textContent = value;
+      const values = {};
+
+      for (const row of data || []) {
+        values[row.setting_key] = row.setting_value;
+      }
+
+      examSettings.free_student_question_limit =
+        validateSetting(
+          values.free_student_question_limit,
+          "Free question limit",
+          1,
+          500
+        );
+
+      examSettings.free_student_duration_minutes =
+        validateSetting(
+          values.free_student_duration_minutes,
+          "Free examination duration",
+          1,
+          600
+        );
+
+      examSettings.premium_student_question_limit =
+        validateSetting(
+          values.premium_student_question_limit,
+          "Premium question limit",
+          1,
+          500
+        );
+
+      examSettings.premium_student_duration_minutes =
+        validateSetting(
+          values.premium_student_duration_minutes,
+          "Premium examination duration",
+          1,
+          600
+        );
+
+      settingsLoaded = true;
+
+      updateSettingsDisplay();
     }
 
     async function loadPage() {
@@ -460,9 +559,10 @@
           return;
         }
 
-        // Load the administrator-configured Free question limit.
-        await loadFreeQuestionLimit();
+        // Load all four administrator-configured settings.
+        await loadExamSettings();
 
+        // Verify the selected education level.
         const {
           data: level,
           error: levelError
@@ -482,6 +582,7 @@
           );
         }
 
+        // Verify that the subject belongs to the selected level.
         const {
           data: assignment,
           error: assignmentError
@@ -504,6 +605,7 @@
         subjectName.textContent = assignment.subjects.name;
         levelName.textContent = level.level_name;
 
+        // Find the latest published examination.
         const {
           data: exams,
           error: examError
@@ -523,14 +625,10 @@
         if (!exams || exams.length === 0) {
           examination = null;
 
-          freeButton.disabled = true;
-          freeButton.textContent = "Exam not available yet";
-
-          premiumButton.disabled = true;
-          premiumButton.textContent = "Premium verification pending";
+          setBusy(false);
 
           showAvailability(
-            "Examination options are shown below, but this subject does not have a published examination yet. You cannot start until an examination is published."
+            "No published examination is currently available for this subject. You cannot start until an examination is published."
           );
 
           return;
@@ -538,25 +636,20 @@
 
         examination = exams[0];
 
-        freeButton.disabled = false;
-        freeButton.textContent = "Start Free Exam";
-
-        // Premium remains unchanged and disabled pending verification.
-        premiumButton.disabled = true;
-        premiumButton.textContent = "Premium verification pending";
-
         hideAvailability();
+        setBusy(false);
 
       } catch (error) {
         console.error("Unable to load examination details:", error);
+
+        examination = null;
+        settingsLoaded = false;
 
         freeButton.disabled = true;
         freeButton.textContent = "Unable to verify exam";
 
         premiumButton.disabled = true;
         premiumButton.textContent = "Premium verification pending";
-
-        freeQuestionCount.textContent = "Unavailable";
 
         showMessage(
           error?.message ||
@@ -570,7 +663,7 @@
         busy ||
         !session ||
         !examination ||
-        freeQuestionLimit === null
+        !settingsLoaded
       ) return;
 
       if (type === "premium") {
@@ -590,7 +683,8 @@
           await supabase.functions.invoke("start-exam", {
             body: {
               examination_id: examination.id,
-              question_count: freeQuestionLimit,
+              question_count:
+                examSettings.free_student_question_limit,
               exam_type: "free"
             },
             headers: {
