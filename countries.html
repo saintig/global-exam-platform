@@ -1,1 +1,937 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countries | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#263449;
+  --muted:#718096;
+  --border:#e5eaf1;
+  --red:#b42318;
+  --green:#16803c;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header {
+  height:65px;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand {
+  font-size:19px;
+  font-weight:bold;
+}
+
+.brand span {
+  color:var(--gold);
+}
+
+.menu-btn {
+  border:1px solid #ffffff55;
+  background:transparent;
+  color:white;
+  font-size:25px;
+  width:42px;
+  height:40px;
+  border-radius:7px;
+  cursor:pointer;
+}
+
+.layout {
+  display:flex;
+  min-height:calc(100vh - 65px);
+}
+
+.sidebar {
+  width:260px;
+  background:var(--navy);
+  color:white;
+  padding:18px 12px;
+  flex-shrink:0;
+}
+
+.sidebar a {
+  display:block;
+  color:#e8edf6;
+  text-decoration:none;
+  padding:13px 14px;
+  margin-bottom:5px;
+  border-radius:7px;
+  font-size:14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background:#ffffff18;
+  border-left:4px solid var(--gold);
+  color:white;
+}
+
+.sidebar .public-link {
+  margin-top:20px;
+  border-top:1px solid #ffffff33;
+  padding-top:20px;
+}
+
+.overlay {
+  display:none;
+}
+
+.main {
+  flex:1;
+  min-width:0;
+  padding:25px;
+}
+
+.heading {
+  margin-bottom:22px;
+}
+
+.heading h1 {
+  color:var(--navy);
+  font-size:24px;
+  margin-bottom:7px;
+}
+
+.heading p,
+.description {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1.5fr;
+  gap:18px;
+  align-items:start;
+}
+
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:20px;
+  box-shadow:0 3px 12px #142b5208;
+  margin-bottom:20px;
+}
+
+.card h2 {
+  color:var(--navy);
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+label {
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:18px 0 7px;
+}
+
+input {
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  font-size:14px;
+  outline:none;
+}
+
+input:focus {
+  border-color:var(--blue);
+}
+
+button {
+  cursor:pointer;
+  border:0;
+  border-radius:7px;
+  padding:11px 15px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.primary {
+  background:var(--navy);
+  color:white;
+}
+
+.primary:hover {
+  background:var(--blue);
+}
+
+.gold {
+  background:var(--gold);
+  color:var(--navy);
+}
+
+.danger {
+  background:#fee4e2;
+  color:var(--red);
+}
+
+.secondary {
+  background:#edf1f7;
+  color:var(--navy);
+}
+
+button:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.full {
+  width:100%;
+  margin-top:18px;
+}
+
+.toolbar {
+  display:flex;
+  gap:10px;
+  margin:18px 0;
+}
+
+.toolbar input {
+  flex:1;
+}
+
+.country-list {
+  display:grid;
+  gap:12px;
+}
+
+.country-item {
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.country-name {
+  font-weight:bold;
+  color:var(--navy);
+  margin-bottom:7px;
+}
+
+.country-meta {
+  font-size:12px;
+  color:var(--muted);
+}
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  justify-content:flex-end;
+}
+
+.actions button {
+  padding:8px 10px;
+}
+
+.status {
+  padding:12px;
+  border-radius:7px;
+  font-size:13px;
+  margin-top:15px;
+  display:none;
+  line-height:1.5;
+}
+
+.status.show {
+  display:block;
+}
+
+.status.error {
+  background:#fee4e2;
+  color:var(--red);
+}
+
+.status.success {
+  background:#dcfce7;
+  color:var(--green);
+}
+
+.status.info {
+  background:#eaf1ff;
+  color:var(--navy);
+}
+
+.empty {
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+}
+
+.modal.show {
+  display:flex;
+}
+
+.modal-content {
+  background:white;
+  width:100%;
+  max-width:430px;
+  border-radius:12px;
+  padding:22px;
+}
+
+.modal-content h2 {
+  color:var(--navy);
+  margin-bottom:15px;
+}
+
+.modal-buttons {
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.modal-buttons button {
+  flex:1;
+}
+
+@media(max-width:900px) {
+  .sidebar {
+    position:fixed;
+    top:65px;
+    bottom:0;
+    left:-270px;
+    z-index:90;
+    overflow-y:auto;
+    transition:left .25s;
+  }
+
+  .sidebar.open {
+    left:0;
+  }
+
+  .overlay.show {
+    display:block;
+    position:fixed;
+    inset:65px 0 0;
+    background:#0006;
+    z-index:80;
+  }
+
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .main {
+    padding:18px;
+  }
+}
+
+@media(max-width:550px) {
+  .country-item {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .actions {
+    justify-content:flex-start;
+  }
+
+  .toolbar {
+    flex-direction:column;
+  }
+
+  .heading h1 {
+    font-size:21px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <button class="menu-btn" id="menuBtn">☰</button>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <a href="admin.html">Dashboard Overview</a>
+  <a href="countries.html" class="active">Countries</a>
+  <a href="education-levels.html">Education Levels</a>
+  <a href="subjects.html">Subjects</a>
+  <a href="question-bank.html">Question Bank</a>
+  <a href="register-exam.html">Register Examination</a>
+  <a href="register-users.html">Register Users</a>
+  <a href="paid-subscribers.html">Paid Subscribers</a>
+  <a href="results-reports.html">Results & Reports</a>
+  <a href="visitor-analytics.html">Visitor Analytics</a>
+  <a href="ai-question-generator.html">AI Question Generator</a>
+  <a href="settings-security.html">Settings & Security</a>
+  <a href="archived-records.html">Archived Records</a>
+
+  <div class="public-link">
+    <a href="index.html">View Public Website ↗</a>
+    <a href="#" id="logoutBtn">Sign Out</a>
+  </div>
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<main class="main">
+
+  <div class="heading">
+    <h1>Country Management</h1>
+    <p>Add and manage the countries available on SAINTIG EXAMS.</p>
+  </div>
+
+  <div class="grid">
+
+    <section class="card">
+      <h2 id="formTitle">A. Add Country</h2>
+      <p class="description">
+        Enter the country name to register it on the platform.
+      </p>
+
+      <form id="countryForm">
+        <input type="hidden" id="countryId">
+
+        <label for="countryName">Country Name</label>
+        <input
+          type="text"
+          id="countryName"
+          placeholder="Enter country name"
+          maxlength="100"
+          required
+        >
+
+        <button type="submit" class="primary full" id="saveBtn">
+          Add Country
+        </button>
+
+        <button
+          type="button"
+          class="secondary full"
+          id="cancelEditBtn"
+          hidden
+        >
+          Cancel Editing
+        </button>
+      </form>
+
+      <div class="status" id="formMessage"></div>
+    </section>
+
+    <section class="card">
+      <h2>B. Manage Existing Countries</h2>
+      <p class="description">
+        Search, view, edit, publish or delete registered countries.
+      </p>
+
+      <div class="toolbar">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search countries..."
+        >
+        <button class="secondary" id="refreshBtn">Refresh</button>
+      </div>
+
+      <div class="country-list" id="countryList">
+        <div class="empty">Loading countries...</div>
+      </div>
+
+      <div class="status" id="listMessage"></div>
+    </section>
+
+  </div>
+</main>
+</div>
+
+<!-- Country details modal -->
+<div class="modal" id="detailsModal">
+  <div class="modal-content">
+    <h2>Country Details</h2>
+    <div id="detailsContent"></div>
+    <div class="modal-buttons">
+      <button class="secondary" id="closeDetailsBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal" id="deleteModal">
+  <div class="modal-content">
+    <h2>Delete Country</h2>
+    <p id="deleteText" class="description"></p>
+    <div class="modal-buttons">
+      <button class="secondary" id="cancelDeleteBtn">Cancel</button>
+      <button class="danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+let countries = [];
+let deletingCountryId = null;
+
+function showStatus(id, message, type = "info") {
+  const element = $(id);
+  element.textContent = message;
+  element.className = "status show " + type;
+}
+
+function clearStatus(id) {
+  $(id).className = "status";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+// Mobile navigation
+const sidebar = $("sidebar");
+const overlay = $("overlay");
+
+$("menuBtn").addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
+// Verify administrator and permission
+async function verifyAccess() {
+  const { data: userData, error: userError } =
+    await supabase.auth.getUser();
+
+  if (userError || !userData.user) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: allowed, error } = await supabase.rpc(
+    "has_admin_permission",
+    { p_permission: "manage_education_systems" }
+  );
+
+  if (error || !allowed) {
+    document.querySelector(".main").innerHTML = `
+      <section class="card">
+        <h2>Access Restricted</h2>
+        <p class="description">
+          You do not have permission to manage countries.
+          Contact your Super Administrator.
+        </p>
+      </section>
+    `;
+    return false;
+  }
+
+  return true;
+}
+
+// Load countries
+async function loadCountries() {
+  $("countryList").innerHTML =
+    '<div class="empty">Loading countries...</div>';
+
+  clearStatus("listMessage");
+
+  const { data, error } = await supabase
+    .from("education_systems")
+    .select("id,country_name,is_active")
+    .order("country_name", { ascending:true });
+
+  if (error) {
+    $("countryList").innerHTML =
+      '<div class="empty">Unable to load countries.</div>';
+
+    showStatus("listMessage", error.message, "error");
+    return;
+  }
+
+  countries = data || [];
+  renderCountries();
+}
+
+// Display countries
+function renderCountries() {
+  const search = $("searchInput").value
+    .trim()
+    .toLowerCase();
+
+  const filtered = countries.filter(country =>
+    country.country_name.toLowerCase().includes(search)
+  );
+
+  if (!filtered.length) {
+    $("countryList").innerHTML =
+      '<div class="empty">No matching countries found.</div>';
+    return;
+  }
+
+  $("countryList").innerHTML = filtered.map(country => `
+    <article class="country-item">
+
+      <div>
+        <div class="country-name">
+          ${escapeHTML(country.country_name)}
+        </div>
+
+        <div class="country-meta">
+          ID: ${country.id}
+          ·
+          ${country.is_active ? "Published" : "Unpublished"}
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="secondary"
+          data-action="view"
+          data-id="${country.id}">
+          View
+        </button>
+
+        <button class="gold"
+          data-action="edit"
+          data-id="${country.id}">
+          Edit
+        </button>
+
+        <button class="secondary"
+          data-action="publish"
+          data-id="${country.id}">
+          ${country.is_active ? "Unpublish" : "Publish"}
+        </button>
+
+        <button class="danger"
+          data-action="delete"
+          data-id="${country.id}">
+          Delete
+        </button>
+      </div>
+
+    </article>
+  `).join("");
+}
+
+// Add or update country
+$("countryForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const name = $("countryName").value.trim();
+  const id = $("countryId").value;
+
+  if (!name) {
+    showStatus("formMessage", "Enter a country name.", "error");
+    return;
+  }
+
+  const duplicate = countries.some(country =>
+    country.country_name.toLowerCase() === name.toLowerCase()
+    && String(country.id) !== id
+  );
+
+  if (duplicate) {
+    showStatus(
+      "formMessage",
+      "This country is already registered.",
+      "error"
+    );
+    return;
+  }
+
+  $("saveBtn").disabled = true;
+
+  try {
+    let result;
+
+    if (id) {
+      result = await supabase
+        .from("education_systems")
+        .update({ country_name:name })
+        .eq("id", Number(id));
+    } else {
+      result = await supabase
+        .from("education_systems")
+        .insert({
+          country_name:name,
+          is_active:true
+        });
+    }
+
+    if (result.error) throw result.error;
+
+    resetForm();
+
+    showStatus(
+      "formMessage",
+      id ? "Country updated successfully." :
+           "Country added successfully.",
+      "success"
+    );
+
+    await loadCountries();
+
+  } catch (error) {
+    showStatus("formMessage", error.message, "error");
+  } finally {
+    $("saveBtn").disabled = false;
+  }
+});
+
+// Edit country
+function editCountry(country) {
+  $("countryId").value = country.id;
+  $("countryName").value = country.country_name;
+
+  $("formTitle").textContent = "Edit Country";
+  $("saveBtn").textContent = "Save Changes";
+  $("cancelEditBtn").hidden = false;
+
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+// Reset form
+function resetForm() {
+  $("countryForm").reset();
+  $("countryId").value = "";
+  $("formTitle").textContent = "A. Add Country";
+  $("saveBtn").textContent = "Add Country";
+  $("cancelEditBtn").hidden = true;
+}
+
+$("cancelEditBtn").addEventListener("click", resetForm);
+
+// View country
+function viewCountry(country) {
+  $("detailsContent").innerHTML = `
+    <p><strong>Country:</strong>
+      ${escapeHTML(country.country_name)}</p>
+
+    <p style="margin-top:12px">
+      <strong>Country ID:</strong> ${country.id}
+    </p>
+
+    <p style="margin-top:12px">
+      <strong>Status:</strong>
+      ${country.is_active ? "Published" : "Unpublished"}
+    </p>
+  `;
+
+  $("detailsModal").classList.add("show");
+}
+
+$("closeDetailsBtn").addEventListener("click", () => {
+  $("detailsModal").classList.remove("show");
+});
+
+// Publish / Unpublish
+async function togglePublish(country) {
+  const action = country.is_active ? "unpublish" : "publish";
+
+  if (!confirm(
+    `Are you sure you want to ${action} ${country.country_name}?`
+  )) return;
+
+  const { error } = await supabase
+    .from("education_systems")
+    .update({ is_active:!country.is_active })
+    .eq("id", country.id);
+
+  if (error) {
+    showStatus("listMessage", error.message, "error");
+    return;
+  }
+
+  showStatus(
+    "listMessage",
+    `${country.country_name} ${action}ed successfully.`,
+    "success"
+  );
+
+  await loadCountries();
+}
+
+// Delete confirmation
+function requestDelete(country) {
+  deletingCountryId = country.id;
+
+  $("deleteText").textContent =
+    `Are you sure you want to delete ${country.country_name}? ` +
+    "This operation may affect education levels and their associated data.";
+
+  $("deleteModal").classList.add("show");
+}
+
+$("cancelDeleteBtn").addEventListener("click", () => {
+  deletingCountryId = null;
+  $("deleteModal").classList.remove("show");
+});
+
+// Delete country
+$("confirmDeleteBtn").addEventListener("click", async () => {
+  if (deletingCountryId === null) return;
+
+  const id = deletingCountryId;
+
+  $("confirmDeleteBtn").disabled = true;
+
+  try {
+    const { error } = await supabase
+      .from("education_systems")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    $("deleteModal").classList.remove("show");
+    deletingCountryId = null;
+
+    showStatus(
+      "listMessage",
+      "Country deleted successfully.",
+      "success"
+    );
+
+    await loadCountries();
+
+  } catch (error) {
+    $("deleteModal").classList.remove("show");
+
+    showStatus(
+      "listMessage",
+      "Country was not deleted. Its existing education levels " +
+      "may prevent deletion. The database deletion relationships " +
+      "must be updated before cascading deletion is available. " +
+      "Details: " + error.message,
+      "error"
+    );
+
+  } finally {
+    $("confirmDeleteBtn").disabled = false;
+  }
+});
+
+// Country action buttons
+$("countryList").addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const country = countries.find(
+    item => item.id === Number(button.dataset.id)
+  );
+
+  if (!country) return;
+
+  switch (button.dataset.action) {
+    case "view":
+      viewCountry(country);
+      break;
+
+    case "edit":
+      editCountry(country);
+      break;
+
+    case "publish":
+      togglePublish(country);
+      break;
+
+    case "delete":
+      requestDelete(country);
+      break;
+  }
+});
+
+// Search
+$("searchInput").addEventListener("input", renderCountries);
+
+// Refresh
+$("refreshBtn").addEventListener("click", loadCountries);
+
+// Sign out
+$("logoutBtn").addEventListener("click", async event => {
+  event.preventDefault();
+  await supabase.auth.signOut();
+  location.replace("admin-login.html");
+});
+
+// Initialize
+async function initializePage() {
+  try {
+    const allowed = await verifyAccess();
+    if (!allowed) return;
+
+    await loadCountries();
+
+  } catch (error) {
+    console.error("Countries page error:", error);
+
+    showStatus(
+      "listMessage",
+      "Unable to initialize the page: " + error.message,
+      "error"
+    );
+  }
+}
+
+initializePage();
+</script>
+
+</body>
+</html>
