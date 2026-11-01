@@ -1,1 +1,605 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Settings & Security | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#263449;
+  --muted:#6b7789;
+  --border:#e1e7ef;
+  --green:#16794b;
+  --red:#b42318;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+.topbar{
+  background:var(--navy);
+  color:white;
+  padding:16px 22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.topbar a{
+  color:white;
+  text-decoration:none;
+  border:1px solid #ffffff55;
+  padding:9px 13px;
+  border-radius:7px;
+  font-size:13px;
+}
+.container{
+  max-width:1250px;
+  margin:auto;
+  padding:25px 18px;
+}
+.page-heading{margin-bottom:22px}
+.page-heading h1{
+  margin:0 0 6px;
+  color:var(--navy);
+  font-size:27px;
+}
+.page-heading p{margin:0;color:var(--muted)}
+.layout{
+  display:grid;
+  grid-template-columns:245px minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+.sidebar,.content-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+.sidebar{padding:12px}
+.sidebar-title{
+  padding:10px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+.side-link{
+  display:block;
+  width:100%;
+  border:0;
+  background:white;
+  text-align:left;
+  padding:12px;
+  margin:3px 0;
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--text);
+  font-size:14px;
+}
+.side-link:hover,.side-link.active{
+  background:#edf2fa;
+  color:var(--navy);
+  font-weight:700;
+}
+.content-card{
+  padding:22px;
+  margin-bottom:18px;
+}
+.panel{display:none}
+.panel.active{display:block}
+.panel h2{
+  margin:0 0 7px;
+  color:var(--navy);
+  font-size:21px;
+}
+.description{
+  color:var(--muted);
+  margin:0 0 22px;
+  font-size:14px;
+  line-height:1.6;
+}
+.setting-box{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+  margin-bottom:16px;
+}
+.setting-box h3{
+  margin:0 0 8px;
+  color:var(--navy);
+  font-size:16px;
+}
+.setting-box p{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+.limit-options{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:9px;
+  margin:15px 0;
+}
+.limit-button{
+  border:1px solid var(--border);
+  background:#f8faff;
+  color:var(--navy);
+  padding:13px 7px;
+  border-radius:8px;
+  font-weight:700;
+  cursor:pointer;
+}
+.limit-button:hover{border-color:var(--blue)}
+.limit-button.selected{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+.form-group{margin:14px 0}
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+.form-group input,.form-group select{
+  width:100%;
+  padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:8px;
+  background:white;
+  font:inherit;
+}
+.button{
+  display:inline-block;
+  padding:11px 16px;
+  border:0;
+  border-radius:8px;
+  background:var(--navy);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+.button.gold{background:var(--gold);color:#202938}
+.button.secondary{background:#edf1f7;color:var(--navy)}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+}
+.notice{
+  background:#fff8e5;
+  border:1px solid #f0dfa8;
+  padding:13px;
+  border-radius:8px;
+  font-size:13px;
+  line-height:1.6;
+  margin-top:15px;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.info-item{
+  padding:16px;
+  background:#f8faff;
+  border:1px solid var(--border);
+  border-radius:9px;
+}
+.info-item strong{
+  display:block;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+.info-item span{
+  color:var(--muted);
+  font-size:13px;
+}
+.coming{
+  padding:15px;
+  border-radius:8px;
+  background:#f8faff;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+.footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:20px;
+}
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .sidebar-title{grid-column:1/-1}
+  .limit-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:480px){
+  .topbar{padding:13px}
+  .container{padding:17px 11px}
+  .content-card{padding:15px}
+  .sidebar{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <a href="admin.html">← Admin Dashboard</a>
+</header>
+
+<div class="container">
+
+  <div class="page-heading">
+    <h1>Settings & Security</h1>
+    <p>Manage platform configuration, administrator access and security controls.</p>
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-title">Administration</div>
+
+      <button class="side-link active" data-panel="permissions">
+        🛡️ Administrator Permissions
+      </button>
+
+      <button class="side-link" data-panel="configuration">
+        ⚙️ Platform Configuration
+      </button>
+
+      <button class="side-link" data-panel="login">
+        🔐 Login Protection
+      </button>
+
+      <button class="side-link" data-panel="restrictions">
+        🚫 Access Restrictions
+      </button>
+
+      <button class="side-link" data-panel="activity">
+        📊 Activity Logs
+      </button>
+
+      <button class="side-link" data-panel="security">
+        🔒 Security Settings
+      </button>
+
+      <button class="side-link" data-panel="records">
+        📋 Administrative Action Records
+      </button>
+    </aside>
+
+    <main>
+
+      <!-- 1. ADMINISTRATOR PERMISSIONS -->
+      <section class="panel active" id="permissions">
+        <div class="content-card">
+          <h2>Administrator Permissions</h2>
+          <p class="description">
+            Manage administrative roles and the permissions assigned to platform administrators.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Super Administrator</strong>
+              <span>Full administrative control, including platform configuration.</span>
+            </div>
+            <div class="info-item">
+              <strong>Administrator</strong>
+              <span>Access according to assigned administrative permissions.</span>
+            </div>
+          </div>
+
+          <div class="notice">
+            Administrator role management will be connected to the existing
+            administrator records and backend permission checks.
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PLATFORM CONFIGURATION -->
+      <section class="panel" id="configuration">
+        <div class="content-card">
+          <h2>Platform Configuration</h2>
+          <p class="description">
+            Configure general platform settings and examination limits.
+          </p>
+
+          <div class="setting-box">
+            <h3>Free Student Question Limit</h3>
+            <p>
+              Choose how many questions a Free student receives when starting
+              a new examination. This setting will not change Premium students'
+              question limits.
+            </p>
+
+            <div class="limit-options">
+              <button class="limit-button selected" data-limit="10">10</button>
+              <button class="limit-button" data-limit="20">20</button>
+              <button class="limit-button" data-limit="30">30</button>
+              <button class="limit-button" data-limit="50">50</button>
+              <button class="limit-button" data-limit="100">100</button>
+            </div>
+
+            <div class="form-group">
+              <label for="customLimit">Custom question limit</label>
+              <input
+                type="number"
+                id="customLimit"
+                min="1"
+                max="500"
+                placeholder="Enter a custom number"
+              >
+            </div>
+
+            <p id="selectedLimitText">
+              Selected Free student limit: 10 questions
+            </p>
+
+            <button class="button gold" id="saveFreeLimit" type="button">
+              Save Free Student Limit
+            </button>
+
+            <div class="status" id="limitMessage" role="status">
+              Interface only: the setting has not yet been saved to Supabase.
+            </div>
+          </div>
+
+          <div class="setting-box">
+            <h3>Premium Examination Configuration</h3>
+            <p>
+              Premium question limits and examination duration remain under
+              the existing Premium examination configuration. The Free
+              student setting will not modify them.
+            </p>
+          </div>
+
+          <div class="setting-box">
+            <h3>General Platform Information</h3>
+            <p>
+              Platform-wide configuration options will be added here when
+              their database settings are connected.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. LOGIN PROTECTION -->
+      <section class="panel" id="login">
+        <div class="content-card">
+          <h2>Login Protection</h2>
+          <p class="description">
+            Manage account authentication and protection against unauthorized access.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Student Authentication</strong>
+              <span>Require valid student authentication before accessing protected pages.</span>
+            </div>
+            <div class="info-item">
+              <strong>Administrator Authentication</strong>
+              <span>Verify administrator identity and permissions on protected operations.</span>
+            </div>
+            <div class="info-item">
+              <strong>Session Protection</strong>
+              <span>Control access when a user session expires or becomes invalid.</span>
+            </div>
+            <div class="info-item">
+              <strong>Login Monitoring</strong>
+              <span>Record relevant authentication events for security review.</span>
+            </div>
+          </div>
+
+          <div class="notice">
+            These protections must be enforced through Supabase authentication,
+            database policies and server-side functions.
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ACCESS RESTRICTIONS -->
+      <section class="panel" id="restrictions">
+        <div class="content-card">
+          <h2>Access Restrictions</h2>
+          <p class="description">
+            Manage which categories of users can access platform features.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Students</strong>
+              <span>Control student access and examination eligibility.</span>
+            </div>
+            <div class="info-item">
+              <strong>Teachers</strong>
+              <span>Control teacher account access and permitted activities.</span>
+            </div>
+            <div class="info-item">
+              <strong>Administrators</strong>
+              <span>Restrict administrative access according to assigned roles.</span>
+            </div>
+            <div class="info-item">
+              <strong>Premium Access</strong>
+              <span>Verify active subscription status before allowing paid features.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. ACTIVITY LOGS -->
+      <section class="panel" id="activity">
+        <div class="content-card">
+          <h2>Activity Logs</h2>
+          <p class="description">
+            Review important activities performed on the platform.
+          </p>
+
+          <div class="coming">
+            Activity records will be displayed here after the activity-log
+            data source and access policies have been established.
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. SECURITY SETTINGS -->
+      <section class="panel" id="security">
+        <div class="content-card">
+          <h2>Security Settings</h2>
+          <p class="description">
+            Configure and monitor the security measures protecting SAINTIG EXAMS.
+          </p>
+
+          <div class="info-grid">
+            <div class="info-item">
+              <strong>Database Protection</strong>
+              <span>Use Row Level Security and restricted database permissions.</span>
+            </div>
+            <div class="info-item">
+              <strong>Backend Protection</strong>
+              <span>Validate sensitive actions through trusted server-side functions.</span>
+            </div>
+            <div class="info-item">
+              <strong>Session Validation</strong>
+              <span>Verify user identity before protected operations.</span>
+            </div>
+            <div class="info-item">
+              <strong>Administrative Monitoring</strong>
+              <span>Keep records of important administrative changes.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. ADMINISTRATIVE ACTION RECORDS -->
+      <section class="panel" id="records">
+        <div class="content-card">
+          <h2>Administrative Action Records</h2>
+          <p class="description">
+            Maintain an audit trail of important administrative actions.
+          </p>
+
+          <div class="coming">
+            Records will include the administrator, action performed,
+            affected record and date/time. The audit trail will be stored
+            securely in the database.
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="footer">
+    © <span id="year"></span> SAINTIG EXAMS · SAINT IG DIGITAL
+  </div>
+
+</div>
+
+<script>
+const panelButtons = document.querySelectorAll("[data-panel]");
+const panels = document.querySelectorAll(".panel");
+
+panelButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const target = button.dataset.panel;
+
+    panelButtons.forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+    panels.forEach(panel => {
+      panel.classList.toggle("active", panel.id === target);
+    });
+  });
+});
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+/* Free student question limit interface */
+
+let selectedLimit = 10;
+
+const limitButtons = document.querySelectorAll("[data-limit]");
+const customInput = document.getElementById("customLimit");
+const selectedText = document.getElementById("selectedLimitText");
+const limitMessage = document.getElementById("limitMessage");
+
+function updateLimit(value) {
+  selectedLimit = Number(value);
+
+  limitButtons.forEach(button => {
+    button.classList.toggle(
+      "selected",
+      Number(button.dataset.limit) === selectedLimit
+    );
+  });
+
+  selectedText.textContent =
+    "Selected Free student limit: " + selectedLimit + " questions";
+
+  limitMessage.textContent =
+    "Selection ready. Connect Supabase before saving the setting.";
+}
+
+limitButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    customInput.value = "";
+    updateLimit(button.dataset.limit);
+  });
+});
+
+customInput.addEventListener("input", () => {
+  const value = Number(customInput.value);
+
+  if (
+    customInput.value === "" ||
+    !Number.isInteger(value) ||
+    value < 1 ||
+    value > 500
+  ) {
+    limitMessage.textContent =
+      "Enter a whole number between 1 and 500.";
+    return;
+  }
+
+  updateLimit(value);
+
+  limitButtons.forEach(button => {
+    button.classList.remove("selected");
+  });
+});
+
+document.getElementById("saveFreeLimit").addEventListener("click", () => {
+  limitMessage.textContent =
+    "Not saved yet. Supabase connection is required before this setting can take effect.";
+});
+</script>
+
+</body>
+</html>
