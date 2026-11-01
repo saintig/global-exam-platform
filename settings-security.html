@@ -521,6 +521,10 @@ body{
 </div>
 
 <script>
+
+  <script type="module">
+import { supabase } from "./auth.js";
+
 const panelButtons = document.querySelectorAll("[data-panel]");
 const panels = document.querySelectorAll(".panel");
 
@@ -528,27 +532,26 @@ panelButtons.forEach(button => {
   button.addEventListener("click", () => {
     const target = button.dataset.panel;
 
-    panelButtons.forEach(item => {
-      item.classList.toggle("active", item === button);
-    });
+    panelButtons.forEach(item =>
+      item.classList.toggle("active", item === button)
+    );
 
-    panels.forEach(panel => {
-      panel.classList.toggle("active", panel.id === target);
-    });
+    panels.forEach(panel =>
+      panel.classList.toggle("active", panel.id === target)
+    );
   });
 });
 
 document.getElementById("year").textContent =
   new Date().getFullYear();
 
-/* Free student question limit interface */
-
-let selectedLimit = 10;
+let selectedLimit = 50;
 
 const limitButtons = document.querySelectorAll("[data-limit]");
 const customInput = document.getElementById("customLimit");
 const selectedText = document.getElementById("selectedLimitText");
 const limitMessage = document.getElementById("limitMessage");
+const saveButton = document.getElementById("saveFreeLimit");
 
 function updateLimit(value) {
   selectedLimit = Number(value);
@@ -563,8 +566,62 @@ function updateLimit(value) {
   selectedText.textContent =
     "Selected Free student limit: " + selectedLimit + " questions";
 
-  limitMessage.textContent =
-    "Selection ready. Connect Supabase before saving the setting.";
+  limitMessage.textContent = "Ready to save.";
+}
+
+async function initializeSettings() {
+  try {
+    const { data: sessionData, error: sessionError } =
+      await supabase.auth.getSession();
+
+    if (sessionError || !sessionData.session) {
+      location.replace("admin-login.html");
+      return;
+    }
+
+    const { data: admin, error: adminError } = await supabase
+      .from("admin_users")
+      .select("user_id")
+      .eq("user_id", sessionData.session.user.id)
+      .maybeSingle();
+
+    if (adminError || !admin) {
+      limitMessage.textContent =
+        "Administrator access could not be verified.";
+      saveButton.disabled = true;
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("platform_settings")
+      .select("setting_value")
+      .eq("setting_key", "free_student_question_limit")
+      .single();
+
+    if (error) throw error;
+
+    const savedLimit = Number(data.setting_value);
+
+    if (
+      !Number.isInteger(savedLimit) ||
+      savedLimit < 1 ||
+      savedLimit > 500
+    ) {
+      throw new Error("Saved question limit is invalid.");
+    }
+
+    customInput.value = "";
+
+    updateLimit(savedLimit);
+
+    limitMessage.textContent =
+      "Loaded successfully from Supabase.";
+
+  } catch (error) {
+    console.error(error);
+    limitMessage.textContent =
+      "Unable to load settings: " + error.message;
+  }
 }
 
 limitButtons.forEach(button => {
@@ -589,16 +646,59 @@ customInput.addEventListener("input", () => {
   }
 
   updateLimit(value);
-
-  limitButtons.forEach(button => {
-    button.classList.remove("selected");
-  });
+  limitButtons.forEach(button =>
+    button.classList.remove("selected")
+  );
 });
 
-document.getElementById("saveFreeLimit").addEventListener("click", () => {
-  limitMessage.textContent =
-    "Not saved yet. Supabase connection is required before this setting can take effect.";
+saveButton.addEventListener("click", async () => {
+  if (
+    !Number.isInteger(selectedLimit) ||
+    selectedLimit < 1 ||
+    selectedLimit > 500
+  ) {
+    limitMessage.textContent =
+      "Enter a valid whole number between 1 and 500.";
+    return;
+  }
+
+  saveButton.disabled = true;
+  limitMessage.textContent = "Saving...";
+
+  try {
+    const { data: sessionData } =
+      await supabase.auth.getSession();
+
+    if (!sessionData.session) {
+      location.replace("admin-login.html");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("platform_settings")
+      .update({
+        setting_value: selectedLimit,
+        updated_by: sessionData.session.user.id,
+        updated_at: new Date().toISOString()
+      })
+      .eq("setting_key", "free_student_question_limit");
+
+    if (error) throw error;
+
+    limitMessage.textContent =
+      "Successfully saved " + selectedLimit +
+      " questions to Supabase.";
+
+  } catch (error) {
+    console.error(error);
+    limitMessage.textContent =
+      "Save failed: " + error.message;
+  } finally {
+    saveButton.disabled = false;
+  }
 });
+
+initializeSettings();
 </script>
 
 </body>
