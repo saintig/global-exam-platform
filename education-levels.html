@@ -1,0 +1,846 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education Levels | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#263248;
+  --muted:#68758a;
+  --border:#e1e6ef;
+  --danger:#c0392b;
+  --green:#16834a;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header {
+  background:var(--navy);
+  color:white;
+  padding:17px 20px;
+  border-bottom:4px solid var(--gold);
+}
+
+header h2 {
+  margin:0;
+  font-size:20px;
+}
+
+header p {
+  margin:5px 0 0;
+  font-size:13px;
+  opacity:.85;
+}
+
+.container {
+  max-width:1100px;
+  margin:22px auto;
+  padding:0 15px;
+}
+
+.nav {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.nav a {
+  text-decoration:none;
+  background:white;
+  color:var(--navy);
+  border:1px solid var(--border);
+  border-radius:7px;
+  padding:10px 13px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+.nav a.active {
+  background:var(--navy);
+  color:white;
+}
+
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,.035);
+}
+
+.card h3 {
+  margin:0 0 16px;
+  color:var(--navy);
+  font-size:17px;
+}
+
+label {
+  display:block;
+  margin:13px 0 6px;
+  font-size:13px;
+  font-weight:bold;
+}
+
+input,select {
+  width:100%;
+  padding:12px;
+  border:1px solid #ccd4e0;
+  border-radius:7px;
+  background:white;
+  font-size:14px;
+  color:var(--text);
+}
+
+input:focus,select:focus {
+  outline:2px solid rgba(36,87,167,.15);
+  border-color:var(--blue);
+}
+
+button {
+  border:0;
+  border-radius:7px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:bold;
+}
+
+button:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.primary {
+  background:var(--navy);
+  color:white;
+}
+
+.secondary {
+  background:#e9eef7;
+  color:var(--navy);
+}
+
+.success {
+  background:#e2f5e9;
+  color:var(--green);
+}
+
+.danger {
+  background:#fde9e7;
+  color:var(--danger);
+}
+
+.form-button {
+  margin-top:17px;
+  width:100%;
+  padding:13px;
+}
+
+.filters {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.table-wrap {
+  overflow-x:auto;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,td {
+  text-align:left;
+  padding:12px 10px;
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+  vertical-align:middle;
+}
+
+th {
+  background:#f5f7fb;
+  color:var(--navy);
+}
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.status {
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.status.active {
+  background:#e2f5e9;
+  color:var(--green);
+}
+
+.status.inactive {
+  background:#f0f1f4;
+  color:#667085;
+}
+
+.message {
+  display:none;
+  padding:11px;
+  border-radius:7px;
+  margin-top:12px;
+  font-size:13px;
+}
+
+.message.error {
+  display:block;
+  background:#fde9e7;
+  color:var(--danger);
+}
+
+.message.ok {
+  display:block;
+  background:#e2f5e9;
+  color:var(--green);
+}
+
+.empty {
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+}
+
+.modal {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:10;
+  padding:20px;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-box {
+  background:white;
+  border-radius:10px;
+  padding:22px;
+  width:100%;
+  max-width:450px;
+}
+
+.modal-box h3 {
+  color:var(--navy);
+  margin-top:0;
+}
+
+.modal-actions {
+  display:flex;
+  gap:8px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.small-note {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+}
+
+.logout {
+  float:right;
+  background:#fff;
+  color:var(--navy);
+}
+
+@media(max-width:600px) {
+  .filters { grid-template-columns:1fr; }
+  .card { padding:15px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="logout" id="logoutBtn">Sign Out</button>
+  <h2>SAINTIG EXAMS</h2>
+  <p>Education Level Management</p>
+</header>
+
+<div class="container">
+
+  <nav class="nav">
+    <a href="admin.html">Dashboard</a>
+    <a href="countries.html">Countries</a>
+    <a href="education-levels.html" class="active">Education Levels</a>
+    <a href="subjects.html">Subjects</a>
+    <a href="question-bank.html">Question Bank</a>
+  </nav>
+
+  <section class="card">
+    <h3 id="formTitle">Add Education Level</h3>
+
+    <form id="levelForm">
+      <label for="countrySelect">Select Country</label>
+      <select id="countrySelect" required>
+        <option value="">Loading countries...</option>
+      </select>
+
+      <label for="levelName">Education Level</label>
+      <input
+        type="text"
+        id="levelName"
+        maxlength="100"
+        placeholder="e.g. Senior Secondary School"
+        required
+      >
+
+      <button class="primary form-button" id="saveBtn" type="submit">
+        Add Education Level
+      </button>
+
+      <button
+        class="secondary form-button"
+        id="cancelEditBtn"
+        type="button"
+        style="display:none"
+      >
+        Cancel Editing
+      </button>
+
+      <div id="formMessage" class="message"></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h3>Manage Existing Education Levels</h3>
+
+    <div class="filters">
+      <div>
+        <label for="countryFilter">Filter by Country</label>
+        <select id="countryFilter">
+          <option value="">All Countries</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="searchInput">Search Education Levels</label>
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search by education level..."
+        >
+      </div>
+    </div>
+
+    <p class="small-note" id="recordCount"></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>Education Level</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="levelsTable">
+          <tr><td colspan="4" class="empty">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="listMessage" class="message"></div>
+  </section>
+
+</div>
+
+<div class="modal" id="detailsModal">
+  <div class="modal-box">
+    <h3>Education Level Details</h3>
+    <div id="detailsContent"></div>
+    <div class="modal-actions">
+      <button class="primary" id="closeModalBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+let countries = [];
+let levels = [];
+let editingId = null;
+let busy = false;
+
+function showMessage(element, message, type) {
+  element.textContent = message;
+  element.className = "message " + type;
+}
+
+function clearMessage(element) {
+  element.textContent = "";
+  element.className = "message";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[character]);
+}
+
+async function verifyAccess() {
+  const { data: userData, error: authError } =
+    await supabase.auth.getUser();
+
+  if (authError || !userData?.user) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: allowed, error } = await supabase.rpc(
+    "has_admin_permission",
+    { p_permission:"manage_education_levels" }
+  );
+
+  if (error || allowed !== true) {
+    document.body.innerHTML = `
+      <div style="padding:35px;font-family:Arial">
+        <h2>Access denied</h2>
+        <p>You do not have permission to manage education levels.</p>
+        <a href="admin.html">Return to dashboard</a>
+      </div>
+    `;
+    return false;
+  }
+
+  return true;
+}
+
+async function loadCountries() {
+  const { data, error } = await supabase
+    .from("education_systems")
+    .select("id,country_name,is_active")
+    .order("country_name");
+
+  if (error) throw error;
+
+  countries = data || [];
+
+  const options = countries.map(country => `
+    <option value="${escapeHTML(country.id)}">
+      ${escapeHTML(country.country_name)}
+      ${country.is_active ? "" : "(Unpublished)"}
+    </option>
+  `).join("");
+
+  $("countrySelect").innerHTML =
+    '<option value="">Select Country</option>' + options;
+
+  $("countryFilter").innerHTML =
+    '<option value="">All Countries</option>' + options;
+}
+
+async function loadLevels() {
+  clearMessage($("listMessage"));
+
+  const { data, error } = await supabase
+    .from("education_levels")
+    .select(`
+      id,
+      education_system_id,
+      level_name,
+      description,
+      is_active,
+      created_at
+    `)
+    .order("level_name");
+
+  if (error) {
+    showMessage(
+      $("listMessage"),
+      "Unable to load education levels: " + error.message,
+      "error"
+    );
+    return;
+  }
+
+  levels = data || [];
+  renderLevels();
+}
+
+function getCountryName(id) {
+  const country = countries.find(
+    item => String(item.id) === String(id)
+  );
+
+  return country ? country.country_name : "Unknown country";
+}
+
+function renderLevels() {
+  const selectedCountry = $("countryFilter").value;
+  const search = $("searchInput").value.trim().toLowerCase();
+
+  const filtered = levels.filter(level => {
+    const countryMatch =
+      !selectedCountry ||
+      String(level.education_system_id) === selectedCountry;
+
+    const searchMatch =
+      level.level_name.toLowerCase().includes(search) ||
+      getCountryName(level.education_system_id)
+        .toLowerCase().includes(search);
+
+    return countryMatch && searchMatch;
+  });
+
+  $("recordCount").textContent =
+    `${filtered.length} education level(s) displayed`;
+
+  if (!filtered.length) {
+    $("levelsTable").innerHTML = `
+      <tr>
+        <td colspan="4" class="empty">
+          No education levels found.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  $("levelsTable").innerHTML = filtered.map(level => `
+    <tr>
+      <td>${escapeHTML(getCountryName(level.education_system_id))}</td>
+      <td>${escapeHTML(level.level_name)}</td>
+      <td>
+        <span class="status ${level.is_active ? "active" : "inactive"}">
+          ${level.is_active ? "Published" : "Unpublished"}
+        </span>
+      </td>
+      <td>
+        <div class="actions">
+          <button class="secondary" data-action="view"
+            data-id="${escapeHTML(level.id)}">View</button>
+
+          <button class="primary" data-action="edit"
+            data-id="${escapeHTML(level.id)}">Edit</button>
+
+          <button class="success" data-action="toggle"
+            data-id="${escapeHTML(level.id)}">
+            ${level.is_active ? "Unpublish" : "Publish"}
+          </button>
+
+          <button class="danger" data-action="delete"
+            data-id="${escapeHTML(level.id)}">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+}
+
+async function saveLevel(event) {
+  event.preventDefault();
+
+  if (busy) return;
+
+  const countryId = $("countrySelect").value;
+  const levelName = $("levelName").value.trim();
+
+  if (!countryId || !levelName) {
+    showMessage(
+      $("formMessage"),
+      "Select a country and enter an education level.",
+      "error"
+    );
+    return;
+  }
+
+  const countryExists = countries.some(
+    country => String(country.id) === countryId
+  );
+
+  if (!countryExists) {
+    showMessage(
+      $("formMessage"),
+      "The selected country is invalid. Refresh the page.",
+      "error"
+    );
+    return;
+  }
+
+  busy = true;
+  $("saveBtn").disabled = true;
+
+  try {
+    if (editingId !== null) {
+      const { error } = await supabase
+        .from("education_levels")
+        .update({
+          education_system_id:countryId,
+          level_name:levelName
+        })
+        .eq("id", editingId);
+
+      if (error) throw error;
+
+      showMessage(
+        $("formMessage"),
+        "Education level updated successfully.",
+        "ok"
+      );
+    } else {
+      const { error } = await supabase
+        .from("education_levels")
+        .insert({
+          education_system_id:countryId,
+          level_name:levelName,
+          is_active:true
+        });
+
+      if (error) throw error;
+
+      showMessage(
+        $("formMessage"),
+        "Education level added successfully.",
+        "ok"
+      );
+    }
+
+    resetForm();
+    await loadLevels();
+
+  } catch (error) {
+    showMessage(
+      $("formMessage"),
+      "Operation failed: " + error.message,
+      "error"
+    );
+  } finally {
+    busy = false;
+    $("saveBtn").disabled = false;
+  }
+}
+
+function editLevel(id) {
+  const level = levels.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!level) return;
+
+  editingId = level.id;
+
+  $("countrySelect").value = level.education_system_id;
+  $("levelName").value = level.level_name;
+  $("formTitle").textContent = "Edit Education Level";
+  $("saveBtn").textContent = "Save Changes";
+  $("cancelEditBtn").style.display = "block";
+
+  clearMessage($("formMessage"));
+
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function resetForm() {
+  editingId = null;
+  $("levelForm").reset();
+  $("formTitle").textContent = "Add Education Level";
+  $("saveBtn").textContent = "Add Education Level";
+  $("cancelEditBtn").style.display = "none";
+}
+
+function viewLevel(id) {
+  const level = levels.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!level) return;
+
+  $("detailsContent").innerHTML = `
+    <p><strong>Country:</strong>
+      ${escapeHTML(getCountryName(level.education_system_id))}</p>
+    <p><strong>Education Level:</strong>
+      ${escapeHTML(level.level_name)}</p>
+    <p><strong>Status:</strong>
+      ${level.is_active ? "Published" : "Unpublished"}</p>
+    <p><strong>Date Created:</strong>
+      ${escapeHTML(level.created_at || "Not available")}</p>
+  `;
+
+  $("detailsModal").style.display = "flex";
+}
+
+async function toggleLevel(id) {
+  const level = levels.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!level || busy) return;
+
+  const newStatus = !level.is_active;
+  const action = newStatus ? "publish" : "unpublish";
+
+  if (!confirm(
+    `Are you sure you want to ${action} "${level.level_name}"?`
+  )) return;
+
+  busy = true;
+
+  try {
+    const { error } = await supabase
+      .from("education_levels")
+      .update({ is_active:newStatus })
+      .eq("id", id);
+
+    if (error) throw error;
+
+    await loadLevels();
+
+  } catch (error) {
+    showMessage(
+      $("listMessage"),
+      "Unable to change status: " + error.message,
+      "error"
+    );
+  } finally {
+    busy = false;
+  }
+}
+
+async function deleteLevel(id) {
+  const level = levels.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!level || busy) return;
+
+  const confirmed = confirm(
+    `Delete "${level.level_name}" from ${getCountryName(level.education_system_id)}?\n\n` +
+    "This may affect associated classes and subject assignments. " +
+    "Continue only if you are certain."
+  );
+
+  if (!confirmed) return;
+
+  busy = true;
+
+  try {
+    const { error } = await supabase
+      .from("education_levels")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    if (String(editingId) === String(id)) {
+      resetForm();
+    }
+
+    showMessage(
+      $("listMessage"),
+      "Education level deleted successfully.",
+      "ok"
+    );
+
+    await loadLevels();
+
+  } catch (error) {
+    showMessage(
+      $("listMessage"),
+      "Deletion was blocked: " + error.message +
+      ". Check the database relationships and permissions before deleting dependent records.",
+      "error"
+    );
+  } finally {
+    busy = false;
+  }
+}
+
+$("levelForm").addEventListener("submit", saveLevel);
+
+$("cancelEditBtn").addEventListener("click", resetForm);
+
+$("countryFilter").addEventListener("change", renderLevels);
+$("searchInput").addEventListener("input", renderLevels);
+
+$("levelsTable").addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const id = button.dataset.id;
+  const action = button.dataset.action;
+
+  if (action === "view") viewLevel(id);
+  if (action === "edit") editLevel(id);
+  if (action === "toggle") toggleLevel(id);
+  if (action === "delete") deleteLevel(id);
+});
+
+$("closeModalBtn").addEventListener("click", () => {
+  $("detailsModal").style.display = "none";
+});
+
+$("detailsModal").addEventListener("click", event => {
+  if (event.target === $("detailsModal")) {
+    $("detailsModal").style.display = "none";
+  }
+});
+
+$("logoutBtn").addEventListener("click", async () => {
+  await supabase.auth.signOut();
+  location.replace("admin-login.html");
+});
+
+async function initializePage() {
+  try {
+    const permitted = await verifyAccess();
+    if (!permitted) return;
+
+    await loadCountries();
+    await loadLevels();
+
+  } catch (error) {
+    showMessage(
+      $("formMessage"),
+      "Unable to initialize page: " + error.message,
+      "error"
+    );
+  }
+}
+
+initializePage();
+</script>
+
+</body>
+</html>
