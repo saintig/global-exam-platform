@@ -1194,7 +1194,14 @@ document.getElementById("refreshAdminsBtn")
 
 async function loadAdministrativeLogs() {
 
-  if (!pageIsSuperAdmin) return;
+  if (!pageIsSuperAdmin) {
+  const { data: allowed, error } = await supabase.rpc(
+    "has_admin_permission",
+    { p_permission: "view_activity_logs" }
+  );
+
+  if (error || !allowed) return;
+}
 
   const button = document.getElementById("refreshLogsBtn");
 
