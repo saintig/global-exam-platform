@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,9 +64,14 @@ main{flex:1;min-width:0;padding:24px}
 .country-body{display:none;border-top:1px solid var(--border);padding:14px}
 .country-body.open{display:block}
 .level-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.level-link{display:block;padding:13px;border:1px solid var(--border);border-radius:9px;background:#f8faff;color:var(--primary);font-weight:700}
-.level-link:hover{border-color:var(--primary);background:#edf3fc}
+.level-item{border:1px solid var(--border);border-radius:9px;background:#f8faff;padding:13px}
+.level-link{display:block;color:var(--primary);font-weight:700}
+.level-link:hover{color:var(--primary-dark)}
 .level-link small{display:block;color:var(--muted);font-weight:400;margin-top:4px}
+.subject-label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-top:12px;margin-bottom:6px}
+.subject-list{display:flex;flex-wrap:wrap;gap:6px}
+.subject-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf0f9;color:var(--primary);font-size:12px;font-weight:700}
+.no-subjects{font-size:13px;color:var(--muted);margin-top:8px}
 
 .button{border:0;border-radius:8px;padding:11px 15px;cursor:pointer;background:var(--primary);color:white;font-weight:700;display:inline-block;text-align:center}
 .button:hover{background:var(--primary-dark)}
@@ -101,19 +107,11 @@ th{color:var(--muted);background:#f8faff}
   border-radius:9px;
   background:white;
 }
-.recent-attempts-preview.expanded{
-  max-height:420px;
-}
-.recent-attempts-preview table{
-  min-width:650px;
-}
-.recent-attempts-actions{
-  display:flex;
-  justify-content:center;
-  margin-top:12px;
-}
+.recent-attempts-preview.expanded{max-height:420px}
+.recent-attempts-preview table{min-width:650px}
+.recent-attempts-actions{display:flex;justify-content:center;margin-top:12px}
 
-/* COMPACT RESULTS */
+/* RESULTS */
 .results-preview{
   max-height:300px;
   overflow:auto;
@@ -124,17 +122,10 @@ th{color:var(--muted);background:#f8faff}
 .results-preview.expanded{max-height:420px}
 .results-preview table{min-width:650px}
 .results-preview th,.results-preview td{padding:10px 9px}
-
-.results-actions{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
+.results-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 .results-count{color:var(--muted);font-size:13px}
 
+.pricing-note{background:#f8faff;border:1px solid var(--border);border-radius:9px;padding:15px;margin-top:12px}
 .footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted);font-size:13px}
 .mobile-backdrop{display:none}
 
@@ -179,8 +170,7 @@ th{color:var(--muted);background:#f8faff}
   <button class="nav-link" data-section="results">📊 Results</button>
   <button class="nav-link" data-section="school">🏫 Teacher/School Exam Login</button>
   <button class="nav-link" data-section="check-results">🔎 Check / Print Results</button>
-  <button class="nav-link" data-section="scheme">📖 Scheme of Work</button>
-  <button class="nav-link" data-section="subscription">💳 Subscription</button>
+  <button class="nav-link" data-section="pricing">💳 Pricing and Subscription</button>
   <button class="nav-link" data-section="notifications">🔔 Notifications</button>
   <button class="nav-link" data-section="account">👤 My Account</button>
   <button class="nav-link" data-section="about">ℹ️ About</button>
@@ -240,11 +230,15 @@ th{color:var(--muted);background:#f8faff}
 <!-- TAKE EXAM -->
 <section class="section" id="exams">
   <h2 class="section-heading">Take an Exam</h2>
-  <p class="section-description">Choose a country and education level to find available examinations.</p>
+  <p class="section-description">Choose a country and education level to find available subjects and examinations.</p>
   <div class="card">
-    <h3>Choose Your Education Level</h3>
+    <div class="results-actions">
+      <h3>Choose Your Education Level</h3>
+      <button class="button secondary" id="refreshEducationOptions" type="button">Refresh Options</button>
+    </div>
+    <div id="educationStatus" class="status-message" role="status"></div>
     <div id="countryList" class="country-list">
-      <div class="empty-state">Loading countries and education levels…</div>
+      <div class="empty-state">Loading countries, education levels and subjects…</div>
     </div>
   </div>
 </section>
@@ -313,21 +307,24 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- SCHEME -->
-<section class="section" id="scheme">
-  <h2 class="section-heading">Subjects Scheme of Work</h2>
-  <div class="card">
-    <p>The scheme-of-work library will be connected when its content and database are ready.</p>
-  </div>
-</section>
+<!-- PRICING AND SUBSCRIPTION -->
+<section class="section" id="pricing">
+  <h2 class="section-heading">Pricing and Subscription</h2>
+  <p class="section-description">Information about SAINTIG EXAMS access and subscription plans.</p>
 
-<!-- SUBSCRIPTION -->
-<section class="section" id="subscription">
-  <h2 class="section-heading">Subscription</h2>
   <div class="card">
     <h3>Your Subscription</h3>
-    <p id="subscriptionStatus">Subscription information is not connected yet.</p>
-    <p class="muted">Payment processing and premium access will be configured separately.</p>
+    <p id="subscriptionStatus">Subscription management is not active yet.</p>
+
+    <div class="pricing-note">
+      <strong>Free access</strong>
+      <p class="muted">You can use the examination features currently made available on the platform without a subscription payment.</p>
+    </div>
+
+    <div class="pricing-note">
+      <strong>Premium subscription</strong>
+      <p class="muted">Premium plan details, prices and payment options will be displayed here when the subscription service is activated.</p>
+    </div>
   </div>
 </section>
 
@@ -415,6 +412,11 @@ let completedCache = [];
 let examinationTitles = {};
 let showAllResults = false;
 let showAllRecentAttempts = false;
+
+/* EDUCATION DATA */
+let educationRealtimeChannel = null;
+let educationReloadTimer = null;
+let educationLoadVersion = 0;
 
 $("currentYear").textContent = new Date().getFullYear();
 
@@ -615,74 +617,298 @@ $("passwordForm").addEventListener("submit",async event => {
   }
 });
 
-/* COUNTRIES AND EDUCATION LEVELS */
+/* COUNTRIES, EDUCATION LEVELS AND SUBJECTS */
 
 async function loadEducationOptions() {
   const list = $("countryList");
-  list.innerHTML = '<div class="empty-state">Loading education options…</div>';
+  const refreshButton = $("refreshEducationOptions");
+  const loadVersion = ++educationLoadVersion;
 
-  const [systemsResult,levelsResult] = await Promise.all([
-    supabase.from("education_systems")
-      .select("id,country_name,is_active")
-      .eq("is_active",true)
-      .order("country_name"),
+  list.innerHTML = '<div class="empty-state">Loading countries, education levels and subjects…</div>';
+  showMessage($("educationStatus"),"Updating education options…");
 
-    supabase.from("education_levels")
-      .select("id,education_system_id,level_name,is_active")
-      .eq("is_active",true)
-      .order("level_name")
-  ]);
+  if (refreshButton) refreshButton.disabled = true;
 
-  if (systemsResult.error) throw systemsResult.error;
-  if (levelsResult.error) throw levelsResult.error;
+  try {
+    const [
+      systemsResult,
+      levelsResult,
+      mappingsResult,
+      subjectsResult
+    ] = await Promise.all([
 
-  const countries = systemsResult.data || [];
-  const levels = levelsResult.data || [];
+      supabase
+        .from("education_systems")
+        .select("id,country_name,is_active")
+        .eq("is_active",true)
+        .order("country_name"),
 
-  $("countryCount").textContent = countries.length;
+      supabase
+        .from("education_levels")
+        .select("id,education_system_id,level_name,is_active")
+        .eq("is_active",true)
+        .order("level_name"),
 
-  if (!countries.length) {
-    list.innerHTML = '<div class="empty-state">No active countries are available.</div>';
-    return;
-  }
+      supabase
+        .from("education_level_subjects")
+        .select("id,education_level_id,subject_id,is_active")
+        .eq("is_active",true),
 
-  list.innerHTML = countries.map(country => {
-    const countryLevels = levels.filter(level =>
-      String(level.education_system_id) === String(country.id)
+      supabase
+        .from("subjects")
+        .select("id,name,is_active")
+        .eq("is_active",true)
+        .order("name")
+    ]);
+
+    if (systemsResult.error) throw systemsResult.error;
+    if (levelsResult.error) throw levelsResult.error;
+    if (mappingsResult.error) throw mappingsResult.error;
+    if (subjectsResult.error) throw subjectsResult.error;
+
+    /* Ignore an older request if a newer refresh has started. */
+    if (loadVersion !== educationLoadVersion) return;
+
+    const countries = systemsResult.data || [];
+    const levels = levelsResult.data || [];
+    const mappings = mappingsResult.data || [];
+    const subjects = subjectsResult.data || [];
+
+    $("countryCount").textContent = countries.length;
+
+    if (!countries.length) {
+      list.innerHTML = '<div class="empty-state">No active countries are available.</div>';
+      showMessage($("educationStatus"),"No published countries are currently available.");
+      return;
+    }
+
+    /*
+      Build a subject lookup using the existing tables:
+      education_level_subjects -> subjects.
+      Both the assignment and the subject itself must be active.
+    */
+
+    const activeSubjectsById = new Map(
+      subjects.map(subject => [String(subject.id),subject])
     );
 
-    return `
-      <div class="country-card">
-        <button class="country-header" type="button"
-          data-country-toggle="${escapeHtml(country.id)}"
-          aria-expanded="false">
-          <span>🌍 ${escapeHtml(country.country_name)}</span>
-          <span>${countryLevels.length} level${countryLevels.length === 1 ? "" : "s"} ▾</span>
-        </button>
+    const subjectsByLevel = new Map();
 
-        <div class="country-body" id="country-body-${escapeHtml(country.id)}">
-          ${
-            countryLevels.length
-              ? `<div class="level-list">${countryLevels.map(level => `
-                  <a class="level-link"
-                    href="start-exam.html?country_id=${encodeURIComponent(country.id)}&level_id=${encodeURIComponent(level.id)}">
-                    ${escapeHtml(level.level_name)}
-                    <small>Choose a subject and available examination</small>
-                  </a>
-                `).join("")}</div>`
-              : `<div class="empty-state">No active education levels have been added for this country.</div>`
-          }
-        </div>
-      </div>`;
-  }).join("");
+    mappings.forEach(mapping => {
+      const subject = activeSubjectsById.get(String(mapping.subject_id));
 
-  list.querySelectorAll("[data-country-toggle]").forEach(button => {
-    button.addEventListener("click",() => {
-      const body = $("country-body-"+button.dataset.countryToggle);
-      const open = body.classList.toggle("open");
-      button.setAttribute("aria-expanded",String(open));
+      if (!subject) return;
+
+      const levelKey = String(mapping.education_level_id);
+
+      if (!subjectsByLevel.has(levelKey)) {
+        subjectsByLevel.set(levelKey,[]);
+      }
+
+      const currentList = subjectsByLevel.get(levelKey);
+
+      if (!currentList.some(item => String(item.id) === String(subject.id))) {
+        currentList.push(subject);
+      }
     });
-  });
+
+    countries.forEach(country => {
+      country.levels = levels.filter(level =>
+        String(level.education_system_id) === String(country.id)
+      );
+    });
+
+    list.innerHTML = countries.map(country => {
+      const countryLevels = country.levels || [];
+
+      return `
+        <div class="country-card">
+          <button class="country-header" type="button"
+            data-country-toggle="${escapeHtml(country.id)}"
+            aria-expanded="false">
+
+            <span>🌍 ${escapeHtml(country.country_name)}</span>
+
+            <span>
+              ${countryLevels.length}
+              level${countryLevels.length === 1 ? "" : "s"} ▾
+            </span>
+          </button>
+
+          <div class="country-body" id="country-body-${escapeHtml(country.id)}">
+
+            ${
+              countryLevels.length
+              ? `
+                <div class="level-list">
+                  ${countryLevels.map(level => {
+                    const levelSubjects =
+                      subjectsByLevel.get(String(level.id)) || [];
+
+                    const subjectDisplay = levelSubjects.length
+                      ? `
+                        <span class="subject-label">Available subjects</span>
+                        <div class="subject-list">
+                          ${levelSubjects.map(subject => `
+                            <span class="subject-tag">
+                              ${escapeHtml(subject.name)}
+                            </span>
+                          `).join("")}
+                        </div>
+                      `
+                      : `
+                        <div class="no-subjects">
+                          No active subjects are currently available for this level.
+                        </div>
+                      `;
+
+                    return `
+                      <div class="level-item">
+
+                        <a class="level-link"
+                          href="start-exam.html?country_id=${encodeURIComponent(country.id)}&level_id=${encodeURIComponent(level.id)}">
+
+                          ${escapeHtml(level.level_name)}
+
+                          <small>Open this education level</small>
+                        </a>
+
+                        ${subjectDisplay}
+
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              `
+              : `
+                <div class="empty-state">
+                  No active education levels have been added for this country.
+                </div>
+              `
+            }
+
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    list.querySelectorAll("[data-country-toggle]").forEach(button => {
+      button.addEventListener("click",() => {
+        const body = $("country-body-"+button.dataset.countryToggle);
+        const open = body.classList.toggle("open");
+
+        button.setAttribute("aria-expanded",String(open));
+      });
+    });
+
+    showMessage(
+      $("educationStatus"),
+      "Education options updated successfully.",
+      "success"
+    );
+
+  } catch(error) {
+    console.error("Education options query:",error);
+
+    list.innerHTML = `
+      <div class="empty-state">
+        Could not load countries, education levels and subjects.
+        Please refresh or check your database permissions.
+      </div>
+    `;
+
+    showMessage(
+      $("educationStatus"),
+      "Education options could not be loaded: "+error.message,
+      "error"
+    );
+
+    throw error;
+
+  } finally {
+    if (loadVersion === educationLoadVersion && refreshButton) {
+      refreshButton.disabled = false;
+    }
+  }
+}
+
+/* MANUAL REFRESH */
+
+$("refreshEducationOptions").addEventListener("click",async () => {
+  try {
+    await loadEducationOptions();
+  } catch(error) {
+    console.error("Manual education refresh failed:",error);
+  }
+});
+
+/* LIVE EDUCATION UPDATES */
+
+function scheduleEducationRefresh() {
+  if (educationReloadTimer) {
+    clearTimeout(educationReloadTimer);
+  }
+
+  educationReloadTimer = setTimeout(async () => {
+    try {
+      await loadEducationOptions();
+    } catch(error) {
+      console.error("Live education refresh failed:",error);
+    }
+  },500);
+}
+
+function subscribeToEducationChanges() {
+  if (educationRealtimeChannel) {
+    supabase.removeChannel(educationRealtimeChannel);
+  }
+
+  educationRealtimeChannel = supabase
+    .channel("student-education-options")
+
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"education_systems"
+      },
+      scheduleEducationRefresh
+    )
+
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"education_levels"
+      },
+      scheduleEducationRefresh
+    )
+
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"education_level_subjects"
+      },
+      scheduleEducationRefresh
+    )
+
+    .on(
+      "postgres_changes",
+      {
+        event:"*",
+        schema:"public",
+        table:"subjects"
+      },
+      scheduleEducationRefresh
+    )
+
+    .subscribe(status => {
+      console.log("Education live updates:",status);
+    });
 }
 
 /* EXAMINATION TITLES */
@@ -803,7 +1029,7 @@ function renderAttemptsTable(attempts,showScore=true) {
     </div>`;
 }
 
-/* RECENTLY ATTEMPTED EXAMS: LATEST 5 / VIEW ALL */
+/* RECENTLY ATTEMPTED EXAMS */
 
 function renderRecentAttempts() {
   const container = $("recentAttempts");
@@ -983,7 +1209,7 @@ async function initializeDashboard() {
 
         if (index === 1) {
           $("countryList").innerHTML =
-            '<div class="empty-state">Could not load countries. Please refresh or check permissions.</div>';
+            '<div class="empty-state">Could not load countries, education levels and subjects. Please refresh or check permissions.</div>';
         }
 
         if (index === 2) {
@@ -1001,6 +1227,9 @@ async function initializeDashboard() {
         }
       }
     });
+
+    /* Start live updates after the initial data has loaded. */
+    subscribeToEducationChanges();
 
   } catch(error) {
     console.error("Dashboard initialization failed:",error);
