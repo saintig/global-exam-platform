@@ -45,13 +45,11 @@
       text-decoration: none;
     }
 
-    button,
-    input {
+    button, input {
       font: inherit;
     }
 
-    button,
-    a {
+    button, a {
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -388,6 +386,74 @@
       font-size: 14px;
     }
 
+    /* EXAMINATION SHOWCASE */
+
+    .exam-showcase {
+      padding: 35px 0 42px;
+      background: #f0f3f8;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exam-showcase-heading {
+      text-align: center;
+      margin-bottom: 23px;
+    }
+
+    .exam-showcase-heading h2 {
+      font-size: clamp(21px, 3vw, 27px);
+      margin-bottom: 6px;
+    }
+
+    .exam-showcase-heading p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .exam-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 13px;
+    }
+
+    .exam-tile {
+      min-height: 125px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      padding: 15px 8px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-bottom: 4px solid var(--gold);
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 5px 16px rgba(16,38,74,.04);
+    }
+
+    .exam-tile-icon {
+      width: 43px;
+      height: 43px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 11px;
+      background: #fff2ce;
+      color: #795b0d;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .exam-tile strong {
+      font-size: 15px;
+      letter-spacing: .5px;
+    }
+
+    .exam-tile small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
     /* COUNTRY AND EDUCATION SELECTOR */
 
     .country-list {
@@ -500,11 +566,8 @@
       border-radius: 10px;
       background: var(--white);
       color: var(--navy);
-      transition:
-        border-color .2s,
-        background .2s,
-        transform .2s,
-        box-shadow .2s;
+      transition: border-color .2s, background .2s,
+        transform .2s, box-shadow .2s;
     }
 
     .education-option:last-child {
@@ -719,6 +782,56 @@
       display: block;
     }
 
+    /* PRICING AND SUBSCRIPTION */
+
+    .pricing-section {
+      background: var(--cream);
+    }
+
+    .pricing-card {
+      max-width: 720px;
+      margin: auto;
+      padding: 35px 25px;
+      text-align: center;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 5px solid var(--gold);
+      border-radius: 16px;
+      box-shadow: 0 7px 24px rgba(16,38,74,.05);
+    }
+
+    .coming-soon {
+      display: inline-block;
+      padding: 6px 15px;
+      margin-bottom: 15px;
+      border-radius: 30px;
+      background: #fff2ce;
+      color: #795b0d;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .pricing-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .pricing-card p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pricing-note {
+      margin-top: 20px;
+      padding: 13px;
+      background: #f0f3f8;
+      border-radius: 9px;
+      color: var(--navy);
+      font-size: 13px;
+    }
+
     /* BENEFITS */
 
     .benefits-section {
@@ -907,6 +1020,10 @@
       .education-option-text strong {
         font-size: 14px;
       }
+
+      .exam-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 420px) {
@@ -950,6 +1067,14 @@
         height: 37px;
         font-size: 19px;
       }
+
+      .exam-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .exam-tile {
+        min-height: 112px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -964,6 +1089,8 @@
 </head>
 
 <body>
+
+  <!-- HEADER -->
   <header>
     <div class="container header-content">
       <a class="brand" href="index.html"
@@ -986,9 +1113,10 @@
     </div>
   </header>
 
-  <!-- Mobile-friendly navigation menu -->
+  <!-- MENU OVERLAY -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
+  <!-- HAMBURGER MENU -->
   <nav class="side-menu" id="sideMenu"
     aria-label="Main navigation"
     aria-hidden="true"
@@ -1023,6 +1151,7 @@
 
     <hr class="menu-divider">
 
+    <!-- EXISTING TEACHER/SCHOOL LINKS PRESERVED -->
     <a class="menu-link" href="teacher-login.html?mode=login">
       <span class="menu-icon" aria-hidden="true">♟</span>
       Teacher/School Sign In
@@ -1040,14 +1169,22 @@
 
     <hr class="menu-divider">
 
-    <a class="menu-link" href="#exam-access">
+    <!-- NEW SEPARATE EXAMINATION PAGE -->
+    <a class="menu-link" href="school-exam-login.html">
       <span class="menu-icon" aria-hidden="true">✓</span>
-      Take Teacher/School Exam
+      Teacher/School Exam Login
     </a>
 
-    <a class="menu-link" href="#print-results">
+    <!-- NEW SEPARATE RESULTS PAGE -->
+    <a class="menu-link" href="school-results.html">
       <span class="menu-icon" aria-hidden="true">▧</span>
-      Check &amp; Print Results
+      Check Results &amp; Print
+    </a>
+
+    <!-- PRICING -->
+    <a class="menu-link" href="#pricing-subscription">
+      <span class="menu-icon" aria-hidden="true">₦</span>
+      Pricing &amp; Subscription
     </a>
 
     <hr class="menu-divider">
@@ -1069,6 +1206,7 @@
   </nav>
 
   <main>
+
     <!-- HERO -->
     <section class="hero" id="home">
       <div class="container hero-content">
@@ -1080,9 +1218,9 @@
         </h1>
 
         <p>
-          Welcome to SAINTIG EXAMS, an online examination platform designed
-          to help students practise, assess their knowledge and build
-          confidence through accessible online examinations.
+          Welcome to SAINTIG EXAMS, an online examination platform
+          designed to help students practise, assess their knowledge
+          and build confidence through accessible online examinations.
         </p>
 
         <div class="hero-buttons">
@@ -1099,9 +1237,57 @@
       </div>
     </section>
 
-    <!-- EDUCATION LEVELS BY COUNTRY -->
+    <!-- EXAMINATION SHOWCASE -->
+    <section class="exam-showcase">
+      <div class="container">
+
+        <div class="exam-showcase-heading">
+          <h2>Prepare for Important Examinations</h2>
+          <p>
+            Practise, improve your knowledge and prepare with confidence.
+          </p>
+        </div>
+
+        <div class="exam-grid">
+
+          <div class="exam-tile">
+            <div class="exam-tile-icon" aria-hidden="true">W</div>
+            <strong>WAEC</strong>
+            <small>West African Examinations</small>
+          </div>
+
+          <div class="exam-tile">
+            <div class="exam-tile-icon" aria-hidden="true">N</div>
+            <strong>NECO</strong>
+            <small>National Examinations</small>
+          </div>
+
+          <div class="exam-tile">
+            <div class="exam-tile-icon" aria-hidden="true">J</div>
+            <strong>JAMB</strong>
+            <small>UTME Preparation</small>
+          </div>
+
+          <div class="exam-tile">
+            <div class="exam-tile-icon" aria-hidden="true">I</div>
+            <strong>IELTS</strong>
+            <small>English Language Practice</small>
+          </div>
+
+          <div class="exam-tile">
+            <div class="exam-tile-icon" aria-hidden="true">T</div>
+            <strong>TOEFL</strong>
+            <small>English Language Practice</small>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTRY AND EDUCATION LEVELS -->
     <section class="section" id="education-levels">
       <div class="container">
+
         <div class="section-heading">
           <div class="kicker">Explore Your Level</div>
           <h2>Choose Your Country and Education Level</h2>
@@ -1116,12 +1302,11 @@
 
           <!-- NIGERIA -->
           <article class="country-item">
-            <button
-              class="country-toggle"
-              id="toggle-nigeria"
+            <button class="country-toggle"
               type="button"
               aria-expanded="false"
               aria-controls="options-nigeria">
+
               <span class="country-heading">
                 <span class="country-flag" aria-hidden="true">🇳🇬</span>
                 <span>
@@ -1129,50 +1314,52 @@
                   <span class="country-subtitle">Choose your school level</span>
                 </span>
               </span>
+
               <span class="country-arrow" aria-hidden="true">›</span>
             </button>
 
             <div class="country-options" id="options-nigeria" hidden>
+
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Primary%20School">
-                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Primary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Junior%20Secondary%20School">
-                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Junior Secondary School</strong>
                   <small>Strengthen your subject knowledge</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Senior%20Secondary%20School">
-                <span class="education-option-icon" aria-hidden="true">🏆</span>
+                <span class="education-option-icon">🏆</span>
                 <span class="education-option-text">
                   <strong>Senior Secondary School</strong>
                   <small>Prepare for advanced school examinations</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
+
             </div>
           </article>
 
           <!-- UNITED STATES -->
           <article class="country-item">
-            <button
-              class="country-toggle"
-              id="toggle-united-states"
+            <button class="country-toggle"
               type="button"
               aria-expanded="false"
               aria-controls="options-united-states">
+
               <span class="country-heading">
                 <span class="country-flag" aria-hidden="true">🇺🇸</span>
                 <span>
@@ -1180,40 +1367,42 @@
                   <span class="country-subtitle">Choose your school level</span>
                 </span>
               </span>
+
               <span class="country-arrow" aria-hidden="true">›</span>
             </button>
 
             <div class="country-options" id="options-united-states" hidden>
+
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20States&amp;level=Elementary%20School">
-                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Elementary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20States&amp;level=Middle%2FHigh%20School">
-                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Middle/High School</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
+
             </div>
           </article>
 
           <!-- UNITED KINGDOM -->
           <article class="country-item">
-            <button
-              class="country-toggle"
-              id="toggle-united-kingdom"
+            <button class="country-toggle"
               type="button"
               aria-expanded="false"
               aria-controls="options-united-kingdom">
+
               <span class="country-heading">
                 <span class="country-flag" aria-hidden="true">🇬🇧</span>
                 <span>
@@ -1221,40 +1410,42 @@
                   <span class="country-subtitle">Choose your education level</span>
                 </span>
               </span>
+
               <span class="country-arrow" aria-hidden="true">›</span>
             </button>
 
             <div class="country-options" id="options-united-kingdom" hidden>
+
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Primary%20Education">
-                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Primary Education</strong>
                   <small>Build your academic foundation</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Secondary%20Education">
-                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Secondary Education</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
+
             </div>
           </article>
 
           <!-- CANADA -->
           <article class="country-item">
-            <button
-              class="country-toggle"
-              id="toggle-canada"
+            <button class="country-toggle"
               type="button"
               aria-expanded="false"
               aria-controls="options-canada">
+
               <span class="country-heading">
                 <span class="country-flag" aria-hidden="true">🇨🇦</span>
                 <span>
@@ -1262,29 +1453,75 @@
                   <span class="country-subtitle">Choose your school level</span>
                 </span>
               </span>
+
               <span class="country-arrow" aria-hidden="true">›</span>
             </button>
 
             <div class="country-options" id="options-canada" hidden>
+
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Canada&amp;level=Elementary%20School">
-                <span class="education-option-icon" aria-hidden="true">📚</span>
+                <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Elementary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Canada&amp;level=Middle%2FSecondary%20School">
-                <span class="education-option-icon" aria-hidden="true">🎓</span>
+                <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Middle/Secondary School</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
-                <span class="education-option-arrow" aria-hidden="true">→</span>
+                <span class="education-option-arrow">→</span>
               </a>
+
+            </div>
+          </article>
+
+          <!-- AUSTRALIA -->
+          <article class="country-item">
+            <button class="country-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="options-australia">
+
+              <span class="country-heading">
+                <span class="country-flag" aria-hidden="true">🇦🇺</span>
+                <span>
+                  <span class="country-name">Australia</span>
+                  <span class="country-subtitle">Choose your school level</span>
+                </span>
+              </span>
+
+              <span class="country-arrow" aria-hidden="true">›</span>
+            </button>
+
+            <div class="country-options" id="options-australia" hidden>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Australia&amp;level=Primary%20School">
+                <span class="education-option-icon">📚</span>
+                <span class="education-option-text">
+                  <strong>Primary School</strong>
+                  <small>Build your academic foundation</small>
+                </span>
+                <span class="education-option-arrow">→</span>
+              </a>
+
+              <a class="education-option"
+                href="student-login.html?mode=register&amp;country=Australia&amp;level=Secondary%20School">
+                <span class="education-option-icon">🎓</span>
+                <span class="education-option-text">
+                  <strong>Secondary School</strong>
+                  <small>Develop your knowledge and prepare for assessments</small>
+                </span>
+                <span class="education-option-arrow">→</span>
+              </a>
+
             </div>
           </article>
 
@@ -1295,6 +1532,7 @@
     <!-- TEACHER/SCHOOL PORTAL -->
     <section class="section teacher-section" id="teacher-portal">
       <div class="container">
+
         <div class="section-heading">
           <div class="kicker">For Teachers and Schools</div>
           <h2>Teacher &amp; School Portal</h2>
@@ -1305,6 +1543,7 @@
         </div>
 
         <div class="feature-grid">
+
           <article class="feature-card">
             <div class="feature-icon" aria-hidden="true">👨‍🏫</div>
             <h3>Already Have an Account?</h3>
@@ -1312,6 +1551,7 @@
               Sign in to your teacher or school account to manage your
               examination activities.
             </p>
+
             <div class="feature-actions">
               <a class="btn btn-navy btn-small"
                 href="teacher-login.html?mode=login">
@@ -1327,6 +1567,7 @@
               Create a teacher or school account to get started with
               examination preparation and management.
             </p>
+
             <div class="feature-actions">
               <a class="btn btn-light btn-small"
                 href="teacher-login.html?mode=register">
@@ -1334,13 +1575,15 @@
               </a>
             </div>
           </article>
+
         </div>
       </div>
     </section>
 
-    <!-- TEACHER EXAM ACCESS -->
+    <!-- EXISTING EXAM ACCESS SECTION -->
     <section class="section form-section" id="exam-access">
       <div class="container">
+
         <div class="section-heading">
           <div class="kicker">Student Examination Access</div>
           <h2>Take a Teacher/School Exam</h2>
@@ -1351,6 +1594,7 @@
         </div>
 
         <div class="form-grid">
+
           <div class="access-card">
             <h3>Enter Your Examination Details</h3>
             <p class="description">
@@ -1359,6 +1603,7 @@
 
             <form id="examAccessForm" action="teacher-exam-login.html"
               method="get">
+
               <div class="field">
                 <label for="examId">Exam ID</label>
                 <input
@@ -1414,13 +1659,15 @@
               Contact Information
             </a>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- CHECK AND PRINT RESULTS -->
+    <!-- EXISTING RESULTS SECTION -->
     <section class="section teacher-section" id="print-results">
       <div class="container">
+
         <div class="section-heading">
           <div class="kicker">Your Examination Performance</div>
           <h2>Check &amp; Print Results</h2>
@@ -1432,6 +1679,7 @@
         </div>
 
         <div class="form-grid">
+
           <div class="access-card">
             <h3>Find Your Result</h3>
             <p class="description">
@@ -1440,6 +1688,7 @@
             </p>
 
             <form id="resultsForm" action="print-results.html" method="get">
+
               <div class="field">
                 <label for="resultExamId">Exam ID</label>
                 <input
@@ -1495,6 +1744,54 @@
               Access an Examination
             </a>
           </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING AND SUBSCRIPTION -->
+    <section class="section pricing-section" id="pricing-subscription">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="kicker">Plans &amp; Access</div>
+          <h2>Pricing &amp; Subscription</h2>
+          <p>
+            Discover upcoming subscription options for students,
+            teachers and schools using SAINTIG EXAMS.
+          </p>
+        </div>
+
+        <div class="pricing-card">
+
+          <span class="coming-soon">COMING SOON</span>
+
+          <div class="feature-icon"
+            aria-hidden="true"
+            style="margin: 0 auto 15px;">
+            ₦
+          </div>
+
+          <h3>Flexible Subscription Plans</h3>
+
+          <p>
+            We are preparing flexible subscription options
+            designed to support students, teachers and schools.
+          </p>
+
+          <p>
+            Details about available plans, subscription benefits
+            and payment methods will be announced when the
+            payment system is ready.
+          </p>
+
+          <div class="pricing-note">
+            <strong>Free access remains available.</strong>
+            <br>
+            You can continue using the currently available
+            free examination services.
+          </div>
+
         </div>
       </div>
     </section>
@@ -1502,6 +1799,7 @@
     <!-- BENEFITS -->
     <section class="section benefits-section" id="about">
       <div class="container">
+
         <div class="section-heading">
           <div class="kicker">Why SAINTIG EXAMS?</div>
           <h2>A Smarter Way to Practise</h2>
@@ -1512,6 +1810,7 @@
         </div>
 
         <div class="benefits">
+
           <article class="benefit">
             <div class="benefit-icon" aria-hidden="true">💻</div>
             <h3>Online Examination</h3>
@@ -1538,6 +1837,7 @@
               your performance and areas for improvement.
             </p>
           </article>
+
         </div>
       </div>
     </section>
@@ -1545,6 +1845,7 @@
     <!-- ABOUT SAINTIG EXAMS -->
     <section class="section">
       <div class="container about-content">
+
         <div class="section-heading">
           <div class="kicker">About Our Platform</div>
           <h2>About SAINTIG EXAMS</h2>
@@ -1561,14 +1862,17 @@
           examination results easier through a clear, mobile-friendly
           online platform.
         </p>
+
       </div>
     </section>
 
     <!-- STUDENT CALL TO ACTION -->
     <section class="cta">
       <div class="container">
+
         <div class="cta-box">
           <h2>Ready to Begin?</h2>
+
           <p>
             Create your student account to access examinations and
             start your learning journey with SAINTIG EXAMS.
@@ -1579,13 +1883,16 @@
             Create Your Account
           </a>
         </div>
+
       </div>
     </section>
+
   </main>
 
   <!-- FOOTER -->
   <footer id="contact">
     <div class="container">
+
       <a class="footer-brand" href="index.html">
         SAINTIG <span>EXAMS</span>
       </a>
@@ -1594,8 +1901,9 @@
         <a href="index.html">Home</a>
         <a href="#about">About Us</a>
         <a href="#contact">Contact Us</a>
-        <a href="#exam-access">Take an Exam</a>
-        <a href="#print-results">Print Results</a>
+        <a href="school-exam-login.html">Teacher/School Exam Login</a>
+        <a href="school-results.html">Check Results &amp; Print</a>
+        <a href="#pricing-subscription">Pricing &amp; Subscription</a>
         <a href="student-login.html?mode=login">Student Sign In</a>
         <a href="teacher-login.html?mode=login">Teacher/School Portal</a>
       </nav>
@@ -1613,6 +1921,7 @@
         <p>© <span id="year"></span> SAINTIG EXAMS. All rights reserved.</p>
         <p>Learn. Practice. Succeed.</p>
       </div>
+
     </div>
   </footer>
 
@@ -1630,10 +1939,13 @@
     function openMenu() {
       sideMenu.classList.add("open");
       menuOverlay.classList.add("open");
+
       menuToggle.setAttribute("aria-expanded", "true");
       menuToggle.setAttribute("aria-label", "Close navigation menu");
+
       sideMenu.setAttribute("aria-hidden", "false");
       sideMenu.inert = false;
+
       document.body.classList.add("menu-open");
       menuClose.focus();
     }
@@ -1641,10 +1953,13 @@
     function closeMenu() {
       sideMenu.classList.remove("open");
       menuOverlay.classList.remove("open");
+
       menuToggle.setAttribute("aria-expanded", "false");
       menuToggle.setAttribute("aria-label", "Open navigation menu");
+
       sideMenu.setAttribute("aria-hidden", "true");
       sideMenu.inert = true;
+
       document.body.classList.remove("menu-open");
     }
 
@@ -1659,14 +1974,14 @@
     menuClose.addEventListener("click", closeMenu);
     menuOverlay.addEventListener("click", closeMenu);
 
-    // Close the menu after choosing a navigation link.
+    // Close menu after selecting a navigation link
     sideMenu.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
         closeMenu();
       });
     });
 
-    // Escape key closes the menu.
+    // Escape key closes the menu
     document.addEventListener("keydown", function (event) {
       if (
         event.key === "Escape" &&
@@ -1677,8 +1992,7 @@
       }
     });
 
-    // Country rows expand independently.
-    // More than one country can stay open at the same time.
+    // Country rows expand independently
     document.querySelectorAll(".country-toggle").forEach(function (toggle) {
       toggle.addEventListener("click", function () {
         const options = document.getElementById(
@@ -1693,8 +2007,7 @@
       });
     });
 
-    // These destinations are planned but are not built yet.
-    // Prevent submission until the actual verification pages exist.
+    // Existing planned exam and result forms remain unconnected
     function prepareFutureForm(formId, statusId, message) {
       const form = document.getElementById(formId);
       const status = document.getElementById(statusId);
@@ -1723,5 +2036,6 @@
       "Result lookup is not connected yet. Secure result verification must be implemented before results can be displayed or printed."
     );
   </script>
+
 </body>
 </html>
