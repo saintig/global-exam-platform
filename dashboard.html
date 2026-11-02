@@ -252,7 +252,6 @@ main{
   font-weight:700
 }
 
-/* Corrected CSS syntax */
 .level-link:hover{color:var(--primary-dark)}
 
 .level-link small{
@@ -267,37 +266,6 @@ main{
   position:absolute;
   inset:0;
   z-index:1
-}
-
-.subject-label{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  font-weight:700;
-  margin-top:12px;
-  margin-bottom:6px
-}
-
-.subject-list{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px
-}
-
-.subject-tag{
-  display:inline-block;
-  padding:4px 9px;
-  border-radius:20px;
-  background:#eaf0f9;
-  color:var(--primary);
-  font-size:12px;
-  font-weight:700
-}
-
-.no-subjects{
-  font-size:13px;
-  color:var(--muted);
-  margin-top:8px
 }
 
 .button{
@@ -626,7 +594,7 @@ th{
 
     <div id="countryList" class="country-list">
       <div class="empty-state">
-        Loading countries, education levels and subjects…
+        Loading countries and education levels…
       </div>
     </div>
   </div>
@@ -933,7 +901,16 @@ $("menuButton").addEventListener("click",() => {
 $("mobileBackdrop").addEventListener("click",closeMenu);
 
 document.querySelectorAll(".nav-link[data-section]").forEach(button => {
-  button.addEventListener("click",() => openSection(button.dataset.section));
+  button.addEventListener("click",() => {
+    const target = button.dataset.section;
+
+    /*
+      Take an Exam is reserved for the teacher/school examination system.
+      The existing school login section is used until its dedicated page
+      and backend are created.
+    */
+    openSection(target === "exams" ? "school" : target);
+  });
 });
 
 document.querySelectorAll("[data-go]").forEach(button => {
@@ -1068,7 +1045,7 @@ $("passwordForm").addEventListener("submit",async event => {
   }
 });
 
-/* COUNTRIES, EDUCATION LEVELS AND SUBJECTS */
+/* COUNTRIES AND EDUCATION LEVELS */
 
 async function loadEducationOptions() {
   const list = $("countryList");
@@ -1076,7 +1053,7 @@ async function loadEducationOptions() {
   const loadVersion = ++educationLoadVersion;
 
   list.innerHTML =
-    '<div class="empty-state">Loading countries, education levels and subjects…</div>';
+    '<div class="empty-state">Loading countries and education levels…</div>';
 
   showMessage($("educationStatus"),"Updating education options…");
 
@@ -1085,9 +1062,7 @@ async function loadEducationOptions() {
   try {
     const [
       systemsResult,
-      levelsResult,
-      mappingsResult,
-      subjectsResult
+      levelsResult
     ] = await Promise.all([
 
       supabase
@@ -1100,31 +1075,16 @@ async function loadEducationOptions() {
         .from("education_levels")
         .select("id,education_system_id,level_name,is_active")
         .eq("is_active",true)
-        .order("level_name"),
-
-      supabase
-        .from("education_level_subjects")
-        .select("id,education_level_id,subject_id,is_active")
-        .eq("is_active",true),
-
-      supabase
-        .from("subjects")
-        .select("id,name,is_active")
-        .eq("is_active",true)
-        .order("name")
+        .order("level_name")
     ]);
 
     if (systemsResult.error) throw systemsResult.error;
     if (levelsResult.error) throw levelsResult.error;
-    if (mappingsResult.error) throw mappingsResult.error;
-    if (subjectsResult.error) throw subjectsResult.error;
 
     if (loadVersion !== educationLoadVersion) return;
 
     const countries = systemsResult.data || [];
     const levels = levelsResult.data || [];
-    const mappings = mappingsResult.data || [];
-    const subjects = subjectsResult.data || [];
 
     $("countryCount").textContent = countries.length;
 
@@ -1139,32 +1099,6 @@ async function loadEducationOptions() {
 
       return;
     }
-
-    const activeSubjectsById = new Map(
-      subjects.map(subject => [String(subject.id),subject])
-    );
-
-    const subjectsByLevel = new Map();
-
-    mappings.forEach(mapping => {
-      const subject = activeSubjectsById.get(String(mapping.subject_id));
-
-      if (!subject) return;
-
-      const levelKey = String(mapping.education_level_id);
-
-      if (!subjectsByLevel.has(levelKey)) {
-        subjectsByLevel.set(levelKey,[]);
-      }
-
-      const currentList = subjectsByLevel.get(levelKey);
-
-      if (!currentList.some(item =>
-        String(item.id) === String(subject.id)
-      )) {
-        currentList.push(subject);
-      }
-    });
 
     countries.forEach(country => {
       country.levels = levels.filter(level =>
@@ -1199,44 +1133,19 @@ async function loadEducationOptions() {
               ? `
                 <div class="level-list">
 
-                  ${countryLevels.map(level => {
-                    const levelSubjects =
-                      subjectsByLevel.get(String(level.id)) || [];
+                  ${countryLevels.map(level => `
+                    <div class="level-item">
 
-                    const subjectDisplay = levelSubjects.length
-                      ? `
-                        <span class="subject-label">Available subjects</span>
+                      <a class="level-link"
+                        href="start-exam.html?country_id=${encodeURIComponent(country.id)}&level_id=${encodeURIComponent(level.id)}">
 
-                        <div class="subject-list">
-                          ${levelSubjects.map(subject => `
-                            <span class="subject-tag">
-                              ${escapeHtml(subject.name)}
-                            </span>
-                          `).join("")}
-                        </div>
-                      `
-                      : `
-                        <div class="no-subjects">
-                          No active subjects are currently available for this level.
-                        </div>
-                      `;
+                        ${escapeHtml(level.level_name)}
 
-                    return `
-                      <div class="level-item">
+                        <small>Open this education level</small>
+                      </a>
 
-                        <a class="level-link"
-                          href="start-exam.html?country_id=${encodeURIComponent(country.id)}&level_id=${encodeURIComponent(level.id)}">
-
-                          ${escapeHtml(level.level_name)}
-
-                          <small>Open this education level</small>
-                        </a>
-
-                        ${subjectDisplay}
-
-                      </div>
-                    `;
-                  }).join("")}
+                    </div>
+                  `).join("")}
 
                 </div>
               `
@@ -1276,7 +1185,7 @@ async function loadEducationOptions() {
     if (loadVersion === educationLoadVersion) {
       list.innerHTML = `
         <div class="empty-state">
-          Could not load countries, education levels and subjects.
+          Could not load countries and education levels.
           Please refresh or check your database permissions.
         </div>
       `;
@@ -1611,7 +1520,7 @@ $("schoolExamForm").addEventListener("submit",event => {
 
   showMessage(
     $("schoolExamMessage"),
-    "School examination login is not active yet. The school exam database will be connected in a later stage.",
+    "School examination login is not active yet. The teacher/school examination system will be connected when it is created.",
     "error"
   );
 });
@@ -1681,7 +1590,7 @@ async function initializeDashboard() {
 
         if (index === 1) {
           $("countryList").innerHTML =
-            '<div class="empty-state">Could not load countries, education levels and subjects. Please refresh or check permissions.</div>';
+            '<div class="empty-state">Could not load countries and education levels. Please refresh or check permissions.</div>';
         }
 
         if (index === 2) {
