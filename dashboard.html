@@ -64,10 +64,36 @@ main{flex:1;min-width:0;padding:24px}
 .country-body{display:none;border-top:1px solid var(--border);padding:14px}
 .country-body.open{display:block}
 .level-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.level-item{border:1px solid var(--border);border-radius:9px;background:#f8faff;padding:13px}
-.level-link{display:block;color:var(--primary);font-weight:700}
-.level-link:hover{color:var(--primary-dark)}
+
+/* Entire education-level card is clickable. */
+.level-item{
+  position:relative;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#f8faff;
+  padding:13px;
+  cursor:pointer;
+}
+.level-item:hover{
+  border-color:var(--accent);
+  background:#fffdf7;
+}
+.level-link{
+  display:block;
+  color:var(--primary);
+  font-weight:700;
+}
+.level-link:hover{color:var(--primary-dark}
 .level-link small{display:block;color:var(--muted);font-weight:400;margin-top:4px}
+
+/* Expands the link's clickable area over the complete level card. */
+.level-link::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+}
+
 .subject-label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-top:12px;margin-bottom:6px}
 .subject-list{display:flex;flex-wrap:wrap;gap:6px}
 .subject-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf0f9;color:var(--primary);font-size:12px;font-weight:700}
@@ -187,7 +213,6 @@ th{color:var(--muted);background:#f8faff}
   <div id="studentDisplayName" class="student-name" hidden></div>
 </div>
 
-<!-- HOME -->
 <section class="section active" id="home">
   <div class="stats-grid">
     <div class="stat-card">
@@ -227,7 +252,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- TAKE EXAM -->
 <section class="section" id="exams">
   <h2 class="section-heading">Take an Exam</h2>
   <p class="section-description">Choose a country and education level to find available subjects and examinations.</p>
@@ -243,7 +267,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- HISTORY -->
 <section class="section" id="history">
   <h2 class="section-heading">Exam History</h2>
   <p class="section-description">Review your previous examination attempts.</p>
@@ -252,7 +275,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- RESULTS -->
 <section class="section" id="results">
   <h2 class="section-heading">Results</h2>
   <p class="section-description">Review your completed examination attempts.</p>
@@ -266,7 +288,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- SCHOOL EXAM -->
 <section class="section" id="school">
   <h2 class="section-heading">Teacher / School Exam Login</h2>
   <p class="section-description">Enter the examination details supplied by your school.</p>
@@ -286,7 +307,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- CHECK RESULTS -->
 <section class="section" id="check-results">
   <h2 class="section-heading">Check / Print Results</h2>
   <p class="section-description">Enter your school examination ID and student ID to look up a result.</p>
@@ -307,20 +327,16 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- PRICING AND SUBSCRIPTION -->
 <section class="section" id="pricing">
   <h2 class="section-heading">Pricing and Subscription</h2>
   <p class="section-description">Information about SAINTIG EXAMS access and subscription plans.</p>
-
   <div class="card">
     <h3>Your Subscription</h3>
     <p id="subscriptionStatus">Subscription management is not active yet.</p>
-
     <div class="pricing-note">
       <strong>Free access</strong>
       <p class="muted">You can use the examination features currently made available on the platform without a subscription payment.</p>
     </div>
-
     <div class="pricing-note">
       <strong>Premium subscription</strong>
       <p class="muted">Premium plan details, prices and payment options will be displayed here when the subscription service is activated.</p>
@@ -328,7 +344,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- NOTIFICATIONS -->
 <section class="section" id="notifications">
   <h2 class="section-heading">Notifications</h2>
   <div class="card">
@@ -336,7 +351,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- ACCOUNT -->
 <section class="section" id="account">
   <h2 class="section-heading">My Account</h2>
   <p class="section-description">Update your name and password.</p>
@@ -375,7 +389,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- ABOUT -->
 <section class="section" id="about">
   <h2 class="section-heading">About SAINTIG EXAMS</h2>
   <div class="card">
@@ -384,7 +397,6 @@ th{color:var(--muted);background:#f8faff}
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="section" id="contact">
   <h2 class="section-heading">Contact</h2>
   <div class="card">
@@ -413,7 +425,6 @@ let examinationTitles = {};
 let showAllResults = false;
 let showAllRecentAttempts = false;
 
-/* EDUCATION DATA */
 let educationRealtimeChannel = null;
 let educationReloadTimer = null;
 let educationLoadVersion = 0;
@@ -666,7 +677,6 @@ async function loadEducationOptions() {
     if (mappingsResult.error) throw mappingsResult.error;
     if (subjectsResult.error) throw subjectsResult.error;
 
-    /* Ignore an older request if a newer refresh has started. */
     if (loadVersion !== educationLoadVersion) return;
 
     const countries = systemsResult.data || [];
@@ -681,12 +691,6 @@ async function loadEducationOptions() {
       showMessage($("educationStatus"),"No published countries are currently available.");
       return;
     }
-
-    /*
-      Build a subject lookup using the existing tables:
-      education_level_subjects -> subjects.
-      Both the assignment and the subject itself must be active.
-    */
 
     const activeSubjectsById = new Map(
       subjects.map(subject => [String(subject.id),subject])
@@ -986,8 +990,6 @@ async function loadAttempts() {
   renderHomeResults();
 }
 
-/* SHARED EXAM TABLE */
-
 function renderAttemptsTable(attempts,showScore=true) {
   return `
     <div class="table-wrap">
@@ -1228,7 +1230,6 @@ async function initializeDashboard() {
       }
     });
 
-    /* Start live updates after the initial data has loaded. */
     subscribeToEducationChanges();
 
   } catch(error) {
