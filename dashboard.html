@@ -20,86 +20,298 @@
   --success:#16794b;
   --danger:#b42318;
 }
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--background);color:var(--text);line-height:1.5}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--background);
+  color:var(--text);
+  line-height:1.5
+}
+
 button,input{font:inherit}
 a{color:inherit;text-decoration:none}
 button,a{-webkit-tap-highlight-color:transparent}
 
-.topbar{background:var(--primary);color:white;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:40;box-shadow:0 2px 8px #00000016}
-.brand{font-size:18px;font-weight:800;letter-spacing:.3px}
-.brand span{color:var(--accent)}
-.top-actions{display:flex;align-items:center;gap:8px}
-.top-link,.menu-button{color:white;border:1px solid #ffffff55;background:transparent;border-radius:8px;padding:8px 11px;cursor:pointer;font-size:14px}
+.topbar{
+  background:var(--primary);
+  color:white;
+  padding:13px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:40;
+  box-shadow:0 2px 8px #00000016
+}
 
-.layout{display:flex;min-height:calc(100vh - 58px)}
-.sidebar{width:250px;flex-shrink:0;background:white;border-right:1px solid var(--border);padding:16px 12px}
-.sidebar-title{padding:8px 12px;color:var(--muted);font-size:12px;text-transform:uppercase;font-weight:700;letter-spacing:.8px}
-.nav-link{display:block;padding:11px 12px;margin:3px 0;border-radius:8px;cursor:pointer;color:var(--text);background:transparent;border:0;text-align:left;width:100%}
-.nav-link:hover,.nav-link.active{background:#eaf0f9;color:var(--primary);font-weight:700}
+.brand{
+  font-size:18px;
+  font-weight:800;
+  letter-spacing:.3px
+}
+
+.brand span{color:var(--accent)}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px
+}
+
+.top-link,.menu-button{
+  color:white;
+  border:1px solid #ffffff55;
+  background:transparent;
+  border-radius:8px;
+  padding:8px 11px;
+  cursor:pointer;
+  font-size:14px
+}
+
+.layout{
+  display:flex;
+  min-height:calc(100vh - 58px)
+}
+
+.sidebar{
+  width:250px;
+  flex-shrink:0;
+  background:white;
+  border-right:1px solid var(--border);
+  padding:16px 12px
+}
+
+.sidebar-title{
+  padding:8px 12px;
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  font-weight:700;
+  letter-spacing:.8px
+}
+
+.nav-link{
+  display:block;
+  padding:11px 12px;
+  margin:3px 0;
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--text);
+  background:transparent;
+  border:0;
+  text-align:left;
+  width:100%
+}
+
+.nav-link:hover,.nav-link.active{
+  background:#eaf0f9;
+  color:var(--primary);
+  font-weight:700
+}
+
 .nav-link.logout{color:var(--danger)}
 
-main{flex:1;min-width:0;padding:24px}
+main{
+  flex:1;
+  min-width:0;
+  padding:24px
+}
+
 .welcome{margin-bottom:22px}
-.welcome h1{margin:0 0 5px;font-size:26px;font-weight:800}
-.welcome p{margin:0;color:var(--muted)}
-.student-name{display:inline-block;margin-top:10px;padding:7px 13px;border-radius:8px;background:#eaf0f9;color:var(--primary);font-size:17px;font-weight:800;overflow-wrap:anywhere}
+
+.welcome h1{
+  margin:0 0 5px;
+  font-size:26px;
+  font-weight:800
+}
+
+.welcome p{
+  margin:0;
+  color:var(--muted)
+}
+
+.student-name{
+  display:inline-block;
+  margin-top:10px;
+  padding:7px 13px;
+  border-radius:8px;
+  background:#eaf0f9;
+  color:var(--primary);
+  font-size:17px;
+  font-weight:800;
+  overflow-wrap:anywhere
+}
 
 .section{display:none}
 .section.active{display:block}
-.section-heading{margin:0 0 6px;font-size:23px}
-.section-description{color:var(--muted);margin:0 0 20px}
 
-.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:25px}
-.stat-card,.card{background:white;border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:0 3px 10px #173b6908}
-.stat-label{color:var(--muted);font-size:13px}
-.stat-value{font-size:27px;font-weight:800;margin-top:4px;color:var(--primary)}
+.section-heading{
+  margin:0 0 6px;
+  font-size:23px
+}
+
+.section-description{
+  color:var(--muted);
+  margin:0 0 20px
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:15px;
+  margin-bottom:25px
+}
+
+.stat-card,.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 3px 10px #173b6908
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:13px
+}
+
+.stat-value{
+  font-size:27px;
+  font-weight:800;
+  margin-top:4px;
+  color:var(--primary)
+}
+
 .card{margin-bottom:18px}
 .card h3{margin:0 0 10px}
 
-.country-list{display:grid;gap:13px}
-.country-card{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.country-header{padding:15px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;font-weight:700;background:white;border:0;width:100%;text-align:left}
-.country-header:hover{background:#f8faff}
-.country-body{display:none;border-top:1px solid var(--border);padding:14px}
-.country-body.open{display:block}
-.level-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.country-list{
+  display:grid;
+  gap:13px
+}
 
-/* Entire education-level card is clickable. */
+.country-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden
+}
+
+.country-header{
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  cursor:pointer;
+  font-weight:700;
+  background:white;
+  border:0;
+  width:100%;
+  text-align:left
+}
+
+.country-header:hover{background:#f8faff}
+
+.country-body{
+  display:none;
+  border-top:1px solid var(--border);
+  padding:14px
+}
+
+.country-body.open{display:block}
+
+.level-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px
+}
+
 .level-item{
   position:relative;
   border:1px solid var(--border);
   border-radius:9px;
   background:#f8faff;
   padding:13px;
-  cursor:pointer;
+  cursor:pointer
 }
+
 .level-item:hover{
   border-color:var(--accent);
-  background:#fffdf7;
+  background:#fffdf7
 }
+
 .level-link{
   display:block;
   color:var(--primary);
-  font-weight:700;
+  font-weight:700
 }
-.level-link:hover{color:var(--primary-dark}
-.level-link small{display:block;color:var(--muted);font-weight:400;margin-top:4px}
 
-/* Expands the link's clickable area over the complete level card. */
+/* Corrected CSS syntax */
+.level-link:hover{color:var(--primary-dark)}
+
+.level-link small{
+  display:block;
+  color:var(--muted);
+  font-weight:400;
+  margin-top:4px
+}
+
 .level-link::after{
   content:"";
   position:absolute;
   inset:0;
-  z-index:1;
+  z-index:1
 }
 
-.subject-label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-top:12px;margin-bottom:6px}
-.subject-list{display:flex;flex-wrap:wrap;gap:6px}
-.subject-tag{display:inline-block;padding:4px 9px;border-radius:20px;background:#eaf0f9;color:var(--primary);font-size:12px;font-weight:700}
-.no-subjects{font-size:13px;color:var(--muted);margin-top:8px}
+.subject-label{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:700;
+  margin-top:12px;
+  margin-bottom:6px
+}
 
-.button{border:0;border-radius:8px;padding:11px 15px;cursor:pointer;background:var(--primary);color:white;font-weight:700;display:inline-block;text-align:center}
+.subject-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px
+}
+
+.subject-tag{
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:20px;
+  background:#eaf0f9;
+  color:var(--primary);
+  font-size:12px;
+  font-weight:700
+}
+
+.no-subjects{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px
+}
+
+.button{
+  border:0;
+  border-radius:8px;
+  padding:11px 15px;
+  cursor:pointer;
+  background:var(--primary);
+  color:white;
+  font-weight:700;
+  display:inline-block;
+  text-align:center
+}
+
 .button:hover{background:var(--primary-dark)}
 .button:disabled{opacity:.6;cursor:not-allowed}
 .button.secondary{background:#edf1f7;color:var(--primary)}
@@ -107,63 +319,191 @@ main{flex:1;min-width:0;padding:24px}
 .button.full{width:100%}
 
 .form-group{margin-bottom:15px}
-.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:14px}
-.form-group input{width:100%;padding:12px;border:1px solid #cfd8e5;border-radius:8px;background:white;min-height:44px}
-.form-group input:focus{outline:2px solid #173b6930;border-color:var(--primary)}
-.status-message{margin:12px 0;font-size:14px;overflow-wrap:anywhere}
+
+.form-group label{
+  display:block;
+  margin-bottom:6px;
+  font-weight:700;
+  font-size:14px
+}
+
+.form-group input{
+  width:100%;
+  padding:12px;
+  border:1px solid #cfd8e5;
+  border-radius:8px;
+  background:white;
+  min-height:44px
+}
+
+.form-group input:focus{
+  outline:2px solid #173b6930;
+  border-color:var(--primary)
+}
+
+.status-message{
+  margin:12px 0;
+  font-size:14px;
+  overflow-wrap:anywhere
+}
+
 .status-message.error{color:var(--danger)}
 .status-message.success{color:var(--success)}
 .muted{color:var(--muted)}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px
+}
 
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;background:white}
-th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px;white-space:nowrap}
-th{color:var(--muted);background:#f8faff}
-.pill{display:inline-block;border-radius:20px;padding:4px 9px;font-size:12px;background:#edf1f7;color:var(--text)}
-.pill.success{background:#e6f6ee;color:var(--success)}
-.empty-state{text-align:center;color:var(--muted);padding:25px 12px}
-.result-link{display:inline-block;color:var(--primary);font-weight:700;text-decoration:underline}
 
-/* RECENT ATTEMPTS */
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white
+}
+
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--border);
+  text-align:left;
+  font-size:14px;
+  white-space:nowrap
+}
+
+th{
+  color:var(--muted);
+  background:#f8faff
+}
+
+.pill{
+  display:inline-block;
+  border-radius:20px;
+  padding:4px 9px;
+  font-size:12px;
+  background:#edf1f7;
+  color:var(--text)
+}
+
+.pill.success{
+  background:#e6f6ee;
+  color:var(--success)
+}
+
+.empty-state{
+  text-align:center;
+  color:var(--muted);
+  padding:25px 12px
+}
+
+.result-link{
+  display:inline-block;
+  color:var(--primary);
+  font-weight:700;
+  text-decoration:underline
+}
+
 .recent-attempts-preview{
   max-height:300px;
   overflow:auto;
   border:1px solid var(--border);
   border-radius:9px;
-  background:white;
+  background:white
 }
+
 .recent-attempts-preview.expanded{max-height:420px}
 .recent-attempts-preview table{min-width:650px}
-.recent-attempts-actions{display:flex;justify-content:center;margin-top:12px}
 
-/* RESULTS */
+.recent-attempts-actions{
+  display:flex;
+  justify-content:center;
+  margin-top:12px
+}
+
 .results-preview{
   max-height:300px;
   overflow:auto;
   border:1px solid var(--border);
   border-radius:9px;
-  background:white;
+  background:white
 }
+
 .results-preview.expanded{max-height:420px}
 .results-preview table{min-width:650px}
-.results-preview th,.results-preview td{padding:10px 9px}
-.results-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
-.results-count{color:var(--muted);font-size:13px}
 
-.pricing-note{background:#f8faff;border:1px solid var(--border);border-radius:9px;padding:15px;margin-top:12px}
-.footer{margin-top:28px;padding:18px;text-align:center;color:var(--muted);font-size:13px}
+.results-preview th,.results-preview td{
+  padding:10px 9px
+}
+
+.results-actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+
+.results-count{
+  color:var(--muted);
+  font-size:13px
+}
+
+.pricing-note{
+  background:#f8faff;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:15px;
+  margin-top:12px
+}
+
+.footer{
+  margin-top:28px;
+  padding:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px
+}
+
 .mobile-backdrop{display:none}
 
 @media(max-width:800px){
-  .sidebar{position:fixed;top:58px;bottom:0;left:0;z-index:35;transform:translateX(-105%);transition:transform .2s ease;overflow-y:auto}
-  .sidebar.open{transform:translateX(0);box-shadow:5px 0 20px #00000015}
-  .mobile-backdrop.open{display:block;position:fixed;inset:58px 0 0;z-index:30;background:#00000045}
+  .sidebar{
+    position:fixed;
+    top:58px;
+    bottom:0;
+    left:0;
+    z-index:35;
+    transform:translateX(-105%);
+    transition:transform .2s ease;
+    overflow-y:auto
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+    box-shadow:5px 0 20px #00000015
+  }
+
+  .mobile-backdrop.open{
+    display:block;
+    position:fixed;
+    inset:58px 0 0;
+    z-index:30;
+    background:#00000045
+  }
+
   main{padding:18px 13px}
-  .stats-grid,.form-grid,.level-list{grid-template-columns:1fr}
+
+  .stats-grid,.form-grid,.level-list{
+    grid-template-columns:1fr
+  }
+
   .welcome h1{font-size:23px}
   .top-link{display:none}
 }
+
 @media(max-width:600px){
   .results-preview{max-height:260px}
   .results-preview.expanded{max-height:360px}
@@ -178,18 +518,22 @@ th{color:var(--muted);background:#f8faff}
 
 <header class="topbar">
   <a class="brand" href="dashboard.html">SAINTIG <span>EXAMS</span></a>
+
   <div class="top-actions">
     <a class="top-link" href="dashboard.html">Return Home</a>
     <a class="top-link" href="dashboard.html">Dashboard</a>
-    <button class="menu-button" id="menuButton" type="button" aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
+    <button class="menu-button" id="menuButton" type="button"
+      aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
   </div>
 </header>
 
 <div class="mobile-backdrop" id="mobileBackdrop"></div>
 
 <div class="layout">
+
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-title">Student menu</div>
+
   <button class="nav-link active" data-section="home">🏠 Dashboard</button>
   <button class="nav-link" data-section="exams">📝 Take an Exam</button>
   <button class="nav-link" data-section="history">📚 Exam History</button>
@@ -201,6 +545,7 @@ th{color:var(--muted);background:#f8faff}
   <button class="nav-link" data-section="account">👤 My Account</button>
   <button class="nav-link" data-section="about">ℹ️ About</button>
   <button class="nav-link" data-section="contact">✉️ Contact</button>
+
   <div class="sidebar-title">Account</div>
   <button class="nav-link logout" id="signOutButton">↪ Sign Out</button>
 </aside>
@@ -214,15 +559,18 @@ th{color:var(--muted);background:#f8faff}
 </div>
 
 <section class="section active" id="home">
+
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-label">Exams Attempted</div>
       <div class="stat-value" id="attemptCount">—</div>
     </div>
+
     <div class="stat-card">
       <div class="stat-label">Completed Exams</div>
       <div class="stat-value" id="completedCount">—</div>
     </div>
+
     <div class="stat-card">
       <div class="stat-label">Available Countries</div>
       <div class="stat-value" id="countryCount">—</div>
@@ -231,8 +579,12 @@ th{color:var(--muted);background:#f8faff}
 
   <div class="card">
     <h2 class="section-heading">Start Your Examination</h2>
-    <p class="section-description">Choose your country, education level and an available subject.</p>
-    <button class="button gold" type="button" data-go="exams">Explore Examinations</button>
+    <p class="section-description">
+      Choose your country, education level and an available subject.
+    </p>
+    <button class="button gold" type="button" data-go="exams">
+      Explore Examinations
+    </button>
   </div>
 
   <div class="card">
@@ -245,24 +597,37 @@ th{color:var(--muted);background:#f8faff}
     <h3>📊 Recent Results</h3>
     <p class="muted">Your latest completed examinations.</p>
     <div id="homeResultsContent" class="empty-state">Loading results…</div>
+
     <div class="results-actions">
       <span id="homeResultsCount" class="results-count">Loading results…</span>
-      <button class="button secondary" type="button" data-go="results">View All Results</button>
+      <button class="button secondary" type="button" data-go="results">
+        View All Results
+      </button>
     </div>
   </div>
+
 </section>
 
 <section class="section" id="exams">
   <h2 class="section-heading">Take an Exam</h2>
-  <p class="section-description">Choose a country and education level to find available subjects and examinations.</p>
+  <p class="section-description">
+    Choose a country and education level to find available subjects and examinations.
+  </p>
+
   <div class="card">
     <div class="results-actions">
       <h3>Choose Your Education Level</h3>
-      <button class="button secondary" id="refreshEducationOptions" type="button">Refresh Options</button>
+      <button class="button secondary" id="refreshEducationOptions" type="button">
+        Refresh Options
+      </button>
     </div>
+
     <div id="educationStatus" class="status-message" role="status"></div>
+
     <div id="countryList" class="country-list">
-      <div class="empty-state">Loading countries, education levels and subjects…</div>
+      <div class="empty-state">
+        Loading countries, education levels and subjects…
+      </div>
     </div>
   </div>
 </section>
@@ -278,12 +643,16 @@ th{color:var(--muted);background:#f8faff}
 <section class="section" id="results">
   <h2 class="section-heading">Results</h2>
   <p class="section-description">Review your completed examination attempts.</p>
+
   <div class="card">
     <h3>Your Examination Results</h3>
     <div id="resultsContent" class="empty-state">Loading results…</div>
+
     <div class="results-actions">
       <span id="resultsCount" class="results-count">Loading results…</span>
-      <button class="button secondary" id="toggleAllResults" type="button" hidden>View All Results</button>
+      <button class="button secondary" id="toggleAllResults" type="button" hidden>
+        View All Results
+      </button>
     </div>
   </div>
 </section>
@@ -291,16 +660,21 @@ th{color:var(--muted);background:#f8faff}
 <section class="section" id="school">
   <h2 class="section-heading">Teacher / School Exam Login</h2>
   <p class="section-description">Enter the examination details supplied by your school.</p>
+
   <div class="card">
     <form id="schoolExamForm">
       <div class="form-group">
         <label for="schoolExamId">Exam ID</label>
-        <input id="schoolExamId" name="exam_id" type="text" placeholder="Enter Exam ID" required autocomplete="off">
+        <input id="schoolExamId" name="exam_id" type="text"
+          placeholder="Enter Exam ID" required autocomplete="off">
       </div>
+
       <div class="form-group">
         <label for="schoolStudentId">Student ID</label>
-        <input id="schoolStudentId" name="student_id" type="text" placeholder="Enter Student ID" required autocomplete="off">
+        <input id="schoolStudentId" name="student_id" type="text"
+          placeholder="Enter Student ID" required autocomplete="off">
       </div>
+
       <button class="button full" type="submit">Take Exam</button>
       <div id="schoolExamMessage" class="status-message" role="status"></div>
     </form>
@@ -309,17 +683,24 @@ th{color:var(--muted);background:#f8faff}
 
 <section class="section" id="check-results">
   <h2 class="section-heading">Check / Print Results</h2>
-  <p class="section-description">Enter your school examination ID and student ID to look up a result.</p>
+  <p class="section-description">
+    Enter your school examination ID and student ID to look up a result.
+  </p>
+
   <div class="card">
     <form id="schoolResultForm">
       <div class="form-group">
         <label for="resultExamId">Exam ID</label>
-        <input id="resultExamId" name="exam_id" type="text" placeholder="Enter Exam ID" required autocomplete="off">
+        <input id="resultExamId" name="exam_id" type="text"
+          placeholder="Enter Exam ID" required autocomplete="off">
       </div>
+
       <div class="form-group">
         <label for="resultStudentId">Student ID</label>
-        <input id="resultStudentId" name="student_id" type="text" placeholder="Enter Student ID" required autocomplete="off">
+        <input id="resultStudentId" name="student_id" type="text"
+          placeholder="Enter Student ID" required autocomplete="off">
       </div>
+
       <button class="button full" type="submit">View Results</button>
       <div id="schoolResultMessage" class="status-message" role="status"></div>
       <div id="schoolResultOutput"></div>
@@ -329,17 +710,28 @@ th{color:var(--muted);background:#f8faff}
 
 <section class="section" id="pricing">
   <h2 class="section-heading">Pricing and Subscription</h2>
-  <p class="section-description">Information about SAINTIG EXAMS access and subscription plans.</p>
+  <p class="section-description">
+    Information about SAINTIG EXAMS access and subscription plans.
+  </p>
+
   <div class="card">
     <h3>Your Subscription</h3>
     <p id="subscriptionStatus">Subscription management is not active yet.</p>
+
     <div class="pricing-note">
       <strong>Free access</strong>
-      <p class="muted">You can use the examination features currently made available on the platform without a subscription payment.</p>
+      <p class="muted">
+        You can use the examination features currently made available
+        on the platform without a subscription payment.
+      </p>
     </div>
+
     <div class="pricing-note">
       <strong>Premium subscription</strong>
-      <p class="muted">Premium plan details, prices and payment options will be displayed here when the subscription service is activated.</p>
+      <p class="muted">
+        Premium plan details, prices and payment options will be displayed
+        here when the subscription service is activated.
+      </p>
     </div>
   </div>
 </section>
@@ -347,7 +739,9 @@ th{color:var(--muted);background:#f8faff}
 <section class="section" id="notifications">
   <h2 class="section-heading">Notifications</h2>
   <div class="card">
-    <div class="empty-state">Notifications will appear here when the notification feature is connected.</div>
+    <div class="empty-state">
+      Notifications will appear here when the notification feature is connected.
+    </div>
   </div>
 </section>
 
@@ -357,15 +751,19 @@ th{color:var(--muted);background:#f8faff}
 
   <div class="card">
     <h3>Profile Information</h3>
+
     <form id="profileForm">
       <div class="form-group">
         <label for="displayName">Display name</label>
-        <input id="displayName" type="text" maxlength="100" placeholder="Enter your name" required>
+        <input id="displayName" type="text" maxlength="100"
+          placeholder="Enter your name" required>
       </div>
+
       <div class="form-group">
         <label for="accountEmail">Email address</label>
         <input id="accountEmail" type="email" readonly>
       </div>
+
       <button class="button" type="submit">Save Profile</button>
       <div id="profileMessage" class="status-message" role="status"></div>
     </form>
@@ -374,15 +772,20 @@ th{color:var(--muted);background:#f8faff}
   <div class="card">
     <h3>Change Password</h3>
     <p class="muted">Choose a new password for your account.</p>
+
     <form id="passwordForm">
       <div class="form-group">
         <label for="newPassword">New password</label>
-        <input id="newPassword" type="password" minlength="8" autocomplete="new-password" placeholder="At least 8 characters" required>
+        <input id="newPassword" type="password" minlength="8"
+          autocomplete="new-password" placeholder="At least 8 characters" required>
       </div>
+
       <div class="form-group">
         <label for="confirmPassword">Confirm new password</label>
-        <input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Enter the new password again" required>
+        <input id="confirmPassword" type="password" minlength="8"
+          autocomplete="new-password" placeholder="Enter the new password again" required>
       </div>
+
       <button class="button" type="submit">Update Password</button>
       <div id="passwordMessage" class="status-message" role="status"></div>
     </form>
@@ -392,7 +795,11 @@ th{color:var(--muted);background:#f8faff}
 <section class="section" id="about">
   <h2 class="section-heading">About SAINTIG EXAMS</h2>
   <div class="card">
-    <p>SAINTIG EXAMS is an examination platform designed to provide learners with access to examinations across supported countries, education levels and subjects.</p>
+    <p>
+      SAINTIG EXAMS is an examination platform designed to provide learners
+      with access to examinations across supported countries, education levels
+      and subjects.
+    </p>
     <p>Developed by SAINT IG DIGITAL.</p>
   </div>
 </section>
@@ -400,14 +807,20 @@ th{color:var(--muted);background:#f8faff}
 <section class="section" id="contact">
   <h2 class="section-heading">Contact</h2>
   <div class="card">
-    <p>For assistance with your account or examination access, use the official SAINTIG EXAMS support channel when available.</p>
+    <p>
+      For assistance with your account or examination access, use the official
+      SAINTIG EXAMS support channel when available.
+    </p>
     <p class="muted">Official contact details can be added here later.</p>
   </div>
 </section>
 
 <footer class="footer">
   © <span id="currentYear"></span> SAINTIG EXAMS · SAINT IG DIGITAL
-  <p><a href="dashboard.html">Return Home</a> · <a href="dashboard.html">Return to Dashboard</a></p>
+  <p>
+    <a href="dashboard.html">Return Home</a> ·
+    <a href="dashboard.html">Return to Dashboard</a>
+  </p>
 </footer>
 
 </main>
@@ -448,6 +861,7 @@ function escapeHtml(value) {
 
 function formatDate(value) {
   if (!value) return "—";
+
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "—";
 
@@ -461,7 +875,10 @@ function formatDate(value) {
 }
 
 function normalizeStatus(status) {
-  return String(status || "").trim().toLowerCase().replace(/[\s-]+/g,"_");
+  return String(status || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g,"_");
 }
 
 function isSubmitted(attempt) {
@@ -508,6 +925,7 @@ function openSection(sectionId) {
 
 $("menuButton").addEventListener("click",() => {
   const open = $("sidebar").classList.toggle("open");
+
   $("mobileBackdrop").classList.toggle("open",open);
   $("menuButton").setAttribute("aria-expanded",String(open));
 });
@@ -526,6 +944,7 @@ document.querySelectorAll("[data-go]").forEach(button => {
 
 function updateDisplayedName(name) {
   const clean = String(name || "").trim();
+
   $("studentDisplayName").textContent = clean;
   $("studentDisplayName").hidden = !clean;
 }
@@ -539,7 +958,9 @@ async function loadProfile() {
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if (error) console.warn("Profile query:",error.message);
+  if (error) {
+    console.warn("Profile query:",error.message);
+  }
 
   const name = data?.display_name ||
     currentUser.user_metadata?.display_name ||
@@ -578,11 +999,20 @@ $("profileForm").addEventListener("submit",async event => {
     $("displayName").value = data.display_name;
     updateDisplayedName(data.display_name);
 
-    showMessage($("profileMessage"),"Profile saved successfully.","success");
+    showMessage(
+      $("profileMessage"),
+      "Profile saved successfully.",
+      "success"
+    );
 
   } catch(error) {
     console.error("Profile save:",error);
-    showMessage($("profileMessage"),"Could not save profile: "+error.message,"error");
+
+    showMessage(
+      $("profileMessage"),
+      "Could not save profile: "+error.message,
+      "error"
+    );
 
   } finally {
     button.disabled = false;
@@ -614,13 +1044,23 @@ $("passwordForm").addEventListener("submit",async event => {
 
   try {
     const {error} = await supabase.auth.updateUser({password});
+
     if (error) throw error;
 
     $("passwordForm").reset();
-    showMessage($("passwordMessage"),"Password updated successfully.","success");
+
+    showMessage(
+      $("passwordMessage"),
+      "Password updated successfully.",
+      "success"
+    );
 
   } catch(error) {
-    showMessage($("passwordMessage"),error.message || "Could not update password.","error");
+    showMessage(
+      $("passwordMessage"),
+      error.message || "Could not update password.",
+      "error"
+    );
 
   } finally {
     button.disabled = false;
@@ -635,7 +1075,9 @@ async function loadEducationOptions() {
   const refreshButton = $("refreshEducationOptions");
   const loadVersion = ++educationLoadVersion;
 
-  list.innerHTML = '<div class="empty-state">Loading countries, education levels and subjects…</div>';
+  list.innerHTML =
+    '<div class="empty-state">Loading countries, education levels and subjects…</div>';
+
   showMessage($("educationStatus"),"Updating education options…");
 
   if (refreshButton) refreshButton.disabled = true;
@@ -687,8 +1129,14 @@ async function loadEducationOptions() {
     $("countryCount").textContent = countries.length;
 
     if (!countries.length) {
-      list.innerHTML = '<div class="empty-state">No active countries are available.</div>';
-      showMessage($("educationStatus"),"No published countries are currently available.");
+      list.innerHTML =
+        '<div class="empty-state">No active countries are available.</div>';
+
+      showMessage(
+        $("educationStatus"),
+        "No published countries are currently available."
+      );
+
       return;
     }
 
@@ -711,7 +1159,9 @@ async function loadEducationOptions() {
 
       const currentList = subjectsByLevel.get(levelKey);
 
-      if (!currentList.some(item => String(item.id) === String(subject.id))) {
+      if (!currentList.some(item =>
+        String(item.id) === String(subject.id)
+      )) {
         currentList.push(subject);
       }
     });
@@ -727,6 +1177,7 @@ async function loadEducationOptions() {
 
       return `
         <div class="country-card">
+
           <button class="country-header" type="button"
             data-country-toggle="${escapeHtml(country.id)}"
             aria-expanded="false">
@@ -737,14 +1188,17 @@ async function loadEducationOptions() {
               ${countryLevels.length}
               level${countryLevels.length === 1 ? "" : "s"} ▾
             </span>
+
           </button>
 
-          <div class="country-body" id="country-body-${escapeHtml(country.id)}">
+          <div class="country-body"
+            id="country-body-${escapeHtml(country.id)}">
 
             ${
               countryLevels.length
               ? `
                 <div class="level-list">
+
                   ${countryLevels.map(level => {
                     const levelSubjects =
                       subjectsByLevel.get(String(level.id)) || [];
@@ -752,6 +1206,7 @@ async function loadEducationOptions() {
                     const subjectDisplay = levelSubjects.length
                       ? `
                         <span class="subject-label">Available subjects</span>
+
                         <div class="subject-list">
                           ${levelSubjects.map(subject => `
                             <span class="subject-tag">
@@ -782,6 +1237,7 @@ async function loadEducationOptions() {
                       </div>
                     `;
                   }).join("")}
+
                 </div>
               `
               : `
@@ -799,6 +1255,9 @@ async function loadEducationOptions() {
     list.querySelectorAll("[data-country-toggle]").forEach(button => {
       button.addEventListener("click",() => {
         const body = $("country-body-"+button.dataset.countryToggle);
+
+        if (!body) return;
+
         const open = body.classList.toggle("open");
 
         button.setAttribute("aria-expanded",String(open));
@@ -814,18 +1273,20 @@ async function loadEducationOptions() {
   } catch(error) {
     console.error("Education options query:",error);
 
-    list.innerHTML = `
-      <div class="empty-state">
-        Could not load countries, education levels and subjects.
-        Please refresh or check your database permissions.
-      </div>
-    `;
+    if (loadVersion === educationLoadVersion) {
+      list.innerHTML = `
+        <div class="empty-state">
+          Could not load countries, education levels and subjects.
+          Please refresh or check your database permissions.
+        </div>
+      `;
 
-    showMessage(
-      $("educationStatus"),
-      "Education options could not be loaded: "+error.message,
-      "error"
-    );
+      showMessage(
+        $("educationStatus"),
+        "Education options could not be loaded: "+error.message,
+        "error"
+      );
+    }
 
     throw error;
 
@@ -919,7 +1380,9 @@ function subscribeToEducationChanges() {
 
 async function loadExaminationTitles() {
   const ids = [...new Set(
-    attemptsCache.map(attempt => attempt.examination_id).filter(Boolean)
+    attemptsCache
+      .map(attempt => attempt.examination_id)
+      .filter(Boolean)
   )];
 
   examinationTitles = {};
@@ -1004,12 +1467,16 @@ function renderAttemptsTable(attempts,showScore=true) {
             <th>Result</th>
           </tr>
         </thead>
+
         <tbody>
           ${attempts.map(attempt => {
             const submitted = isSubmitted(attempt);
 
             const resultLink = submitted
-              ? `<a class="result-link" href="result.html?attempt_id=${encodeURIComponent(attempt.id)}">View Result</a>`
+              ? `<a class="result-link"
+                  href="result.html?attempt_id=${encodeURIComponent(attempt.id)}">
+                  View Result
+                </a>`
               : `<span class="muted">Not submitted</span>`;
 
             return `
@@ -1024,11 +1491,13 @@ function renderAttemptsTable(attempts,showScore=true) {
                   </span>
                 </td>
                 <td>${resultLink}</td>
-              </tr>`;
+              </tr>
+            `;
           }).join("")}
         </tbody>
       </table>
-    </div>`;
+    </div>
+  `;
 }
 
 /* RECENTLY ATTEMPTED EXAMS */
@@ -1056,7 +1525,8 @@ function renderRecentAttempts() {
   container.innerHTML = `
     <div class="recent-attempts-preview ${showAllRecentAttempts ? "expanded" : ""}">
       ${renderAttemptsTable(visible,false)}
-    </div>`;
+    </div>
+  `;
 
   if (total > 5) {
     toggle.innerHTML = `
@@ -1189,7 +1659,7 @@ async function initializeDashboard() {
   try {
     const session = await requireStudentSession();
 
-    if (!session) return;
+    if (!session || !session.user) return;
 
     currentUser = session.user;
 
@@ -1234,6 +1704,7 @@ async function initializeDashboard() {
 
   } catch(error) {
     console.error("Dashboard initialization failed:",error);
+
     alert("The dashboard could not finish loading. Please sign in again.");
   }
 }
