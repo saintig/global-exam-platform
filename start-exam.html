@@ -4,265 +4,267 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10264a">
 <title>Start Examination | SAINTIG EXAMS</title>
 
 <style>
 :root {
-  --navy: #10264a;
-  --navy-light: #183963;
-  --gold: #e2b84b;
-  --white: #ffffff;
-  --cream: #faf8f2;
-  --muted: #667085;
-  --border: #e5e8ef;
+  --navy:#10264a;
+  --navy-light:#183963;
+  --gold:#e2b84b;
+  --white:#ffffff;
+  --cream:#faf8f2;
+  --muted:#667085;
+  --border:#e5e8ef;
 }
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-body {
-  margin: 0;
-  background: var(--cream);
-  color: #243047;
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+body{
+  margin:0;
+  background:var(--cream);
+  color:#243047;
+  font-family:Arial,sans-serif;
+  line-height:1.6;
 }
 
-a { text-decoration: none; color: inherit; }
-button, input { font: inherit; }
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
 
-.container {
-  width: min(960px, 92%);
-  margin: auto;
+.container{
+  width:min(960px,92%);
+  margin:auto;
 }
 
-header {
-  background: var(--navy);
-  color: white;
-  border-bottom: 4px solid var(--gold);
+header{
+  background:var(--navy);
+  color:white;
+  border-bottom:4px solid var(--gold);
 }
 
-.header-inner {
-  padding: 14px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.header-inner{
+  padding:14px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
 
-.brand {
-  font-size: 22px;
-  font-weight: 800;
-  line-height: 1.2;
+.brand{
+  font-size:22px;
+  font-weight:800;
+  line-height:1.2;
 }
 
-.brand span { color: var(--gold); }
+.brand span{color:var(--gold)}
 
-.tagline {
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  color: #e4e8f0;
+.tagline{
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:#e4e8f0;
 }
 
-.back {
-  color: var(--gold);
-  font-weight: bold;
-  font-size: 14px;
+.back{
+  color:var(--gold);
+  font-weight:bold;
+  font-size:14px;
 }
 
-.hero {
-  background: var(--navy);
-  color: white;
-  text-align: center;
-  padding: 36px 0 43px;
+.hero{
+  background:var(--navy);
+  color:white;
+  text-align:center;
+  padding:36px 0 43px;
 }
 
-.eyebrow {
-  font-size: 12px;
-  color: var(--gold);
-  font-weight: bold;
-  letter-spacing: 1.6px;
+.eyebrow{
+  font-size:12px;
+  color:var(--gold);
+  font-weight:bold;
+  letter-spacing:1.6px;
 }
 
-h1 {
-  font-size: clamp(28px, 5vw, 40px);
-  line-height: 1.2;
-  margin: 10px 0;
+h1{
+  font-size:clamp(28px,5vw,40px);
+  line-height:1.2;
+  margin:10px 0;
 }
 
-.hero p {
-  color: #e4e8f0;
-  margin: 0 auto;
-  max-width: 650px;
+.hero p{
+  color:#e4e8f0;
+  margin:0 auto;
+  max-width:650px;
 }
 
-main { padding: 30px 0 50px; }
+main{padding:30px 0 50px}
 
-.summary {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
-  margin-bottom: 20px;
+.summary{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:20px;
 }
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+.summary-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
 }
 
-.summary label {
-  display: block;
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: .7px;
+.summary label{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:.7px;
 }
 
-.summary strong {
-  display: block;
-  color: var(--navy);
-  font-size: 17px;
+.summary strong{
+  display:block;
+  color:var(--navy);
+  font-size:17px;
+  overflow-wrap:anywhere;
 }
 
-.card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 13px;
-  padding: 22px;
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:22px;
 }
 
-h2 {
-  color: var(--navy);
-  font-size: 24px;
-  margin: 0 0 5px;
+h2{
+  color:var(--navy);
+  font-size:24px;
+  margin:0 0 5px;
 }
 
-.muted {
-  color: var(--muted);
-  font-size: 14px;
-  margin-top: 0;
+.muted{
+  color:var(--muted);
+  font-size:14px;
+  margin-top:0;
 }
 
-.subject-count {
-  display: inline-block;
-  margin: 12px 0 3px;
-  padding: 5px 11px;
-  background: #fff5d8;
-  color: var(--navy);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
+.subject-count{
+  display:inline-block;
+  margin:12px 0 3px;
+  padding:5px 11px;
+  background:#fff5d8;
+  color:var(--navy);
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
 }
 
-.subjects {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 11px;
-  margin: 18px 0 25px;
+.subjects{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:11px;
+  margin:18px 0 25px;
 }
 
-.subject {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 13px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: white;
-  cursor: pointer;
-  transition: border-color .15s, background .15s;
+.subject{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:white;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
 }
 
-.subject:hover {
-  border-color: var(--gold);
-  background: #fffdf7;
+.subject:hover{
+  border-color:var(--gold);
+  background:#fffdf7;
 }
 
-.subject:has(input:checked) {
-  border: 2px solid var(--gold);
-  background: #fffaf0;
-  padding: 12px;
+.subject:has(input:checked){
+  border:2px solid var(--gold);
+  background:#fffaf0;
+  padding:12px;
 }
 
-.subject input {
-  width: 19px;
-  height: 19px;
-  flex-shrink: 0;
-  accent-color: var(--navy);
+.subject input{
+  width:19px;
+  height:19px;
+  flex-shrink:0;
+  accent-color:var(--navy);
 }
 
-.subject span {
-  font-weight: bold;
-  color: var(--navy);
-  font-size: 14px;
+.subject span{
+  font-weight:bold;
+  color:var(--navy);
+  font-size:14px;
 }
 
-.start-button {
-  width: 100%;
-  padding: 17px;
-  background: var(--gold);
-  color: var(--navy);
-  border: 0;
-  border-radius: 9px;
-  font-size: 17px;
-  font-weight: 800;
-  box-shadow: 0 4px 0 #b38d2c;
-  cursor: pointer;
+.start-button{
+  width:100%;
+  padding:17px;
+  background:var(--gold);
+  color:var(--navy);
+  border:0;
+  border-radius:9px;
+  font-size:17px;
+  font-weight:800;
+  box-shadow:0 4px 0 #b38d2c;
+  cursor:pointer;
 }
 
-.start-button:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #b38d2c;
+.start-button:active{
+  transform:translateY(2px);
+  box-shadow:0 2px 0 #b38d2c;
 }
 
-.start-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
+.start-button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
 }
 
-.status {
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
-  background: #f1f4f8;
-  color: var(--navy);
-  font-size: 14px;
-  overflow-wrap: anywhere;
+.status{
+  padding:12px;
+  border-radius:8px;
+  margin-top:15px;
+  background:#f1f4f8;
+  color:var(--navy);
+  font-size:14px;
+  overflow-wrap:anywhere;
 }
 
-.status:empty { display: none; }
+.status:empty{display:none}
 
-.status.error {
-  background: #fff0f0;
-  color: #9b1c1c;
+.status.error{
+  background:#fff0f0;
+  color:#9b1c1c;
 }
 
-.status.success {
-  background: #eaf8ef;
-  color: #176534;
+.status.success{
+  background:#eaf8ef;
+  color:#176534;
 }
 
-.notice {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 15px;
+.notice{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:15px;
 }
 
-footer {
-  background: #0b1b35;
-  color: white;
-  text-align: center;
-  padding: 22px 10px;
-  font-size: 12px;
+footer{
+  background:#0b1b35;
+  color:white;
+  text-align:center;
+  padding:22px 10px;
+  font-size:12px;
 }
 
-@media (max-width: 520px) {
-  .subjects { grid-template-columns: 1fr; }
-  .card { padding: 17px; }
-  .summary-grid { grid-template-columns: 1fr; }
-  .brand { font-size: 19px; }
+@media(max-width:520px){
+  .subjects{grid-template-columns:1fr}
+  .card{padding:17px}
+  .summary-grid{grid-template-columns:1fr}
+  .brand{font-size:19px}
 }
 </style>
 </head>
@@ -275,6 +277,7 @@ footer {
       SAINTIG <span>EXAMS</span>
       <div class="tagline">LEARN. PRACTICE. SUCCEED.</div>
     </a>
+
     <a class="back" href="dashboard.html">← Dashboard</a>
   </div>
 </header>
@@ -295,6 +298,7 @@ footer {
         <label>Country</label>
         <strong id="countryName">Loading…</strong>
       </div>
+
       <div>
         <label>Education Level</label>
         <strong id="levelName">Loading…</strong>
@@ -332,21 +336,13 @@ footer {
   © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
 </footer>
 
-
-
-
 <script type="module">
-import { supabase, getCurrentSession } from "./auth.js";
+import { supabase } from "./auth.js";
 
-const params = new URLSearchParams(location.search);
+const params = new URLSearchParams(window.location.search);
 
-// Use the real Supabase IDs passed by dashboard.html.
 const countryId = params.get("country_id");
 const levelId = params.get("level_id");
-
-// Support the previous URL format for compatibility, if used elsewhere.
-const legacyCountry = params.get("country") || "";
-const legacyLevel = params.get("level") || "";
 
 const $ = id => document.getElementById(id);
 
@@ -363,10 +359,14 @@ let loadedSubjects = [];
 
 $("year").textContent = new Date().getFullYear();
 
-function showStatus(message, type = "") {
+/* STATUS MESSAGE */
+
+function showStatus(message,type="") {
   statusBox.textContent = message;
   statusBox.className = "status" + (type ? " " + type : "");
 }
+
+/* SUBJECT EMPTY STATE */
 
 function setSubjectMessage(message) {
   subjectList.replaceChildren();
@@ -374,54 +374,56 @@ function setSubjectMessage(message) {
   const paragraph = document.createElement("p");
   paragraph.className = "muted";
   paragraph.textContent = message;
+
   subjectList.appendChild(paragraph);
 
   subjectCount.textContent = "0 SUBJECTS AVAILABLE";
   startButton.disabled = true;
 }
 
-function getSessionObject(result) {
-  if (result?.data?.session) return result.data.session;
-  if (result?.session) return result.session;
-  if (result?.access_token && result?.user) return result;
-  return null;
-}
+/* EDUCATION DETAILS */
 
 function displayEducationDetails() {
   $("countryName").textContent =
-    selectedCountry?.country_name || legacyCountry || "Not selected";
+    selectedCountry?.country_name || "Not selected";
 
   $("levelName").textContent =
-    selectedLevel?.level_name || legacyLevel || "Not selected";
+    selectedLevel?.level_name || "Not selected";
 
   subjectHeading.textContent =
     (selectedLevel?.level_name || "Education") + " Subjects";
 }
+
+/* VERIFY COUNTRY AND EDUCATION LEVEL */
 
 async function loadSelectedEducation() {
   if (!countryId || !levelId) {
     setSubjectMessage(
       "Your country or education level was not provided. Return to the student dashboard and select your country and education level again."
     );
-    showStatus("Missing country or education-level selection.", "error");
+
+    showStatus("Missing country or education-level selection.","error");
     displayEducationDetails();
+
     return false;
   }
 
-  const [countryResult, levelResult] = await Promise.all([
+  const [countryResult,levelResult] = await Promise.all([
+
     supabase
       .from("education_systems")
       .select("id,country_name,is_active")
-      .eq("id", countryId)
-      .eq("is_active", true)
+      .eq("id",countryId)
+      .eq("is_active",true)
       .maybeSingle(),
 
     supabase
       .from("education_levels")
       .select("id,education_system_id,level_name,is_active")
-      .eq("id", levelId)
-      .eq("is_active", true)
+      .eq("id",levelId)
+      .eq("is_active",true)
       .maybeSingle()
+
   ]);
 
   if (countryResult.error) throw countryResult.error;
@@ -434,8 +436,10 @@ async function loadSelectedEducation() {
     setSubjectMessage(
       "This country is unavailable or inactive. Please return to the dashboard."
     );
-    showStatus("The selected country could not be found.", "error");
+
+    showStatus("The selected country could not be found.","error");
     displayEducationDetails();
+
     return false;
   }
 
@@ -443,36 +447,47 @@ async function loadSelectedEducation() {
     setSubjectMessage(
       "This education level is unavailable or inactive. Please return to the dashboard."
     );
-    showStatus("The selected education level could not be found.", "error");
+
+    showStatus("The selected education level could not be found.","error");
     displayEducationDetails();
+
     return false;
   }
 
-  // Prevent a level from another country being used with this country.
-  if (String(selectedLevel.education_system_id) !== String(selectedCountry.id)) {
+  if (
+    String(selectedLevel.education_system_id) !==
+    String(selectedCountry.id)
+  ) {
     setSubjectMessage(
       "The selected education level does not belong to this country. Return to the dashboard and choose again."
     );
-    showStatus("Country and education level do not match.", "error");
+
+    showStatus("Country and education level do not match.","error");
     displayEducationDetails();
+
     return false;
   }
 
   displayEducationDetails();
+
   return true;
 }
+
+/* LOAD SUBJECTS FOR THE SELECTED EDUCATION LEVEL */
 
 async function loadSubjects() {
   startButton.disabled = true;
   subjectCount.textContent = "Loading subjects…";
   subjectList.replaceChildren();
 
+  loadedSubjects = [];
+
   try {
     const validSelection = await loadSelectedEducation();
+
     if (!validSelection) return;
 
-    // Load active subject assignments for the actual selected level.
-    const { data, error } = await supabase
+    const {data,error} = await supabase
       .from("education_level_subjects")
       .select(`
         subject_id,
@@ -483,30 +498,48 @@ async function loadSubjects() {
           is_active
         )
       `)
-      .eq("education_level_id", selectedLevel.id)
-      .eq("is_active", true);
+      .eq("education_level_id",selectedLevel.id)
+      .eq("is_active",true);
 
     if (error) throw error;
 
+    /*
+      Supabase relationship data can be returned as either
+      an object or an array. Handle both formats.
+    */
+
     loadedSubjects = (data || [])
-      .map(row => row.subjects)
+      .filter(row => row.is_active === true)
+      .map(row => {
+        const related = row.subjects;
+
+        const subject = Array.isArray(related)
+          ? related[0]
+          : related;
+
+        return subject || null;
+      })
       .filter(subject =>
         subject &&
         subject.is_active === true &&
         subject.id !== null &&
+        subject.id !== undefined &&
         subject.name
       )
-      .filter((subject, index, subjects) =>
+      .filter((subject,index,subjects) =>
         subjects.findIndex(item =>
           String(item.id) === String(subject.id)
         ) === index
       )
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a,b) =>
+        String(a.name).localeCompare(String(b.name))
+      );
 
     if (!loadedSubjects.length) {
       setSubjectMessage(
         "No active subjects have been assigned to this education level yet. Please contact the administrator."
       );
+
       return;
     }
 
@@ -515,6 +548,7 @@ async function loadSubjects() {
       label.className = "subject";
 
       const radio = document.createElement("input");
+
       radio.type = "radio";
       radio.name = "subject";
       radio.value = String(subject.id);
@@ -524,7 +558,7 @@ async function loadSubjects() {
       const name = document.createElement("span");
       name.textContent = subject.name;
 
-      label.append(radio, name);
+      label.append(radio,name);
       subjectList.appendChild(label);
     });
 
@@ -533,8 +567,8 @@ async function loadSubjects() {
 
     startButton.disabled = false;
 
-  } catch (error) {
-    console.error("Unable to load education subjects:", error);
+  } catch(error) {
+    console.error("Unable to load education subjects:",error);
 
     setSubjectMessage(
       "We couldn't load the subjects. Check your internet connection and Supabase read permissions, then refresh."
@@ -547,36 +581,9 @@ async function loadSubjects() {
   }
 }
 
+/* START EXAMINATION */
 
-async function findPublishedExamination(subjectId) {
-  if (!selectedLevel?.id) {
-    throw new Error(
-      "Your education level could not be verified. Return to the dashboard and select your level again."
-    );
-  }
-
-  const { data, error } = await supabase
-    .from("examinations")
-    .select("id,subject_id,education_level_id,title,is_published")
-    .eq("subject_id", subjectId)
-    .eq("education_level_id", selectedLevel.id)
-    .eq("is_published", true)
-    .order("created_at", { ascending: false })
-    .limit(1);
-
-  if (error) throw error;
-
-  if (!data?.length) {
-    throw new Error(
-      "There is no published examination for this subject and education level yet. Please contact the administrator."
-    );
-  }
-
-  return data[0];
-}
-
-
-form.addEventListener("submit", async event => {
+form.addEventListener("submit",async event => {
   event.preventDefault();
 
   const selected = form.querySelector(
@@ -584,7 +591,7 @@ form.addEventListener("submit", async event => {
   );
 
   if (!selected) {
-    showStatus("Please select a subject first.", "error");
+    showStatus("Please select a subject first.","error");
     return;
   }
 
@@ -593,6 +600,20 @@ form.addEventListener("submit", async event => {
       "Your country or education level could not be verified. Return to the dashboard and try again.",
       "error"
     );
+
+    return;
+  }
+
+  const subjectId = selected.value;
+
+  if (!loadedSubjects.some(subject =>
+    String(subject.id) === String(subjectId)
+  )) {
+    showStatus(
+      "The selected subject is not available. Refresh the page and try again.",
+      "error"
+    );
+
     return;
   }
 
@@ -602,33 +623,38 @@ form.addEventListener("submit", async event => {
   try {
     showStatus("Checking your sign-in…");
 
-    const sessionResult = await getCurrentSession();
-    let session = getSessionObject(sessionResult);
+    /*
+      Read the current Supabase session directly.
+      This avoids relying on different possible return
+      formats from getCurrentSession().
+    */
 
-    const { data: sessionData, error: sessionError } =
+    const {data:sessionData,error:sessionError} =
       await supabase.auth.getSession();
 
     if (sessionError) throw sessionError;
 
-    session = sessionData?.session || session;
+    const session = sessionData?.session;
 
     if (!session?.access_token || !session?.user?.id) {
-      location.href = "student-login.html?mode=login";
+      window.location.href = "student-login.html?mode=login";
       return;
     }
 
-    const subjectId = selected.value;
-
     showStatus("Verifying your selected subject…");
 
-    // Confirm that the subject is still assigned to this level.
-    const { data: assignment, error: assignmentError } =
+    /*
+      Confirm that the subject is still actively assigned
+      to this education level.
+    */
+
+    const {data:assignment,error:assignmentError} =
       await supabase
         .from("education_level_subjects")
         .select("subject_id")
-        .eq("education_level_id", selectedLevel.id)
-        .eq("subject_id", subjectId)
-        .eq("is_active", true)
+        .eq("education_level_id",selectedLevel.id)
+        .eq("subject_id",subjectId)
+        .eq("is_active",true)
         .maybeSingle();
 
     if (assignmentError) throw assignmentError;
@@ -639,7 +665,31 @@ form.addEventListener("submit", async event => {
       );
     }
 
-    // Open exam-type.html instead of starting the examination here.
+    /*
+      Confirm that the subject itself is still active.
+    */
+
+    const {data:subjectRecord,error:subjectError} =
+      await supabase
+        .from("subjects")
+        .select("id,name,is_active")
+        .eq("id",subjectId)
+        .eq("is_active",true)
+        .maybeSingle();
+
+    if (subjectError) throw subjectError;
+
+    if (!subjectRecord) {
+      throw new Error(
+        "This subject is no longer available. Please refresh the page and select another subject."
+      );
+    }
+
+    /*
+      Continue to the existing exam-type page.
+      Do not start an examination on this page.
+    */
+
     const destination = new URL(
       "exam-type.html",
       window.location.href
@@ -647,25 +697,28 @@ form.addEventListener("submit", async event => {
 
     destination.searchParams.set(
       "country_id",
-      selectedCountry.id
+      String(selectedCountry.id)
     );
 
     destination.searchParams.set(
       "level_id",
-      selectedLevel.id
+      String(selectedLevel.id)
     );
 
     destination.searchParams.set(
       "subject_id",
-      subjectId
+      String(subjectId)
     );
 
-    showStatus("Opening Free and Premium examination options…", "success");
+    showStatus(
+      "Opening Free and Premium examination options…",
+      "success"
+    );
 
     window.location.assign(destination.toString());
 
-  } catch (error) {
-    console.error("Unable to open examination options:", error);
+  } catch(error) {
+    console.error("Unable to open examination options:",error);
 
     showStatus(
       error?.message ||
@@ -673,16 +726,17 @@ form.addEventListener("submit", async event => {
       "error"
     );
 
+    startButton.disabled = false;
+
   } finally {
     startButton.textContent = "START EXAMINATION →";
-
-    if (loadedSubjects.length) {
-      startButton.disabled = false;
-    }
   }
 });
+
+/* INITIAL LOAD */
 
 loadSubjects();
 </script>
 
-  
+</body>
+</html>
