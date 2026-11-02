@@ -1,12 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10264a">
-  <meta name="description" content="SAINTIG EXAMS helps students learn, practise and succeed through online examinations.">
-  <title>SAINTIG EXAMS | Learn. Practice. Succeed.</title>
+  <meta name="description" content="SAINTIG EXAMS is a digital examination platform supporting students, teachers and schools with online examinations, practice and assessment management.">
+  <title>SAINTIG EXAMS | Learn. Teach. Assess. Succeed.</title>
 
   <style>
     :root {
@@ -17,6 +16,8 @@
       --cream: #faf8f2;
       --muted: #667085;
       --border: #e5e8ef;
+      --green: #16834f;
+      --red: #bd3838;
     }
 
     * {
@@ -275,7 +276,7 @@
     .hero-content {
       position: relative;
       z-index: 1;
-      max-width: 790px;
+      max-width: 850px;
       text-align: center;
       margin: auto;
     }
@@ -302,12 +303,39 @@
       color: var(--gold);
     }
 
-    .hero p {
-      max-width: 650px;
+    .hero-description {
+      max-width: 700px;
       margin: 0 auto 28px;
       color: #e1e8f2;
       font-size: 16px;
       line-height: 1.8;
+    }
+
+    .hero-audience {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+      margin: 28px 0;
+      text-align: left;
+    }
+
+    .audience-card {
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.07);
+      border-radius: 13px;
+    }
+
+    .audience-card h3 {
+      color: var(--gold);
+      font-size: 17px;
+      margin-bottom: 9px;
+    }
+
+    .audience-card p {
+      color: #e1e8f2;
+      font-size: 13px;
+      line-height: 1.7;
     }
 
     .hero-buttons {
@@ -317,19 +345,17 @@
       gap: 13px;
     }
 
-    /* TEACHER/SCHOOL LINKS IN HERO */
-
     .hero-school-links {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      margin-top: 24px;
+      margin-top: 22px;
     }
 
     .school-account-link {
       display: block;
-      width: min(100%, 370px);
+      width: min(100%, 390px);
       padding: 12px 16px;
       border: 1px solid rgba(226,184,75,.65);
       border-radius: 9px;
@@ -411,6 +437,93 @@
       background: rgba(255,255,255,.1);
     }
 
+    .btn-small {
+      min-height: 43px;
+      padding: 11px 15px;
+      font-size: 13px;
+    }
+
+    .btn-navy {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .btn-navy:hover {
+      background: var(--navy-light);
+    }
+
+    .btn-light {
+      background: #fff4d6;
+      color: var(--navy);
+      border: 1px solid #ecd18a;
+    }
+
+    .btn-light:hover {
+      background: #f9e9bc;
+    }
+
+    /* PLATFORM STATISTICS */
+
+    .statistics-section {
+      padding: 45px 0;
+      background: linear-gradient(125deg, #293f91, #775078, #d96a24);
+      color: var(--white);
+    }
+
+    .statistics-card {
+      max-width: 850px;
+      margin: auto;
+      padding: 30px 25px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 23px;
+      background: rgba(255,255,255,.13);
+      box-shadow: 0 12px 35px rgba(0,0,0,.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .statistics-heading {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #f5f5f5;
+    }
+
+    .statistics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 25px 15px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 8px;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: clamp(30px, 5vw, 43px);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .stat-label {
+      display: block;
+      color: #f4f1f1;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .statistics-note {
+      text-align: center;
+      color: rgba(255,255,255,.9);
+      font-size: 11px;
+      margin-top: 20px;
+    }
+
     /* GENERAL SECTIONS */
 
     .section {
@@ -419,7 +532,7 @@
 
     .section-heading {
       text-align: center;
-      max-width: 690px;
+      max-width: 720px;
       margin: 0 auto 32px;
     }
 
@@ -446,14 +559,14 @@
     /* EXAMINATION SHOWCASE */
 
     .exam-showcase {
-      padding: 35px 0 42px;
+      padding: 42px 0;
       background: #f0f3f8;
       border-bottom: 1px solid var(--border);
     }
 
     .exam-showcase-heading {
       text-align: center;
-      margin-bottom: 23px;
+      margin-bottom: 25px;
     }
 
     .exam-showcase-heading h2 {
@@ -468,12 +581,12 @@
 
     .exam-grid {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
       gap: 13px;
     }
 
     .exam-tile {
-      min-height: 125px;
+      min-height: 145px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -485,9 +598,7 @@
       border-bottom: 4px solid var(--gold);
       border-radius: 12px;
       text-align: center;
-      box-shadow: 0 5px 16px rgba(16,38,74,.04);
       color: var(--navy);
-      text-decoration: none;
       cursor: pointer;
       transition: transform .2s, box-shadow .2s, border-color .2s;
     }
@@ -504,17 +615,58 @@
       outline-offset: 3px;
     }
 
-    .exam-tile-icon {
-      width: 43px;
-      height: 43px;
+    .exam-logo {
+      width: 62px;
+      height: 52px;
       display: flex;
       justify-content: center;
       align-items: center;
-      border-radius: 11px;
-      background: #fff2ce;
-      color: #795b0d;
-      font-size: 22px;
-      font-weight: 800;
+      border-radius: 10px;
+      background: #fff4d6;
+      color: var(--navy);
+      font-weight: 900;
+      font-size: 23px;
+      letter-spacing: -1px;
+      border: 1px solid #f0dfb3;
+    }
+
+    .exam-logo.waec {
+      color: #174d9b;
+      border-bottom: 4px solid #e3a72e;
+    }
+
+    .exam-logo.neco {
+      color: #17844d;
+      border-bottom: 4px solid #e3a72e;
+    }
+
+    .exam-logo.jamb {
+      color: #174d9b;
+      border-bottom: 4px solid #d44b36;
+    }
+
+    .exam-logo.ielts {
+      color: #d34b32;
+      font-size: 19px;
+      letter-spacing: -1px;
+    }
+
+    .exam-logo.toefl {
+      color: #23609d;
+      font-size: 19px;
+      letter-spacing: -1px;
+    }
+
+    .exam-logo.gce {
+      width: 57px;
+      height: 57px;
+      border-radius: 50%;
+      color: var(--gold);
+      background: var(--navy);
+      border: 3px double var(--gold);
+      font-size: 18px;
+      letter-spacing: 0;
+      box-shadow: 0 3px 9px rgba(16,38,74,.15);
     }
 
     .exam-tile strong {
@@ -525,6 +677,152 @@
     .exam-tile small {
       color: var(--muted);
       font-size: 10px;
+    }
+
+    .exam-showcase-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 18px;
+    }
+
+    /* PAPER EXAMS COMPARISON */
+
+    .comparison-section {
+      background: var(--white);
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .comparison-card {
+      padding: 26px;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+    }
+
+    .comparison-card.traditional {
+      background: #fff4f2;
+      border-top: 5px solid #c94b43;
+    }
+
+    .comparison-card.saintig {
+      background: #eff8f2;
+      border-top: 5px solid #238653;
+    }
+
+    .comparison-card h3 {
+      font-size: 20px;
+      margin-bottom: 19px;
+    }
+
+    .comparison-card.traditional h3 {
+      color: #9d302b;
+    }
+
+    .comparison-card.saintig h3 {
+      color: #176b43;
+    }
+
+    .comparison-list {
+      list-style: none;
+      display: grid;
+      gap: 15px;
+    }
+
+    .comparison-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 14px;
+      color: #344054;
+      line-height: 1.55;
+    }
+
+    .comparison-mark {
+      flex-shrink: 0;
+      font-weight: 900;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .traditional .comparison-mark {
+      color: var(--red);
+    }
+
+    .saintig .comparison-mark {
+      color: var(--green);
+    }
+
+    .comparison-disclaimer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 20px;
+    }
+
+    /* RESULT VERIFICATION PROMO */
+
+    .verification-section {
+      padding: 48px 0;
+      background: #f0f3f8;
+    }
+
+    .verification-card {
+      max-width: 800px;
+      margin: auto;
+      padding: 35px 25px;
+      text-align: center;
+      border-radius: 18px;
+      background: var(--navy);
+      color: var(--white);
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 28px rgba(16,38,74,.12);
+    }
+
+    .verification-symbol {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 65px;
+      height: 65px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-size: 30px;
+    }
+
+    .verification-card .official-label {
+      display: inline-block;
+      padding: 5px 13px;
+      border-radius: 30px;
+      background: rgba(226,184,75,.16);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .verification-card h2 {
+      font-size: clamp(23px, 4vw, 32px);
+      margin-bottom: 10px;
+    }
+
+    .verification-card h2 span {
+      color: var(--gold);
+    }
+
+    .verification-card p {
+      max-width: 580px;
+      margin: 0 auto 20px;
+      color: #e1e8f2;
+      font-size: 14px;
     }
 
     /* COUNTRY AND EDUCATION SELECTOR */
@@ -746,31 +1044,6 @@
       gap: 10px;
     }
 
-    .btn-small {
-      min-height: 43px;
-      padding: 11px 15px;
-      font-size: 13px;
-    }
-
-    .btn-navy {
-      background: var(--navy);
-      color: var(--white);
-    }
-
-    .btn-navy:hover {
-      background: var(--navy-light);
-    }
-
-    .btn-light {
-      background: #fff4d6;
-      color: var(--navy);
-      border: 1px solid #ecd18a;
-    }
-
-    .btn-light:hover {
-      background: #f9e9bc;
-    }
-
     /* EXAM ACCESS AND RESULT FORMS */
 
     .form-section {
@@ -940,18 +1213,46 @@
     /* ABOUT */
 
     .about-content {
-      max-width: 780px;
+      max-width: 850px;
       margin: auto;
+    }
+
+    .about-content > p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 15px;
+      line-height: 1.85;
       text-align: center;
     }
 
-    .about-content p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 12px;
+    .about-mission-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 28px;
     }
 
-    /* STUDENT CTA */
+    .about-info-card {
+      padding: 23px;
+      background: #f0f3f8;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      text-align: left;
+    }
+
+    .about-info-card h3 {
+      font-size: 17px;
+      color: var(--navy);
+      margin-bottom: 9px;
+    }
+
+    .about-info-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* CALL TO ACTION */
 
     .cta {
       padding: 55px 0;
@@ -971,10 +1272,17 @@
     }
 
     .cta-box p {
-      max-width: 570px;
+      max-width: 620px;
       margin: 0 auto 23px;
       color: #e1e8f2;
       font-size: 14px;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     /* FOOTER */
@@ -1041,6 +1349,12 @@
 
     /* RESPONSIVE DESIGN */
 
+    @media (max-width: 900px) {
+      .exam-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 760px) {
       .hero {
         padding: 52px 0 57px;
@@ -1048,7 +1362,12 @@
 
       .benefits,
       .feature-grid,
-      .form-grid {
+      .form-grid,
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-mission-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1093,13 +1412,9 @@
       .education-option-text strong {
         font-size: 14px;
       }
-
-      .exam-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
     }
 
-    @media (max-width: 420px) {
+    @media (max-width: 480px) {
       .brand {
         font-size: 19px;
       }
@@ -1109,8 +1424,14 @@
         letter-spacing: 1px;
       }
 
-      .hero p {
+      .hero p,
+      .hero-description {
         font-size: 14px;
+      }
+
+      .hero-audience {
+        grid-template-columns: 1fr;
+        gap: 12px;
       }
 
       .hero-buttons {
@@ -1155,7 +1476,31 @@
       }
 
       .exam-tile {
-        min-height: 112px;
+        min-height: 125px;
+      }
+
+      .statistics-card {
+        padding: 25px 13px;
+      }
+
+      .statistics-grid {
+        gap: 18px 8px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+      }
+
+      .comparison-card {
+        padding: 21px 17px;
+      }
+
+      .cta-actions {
+        flex-direction: column;
+      }
+
+      .cta-actions .btn {
+        width: 100%;
       }
     }
 
@@ -1178,7 +1523,7 @@
       <a class="brand" href="index.html"
         aria-label="SAINTIG EXAMS homepage">
         SAINTIG <span>EXAMS</span>
-        <small>LEARN. PRACTICE. SUCCEED.</small>
+        <small>LEARN. TEACH. ASSESS. SUCCEED.</small>
       </a>
 
       <button
@@ -1207,7 +1552,7 @@
     <div class="menu-heading">
       <div class="menu-brand">
         SAINTIG <span>EXAMS</span>
-        <small>LEARN. PRACTICE. SUCCEED.</small>
+        <small>LEARN. TEACH. ASSESS. SUCCEED.</small>
       </div>
 
       <button class="menu-close" id="menuClose"
@@ -1233,7 +1578,6 @@
 
     <hr class="menu-divider">
 
-    <!-- TEACHER/SCHOOL ACCOUNT LINKS -->
     <a class="menu-link" href="school-login.html">
       <span class="menu-icon" aria-hidden="true">♟</span>
       Teacher/School Sign In
@@ -1286,24 +1630,50 @@
 
   <main>
 
-    <!-- HERO -->
+    <!-- HERO: STUDENTS AND TEACHERS/SCHOOLS -->
     <section class="hero" id="home">
       <div class="container hero-content">
-        <div class="eyebrow">YOUR LEARNING JOURNEY STARTS HERE</div>
+
+        <div class="eyebrow">
+          YOUR DIGITAL EXAMINATION PLATFORM
+        </div>
 
         <h1>
-          Learn. Practice.<br>
-          <span>Succeed.</span>
+          A Smarter Way to<br>
+          <span>Learn, Teach and Assess.</span>
         </h1>
 
-        <p>
-          Welcome to SAINTIG EXAMS, an online examination platform
-          designed to help students practise, assess their knowledge
-          and build confidence through accessible online examinations.
+        <p class="hero-description">
+          Welcome to SAINTIG EXAMS, a digital examination and learning
+          platform designed to connect students, teachers and schools
+          through accessible, organised and reliable online assessment.
         </p>
+
+        <div class="hero-audience">
+
+          <article class="audience-card">
+            <h3>For Students</h3>
+            <p>
+              Practise for important examinations, test your knowledge,
+              improve your examination skills and monitor your academic
+              progress through available online assessments.
+            </p>
+          </article>
+
+          <article class="audience-card">
+            <h3>For Teachers/Schools</h3>
+            <p>
+              Create and manage examinations, organise question banks,
+              conduct online assessments, monitor student performance
+              and manage examination results.
+            </p>
+          </article>
+
+        </div>
 
         <!-- STUDENT ACCOUNT LINKS -->
         <div class="hero-buttons">
+
           <a class="btn btn-gold"
             href="student-login.html?mode=register">
             Create Student Account
@@ -1313,6 +1683,7 @@
             href="student-login.html?mode=login">
             Student Sign In
           </a>
+
         </div>
 
         <!-- TEACHER/SCHOOL ACCOUNT LINKS -->
@@ -1344,14 +1715,58 @@
       </div>
     </section>
 
+    <!-- PLATFORM STATISTICS -->
+    <section class="statistics-section" id="platform-statistics">
+      <div class="container">
+
+        <div class="statistics-card">
+
+          <div class="statistics-heading">
+            ✦ &nbsp; SAINTIG EXAMS PLATFORM GROWTH TARGETS
+          </div>
+
+          <div class="statistics-grid">
+
+            <div class="stat-item">
+              <span class="stat-number">15K+</span>
+              <span class="stat-label">Student Target</span>
+            </div>
+
+            <div class="stat-item">
+              <span class="stat-number">80+</span>
+              <span class="stat-label">School Partnership Target</span>
+            </div>
+
+            <div class="stat-item">
+              <span class="stat-number">64K+</span>
+              <span class="stat-label">Question Bank Target</span>
+            </div>
+
+            <div class="stat-item">
+              <span class="stat-number">50K+</span>
+              <span class="stat-label">Exam Completion Target</span>
+            </div>
+
+          </div>
+
+          <p class="statistics-note">
+            These are growth targets, not current user or usage statistics.
+          </p>
+
+        </div>
+
+      </div>
+    </section>
+
     <!-- EXAMINATION SHOWCASE -->
-    <section class="exam-showcase">
+    <section class="exam-showcase" id="examinations">
       <div class="container">
 
         <div class="exam-showcase-heading">
           <h2>Prepare for Important Examinations</h2>
           <p>
             Practise, improve your knowledge and prepare with confidence.
+            Select an examination category to continue.
           </p>
         </div>
 
@@ -1359,47 +1774,193 @@
 
           <a href="student-login.html" class="exam-tile"
             aria-label="WAEC student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">W</div>
+
+            <div class="exam-logo waec" aria-hidden="true">WAEC</div>
             <strong>WAEC</strong>
             <small>West African Examinations</small>
+
           </a>
 
           <a href="student-login.html" class="exam-tile"
             aria-label="NECO student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">N</div>
+
+            <div class="exam-logo neco" aria-hidden="true">NECO</div>
             <strong>NECO</strong>
             <small>National Examinations</small>
+
           </a>
 
           <a href="student-login.html" class="exam-tile"
             aria-label="JAMB student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">J</div>
+
+            <div class="exam-logo jamb" aria-hidden="true">JAMB</div>
             <strong>JAMB</strong>
             <small>UTME Preparation</small>
+
           </a>
 
           <a href="student-login.html" class="exam-tile"
             aria-label="IELTS student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">I</div>
+
+            <div class="exam-logo ielts" aria-hidden="true">IELTS</div>
             <strong>IELTS</strong>
             <small>English Language Practice</small>
+
           </a>
 
           <a href="student-login.html" class="exam-tile"
             aria-label="TOEFL student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">T</div>
+
+            <div class="exam-logo toefl" aria-hidden="true">TOEFL</div>
             <strong>TOEFL</strong>
             <small>English Language Practice</small>
+
           </a>
 
           <a href="student-login.html" class="exam-tile"
             aria-label="GCE student registration and sign in">
-            <div class="exam-tile-icon" aria-hidden="true">G</div>
+
+            <div class="exam-logo gce" aria-hidden="true">GCE</div>
             <strong>GCE</strong>
-            <small>General Certificate Examination</small>
+            <small>General Certificate of Education</small>
+
           </a>
 
         </div>
+
+        <p class="exam-showcase-note">
+          Select any examination category to access the student account page.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- TRADITIONAL PAPER EXAMS VS SAINTIG EXAMS -->
+    <section class="section comparison-section" id="why-digital-exams">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="kicker">The Digital Advantage</div>
+          <h2>A Better Way to Conduct Examinations</h2>
+          <p>
+            Discover how digital examination systems can help reduce
+            some of the challenges associated with traditional paper exams.
+          </p>
+        </div>
+
+        <div class="comparison-grid">
+
+          <!-- TRADITIONAL PAPER EXAMS -->
+          <article class="comparison-card traditional">
+
+            <h3>Traditional Paper Exams</h3>
+
+            <ul class="comparison-list">
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✕</span>
+                <span>Expensive printing and photocopying costs.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✕</span>
+                <span>Teachers spend considerable time marking scripts.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✕</span>
+                <span>Prone to human errors during marking.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✕</span>
+                <span>Risk of examination malpractice and question leakage.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✕</span>
+                <span>Delayed results for students and parents.</span>
+              </li>
+
+            </ul>
+
+          </article>
+
+          <!-- SAINTIG EXAMS -->
+          <article class="comparison-card saintig">
+
+            <h3>The SAINTIG EXAMS Advantage</h3>
+
+            <ul class="comparison-list">
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✓</span>
+                <span>Reduce printing and photocopying expenses.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✓</span>
+                <span>Automatic marking for supported objective examinations.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✓</span>
+                <span>Consistent automated scoring based on approved answers.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✓</span>
+                <span>Controlled examination access and question management.</span>
+              </li>
+
+              <li>
+                <span class="comparison-mark" aria-hidden="true">✓</span>
+                <span>Faster result processing and access after release.</span>
+              </li>
+
+            </ul>
+
+          </article>
+
+        </div>
+
+        <p class="comparison-disclaimer">
+          Actual results depend on the examination setup, available features
+          and the security procedures used by each school.
+        </p>
+
+      </div>
+    </section>
+
+    <!-- OFFICIAL RESULT VERIFICATION PROMOTION -->
+    <section class="verification-section" id="official-verification">
+      <div class="container">
+
+        <div class="verification-card">
+
+          <div class="verification-symbol" aria-hidden="true">
+            ✓
+          </div>
+
+          <div class="official-label">RESULT VERIFICATION</div>
+
+          <h2>
+            OFFICIAL<br>
+            <span>VERIFY RESULTS ✓</span>
+          </h2>
+
+          <p>
+            Verify examination results securely using the required
+            Examination ID and Student ID. Access and print eligible
+            results once they have been released and verified.
+          </p>
+
+          <a class="btn btn-gold" href="school-results.html">
+            Check and Print Results →
+          </a>
+
+        </div>
+
       </div>
     </section>
 
@@ -1421,6 +1982,7 @@
 
           <!-- NIGERIA -->
           <article class="country-item">
+
             <button class="country-toggle"
               type="button"
               aria-expanded="false"
@@ -1441,32 +2003,38 @@
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Primary%20School">
+
                 <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Primary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Junior%20Secondary%20School">
+
                 <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Junior Secondary School</strong>
                   <small>Strengthen your subject knowledge</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Nigeria&amp;level=Senior%20Secondary%20School">
+
                 <span class="education-option-icon">🏆</span>
                 <span class="education-option-text">
                   <strong>Senior Secondary School</strong>
                   <small>Prepare for advanced school examinations</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
             </div>
@@ -1474,6 +2042,7 @@
 
           <!-- UNITED STATES -->
           <article class="country-item">
+
             <button class="country-toggle"
               type="button"
               aria-expanded="false"
@@ -1494,22 +2063,26 @@
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20States&amp;level=Elementary%20School">
+
                 <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Elementary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20States&amp;level=Middle%2FHigh%20School">
+
                 <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Middle/High School</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
             </div>
@@ -1517,6 +2090,7 @@
 
           <!-- UNITED KINGDOM -->
           <article class="country-item">
+
             <button class="country-toggle"
               type="button"
               aria-expanded="false"
@@ -1537,22 +2111,26 @@
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Primary%20Education">
+
                 <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Primary Education</strong>
                   <small>Build your academic foundation</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=United%20Kingdom&amp;level=Secondary%20Education">
+
                 <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Secondary Education</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
             </div>
@@ -1560,6 +2138,7 @@
 
           <!-- CANADA -->
           <article class="country-item">
+
             <button class="country-toggle"
               type="button"
               aria-expanded="false"
@@ -1580,22 +2159,26 @@
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Canada&amp;level=Elementary%20School">
+
                 <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Elementary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Canada&amp;level=Middle%2FSecondary%20School">
+
                 <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Middle/Secondary School</strong>
                   <small>Practise and prepare for school assessments</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
             </div>
@@ -1603,6 +2186,7 @@
 
           <!-- AUSTRALIA -->
           <article class="country-item">
+
             <button class="country-toggle"
               type="button"
               aria-expanded="false"
@@ -1623,22 +2207,26 @@
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Australia&amp;level=Primary%20School">
+
                 <span class="education-option-icon">📚</span>
                 <span class="education-option-text">
                   <strong>Primary School</strong>
                   <small>Build your academic foundation</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
               <a class="education-option"
                 href="student-login.html?mode=register&amp;country=Australia&amp;level=Secondary%20School">
+
                 <span class="education-option-icon">🎓</span>
                 <span class="education-option-text">
                   <strong>Secondary School</strong>
                   <small>Develop your knowledge and prepare for assessments</small>
                 </span>
                 <span class="education-option-arrow">→</span>
+
               </a>
 
             </div>
@@ -1654,21 +2242,25 @@
 
         <div class="section-heading">
           <div class="kicker">For Teachers and Schools</div>
-          <h2>Teacher &amp; School Portal</h2>
+          <h2>Teacher/School Portal</h2>
           <p>
-            Prepare examinations, manage students and access examination
-            services through the teacher and school portal.
+            Prepare examinations, manage question banks, organise
+            student assessments and access examination services
+            through the Teacher/School portal.
           </p>
         </div>
 
         <div class="feature-grid">
 
           <article class="feature-card">
+
             <div class="feature-icon" aria-hidden="true">👨‍🏫</div>
+
             <h3>Already Have an Account?</h3>
+
             <p>
-              Sign in to your teacher or school account to manage your
-              examination activities.
+              Sign in to your Teacher/School account to manage
+              examination activities, questions and student assessments.
             </p>
 
             <div class="feature-actions">
@@ -1677,22 +2269,27 @@
                 Teacher/School Sign In
               </a>
             </div>
+
           </article>
 
           <article class="feature-card">
+
             <div class="feature-icon" aria-hidden="true">📝</div>
+
             <h3>New to the Portal?</h3>
+
             <p>
-              Create a teacher or school account to get started with
+              Create a Teacher/School account to get started with
               examination preparation and management.
             </p>
 
             <div class="feature-actions">
               <a class="btn btn-light btn-small"
                 href="school-login.html">
-                Create Account
+                Create Teacher/School Account
               </a>
             </div>
+
           </article>
 
         </div>
@@ -1715,12 +2312,15 @@
         <div class="form-grid">
 
           <div class="access-card">
+
             <h3>Enter Your Examination Details</h3>
+
             <p class="description">
               Use the IDs issued to you by your teacher or school.
             </p>
 
-            <form id="examAccessForm" action="teacher-exam-login.html"
+            <form id="examAccessForm"
+              action="school-exam-login.html"
               method="get">
 
               <div class="field">
@@ -1756,11 +2356,15 @@
 
               <div class="form-status" id="examAccessStatus"
                 role="status" aria-live="polite"></div>
+
             </form>
+
           </div>
 
           <div class="access-card">
+
             <h3>Need Help Accessing Your Exam?</h3>
+
             <p class="description">
               Make sure both IDs match the details provided by your
               teacher or school.
@@ -1777,6 +2381,7 @@
             <a class="btn btn-light form-button" href="#contact">
               Contact Information
             </a>
+
           </div>
 
         </div>
@@ -1800,13 +2405,17 @@
         <div class="form-grid">
 
           <div class="access-card">
+
             <h3>Find Your Result</h3>
+
             <p class="description">
               Enter the examination and student details supplied
               by your teacher or school.
             </p>
 
-            <form id="resultsForm" action="print-results.html" method="get">
+            <form id="resultsForm"
+              action="school-results.html"
+              method="get">
 
               <div class="field">
                 <label for="resultExamId">Exam ID</label>
@@ -1841,11 +2450,15 @@
 
               <div class="form-status" id="resultsStatus"
                 role="status" aria-live="polite"></div>
+
             </form>
+
           </div>
 
           <div class="access-card">
+
             <h3>Print or Save Your Result</h3>
+
             <p class="description">
               After your result has been securely verified and displayed,
               you will be able to print it or save it as a PDF.
@@ -1862,6 +2475,7 @@
             <a class="btn btn-light form-button" href="#exam-access">
               Access an Examination
             </a>
+
           </div>
 
         </div>
@@ -1916,15 +2530,15 @@
     </section>
 
     <!-- BENEFITS -->
-    <section class="section benefits-section" id="about">
+    <section class="section benefits-section" id="benefits">
       <div class="container">
 
         <div class="section-heading">
           <div class="kicker">Why SAINTIG EXAMS?</div>
-          <h2>A Smarter Way to Practise</h2>
+          <h2>Built to Support Learning and Assessment</h2>
           <p>
-            Make your study time more productive with a platform focused
-            on learning and examination practice.
+            Useful digital examination services for students,
+            teachers and schools.
           </p>
         </div>
 
@@ -1941,19 +2555,19 @@
 
           <article class="benefit">
             <div class="benefit-icon" aria-hidden="true">⏱️</div>
-            <h3>Practise at Your Pace</h3>
+            <h3>Practise and Assess</h3>
             <p>
-              Develop your examination skills and learn to manage
-              your time effectively.
+              Develop examination skills, test your knowledge
+              and learn to manage time effectively.
             </p>
           </article>
 
           <article class="benefit">
             <div class="benefit-icon" aria-hidden="true">📈</div>
-            <h3>Review Your Progress</h3>
+            <h3>Review Performance</h3>
             <p>
               Access available scores and results to understand
-              your performance and areas for improvement.
+              performance and areas for improvement.
             </p>
           </article>
 
@@ -1962,45 +2576,93 @@
     </section>
 
     <!-- ABOUT SAINTIG EXAMS -->
-    <section class="section">
+    <section class="section" id="about">
       <div class="container about-content">
 
         <div class="section-heading">
           <div class="kicker">About Our Platform</div>
           <h2>About SAINTIG EXAMS</h2>
+          <p>
+            Transforming learning and examination through technology.
+          </p>
         </div>
 
         <p>
-          SAINTIG EXAMS is designed to support examination practice
-          for students while providing teachers and schools with tools
-          to prepare and manage examinations.
+          SAINTIG EXAMS is a digital examination and learning platform
+          developed to make academic assessment easier, more accessible
+          and more organised for students, teachers and schools.
         </p>
 
         <p>
-          Our goal is to make learning, assessment and access to
-          examination results easier through a clear, mobile-friendly
-          online platform.
+          Our platform provides students with opportunities to practise,
+          prepare for important examinations, test their knowledge and
+          monitor their academic progress. It also provides teachers
+          and schools with digital tools to create and manage examinations,
+          organise question banks, conduct online assessments, monitor
+          student performance and manage examination results.
         </p>
+
+        <p>
+          Whether you are a student preparing for an important examination
+          or a teacher/school looking for a better way to organise
+          assessments, SAINTIG EXAMS provides a platform designed to
+          support your educational needs.
+        </p>
+
+        <div class="about-mission-grid">
+
+          <article class="about-info-card">
+            <h3>Our Mission</h3>
+            <p>
+              To improve access to quality examination practice and
+              modern digital assessment tools by making examination
+              management and learning more efficient, accessible
+              and convenient.
+            </p>
+          </article>
+
+          <article class="about-info-card">
+            <h3>Our Vision</h3>
+            <p>
+              To become a trusted digital examination platform connecting
+              students, teachers and educational institutions across
+              Nigeria and beyond.
+            </p>
+          </article>
+
+        </div>
 
       </div>
     </section>
 
-    <!-- STUDENT CALL TO ACTION -->
+    <!-- CALL TO ACTION -->
     <section class="cta">
       <div class="container">
 
         <div class="cta-box">
+
           <h2>Ready to Begin?</h2>
 
           <p>
-            Create your student account to access examinations and
-            start your learning journey with SAINTIG EXAMS.
+            Whether you are a student ready to practise or a teacher
+            or school ready to organise examinations, SAINTIG EXAMS
+            is here to support your digital examination journey.
           </p>
 
-          <a class="btn btn-gold"
-            href="student-login.html?mode=register">
-            Create Your Account
-          </a>
+          <div class="cta-actions">
+
+            <a class="btn btn-gold"
+              href="student-login.html?mode=register">
+              Create Student Account
+            </a>
+
+            <a class="btn btn-outline"
+              href="school-login.html">
+              Teacher/School Portal
+            </a>
+
+          </div>
+
         </div>
 
       </div>
@@ -2017,14 +2679,18 @@
       </a>
 
       <nav class="footer-links" aria-label="Footer navigation">
+
         <a href="index.html">Home</a>
         <a href="#about">About Us</a>
         <a href="#contact">Contact Us</a>
+        <a href="#examinations">Examinations</a>
+        <a href="#why-digital-exams">Why Digital Exams?</a>
         <a href="school-exam-login.html">Teacher/School Exam Login</a>
         <a href="school-results.html">Check Results &amp; Print</a>
         <a href="#pricing-subscription">Pricing &amp; Subscription</a>
         <a href="student-login.html?mode=login">Student Sign In</a>
         <a href="school-login.html">Teacher/School Portal</a>
+
       </nav>
 
       <p style="font-size:13px; margin-bottom:18px; color:#c8d1df;">
@@ -2037,19 +2703,21 @@
       </a>
 
       <div class="copyright">
-        <p>© <span id="year"></span> SAINT IG EXAMS. All rights reserved.</p>
-        <p>Learn. Practice. Succeed.</p>
+        <p>© <span id="year"></span> SAINTIG EXAMS. All rights reserved.</p>
+        <p>Learn. Teach. Assess. Succeed.</p>
       </div>
 
     </div>
   </footer>
 
   <script>
-    // Automatic copyright year
+    // AUTOMATIC COPYRIGHT YEAR
     document.getElementById("year").textContent =
       new Date().getFullYear();
 
-    // Hamburger menu controls
+
+    // HAMBURGER MENU CONTROLS
+
     const menuToggle = document.getElementById("menuToggle");
     const sideMenu = document.getElementById("sideMenu");
     const menuOverlay = document.getElementById("menuOverlay");
@@ -2066,10 +2734,11 @@
       sideMenu.inert = false;
 
       document.body.classList.add("menu-open");
+
       menuClose.focus();
     }
 
-    function closeMenu() {
+    function closeMenu(returnFocus = false) {
       sideMenu.classList.remove("open");
       menuOverlay.classList.remove("open");
 
@@ -2080,6 +2749,10 @@
       sideMenu.inert = true;
 
       document.body.classList.remove("menu-open");
+
+      if (returnFocus) {
+        menuToggle.focus();
+      }
     }
 
     menuToggle.addEventListener("click", function () {
@@ -2090,30 +2763,39 @@
       }
     });
 
-    menuClose.addEventListener("click", closeMenu);
-    menuOverlay.addEventListener("click", closeMenu);
+    menuClose.addEventListener("click", function () {
+      closeMenu(true);
+    });
 
-    // Close menu after selecting a navigation link
+    menuOverlay.addEventListener("click", function () {
+      closeMenu(true);
+    });
+
+    // CLOSE MENU AFTER SELECTING A NAVIGATION LINK
+
     sideMenu.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
         closeMenu();
       });
     });
 
-    // Escape key closes the menu
+    // ESCAPE KEY CLOSES THE MENU
+
     document.addEventListener("keydown", function (event) {
       if (
         event.key === "Escape" &&
         menuToggle.getAttribute("aria-expanded") === "true"
       ) {
-        closeMenu();
-        menuToggle.focus();
+        closeMenu(true);
       }
     });
 
-    // Country rows expand independently
+
+    // COUNTRY ROWS EXPAND INDEPENDENTLY
+
     document.querySelectorAll(".country-toggle").forEach(function (toggle) {
       toggle.addEventListener("click", function () {
+
         const options = document.getElementById(
           toggle.getAttribute("aria-controls")
         );
@@ -2123,15 +2805,22 @@
 
         toggle.setAttribute("aria-expanded", String(!isExpanded));
         options.hidden = isExpanded;
+
       });
     });
 
-    // Existing planned exam and result forms remain unconnected
+
+    // EXISTING PLANNED EXAM AND RESULT FORMS REMAIN UNCONNECTED
+    // These messages are intentionally retained until the secure
+    // backend services are implemented.
+
     function prepareFutureForm(formId, statusId, message) {
+
       const form = document.getElementById(formId);
       const status = document.getElementById(statusId);
 
       form.addEventListener("submit", function (event) {
+
         event.preventDefault();
 
         if (!form.reportValidity()) {
@@ -2140,6 +2829,7 @@
 
         status.textContent = message;
         status.classList.add("visible");
+
       });
     }
 
@@ -2154,6 +2844,7 @@
       "resultsStatus",
       "Result lookup is not connected yet. Secure result verification must be implemented before results can be displayed or printed."
     );
+
   </script>
 
 </body>
