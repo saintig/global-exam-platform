@@ -1,1 +1,858 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10264a">
+  <title>Teacher/School Access | SAINTIG EXAMS</title>
+
+  <style>
+    :root {
+      --navy: #10264a;
+      --navy-light: #183963;
+      --gold: #e2b84b;
+      --white: #ffffff;
+      --cream: #faf8f2;
+      --muted: #667085;
+      --border: #dfe4ec;
+      --danger: #b42318;
+      --success: #18794e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--navy);
+      padding: 19px 16px;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    .brand {
+      display: block;
+      max-width: 1000px;
+      margin: auto;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .brand span { color: var(--gold); }
+
+    .brand small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+      letter-spacing: 1.5px;
+      margin-top: 5px;
+      color: #e4eaf4;
+    }
+
+    main {
+      width: 100%;
+      max-width: 490px;
+      padding: 30px 17px;
+      margin: auto;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 27px 22px;
+      box-shadow: 0 12px 35px rgba(16, 38, 74, .08);
+    }
+
+    .intro {
+      text-align: center;
+      margin-bottom: 23px;
+    }
+
+    .intro h1 {
+      font-size: 25px;
+      margin-bottom: 9px;
+    }
+
+    .intro p {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      padding: 5px;
+      border-radius: 11px;
+      background: #f0f3f8;
+      margin-bottom: 23px;
+    }
+
+    .tab {
+      border: none;
+      background: transparent;
+      padding: 12px 7px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .form-panel[hidden] {
+      display: none !important;
+    }
+
+    .field { margin-bottom: 17px; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 13px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: white;
+      color: #172b4d;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--navy-light);
+      box-shadow: 0 0 0 3px rgba(24, 57, 99, .10);
+    }
+
+    .password-wrap { position: relative; }
+
+    .password-wrap input { padding-right: 76px; }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--navy-light);
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 8px 2px;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: flex-end;
+      margin: -4px 0 19px;
+    }
+
+    a { color: var(--navy-light); }
+
+    .text-link {
+      font-size: 13px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .text-link:hover { text-decoration: underline; }
+
+    .primary-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: 9px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .primary-btn:hover { background: var(--navy-light); }
+
+    .primary-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.show { display: block; }
+    .message.error { background: #fef3f2; color: var(--danger); }
+    .message.success { background: #ecfdf3; color: var(--success); }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 7px;
+    }
+
+    .back-home {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 14px;
+    }
+
+    .back-home a {
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 19px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 400px) {
+      .card { padding: 23px 16px; }
+      .intro h1 { font-size: 22px; }
+      .brand { font-size: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <a class="brand" href="index.html">
+    SAINTIG <span>EXAMS</span>
+    <small>LEARN. PRACTICE. SUCCEED.</small>
+  </a>
+</header>
+
+<main>
+  <section class="card">
+
+    <div class="intro">
+      <h1 id="page-title">Teacher/School Access</h1>
+      <p id="page-description">
+        Sign in or create your Teacher/School account.
+      </p>
+    </div>
+
+    <div class="tabs" id="tabs">
+      <button type="button" class="tab active" id="login-tab">
+        Sign In
+      </button>
+      <button type="button" class="tab" id="register-tab">
+        Create Account
+      </button>
+    </div>
+
+    <div id="message" class="message" role="status"
+         aria-live="polite"></div>
+
+    <!-- SIGN IN -->
+    <form id="login-form" class="form-panel">
+
+      <div class="field">
+        <label for="login-email">Email Address</label>
+        <input id="login-email" type="email"
+               autocomplete="email"
+               placeholder="Enter your registered email"
+               required>
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <div class="password-wrap">
+          <input id="login-password" type="password"
+                 autocomplete="current-password"
+                 placeholder="Enter your password" required>
+          <button type="button" class="toggle-password"
+                  data-target="login-password">Show</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <a href="#" id="forgot-link" class="text-link">
+          Forgot Password?
+        </a>
+      </div>
+
+      <button class="primary-btn" type="submit">
+        Sign In
+      </button>
+
+    </form>
+
+    <!-- REGISTRATION -->
+    <form id="register-form" class="form-panel" hidden>
+
+      <div class="field">
+        <label for="account-type">Account Type</label>
+
+        <select id="account-type" required>
+          <option value="">Select account type</option>
+          <option value="teacher">Teacher</option>
+          <option value="school">School</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label id="name-label" for="register-name">
+          Teacher's Full Name / School's Official Name
+        </label>
+
+        <input id="register-name" type="text"
+               autocomplete="organization"
+               placeholder="Enter your teacher or school name"
+               minlength="2" maxlength="150" required>
+
+        <p class="hint" id="name-hint">
+          Select an account type above to continue.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="register-email">Email Address</label>
+        <input id="register-email" type="email"
+               autocomplete="email"
+               placeholder="Enter your email address"
+               required>
+      </div>
+
+      <div class="field">
+        <label for="register-password">Create Password</label>
+
+        <div class="password-wrap">
+          <input id="register-password" type="password"
+                 autocomplete="new-password"
+                 minlength="8"
+                 placeholder="At least 8 characters" required>
+
+          <button type="button" class="toggle-password"
+                  data-target="register-password">Show</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="confirm-password">Confirm Password</label>
+
+        <div class="password-wrap">
+          <input id="confirm-password" type="password"
+                 autocomplete="new-password"
+                 minlength="8"
+                 placeholder="Enter your password again" required>
+
+          <button type="button" class="toggle-password"
+                  data-target="confirm-password">Show</button>
+        </div>
+      </div>
+
+      <button class="primary-btn" type="submit">
+        Create Teacher/School Account
+      </button>
+
+    </form>
+
+    <!-- PASSWORD RESET -->
+    <form id="reset-form" class="form-panel" hidden>
+
+      <div class="field">
+        <label for="reset-email">Registered Email Address</label>
+        <input id="reset-email" type="email"
+               autocomplete="email"
+               placeholder="Enter your registered email"
+               required>
+      </div>
+
+      <p class="hint" style="margin-bottom:18px">
+        Request a password reset link using your registered email.
+      </p>
+
+      <button class="primary-btn" type="submit">
+        Send Reset Link
+      </button>
+
+      <p style="text-align:center;margin-top:18px">
+        <a href="#" id="back-login" class="text-link">
+          Back to Sign In
+        </a>
+      </p>
+
+    </form>
+
+    <div class="back-home">
+      <a href="index.html">← Back to Public Homepage</a>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> SAINTIG EXAMS.
+  Learn. Practice. Succeed.
+</footer>
+
+<script type="module">
+  import { supabase } from "./auth.js";
+
+  const $ = id => document.getElementById(id);
+
+  const loginTab = $("login-tab");
+  const registerTab = $("register-tab");
+  const tabs = $("tabs");
+
+  const loginForm = $("login-form");
+  const registerForm = $("register-form");
+  const resetForm = $("reset-form");
+
+  const message = $("message");
+  const title = $("page-title");
+  const description = $("page-description");
+
+  $("year").textContent = new Date().getFullYear();
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message show " + type;
+  }
+
+  function clearMessage() {
+    message.textContent = "";
+    message.className = "message";
+  }
+
+  function setLoading(form, loading, text) {
+    const button = form.querySelector('button[type="submit"]');
+
+    if (!button.dataset.originalText) {
+      button.dataset.originalText = button.textContent.trim();
+    }
+
+    button.disabled = loading;
+    button.textContent = loading
+      ? text
+      : button.dataset.originalText;
+  }
+
+  function showLogin() {
+    clearMessage();
+    tabs.hidden = false;
+    loginForm.hidden = false;
+    registerForm.hidden = true;
+    resetForm.hidden = true;
+
+    loginTab.classList.add("active");
+    registerTab.classList.remove("active");
+
+    title.textContent = "Teacher/School Access";
+    description.textContent =
+      "Sign in to access your Teacher/School dashboard.";
+  }
+
+  function showRegister() {
+    clearMessage();
+    tabs.hidden = false;
+    loginForm.hidden = true;
+    registerForm.hidden = false;
+    resetForm.hidden = true;
+
+    loginTab.classList.remove("active");
+    registerTab.classList.add("active");
+
+    title.textContent = "Create Your Account";
+    description.textContent =
+      "Register as a Teacher or School on SAINTIG EXAMS.";
+  }
+
+  function showReset() {
+    clearMessage();
+    tabs.hidden = true;
+    loginForm.hidden = true;
+    registerForm.hidden = true;
+    resetForm.hidden = false;
+
+    title.textContent = "Reset Your Password";
+    description.textContent =
+      "Enter the email address linked to your account.";
+  }
+
+  loginTab.addEventListener("click", showLogin);
+  registerTab.addEventListener("click", showRegister);
+
+  $("forgot-link").addEventListener("click", event => {
+    event.preventDefault();
+    showReset();
+  });
+
+  $("back-login").addEventListener("click", event => {
+    event.preventDefault();
+    showLogin();
+  });
+
+  // Change the name label when the account type changes.
+  $("account-type").addEventListener("change", event => {
+    const type = event.target.value;
+
+    if (type === "teacher") {
+      $("name-label").textContent = "Teacher's Full Name";
+      $("register-name").placeholder =
+        "Enter teacher's full name";
+      $("name-hint").textContent =
+        "Enter the full name of the teacher registering.";
+      $("register-name").setAttribute("autocomplete", "name");
+    } else if (type === "school") {
+      $("name-label").textContent = "School's Official Name";
+      $("register-name").placeholder =
+        "Enter school's official name";
+      $("name-hint").textContent =
+        "Enter the official name of the school.";
+      $("register-name").setAttribute("autocomplete", "organization");
+    } else {
+      $("name-label").textContent =
+        "Teacher's Full Name / School's Official Name";
+      $("name-hint").textContent =
+        "Select an account type above to continue.";
+    }
+  });
+
+  // Show and hide passwords.
+  document.querySelectorAll(".toggle-password").forEach(button => {
+    button.addEventListener("click", () => {
+      const input = $(button.dataset.target);
+      const reveal = input.type === "password";
+
+      input.type = reveal ? "text" : "password";
+      button.textContent = reveal ? "Hide" : "Show";
+      button.setAttribute("aria-pressed", String(reveal));
+    });
+  });
+
+  // Create Teacher/School account.
+  registerForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    clearMessage();
+
+    const accountType = $("account-type").value;
+    const name = $("register-name").value.trim();
+    const email = $("register-email").value.trim();
+    const password = $("register-password").value;
+    const confirmation = $("confirm-password").value;
+
+    if (!["teacher", "school"].includes(accountType)) {
+      showMessage("Please select Teacher or School.", "error");
+      return;
+    }
+
+    if (name.length < 2) {
+      showMessage(
+        "Please enter the teacher's or school's name.",
+        "error"
+      );
+      return;
+    }
+
+    if (password.length < 8) {
+      showMessage(
+        "Your password must contain at least 8 characters.",
+        "error"
+      );
+      return;
+    }
+
+    if (password !== confirmation) {
+      showMessage(
+        "Your passwords do not match.",
+        "error"
+      );
+      return;
+    }
+
+    setLoading(registerForm, true, "Creating Account...");
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            account_type: accountType,
+            full_name: name
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // If email confirmation is disabled and a session is returned,
+      // create the profile immediately.
+      if (data.session && data.user) {
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .upsert({
+            id: data.user.id,
+            display_name: name,
+            account_type: accountType
+          }, {
+            onConflict: "id"
+          });
+
+        if (profileError) {
+          console.error("Profile creation failed:", profileError);
+          showMessage(
+            "Your account was created, but your profile could not be saved. Please contact support before continuing.",
+            "error"
+          );
+          return;
+        }
+
+        showMessage(
+          "Your account was created successfully. Opening your dashboard...",
+          "success"
+        );
+
+        window.location.replace("school-dashboard.html");
+        return;
+      }
+
+      showLogin();
+
+      showMessage(
+        "Registration successful! Please check your email and confirm your address. Then sign in to access your dashboard.",
+        "success"
+      );
+
+    } catch (error) {
+      showMessage(
+        error.message ||
+        "We could not create your account. Please try again.",
+        "error"
+      );
+    } finally {
+      setLoading(registerForm, false);
+    }
+  });
+
+  // Sign in and verify that this is a Teacher/School account.
+  loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    clearMessage();
+
+    const email = $("login-email").value.trim();
+    const password = $("login-password").value;
+
+    setLoading(loginForm, true, "Signing In...");
+
+    try {
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      if (!data.session || !data.user) {
+        throw new Error(
+          "Sign-in was not completed. Please try again."
+        );
+      }
+
+      const user = data.user;
+
+      const { data: profile, error: profileError } =
+        await supabase
+          .from("profiles")
+          .select("id, display_name, account_type")
+          .eq("id", user.id)
+          .maybeSingle();
+
+      if (profileError) throw profileError;
+
+      // Use the existing profile when present, otherwise use the
+      // account information saved during registration.
+      const metadata = user.user_metadata || {};
+
+      const accountType =
+        profile?.account_type || metadata.account_type;
+
+      const displayName =
+        profile?.display_name || metadata.full_name;
+
+      if (!["teacher", "school"].includes(accountType)) {
+        await supabase.auth.signOut();
+
+        throw new Error(
+          "This login page is for Teacher/School accounts. Please use the correct login page."
+        );
+      }
+
+      if (!displayName) {
+        throw new Error(
+          "Your account name is missing. Please contact support."
+        );
+      }
+
+      // Create or update the user's own profile.
+      const { error: saveError } = await supabase
+        .from("profiles")
+        .upsert({
+          id: user.id,
+          display_name: displayName,
+          account_type: accountType
+        }, {
+          onConflict: "id"
+        });
+
+      if (saveError) throw saveError;
+
+      showMessage(
+        "Sign-in successful. Opening your dashboard...",
+        "success"
+      );
+
+      window.location.replace("school-dashboard.html");
+
+    } catch (error) {
+      showMessage(
+        error.message ||
+        "Sign-in failed. Check your details and try again.",
+        "error"
+      );
+    } finally {
+      setLoading(loginForm, false);
+    }
+  });
+
+  // Request password reset.
+  resetForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    clearMessage();
+
+    const email = $("reset-email").value.trim();
+
+    setLoading(resetForm, true, "Sending Link...");
+
+    try {
+      const { error } =
+        await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo:
+            window.location.origin +
+            window.location.pathname.replace(
+              /[^/]*$/,
+              "school-login.html"
+            ) +
+            "?mode=reset"
+        });
+
+      if (error) throw error;
+
+      showMessage(
+        "If the address is registered, a password reset email will be sent. Check your inbox and spam folder.",
+        "success"
+      );
+
+    } catch (error) {
+      showMessage(
+        error.message ||
+        "We could not request a reset link. Please try again.",
+        "error"
+      );
+    } finally {
+      setLoading(resetForm, false);
+    }
+  });
+
+  // Check whether a user is already signed in.
+  async function initializePage() {
+    const mode = new URLSearchParams(
+      window.location.search
+    ).get("mode");
+
+    if (mode === "register") {
+      showRegister();
+      return;
+    }
+
+    if (mode === "reset") {
+      showReset();
+      return;
+    }
+
+    try {
+      const { data, error } =
+        await supabase.auth.getSession();
+
+      if (error) throw error;
+
+      if (data.session) {
+        const user = data.session.user;
+        const metadata = user.user_metadata || {};
+
+        const { data: profile, error: profileError } =
+          await supabase
+            .from("profiles")
+            .select("account_type")
+            .eq("id", user.id)
+            .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        const accountType =
+          profile?.account_type || metadata.account_type;
+
+        if (["teacher", "school"].includes(accountType)) {
+          window.location.replace("school-dashboard.html");
+          return;
+        }
+
+        // Do not redirect a student to the Teacher/School dashboard.
+        await supabase.auth.signOut();
+      }
+
+    } catch (error) {
+      console.error("Session check failed:", error.message);
+    }
+
+    showLogin();
+  }
+
+  initializePage();
+</script>
+
+</body>
+</html>
