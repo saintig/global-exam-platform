@@ -1042,6 +1042,16 @@ function openSidebar(){
 
 function navigate(page){
 
+  closeSidebar();
+
+  /* REGISTER EXAMINATION PAGE */
+
+  if(page==="Register Examination"){
+
+    location.href="register-examination.html";
+    return;
+  }
+
   document
     .querySelectorAll("nav button[data-page]")
     .forEach(button=>{
@@ -1052,8 +1062,6 @@ function navigate(page){
     });
 
   $("topTitle").textContent=page;
-
-  closeSidebar();
 
   if(page==="Dashboard"){
 
