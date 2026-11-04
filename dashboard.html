@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -484,13 +485,18 @@ th{
 <body>
 
 <header class="topbar">
-  <a class="brand" href="dashboard.html">SAINTIG <span>EXAMS</span></a>
+  <a class="brand" href="dashboard.html">
+    SAINTIG <span>EXAMS</span>
+  </a>
 
   <div class="top-actions">
     <a class="top-link" href="dashboard.html">Return Home</a>
     <a class="top-link" href="dashboard.html">Dashboard</a>
+
     <button class="menu-button" id="menuButton" type="button"
-      aria-label="Toggle navigation" aria-expanded="false">☰ Menu</button>
+      aria-label="Toggle navigation" aria-expanded="false">
+      ☰ Menu
+    </button>
   </div>
 </header>
 
@@ -499,22 +505,59 @@ th{
 <div class="layout">
 
 <aside class="sidebar" id="sidebar">
+
   <div class="sidebar-title">Student menu</div>
 
-  <button class="nav-link active" data-section="home">🏠 Dashboard</button>
-  <button class="nav-link" data-section="exams">📝 Take an Exam</button>
-  <button class="nav-link" data-section="history">📚 Exam History</button>
-  <button class="nav-link" data-section="results">📊 Results</button>
-  <button class="nav-link" data-section="school">🏫 Teacher/School Exam Login</button>
-  <button class="nav-link" data-section="check-results">🔎 Check / Print Results</button>
-  <button class="nav-link" data-section="pricing">💳 Pricing and Subscription</button>
-  <button class="nav-link" data-section="notifications">🔔 Notifications</button>
-  <button class="nav-link" data-section="account">👤 My Account</button>
-  <button class="nav-link" data-section="about">ℹ️ About</button>
-  <button class="nav-link" data-section="contact">✉️ Contact</button>
+  <button class="nav-link active" data-section="home" type="button">
+    🏠 Dashboard
+  </button>
+
+  <button class="nav-link" data-section="exams" type="button">
+    📝 Take an Exam
+  </button>
+
+  <button class="nav-link" data-section="history" type="button">
+    📚 Exam History
+  </button>
+
+  <button class="nav-link" data-section="results" type="button">
+    📊 Results
+  </button>
+
+  <button class="nav-link" data-section="school" type="button">
+    🏫 Teacher/School Exam Login
+  </button>
+
+  <button class="nav-link" data-section="check-results" type="button">
+    🔎 Check / Print Results
+  </button>
+
+  <button class="nav-link" data-section="pricing" type="button">
+    💳 Pricing and Subscription
+  </button>
+
+  <button class="nav-link" data-section="notifications" type="button">
+    🔔 Notifications
+  </button>
+
+  <button class="nav-link" data-section="account" type="button">
+    👤 My Account
+  </button>
+
+  <button class="nav-link" data-section="about" type="button">
+    ℹ️ About
+  </button>
+
+  <button class="nav-link" data-section="contact" type="button">
+    ✉️ Contact
+  </button>
 
   <div class="sidebar-title">Account</div>
-  <button class="nav-link logout" id="signOutButton">↪ Sign Out</button>
+
+  <button class="nav-link logout" id="signOutButton" type="button">
+    ↪ Sign Out
+  </button>
+
 </aside>
 
 <main>
@@ -528,6 +571,7 @@ th{
 <section class="section active" id="home">
 
   <div class="stats-grid">
+
     <div class="stat-card">
       <div class="stat-label">Exams Attempted</div>
       <div class="stat-value" id="attemptCount">—</div>
@@ -542,13 +586,16 @@ th{
       <div class="stat-label">Available Countries</div>
       <div class="stat-value" id="countryCount">—</div>
     </div>
+
   </div>
 
   <div class="card">
     <h2 class="section-heading">Start Your Examination</h2>
+
     <p class="section-description">
       Choose your country, education level and an available subject.
     </p>
+
     <button class="button gold" type="button" data-go="exams">
       Explore Examinations
     </button>
@@ -556,17 +603,28 @@ th{
 
   <div class="card">
     <h3>Recently Attempted Exams</h3>
-    <div id="recentAttempts" class="empty-state">Loading exam history…</div>
+
+    <div id="recentAttempts" class="empty-state">
+      Loading exam history…
+    </div>
+
     <div id="recentAttemptsToggle" class="recent-attempts-actions"></div>
   </div>
 
   <div class="card">
     <h3>📊 Recent Results</h3>
+
     <p class="muted">Your latest completed examinations.</p>
-    <div id="homeResultsContent" class="empty-state">Loading results…</div>
+
+    <div id="homeResultsContent" class="empty-state">
+      Loading results…
+    </div>
 
     <div class="results-actions">
-      <span id="homeResultsCount" class="results-count">Loading results…</span>
+      <span id="homeResultsCount" class="results-count">
+        Loading results…
+      </span>
+
       <button class="button secondary" type="button" data-go="results">
         View All Results
       </button>
@@ -576,14 +634,18 @@ th{
 </section>
 
 <section class="section" id="exams">
+
   <h2 class="section-heading">Take an Exam</h2>
+
   <p class="section-description">
     Choose a country and education level to find available subjects and examinations.
   </p>
 
   <div class="card">
+
     <div class="results-actions">
       <h3>Choose Your Education Level</h3>
+
       <button class="button secondary" id="refreshEducationOptions" type="button">
         Refresh Options
       </button>
@@ -596,212 +658,322 @@ th{
         Loading countries and education levels…
       </div>
     </div>
+
   </div>
+
 </section>
 
 <section class="section" id="history">
+
   <h2 class="section-heading">Exam History</h2>
-  <p class="section-description">Review your previous examination attempts.</p>
+
+  <p class="section-description">
+    Review your previous examination attempts.
+  </p>
+
   <div class="card">
-    <div id="historyContent" class="empty-state">Loading exam history…</div>
+    <div id="historyContent" class="empty-state">
+      Loading exam history…
+    </div>
   </div>
+
 </section>
 
 <section class="section" id="results">
+
   <h2 class="section-heading">Results</h2>
-  <p class="section-description">Review your completed examination attempts.</p>
+
+  <p class="section-description">
+    Review your completed examination attempts.
+  </p>
 
   <div class="card">
+
     <h3>Your Examination Results</h3>
-    <div id="resultsContent" class="empty-state">Loading results…</div>
+
+    <div id="resultsContent" class="empty-state">
+      Loading results…
+    </div>
 
     <div class="results-actions">
-      <span id="resultsCount" class="results-count">Loading results…</span>
-      <button class="button secondary" id="toggleAllResults" type="button" hidden>
+
+      <span id="resultsCount" class="results-count">
+        Loading results…
+      </span>
+
+      <button class="button secondary" id="toggleAllResults"
+        type="button" hidden>
         View All Results
       </button>
+
     </div>
+
   </div>
+
 </section>
 
 <section class="section" id="school">
+
   <h2 class="section-heading">Teacher / School Exam Login</h2>
-  <p class="section-description">Enter the examination details supplied by your school.</p>
+
+  <p class="section-description">
+    Enter the examination details supplied by your school.
+  </p>
 
   <div class="card">
+
     <form id="schoolExamForm">
+
       <div class="form-group">
         <label for="schoolExamId">Exam ID</label>
+
         <input id="schoolExamId" name="exam_id" type="text"
           placeholder="Enter Exam ID" required autocomplete="off">
       </div>
 
       <div class="form-group">
         <label for="schoolStudentId">Student ID</label>
+
         <input id="schoolStudentId" name="student_id" type="text"
           placeholder="Enter Student ID" required autocomplete="off">
       </div>
 
       <button class="button full" type="submit">Take Exam</button>
+
       <div id="schoolExamMessage" class="status-message" role="status"></div>
+
     </form>
+
   </div>
+
 </section>
 
 <section class="section" id="check-results">
+
   <h2 class="section-heading">Check / Print Results</h2>
+
   <p class="section-description">
     Enter your school examination ID and student ID to look up a result.
   </p>
 
   <div class="card">
+
     <form id="schoolResultForm">
+
       <div class="form-group">
         <label for="resultExamId">Exam ID</label>
+
         <input id="resultExamId" name="exam_id" type="text"
           placeholder="Enter Exam ID" required autocomplete="off">
       </div>
 
       <div class="form-group">
         <label for="resultStudentId">Student ID</label>
+
         <input id="resultStudentId" name="student_id" type="text"
           placeholder="Enter Student ID" required autocomplete="off">
       </div>
 
       <button class="button full" type="submit">View Results</button>
+
       <div id="schoolResultMessage" class="status-message" role="status"></div>
+
       <div id="schoolResultOutput"></div>
+
     </form>
+
   </div>
+
 </section>
 
 <section class="section" id="pricing">
+
   <h2 class="section-heading">Pricing and Subscription</h2>
+
   <p class="section-description">
     Information about SAINTIG EXAMS access and subscription plans.
   </p>
 
   <div class="card">
+
     <h3>Your Subscription</h3>
-    <p id="subscriptionStatus">Subscription management is not active yet.</p>
+
+    <p id="subscriptionStatus">
+      Subscription management is not active yet.
+    </p>
 
     <div class="pricing-note">
+
       <strong>Free access</strong>
+
       <p class="muted">
         You can use the examination features currently made available
         on the platform without a subscription payment.
       </p>
+
     </div>
 
     <div class="pricing-note">
+
       <strong>Premium subscription</strong>
+
       <p class="muted">
         Premium plan details, prices and payment options will be displayed
         here when the subscription service is activated.
       </p>
+
     </div>
+
   </div>
+
 </section>
 
 <section class="section" id="notifications">
+
   <h2 class="section-heading">Notifications</h2>
+
   <div class="card">
     <div class="empty-state">
       Notifications will appear here when the notification feature is connected.
     </div>
   </div>
+
 </section>
 
 <section class="section" id="account">
+
   <h2 class="section-heading">My Account</h2>
-  <p class="section-description">Update your name and password.</p>
+
+  <p class="section-description">
+    Update your name and password.
+  </p>
 
   <div class="card">
+
     <h3>Profile Information</h3>
 
     <form id="profileForm">
+
       <div class="form-group">
         <label for="displayName">Display name</label>
+
         <input id="displayName" type="text" maxlength="100"
           placeholder="Enter your name" required>
       </div>
 
       <div class="form-group">
         <label for="accountEmail">Email address</label>
+
         <input id="accountEmail" type="email" readonly>
       </div>
 
       <button class="button" type="submit">Save Profile</button>
+
       <div id="profileMessage" class="status-message" role="status"></div>
+
     </form>
+
   </div>
 
   <div class="card">
+
     <h3>Change Password</h3>
-    <p class="muted">Choose a new password for your account.</p>
+
+    <p class="muted">
+      Choose a new password for your account.
+    </p>
 
     <form id="passwordForm">
+
       <div class="form-group">
         <label for="newPassword">New password</label>
+
         <input id="newPassword" type="password" minlength="8"
-          autocomplete="new-password" placeholder="At least 8 characters" required>
+          autocomplete="new-password"
+          placeholder="At least 8 characters" required>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">Confirm new password</label>
+
         <input id="confirmPassword" type="password" minlength="8"
-          autocomplete="new-password" placeholder="Enter the new password again" required>
+          autocomplete="new-password"
+          placeholder="Enter the new password again" required>
       </div>
 
       <button class="button" type="submit">Update Password</button>
+
       <div id="passwordMessage" class="status-message" role="status"></div>
+
     </form>
+
   </div>
+
 </section>
 
 <section class="section" id="about">
+
   <h2 class="section-heading">About SAINTIG EXAMS</h2>
+
   <div class="card">
+
     <p>
       SAINTIG EXAMS is an examination platform designed to provide learners
       with access to examinations across supported countries, education levels
       and subjects.
     </p>
+
     <p>Developed by SAINT IG DIGITAL.</p>
+
   </div>
+
 </section>
 
 <section class="section" id="contact">
+
   <h2 class="section-heading">Contact</h2>
+
   <div class="card">
+
     <p>
       For assistance with your account or examination access, use the official
       SAINTIG EXAMS support channel when available.
     </p>
-    <p class="muted">Official contact details can be added here later.</p>
+
+    <p class="muted">
+      Official contact details can be added here later.
+    </p>
+
   </div>
+
 </section>
 
 <footer class="footer">
+
   © <span id="currentYear"></span> SAINTIG EXAMS · SAINT IG DIGITAL
+
   <p>
     <a href="dashboard.html">Return Home</a> ·
     <a href="dashboard.html">Return to Dashboard</a>
   </p>
+
 </footer>
 
 </main>
 </div>
 
 <script type="module">
+
 import { supabase, requireStudentSession } from "./auth.js";
 
 const $ = id => document.getElementById(id);
 
 let currentUser = null;
+
 let attemptsCache = [];
 let completedCache = [];
 let examinationTitles = {};
+
 let showAllResults = false;
 let showAllRecentAttempts = false;
 
@@ -809,13 +981,19 @@ let educationRealtimeChannel = null;
 let educationReloadTimer = null;
 let educationLoadVersion = 0;
 
+let isSigningOut = false;
+
 $("currentYear").textContent = new Date().getFullYear();
 
-/* GENERAL HELPERS */
+/* =========================================
+   GENERAL HELPERS
+========================================= */
 
 function showMessage(element,message,type="") {
   element.textContent = message;
-  element.className = "status-message" + (type ? " " + type : "");
+
+  element.className =
+    "status-message" + (type ? " " + type : "");
 }
 
 function escapeHtml(value) {
@@ -832,6 +1010,7 @@ function formatDate(value) {
   if (!value) return "—";
 
   const date = new Date(value);
+
   if (Number.isNaN(date.getTime())) return "—";
 
   return date.toLocaleString(undefined,{
@@ -855,28 +1034,58 @@ function isSubmitted(attempt) {
 }
 
 function readableStatus(status) {
-  const value = String(status || "unknown").replace(/[_-]/g," ");
+  const value = String(status || "unknown")
+    .replace(/[_-]/g," ");
+
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function formatScore(attempt) {
-  if (attempt.score === null || attempt.score === undefined) return "—";
+  if (
+    attempt.score === null ||
+    attempt.score === undefined
+  ) {
+    return "—";
+  }
 
-  if (attempt.total_marks === null || attempt.total_marks === undefined) {
+  if (
+    attempt.total_marks === null ||
+    attempt.total_marks === undefined
+  ) {
     return escapeHtml(attempt.score);
   }
 
-  return `${escapeHtml(attempt.score)} / ${escapeHtml(attempt.total_marks)}`;
+  return (
+    `${escapeHtml(attempt.score)} / ` +
+    `${escapeHtml(attempt.total_marks)}`
+  );
 }
 
-/* STUDENT ACCOUNT VERIFICATION */
+/* =========================================
+   STUDENT ACCOUNT VERIFICATION
+========================================= */
+
+async function redirectAfterAccountCheck(destination) {
+  try {
+    await supabase.auth.signOut();
+  } catch(error) {
+    console.error("Account sign-out:",error);
+  }
+
+  window.location.replace(destination);
+}
 
 async function verifyStudentAccount(user) {
+
   if (!user?.id) {
     throw new Error("Your account could not be verified.");
   }
 
-  // Teacher/School accounts must never enter the student dashboard.
+  /*
+    FIRST CHECK:
+    Reject accounts registered in school_accounts.
+  */
+
   const {data:schoolAccount,error:schoolError} = await supabase
     .from("school_accounts")
     .select("id,account_type,status")
@@ -884,21 +1093,30 @@ async function verifyStudentAccount(user) {
     .maybeSingle();
 
   if (schoolError) {
-    console.error("Teacher/School account verification:",schoolError);
-    throw new Error("Unable to verify your account type. Please sign in again.");
+    console.error(
+      "Teacher/School account verification:",
+      schoolError
+    );
+
+    throw new Error(
+      "Unable to verify your account type. Please try again."
+    );
   }
 
   if (schoolAccount) {
-    await supabase.auth.signOut();
 
-    window.location.replace(
-      "student-login.html?mode=login&account=teacher-school"
+    await redirectAfterAccountCheck(
+      "school-login.html?mode=login&account=teacher-school"
     );
 
     return false;
   }
 
-  // Require an explicitly identified student profile.
+  /*
+    SECOND CHECK:
+    Require an explicitly identified student profile.
+  */
+
   const {data:profile,error:profileError} = await supabase
     .from("profiles")
     .select("account_type")
@@ -906,8 +1124,14 @@ async function verifyStudentAccount(user) {
     .maybeSingle();
 
   if (profileError) {
-    console.error("Student profile verification:",profileError);
-    throw new Error("Unable to verify your student profile.");
+    console.error(
+      "Student profile verification:",
+      profileError
+    );
+
+    throw new Error(
+      "Unable to verify your student profile."
+    );
   }
 
   const accountType = String(profile?.account_type || "")
@@ -915,11 +1139,20 @@ async function verifyStudentAccount(user) {
     .toLowerCase();
 
   if (accountType !== "student") {
-    await supabase.auth.signOut();
 
-    window.location.replace(
-      "student-login.html?mode=login&account=not-student"
-    );
+    if (
+      accountType === "teacher" ||
+      accountType === "school"
+    ) {
+      await redirectAfterAccountCheck(
+        "school-login.html?mode=login&account=teacher-school"
+      );
+
+    } else {
+      await redirectAfterAccountCheck(
+        "student-login.html?mode=login&account=not-student"
+      );
+    }
 
     return false;
   }
@@ -927,65 +1160,122 @@ async function verifyStudentAccount(user) {
   return true;
 }
 
-/* NAVIGATION */
+/* =========================================
+   NAVIGATION
+========================================= */
 
 function closeMenu() {
   $("sidebar").classList.remove("open");
+
   $("mobileBackdrop").classList.remove("open");
-  $("menuButton").setAttribute("aria-expanded","false");
+
+  $("menuButton").setAttribute(
+    "aria-expanded",
+    "false"
+  );
 }
 
 function openSection(sectionId) {
-  if (!$(sectionId)) return;
+
+  const targetSection = $(sectionId);
+
+  if (!targetSection) return;
 
   document.querySelectorAll(".section").forEach(section => {
-    section.classList.toggle("active",section.id === sectionId);
+    section.classList.toggle(
+      "active",
+      section.id === sectionId
+    );
   });
 
-  document.querySelectorAll(".nav-link[data-section]").forEach(link => {
-    link.classList.toggle("active",link.dataset.section === sectionId);
-  });
+  document.querySelectorAll(".nav-link[data-section]")
+    .forEach(link => {
+
+      link.classList.toggle(
+        "active",
+        link.dataset.section === sectionId
+      );
+
+    });
 
   closeMenu();
-  window.scrollTo({top:0,behavior:"smooth"});
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 $("menuButton").addEventListener("click",() => {
+
   const open = $("sidebar").classList.toggle("open");
 
   $("mobileBackdrop").classList.toggle("open",open);
-  $("menuButton").setAttribute("aria-expanded",String(open));
+
+  $("menuButton").setAttribute(
+    "aria-expanded",
+    String(open)
+  );
+
 });
 
-$("mobileBackdrop").addEventListener("click",closeMenu);
+$("mobileBackdrop").addEventListener(
+  "click",
+  closeMenu
+);
 
 document.addEventListener("keydown",event => {
-  if (event.key === "Escape") closeMenu();
+
+  if (event.key === "Escape") {
+    closeMenu();
+  }
+
 });
 
-document.querySelectorAll(".nav-link[data-section]").forEach(button => {
-  button.addEventListener("click",() => {
-    const target = button.dataset.section;
+/*
+  CORRECTION:
+  Take an Exam now opens the exams section.
+  It no longer opens the school login section.
+*/
 
-    // Keep the existing Teacher/School exam login placeholder.
-    openSection(target === "exams" ? "school" : target);
+document.querySelectorAll(".nav-link[data-section]")
+  .forEach(button => {
+
+    button.addEventListener("click",() => {
+
+      openSection(button.dataset.section);
+
+    });
+
   });
-});
 
-document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click",() => openSection(button.dataset.go));
-});
+document.querySelectorAll("[data-go]")
+  .forEach(button => {
 
-/* PROFILE */
+    button.addEventListener("click",() => {
+
+      openSection(button.dataset.go);
+
+    });
+
+  });
+
+/* =========================================
+   PROFILE
+========================================= */
 
 function updateDisplayedName(name) {
+
   const clean = String(name || "").trim();
 
   $("studentDisplayName").textContent = clean;
+
   $("studentDisplayName").hidden = !clean;
+
 }
 
 async function loadProfile() {
+
   $("accountEmail").value = currentUser.email || "";
 
   const {data,error} = await supabase
@@ -996,22 +1286,46 @@ async function loadProfile() {
 
   if (error) throw error;
 
-  const name = data?.display_name ||
+  if (!data) {
+    throw new Error(
+      "Your student profile could not be found."
+    );
+  }
+
+  const name =
+    data.display_name ||
     currentUser.user_metadata?.display_name ||
-    currentUser.user_metadata?.full_name || "";
+    currentUser.user_metadata?.full_name ||
+    "";
 
   $("displayName").value = name;
+
   updateDisplayedName(name);
+
 }
 
+/*
+  Update only display_name.
+  Do not upsert the profile because account_type
+  must never be accidentally overwritten.
+*/
+
 $("profileForm").addEventListener("submit",async event => {
+
   event.preventDefault();
 
   const name = $("displayName").value.trim();
-  const button = $("profileForm").querySelector('button[type="submit"]');
+
+  const button = $("profileForm")
+    .querySelector('button[type="submit"]');
 
   if (!name) {
-    showMessage($("profileMessage"),"Please enter your name.","error");
+    showMessage(
+      $("profileMessage"),
+      "Please enter your name.",
+      "error"
+    );
+
     return;
   }
 
@@ -1019,18 +1333,20 @@ $("profileForm").addEventListener("submit",async event => {
   button.textContent = "Saving…";
 
   try {
+
     const {data,error} = await supabase
       .from("profiles")
-      .upsert(
-        {id:currentUser.id,display_name:name},
-        {onConflict:"id"}
-      )
+      .update({
+        display_name:name
+      })
+      .eq("id",currentUser.id)
       .select("id,display_name")
       .single();
 
     if (error) throw error;
 
     $("displayName").value = data.display_name;
+
     updateDisplayedName(data.display_name);
 
     showMessage(
@@ -1040,36 +1356,58 @@ $("profileForm").addEventListener("submit",async event => {
     );
 
   } catch(error) {
+
     console.error("Profile save:",error);
 
     showMessage(
       $("profileMessage"),
-      "Could not save profile: "+error.message,
+      "Could not save profile: " + error.message,
       "error"
     );
 
   } finally {
+
     button.disabled = false;
     button.textContent = "Save Profile";
+
   }
+
 });
 
-/* PASSWORD */
+/* =========================================
+   PASSWORD
+========================================= */
 
 $("passwordForm").addEventListener("submit",async event => {
+
   event.preventDefault();
 
   const password = $("newPassword").value;
+
   const confirmation = $("confirmPassword").value;
-  const button = $("passwordForm").querySelector('button[type="submit"]');
+
+  const button = $("passwordForm")
+    .querySelector('button[type="submit"]');
 
   if (password.length < 8) {
-    showMessage($("passwordMessage"),"Use at least 8 characters.","error");
+
+    showMessage(
+      $("passwordMessage"),
+      "Use at least 8 characters.",
+      "error"
+    );
+
     return;
   }
 
   if (password !== confirmation) {
-    showMessage($("passwordMessage"),"The passwords do not match.","error");
+
+    showMessage(
+      $("passwordMessage"),
+      "The passwords do not match.",
+      "error"
+    );
+
     return;
   }
 
@@ -1077,7 +1415,10 @@ $("passwordForm").addEventListener("submit",async event => {
   button.textContent = "Updating…";
 
   try {
-    const {error} = await supabase.auth.updateUser({password});
+
+    const {error} = await supabase.auth.updateUser({
+      password
+    });
 
     if (error) throw error;
 
@@ -1090,6 +1431,9 @@ $("passwordForm").addEventListener("submit",async event => {
     );
 
   } catch(error) {
+
+    console.error("Password update:",error);
+
     showMessage(
       $("passwordMessage"),
       error.message || "Could not update password.",
@@ -1097,26 +1441,40 @@ $("passwordForm").addEventListener("submit",async event => {
     );
 
   } finally {
+
     button.disabled = false;
     button.textContent = "Update Password";
+
   }
+
 });
 
-/* COUNTRIES AND EDUCATION LEVELS */
+/* =========================================
+   COUNTRIES AND EDUCATION LEVELS
+========================================= */
 
 async function loadEducationOptions() {
+
   const list = $("countryList");
+
   const refreshButton = $("refreshEducationOptions");
+
   const loadVersion = ++educationLoadVersion;
 
   list.innerHTML =
     '<div class="empty-state">Loading countries and education levels…</div>';
 
-  showMessage($("educationStatus"),"Updating education options…");
+  showMessage(
+    $("educationStatus"),
+    "Updating education options…"
+  );
 
-  if (refreshButton) refreshButton.disabled = true;
+  if (refreshButton) {
+    refreshButton.disabled = true;
+  }
 
   try {
+
     const [systemsResult,levelsResult] = await Promise.all([
 
       supabase
@@ -1130,19 +1488,27 @@ async function loadEducationOptions() {
         .select("id,education_system_id,level_name,is_active")
         .eq("is_active",true)
         .order("level_name")
+
     ]);
 
-    if (systemsResult.error) throw systemsResult.error;
-    if (levelsResult.error) throw levelsResult.error;
+    if (systemsResult.error) {
+      throw systemsResult.error;
+    }
+
+    if (levelsResult.error) {
+      throw levelsResult.error;
+    }
 
     if (loadVersion !== educationLoadVersion) return;
 
     const countries = systemsResult.data || [];
+
     const levels = levelsResult.data || [];
 
     $("countryCount").textContent = countries.length;
 
     if (!countries.length) {
+
       list.innerHTML =
         '<div class="empty-state">No active countries are available.</div>';
 
@@ -1155,22 +1521,32 @@ async function loadEducationOptions() {
     }
 
     countries.forEach(country => {
+
       country.levels = levels.filter(level =>
-        String(level.education_system_id) === String(country.id)
+
+        String(level.education_system_id) ===
+        String(country.id)
+
       );
+
     });
 
     list.innerHTML = countries.map(country => {
+
       const countryLevels = country.levels || [];
 
       return `
+
         <div class="country-card">
 
-          <button class="country-header" type="button"
+          <button class="country-header"
+            type="button"
             data-country-toggle="${escapeHtml(country.id)}"
             aria-expanded="false">
 
-            <span>🌍 ${escapeHtml(country.country_name)}</span>
+            <span>
+              🌍 ${escapeHtml(country.country_name)}
+            </span>
 
             <span>
               ${countryLevels.length}
@@ -1184,48 +1560,73 @@ async function loadEducationOptions() {
 
             ${
               countryLevels.length
+
               ? `
+
                 <div class="level-list">
 
                   ${countryLevels.map(level => `
+
                     <div class="level-item">
 
                       <a class="level-link"
+
                         href="start-exam.html?country_id=${encodeURIComponent(country.id)}&level_id=${encodeURIComponent(level.id)}">
 
                         ${escapeHtml(level.level_name)}
 
-                        <small>Open this education level</small>
+                        <small>
+                          Open this education level
+                        </small>
+
                       </a>
 
                     </div>
+
                   `).join("")}
 
                 </div>
+
               `
+
               : `
+
                 <div class="empty-state">
                   No active education levels have been added for this country.
                 </div>
+
               `
             }
 
           </div>
+
         </div>
+
       `;
+
     }).join("");
 
-    list.querySelectorAll("[data-country-toggle]").forEach(button => {
-      button.addEventListener("click",() => {
-        const body = $("country-body-"+button.dataset.countryToggle);
+    list.querySelectorAll("[data-country-toggle]")
+      .forEach(button => {
 
-        if (!body) return;
+        button.addEventListener("click",() => {
 
-        const open = body.classList.toggle("open");
+          const body = $(
+            "country-body-" + button.dataset.countryToggle
+          );
 
-        button.setAttribute("aria-expanded",String(open));
+          if (!body) return;
+
+          const open = body.classList.toggle("open");
+
+          button.setAttribute(
+            "aria-expanded",
+            String(open)
+          );
+
+        });
+
       });
-    });
 
     showMessage(
       $("educationStatus"),
@@ -1234,61 +1635,107 @@ async function loadEducationOptions() {
     );
 
   } catch(error) {
-    console.error("Education options query:",error);
+
+    console.error(
+      "Education options query:",
+      error
+    );
 
     if (loadVersion === educationLoadVersion) {
+
       list.innerHTML = `
+
         <div class="empty-state">
           Could not load countries and education levels.
           Please refresh or check your database permissions.
         </div>
+
       `;
 
       showMessage(
         $("educationStatus"),
-        "Education options could not be loaded: "+error.message,
+        "Education options could not be loaded: " + error.message,
         "error"
       );
+
     }
 
     throw error;
 
   } finally {
-    if (loadVersion === educationLoadVersion && refreshButton) {
+
+    if (
+      loadVersion === educationLoadVersion &&
+      refreshButton
+    ) {
       refreshButton.disabled = false;
     }
+
   }
+
 }
 
-/* MANUAL REFRESH */
+/* =========================================
+   MANUAL EDUCATION REFRESH
+========================================= */
 
-$("refreshEducationOptions").addEventListener("click",async () => {
-  try {
-    await loadEducationOptions();
-  } catch(error) {
-    console.error("Manual education refresh failed:",error);
+$("refreshEducationOptions").addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await loadEducationOptions();
+
+    } catch(error) {
+
+      console.error(
+        "Manual education refresh failed:",
+        error
+      );
+
+    }
+
   }
-});
+);
 
-/* LIVE EDUCATION UPDATES */
+/* =========================================
+   LIVE EDUCATION UPDATES
+========================================= */
 
 function scheduleEducationRefresh() {
+
   if (educationReloadTimer) {
     clearTimeout(educationReloadTimer);
   }
 
   educationReloadTimer = setTimeout(async () => {
+
     try {
+
       await loadEducationOptions();
+
     } catch(error) {
-      console.error("Live education refresh failed:",error);
+
+      console.error(
+        "Live education refresh failed:",
+        error
+      );
+
     }
+
   },500);
+
 }
 
 function subscribeToEducationChanges() {
+
   if (educationRealtimeChannel) {
-    supabase.removeChannel(educationRealtimeChannel);
+
+    supabase.removeChannel(
+      educationRealtimeChannel
+    );
+
   }
 
   educationRealtimeChannel = supabase
@@ -1335,18 +1782,31 @@ function subscribeToEducationChanges() {
     )
 
     .subscribe(status => {
-      console.log("Education live updates:",status);
+
+      console.log(
+        "Education live updates:",
+        status
+      );
+
     });
+
 }
 
-/* EXAMINATION TITLES */
+/* =========================================
+   EXAMINATION TITLES
+========================================= */
 
 async function loadExaminationTitles() {
-  const ids = [...new Set(
-    attemptsCache
-      .map(attempt => attempt.examination_id)
-      .filter(Boolean)
-  )];
+
+  const ids = [
+    ...new Set(
+
+      attemptsCache
+        .map(attempt => attempt.examination_id)
+        .filter(id => id !== null && id !== undefined)
+
+    )
+  ];
 
   examinationTitles = {};
 
@@ -1358,115 +1818,228 @@ async function loadExaminationTitles() {
     .in("id",ids);
 
   if (error) {
-    console.error("Examination titles query:",error);
+
+    console.error(
+      "Examination titles query:",
+      error
+    );
+
     return;
   }
 
   (data || []).forEach(exam => {
-    examinationTitles[String(exam.id)] = exam.title;
+
+    examinationTitles[String(exam.id)] =
+      exam.title;
+
   });
+
 }
 
 function getExamTitle(attempt) {
-  return examinationTitles[String(attempt.examination_id)] ||
-    "Examination #"+attempt.examination_id;
+
+  return (
+    examinationTitles[String(attempt.examination_id)] ||
+    "Examination #" + attempt.examination_id
+  );
+
 }
 
-/* ATTEMPTS AND RESULTS */
+/* =========================================
+   ATTEMPTS AND RESULTS
+========================================= */
 
 async function loadAttempts() {
+
   if (!currentUser?.id) {
     throw new Error("Student session is missing.");
   }
 
-  $("recentAttempts").textContent = "Loading exam history…";
-  $("historyContent").textContent = "Loading exam history…";
-  $("resultsContent").textContent = "Loading results…";
-  $("homeResultsContent").textContent = "Loading results…";
+  $("recentAttempts").textContent =
+    "Loading exam history…";
+
+  $("historyContent").textContent =
+    "Loading exam history…";
+
+  $("resultsContent").textContent =
+    "Loading results…";
+
+  $("homeResultsContent").textContent =
+    "Loading results…";
 
   const {data:allAttempts,error:historyError} = await supabase
     .from("exam_attempts")
-    .select("id,examination_id,started_at,submitted_at,status,score,total_marks")
+    .select(
+      "id,examination_id,started_at,submitted_at,status,score,total_marks"
+    )
     .eq("user_id",currentUser.id)
     .order("started_at",{ascending:false});
 
-  if (historyError) throw historyError;
+  if (historyError) {
+    throw historyError;
+  }
 
   attemptsCache = allAttempts || [];
 
-  const {data:submittedAttempts,error:resultsError} = await supabase
-    .from("exam_attempts")
-    .select("id,examination_id,started_at,submitted_at,status,score,total_marks")
-    .eq("user_id",currentUser.id)
-    .eq("status","submitted")
-    .order("submitted_at",{ascending:false});
+  /*
+    Filter submitted attempts in JavaScript.
+    This also handles status values consistently.
+  */
 
-  if (resultsError) throw resultsError;
+  completedCache = attemptsCache
+    .filter(attempt => isSubmitted(attempt))
+    .sort((a,b) => {
 
-  completedCache = submittedAttempts || [];
+      const dateA = new Date(
+        a.submitted_at || a.started_at
+      ).getTime();
+
+      const dateB = new Date(
+        b.submitted_at || b.started_at
+      ).getTime();
+
+      return dateB - dateA;
+
+    });
 
   await loadExaminationTitles();
 
-  $("attemptCount").textContent = attemptsCache.length;
-  $("completedCount").textContent = completedCache.length;
+  $("attemptCount").textContent =
+    attemptsCache.length;
+
+  $("completedCount").textContent =
+    completedCache.length;
 
   renderRecentAttempts();
+
   renderAttempts("history");
+
   renderAttempts("results");
+
   renderHomeResults();
+
 }
 
+/* =========================================
+   ATTEMPT TABLE
+========================================= */
+
 function renderAttemptsTable(attempts,showScore=true) {
+
   return `
+
     <div class="table-wrap">
+
       <table>
+
         <thead>
+
           <tr>
+
             <th>Examination</th>
+
             ${showScore ? "<th>Score</th>" : ""}
+
             <th>Date Started</th>
+
             <th>Date Submitted</th>
+
             <th>Status</th>
+
             <th>Result</th>
+
           </tr>
+
         </thead>
 
         <tbody>
+
           ${attempts.map(attempt => {
+
             const submitted = isSubmitted(attempt);
 
             const resultLink = submitted
-              ? `<a class="result-link"
+
+              ? `
+
+                <a class="result-link"
+
                   href="result.html?attempt_id=${encodeURIComponent(attempt.id)}">
+
                   View Result
-                </a>`
-              : `<span class="muted">Not submitted</span>`;
+
+                </a>
+
+              `
+
+              : `
+
+                <span class="muted">
+                  Not submitted
+                </span>
+
+              `;
 
             return `
+
               <tr>
-                <td>${escapeHtml(getExamTitle(attempt))}</td>
-                ${showScore ? `<td>${formatScore(attempt)}</td>` : ""}
-                <td>${escapeHtml(formatDate(attempt.started_at))}</td>
-                <td>${escapeHtml(formatDate(attempt.submitted_at))}</td>
+
                 <td>
-                  <span class="pill ${submitted ? "success" : ""}">
-                    ${escapeHtml(readableStatus(attempt.status))}
-                  </span>
+                  ${escapeHtml(getExamTitle(attempt))}
                 </td>
-                <td>${resultLink}</td>
+
+                ${
+                  showScore
+                  ? `<td>${formatScore(attempt)}</td>`
+                  : ""
+                }
+
+                <td>
+                  ${escapeHtml(formatDate(attempt.started_at))}
+                </td>
+
+                <td>
+                  ${escapeHtml(formatDate(attempt.submitted_at))}
+                </td>
+
+                <td>
+
+                  <span class="pill ${submitted ? "success" : ""}">
+
+                    ${escapeHtml(readableStatus(attempt.status))}
+
+                  </span>
+
+                </td>
+
+                <td>
+                  ${resultLink}
+                </td>
+
               </tr>
+
             `;
+
           }).join("")}
+
         </tbody>
+
       </table>
+
     </div>
+
   `;
+
 }
 
-/* RECENTLY ATTEMPTED EXAMS */
+/* =========================================
+   RECENTLY ATTEMPTED EXAMS
+========================================= */
 
 function renderRecentAttempts() {
+
   const container = $("recentAttempts");
+
   const toggle = $("recentAttemptsToggle");
 
   if (!container || !toggle) return;
@@ -1474,167 +2047,341 @@ function renderRecentAttempts() {
   const total = attemptsCache.length;
 
   const visible = showAllRecentAttempts
+
     ? attemptsCache
+
     : attemptsCache.slice(0,5);
 
   if (!total) {
+
     container.innerHTML =
       '<div class="empty-state">You have not attempted any examinations yet.</div>';
 
     toggle.innerHTML = "";
+
     return;
   }
 
   container.innerHTML = `
+
     <div class="recent-attempts-preview ${showAllRecentAttempts ? "expanded" : ""}">
+
       ${renderAttemptsTable(visible,false)}
+
     </div>
+
   `;
 
   if (total > 5) {
+
     toggle.innerHTML = `
-      <button class="button secondary" type="button" id="toggleRecentAttempts">
+
+      <button class="button secondary"
+        type="button"
+        id="toggleRecentAttempts">
+
         ${showAllRecentAttempts ? "Show Less" : "View All"}
+
       </button>
+
     `;
 
-    $("toggleRecentAttempts").addEventListener("click",() => {
-      showAllRecentAttempts = !showAllRecentAttempts;
-      renderRecentAttempts();
-    });
+    $("toggleRecentAttempts").addEventListener(
+      "click",
+      () => {
+
+        showAllRecentAttempts =
+          !showAllRecentAttempts;
+
+        renderRecentAttempts();
+
+      }
+    );
 
   } else {
+
     toggle.innerHTML = "";
+
   }
+
 }
 
-/* HOME RESULTS PREVIEW */
+/* =========================================
+   HOME RESULTS PREVIEW
+========================================= */
 
 function renderHomeResults() {
+
   const latest = completedCache.slice(0,5);
 
   $("homeResultsCount").textContent =
-    `${completedCache.length} completed result${completedCache.length === 1 ? "" : "s"}`;
+
+    `${completedCache.length} completed result` +
+    `${completedCache.length === 1 ? "" : "s"}`;
 
   $("homeResultsContent").innerHTML = latest.length
-    ? `<div class="results-preview">${renderAttemptsTable(latest,true)}</div>`
-    : '<div class="empty-state">No completed examination results yet.</div>';
+
+    ? `
+
+      <div class="results-preview">
+
+        ${renderAttemptsTable(latest,true)}
+
+      </div>
+
+    `
+
+    : `
+
+      <div class="empty-state">
+        No completed examination results yet.
+      </div>
+
+    `;
+
 }
 
-/* RESULTS MENU */
+/* =========================================
+   RESULTS MENU
+========================================= */
 
 function renderAttempts(sectionId) {
+
   if (sectionId === "results") {
+
     const total = completedCache.length;
 
     const visible = showAllResults
+
       ? completedCache
+
       : completedCache.slice(0,5);
 
     $("resultsCount").textContent =
-      `${total} completed result${total === 1 ? "" : "s"}`;
+
+      `${total} completed result` +
+      `${total === 1 ? "" : "s"}`;
 
     if (!total) {
-      $("resultsContent").innerHTML =
-        '<div class="empty-state">No submitted examination results were found for this account.</div>';
+
+      $("resultsContent").innerHTML = `
+
+        <div class="empty-state">
+          No submitted examination results were found for this account.
+        </div>
+
+      `;
 
       $("toggleAllResults").hidden = true;
+
       return;
     }
 
-    $("resultsContent").innerHTML =
-      `<div class="results-preview ${showAllResults ? "expanded" : ""}">
+    $("resultsContent").innerHTML = `
+
+      <div class="results-preview ${showAllResults ? "expanded" : ""}">
+
         ${renderAttemptsTable(visible,true)}
-      </div>`;
+
+      </div>
+
+    `;
 
     $("toggleAllResults").hidden = total <= 5;
 
     $("toggleAllResults").textContent =
-      showAllResults ? "Show Latest 5" : "View All Results";
+
+      showAllResults
+      ? "Show Latest 5"
+      : "View All Results";
 
     return;
   }
 
   $("historyContent").innerHTML = attemptsCache.length
+
     ? renderAttemptsTable(attemptsCache,true)
-    : '<div class="empty-state">You have not attempted any examinations yet.</div>';
+
+    : `
+
+      <div class="empty-state">
+        You have not attempted any examinations yet.
+      </div>
+
+    `;
+
 }
 
-/* VIEW ALL RESULTS BUTTON */
+/* =========================================
+   VIEW ALL RESULTS
+========================================= */
 
-$("toggleAllResults").addEventListener("click",() => {
-  showAllResults = !showAllResults;
-  renderAttempts("results");
-});
+$("toggleAllResults").addEventListener(
+  "click",
+  () => {
 
-/* SCHOOL EXAM PLACEHOLDERS */
+    showAllResults = !showAllResults;
 
-$("schoolExamForm").addEventListener("submit",event => {
-  event.preventDefault();
+    renderAttempts("results");
 
-  showMessage(
-    $("schoolExamMessage"),
-    "School examination login is not active yet. The Teacher/School examination system will be connected when it is created.",
-    "error"
-  );
-});
-
-$("schoolResultForm").addEventListener("submit",event => {
-  event.preventDefault();
-
-  showMessage(
-    $("schoolResultMessage"),
-    "School results are not available for lookup yet. The results database will be connected in a later stage.",
-    "error"
-  );
-
-  $("schoolResultOutput").replaceChildren();
-});
-
-/* SIGN OUT */
-
-$("signOutButton").addEventListener("click",async () => {
-  const button = $("signOutButton");
-
-  button.disabled = true;
-  button.textContent = "Signing out…";
-
-  try {
-    const {error} = await supabase.auth.signOut();
-
-    if (error) throw error;
-
-    window.location.replace("student-login.html?mode=login");
-
-  } catch(error) {
-    console.error("Sign-out failed:",error);
-
-    button.disabled = false;
-    button.textContent = "↪ Sign Out";
-
-    alert("Could not sign out. Please try again.");
   }
+);
+
+/* =========================================
+   TEACHER/SCHOOL EXAM PLACEHOLDERS
+========================================= */
+
+$("schoolExamForm").addEventListener(
+  "submit",
+  event => {
+
+    event.preventDefault();
+
+    showMessage(
+      $("schoolExamMessage"),
+      "School examination login is not active yet. The Teacher/School examination system will be connected when it is created.",
+      "error"
+    );
+
+  }
+);
+
+$("schoolResultForm").addEventListener(
+  "submit",
+  event => {
+
+    event.preventDefault();
+
+    showMessage(
+      $("schoolResultMessage"),
+      "School results are not available for lookup yet. The results database will be connected in a later stage.",
+      "error"
+    );
+
+    $("schoolResultOutput").replaceChildren();
+
+  }
+);
+
+/* =========================================
+   SIGN OUT
+========================================= */
+
+$("signOutButton").addEventListener(
+  "click",
+  async () => {
+
+    if (isSigningOut) return;
+
+    isSigningOut = true;
+
+    const button = $("signOutButton");
+
+    button.disabled = true;
+
+    button.textContent = "Signing out…";
+
+    try {
+
+      const {error} = await supabase.auth.signOut();
+
+      if (error) throw error;
+
+      window.location.replace(
+        "student-login.html?mode=login"
+      );
+
+    } catch(error) {
+
+      console.error(
+        "Sign-out failed:",
+        error
+      );
+
+      isSigningOut = false;
+
+      button.disabled = false;
+
+      button.textContent = "↪ Sign Out";
+
+      alert(
+        "Could not sign out. Please try again."
+      );
+
+    }
+
+  }
+);
+
+/* =========================================
+   CLEANUP
+========================================= */
+
+window.addEventListener("pagehide",() => {
+
+  if (educationReloadTimer) {
+    clearTimeout(educationReloadTimer);
+  }
+
+  if (educationRealtimeChannel) {
+
+    supabase.removeChannel(
+      educationRealtimeChannel
+    );
+
+  }
+
 });
 
-/* INITIALIZATION */
+/* =========================================
+   INITIALIZATION
+========================================= */
 
 async function initializeDashboard() {
+
   try {
+
+    /*
+      First confirm that the visitor has an
+      authenticated Supabase student session.
+    */
+
     const session = await requireStudentSession();
 
-    if (!session || !session.user) return;
+    if (!session?.user) {
+      return;
+    }
 
     currentUser = session.user;
 
-    // Verify account type before loading any student information.
-    const isStudent = await verifyStudentAccount(currentUser);
+    /*
+      Verify account type BEFORE loading
+      student profile, education options,
+      examination history or results.
+    */
 
-    if (!isStudent) return;
+    const isStudent = await verifyStudentAccount(
+      currentUser
+    );
+
+    if (!isStudent) {
+      return;
+    }
+
+    /*
+      Load dashboard information.
+      A failure in one section does not prevent
+      the other sections from loading.
+    */
 
     const results = await Promise.allSettled([
+
       loadProfile(),
+
       loadEducationOptions(),
+
       loadAttempts()
+
     ]);
 
     const names = [
@@ -1644,52 +2391,88 @@ async function initializeDashboard() {
     ];
 
     results.forEach((result,index) => {
+
       if (result.status === "rejected") {
-        console.error(names[index]+" failed:",result.reason);
+
+        console.error(
+          names[index] + " failed:",
+          result.reason
+        );
 
         if (index === 0) {
+
           showMessage(
             $("profileMessage"),
             "Your profile could not be loaded. Please refresh the page.",
             "error"
           );
+
         }
 
         if (index === 1) {
-          $("countryList").innerHTML =
-            '<div class="empty-state">Could not load countries and education levels. Please refresh or check permissions.</div>';
+
+          $("countryList").innerHTML = `
+
+            <div class="empty-state">
+              Could not load countries and education levels.
+              Please refresh or check permissions.
+            </div>
+
+          `;
+
         }
 
         if (index === 2) {
-          $("recentAttempts").textContent = "Could not load exam history.";
-          $("recentAttemptsToggle").innerHTML = "";
-          $("historyContent").textContent = "Could not load exam history.";
-          $("resultsContent").textContent = "Could not load results.";
-          $("homeResultsContent").textContent = "Could not load results.";
 
-          $("homeResultsCount").textContent = "Results unavailable";
-          $("resultsCount").textContent = "Results unavailable";
+          $("recentAttempts").textContent =
+            "Could not load exam history.";
+
+          $("recentAttemptsToggle").innerHTML = "";
+
+          $("historyContent").textContent =
+            "Could not load exam history.";
+
+          $("resultsContent").textContent =
+            "Could not load results.";
+
+          $("homeResultsContent").textContent =
+            "Could not load results.";
+
+          $("homeResultsCount").textContent =
+            "Results unavailable";
+
+          $("resultsCount").textContent =
+            "Results unavailable";
 
           $("attemptCount").textContent = "—";
+
           $("completedCount").textContent = "—";
+
         }
+
       }
+
     });
 
     subscribeToEducationChanges();
 
   } catch(error) {
-    console.error("Dashboard initialization failed:",error);
 
-    await supabase.auth.signOut();
+    console.error(
+      "Dashboard initialization failed:",
+      error
+    );
 
-    window.location.replace(
+    await redirectAfterAccountCheck(
       "student-login.html?mode=login&account=verification-failed"
     );
+
   }
+
 }
 
 initializeDashboard();
+
 </script>
 
 </body>
