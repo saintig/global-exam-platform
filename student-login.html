@@ -205,13 +205,18 @@ a{color:var(--navy-light)}
   margin-top:24px;
   font-size:13px;
   color:var(--muted);
+  line-height:1.7;
 }
 
 .admin-link a{
+  display:inline-block;
+  margin-top:5px;
   color:var(--navy);
   font-weight:bold;
   text-decoration:none;
 }
+
+.admin-link a:hover{text-decoration:underline}
 
 footer{
   text-align:center;
@@ -351,8 +356,9 @@ footer{
   </div>
 
   <div class="admin-link">
-    Are you an administrator?
-    <a href="admin-login.html">Admin Sign In</a>
+    Are you a Teacher/School Owner?
+    <br>
+    <a href="school-login.html">Teacher/School Sign In</a>
   </div>
 
 </section>
@@ -370,68 +376,67 @@ import {
   requestPasswordReset
 } from "./auth.js";
 
-const loginTab=document.getElementById("login-tab");
-const registerTab=document.getElementById("register-tab");
-const tabs=document.getElementById("tabs");
+const loginTab = document.getElementById("login-tab");
+const registerTab = document.getElementById("register-tab");
+const tabs = document.getElementById("tabs");
 
-const loginForm=document.getElementById("login-form");
-const registerForm=document.getElementById("register-form");
-const resetForm=document.getElementById("reset-form");
+const loginForm = document.getElementById("login-form");
+const registerForm = document.getElementById("register-form");
+const resetForm = document.getElementById("reset-form");
 
-const title=document.getElementById("page-title");
-const description=document.getElementById("page-description");
-const message=document.getElementById("message");
+const title = document.getElementById("page-title");
+const description = document.getElementById("page-description");
+const message = document.getElementById("message");
 
-document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("year").textContent =
+  new Date().getFullYear();
 
-function showMessage(text,type){
-  message.textContent=text;
-  message.className="message show "+type;
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message show " + type;
 }
 
-function clearMessage(){
-  message.textContent="";
-  message.className="message";
+function clearMessage() {
+  message.textContent = "";
+  message.className = "message";
 }
 
-function setLoading(form,loading,label){
-  const button=form.querySelector('button[type="submit"]');
+function setLoading(form, loading, label) {
+  const button = form.querySelector('button[type="submit"]');
 
-  if(!button.dataset.originalText){
-    button.dataset.originalText=button.textContent;
+  if (!button.dataset.originalText) {
+    button.dataset.originalText = button.textContent;
   }
 
-  button.disabled=loading;
-  button.textContent=loading?label:button.dataset.originalText;
+  button.disabled = loading;
+  button.textContent = loading ? label : button.dataset.originalText;
 }
 
-/*
-  ACCOUNT TYPE VERIFICATION
+/* STRICT STUDENT ACCOUNT VERIFICATION */
 
-  Teacher/School accounts are recorded in school_accounts.
-  Student accounts must not have a Teacher/School record.
-*/
-
-async function verifyStudentAccount(user){
-
-  if(!user?.id){
-    throw new Error("Your account could not be verified. Please sign in again.");
+async function verifyStudentAccount(user) {
+  if (!user?.id) {
+    throw new Error(
+      "Your account could not be verified. Please sign in again."
+    );
   }
 
-  // First, check whether this user is a Teacher/School account.
-  const {data:teacherAccount,error:teacherError}=
+  const { data: teacherAccount, error: teacherError } =
     await supabase
       .from("school_accounts")
       .select("id")
-      .eq("user_id",user.id)
+      .eq("user_id", user.id)
       .maybeSingle();
 
-  if(teacherError){
-    console.error("Teacher/School account verification:",teacherError.message);
-    throw new Error("We could not verify your account type. Please try again.");
+  if (teacherError) {
+    console.error("Teacher/School verification:", teacherError.message);
+
+    throw new Error(
+      "We could not verify your account type. Please try again."
+    );
   }
 
-  if(teacherAccount){
+  if (teacherAccount) {
     await supabase.auth.signOut();
 
     throw new Error(
@@ -439,134 +444,145 @@ async function verifyStudentAccount(user){
     );
   }
 
-  // Check the account type stored in the user's profile.
-  const {data:profile,error:profileError}=
+  const { data: profile, error: profileError } =
     await supabase
       .from("profiles")
       .select("account_type")
-      .eq("id",user.id)
+      .eq("id", user.id)
       .maybeSingle();
 
-  if(profileError){
-    console.error("Profile account verification:",profileError.message);
-    throw new Error("We could not verify your account type. Please try again.");
+  if (profileError) {
+    console.error("Profile verification:", profileError.message);
+
+    throw new Error(
+      "We could not verify your account type. Please try again."
+    );
   }
 
-  const accountType=String(profile?.account_type||"").toLowerCase();
+  const accountType = String(
+    profile?.account_type || ""
+  ).trim().toLowerCase();
 
-  if(accountType && accountType!=="student"){
+  if (accountType !== "student") {
     await supabase.auth.signOut();
 
     throw new Error(
-      "This account is not registered as a student account. Please use the correct login portal."
+      "Access denied. This account is not registered as a Student account. Please use the correct login portal."
     );
   }
 
   return true;
 }
 
-function showLogin(){
+/* PAGE NAVIGATION */
+
+function showLogin() {
   clearMessage();
-  tabs.hidden=false;
-  loginForm.hidden=false;
-  registerForm.hidden=true;
-  resetForm.hidden=true;
+  tabs.hidden = false;
+  loginForm.hidden = false;
+  registerForm.hidden = true;
+  resetForm.hidden = true;
 
   loginTab.classList.add("active");
   registerTab.classList.remove("active");
 
-  loginTab.setAttribute("aria-selected","true");
-  registerTab.setAttribute("aria-selected","false");
+  loginTab.setAttribute("aria-selected", "true");
+  registerTab.setAttribute("aria-selected", "false");
 
-  title.textContent="Welcome Back!";
-  description.textContent=
+  title.textContent = "Welcome Back!";
+  description.textContent =
     "Sign in to access your examinations, results and student dashboard.";
 }
 
-function showRegister(){
+function showRegister() {
   clearMessage();
-  tabs.hidden=false;
-  loginForm.hidden=true;
-  registerForm.hidden=false;
-  resetForm.hidden=true;
+  tabs.hidden = false;
+  loginForm.hidden = true;
+  registerForm.hidden = false;
+  resetForm.hidden = true;
 
   loginTab.classList.remove("active");
   registerTab.classList.add("active");
 
-  loginTab.setAttribute("aria-selected","false");
-  registerTab.setAttribute("aria-selected","true");
+  loginTab.setAttribute("aria-selected", "false");
+  registerTab.setAttribute("aria-selected", "true");
 
-  title.textContent="Create Your Account";
-  description.textContent=
+  title.textContent = "Create Your Account";
+  description.textContent =
     "Register to start your learning and examination journey.";
 }
 
-function showReset(){
+function showReset() {
   clearMessage();
-  tabs.hidden=true;
-  loginForm.hidden=true;
-  registerForm.hidden=true;
-  resetForm.hidden=false;
+  tabs.hidden = true;
+  loginForm.hidden = true;
+  registerForm.hidden = true;
+  resetForm.hidden = false;
 
-  title.textContent="Reset Your Password";
-  description.textContent=
+  title.textContent = "Reset Your Password";
+  description.textContent =
     "Enter the email address linked to your student account.";
 }
 
-loginTab.addEventListener("click",showLogin);
-registerTab.addEventListener("click",showRegister);
+loginTab.addEventListener("click", showLogin);
+registerTab.addEventListener("click", showRegister);
 
-document.getElementById("forgot-link").addEventListener("click",event=>{
+document.getElementById("forgot-link").addEventListener("click", event => {
   event.preventDefault();
   showReset();
 });
 
-document.getElementById("back-login").addEventListener("click",event=>{
+document.getElementById("back-login").addEventListener("click", event => {
   event.preventDefault();
   showLogin();
 });
 
-document.querySelectorAll(".toggle-password").forEach(button=>{
-  button.addEventListener("click",()=>{
-    const input=document.getElementById(button.dataset.target);
-    const reveal=input.type==="password";
+/* SHOW/HIDE PASSWORD */
 
-    input.type=reveal?"text":"password";
-    button.textContent=reveal?"Hide":"Show";
-    button.setAttribute("aria-pressed",String(reveal));
+document.querySelectorAll(".toggle-password").forEach(button => {
+  button.addEventListener("click", () => {
+    const input = document.getElementById(button.dataset.target);
+    const reveal = input.type === "password";
+
+    input.type = reveal ? "text" : "password";
+    button.textContent = reveal ? "Hide" : "Show";
+    button.setAttribute("aria-pressed", String(reveal));
   });
 });
 
 /* STUDENT REGISTRATION */
 
-registerForm.addEventListener("submit",async event=>{
+registerForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearMessage();
 
-  const name=document.getElementById("register-name").value.trim();
-  const email=document.getElementById("register-email").value.trim();
-  const password=document.getElementById("register-password").value;
-  const confirmation=document.getElementById("confirm-password").value;
+  const name = document.getElementById("register-name").value.trim();
+  const email = document.getElementById("register-email").value.trim();
+  const password = document.getElementById("register-password").value;
+  const confirmation = document.getElementById("confirm-password").value;
 
-  if(name.length<2){
-    showMessage("Please enter your full name.","error");
+  if (name.length < 2) {
+    showMessage("Please enter your full name.", "error");
     return;
   }
 
-  if(password!==confirmation){
-    showMessage("Your passwords do not match. Please check and try again.","error");
+  if (password !== confirmation) {
+    showMessage(
+      "Your passwords do not match. Please check and try again.",
+      "error"
+    );
     return;
   }
 
-  setLoading(registerForm,true,"Creating Account...");
+  setLoading(registerForm, true, "Creating Account...");
 
-  try{
-    const {data,error}=await registerStudent(email,password,name);
+  try {
+    const { data, error } =
+      await registerStudent(email, password, name);
 
-    if(error)throw error;
+    if (error) throw error;
 
-    if(data.session){
-
+    if (data.session) {
       await verifyStudentAccount(data.session.user);
 
       showMessage(
@@ -575,52 +591,50 @@ registerForm.addEventListener("submit",async event=>{
       );
 
       window.location.replace("dashboard.html");
-
-    }else{
-
-      showLogin();
-
-      showMessage(
-        "Registration received. Check your email for the confirmation link. After confirming, sign in with your email and password.",
-        "success"
-      );
+      return;
     }
 
-  }catch(error){
+    showLogin();
 
     showMessage(
-      error.message||"We could not create your account. Please try again.",
-      "error"
+      "Registration received. Check your email for the confirmation link. Your Student account must be provisioned before you can sign in.",
+      "success"
     );
 
-  }finally{
-
-    setLoading(registerForm,false);
+  } catch (error) {
+    showMessage(
+      error.message ||
+      "We could not create your account. Please try again.",
+      "error"
+    );
+  } finally {
+    setLoading(registerForm, false);
   }
 });
 
 /* STUDENT SIGN IN */
 
-loginForm.addEventListener("submit",async event=>{
+loginForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearMessage();
 
-  const email=document.getElementById("login-email").value.trim();
-  const password=document.getElementById("login-password").value;
+  const email = document.getElementById("login-email").value.trim();
+  const password = document.getElementById("login-password").value;
 
-  setLoading(loginForm,true,"Verifying Account...");
+  setLoading(loginForm, true, "Verifying Account...");
 
-  try{
+  try {
+    const { data, error } =
+      await signInStudent(email, password);
 
-    const {data,error}=await signInStudent(email,password);
+    if (error) throw error;
 
-    if(error)throw error;
-
-    if(!data.session){
-      throw new Error("Sign-in was not completed. Please try again.");
+    if (!data.session) {
+      throw new Error(
+        "Sign-in was not completed. Please try again."
+      );
     }
 
-    // IMPORTANT: verify account type before opening student dashboard.
     await verifyStudentAccount(data.session.user);
 
     showMessage(
@@ -630,95 +644,82 @@ loginForm.addEventListener("submit",async event=>{
 
     window.location.replace("dashboard.html");
 
-  }catch(error){
-
+  } catch (error) {
     showMessage(
-      error.message||"Sign-in failed. Check your details and try again.",
+      error.message ||
+      "Sign-in failed. Check your details and try again.",
       "error"
     );
-
-  }finally{
-
-    setLoading(loginForm,false);
+  } finally {
+    setLoading(loginForm, false);
   }
 });
 
 /* PASSWORD RESET REQUEST */
 
-resetForm.addEventListener("submit",async event=>{
+resetForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearMessage();
 
-  const email=document.getElementById("reset-email").value.trim();
+  const email = document.getElementById("reset-email").value.trim();
 
-  setLoading(resetForm,true,"Sending Link...");
+  setLoading(resetForm, true, "Sending Link...");
 
-  try{
+  try {
+    const { error } = await requestPasswordReset(email);
 
-    const {error}=await requestPasswordReset(email);
-
-    if(error)throw error;
+    if (error) throw error;
 
     showMessage(
       "If the address is registered, a password reset email will be sent. Check your inbox and spam folder.",
       "success"
     );
 
-  }catch(error){
-
+  } catch (error) {
     showMessage(
-      error.message||"We could not request a reset link. Please try again.",
+      error.message ||
+      "We could not request a reset link. Please try again.",
       "error"
     );
-
-  }finally{
-
-    setLoading(resetForm,false);
+  } finally {
+    setLoading(resetForm, false);
   }
 });
 
-/*
-  CHECK EXISTING SESSION
+/* CHECK EXISTING SESSION */
 
-  A signed-in Teacher/School account must not be redirected
-  straight into the student dashboard.
-*/
+async function checkExistingSession() {
+  const mode =
+    new URLSearchParams(window.location.search).get("mode");
 
-async function checkExistingSession(){
-
-  const mode=new URLSearchParams(window.location.search).get("mode");
-
-  if(mode==="reset"){
+  if (mode === "reset") {
     showReset();
     return;
   }
 
-  try{
+  try {
+    const { data, error } = await supabase.auth.getSession();
 
-    const {data,error}=await supabase.auth.getSession();
+    if (error) throw error;
 
-    if(error)throw error;
-
-    if(data.session){
-
+    if (data.session) {
       await verifyStudentAccount(data.session.user);
 
       window.location.replace("dashboard.html");
       return;
     }
 
-  }catch(error){
-
-    console.error("Session/account verification:",error.message);
+  } catch (error) {
+    console.error("Session/account verification:", error.message);
 
     showLogin();
-    showMessage(error.message,"error");
+    showMessage(error.message, "error");
     return;
   }
 
-  if(mode==="register"){
+  if (mode === "register") {
     showRegister();
-  }else{
+  } else {
     showLogin();
   }
 }
