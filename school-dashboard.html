@@ -549,8 +549,8 @@ h1{
 
   <nav>
     <button class="active" data-page="Dashboard">▦ &nbsp; Dashboard</button>
-    <button data-page="My Students">♙ &nbsp; My Students</button>
-    <button data-page="My Subjects">▤ &nbsp; My Subjects</button>
+    <button data-page="School Students">♙ &nbsp; School Students</button>
+    <button data-page="School Subjects">▤ &nbsp; School Subjects</button>
     <button data-page="Register Examination">＋ &nbsp; Register Examination</button>
     <button data-page="Question Bank">▣ &nbsp; Question Bank</button>
     <button data-page="Archive Management">▧ &nbsp; Archive Management</button>
@@ -562,7 +562,7 @@ h1{
   <nav>
     <button data-page="Subscription Plans">◇ &nbsp; Subscription Plans</button>
     <button data-page="Notifications">♧ &nbsp; Notifications</button>
-    <button data-page="My Profile">⚙ &nbsp; My Profile</button>
+    <button data-page="School Profile">⚙ &nbsp; School Profile</button>
     <button data-page="Help & Support">? &nbsp; Help &amp; Support</button>
   </nav>
 
@@ -720,9 +720,9 @@ h1{
 
       <div class="actions">
 
-        <button data-page="My Students">＋ Add Student</button>
+        <button data-page="School Students">＋ Add Student</button>
 
-        <button data-page="My Subjects">＋ Add Subject</button>
+        <button data-page="School Subjects">＋ Add Subject</button>
 
         <button data-page="Register Examination">＋ Register Examination</button>
 
@@ -833,7 +833,9 @@ async function loadCounts(accountId){
 
     countRows(
       "school_subjects",
-      q=>q.eq("school_account_id",accountId)
+      q=>q
+        .eq("school_account_id",accountId)
+        .eq("is_archived",false)
     ),
 
     countRows(
@@ -1040,40 +1042,46 @@ function openSidebar(){
   $("sidebarOverlay").classList.add("show");
 }
 
+/*
+  CENTRAL PAGE ROUTING
+
+  All dashboard navigation uses the agreed filenames.
+  Dashboard always returns to school-dashboard.html.
+*/
+
+const PAGE_LINKS = {
+  "Dashboard": "school-dashboard.html",
+  "School Students": "school-students.html",
+  "School Subjects": "school-subjects.html",
+  "Register Examination": "register-examination.html",
+  "Question Bank": "school-question-bank.html",
+  "Archive Management": "school-archive-management.html",
+  "Results & Performance": "school-results-performance.html",
+  "Subscription Plans": "school-subscription-plans.html",
+  "Notifications": "school-notifications.html",
+  "School Profile": "school-my-profile.html",
+  "Help & Support": "school-help-support.html"
+};
+
 function navigate(page){
 
   closeSidebar();
 
-  /* REGISTER EXAMINATION PAGE */
+  const destination=PAGE_LINKS[page];
 
-  if(page==="Register Examination"){
+  if(!destination){
 
-    location.href="register-examination.html";
+    console.error("Unknown dashboard page:",page);
+
+    message(
+      "This dashboard link has not been configured.",
+      "error"
+    );
+
     return;
   }
 
-  document
-    .querySelectorAll("nav button[data-page]")
-    .forEach(button=>{
-      button.classList.toggle(
-        "active",
-        button.dataset.page===page
-      );
-    });
-
-  $("topTitle").textContent=page;
-
-  if(page==="Dashboard"){
-
-    $("statusMessage").className="status";
-
-  }else{
-
-    message(
-      page+" will be developed and connected in its agreed development stage.",
-      "info"
-    );
-  }
+  location.href=destination;
 }
 
 /* MENU BUTTON */
