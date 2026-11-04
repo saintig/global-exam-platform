@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -812,6 +811,8 @@ let educationLoadVersion = 0;
 
 $("currentYear").textContent = new Date().getFullYear();
 
+/* GENERAL HELPERS */
+
 function showMessage(element,message,type="") {
   element.textContent = message;
   element.className = "status-message" + (type ? " " + type : "");
@@ -868,6 +869,64 @@ function formatScore(attempt) {
   return `${escapeHtml(attempt.score)} / ${escapeHtml(attempt.total_marks)}`;
 }
 
+/* STUDENT ACCOUNT VERIFICATION */
+
+async function verifyStudentAccount(user) {
+  if (!user?.id) {
+    throw new Error("Your account could not be verified.");
+  }
+
+  // Teacher/School accounts must never enter the student dashboard.
+  const {data:schoolAccount,error:schoolError} = await supabase
+    .from("school_accounts")
+    .select("id,account_type,status")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if (schoolError) {
+    console.error("Teacher/School account verification:",schoolError);
+    throw new Error("Unable to verify your account type. Please sign in again.");
+  }
+
+  if (schoolAccount) {
+    await supabase.auth.signOut();
+
+    window.location.replace(
+      "student-login.html?mode=login&account=teacher-school"
+    );
+
+    return false;
+  }
+
+  // Require an explicitly identified student profile.
+  const {data:profile,error:profileError} = await supabase
+    .from("profiles")
+    .select("account_type")
+    .eq("id",user.id)
+    .maybeSingle();
+
+  if (profileError) {
+    console.error("Student profile verification:",profileError);
+    throw new Error("Unable to verify your student profile.");
+  }
+
+  const accountType = String(profile?.account_type || "")
+    .trim()
+    .toLowerCase();
+
+  if (accountType !== "student") {
+    await supabase.auth.signOut();
+
+    window.location.replace(
+      "student-login.html?mode=login&account=not-student"
+    );
+
+    return false;
+  }
+
+  return true;
+}
+
 /* NAVIGATION */
 
 function closeMenu() {
@@ -900,15 +959,15 @@ $("menuButton").addEventListener("click",() => {
 
 $("mobileBackdrop").addEventListener("click",closeMenu);
 
+document.addEventListener("keydown",event => {
+  if (event.key === "Escape") closeMenu();
+});
+
 document.querySelectorAll(".nav-link[data-section]").forEach(button => {
   button.addEventListener("click",() => {
     const target = button.dataset.section;
 
-    /*
-      Take an Exam is reserved for the teacher/school examination system.
-      The existing school login section is used until its dedicated page
-      and backend are created.
-    */
+    // Keep the existing Teacher/School exam login placeholder.
     openSection(target === "exams" ? "school" : target);
   });
 });
@@ -935,9 +994,7 @@ async function loadProfile() {
     .eq("id",currentUser.id)
     .maybeSingle();
 
-  if (error) {
-    console.warn("Profile query:",error.message);
-  }
+  if (error) throw error;
 
   const name = data?.display_name ||
     currentUser.user_metadata?.display_name ||
@@ -1060,10 +1117,7 @@ async function loadEducationOptions() {
   if (refreshButton) refreshButton.disabled = true;
 
   try {
-    const [
-      systemsResult,
-      levelsResult
-    ] = await Promise.all([
+    const [systemsResult,levelsResult] = await Promise.all([
 
       supabase
         .from("education_systems")
@@ -1520,7 +1574,7 @@ $("schoolExamForm").addEventListener("submit",event => {
 
   showMessage(
     $("schoolExamMessage"),
-    "School examination login is not active yet. The teacher/school examination system will be connected when it is created.",
+    "School examination login is not active yet. The Teacher/School examination system will be connected when it is created.",
     "error"
   );
 });
@@ -1572,6 +1626,11 @@ async function initializeDashboard() {
 
     currentUser = session.user;
 
+    // Verify account type before loading any student information.
+    const isStudent = await verifyStudentAccount(currentUser);
+
+    if (!isStudent) return;
+
     const results = await Promise.allSettled([
       loadProfile(),
       loadEducationOptions(),
@@ -1587,6 +1646,14 @@ async function initializeDashboard() {
     results.forEach((result,index) => {
       if (result.status === "rejected") {
         console.error(names[index]+" failed:",result.reason);
+
+        if (index === 0) {
+          showMessage(
+            $("profileMessage"),
+            "Your profile could not be loaded. Please refresh the page.",
+            "error"
+          );
+        }
 
         if (index === 1) {
           $("countryList").innerHTML =
@@ -1614,7 +1681,11 @@ async function initializeDashboard() {
   } catch(error) {
     console.error("Dashboard initialization failed:",error);
 
-    alert("The dashboard could not finish loading. Please sign in again.");
+    await supabase.auth.signOut();
+
+    window.location.replace(
+      "student-login.html?mode=login&account=verification-failed"
+    );
   }
 }
 
