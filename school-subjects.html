@@ -1,1 +1,1793 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>School Subjects | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#14243a;
+  --navy2:#1d3554;
+  --gold:#d4af37;
+  --paper:#f5f7fa;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e5e9ef;
+  --green:#16834a;
+  --red:#b42318;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:15px/1.5 Arial,sans-serif;
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:240px 1fr;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  background:var(--navy);
+  color:white;
+  padding:20px 15px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:5px 8px 22px;
+  border-bottom:1px solid #ffffff20;
+}
+
+.mark{
+  width:42px;
+  height:42px;
+  border-radius:11px;
+  background:var(--gold);
+  color:var(--navy);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+
+.brand b{font-size:16px}
+.brand small{
+  display:block;
+  color:#bdc8d5;
+  font-size:10px;
+  letter-spacing:1.2px;
+}
+
+.navlabel{
+  font-size:10px;
+  color:#9eacbd;
+  letter-spacing:1.4px;
+  font-weight:bold;
+  padding:22px 10px 8px;
+}
+
+.sidebar a{
+  display:block;
+  text-decoration:none;
+  color:#dce4ed;
+  padding:11px;
+  border-radius:8px;
+  margin-bottom:4px;
+  font-size:14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+  background:var(--navy2);
+  color:white;
+}
+
+.sidebar a.active{
+  box-shadow:inset 3px 0 var(--gold);
+}
+
+.sidebottom{
+  margin-top:auto;
+  border-top:1px solid #ffffff20;
+  padding:15px 5px 5px;
+}
+
+.accountname{
+  font-size:12px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+
+.accounttype{
+  font-size:11px;
+  color:#bdc8d5;
+}
+
+/* MAIN */
+
+.main{min-width:0}
+
+.topbar{
+  height:70px;
+  background:white;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+
+.top-title{
+  color:var(--navy);
+  font-weight:bold;
+}
+
+.topright{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.menu{
+  display:none;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:7px;
+  padding:7px 11px;
+  color:var(--navy);
+  margin-right:10px;
+}
+
+.content{
+  max-width:1450px;
+  margin:auto;
+  padding:30px;
+}
+
+/* PAGE HEADER */
+
+.pagehead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:15px;
+  margin-bottom:24px;
+}
+
+h1{
+  margin:0 0 5px;
+  color:var(--navy);
+  font-size:28px;
+}
+
+.subtitle{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.primary{
+  border:0;
+  background:var(--navy);
+  color:white;
+  padding:11px 17px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.primary:hover{background:var(--navy2)}
+.primary:disabled{opacity:.55;cursor:not-allowed}
+
+.secondary{
+  background:white;
+  border:1px solid var(--line);
+  color:var(--navy);
+  padding:10px 14px;
+  border-radius:8px;
+}
+
+.secondary:hover{border-color:var(--gold)}
+
+.danger{
+  background:#fff0ef;
+  color:var(--red);
+  border:1px solid #ffd2ce;
+  padding:9px 12px;
+  border-radius:7px;
+}
+
+.success{
+  background:#edf9f1;
+  color:var(--green);
+  border:1px solid #ccebd7;
+  padding:9px 12px;
+  border-radius:7px;
+}
+
+/* STATUS */
+
+.status{
+  display:none;
+  padding:12px 14px;
+  border-radius:8px;
+  margin-bottom:18px;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+
+.status.info{
+  display:block;
+  background:#eef6ff;
+  border:1px solid #d5e8fa;
+  color:#31577b;
+}
+
+.status.error{
+  display:block;
+  background:#fff0ef;
+  border:1px solid #ffd2ce;
+  color:var(--red);
+}
+
+.status.success{
+  display:block;
+  background:#edf9f1;
+  border:1px solid #ccebd7;
+  color:var(--green);
+}
+
+/* SUMMARY */
+
+.summary{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+  margin-bottom:23px;
+}
+
+.summary-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:19px 21px;
+  box-shadow:0 5px 18px #14243a08;
+}
+
+.summary-label{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.summary-number{
+  color:var(--navy);
+  font-size:30px;
+  font-weight:800;
+  margin-top:5px;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+  display:flex;
+  gap:12px;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:17px;
+}
+
+.search{
+  flex:1;
+  min-width:200px;
+  max-width:420px;
+}
+
+.search input{
+  width:100%;
+  padding:12px 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:white;
+  outline:none;
+}
+
+.search input:focus,
+.form-field input:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px #d4af3720;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+}
+
+.tab{
+  padding:10px 14px;
+  border:1px solid var(--line);
+  background:white;
+  color:var(--muted);
+  border-radius:8px;
+  font-size:13px;
+}
+
+.tab.active{
+  background:var(--navy);
+  color:white;
+  border-color:var(--navy);
+}
+
+/* SUBJECT CARDS */
+
+.subject-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+
+.subject-card{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 5px 18px #14243a08;
+  min-width:0;
+}
+
+.subject-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.subject-name{
+  color:var(--navy);
+  font-size:18px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+
+.subject-date{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+
+.badge.published{
+  background:#e9f8ef;
+  color:#147a43;
+}
+
+.badge.unpublished{
+  background:#fff4df;
+  color:#87610a;
+}
+
+.badge.archived{
+  background:#eef0f3;
+  color:#566273;
+}
+
+.subject-stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:15px 0;
+  margin-top:12px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+
+.subject-stat{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.subject-stat b{
+  display:block;
+  color:var(--navy);
+  font-size:19px;
+  margin-top:3px;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:15px;
+}
+
+.action-btn{
+  padding:8px 10px;
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:7px;
+  font-size:11px;
+}
+
+.action-btn:hover{
+  border-color:var(--gold);
+  background:#fffcf2;
+}
+
+.action-btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.empty{
+  grid-column:1/-1;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:35px 15px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:30;
+  background:#0008;
+  padding:18px;
+  overflow-y:auto;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:100%;
+  max-width:470px;
+  background:white;
+  border-radius:13px;
+  padding:24px;
+  box-shadow:0 15px 50px #0003;
+}
+
+.modal-box.wide{max-width:650px}
+
+.modal-title{
+  color:var(--navy);
+  font-size:20px;
+  font-weight:bold;
+  margin:0 0 5px;
+}
+
+.modal-subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:20px;
+}
+
+.form-field{margin-bottom:17px}
+
+.form-field label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  color:var(--navy);
+  margin-bottom:7px;
+}
+
+.form-field input{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  outline:none;
+}
+
+.form-buttons{
+  display:flex;
+  gap:9px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  margin-top:20px;
+}
+
+.modal-note{
+  background:#fffaf0;
+  border:1px solid #f0df9f;
+  color:#72570d;
+  padding:11px;
+  border-radius:8px;
+  font-size:12px;
+  margin-top:15px;
+}
+
+.exam-row{
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.exam-row:last-child{border-bottom:0}
+
+.exam-title{
+  color:var(--navy);
+  font-weight:bold;
+  font-size:14px;
+}
+
+.exam-meta{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+.footer{
+  text-align:center;
+  color:#8995a3;
+  font-size:11px;
+  padding:35px 8px 15px;
+}
+
+/* MOBILE */
+
+.overlay{
+  display:none;
+}
+
+@media(max-width:950px){
+  .subject-list{grid-template-columns:1fr}
+}
+
+@media(max-width:720px){
+
+  .app{display:block}
+
+  .sidebar{
+    position:fixed;
+    z-index:22;
+    inset:0 auto 0 0;
+    width:270px;
+    height:100dvh;
+    min-height:0;
+    overflow-y:auto;
+    transform:translateX(-105%);
+    transition:transform .2s ease;
+    box-shadow:10px 0 25px #0002;
+  }
+
+  .sidebar.open{transform:translateX(0)}
+
+  .overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:21;
+    background:#0007;
+    opacity:0;
+    visibility:hidden;
+  }
+
+  .overlay.show{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .menu{display:inline-block}
+
+  .topbar{
+    height:62px;
+    padding:0 14px;
+  }
+
+  .topright{display:none}
+
+  .content{padding:22px 15px}
+
+  .pagehead{display:block}
+
+  .pagehead .primary{
+    margin-top:15px;
+  }
+
+  h1{font-size:25px}
+
+  .toolbar{align-items:stretch}
+
+  .search{
+    max-width:none;
+    min-width:100%;
+  }
+
+  .tabs{width:100%}
+
+  .tab{flex:1}
+
+  .summary{gap:10px}
+
+  .summary-card{padding:15px}
+
+  .summary-number{font-size:25px}
+}
+
+@media(max-width:380px){
+  .subject-card{padding:15px}
+  .actions{gap:5px}
+  .action-btn{font-size:10px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="mark">SE</div>
+    <div>
+      <b>SAINTIG EXAMS</b>
+      <small>EXAMINATION PLATFORM</small>
+    </div>
+  </div>
+
+  <div class="navlabel">MAIN MENU</div>
+
+  <a href="school-dashboard.html">▦ &nbsp; Dashboard</a>
+  <a href="school-students.html">♙ &nbsp; School Students</a>
+  <a href="school-subjects.html" class="active">▤ &nbsp; School Subjects</a>
+  <a href="register-examination.html">＋ &nbsp; Register Examination</a>
+  <a href="school-question-bank.html">▣ &nbsp; Question Bank</a>
+  <a href="school-archive-management.html">▧ &nbsp; Archive Management</a>
+  <a href="school-results-performance.html">▥ &nbsp; Results &amp; Performance</a>
+
+  <div class="navlabel">ACCOUNT</div>
+
+  <a href="school-subscription-plans.html">◇ &nbsp; Subscription Plans</a>
+  <a href="school-notifications.html">♧ &nbsp; Notifications</a>
+  <a href="school-my-profile.html">⚙ &nbsp; School Profile</a>
+  <a href="school-help-support.html">? &nbsp; Help &amp; Support</a>
+
+  <div class="sidebottom">
+    <div class="accountname" id="sideName">Loading account…</div>
+    <div class="accounttype">Teacher/School Account</div>
+  </div>
+
+</aside>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+  <div>
+    <button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
+    <span class="top-title">School Subjects</span>
+  </div>
+  <div class="topright" id="topAccount">Loading account…</div>
+</header>
+
+<section class="content">
+
+  <div id="statusMessage" class="status"></div>
+
+  <div class="pagehead">
+    <div>
+      <h1>School Subjects</h1>
+      <div class="subtitle">
+        Create and manage the subjects offered in your account.
+      </div>
+    </div>
+
+    <button class="primary" id="addSubjectBtn">
+      + Add Subject
+    </button>
+  </div>
+
+  <!-- SUMMARY -->
+
+  <div class="summary">
+
+    <div class="summary-card">
+      <div class="summary-label">Active Subjects</div>
+      <div class="summary-number" id="activeCount">—</div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">Archived Subjects</div>
+      <div class="summary-number" id="archivedCount">—</div>
+    </div>
+
+  </div>
+
+  <!-- SEARCH AND TABS -->
+
+  <div class="toolbar">
+
+    <div class="search">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="Search subjects"
+        autocomplete="off"
+      >
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" id="activeTab">Active Subjects</button>
+      <button class="tab" id="archivedTab">Archived Subjects</button>
+    </div>
+
+  </div>
+
+  <div class="subject-list" id="subjectList">
+    <div class="empty">Loading subjects…</div>
+  </div>
+
+  <div class="footer">
+    © <span id="year"></span> SAINTIG EXAMS · Building a better examination experience
+  </div>
+
+</section>
+</main>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+
+<div class="modal" id="subjectModal">
+
+  <div class="modal-box">
+
+    <h2 class="modal-title" id="formTitle">Add Subject</h2>
+
+    <div class="modal-subtitle">
+      Enter the subject name below.
+    </div>
+
+    <form id="subjectForm">
+
+      <div class="form-field">
+        <label for="subjectName">Subject Name</label>
+        <input
+          type="text"
+          id="subjectName"
+          maxlength="100"
+          placeholder="Enter subject name"
+          required
+        >
+      </div>
+
+      <div class="form-buttons">
+        <button type="button" class="secondary" id="cancelForm">
+          Cancel
+        </button>
+
+        <button type="submit" class="primary" id="saveSubjectBtn">
+          Save Subject
+        </button>
+      </div>
+
+    </form>
+
+    <div class="modal-note">
+      Newly created subjects are published automatically.
+    </div>
+
+  </div>
+</div>
+
+<!-- EXAMINATIONS MODAL -->
+
+<div class="modal" id="examsModal">
+
+  <div class="modal-box wide">
+
+    <h2 class="modal-title" id="examsModalTitle">
+      Linked Examinations
+    </h2>
+
+    <div class="modal-subtitle">
+      Examinations connected to this subject.
+    </div>
+
+    <div id="examList">
+      <div class="empty">Loading examinations…</div>
+    </div>
+
+    <div class="form-buttons">
+      <button class="secondary" id="closeExams">
+        Close
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* SUPABASE CONFIGURATION */
+
+const SUPABASE_URL =
+  "https://scuiswponnqyrbqjypkx.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
+const LOGIN_PAGE = "school-login.html";
+
+const $ = id => document.getElementById(id);
+
+let supabaseClient;
+let accountId = null;
+let subjects = [];
+let currentView = "active";
+let editingSubjectId = null;
+let busy = false;
+
+$("year").textContent = new Date().getFullYear();
+
+/* GENERAL HELPERS */
+
+function showMessage(text,type="info"){
+
+  const el=$("statusMessage");
+
+  el.textContent=text;
+  el.className="status "+type;
+
+}
+
+function clearMessage(){
+
+  $("statusMessage").className="status";
+  $("statusMessage").textContent="";
+
+}
+
+function escapeHTML(value){
+
+  return String(value??"").replace(/[&<>"']/g,char=>({
+
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+
+  })[char]);
+
+}
+
+function formatDate(value){
+
+  if(!value)return "—";
+
+  const date=new Date(value);
+
+  if(Number.isNaN(date.getTime()))return "—";
+
+  return date.toLocaleDateString("en-NG",{
+    day:"numeric",
+    month:"short",
+    year:"numeric"
+  });
+
+}
+
+function setBusy(value){
+
+  busy=value;
+
+  $("addSubjectBtn").disabled=value;
+
+  $("saveSubjectBtn").disabled=value;
+
+}
+
+/* AUTHENTICATION AND ACCOUNT */
+
+async function initializePage(){
+
+  if(!window.supabase?.createClient){
+
+    showMessage(
+      "Supabase could not load. Check your internet connection and refresh.",
+      "error"
+    );
+
+    return;
+  }
+
+  supabaseClient=window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+  const {
+    data:sessionData,
+    error:sessionError
+  }=await supabaseClient.auth.getSession();
+
+  if(sessionError || !sessionData.session){
+
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  const user=sessionData.session.user;
+
+  const {
+    data:account,
+    error
+  }=await supabaseClient
+    .from("school_accounts")
+    .select("id,user_id,account_name,status")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(error){
+
+    console.error("Account lookup:",error);
+
+    showMessage(
+      "Unable to verify your Teacher/School account. Check your database permissions.",
+      "error"
+    );
+
+    return;
+  }
+
+  if(!account){
+
+    showMessage(
+      "No Teacher/School account is linked to this login.",
+      "error"
+    );
+
+    return;
+  }
+
+  if(account.status!=="active"){
+
+    await supabaseClient.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  accountId=account.id;
+
+  $("sideName").textContent=
+    account.account_name||"Teacher/School";
+
+  $("topAccount").textContent=
+    account.account_name||"Teacher/School";
+
+  await loadSubjects();
+
+}
+
+/* LOAD SUBJECTS */
+
+async function loadSubjects(){
+
+  if(!accountId)return;
+
+  $("subjectList").innerHTML=
+    '<div class="empty">Loading subjects…</div>';
+
+  const {data,error}=await supabaseClient
+    .from("school_subjects")
+    .select("id,school_account_id,subject_name,is_published,is_archived,created_at")
+    .eq("school_account_id",accountId)
+    .order("created_at",{ascending:false});
+
+  if(error){
+
+    console.error("Load subjects:",error);
+
+    $("subjectList").innerHTML=
+      '<div class="empty">Unable to load subjects. Check the school_subjects table permissions.</div>';
+
+    showMessage(
+      "Unable to load subjects. Your database permissions may need to be configured.",
+      "error"
+    );
+
+    return;
+  }
+
+  subjects=data||[];
+
+  $("activeCount").textContent=
+    subjects.filter(s=>!s.is_archived).length;
+
+  $("archivedCount").textContent=
+    subjects.filter(s=>s.is_archived).length;
+
+  await renderSubjects();
+
+}
+
+/* LOAD EXAMINATION AND QUESTION COUNTS */
+
+async function getSubjectCounts(subjectId){
+
+  const {data:exams,error}=await supabaseClient
+    .from("examinations")
+    .select("id")
+    .eq("school_account_id",accountId)
+    .eq("school_subject_id",subjectId);
+
+  if(error){
+
+    console.error("Examination count:",error);
+
+    return {
+      examinations:null,
+      questions:null
+    };
+  }
+
+  const examIds=(exams||[]).map(exam=>exam.id);
+
+  if(!examIds.length){
+
+    return {
+      examinations:0,
+      questions:0
+    };
+  }
+
+  const {count,error:questionError}=await supabaseClient
+    .from("exam_questions")
+    .select("id",{count:"exact",head:true})
+    .in("examination_id",examIds);
+
+  if(questionError){
+
+    console.error("Question count:",questionError);
+
+    return {
+      examinations:examIds.length,
+      questions:null
+    };
+  }
+
+  return {
+    examinations:examIds.length,
+    questions:count??0
+  };
+
+}
+
+/* RENDER SUBJECTS */
+
+async function renderSubjects(){
+
+  const query=$("searchInput").value
+    .trim()
+    .toLowerCase();
+
+  const list=subjects.filter(subject=>{
+
+    const correctView=currentView==="archived"
+      ? subject.is_archived
+      : !subject.is_archived;
+
+    const matches=subject.subject_name
+      .toLowerCase()
+      .includes(query);
+
+    return correctView&&matches;
+
+  });
+
+  if(!list.length){
+
+    $("subjectList").innerHTML=
+      currentView==="archived"
+        ? '<div class="empty">No archived subjects found.</div>'
+        : '<div class="empty">No active subjects found. Use Add Subject to create your first subject.</div>';
+
+    return;
+  }
+
+  $("subjectList").innerHTML="";
+
+  for(const subject of list){
+
+    const counts=await getSubjectCounts(subject.id);
+
+    const card=document.createElement("article");
+
+    card.className="subject-card";
+
+    const status=subject.is_archived
+      ? '<span class="badge archived">Archived</span>'
+      : subject.is_published
+        ? '<span class="badge published">Published</span>'
+        : '<span class="badge unpublished">Unpublished</span>';
+
+    const publicationAction=subject.is_published
+      ? '<button class="action-btn" data-action="unpublish">Unpublish</button>'
+      : '<button class="action-btn" data-action="publish">Publish</button>';
+
+    let actions="";
+
+    if(subject.is_archived){
+
+      actions=`
+        <button class="action-btn" data-action="view">View</button>
+        <button class="action-btn" data-action="exams">Linked Examinations</button>
+        <button class="action-btn" data-action="restore">Restore</button>
+        <button class="action-btn" data-action="delete">Delete</button>
+      `;
+
+    }else{
+
+      actions=`
+        <button class="action-btn" data-action="view">View</button>
+        <button class="action-btn" data-action="edit">Edit</button>
+        ${publicationAction}
+        <button class="action-btn" data-action="exams">Examinations</button>
+        <button class="action-btn" data-action="archive">Archive</button>
+        <button class="action-btn" data-action="delete">Delete</button>
+      `;
+
+    }
+
+    card.innerHTML=`
+
+      <div class="subject-top">
+
+        <div>
+          <div class="subject-name">
+            ${escapeHTML(subject.subject_name)}
+          </div>
+
+          <div class="subject-date">
+            Created: ${formatDate(subject.created_at)}
+          </div>
+        </div>
+
+        ${status}
+
+      </div>
+
+      <div class="subject-stats">
+
+        <div class="subject-stat">
+          Number of Examinations
+          <b>${counts.examinations===null?"—":counts.examinations}</b>
+        </div>
+
+        <div class="subject-stat">
+          Number of Questions
+          <b>${counts.questions===null?"—":counts.questions}</b>
+        </div>
+
+      </div>
+
+      <div class="actions">
+        ${actions}
+      </div>
+
+    `;
+
+    card.querySelectorAll("[data-action]").forEach(button=>{
+
+      button.addEventListener("click",()=>{
+
+        handleSubjectAction(
+          button.dataset.action,
+          subject
+        );
+
+      });
+
+    });
+
+    $("subjectList").appendChild(card);
+
+  }
+
+}
+
+/* ADD SUBJECT */
+
+function openAddModal(){
+
+  editingSubjectId=null;
+
+  $("formTitle").textContent="Add Subject";
+  $("subjectName").value="";
+  $("saveSubjectBtn").textContent="Save Subject";
+
+  $("subjectModal").classList.add("show");
+
+  $("subjectName").focus();
+
+}
+
+/* EDIT SUBJECT */
+
+function openEditModal(subject){
+
+  editingSubjectId=subject.id;
+
+  $("formTitle").textContent="Edit Subject";
+  $("subjectName").value=subject.subject_name;
+  $("saveSubjectBtn").textContent="Save Changes";
+
+  $("subjectModal").classList.add("show");
+
+  $("subjectName").focus();
+
+}
+
+function closeSubjectModal(){
+
+  $("subjectModal").classList.remove("show");
+
+  editingSubjectId=null;
+
+  $("subjectForm").reset();
+
+}
+
+/* SAVE SUBJECT */
+
+$("subjectForm").addEventListener("submit",async event=>{
+
+  event.preventDefault();
+
+  if(busy||!accountId)return;
+
+  const subjectName=$("subjectName").value.trim();
+
+  if(!subjectName){
+
+    showMessage("Enter a subject name.","error");
+    return;
+  }
+
+  if(subjectName.length>100){
+
+    showMessage(
+      "Subject name cannot exceed 100 characters.",
+      "error"
+    );
+
+    return;
+  }
+
+  setBusy(true);
+
+  $("saveSubjectBtn").textContent="Saving…";
+
+  try{
+
+    if(editingSubjectId){
+
+      const {error}=await supabaseClient
+        .from("school_subjects")
+        .update({
+          subject_name:subjectName,
+          updated_at:new Date().toISOString()
+        })
+        .eq("id",editingSubjectId)
+        .eq("school_account_id",accountId)
+        .eq("is_archived",false);
+
+      if(error)throw error;
+
+      showMessage(
+        "Subject name updated successfully.",
+        "success"
+      );
+
+    }else{
+
+      const {error}=await supabaseClient
+        .from("school_subjects")
+        .insert({
+          school_account_id:accountId,
+          subject_name:subjectName,
+          is_published:true,
+          is_archived:false
+        });
+
+      if(error)throw error;
+
+      showMessage(
+        "Subject created and published successfully.",
+        "success"
+      );
+
+    }
+
+    closeSubjectModal();
+
+    await loadSubjects();
+
+  }catch(error){
+
+    console.error("Save subject:",error);
+
+    showMessage(
+      error.message||"Unable to save subject. Check database permissions and package limits.",
+      "error"
+    );
+
+  }finally{
+
+    setBusy(false);
+
+    $("saveSubjectBtn").textContent=
+      editingSubjectId
+        ? "Save Changes"
+        : "Save Subject";
+
+  }
+
+});
+
+/* SUBJECT ACTIONS */
+
+async function handleSubjectAction(action,subject){
+
+  if(busy)return;
+
+  if(action==="view"){
+
+    const counts=await getSubjectCounts(subject.id);
+
+    alert(
+      "Subject: "+subject.subject_name+
+      "\nStatus: "+(subject.is_archived?"Archived":subject.is_published?"Published":"Unpublished")+
+      "\nExaminations: "+(counts.examinations??"Unavailable")+
+      "\nQuestions: "+(counts.questions??"Unavailable")+
+      "\nCreated: "+formatDate(subject.created_at)
+    );
+
+    return;
+  }
+
+  if(action==="edit"){
+
+    openEditModal(subject);
+    return;
+  }
+
+  if(action==="exams"){
+
+    await showLinkedExaminations(subject);
+    return;
+  }
+
+  if(action==="publish"){
+
+    await updateSubjectStatus(
+      subject,
+      {is_published:true},
+      "Subject published successfully."
+    );
+
+    return;
+  }
+
+  if(action==="unpublish"){
+
+    const confirmed=confirm(
+      "Unpublish "+subject.subject_name+"?\n\nExaminations under this subject must not be published while the subject is unpublished. Existing examination records will be preserved."
+    );
+
+    if(!confirmed)return;
+
+    await updateSubjectStatus(
+      subject,
+      {is_published:false},
+      "Subject unpublished successfully."
+    );
+
+    return;
+  }
+
+  if(action==="archive"){
+
+    const confirmed=confirm(
+      "Archive "+subject.subject_name+"?\n\nThe subject will be moved to Archived Subjects. Linked examinations, questions, attempts and results will be preserved."
+    );
+
+    if(!confirmed)return;
+
+    await updateSubjectStatus(
+      subject,
+      {is_archived:true},
+      "Subject archived. Linked examination history has not been deleted."
+    );
+
+    return;
+  }
+
+  if(action==="restore"){
+
+    const confirmed=confirm(
+      "Restore "+subject.subject_name+"?\n\nThe subject will return to Active Subjects."
+    );
+
+    if(!confirmed)return;
+
+    await updateSubjectStatus(
+      subject,
+      {is_archived:false},
+      "Subject restored successfully."
+    );
+
+    return;
+  }
+
+  if(action==="delete"){
+
+    await deleteSubject(subject);
+    return;
+  }
+
+}
+
+/* UPDATE SUBJECT STATUS */
+
+async function updateSubjectStatus(subject,changes,successText){
+
+  setBusy(true);
+
+  try{
+
+    const {error}=await supabaseClient
+      .from("school_subjects")
+      .update({
+        ...changes,
+        updated_at:new Date().toISOString()
+      })
+      .eq("id",subject.id)
+      .eq("school_account_id",accountId);
+
+    if(error)throw error;
+
+    showMessage(successText,"success");
+
+    await loadSubjects();
+
+  }catch(error){
+
+    console.error("Subject update:",error);
+
+    showMessage(
+      error.message||"Unable to update subject. Check database permissions.",
+      "error"
+    );
+
+  }finally{
+
+    setBusy(false);
+
+  }
+
+}
+
+/* SAFE SUBJECT DELETION */
+
+async function deleteSubject(subject){
+
+  const {data:linkedExams,error:lookupError}=await supabaseClient
+    .from("examinations")
+    .select("id")
+    .eq("school_account_id",accountId)
+    .eq("school_subject_id",subject.id)
+    .limit(1);
+
+  if(lookupError){
+
+    showMessage(
+      "Unable to verify linked examinations. Deletion has been stopped for safety.",
+      "error"
+    );
+
+    return;
+  }
+
+  if(linkedExams?.length){
+
+    showMessage(
+      "This subject has linked examinations. It cannot be permanently deleted. Archive it instead to preserve examination history.",
+      "error"
+    );
+
+    return;
+  }
+
+  const confirmed=confirm(
+    "Permanently delete "+subject.subject_name+"?\n\nThis is allowed only because no linked examinations were found. This action cannot be undone."
+  );
+
+  if(!confirmed)return;
+
+  setBusy(true);
+
+  try{
+
+    const {error}=await supabaseClient
+      .from("school_subjects")
+      .delete()
+      .eq("id",subject.id)
+      .eq("school_account_id",accountId);
+
+    if(error)throw error;
+
+    showMessage(
+      "Subject deleted successfully.",
+      "success"
+    );
+
+    await loadSubjects();
+
+  }catch(error){
+
+    console.error("Delete subject:",error);
+
+    showMessage(
+      "Deletion was blocked. A database relationship or permission may protect this subject.",
+      "error"
+    );
+
+  }finally{
+
+    setBusy(false);
+
+  }
+
+}
+
+/* VIEW LINKED EXAMINATIONS */
+
+async function showLinkedExaminations(subject){
+
+  $("examsModalTitle").textContent=
+    "Examinations: "+subject.subject_name;
+
+  $("examList").innerHTML=
+    '<div class="empty">Loading examinations…</div>';
+
+  $("examsModal").classList.add("show");
+
+  const {data:exams,error}=await supabaseClient
+    .from("examinations")
+    .select("id,title,is_published,is_archived,created_at,duration_minutes")
+    .eq("school_account_id",accountId)
+    .eq("school_subject_id",subject.id)
+    .order("created_at",{ascending:false});
+
+  if(error){
+
+    console.error("Linked examinations:",error);
+
+    $("examList").innerHTML=
+      '<div class="empty">Unable to load linked examinations.</div>';
+
+    return;
+  }
+
+  if(!exams?.length){
+
+    $("examList").innerHTML=
+      '<div class="empty">No examinations are linked to this subject yet.</div>';
+
+    return;
+  }
+
+  $("examList").innerHTML="";
+
+  exams.forEach(exam=>{
+
+    const row=document.createElement("div");
+
+    row.className="exam-row";
+
+    const status=exam.is_archived
+      ? "Archived"
+      : exam.is_published
+        ? "Published"
+        : "Unpublished";
+
+    row.innerHTML=`
+
+      <div class="exam-title">
+        ${escapeHTML(exam.title)}
+      </div>
+
+      <div class="exam-meta">
+        Status: ${status}
+        · Duration: ${exam.duration_minutes} minutes
+        · Created: ${formatDate(exam.created_at)}
+      </div>
+
+    `;
+
+    $("examList").appendChild(row);
+
+  });
+
+}
+
+/* SEARCH */
+
+$("searchInput").addEventListener("input",()=>{
+
+  renderSubjects();
+
+});
+
+/* TABS */
+
+function switchView(view){
+
+  currentView=view;
+
+  $("activeTab").classList.toggle(
+    "active",
+    view==="active"
+  );
+
+  $("archivedTab").classList.toggle(
+    "active",
+    view==="archived"
+  );
+
+  $("searchInput").value="";
+
+  renderSubjects();
+
+}
+
+$("activeTab").addEventListener("click",()=>{
+
+  switchView("active");
+
+});
+
+$("archivedTab").addEventListener("click",()=>{
+
+  switchView("archived");
+
+});
+
+/* MODAL CONTROLS */
+
+$("addSubjectBtn").addEventListener("click",openAddModal);
+
+$("cancelForm").addEventListener("click",closeSubjectModal);
+
+$("closeExams").addEventListener("click",()=>{
+
+  $("examsModal").classList.remove("show");
+
+});
+
+$("subjectModal").addEventListener("click",event=>{
+
+  if(event.target===$("subjectModal")){
+    closeSubjectModal();
+  }
+
+});
+
+$("examsModal").addEventListener("click",event=>{
+
+  if(event.target===$("examsModal")){
+    $("examsModal").classList.remove("show");
+  }
+
+});
+
+/* MOBILE MENU */
+
+function closeSidebar(){
+
+  $("sidebar").classList.remove("open");
+  $("overlay").classList.remove("show");
+
+}
+
+$("menuToggle").addEventListener("click",()=>{
+
+  $("sidebar").classList.toggle("open");
+  $("overlay").classList.toggle("show");
+
+});
+
+$("overlay").addEventListener("click",closeSidebar);
+
+document.addEventListener("keydown",event=>{
+
+  if(event.key==="Escape"){
+
+    closeSidebar();
+
+    $("subjectModal").classList.remove("show");
+    $("examsModal").classList.remove("show");
+
+  }
+
+});
+
+/* SESSION MONITOR */
+
+document.addEventListener("visibilitychange",async()=>{
+
+  if(
+    document.visibilityState==="visible" &&
+    supabaseClient
+  ){
+
+    const {data}=await supabaseClient.auth.getSession();
+
+    if(!data.session){
+
+      location.replace(LOGIN_PAGE);
+
+    }
+
+  }
+
+});
+
+/* START */
+
+initializePage();
+
+</script>
+
+</body>
+</html>
