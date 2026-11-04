@@ -281,8 +281,8 @@
       </button>
     </div>
 
-    <div id="message" class="message" role="status"
-         aria-live="polite"></div>
+    <div id="message" class="message"
+         role="status" aria-live="polite"></div>
 
     <!-- SIGN IN -->
     <form id="login-form" class="form-panel">
@@ -297,10 +297,12 @@
 
       <div class="field">
         <label for="login-password">Password</label>
+
         <div class="password-wrap">
           <input id="login-password" type="password"
                  autocomplete="current-password"
                  placeholder="Enter your password" required>
+
           <button type="button" class="toggle-password"
                   data-target="login-password">Show</button>
         </div>
@@ -348,6 +350,7 @@
 
       <div class="field">
         <label for="register-email">Email Address</label>
+
         <input id="register-email" type="email"
                autocomplete="email"
                placeholder="Enter your email address"
@@ -393,6 +396,7 @@
 
       <div class="field">
         <label for="reset-email">Registered Email Address</label>
+
         <input id="reset-email" type="email"
                autocomplete="email"
                placeholder="Enter your registered email"
@@ -428,6 +432,7 @@
 </footer>
 
 <script type="module">
+
   import { supabase } from "./auth.js";
 
   const $ = id => document.getElementById(id);
@@ -444,7 +449,13 @@
   const title = $("page-title");
   const description = $("page-description");
 
+  const SITE_URL =
+    "https://saintig.github.io/global-exam-platform";
+
   $("year").textContent = new Date().getFullYear();
+
+
+  // DISPLAY MESSAGES
 
   function showMessage(text, type) {
     message.textContent = text;
@@ -456,21 +467,32 @@
     message.className = "message";
   }
 
+
+  // BUTTON LOADING
+
   function setLoading(form, loading, text) {
-    const button = form.querySelector('button[type="submit"]');
+    const button = form.querySelector(
+      'button[type="submit"]'
+    );
 
     if (!button.dataset.originalText) {
-      button.dataset.originalText = button.textContent.trim();
+      button.dataset.originalText =
+        button.textContent.trim();
     }
 
     button.disabled = loading;
+
     button.textContent = loading
       ? text
       : button.dataset.originalText;
   }
 
+
+  // FORM NAVIGATION
+
   function showLogin() {
     clearMessage();
+
     tabs.hidden = false;
     loginForm.hidden = false;
     registerForm.hidden = true;
@@ -480,12 +502,14 @@
     registerTab.classList.remove("active");
 
     title.textContent = "Teacher/School Access";
+
     description.textContent =
       "Sign in to access your Teacher/School dashboard.";
   }
 
   function showRegister() {
     clearMessage();
+
     tabs.hidden = false;
     loginForm.hidden = true;
     registerForm.hidden = false;
@@ -495,18 +519,21 @@
     registerTab.classList.add("active");
 
     title.textContent = "Create Your Account";
+
     description.textContent =
       "Register as a Teacher or School on SAINTIG EXAMS.";
   }
 
   function showReset() {
     clearMessage();
+
     tabs.hidden = true;
     loginForm.hidden = true;
     registerForm.hidden = true;
     resetForm.hidden = false;
 
     title.textContent = "Reset Your Password";
+
     description.textContent =
       "Enter the email address linked to your account.";
   }
@@ -524,46 +551,130 @@
     showLogin();
   });
 
-  // Change the name label when the account type changes.
+
+  // ACCOUNT NAME FIELD
+
   $("account-type").addEventListener("change", event => {
+
     const type = event.target.value;
 
     if (type === "teacher") {
-      $("name-label").textContent = "Teacher's Full Name";
+
+      $("name-label").textContent =
+        "Teacher's Full Name";
+
       $("register-name").placeholder =
         "Enter teacher's full name";
+
       $("name-hint").textContent =
         "Enter the full name of the teacher registering.";
-      $("register-name").setAttribute("autocomplete", "name");
+
+      $("register-name").setAttribute(
+        "autocomplete",
+        "name"
+      );
+
     } else if (type === "school") {
-      $("name-label").textContent = "School's Official Name";
+
+      $("name-label").textContent =
+        "School's Official Name";
+
       $("register-name").placeholder =
         "Enter school's official name";
+
       $("name-hint").textContent =
         "Enter the official name of the school.";
-      $("register-name").setAttribute("autocomplete", "organization");
+
+      $("register-name").setAttribute(
+        "autocomplete",
+        "organization"
+      );
+
     } else {
+
       $("name-label").textContent =
         "Teacher's Full Name / School's Official Name";
+
       $("name-hint").textContent =
         "Select an account type above to continue.";
     }
+
   });
 
-  // Show and hide passwords.
-  document.querySelectorAll(".toggle-password").forEach(button => {
-    button.addEventListener("click", () => {
-      const input = $(button.dataset.target);
-      const reveal = input.type === "password";
 
-      input.type = reveal ? "text" : "password";
-      button.textContent = reveal ? "Hide" : "Show";
-      button.setAttribute("aria-pressed", String(reveal));
+  // SHOW AND HIDE PASSWORDS
+
+  document.querySelectorAll(".toggle-password")
+    .forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        const input = $(button.dataset.target);
+
+        const reveal = input.type === "password";
+
+        input.type = reveal ? "text" : "password";
+
+        button.textContent = reveal ? "Hide" : "Show";
+
+        button.setAttribute(
+          "aria-pressed",
+          String(reveal)
+        );
+
+      });
+
     });
-  });
 
-  // Create Teacher/School account.
+
+  // VERIFY TEACHER/SCHOOL ACCOUNT FROM DATABASE
+
+  async function verifyTeacherSchoolAccount(user) {
+
+    const { data: account, error } = await supabase
+      .from("school_accounts")
+      .select("id, user_id, account_name, account_type, status")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (error) {
+      throw new Error(
+        "Unable to verify your Teacher/School account. " +
+        error.message
+      );
+    }
+
+    if (!account) {
+      throw new Error(
+        "Your Teacher/School account has not been created. " +
+        "Please confirm your email address or contact support."
+      );
+    }
+
+    if (!["teacher", "school"].includes(account.account_type)) {
+      throw new Error(
+        "Your account type is invalid. Please contact support."
+      );
+    }
+
+    if (account.status !== "active") {
+
+      await supabase.auth.signOut();
+
+      throw new Error(
+        "Your Teacher/School account is currently suspended. " +
+        "Please contact the administrator."
+      );
+    }
+
+    return account;
+  }
+
+
+  // REGISTER TEACHER/SCHOOL ACCOUNT
+
   registerForm.addEventListener("submit", async event => {
+
     event.preventDefault();
     clearMessage();
 
@@ -574,13 +685,16 @@
     const confirmation = $("confirm-password").value;
 
     if (!["teacher", "school"].includes(accountType)) {
-      showMessage("Please select Teacher or School.", "error");
+      showMessage(
+        "Please select Teacher or School.",
+        "error"
+      );
       return;
     }
 
-    if (name.length < 2) {
+    if (name.length < 2 || name.length > 150) {
       showMessage(
-        "Please enter the teacher's or school's name.",
+        "Your account name must contain between 2 and 150 characters.",
         "error"
       );
       return;
@@ -602,86 +716,105 @@
       return;
     }
 
-    setLoading(registerForm, true, "Creating Account...");
+    setLoading(
+      registerForm,
+      true,
+      "Creating Account..."
+    );
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            account_type: accountType,
-            full_name: name
+
+      const { data, error } =
+        await supabase.auth.signUp({
+
+          email,
+          password,
+
+          options: {
+
+            emailRedirectTo:
+              SITE_URL + "/school-login.html",
+
+            data: {
+              account_type: accountType,
+              full_name: name
+            }
+
           }
-        }
-      });
+
+        });
 
       if (error) throw error;
 
-      // If email confirmation is disabled and a session is returned,
-      // create the profile immediately.
       if (data.session && data.user) {
-        const { error: profileError } = await supabase
-          .from("profiles")
-          .upsert({
-            id: data.user.id,
-            display_name: name,
-            account_type: accountType
-          }, {
-            onConflict: "id"
-          });
 
-        if (profileError) {
-          console.error("Profile creation failed:", profileError);
-          showMessage(
-            "Your account was created, but your profile could not be saved. Please contact support before continuing.",
-            "error"
-          );
-          return;
-        }
+        // Email confirmation may be disabled.
+        // The database trigger should provision the account.
+        const account =
+          await verifyTeacherSchoolAccount(data.user);
 
         showMessage(
           "Your account was created successfully. Opening your dashboard...",
           "success"
         );
 
-        window.location.replace("school-dashboard.html");
+        window.location.replace(
+          "school-dashboard.html"
+        );
+
         return;
       }
 
       showLogin();
 
       showMessage(
-        "Registration successful! Please check your email and confirm your address. Then sign in to access your dashboard.",
+        "Registration received successfully. " +
+        "Please check your email and confirm your address. " +
+        "After confirmation, sign in to access your dashboard.",
         "success"
       );
 
     } catch (error) {
+
       showMessage(
         error.message ||
         "We could not create your account. Please try again.",
         "error"
       );
+
     } finally {
+
       setLoading(registerForm, false);
+
     }
+
   });
 
-  // Sign in and verify that this is a Teacher/School account.
+
+  // SIGN IN
+
   loginForm.addEventListener("submit", async event => {
+
     event.preventDefault();
     clearMessage();
 
     const email = $("login-email").value.trim();
     const password = $("login-password").value;
 
-    setLoading(loginForm, true, "Signing In...");
+    setLoading(
+      loginForm,
+      true,
+      "Signing In..."
+    );
 
     try {
+
       const { data, error } =
         await supabase.auth.signInWithPassword({
+
           email,
           password
+
         });
 
       if (error) throw error;
@@ -692,92 +825,78 @@
         );
       }
 
-      const user = data.user;
+      // Verify the authenticated user with Supabase.
+      const { data: verifiedData, error: userError } =
+        await supabase.auth.getUser();
 
-      const { data: profile, error: profileError } =
-        await supabase
-          .from("profiles")
-          .select("id, display_name, account_type")
-          .eq("id", user.id)
-          .maybeSingle();
+      if (userError || !verifiedData.user) {
 
-      if (profileError) throw profileError;
-
-      // Use the existing profile when present, otherwise use the
-      // account information saved during registration.
-      const metadata = user.user_metadata || {};
-
-      const accountType =
-        profile?.account_type || metadata.account_type;
-
-      const displayName =
-        profile?.display_name || metadata.full_name;
-
-      if (!["teacher", "school"].includes(accountType)) {
         await supabase.auth.signOut();
 
         throw new Error(
-          "This login page is for Teacher/School accounts. Please use the correct login page."
+          "Your login session could not be verified."
         );
       }
 
-      if (!displayName) {
-        throw new Error(
-          "Your account name is missing. Please contact support."
-        );
-      }
-
-      // Create or update the user's own profile.
-      const { error: saveError } = await supabase
-        .from("profiles")
-        .upsert({
-          id: user.id,
-          display_name: displayName,
-          account_type: accountType
-        }, {
-          onConflict: "id"
-        });
-
-      if (saveError) throw saveError;
+      // The database record is authoritative.
+      await verifyTeacherSchoolAccount(
+        verifiedData.user
+      );
 
       showMessage(
         "Sign-in successful. Opening your dashboard...",
         "success"
       );
 
-      window.location.replace("school-dashboard.html");
+      window.location.replace(
+        "school-dashboard.html"
+      );
 
     } catch (error) {
+
       showMessage(
         error.message ||
         "Sign-in failed. Check your details and try again.",
         "error"
       );
+
     } finally {
+
       setLoading(loginForm, false);
+
     }
+
   });
 
-  // Request password reset.
+
+  // PASSWORD RESET
+
   resetForm.addEventListener("submit", async event => {
+
     event.preventDefault();
     clearMessage();
 
     const email = $("reset-email").value.trim();
 
-    setLoading(resetForm, true, "Sending Link...");
+    setLoading(
+      resetForm,
+      true,
+      "Sending Link..."
+    );
 
     try {
+
       const { error } =
-        await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo:
-            window.location.origin +
-            window.location.pathname.replace(
-              /[^/]*$/,
-              "school-login.html"
-            ) +
-            "?mode=reset"
-        });
+        await supabase.auth.resetPasswordForEmail(
+
+          email,
+
+          {
+            redirectTo:
+              SITE_URL + "/school-login.html?mode=reset"
+          }
+
+        );
 
       if (error) throw error;
 
@@ -787,71 +906,102 @@
       );
 
     } catch (error) {
+
       showMessage(
         error.message ||
         "We could not request a reset link. Please try again.",
         "error"
       );
+
     } finally {
+
       setLoading(resetForm, false);
+
     }
+
   });
 
-  // Check whether a user is already signed in.
+
+  // INITIALIZE PAGE
+
   async function initializePage() {
-    const mode = new URLSearchParams(
+
+    const params = new URLSearchParams(
       window.location.search
-    ).get("mode");
+    );
+
+    const mode = params.get("mode");
+
+    // Handle recovery links.
+    if (mode === "reset") {
+      showReset();
+      return;
+    }
 
     if (mode === "register") {
       showRegister();
       return;
     }
 
-    if (mode === "reset") {
-      showReset();
-      return;
-    }
-
     try {
+
       const { data, error } =
         await supabase.auth.getSession();
 
       if (error) throw error;
 
       if (data.session) {
-        const user = data.session.user;
-        const metadata = user.user_metadata || {};
 
-        const { data: profile, error: profileError } =
-          await supabase
-            .from("profiles")
-            .select("account_type")
-            .eq("id", user.id)
-            .maybeSingle();
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
 
-        if (profileError) throw profileError;
-
-        const accountType =
-          profile?.account_type || metadata.account_type;
-
-        if (["teacher", "school"].includes(accountType)) {
-          window.location.replace("school-dashboard.html");
+        if (userError || !userData.user) {
+          await supabase.auth.signOut();
+          showLogin();
           return;
         }
 
-        // Do not redirect a student to the Teacher/School dashboard.
-        await supabase.auth.signOut();
+        try {
+
+          await verifyTeacherSchoolAccount(
+            userData.user
+          );
+
+          window.location.replace(
+            "school-dashboard.html"
+          );
+
+          return;
+
+        } catch (accountError) {
+
+          await supabase.auth.signOut();
+
+          console.warn(
+            "Teacher/School verification:",
+            accountError.message
+          );
+
+        }
+
       }
 
     } catch (error) {
-      console.error("Session check failed:", error.message);
+
+      console.error(
+        "Session check failed:",
+        error.message
+      );
+
     }
 
     showLogin();
+
   }
 
+
   initializePage();
+
 </script>
 
 </body>
