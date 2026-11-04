@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,55 +6,547 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#14243a">
 <title>Teacher/School Dashboard | SAINTIG EXAMS</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--navy:#14243a;--navy2:#1d3554;--gold:#d4af37;--paper:#f5f7fa;--ink:#1e293b;--muted:#64748b;--line:#e5e9ef}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,sans-serif}
-button{font:inherit;cursor:pointer}.app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}
-.sidebar{background:var(--navy);color:white;padding:20px 15px;display:flex;flex-direction:column;min-height:100vh}
-.brand{display:flex;gap:11px;align-items:center;padding:5px 8px 22px;border-bottom:1px solid #ffffff20}
-.mark{width:42px;height:42px;border-radius:11px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800}
-.brand b{font-size:16px;letter-spacing:.4px}.brand small{display:block;color:#bdc8d5;font-size:10px;letter-spacing:1.2px}
-.navlabel{font-size:10px;color:#9eacbd;letter-spacing:1.4px;font-weight:bold;padding:22px 10px 8px}
-nav{display:grid;gap:4px}nav button{border:0;background:none;color:#dce4ed;text-align:left;padding:10px 11px;border-radius:8px}
-nav button:hover,nav button.active{background:var(--navy2);color:white}nav button.active{box-shadow:inset 3px 0 var(--gold)}
-.account{margin-top:auto;border-top:1px solid #ffffff20;padding:15px 5px 10px;display:flex;align-items:center;gap:10px}
-.avatar{width:37px;height:37px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:bold;flex-shrink:0}
-.accountname{font-size:12px;font-weight:bold;overflow-wrap:anywhere}.accounttype{font-size:11px;color:#bdc8d5}
-.signout{width:100%;padding:10px;border:1px solid #ffffff30;background:none;color:#ffd4d1;border-radius:8px}
-.main{min-width:0}.topbar{height:70px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:4}
-.top-title{font-weight:bold;color:var(--navy)}.topright{color:var(--muted);font-size:13px}.menu{display:none}
-.content{padding:28px;max-width:1500px;margin:auto}.welcome{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:22px}
-h1{font-size:28px;color:var(--navy);margin:0 0 4px}.muted{color:var(--muted);font-size:13px}
-.pill{background:#fff8df;color:#795d0c;border:1px solid #f0df9f;border-radius:25px;padding:7px 12px;font-size:12px;font-weight:bold}
-.section-title{font-weight:bold;color:var(--navy);margin:23px 0 12px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
-.stat,.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:0 7px 22px #14243a0b}
-.stat{min-height:110px}.stathead{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
-.staticon{background:#f6efd9;color:#98751a;border-radius:8px;padding:5px 9px}.value{font-size:26px;font-weight:800;color:var(--navy);margin-top:7px}
-.note{font-size:11px;color:var(--muted)}.columns{display:grid;grid-template-columns:1.2fr .8fr;gap:15px;margin-top:16px}
-.panel h2{font-size:16px;color:var(--navy);margin:0 0 4px}.panel p{font-size:12px;color:var(--muted);margin:0}
-.usage{display:grid;gap:13px;margin-top:17px}.usagehead{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
-.bar{height:7px;background:#edf0f4;border-radius:8px}.bar span{display:block;height:100%;width:0;background:var(--gold);border-radius:8px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}
-.actions button{border:1px solid var(--line);background:white;color:var(--navy);border-radius:8px;padding:10px;text-align:left;font-size:12px;font-weight:bold}
-.actions button:hover{border-color:var(--gold);background:#fffcf2}
-.notice{margin-top:16px;padding:11px;background:#fffaf0;border:1px solid #f0df9f;border-radius:8px;color:#72570d;font-size:12px}
-.empty{text-align:center;color:var(--muted);padding:22px 8px;font-size:12px}
-.status{display:none;padding:11px 13px;border-radius:8px;margin-bottom:15px;font-size:13px}
-.status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
-.status.info{display:block;background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
-.footer{text-align:center;color:#8995a3;font-size:11px;padding:26px 8px 10px}
-@media(max-width:1000px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:720px){.app{display:block}.sidebar{position:fixed;z-index:10;inset:0 auto 0 0;width:265px;min-height:0;transform:translateX(-105%);transition:.2s;box-shadow:10px 0 25px #0002}.sidebar.open{transform:translateX(0)}.menu{display:inline-block;border:1px solid var(--line);background:white;border-radius:7px;padding:7px 10px;margin-right:10px}.topbar{height:62px;padding:0 14px}.content{padding:20px 14px}.welcome{display:block}.pill{display:inline-block;margin-top:12px}.columns{grid-template-columns:1fr}.topright{display:none}}
-@media(max-width:400px){.stats{gap:8px}.stat{padding:12px}.value{font-size:22px}}
+:root{
+  --navy:#14243a;
+  --navy2:#1d3554;
+  --gold:#d4af37;
+  --paper:#f5f7fa;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e5e9ef;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font:15px/1.5 Arial,sans-serif;
+}
+
+button{font:inherit;cursor:pointer}
+
+.app{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:255px 1fr;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  background:var(--navy);
+  color:white;
+  padding:20px 15px;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+.brand{
+  display:flex;
+  gap:11px;
+  align-items:center;
+  padding:5px 8px 22px;
+  border-bottom:1px solid #ffffff20;
+}
+
+.mark{
+  width:42px;
+  height:42px;
+  border-radius:11px;
+  background:var(--gold);
+  color:var(--navy);
+  display:grid;
+  place-items:center;
+  font-weight:800;
+}
+
+.brand b{
+  font-size:16px;
+  letter-spacing:.4px;
+}
+
+.brand small{
+  display:block;
+  color:#bdc8d5;
+  font-size:10px;
+  letter-spacing:1.2px;
+}
+
+.navlabel{
+  font-size:10px;
+  color:#9eacbd;
+  letter-spacing:1.4px;
+  font-weight:bold;
+  padding:22px 10px 8px;
+}
+
+nav{display:grid;gap:4px}
+
+nav button{
+  border:0;
+  background:none;
+  color:#dce4ed;
+  text-align:left;
+  padding:11px;
+  border-radius:8px;
+  transition:.15s;
+}
+
+nav button:hover,
+nav button.active{
+  background:var(--navy2);
+  color:white;
+}
+
+nav button.active{
+  box-shadow:inset 3px 0 var(--gold);
+}
+
+.account{
+  margin-top:auto;
+  border-top:1px solid #ffffff20;
+  padding:15px 5px 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar{
+  width:37px;
+  height:37px;
+  border-radius:50%;
+  background:var(--gold);
+  color:var(--navy);
+  display:grid;
+  place-items:center;
+  font-weight:bold;
+  flex-shrink:0;
+}
+
+.accountname{
+  font-size:12px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+
+.accounttype{
+  font-size:11px;
+  color:#bdc8d5;
+}
+
+.signout{
+  width:100%;
+  padding:10px;
+  border:1px solid #ffffff30;
+  background:none;
+  color:#ffd4d1;
+  border-radius:8px;
+}
+
+.signout:hover{background:#ffffff10}
+
+/* MAIN AREA */
+
+.main{min-width:0}
+
+.topbar{
+  height:70px;
+  background:white;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 28px;
+  position:sticky;
+  top:0;
+  z-index:4;
+}
+
+.top-title{
+  font-weight:bold;
+  color:var(--navy);
+}
+
+.topright{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.menu{display:none}
+
+.content{
+  padding:32px;
+  max-width:1500px;
+  margin:auto;
+}
+
+/* WELCOME */
+
+.welcome{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:flex-start;
+  margin-bottom:32px;
+}
+
+h1{
+  font-size:29px;
+  color:var(--navy);
+  margin:0 0 6px;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.pill{
+  background:#fff8df;
+  color:#795d0c;
+  border:1px solid #f0df9f;
+  border-radius:25px;
+  padding:8px 14px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+/* OVERVIEW */
+
+.section-title{
+  font-weight:bold;
+  color:var(--navy);
+  font-size:17px;
+  margin:0 0 16px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+.stat,
+.panel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:22px;
+  box-shadow:0 7px 22px #14243a0b;
+}
+
+.stat{
+  min-height:135px;
+}
+
+.stathead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.staticon{
+  background:#f6efd9;
+  color:#98751a;
+  border-radius:9px;
+  padding:7px 11px;
+  font-size:17px;
+}
+
+.value{
+  font-size:31px;
+  font-weight:800;
+  color:var(--navy);
+  margin-top:12px;
+}
+
+.note{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+/* LOWER DASHBOARD */
+
+.columns{
+  display:grid;
+  grid-template-columns:1.2fr .8fr;
+  gap:18px;
+  margin-top:24px;
+}
+
+.panel h2{
+  font-size:17px;
+  color:var(--navy);
+  margin:0 0 5px;
+}
+
+.panel p{
+  font-size:13px;
+  color:var(--muted);
+  margin:0;
+}
+
+.usage{
+  display:grid;
+  gap:17px;
+  margin-top:22px;
+}
+
+.usagehead{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.bar{
+  height:8px;
+  background:#edf0f4;
+  border-radius:8px;
+  overflow:hidden;
+}
+
+.bar span{
+  display:block;
+  height:100%;
+  width:0;
+  background:var(--gold);
+  border-radius:8px;
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:20px;
+}
+
+.actions button{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--navy);
+  border-radius:9px;
+  padding:13px 11px;
+  text-align:left;
+  font-size:12px;
+  font-weight:bold;
+  min-height:48px;
+}
+
+.actions button:hover{
+  border-color:var(--gold);
+  background:#fffcf2;
+}
+
+.notice{
+  margin-top:19px;
+  padding:12px;
+  background:#fffaf0;
+  border:1px solid #f0df9f;
+  border-radius:8px;
+  color:#72570d;
+  font-size:12px;
+}
+
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:25px 8px;
+  font-size:13px;
+}
+
+/* STATUS */
+
+.status{
+  display:none;
+  padding:11px 13px;
+  border-radius:8px;
+  margin-bottom:18px;
+  font-size:13px;
+}
+
+.status.error{
+  display:block;
+  background:#fff0ef;
+  border:1px solid #ffd2ce;
+  color:#b42318;
+}
+
+.status.info{
+  display:block;
+  background:#eef6ff;
+  border:1px solid #d5e8fa;
+  color:#31577b;
+}
+
+.footer{
+  text-align:center;
+  color:#8995a3;
+  font-size:11px;
+  padding:35px 8px 15px;
+}
+
+/* MOBILE SIDEBAR OVERLAY */
+
+.sidebar-overlay{
+  display:none;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+  .columns{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:720px){
+
+  .app{display:block}
+
+  .sidebar{
+    position:fixed;
+    z-index:12;
+    inset:0 auto 0 0;
+    width:270px;
+    min-height:0;
+    height:100dvh;
+    overflow-y:auto;
+    transform:translateX(-105%);
+    transition:transform .22s ease;
+    box-shadow:10px 0 25px #0002;
+  }
+
+  .sidebar.open{
+    transform:translateX(0);
+  }
+
+  .sidebar-overlay{
+    display:block;
+    position:fixed;
+    inset:0;
+    z-index:11;
+    background:#0007;
+    opacity:0;
+    visibility:hidden;
+    transition:.2s;
+  }
+
+  .sidebar-overlay.show{
+    opacity:1;
+    visibility:visible;
+  }
+
+  .menu{
+    display:inline-block;
+    border:1px solid var(--line);
+    background:white;
+    border-radius:7px;
+    padding:7px 11px;
+    margin-right:11px;
+    color:var(--navy);
+  }
+
+  .topbar{
+    height:62px;
+    padding:0 14px;
+  }
+
+  .content{
+    padding:23px 15px;
+  }
+
+  .welcome{
+    display:block;
+    margin-bottom:27px;
+  }
+
+  .pill{
+    display:inline-block;
+    margin-top:14px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:11px;
+  }
+
+  .stat{
+    padding:15px;
+    min-height:125px;
+  }
+
+  .stathead{
+    font-size:11px;
+    gap:5px;
+  }
+
+  .staticon{
+    padding:5px 8px;
+    font-size:14px;
+  }
+
+  .value{
+    font-size:25px;
+  }
+
+  .columns{
+    grid-template-columns:1fr;
+    gap:15px;
+    margin-top:19px;
+  }
+
+  .panel{
+    padding:18px;
+  }
+
+  .topright{display:none}
+}
+
+@media(max-width:380px){
+
+  .stats{gap:8px}
+
+  .stat{padding:12px}
+
+  .stathead{font-size:10px}
+
+  .value{font-size:22px}
+
+  .actions{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
+<!-- SIDEBAR -->
+
 <aside class="sidebar" id="sidebar">
-  <div class="brand"><div class="mark">SE</div><div><b>SAINTIG EXAMS</b><small>EXAMINATION PLATFORM</small></div></div>
+
+  <div class="brand">
+    <div class="mark">SE</div>
+    <div>
+      <b>SAINTIG EXAMS</b>
+      <small>EXAMINATION PLATFORM</small>
+    </div>
+  </div>
+
   <div class="navlabel">MAIN MENU</div>
+
   <nav>
     <button class="active" data-page="Dashboard">▦ &nbsp; Dashboard</button>
     <button data-page="My Students">♙ &nbsp; My Students</button>
@@ -63,142 +556,589 @@ h1{font-size:28px;color:var(--navy);margin:0 0 4px}.muted{color:var(--muted);fon
     <button data-page="Archive Management">▧ &nbsp; Archive Management</button>
     <button data-page="Results & Performance">▥ &nbsp; Results &amp; Performance</button>
   </nav>
+
   <div class="navlabel">ACCOUNT</div>
+
   <nav>
     <button data-page="Subscription Plans">◇ &nbsp; Subscription Plans</button>
     <button data-page="Notifications">♧ &nbsp; Notifications</button>
     <button data-page="My Profile">⚙ &nbsp; My Profile</button>
     <button data-page="Help & Support">? &nbsp; Help &amp; Support</button>
   </nav>
-  <div class="account"><div class="avatar" id="sideAvatar">SE</div><div><div class="accountname" id="sideName">Loading account…</div><div class="accounttype" id="sideType">Teacher/School</div></div></div>
+
+  <div class="account">
+    <div class="avatar" id="sideAvatar">SE</div>
+    <div>
+      <div class="accountname" id="sideName">Loading account…</div>
+      <div class="accounttype" id="sideType">Teacher/School</div>
+    </div>
+  </div>
+
   <button class="signout" id="signOutBtn">↪ &nbsp; Sign Out</button>
+
 </aside>
+
+<!-- MOBILE OVERLAY -->
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- MAIN CONTENT -->
+
 <main class="main">
-<header class="topbar"><div><button class="menu" id="menuToggle">☰</button><span class="top-title" id="topTitle">Dashboard</span></div><div class="topright" id="topAccount">Loading account…</div></header>
+
+<header class="topbar">
+
+  <div>
+    <button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
+    <span class="top-title" id="topTitle">Dashboard</span>
+  </div>
+
+  <div class="topright" id="topAccount">Loading account…</div>
+
+</header>
+
 <section class="content">
-<div class="status" id="statusMessage"></div>
-<div class="welcome"><div><h1>Welcome, <span id="welcomeName">…</span></h1><div class="muted">Here is an overview of your examination account.</div></div><div class="pill" id="packageName">Subscription details pending</div></div>
-<div class="section-title">Account Overview</div>
-<div class="stats">
- <article class="stat"><div class="stathead">Active Students <span class="staticon">♙</span></div><div class="value" id="activeStudents">—</div><div class="note">Active student records</div></article>
- <article class="stat"><div class="stathead">Archived Students <span class="staticon">▧</span></div><div class="value" id="archivedStudents">—</div><div class="note">Preserved student records</div></article>
- <article class="stat"><div class="stathead">Active Subjects <span class="staticon">▤</span></div><div class="value" id="activeSubjects">—</div><div class="note">Subjects in your account</div></article>
- <article class="stat"><div class="stathead">Published Examinations <span class="staticon">▣</span></div><div class="value" id="publishedExams">—</div><div class="note">Published examinations</div></article>
- <article class="stat"><div class="stathead">Archived Examinations <span class="staticon">▧</span></div><div class="value" id="archivedExams">—</div><div class="note">Historical examinations</div></article>
- <article class="stat"><div class="stathead">Question Bank <span class="staticon">▤</span></div><div class="value" id="questionCount">—</div><div class="note">Questions in your account</div></article>
- <article class="stat"><div class="stathead">Completed Attempts <span class="staticon">✓</span></div><div class="value" id="completedAttempts">—</div><div class="note">Submitted examination attempts</div></article>
- <article class="stat"><div class="stathead">Subscription Status <span class="staticon">◇</span></div><div class="value" id="subscriptionStatus" style="font-size:18px">Not connected</div><div class="note" id="expiryDate">Subscription details pending</div></article>
-</div>
-<div class="columns">
- <section class="panel"><h2>Subscription Usage</h2><p>Used and remaining package capacity.</p>
-  <div class="usage">
-   <div><div class="usagehead"><span>Active Students</span><b id="studentUsage">Awaiting package settings</b></div><div class="bar"><span id="studentBar"></span></div></div>
-   <div><div class="usagehead"><span>Subjects</span><b id="subjectUsage">Awaiting package settings</b></div><div class="bar"><span id="subjectBar"></span></div></div>
-   <div><div class="usagehead"><span>Examinations</span><b id="examUsage">Awaiting package settings</b></div><div class="bar"><span id="examBar"></span></div></div>
-   <div><div class="usagehead"><span>Question Bank</span><b id="questionUsage">Awaiting package settings</b></div><div class="bar"><span id="questionBar"></span></div></div>
+
+  <div class="status" id="statusMessage"></div>
+
+  <!-- WELCOME -->
+
+  <div class="welcome">
+
+    <div>
+      <h1>Welcome, <span id="welcomeName">…</span></h1>
+      <div class="muted">
+        Here is an overview of your examination account.
+      </div>
+    </div>
+
+    <div class="pill" id="packageName">
+      Subscription details pending
+    </div>
+
   </div>
-  <div class="notice">Package prices, limits and expiry dates will be loaded from administrator-controlled settings. No figures are assumed.</div>
- </section>
- <section class="panel"><h2>Quick Actions</h2><p>Shortcuts to common dashboard tasks.</p>
-  <div class="actions">
-   <button data-page="My Students">＋ Add Student</button><button data-page="My Subjects">＋ Add Subject</button>
-   <button data-page="Register Examination">＋ Register Examination</button><button data-page="Question Bank">↑ Upload Questions</button>
-   <button data-page="Results & Performance">▥ View Results</button><button data-page="Subscription Plans">◇ Manage Subscription</button>
+
+  <!-- ACCOUNT OVERVIEW -->
+
+  <div class="section-title">Account Overview</div>
+
+  <div class="stats">
+
+    <article class="stat">
+      <div class="stathead">
+        Active Students
+        <span class="staticon">♙</span>
+      </div>
+      <div class="value" id="activeStudents">—</div>
+      <div class="note">Active student records</div>
+    </article>
+
+    <article class="stat">
+      <div class="stathead">
+        Active Subjects
+        <span class="staticon">▤</span>
+      </div>
+      <div class="value" id="activeSubjects">—</div>
+      <div class="note">Subjects in your account</div>
+    </article>
+
+    <article class="stat">
+      <div class="stathead">
+        Published Examinations
+        <span class="staticon">▣</span>
+      </div>
+      <div class="value" id="publishedExams">—</div>
+      <div class="note">Published examinations</div>
+    </article>
+
+    <article class="stat">
+      <div class="stathead">
+        Question Bank
+        <span class="staticon">▤</span>
+      </div>
+      <div class="value" id="questionCount">—</div>
+      <div class="note">Questions in your account</div>
+    </article>
+
   </div>
- </section>
-</div>
-<div class="columns">
- <section class="panel"><h2>Recent Examinations</h2><p>Your latest examination records.</p><div class="empty">This section will be connected during examination-page development.</div></section>
- <section class="panel"><h2>Recent Results</h2><p>Latest completed examination attempts.</p><div class="empty">This section will be connected during results-page development.</div></section>
-</div>
-<div class="footer">© <span id="year"></span> SAINTIG EXAMS · Building a better examination experience</div>
+
+  <!-- SUBSCRIPTION AND QUICK ACTIONS -->
+
+  <div class="columns">
+
+    <section class="panel">
+
+      <h2>Subscription Usage</h2>
+      <p>Used and remaining package capacity.</p>
+
+      <div class="usage">
+
+        <div>
+          <div class="usagehead">
+            <span>Active Students</span>
+            <b id="studentUsage">Awaiting package settings</b>
+          </div>
+          <div class="bar"><span id="studentBar"></span></div>
+        </div>
+
+        <div>
+          <div class="usagehead">
+            <span>Subjects</span>
+            <b id="subjectUsage">Awaiting package settings</b>
+          </div>
+          <div class="bar"><span id="subjectBar"></span></div>
+        </div>
+
+        <div>
+          <div class="usagehead">
+            <span>Examinations</span>
+            <b id="examUsage">Awaiting package settings</b>
+          </div>
+          <div class="bar"><span id="examBar"></span></div>
+        </div>
+
+        <div>
+          <div class="usagehead">
+            <span>Question Bank</span>
+            <b id="questionUsage">Awaiting package settings</b>
+          </div>
+          <div class="bar"><span id="questionBar"></span></div>
+        </div>
+
+      </div>
+
+      <div class="notice">
+        Package prices, limits and expiry dates will be loaded from administrator-controlled settings. No figures are assumed.
+      </div>
+
+    </section>
+
+    <section class="panel">
+
+      <h2>Quick Actions</h2>
+      <p>Shortcuts to common dashboard tasks.</p>
+
+      <div class="actions">
+
+        <button data-page="My Students">＋ Add Student</button>
+
+        <button data-page="My Subjects">＋ Add Subject</button>
+
+        <button data-page="Register Examination">＋ Register Examination</button>
+
+        <button data-page="Question Bank">↑ Upload Questions</button>
+
+        <button data-page="Subscription Plans">◇ Manage Subscription</button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- RECENT EXAMINATIONS -->
+
+  <section class="panel" style="margin-top:24px">
+
+    <h2>Recent Examinations</h2>
+    <p>Your latest examination records.</p>
+
+    <div class="empty">
+      This section will be connected during examination-page development.
+    </div>
+
+  </section>
+
+  <div class="footer">
+    © <span id="year"></span> SAINTIG EXAMS · Building a better examination experience
+  </div>
+
 </section>
 </main>
 </div>
+
 <script>
-/* Insert the existing Supabase project URL and anon/publishable key below.
-   NEVER place the Supabase service-role key in browser code. */
-const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+/* SUPABASE CONFIGURATION */
+
+const SUPABASE_URL =
+  "https://scuiswponnqyrbqjypkx.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
 const LOGIN_PAGE = "school-login.html";
+
 const $ = id => document.getElementById(id);
+
 let supabaseClient;
 
 $("year").textContent = new Date().getFullYear();
-function message(text,type="info"){const el=$("statusMessage");el.textContent=text;el.className="status "+type;}
-function initials(value){return String(value||"SE").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"SE";}
-function put(id,value){$(id).textContent=value===null||value===undefined||value===""?"—":value;}
+
+/* GENERAL HELPERS */
+
+function message(text,type="info"){
+  const el=$("statusMessage");
+  el.textContent=text;
+  el.className="status "+type;
+}
+
+function initials(value){
+  return String(value||"SE")
+    .trim()
+    .split(/\s+/)
+    .slice(0,2)
+    .map(x=>x[0]||"")
+    .join("")
+    .toUpperCase()||"SE";
+}
+
+function put(id,value){
+  $(id).textContent =
+    value===null || value===undefined || value===""
+      ? "—"
+      : value;
+}
+
+/* ACCOUNT-SCOPED COUNTING */
 
 async function countRows(table,build){
-  let query=supabaseClient.from(table).select("id",{count:"exact",head:true});
+
+  let query=supabaseClient
+    .from(table)
+    .select("id",{count:"exact",head:true});
+
   query=build(query);
+
   const {count,error}=await query;
-  if(error){console.error(table+" count:",error.message);return null;}
+
+  if(error){
+    console.error(table+" count:",error.message);
+    return null;
+  }
+
   return count??0;
 }
 
 async function loadCounts(accountId){
-  // Every count is restricted to this Teacher/School account.
-  const tasks=[
-    countRows("school_students",q=>q.eq("school_account_id",accountId).eq("is_archived",false).eq("is_active",true)),
-    countRows("school_students",q=>q.eq("school_account_id",accountId).eq("is_archived",true)),
-    countRows("school_subjects",q=>q.eq("school_account_id",accountId)),
-    countRows("examinations",q=>q.eq("school_account_id",accountId).eq("is_published",true).eq("is_archived",false)),
-    countRows("examinations",q=>q.eq("school_account_id",accountId).eq("is_archived",true)),
-    countRows("exam_attempts",q=>q.eq("school_account_id",accountId).eq("status","submitted"))
-  ];
-  const values=await Promise.all(tasks);
-  ["activeStudents","archivedStudents","activeSubjects","publishedExams","archivedExams","completedAttempts"].forEach((id,i)=>put(id,values[i]));
 
-  const {data:exams,error:examError}=await supabaseClient.from("examinations").select("id").eq("school_account_id",accountId);
-  if(examError){console.error("Question count examination lookup:",examError.message);put("questionCount",null);}
-  else if(!exams?.length)put("questionCount",0);
-  else{
-    const {count,error}=await supabaseClient.from("exam_questions").select("id",{count:"exact",head:true}).in("examination_id",exams.map(x=>x.id));
-    if(error){console.error("Question count:",error.message);put("questionCount",null);}else put("questionCount",count??0);
+  const tasks=[
+
+    countRows(
+      "school_students",
+      q=>q
+        .eq("school_account_id",accountId)
+        .eq("is_archived",false)
+        .eq("is_active",true)
+    ),
+
+    countRows(
+      "school_subjects",
+      q=>q.eq("school_account_id",accountId)
+    ),
+
+    countRows(
+      "examinations",
+      q=>q
+        .eq("school_account_id",accountId)
+        .eq("is_published",true)
+        .eq("is_archived",false)
+    )
+
+  ];
+
+  const values=await Promise.all(tasks);
+
+  put("activeStudents",values[0]);
+  put("activeSubjects",values[1]);
+  put("publishedExams",values[2]);
+
+  /* QUESTION BANK COUNT */
+
+  const {data:exams,error:examError}=
+    await supabaseClient
+      .from("examinations")
+      .select("id")
+      .eq("school_account_id",accountId);
+
+  if(examError){
+
+    console.error(
+      "Question count examination lookup:",
+      examError.message
+    );
+
+    put("questionCount",null);
+
+  }else if(!exams?.length){
+
+    put("questionCount",0);
+
+  }else{
+
+    const {count,error}=
+      await supabaseClient
+        .from("exam_questions")
+        .select("id",{count:"exact",head:true})
+        .in("examination_id",exams.map(x=>x.id));
+
+    if(error){
+
+      console.error("Question count:",error.message);
+      put("questionCount",null);
+
+    }else{
+
+      put("questionCount",count??0);
+
+    }
   }
 }
+
+/* DASHBOARD INITIALIZATION */
 
 async function initializeDashboard(){
-  if(SUPABASE_URL==="YOUR_SUPABASE_URL"||SUPABASE_ANON_KEY==="YOUR_SUPABASE_ANON_KEY"){
-    message("Add your existing Supabase project URL and anon/publishable key in this file before testing.","error");return;
+
+  if(!window.supabase?.createClient){
+
+    message(
+      "Supabase library did not load. Check your internet connection and refresh.",
+      "error"
+    );
+
+    return;
   }
-  if(!window.supabase?.createClient){message("Supabase library did not load. Check your internet connection and refresh.","error");return;}
-  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-  const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
-  if(sessionError||!sessionData.session){location.replace(LOGIN_PAGE);return;}
+
+  supabaseClient=window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+  const {
+    data:sessionData,
+    error:sessionError
+  }=await supabaseClient.auth.getSession();
+
+  if(sessionError || !sessionData.session){
+
+    location.replace(LOGIN_PAGE);
+    return;
+  }
 
   const user=sessionData.session.user;
-  const {data:account,error}=await supabaseClient.from("school_accounts")
-    .select("id,user_id,account_name,account_type,status").eq("user_id",user.id).maybeSingle();
 
-  if(error){console.error("Account lookup:",error.message);message("Unable to load your Teacher/School account. Check the school_accounts table permissions and account record.","error");return;}
-  if(!account){message("No Teacher/School account is linked to this login. Please contact the administrator.","error");return;}
-  if(account.status!=="active"){await supabaseClient.auth.signOut();location.replace(LOGIN_PAGE);return;}
+  const {
+    data:account,
+    error
+  }=await supabaseClient
+    .from("school_accounts")
+    .select("id,user_id,account_name,account_type,status")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(error){
+
+    console.error("Account lookup:",error.message);
+
+    message(
+      "Unable to load your Teacher/School account. Check the school_accounts table permissions and account record.",
+      "error"
+    );
+
+    return;
+  }
+
+  if(!account){
+
+    message(
+      "No Teacher/School account is linked to this login. Please contact the administrator.",
+      "error"
+    );
+
+    return;
+  }
+
+  if(account.status!=="active"){
+
+    await supabaseClient.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
 
   const name=account.account_name||"Teacher/School";
-  put("welcomeName",name);put("sideName",name);put("topAccount",name);
-  put("sideType",account.account_type==="school"?"School Account":"Teacher Account");
+
+  put("welcomeName",name);
+  put("sideName",name);
+  put("topAccount",name);
+
+  put(
+    "sideType",
+    account.account_type==="school"
+      ? "School Account"
+      : "Teacher Account"
+  );
+
   $("sideAvatar").textContent=initials(name);
+
   await loadCounts(account.id);
-  // Subscription schema has not yet been inspected; do not invent package values.
+
+  /*
+    Subscription schema has not yet been inspected.
+    Package values and limits are intentionally not assumed.
+  */
 }
+
+/* SIGN OUT */
+
 async function signOut(){
-  $("signOutBtn").disabled=true;$("signOutBtn").textContent="Signing out…";
-  try{if(supabaseClient){const {error}=await supabaseClient.auth.signOut();if(error)throw error;}location.replace(LOGIN_PAGE);}
-  catch(error){console.error("Sign out:",error);$("signOutBtn").disabled=false;$("signOutBtn").textContent="↪  Sign Out";message("Sign-out failed. Please try again.","error");}
+
+  $("signOutBtn").disabled=true;
+  $("signOutBtn").textContent="Signing out…";
+
+  try{
+
+    if(supabaseClient){
+
+      const {error}=await supabaseClient.auth.signOut();
+
+      if(error)throw error;
+    }
+
+    location.replace(LOGIN_PAGE);
+
+  }catch(error){
+
+    console.error("Sign out:",error);
+
+    $("signOutBtn").disabled=false;
+    $("signOutBtn").textContent="↪  Sign Out";
+
+    message(
+      "Sign-out failed. Please try again.",
+      "error"
+    );
+  }
 }
+
+/* SIDEBAR NAVIGATION */
+
+function closeSidebar(){
+
+  $("sidebar").classList.remove("open");
+  $("sidebarOverlay").classList.remove("show");
+}
+
+function openSidebar(){
+
+  $("sidebar").classList.add("open");
+  $("sidebarOverlay").classList.add("show");
+}
+
 function navigate(page){
-  document.querySelectorAll("nav button[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
-  $("topTitle").textContent=page;$("sidebar").classList.remove("open");
-  if(page==="Dashboard")$("statusMessage").className="status";
-  else message(page+" will be developed and connected in its agreed development stage.","info");
+
+  document
+    .querySelectorAll("nav button[data-page]")
+    .forEach(button=>{
+      button.classList.toggle(
+        "active",
+        button.dataset.page===page
+      );
+    });
+
+  $("topTitle").textContent=page;
+
+  closeSidebar();
+
+  if(page==="Dashboard"){
+
+    $("statusMessage").className="status";
+
+  }else{
+
+    message(
+      page+" will be developed and connected in its agreed development stage.",
+      "info"
+    );
+  }
 }
-document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
-$("menuToggle").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
+
+/* MENU BUTTON */
+
+$("menuToggle").addEventListener("click",()=>{
+
+  if($("sidebar").classList.contains("open")){
+
+    closeSidebar();
+
+  }else{
+
+    openSidebar();
+
+  }
+});
+
+/* CLICK OUTSIDE SIDEBAR TO CLOSE */
+
+$("sidebarOverlay").addEventListener("click",closeSidebar);
+
+/* ESCAPE KEY CLOSES SIDEBAR */
+
+document.addEventListener("keydown",event=>{
+
+  if(event.key==="Escape")closeSidebar();
+
+});
+
+/* MENU ITEMS AND QUICK ACTIONS */
+
+document.querySelectorAll("[data-page]").forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    navigate(button.dataset.page);
+
+  });
+
+});
+
+/* SIGN OUT BUTTON */
+
 $("signOutBtn").addEventListener("click",signOut);
-document.addEventListener("visibilitychange",async()=>{if(document.visibilityState==="visible"&&supabaseClient){const {data}=await supabaseClient.auth.getSession();if(!data.session)location.replace(LOGIN_PAGE);}});
+
+/* SESSION MONITOR */
+
+document.addEventListener(
+  "visibilitychange",
+  async()=>{
+
+    if(
+      document.visibilityState==="visible" &&
+      supabaseClient
+    ){
+
+      const {data}=await supabaseClient.auth.getSession();
+
+      if(!data.session){
+
+        location.replace(LOGIN_PAGE);
+
+      }
+    }
+
+  }
+);
+
+/* START DASHBOARD */
+
 initializeDashboard();
+
 </script>
+
 </body>
 </html>
