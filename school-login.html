@@ -121,7 +121,8 @@
       color: var(--white);
     }
 
-    .form-panel[hidden] {
+    .form-panel[hidden],
+    [hidden] {
       display: none !important;
     }
 
@@ -276,6 +277,7 @@
       <button type="button" class="tab active" id="login-tab">
         Sign In
       </button>
+
       <button type="button" class="tab" id="register-tab">
         Create Account
       </button>
@@ -289,6 +291,7 @@
 
       <div class="field">
         <label for="login-email">Email Address</label>
+
         <input id="login-email" type="email"
                autocomplete="email"
                placeholder="Enter your registered email"
@@ -319,6 +322,7 @@
       </button>
 
     </form>
+
 
     <!-- REGISTRATION -->
     <form id="register-form" class="form-panel" hidden>
@@ -391,10 +395,12 @@
 
     </form>
 
-    <!-- PASSWORD RESET -->
+
+    <!-- PASSWORD RESET AND RECOVERY -->
     <form id="reset-form" class="form-panel" hidden>
 
-      <div class="field">
+      <!-- Used when requesting a reset email -->
+      <div class="field" id="reset-email-field">
         <label for="reset-email">Registered Email Address</label>
 
         <input id="reset-email" type="email"
@@ -403,11 +409,46 @@
                required>
       </div>
 
-      <p class="hint" style="margin-bottom:18px">
+      <!-- Used after opening a valid recovery link -->
+      <div id="new-password-fields" hidden>
+
+        <div class="field">
+          <label for="new-password">New Password</label>
+
+          <div class="password-wrap">
+            <input id="new-password" type="password"
+                   autocomplete="new-password"
+                   minlength="8"
+                   placeholder="Enter your new password">
+
+            <button type="button" class="toggle-password"
+                    data-target="new-password">Show</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="confirm-new-password">
+            Confirm New Password
+          </label>
+
+          <div class="password-wrap">
+            <input id="confirm-new-password" type="password"
+                   autocomplete="new-password"
+                   minlength="8"
+                   placeholder="Confirm your new password">
+
+            <button type="button" class="toggle-password"
+                    data-target="confirm-new-password">Show</button>
+          </div>
+        </div>
+
+      </div>
+
+      <p class="hint" id="reset-hint" style="margin-bottom:18px">
         Request a password reset link using your registered email.
       </p>
 
-      <button class="primary-btn" type="submit">
+      <button class="primary-btn" id="reset-submit-btn" type="submit">
         Send Reset Link
       </button>
 
@@ -418,6 +459,7 @@
       </p>
 
     </form>
+
 
     <div class="back-home">
       <a href="index.html">← Back to Public Homepage</a>
@@ -430,6 +472,7 @@
   © <span id="year"></span> SAINTIG EXAMS.
   Learn. Practice. Succeed.
 </footer>
+
 
 <script type="module">
 
@@ -452,6 +495,8 @@
   const SITE_URL =
     "https://saintig.github.io/global-exam-platform";
 
+  let recoveryMode = false;
+
   $("year").textContent = new Date().getFullYear();
 
 
@@ -471,6 +516,7 @@
   // BUTTON LOADING
 
   function setLoading(form, loading, text) {
+
     const button = form.querySelector(
       'button[type="submit"]'
     );
@@ -491,6 +537,9 @@
   // FORM NAVIGATION
 
   function showLogin() {
+
+    recoveryMode = false;
+
     clearMessage();
 
     tabs.hidden = false;
@@ -507,7 +556,11 @@
       "Sign in to access your Teacher/School dashboard.";
   }
 
+
   function showRegister() {
+
+    recoveryMode = false;
+
     clearMessage();
 
     tabs.hidden = false;
@@ -524,7 +577,13 @@
       "Register as a Teacher or School on SAINTIG EXAMS.";
   }
 
+
+  // FORGOT PASSWORD: REQUEST RESET EMAIL
+
   function showReset() {
+
+    recoveryMode = false;
+
     clearMessage();
 
     tabs.hidden = true;
@@ -532,19 +591,68 @@
     registerForm.hidden = true;
     resetForm.hidden = false;
 
+    $("reset-email-field").hidden = false;
+    $("new-password-fields").hidden = true;
+
+    $("reset-email").required = true;
+    $("new-password").required = false;
+    $("confirm-new-password").required = false;
+
+    $("reset-hint").textContent =
+      "Request a password reset link using your registered email.";
+
+    $("reset-submit-btn").textContent =
+      "Send Reset Link";
+
     title.textContent = "Reset Your Password";
 
     description.textContent =
       "Enter the email address linked to your account.";
   }
 
+
+  // VALID RECOVERY LINK: ENTER NEW PASSWORD
+
+  function showRecovery() {
+
+    recoveryMode = true;
+
+    clearMessage();
+
+    tabs.hidden = true;
+    loginForm.hidden = true;
+    registerForm.hidden = true;
+    resetForm.hidden = false;
+
+    $("reset-email-field").hidden = true;
+    $("new-password-fields").hidden = false;
+
+    $("reset-email").required = false;
+    $("new-password").required = true;
+    $("confirm-new-password").required = true;
+
+    $("reset-hint").textContent =
+      "Enter and confirm your new password. Your password must contain at least 8 characters.";
+
+    $("reset-submit-btn").textContent =
+      "Update Password";
+
+    title.textContent = "Create a New Password";
+
+    description.textContent =
+      "Choose a new password for your Teacher/School account.";
+  }
+
+
   loginTab.addEventListener("click", showLogin);
   registerTab.addEventListener("click", showRegister);
+
 
   $("forgot-link").addEventListener("click", event => {
     event.preventDefault();
     showReset();
   });
+
 
   $("back-login").addEventListener("click", event => {
     event.preventDefault();
@@ -597,6 +705,7 @@
 
       $("name-hint").textContent =
         "Select an account type above to continue.";
+
     }
 
   });
@@ -748,10 +857,7 @@
 
       if (data.session && data.user) {
 
-        // Email confirmation may be disabled.
-        // The database trigger should provision the account.
-        const account =
-          await verifyTeacherSchoolAccount(data.user);
+        await verifyTeacherSchoolAccount(data.user);
 
         showMessage(
           "Your account was created successfully. Opening your dashboard...",
@@ -825,7 +931,6 @@
         );
       }
 
-      // Verify the authenticated user with Supabase.
       const { data: verifiedData, error: userError } =
         await supabase.auth.getUser();
 
@@ -838,7 +943,6 @@
         );
       }
 
-      // The database record is authoritative.
       await verifyTeacherSchoolAccount(
         verifiedData.user
       );
@@ -869,22 +973,109 @@
   });
 
 
-  // PASSWORD RESET
+  // PASSWORD RESET AND PASSWORD UPDATE
 
   resetForm.addEventListener("submit", async event => {
 
     event.preventDefault();
     clearMessage();
 
-    const email = $("reset-email").value.trim();
-
     setLoading(
       resetForm,
       true,
-      "Sending Link..."
+      recoveryMode
+        ? "Updating Password..."
+        : "Sending Link..."
     );
 
     try {
+
+      // STEP 1: UPDATE PASSWORD AFTER RECOVERY LINK
+
+      if (recoveryMode) {
+
+        const newPassword =
+          $("new-password").value;
+
+        const confirmPassword =
+          $("confirm-new-password").value;
+
+        if (newPassword.length < 8) {
+          throw new Error(
+            "Your new password must contain at least 8 characters."
+          );
+        }
+
+        if (newPassword !== confirmPassword) {
+          throw new Error(
+            "Your passwords do not match."
+          );
+        }
+
+        // Confirm that the recovery session still exists.
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
+
+        if (sessionError || !sessionData.session) {
+          throw new Error(
+            "Your password reset session has expired. Please request a new reset link."
+          );
+        }
+
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
+
+        if (userError || !userData.user) {
+          throw new Error(
+            "Your recovery session could not be verified. Please request a new reset link."
+          );
+        }
+
+        // Save the new password in Supabase Auth.
+        const { error: updateError } =
+          await supabase.auth.updateUser({
+            password: newPassword
+          });
+
+        if (updateError) throw updateError;
+
+        // Password has been updated successfully.
+        recoveryMode = false;
+
+        // Sign out so the user signs in again with the new password.
+        const { error: signOutError } =
+          await supabase.auth.signOut();
+
+        if (signOutError) {
+          console.warn(
+            "Password changed, but sign-out encountered an issue:",
+            signOutError.message
+          );
+        }
+
+        resetForm.reset();
+
+        // Remove recovery parameters from the address bar.
+        window.history.replaceState(
+          {},
+          document.title,
+          "school-login.html"
+        );
+
+        showLogin();
+
+        showMessage(
+          "Your password has been updated successfully. Please sign in using your new password.",
+          "success"
+        );
+
+        return;
+      }
+
+
+      // STEP 2: REQUEST PASSWORD RESET EMAIL
+
+      const email = $("reset-email").value.trim();
 
       const { error } =
         await supabase.auth.resetPasswordForEmail(
@@ -909,7 +1100,7 @@
 
       showMessage(
         error.message ||
-        "We could not request a reset link. Please try again.",
+        "Password recovery failed. Please try again.",
         "error"
       );
 
@@ -932,16 +1123,100 @@
 
     const mode = params.get("mode");
 
-    // Handle recovery links.
+    // Handle password recovery links.
     if (mode === "reset") {
-      showReset();
-      return;
+
+      try {
+
+        // A valid recovery redirect contains either:
+        // a PKCE code in the query string, or
+        // recovery tokens in the URL fragment.
+        const hashParams = new URLSearchParams(
+          window.location.hash.replace(/^#/, "")
+        );
+
+        const hasRecoveryCallback =
+          params.has("code") ||
+          (
+            hashParams.has("access_token") &&
+            hashParams.get("type") === "recovery"
+          );
+
+        if (!hasRecoveryCallback) {
+          showLogin();
+
+          showMessage(
+            "This password reset link is invalid or incomplete. Please request a new reset link.",
+            "error"
+          );
+
+          return;
+        }
+
+        // Supabase processes the recovery callback and restores
+        // the recovery session through auth.js.
+        const { data: sessionData, error: sessionError } =
+          await supabase.auth.getSession();
+
+        if (sessionError || !sessionData.session) {
+
+          showLogin();
+
+          showMessage(
+            "This password reset link has expired or is invalid. Please request a new one.",
+            "error"
+          );
+
+          return;
+        }
+
+        const { data: userData, error: userError } =
+          await supabase.auth.getUser();
+
+        if (userError || !userData.user) {
+
+          await supabase.auth.signOut();
+
+          showLogin();
+
+          showMessage(
+            "We could not verify this password reset link. Please request a new one.",
+            "error"
+          );
+
+          return;
+        }
+
+        showRecovery();
+        return;
+
+      } catch (error) {
+
+        console.error(
+          "Password recovery initialization failed:",
+          error
+        );
+
+        showLogin();
+
+        showMessage(
+          "Unable to verify your password reset link. Please request a new one.",
+          "error"
+        );
+
+        return;
+      }
+
     }
+
 
     if (mode === "register") {
       showRegister();
       return;
     }
+
+
+    // Check existing login session.
 
     try {
 
@@ -956,7 +1231,9 @@
           await supabase.auth.getUser();
 
         if (userError || !userData.user) {
+
           await supabase.auth.signOut();
+
           showLogin();
           return;
         }
