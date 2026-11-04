@@ -2,651 +2,729 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#10264a">
-  <title>Student Access | SAINTIG EXAMS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10264a">
+<title>Student Access | SAINTIG EXAMS</title>
 
-  <style>
-    :root {
-      --navy: #10264a;
-      --navy-light: #183963;
-      --gold: #e2b84b;
-      --white: #ffffff;
-      --cream: #faf8f2;
-      --muted: #667085;
-      --border: #dfe4ec;
-      --danger: #b42318;
-      --success: #18794e;
-    }
+<style>
+:root{
+  --navy:#10264a;
+  --navy-light:#183963;
+  --gold:#e2b84b;
+  --white:#ffffff;
+  --cream:#faf8f2;
+  --muted:#667085;
+  --border:#dfe4ec;
+  --danger:#b42318;
+  --success:#18794e;
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--cream);
-      color: var(--navy);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--cream);
+  color:var(--navy);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-    header {
-      background: var(--navy);
-      padding: 19px 16px;
-      border-bottom: 4px solid var(--gold);
-    }
+header{
+  background:var(--navy);
+  padding:19px 16px;
+  border-bottom:4px solid var(--gold);
+}
 
-    .brand {
-      display: block;
-      max-width: 1000px;
-      margin: auto;
-      color: var(--white);
-      text-decoration: none;
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: .5px;
-    }
+.brand{
+  display:block;
+  max-width:1000px;
+  margin:auto;
+  color:white;
+  text-decoration:none;
+  font-size:23px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
 
-    .brand span { color: var(--gold); }
+.brand span{color:var(--gold)}
 
-    .brand small {
-      display: block;
-      font-size: 11px;
-      font-weight: normal;
-      letter-spacing: 1.5px;
-      margin-top: 5px;
-      color: #e4eaf4;
-    }
+.brand small{
+  display:block;
+  font-size:11px;
+  font-weight:normal;
+  letter-spacing:1.5px;
+  margin-top:5px;
+  color:#e4eaf4;
+}
 
-    main {
-      width: 100%;
-      max-width: 490px;
-      padding: 30px 17px;
-      margin: auto;
-      flex: 1;
-    }
+main{
+  width:100%;
+  max-width:490px;
+  padding:30px 17px;
+  margin:auto;
+  flex:1;
+}
 
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 27px 22px;
-      box-shadow: 0 12px 35px rgba(16, 38, 74, .08);
-    }
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:27px 22px;
+  box-shadow:0 12px 35px rgba(16,38,74,.08);
+}
 
-    .intro {
-      text-align: center;
-      margin-bottom: 23px;
-    }
+.intro{text-align:center;margin-bottom:23px}
+.intro h1{font-size:26px;margin-bottom:9px}
+.intro p{color:var(--muted);line-height:1.6;font-size:14px}
 
-    .intro h1 {
-      font-size: 26px;
-      margin-bottom: 9px;
-    }
+.tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  padding:5px;
+  border-radius:11px;
+  background:#f0f3f8;
+  margin-bottom:23px;
+}
 
-    .intro p {
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14px;
-    }
+.tab{
+  border:none;
+  background:transparent;
+  padding:12px 7px;
+  border-radius:8px;
+  font-size:14px;
+  font-weight:bold;
+  color:var(--navy);
+  cursor:pointer;
+}
 
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      padding: 5px;
-      border-radius: 11px;
-      background: #f0f3f8;
-      margin-bottom: 23px;
-    }
+.tab.active{background:var(--navy);color:white}
+.form-panel[hidden]{display:none!important}
+.field{margin-bottom:17px}
 
-    .tab {
-      border: none;
-      background: transparent;
-      padding: 12px 7px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: bold;
-      color: var(--navy);
-      cursor: pointer;
-    }
+label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:bold;
+  font-size:13px;
+}
 
-    .tab.active {
-      background: var(--navy);
-      color: var(--white);
-    }
+input{
+  width:100%;
+  padding:13px 12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:white;
+  color:#172b4d;
+  font:inherit;
+  font-size:14px;
+  outline:none;
+}
 
-    .form-panel[hidden] { display: none !important; }
+input:focus{
+  border-color:var(--navy-light);
+  box-shadow:0 0 0 3px rgba(24,57,99,.10);
+}
 
-    .field { margin-bottom: 17px; }
+.password-wrap{position:relative}
+.password-wrap input{padding-right:76px}
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-      font-size: 13px;
-    }
+.toggle-password{
+  position:absolute;
+  top:50%;
+  right:10px;
+  transform:translateY(-50%);
+  background:transparent;
+  border:none;
+  color:var(--navy-light);
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+  padding:8px 2px;
+}
 
-    input {
-      width: 100%;
-      padding: 13px 12px;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      background: white;
-      color: #172b4d;
-      font: inherit;
-      font-size: 14px;
-      outline: none;
-    }
+.form-row{
+  display:flex;
+  justify-content:flex-end;
+  margin:-4px 0 19px;
+}
 
-    input:focus {
-      border-color: var(--navy-light);
-      box-shadow: 0 0 0 3px rgba(24, 57, 99, .10);
-    }
+a{color:var(--navy-light)}
 
-    .password-wrap { position: relative; }
+.text-link{
+  font-size:13px;
+  font-weight:bold;
+  text-decoration:none;
+}
 
-    .password-wrap input { padding-right: 76px; }
+.text-link:hover{text-decoration:underline}
 
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      color: var(--navy-light);
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 8px 2px;
-    }
+.primary-btn{
+  display:block;
+  width:100%;
+  padding:14px;
+  background:var(--navy);
+  color:white;
+  border:none;
+  border-radius:9px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:background .2s;
+}
 
-    .form-row {
-      display: flex;
-      justify-content: flex-end;
-      margin: -4px 0 19px;
-    }
+.primary-btn:hover{background:var(--navy-light)}
+.primary-btn:disabled{opacity:.65;cursor:not-allowed}
 
-    a { color: var(--navy-light); }
+.message{
+  display:none;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:16px;
+  font-size:13px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
 
-    .text-link {
-      font-size: 13px;
-      font-weight: bold;
-      text-decoration: none;
-    }
+.message.show{display:block}
+.message.error{background:#fef3f2;color:var(--danger)}
+.message.success{background:#ecfdf3;color:var(--success)}
 
-    .text-link:hover { text-decoration: underline; }
+.back-home{
+  text-align:center;
+  margin-top:22px;
+  font-size:14px;
+}
 
-    .primary-btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      background: var(--navy);
-      color: var(--white);
-      border: none;
-      border-radius: 9px;
-      font-size: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background .2s;
-    }
+.back-home a{text-decoration:none;font-weight:bold}
 
-    .primary-btn:hover { background: var(--navy-light); }
+.admin-link{
+  text-align:center;
+  margin-top:24px;
+  font-size:13px;
+  color:var(--muted);
+}
 
-    .primary-btn:disabled {
-      opacity: .65;
-      cursor: not-allowed;
-    }
+.admin-link a{
+  color:var(--navy);
+  font-weight:bold;
+  text-decoration:none;
+}
 
-    .message {
-      display: none;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 13px;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-    }
+footer{
+  text-align:center;
+  padding:19px 12px;
+  color:var(--muted);
+  font-size:12px;
+  border-top:1px solid var(--border);
+}
 
-    .message.show { display: block; }
-    .message.error { background: #fef3f2; color: var(--danger); }
-    .message.success { background: #ecfdf3; color: var(--success); }
-
-    .back-home {
-      text-align: center;
-      margin-top: 22px;
-      font-size: 14px;
-    }
-
-    .back-home a { text-decoration: none; font-weight: bold; }
-
-    .admin-link {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .admin-link a {
-      color: var(--navy);
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 19px 12px;
-      color: var(--muted);
-      font-size: 12px;
-      border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 400px) {
-      .card { padding: 23px 16px; }
-      .intro h1 { font-size: 23px; }
-      .brand { font-size: 20px; }
-    }
-  </style>
+@media(max-width:400px){
+  .card{padding:23px 16px}
+  .intro h1{font-size:23px}
+  .brand{font-size:20px}
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <a class="brand" href="index.html"
-       aria-label="Return to SAINTIG EXAMS public homepage">
-      SAINTIG <span>EXAMS</span>
-      <small>LEARN. PRACTICE. SUCCEED.</small>
-    </a>
-  </header>
 
-  <main>
-    <section class="card">
-      <div class="intro">
-        <h1 id="page-title">Welcome Back!</h1>
-        <p id="page-description">
-          Sign in to access your examinations, results and student dashboard.
-        </p>
+<header>
+  <a class="brand" href="index.html"
+     aria-label="Return to SAINTIG EXAMS public homepage">
+    SAINTIG <span>EXAMS</span>
+    <small>LEARN. PRACTICE. SUCCEED.</small>
+  </a>
+</header>
+
+<main>
+<section class="card">
+
+  <div class="intro">
+    <h1 id="page-title">Welcome Back!</h1>
+    <p id="page-description">
+      Sign in to access your examinations, results and student dashboard.
+    </p>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button type="button" class="tab active" id="login-tab"
+            aria-selected="true">Sign In</button>
+    <button type="button" class="tab" id="register-tab"
+            aria-selected="false">Create Account</button>
+  </div>
+
+  <div id="message" class="message" role="status"
+       aria-live="polite"></div>
+
+  <form id="login-form" class="form-panel">
+
+    <div class="field">
+      <label for="login-email">Email Address</label>
+      <input id="login-email" type="email" autocomplete="email"
+             placeholder="Enter your email address" required>
+    </div>
+
+    <div class="field">
+      <label for="login-password">Password</label>
+      <div class="password-wrap">
+        <input id="login-password" type="password"
+               autocomplete="current-password"
+               placeholder="Enter your password" required>
+        <button type="button" class="toggle-password"
+                data-target="login-password">Show</button>
       </div>
+    </div>
 
-      <div class="tabs" id="tabs">
-        <button type="button" class="tab active" id="login-tab"
-                aria-selected="true">Sign In</button>
-        <button type="button" class="tab" id="register-tab"
-                aria-selected="false">Create Account</button>
+    <div class="form-row">
+      <a href="#" id="forgot-link" class="text-link">
+        Forgot Password?
+      </a>
+    </div>
+
+    <button class="primary-btn" type="submit">Sign In</button>
+  </form>
+
+  <form id="register-form" class="form-panel" hidden>
+
+    <div class="field">
+      <label for="register-name">Full Name</label>
+      <input id="register-name" type="text" autocomplete="name"
+             placeholder="Enter your full name"
+             minlength="2" maxlength="100" required>
+    </div>
+
+    <div class="field">
+      <label for="register-email">Email Address</label>
+      <input id="register-email" type="email" autocomplete="email"
+             placeholder="Enter your email address" required>
+    </div>
+
+    <div class="field">
+      <label for="register-password">Create Password</label>
+      <div class="password-wrap">
+        <input id="register-password" type="password"
+               autocomplete="new-password" minlength="8"
+               placeholder="At least 8 characters" required>
+        <button type="button" class="toggle-password"
+                data-target="register-password">Show</button>
       </div>
+    </div>
 
-      <div id="message" class="message" role="status"
-           aria-live="polite"></div>
-
-      <form id="login-form" class="form-panel">
-        <div class="field">
-          <label for="login-email">Email Address</label>
-          <input id="login-email" type="email" autocomplete="email"
-                 placeholder="Enter your email address" required>
-        </div>
-
-        <div class="field">
-          <label for="login-password">Password</label>
-          <div class="password-wrap">
-            <input id="login-password" type="password"
-                   autocomplete="current-password"
-                   placeholder="Enter your password" required>
-            <button type="button" class="toggle-password"
-                    data-target="login-password">Show</button>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <a href="#" id="forgot-link" class="text-link">
-            Forgot Password?
-          </a>
-        </div>
-
-        <button class="primary-btn" type="submit">Sign In</button>
-      </form>
-
-      <form id="register-form" class="form-panel" hidden>
-        <div class="field">
-          <label for="register-name">Full Name</label>
-          <input id="register-name" type="text" autocomplete="name"
-                 placeholder="Enter your full name"
-                 minlength="2" maxlength="100" required>
-        </div>
-
-        <div class="field">
-          <label for="register-email">Email Address</label>
-          <input id="register-email" type="email" autocomplete="email"
-                 placeholder="Enter your email address" required>
-        </div>
-
-        <div class="field">
-          <label for="register-password">Create Password</label>
-          <div class="password-wrap">
-            <input id="register-password" type="password"
-                   autocomplete="new-password" minlength="8"
-                   placeholder="At least 8 characters" required>
-            <button type="button" class="toggle-password"
-                    data-target="register-password">Show</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="confirm-password">Confirm Password</label>
-          <div class="password-wrap">
-            <input id="confirm-password" type="password"
-                   autocomplete="new-password" minlength="8"
-                   placeholder="Enter your password again" required>
-            <button type="button" class="toggle-password"
-                    data-target="confirm-password">Show</button>
-          </div>
-        </div>
-
-        <button class="primary-btn" type="submit">Create Account</button>
-      </form>
-
-      <form id="reset-form" class="form-panel" hidden>
-        <div class="field">
-          <label for="reset-email">Registered Email Address</label>
-          <input id="reset-email" type="email" autocomplete="email"
-                 placeholder="Enter your registered email" required>
-        </div>
-
-        <p style="font-size:13px;color:#667085;line-height:1.6;margin-bottom:18px">
-          Request a password reset link using your registered email address.
-        </p>
-
-        <button class="primary-btn" type="submit">Send Reset Link</button>
-
-        <p style="text-align:center;margin-top:18px">
-          <a href="#" id="back-login" class="text-link">Back to Sign In</a>
-        </p>
-      </form>
-
-      <div class="back-home">
-        <a href="index.html">← Back to Public Homepage</a>
+    <div class="field">
+      <label for="confirm-password">Confirm Password</label>
+      <div class="password-wrap">
+        <input id="confirm-password" type="password"
+               autocomplete="new-password" minlength="8"
+               placeholder="Enter your password again" required>
+        <button type="button" class="toggle-password"
+                data-target="confirm-password">Show</button>
       </div>
+    </div>
 
-      <div class="admin-link">
-        Are you an administrator?
-        <a href="admin-login.html">Admin Sign In</a>
-      </div>
-    </section>
-  </main>
+    <button class="primary-btn" type="submit">Create Account</button>
+  </form>
 
-  <footer>
-    © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
-  </footer>
+  <form id="reset-form" class="form-panel" hidden>
 
-  <script type="module">
-    import {
-      supabase,
-      signInStudent,
-      registerStudent,
-      requestPasswordReset
-    } from "./auth.js";
+    <div class="field">
+      <label for="reset-email">Registered Email Address</label>
+      <input id="reset-email" type="email" autocomplete="email"
+             placeholder="Enter your registered email" required>
+    </div>
 
-    const loginTab = document.getElementById("login-tab");
-    const registerTab = document.getElementById("register-tab");
-    const tabs = document.getElementById("tabs");
+    <p style="font-size:13px;color:#667085;line-height:1.6;margin-bottom:18px">
+      Request a password reset link using your registered email address.
+    </p>
 
-    const loginForm = document.getElementById("login-form");
-    const registerForm = document.getElementById("register-form");
-    const resetForm = document.getElementById("reset-form");
+    <button class="primary-btn" type="submit">Send Reset Link</button>
 
-    const title = document.getElementById("page-title");
-    const description = document.getElementById("page-description");
-    const message = document.getElementById("message");
+    <p style="text-align:center;margin-top:18px">
+      <a href="#" id="back-login" class="text-link">Back to Sign In</a>
+    </p>
+  </form>
 
-    document.getElementById("year").textContent =
-      new Date().getFullYear();
+  <div class="back-home">
+    <a href="index.html">← Back to Public Homepage</a>
+  </div>
 
-    function showMessage(text, type) {
-      message.textContent = text;
-      message.className = "message show " + type;
-    }
+  <div class="admin-link">
+    Are you an administrator?
+    <a href="admin-login.html">Admin Sign In</a>
+  </div>
 
-    function clearMessage() {
-      message.textContent = "";
-      message.className = "message";
-    }
+</section>
+</main>
 
-    function setLoading(form, loading, label) {
-      const button = form.querySelector('button[type="submit"]');
+<footer>
+  © <span id="year"></span> SAINTIG EXAMS. Learn. Practice. Succeed.
+</footer>
 
-      if (!button.dataset.originalText) {
-        button.dataset.originalText = button.textContent;
-      }
+<script type="module">
+import {
+  supabase,
+  signInStudent,
+  registerStudent,
+  requestPasswordReset
+} from "./auth.js";
 
-      button.disabled = loading;
-      button.textContent = loading ? label : button.dataset.originalText;
-    }
+const loginTab=document.getElementById("login-tab");
+const registerTab=document.getElementById("register-tab");
+const tabs=document.getElementById("tabs");
 
-    function showLogin() {
-      clearMessage();
-      tabs.hidden = false;
-      loginForm.hidden = false;
-      registerForm.hidden = true;
-      resetForm.hidden = true;
+const loginForm=document.getElementById("login-form");
+const registerForm=document.getElementById("register-form");
+const resetForm=document.getElementById("reset-form");
 
-      loginTab.classList.add("active");
-      registerTab.classList.remove("active");
-      loginTab.setAttribute("aria-selected", "true");
-      registerTab.setAttribute("aria-selected", "false");
+const title=document.getElementById("page-title");
+const description=document.getElementById("page-description");
+const message=document.getElementById("message");
 
-      title.textContent = "Welcome Back!";
-      description.textContent =
-        "Sign in to access your examinations, results and student dashboard.";
-    }
+document.getElementById("year").textContent=new Date().getFullYear();
 
-    function showRegister() {
-      clearMessage();
-      tabs.hidden = false;
-      loginForm.hidden = true;
-      registerForm.hidden = false;
-      resetForm.hidden = true;
+function showMessage(text,type){
+  message.textContent=text;
+  message.className="message show "+type;
+}
 
-      loginTab.classList.remove("active");
-      registerTab.classList.add("active");
-      loginTab.setAttribute("aria-selected", "false");
-      registerTab.setAttribute("aria-selected", "true");
+function clearMessage(){
+  message.textContent="";
+  message.className="message";
+}
 
-      title.textContent = "Create Your Account";
-      description.textContent =
-        "Register to start your learning and examination journey.";
-    }
+function setLoading(form,loading,label){
+  const button=form.querySelector('button[type="submit"]');
 
-    function showReset() {
-      clearMessage();
-      tabs.hidden = true;
-      loginForm.hidden = true;
-      registerForm.hidden = true;
-      resetForm.hidden = false;
+  if(!button.dataset.originalText){
+    button.dataset.originalText=button.textContent;
+  }
 
-      title.textContent = "Reset Your Password";
-      description.textContent =
-        "Enter the email address linked to your student account.";
-    }
+  button.disabled=loading;
+  button.textContent=loading?label:button.dataset.originalText;
+}
 
-    loginTab.addEventListener("click", showLogin);
-    registerTab.addEventListener("click", showRegister);
+/*
+  ACCOUNT TYPE VERIFICATION
 
-    document.getElementById("forgot-link").addEventListener("click", event => {
-      event.preventDefault();
-      showReset();
-    });
+  Teacher/School accounts are recorded in school_accounts.
+  Student accounts must not have a Teacher/School record.
+*/
 
-    document.getElementById("back-login").addEventListener("click", event => {
-      event.preventDefault();
+async function verifyStudentAccount(user){
+
+  if(!user?.id){
+    throw new Error("Your account could not be verified. Please sign in again.");
+  }
+
+  // First, check whether this user is a Teacher/School account.
+  const {data:teacherAccount,error:teacherError}=
+    await supabase
+      .from("school_accounts")
+      .select("id")
+      .eq("user_id",user.id)
+      .maybeSingle();
+
+  if(teacherError){
+    console.error("Teacher/School account verification:",teacherError.message);
+    throw new Error("We could not verify your account type. Please try again.");
+  }
+
+  if(teacherAccount){
+    await supabase.auth.signOut();
+
+    throw new Error(
+      "This is a Teacher/School account. Please use the Teacher/School Sign In portal."
+    );
+  }
+
+  // Check the account type stored in the user's profile.
+  const {data:profile,error:profileError}=
+    await supabase
+      .from("profiles")
+      .select("account_type")
+      .eq("id",user.id)
+      .maybeSingle();
+
+  if(profileError){
+    console.error("Profile account verification:",profileError.message);
+    throw new Error("We could not verify your account type. Please try again.");
+  }
+
+  const accountType=String(profile?.account_type||"").toLowerCase();
+
+  if(accountType && accountType!=="student"){
+    await supabase.auth.signOut();
+
+    throw new Error(
+      "This account is not registered as a student account. Please use the correct login portal."
+    );
+  }
+
+  return true;
+}
+
+function showLogin(){
+  clearMessage();
+  tabs.hidden=false;
+  loginForm.hidden=false;
+  registerForm.hidden=true;
+  resetForm.hidden=true;
+
+  loginTab.classList.add("active");
+  registerTab.classList.remove("active");
+
+  loginTab.setAttribute("aria-selected","true");
+  registerTab.setAttribute("aria-selected","false");
+
+  title.textContent="Welcome Back!";
+  description.textContent=
+    "Sign in to access your examinations, results and student dashboard.";
+}
+
+function showRegister(){
+  clearMessage();
+  tabs.hidden=false;
+  loginForm.hidden=true;
+  registerForm.hidden=false;
+  resetForm.hidden=true;
+
+  loginTab.classList.remove("active");
+  registerTab.classList.add("active");
+
+  loginTab.setAttribute("aria-selected","false");
+  registerTab.setAttribute("aria-selected","true");
+
+  title.textContent="Create Your Account";
+  description.textContent=
+    "Register to start your learning and examination journey.";
+}
+
+function showReset(){
+  clearMessage();
+  tabs.hidden=true;
+  loginForm.hidden=true;
+  registerForm.hidden=true;
+  resetForm.hidden=false;
+
+  title.textContent="Reset Your Password";
+  description.textContent=
+    "Enter the email address linked to your student account.";
+}
+
+loginTab.addEventListener("click",showLogin);
+registerTab.addEventListener("click",showRegister);
+
+document.getElementById("forgot-link").addEventListener("click",event=>{
+  event.preventDefault();
+  showReset();
+});
+
+document.getElementById("back-login").addEventListener("click",event=>{
+  event.preventDefault();
+  showLogin();
+});
+
+document.querySelectorAll(".toggle-password").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const input=document.getElementById(button.dataset.target);
+    const reveal=input.type==="password";
+
+    input.type=reveal?"text":"password";
+    button.textContent=reveal?"Hide":"Show";
+    button.setAttribute("aria-pressed",String(reveal));
+  });
+});
+
+/* STUDENT REGISTRATION */
+
+registerForm.addEventListener("submit",async event=>{
+  event.preventDefault();
+  clearMessage();
+
+  const name=document.getElementById("register-name").value.trim();
+  const email=document.getElementById("register-email").value.trim();
+  const password=document.getElementById("register-password").value;
+  const confirmation=document.getElementById("confirm-password").value;
+
+  if(name.length<2){
+    showMessage("Please enter your full name.","error");
+    return;
+  }
+
+  if(password!==confirmation){
+    showMessage("Your passwords do not match. Please check and try again.","error");
+    return;
+  }
+
+  setLoading(registerForm,true,"Creating Account...");
+
+  try{
+    const {data,error}=await registerStudent(email,password,name);
+
+    if(error)throw error;
+
+    if(data.session){
+
+      await verifyStudentAccount(data.session.user);
+
+      showMessage(
+        "Your student account was created successfully. Opening your dashboard...",
+        "success"
+      );
+
+      window.location.replace("dashboard.html");
+
+    }else{
+
       showLogin();
-    });
 
-    document.querySelectorAll(".toggle-password").forEach(button => {
-      button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.target);
-        const reveal = input.type === "password";
-
-        input.type = reveal ? "text" : "password";
-        button.textContent = reveal ? "Hide" : "Show";
-        button.setAttribute("aria-pressed", String(reveal));
-        button.setAttribute(
-          "aria-label",
-          (reveal ? "Hide" : "Show") + " password"
-        );
-      });
-    });
-
-    // Register a student and save the full name during sign-up.
-    registerForm.addEventListener("submit", async event => {
-      event.preventDefault();
-      clearMessage();
-
-      const name = document.getElementById("register-name").value.trim();
-      const email = document.getElementById("register-email").value.trim();
-      const password = document.getElementById("register-password").value;
-      const confirmation = document.getElementById("confirm-password").value;
-
-      if (name.length < 2) {
-        showMessage("Please enter your full name.", "error");
-        return;
-      }
-
-      if (password !== confirmation) {
-        showMessage(
-          "Your passwords do not match. Please check and try again.",
-          "error"
-        );
-        return;
-      }
-
-      setLoading(registerForm, true, "Creating Account...");
-
-      try {
-        const { data, error } = await registerStudent(
-          email,
-          password,
-          name
-        );
-
-        if (error) throw error;
-
-        if (data.session) {
-          showMessage(
-            "Your account was created successfully. Opening your dashboard...",
-            "success"
-          );
-
-          window.location.replace("dashboard.html");
-        } else {
-          showLogin();
-
-          showMessage(
-            "Registration received. Check your email for the confirmation link. After confirming, sign in with your email and password.",
-            "success"
-          );
-        }
-      } catch (error) {
-        showMessage(
-          error.message || "We could not create your account. Please try again.",
-          "error"
-        );
-      } finally {
-        setLoading(registerForm, false);
-      }
-    });
-
-    // Sign in an existing student.
-    loginForm.addEventListener("submit", async event => {
-      event.preventDefault();
-      clearMessage();
-
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value;
-
-      setLoading(loginForm, true, "Signing In...");
-
-      try {
-        const { data, error } = await signInStudent(email, password);
-
-        if (error) throw error;
-
-        if (!data.session) {
-          throw new Error("Sign-in was not completed. Please try again.");
-        }
-
-        showMessage(
-          "Sign-in successful. Opening your dashboard...",
-          "success"
-        );
-
-        window.location.replace("dashboard.html");
-      } catch (error) {
-        showMessage(
-          error.message || "Sign-in failed. Check your details and try again.",
-          "error"
-        );
-      } finally {
-        setLoading(loginForm, false);
-      }
-    });
-
-    // Request a password reset.
-    resetForm.addEventListener("submit", async event => {
-      event.preventDefault();
-      clearMessage();
-
-      const email = document.getElementById("reset-email").value.trim();
-
-      setLoading(resetForm, true, "Sending Link...");
-
-      try {
-        const { error } = await requestPasswordReset(email);
-
-        if (error) throw error;
-
-        showMessage(
-          "If the address is registered, a password reset email will be sent. Check your inbox and spam folder.",
-          "success"
-        );
-      } catch (error) {
-        showMessage(
-          error.message || "We could not request a reset link. Please try again.",
-          "error"
-        );
-      } finally {
-        setLoading(resetForm, false);
-      }
-    });
-
-    // Redirect an already signed-in user to the dashboard,
-    // except when opening the password-reset screen.
-    try {
-      const { data, error } = await supabase.auth.getSession();
-
-      if (error) throw error;
-
-      const mode = new URLSearchParams(window.location.search).get("mode");
-
-      if (data.session && mode !== "reset") {
-        window.location.replace("dashboard.html");
-      }
-    } catch (error) {
-      console.error("Session check failed:", error.message);
+      showMessage(
+        "Registration received. Check your email for the confirmation link. After confirming, sign in with your email and password.",
+        "success"
+      );
     }
 
-    const mode = new URLSearchParams(window.location.search).get("mode");
+  }catch(error){
 
-    if (mode === "register") {
-      showRegister();
-    } else if (mode === "reset") {
-      showReset();
-    } else {
-      showLogin();
+    showMessage(
+      error.message||"We could not create your account. Please try again.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(registerForm,false);
+  }
+});
+
+/* STUDENT SIGN IN */
+
+loginForm.addEventListener("submit",async event=>{
+  event.preventDefault();
+  clearMessage();
+
+  const email=document.getElementById("login-email").value.trim();
+  const password=document.getElementById("login-password").value;
+
+  setLoading(loginForm,true,"Verifying Account...");
+
+  try{
+
+    const {data,error}=await signInStudent(email,password);
+
+    if(error)throw error;
+
+    if(!data.session){
+      throw new Error("Sign-in was not completed. Please try again.");
     }
-  </script>
+
+    // IMPORTANT: verify account type before opening student dashboard.
+    await verifyStudentAccount(data.session.user);
+
+    showMessage(
+      "Student account verified. Opening your dashboard...",
+      "success"
+    );
+
+    window.location.replace("dashboard.html");
+
+  }catch(error){
+
+    showMessage(
+      error.message||"Sign-in failed. Check your details and try again.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(loginForm,false);
+  }
+});
+
+/* PASSWORD RESET REQUEST */
+
+resetForm.addEventListener("submit",async event=>{
+  event.preventDefault();
+  clearMessage();
+
+  const email=document.getElementById("reset-email").value.trim();
+
+  setLoading(resetForm,true,"Sending Link...");
+
+  try{
+
+    const {error}=await requestPasswordReset(email);
+
+    if(error)throw error;
+
+    showMessage(
+      "If the address is registered, a password reset email will be sent. Check your inbox and spam folder.",
+      "success"
+    );
+
+  }catch(error){
+
+    showMessage(
+      error.message||"We could not request a reset link. Please try again.",
+      "error"
+    );
+
+  }finally{
+
+    setLoading(resetForm,false);
+  }
+});
+
+/*
+  CHECK EXISTING SESSION
+
+  A signed-in Teacher/School account must not be redirected
+  straight into the student dashboard.
+*/
+
+async function checkExistingSession(){
+
+  const mode=new URLSearchParams(window.location.search).get("mode");
+
+  if(mode==="reset"){
+    showReset();
+    return;
+  }
+
+  try{
+
+    const {data,error}=await supabase.auth.getSession();
+
+    if(error)throw error;
+
+    if(data.session){
+
+      await verifyStudentAccount(data.session.user);
+
+      window.location.replace("dashboard.html");
+      return;
+    }
+
+  }catch(error){
+
+    console.error("Session/account verification:",error.message);
+
+    showLogin();
+    showMessage(error.message,"error");
+    return;
+  }
+
+  if(mode==="register"){
+    showRegister();
+  }else{
+    showLogin();
+  }
+}
+
+checkExistingSession();
+
+</script>
 </body>
 </html>
