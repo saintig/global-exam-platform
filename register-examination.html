@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -317,6 +316,11 @@ question_text, option_a, option_b, option_c, option_d, correct_option, explanati
 No new questions have been added yet.
 </div>
 
+<!-- NEW: MINIMUM QUESTION COUNTER -->
+<div class="info-box" id="minimumQuestionStatus">
+Select an examination to check its minimum question requirement.
+</div>
+
 <div class="button-row">
 <button class="btn btn-primary" type="button" id="saveQuestionsBtn" disabled>Save to Questions Bank</button>
 <button class="btn btn-gold" type="button" id="savePublishBtn" disabled>Save and Publish Immediately</button>
@@ -348,6 +352,10 @@ let currentExam = null;
 let examinations = [];
 let subjects = [];
 let pendingQuestions = [];
+
+/* NEW: null means saved question count has not yet been checked. */
+let savedEligibleQuestionCount = null;
+
 let isPublished = false;
 let isProcessing = false;
 
@@ -512,6 +520,9 @@ function populateExamForm(exam){
 
   updateTotalMarks();
   updateQuestionMarksDefault();
+
+  // NEW: refresh the counter using this examination's required count.
+  updateMinimumQuestionCounter();
 }
 
 function displayExamCode(code){
@@ -558,6 +569,64 @@ function updatePendingInfo(){
   }
 
   updateActionButtons();
+
+  // NEW: update the minimum question counter whenever pending questions change.
+  updateMinimumQuestionCounter();
+}
+
+/*
+  NEW FEATURE:
+  Count saved eligible questions plus newly added questions
+  that are waiting to be saved.
+*/
+function updateMinimumQuestionCounter(){
+  const counter=$("minimumQuestionStatus");
+  const required=Number($("questionCount").value)||0;
+
+  if(!currentExam?.id){
+    counter.textContent=
+      "Select an examination to check its minimum question requirement.";
+    counter.className="info-box";
+    return;
+  }
+
+  if(!Number.isSafeInteger(required)||required<1){
+    counter.textContent=
+      "Enter a valid number of questions students will answer.";
+    counter.className="info-box";
+    return;
+  }
+
+  if(savedEligibleQuestionCount===null){
+    counter.textContent=
+      "Checking the saved questions for this examination...";
+    counter.className="info-box";
+    return;
+  }
+
+  const pendingCount=pendingQuestions.length;
+  const totalAvailable=savedEligibleQuestionCount+pendingCount;
+  const remaining=Math.max(0,required-totalAvailable);
+
+  if(remaining>0){
+    counter.textContent=
+      "Minimum questions still needed: "+remaining+
+      ". Available: "+totalAvailable+
+      " (Saved: "+savedEligibleQuestionCount+
+      ", Not yet saved: "+pendingCount+
+      "). Required: "+required+".";
+
+    counter.className="info-box";
+  }else{
+    counter.textContent=
+      "Minimum question requirement met. "+
+      totalAvailable+" eligible question(s) available "+
+      "(Saved: "+savedEligibleQuestionCount+
+      ", Not yet saved: "+pendingCount+
+      "). Students will answer "+required+" questions.";
+
+    counter.className="status show success";
+  }
 }
 
 function updateActionButtons(){
@@ -576,8 +645,11 @@ async function activateExamination(exam){
   isPublished=Boolean(exam.is_published);
 
   pendingQuestions=[];
-  updatePendingInfo();
 
+  // Reset the count while the selected examination is being checked.
+  savedEligibleQuestionCount=null;
+
+  updatePendingInfo();
   populateExamForm(exam);
 
   $("saveDraftBtn").textContent=isPublished?
@@ -597,6 +669,28 @@ async function activateExamination(exam){
     (exam.examination_code?" | Examination ID: "+exam.examination_code:""),
     "info"
   );
+
+  // NEW: retrieve the saved eligible question count for this examination.
+  try{
+    const savedQuestions=await getSavedQuestions();
+
+    // Ensure the result still belongs to the currently selected examination.
+    if(String(currentExam?.id)===String(exam.id)){
+      savedEligibleQuestionCount=countEligibleQuestions(savedQuestions);
+      updateMinimumQuestionCounter();
+    }
+  }catch(error){
+    if(String(currentExam?.id)===String(exam.id)){
+      savedEligibleQuestionCount=null;
+
+      $("minimumQuestionStatus").textContent=
+        "Unable to check the saved questions. Please refresh or try selecting this examination again.";
+
+      $("minimumQuestionStatus").className="info-box";
+    }
+
+    console.error("Unable to load saved examination questions:",error);
+  }
 }
 
 async function loadExaminations(preferredId){
@@ -616,6 +710,7 @@ async function loadExaminations(preferredId){
     currentExam=null;
     isPublished=false;
     pendingQuestions=[];
+    savedEligibleQuestionCount=null;
     updatePendingInfo();
 
     select.innerHTML='<option value="">No registered examinations found</option>';
@@ -641,6 +736,7 @@ async function loadExaminations(preferredId){
     currentExam=null;
     isPublished=false;
     pendingQuestions=[];
+    savedEligibleQuestionCount=null;
     updatePendingInfo();
 
     showStatus(
@@ -1109,6 +1205,10 @@ async function savePendingQuestions(){
 
   const existingQuestions=await getSavedQuestions();
 
+  // NEW: refresh the saved question count before adding new questions.
+  savedEligibleQuestionCount=countEligibleQuestions(existingQuestions);
+  updateMinimumQuestionCounter();
+
   const highestOrder=Math.max(
     0,
     ...existingQuestions.map(getSavedQuestionOrder)
@@ -1128,6 +1228,14 @@ async function savePendingQuestions(){
 
   // Clear only after the server confirms the save.
   pendingQuestions=[];
+
+  /*
+    NEW: count the successfully saved questions immediately.
+    This keeps the counter accurate without requiring another
+    request just to update the display.
+  */
+  savedEligibleQuestionCount+=count;
+
   updatePendingInfo();
 
   return count;
@@ -1227,6 +1335,10 @@ async function saveAndPublishImmediately(){
     const savedQuestions=await getSavedQuestions();
     const eligible=countEligibleQuestions(savedQuestions);
     const required=Number(currentExam.student_question_count);
+
+    // NEW: keep the counter synchronized with the actual saved question bank.
+    savedEligibleQuestionCount=eligible;
+    updateMinimumQuestionCounter();
 
     if(eligible<required){
       showStatus(
@@ -1352,7 +1464,15 @@ $("shareCodeBtn").addEventListener("click",async()=>{
 // FORM CONTROLS
 $("examForm").addEventListener("submit",saveDraft);
 
-$("questionCount").addEventListener("input",updateTotalMarks);
+/*
+  NEW: changing the required student question count
+  immediately recalculates the minimum question counter.
+*/
+$("questionCount").addEventListener("input",()=>{
+  updateTotalMarks();
+  updateMinimumQuestionCounter();
+});
+
 $("marksPerQuestion").addEventListener("input",()=>{
   updateTotalMarks();
   updateQuestionMarksDefault();
@@ -1388,6 +1508,7 @@ async function initializePage(){
     updateTotalMarks();
     updateQuestionMarksDefault();
     updatePendingInfo();
+    updateMinimumQuestionCounter();
 
     await loadSubjects();
     await loadExaminations();
