@@ -1,1 +1,1007 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Students | SAINTIG EXAMS</title>
+
+<style>
+:root {
+  --navy: #102746;
+  --navy2: #193b63;
+  --gold: #d4af37;
+  --bg: #f4f6fa;
+  --white: #ffffff;
+  --text: #253247;
+  --muted: #748094;
+  --border: #e1e6ee;
+  --green: #16834b;
+  --red: #c0392b;
+  --orange: #bd7610;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  background: var(--navy);
+  color: white;
+  padding: 17px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+header h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+header small {
+  color: #e4c96f;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 22px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.page-heading h1 {
+  margin: 0 0 5px;
+  font-size: 25px;
+  color: var(--navy);
+}
+
+.page-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+button {
+  border: none;
+  border-radius: 6px;
+  padding: 11px 15px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.primary {
+  background: var(--navy);
+  color: white;
+}
+
+.gold {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.secondary {
+  background: #e9edf3;
+  color: var(--navy);
+}
+
+.success {
+  background: #e0f3e8;
+  color: var(--green);
+}
+
+.danger {
+  background: #fde8e6;
+  color: var(--red);
+}
+
+.warning {
+  background: #fff2d8;
+  color: var(--orange);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: white;
+  padding: 19px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.stat-card small {
+  color: var(--muted);
+  display: block;
+  margin-bottom: 9px;
+}
+
+.stat-card strong {
+  font-size: 26px;
+  color: var(--navy);
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+
+.panel-heading {
+  padding: 17px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.panel-heading h3 {
+  margin: 0;
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.panel-body {
+  padding: 17px;
+}
+
+.search {
+  width: 100%;
+  max-width: 380px;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  font-size: 13px;
+}
+
+.search:focus, input:focus, textarea:focus {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 750px;
+}
+
+th, td {
+  padding: 13px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+th {
+  background: #f7f8fb;
+  color: var(--navy);
+  font-size: 12px;
+}
+
+td .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.actions button {
+  padding: 7px 9px;
+  font-size: 11px;
+}
+
+.student-id {
+  font-weight: bold;
+  color: var(--navy2);
+  white-space: nowrap;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.status.active {
+  background: #e0f3e8;
+  color: var(--green);
+}
+
+.status.inactive {
+  background: #fff2d8;
+  color: var(--orange);
+}
+
+.status.archived {
+  background: #e9edf3;
+  color: #596579;
+}
+
+.empty {
+  text-align: center;
+  padding: 30px 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.hidden { display: none !important; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 22, 40, .65);
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.modal.show { display: flex; }
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  padding: 22px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--navy);
+}
+
+.close {
+  background: transparent;
+  font-size: 23px;
+  padding: 0 5px;
+}
+
+.form-group { margin-bottom: 16px; }
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-buttons button { flex: 1; }
+
+.info-box {
+  background: #f4f7fb;
+  padding: 12px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.history-item {
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 10px;
+}
+
+.history-item strong {
+  color: var(--navy);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.history-item small {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+#message {
+  display: none;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+#message.show { display: block; }
+#message.error { background: #fde8e6; color: var(--red); }
+#message.success-message { background: #e0f3e8; color: var(--green); }
+
+.loading {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+}
+
+@media(max-width:650px) {
+  .container { padding: 14px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat-card:last-child { grid-column: span 2; }
+  .page-heading h1 { font-size: 22px; }
+  header { padding: 15px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h2>SAINTIG EXAMS</h2>
+    <small>School Management</small>
+  </div>
+  <button class="secondary" onclick="location.href='dashboard.html'">
+    Dashboard
+  </button>
+</header>
+
+<main class="container">
+
+  <div class="page-heading">
+    <div>
+      <h1>My Students</h1>
+      <p>Register and manage your students.</p>
+    </div>
+
+    <button class="gold" id="addStudentBtn">
+      + Add Student
+    </button>
+  </div>
+
+  <div id="message"></div>
+
+  <section class="stats">
+    <div class="stat-card">
+      <small>Active Students</small>
+      <strong id="activeCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <small>Archived Students</small>
+      <strong id="archivedCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <small>Active Student Capacity</small>
+      <strong id="capacityCount">0 / 0</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h3>Student Management</h3>
+      <input
+        type="search"
+        class="search"
+        id="activeSearch"
+        placeholder="Search by student name or Student ID"
+      >
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Registration Date</th>
+            <th>Account / Participation Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="activeStudentsBody">
+          <tr><td colspan="5" class="loading">Loading students...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-heading">
+      <h3>Archived Students</h3>
+      <input
+        type="search"
+        class="search"
+        id="archivedSearch"
+        placeholder="Search archived students"
+      >
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Date Archived</th>
+            <th>Previous Examination History</th>
+            <th>Previous Results</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="archivedStudentsBody">
+          <tr><td colspan="6" class="loading">Loading archived students...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<!-- ADD / EDIT STUDENT MODAL -->
+<div class="modal" id="studentModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="studentModalTitle">Add Student</h3>
+      <button class="close" id="closeStudentModal">&times;</button>
+    </div>
+
+    <form id="studentForm">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          maxlength="200"
+          placeholder="Enter student's full name"
+          required
+        >
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="primary" id="saveStudentBtn">
+          Save Student
+        </button>
+        <button type="button" class="secondary" id="cancelStudentBtn">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- STUDENT DETAILS MODAL -->
+<div class="modal" id="detailsModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Student Details</h3>
+      <button class="close" id="closeDetailsModal">&times;</button>
+    </div>
+
+    <div id="studentDetailsContent"></div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const FUNCTION_NAME = "school-exam-management";
+
+let students = [];
+let packageInfo = {};
+let editingStudentId = null;
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function showMessage(message, type = "success-message") {
+  const box = $("message");
+  box.textContent = message;
+  box.className = "show " + type;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => box.classList.remove("show"), 5000);
+}
+
+async function callExamFunction(body) {
+  const session = await getCurrentSession();
+
+  if (!session?.access_token) {
+    throw new Error("Please sign in again.");
+  }
+
+  const { data, error } = await supabase.functions.invoke(
+    FUNCTION_NAME,
+    { body }
+  );
+
+  if (error) {
+    let message = error.message || "Unable to complete the request.";
+
+    try {
+      const context = error.context;
+      if (context && typeof context.json === "function") {
+        const result = await context.json();
+        if (result?.error) message = result.error;
+      }
+    } catch (_) {}
+
+    throw new Error(message);
+  }
+
+  if (data?.error) throw new Error(data.error);
+
+  return data;
+}
+
+function formatDate(value) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return date.toLocaleDateString();
+}
+
+function openModal(id) {
+  $(id).classList.add("show");
+}
+
+function closeModal(id) {
+  $(id).classList.remove("show");
+}
+
+function setBusy(value) {
+  busy = value;
+  $("saveStudentBtn").disabled = value;
+  $("addStudentBtn").disabled = value;
+}
+
+function getFilteredStudents(archived) {
+  const search = $(
+    archived ? "archivedSearch" : "activeSearch"
+  ).value.trim().toLowerCase();
+
+  return students.filter(student => {
+    if (Boolean(student.is_archived) !== archived) return false;
+
+    return (
+      String(student.full_name || "").toLowerCase().includes(search) ||
+      String(student.student_id || "").toLowerCase().includes(search)
+    );
+  });
+}
+
+function renderStudents() {
+  const active = students.filter(s => !s.is_archived);
+  const archived = students.filter(s => s.is_archived);
+
+  $("activeCount").textContent =
+    active.filter(s => s.is_active).length;
+
+  $("archivedCount").textContent = archived.length;
+
+  const limit = Number(packageInfo.max_active_students || 1);
+  $("capacityCount").textContent =
+    `${active.filter(s => s.is_active).length} / ${limit}`;
+
+  renderActiveTable(getFilteredStudents(false));
+  renderArchivedTable(getFilteredStudents(true));
+}
+
+function renderActiveTable(list) {
+  const body = $("activeStudentsBody");
+
+  if (!list.length) {
+    body.innerHTML = `
+      <tr><td colspan="5" class="empty">
+        No students found.
+      </td></tr>`;
+    return;
+  }
+
+  body.innerHTML = list.map(student => {
+    const status = student.is_active
+      ? '<span class="status active">Active</span>'
+      : '<span class="status inactive">Deactivated</span>';
+
+    return `
+      <tr>
+        <td class="student-id">${escapeHTML(student.student_id)}</td>
+        <td>${escapeHTML(student.full_name)}</td>
+        <td>${formatDate(student.created_at)}</td>
+        <td>${status}</td>
+        <td>
+          <div class="actions">
+            <button class="secondary" data-action="view"
+              data-id="${student.id}">View</button>
+
+            <button class="secondary" data-action="edit"
+              data-id="${student.id}">Edit</button>
+
+            ${
+              student.is_active
+              ? `<button class="warning" data-action="deactivate"
+                  data-id="${student.id}">Deactivate</button>`
+              : `<button class="success" data-action="activate"
+                  data-id="${student.id}">Activate</button>`
+            }
+
+            <button class="secondary" data-action="archive"
+              data-id="${student.id}">Archive</button>
+
+            <button class="danger" data-action="delete"
+              data-id="${student.id}">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function renderArchivedTable(list) {
+  const body = $("archivedStudentsBody");
+
+  if (!list.length) {
+    body.innerHTML = `
+      <tr><td colspan="6" class="empty">
+        No archived students found.
+      </td></tr>`;
+    return;
+  }
+
+  body.innerHTML = list.map(student => `
+    <tr>
+      <td class="student-id">${escapeHTML(student.student_id)}</td>
+      <td>${escapeHTML(student.full_name)}</td>
+      <td>${formatDate(student.archived_at)}</td>
+      <td>${Number(student.attempt_count || 0)} examination(s)</td>
+      <td>${Number(student.result_count || 0)} result(s)</td>
+      <td>
+        <div class="actions">
+          <button class="secondary" data-action="view"
+            data-id="${student.id}">View</button>
+
+          <button class="success" data-action="restore"
+            data-id="${student.id}">Restore</button>
+
+          <button class="danger" data-action="delete"
+            data-id="${student.id}">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join("");
+}
+
+async function loadStudents() {
+  try {
+    $("activeStudentsBody").innerHTML =
+      '<tr><td colspan="5" class="loading">Loading students...</td></tr>';
+
+    $("archivedStudentsBody").innerHTML =
+      '<tr><td colspan="6" class="loading">Loading archived students...</td></tr>';
+
+    const result = await callExamFunction({
+      action: "list_students",
+      include_archived: true
+    });
+
+    students = result.students || [];
+    packageInfo = result.package || {};
+
+    renderStudents();
+
+  } catch (error) {
+    $("activeStudentsBody").innerHTML =
+      `<tr><td colspan="5" class="empty">${escapeHTML(error.message)}</td></tr>`;
+
+    $("archivedStudentsBody").innerHTML =
+      '<tr><td colspan="6" class="empty">Unable to load archived students.</td></tr>';
+
+    showMessage(error.message, "error");
+  }
+}
+
+function openAddForm() {
+  editingStudentId = null;
+  $("studentModalTitle").textContent = "Add Student";
+  $("saveStudentBtn").textContent = "Save Student";
+  $("studentForm").reset();
+  openModal("studentModal");
+}
+
+function openEditForm(student) {
+  editingStudentId = student.id;
+  $("studentModalTitle").textContent = "Edit Student";
+  $("saveStudentBtn").textContent = "Update Student";
+  $("fullName").value = student.full_name || "";
+  openModal("studentModal");
+}
+
+async function saveStudent(event) {
+  event.preventDefault();
+
+  if (busy) return;
+
+  const fullName = $("fullName").value.trim();
+
+  if (!fullName) {
+    showMessage("Enter the student's full name.", "error");
+    return;
+  }
+
+  if (fullName.length > 200) {
+    showMessage("Student name must not exceed 200 characters.", "error");
+    return;
+  }
+
+  setBusy(true);
+
+  try {
+    if (editingStudentId) {
+      await callExamFunction({
+        action: "update_student",
+        student_db_id: editingStudentId,
+        full_name: fullName
+      });
+
+      showMessage("Student details updated successfully.");
+
+    } else {
+      const result = await callExamFunction({
+        action: "add_student",
+        full_name: fullName
+      });
+
+      showMessage(
+        `Student registered successfully. Student ID: ${result.student?.student_id || "Generated"}`
+      );
+    }
+
+    closeModal("studentModal");
+    await loadStudents();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function studentAction(action, id) {
+  const student = students.find(s => String(s.id) === String(id));
+
+  if (!student) {
+    showMessage("Student record not found.", "error");
+    return;
+  }
+
+  if (action === "view") {
+    await viewStudent(student);
+    return;
+  }
+
+  if (action === "edit") {
+    openEditForm(student);
+    return;
+  }
+
+  let confirmed = false;
+
+  if (action === "activate") {
+    confirmed = confirm(`Activate ${student.full_name}? This will allow the student to take examinations.`);
+  }
+
+  if (action === "deactivate") {
+    confirmed = confirm(`Deactivate ${student.full_name}? The student will not be allowed to take examinations.`);
+  }
+
+  if (action === "archive") {
+    confirmed = confirm(`Archive ${student.full_name}? Their examination history will be preserved.`);
+  }
+
+  if (action === "restore") {
+    confirmed = confirm(`Restore ${student.full_name}? Their original Student ID will be retained.`);
+  }
+
+  if (action === "delete") {
+    confirmed = confirm(
+      `Request permanent deletion of ${student.full_name}? The server will refuse deletion if protected examination history exists.`
+    );
+  }
+
+  if (!confirmed) return;
+
+  try {
+    let result;
+
+    if (action === "activate" || action === "deactivate") {
+      result = await callExamFunction({
+        action: "set_student_status",
+        student_db_id: id,
+        is_active: action === "activate"
+      });
+    } else {
+      result = await callExamFunction({
+        action: action + "_student",
+        student_db_id: id
+      });
+    }
+
+    showMessage(result.message || "Student record updated successfully.");
+    await loadStudents();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+async function viewStudent(student) {
+  openModal("detailsModal");
+
+  $("studentDetailsContent").innerHTML =
+    '<div class="loading">Loading student details...</div>';
+
+  try {
+    const result = await callExamFunction({
+      action: "student_details",
+      student_db_id: student.id
+    });
+
+    const details = result.student || student;
+    const attempts = result.attempts || [];
+
+    $("studentDetailsContent").innerHTML = `
+      <div class="info-box">
+        <strong>Student ID:</strong> ${escapeHTML(details.student_id)}<br>
+        <strong>Full Name:</strong> ${escapeHTML(details.full_name)}<br>
+        <strong>Registration Date:</strong> ${formatDate(details.created_at)}<br>
+        <strong>Status:</strong> ${details.is_archived ? "Archived" : details.is_active ? "Active" : "Deactivated"}
+      </div>
+
+      <h4>Previous Examination History and Results</h4>
+
+      ${
+        attempts.length
+        ? attempts.map(attempt => `
+          <div class="history-item">
+            <strong>${escapeHTML(attempt.examination_title || "Examination")}</strong>
+            <small>
+              Examination ID: ${escapeHTML(attempt.examination_code || attempt.examination_id)}<br>
+              Date: ${formatDate(attempt.started_at)}<br>
+              Status: ${escapeHTML(attempt.status || "—")}<br>
+              Score: ${attempt.score === null || attempt.score === undefined ? "Not available" : escapeHTML(attempt.score)}<br>
+              Total Marks: ${attempt.total_marks === null || attempt.total_marks === undefined ? "Not available" : escapeHTML(attempt.total_marks)}
+            </small>
+          </div>
+        `).join("")
+        : '<div class="empty">No examination history is available.</div>'
+      }
+    `;
+
+  } catch (error) {
+    $("studentDetailsContent").innerHTML =
+      `<div class="empty">${escapeHTML(error.message)}</div>`;
+  }
+}
+
+$("addStudentBtn").addEventListener("click", openAddForm);
+$("studentForm").addEventListener("submit", saveStudent);
+
+$("closeStudentModal").addEventListener("click", () => closeModal("studentModal"));
+$("cancelStudentBtn").addEventListener("click", () => closeModal("studentModal"));
+$("closeDetailsModal").addEventListener("click", () => closeModal("detailsModal"));
+
+$("activeSearch").addEventListener("input", renderStudents);
+$("archivedSearch").addEventListener("input", renderStudents);
+
+$("activeStudentsBody").addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  studentAction(button.dataset.action, button.dataset.id);
+});
+
+$("archivedStudentsBody").addEventListener("click", event => {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  studentAction(button.dataset.action, button.dataset.id);
+});
+
+document.querySelectorAll(".modal").forEach(modal => {
+  modal.addEventListener("click", event => {
+    if (event.target === modal) modal.classList.remove("show");
+  });
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closeModal("studentModal");
+    closeModal("detailsModal");
+  }
+});
+
+async function initialize() {
+  try {
+    const session = await getCurrentSession();
+
+    if (!session?.access_token) {
+      location.href = "school-login.html";
+      return;
+    }
+
+    await loadStudents();
+
+  } catch (error) {
+    showMessage(error.message || "Unable to initialize the students page.", "error");
+  }
+}
+
+initialize();
+</script>
+
+</body>
+</html>
