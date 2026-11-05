@@ -1130,21 +1130,18 @@
   }
 
   function getExamObject(data) {
-    if (data?.exam && typeof data.exam === "object") {
-      return data.exam;
-    }
-
-    if (data?.data?.exam && typeof data.data.exam === "object") {
-      return data.data.exam;
-    }
-
-    if (data?.data && typeof data.data === "object" &&
-        !Array.isArray(data.data)) {
-      return data.data;
-    }
-
-    return data;
+  if (!data || typeof data !== "object") {
+    return null;
   }
+
+  return (
+    data.examination ||
+    data.exam ||
+    data.data?.examination ||
+    data.data?.exam ||
+    (data.id ? data : null)
+  );
+}
 
   function getQuestionArray(data) {
     return getArray(data, "questions", "exam_questions", "items");
