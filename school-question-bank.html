@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -668,11 +667,6 @@ async function callExamFunction(body) {
     let message = error.message ||
       "Unable to communicate with the server.";
 
-    /*
-    Try to read the actual server error when Supabase
-    returns a non-2xx Edge Function response.
-    */
-
     try {
       if (
         error.context &&
@@ -867,11 +861,6 @@ async function loadQuestions(examinationId) {
 
 async function refreshQuestionBank() {
 
-  /*
-  Clear the old question cache so the page retrieves
-  the latest examination and question information.
-  */
-
   examinationQuestions.clear();
 
   const result = await callExamFunction({
@@ -1009,6 +998,62 @@ function askOptionalText(label, currentValue) {
   return result || null;
 }
 
+/*
+Convert a stored date into the format accepted by
+a datetime-local input/prompt.
+*/
+
+function toDateTimeLocal(value) {
+
+  if (!value) return "";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  const pad = number =>
+    String(number).padStart(2, "0");
+
+  return (
+    date.getFullYear() + "-" +
+    pad(date.getMonth() + 1) + "-" +
+    pad(date.getDate()) + "T" +
+    pad(date.getHours()) + ":" +
+    pad(date.getMinutes())
+  );
+}
+
+/*
+Ask for a date and time.
+Leaving the field blank means no date/time restriction.
+*/
+
+function askDateTime(label, currentValue) {
+
+  const value = askText(
+    label +
+    "\n\nUse this format: YYYY-MM-DDTHH:mm\n" +
+    "Leave blank if no date/time should be set.",
+    toDateTimeLocal(currentValue)
+  );
+
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(
+      "Invalid date or time. Please use YYYY-MM-DDTHH:mm."
+    );
+  }
+
+  return date.toISOString();
+}
+
 /* EDIT EXAMINATION */
 
 async function editExamination(examId) {
@@ -1031,13 +1076,18 @@ async function editExamination(examId) {
     );
   }
 
+  /*
+  All examination registration fields are editable here,
+  except the Examination ID/code.
+  */
+
   const title = askText(
-    "Enter examination title:",
+    "Enter examination name/title:",
     exam.title
   );
 
   if (!title) {
-    throw new Error("Examination title cannot be empty.");
+    throw new Error("Examination name cannot be empty.");
   }
 
   const nameClass = askText(
@@ -1045,10 +1095,20 @@ async function editExamination(examId) {
     exam.name_class
   );
 
+  if (!nameClass) {
+    throw new Error("Class or level cannot be empty.");
+  }
+
   const description = askOptionalText(
     "Enter examination description:",
     exam.description
   );
+
+  if (!subjects.length) {
+    throw new Error(
+      "No school subjects are available. Please add a subject first."
+    );
+  }
 
   const subjectList = subjects.map((subject, index) =>
     `${index + 1}. ${subject.subject_name}`
@@ -1059,7 +1119,7 @@ async function editExamination(examId) {
   );
 
   const subjectChoice = askNumber(
-    "Choose the subject by entering its number:\n\n" +
+    "Choose the examination subject by entering its number:\n\n" +
     subjectList,
     currentSubjectIndex >= 0
       ? currentSubjectIndex + 1
@@ -1095,12 +1155,47 @@ async function editExamination(examId) {
     exam.marks_per_question || 1
   );
 
+  /*
+  Start and end dates/times are now editable.
+  Existing dates are displayed as local date/time values.
+  */
+
+  const startsAt = askDateTime(
+    "Enter examination START date and time:",
+    exam.starts_at
+  );
+
+  const endsAt = askDateTime(
+    "Enter examination END date and time:",
+    exam.ends_at
+  );
+
+  if (startsAt && endsAt) {
+
+    if (new Date(endsAt) <= new Date(startsAt)) {
+      throw new Error(
+        "The examination end date and time must be later than the start date and time."
+      );
+    }
+  }
+
+  /*
+  IMPORTANT:
+  The examination ID/code is deliberately excluded.
+  The server receives the existing database examination ID
+  only to identify which examination is being updated.
+
+  Existing package and examination question-count rules
+  remain enforced by the server-side function.
+  */
+
   const payload = {
     action: "update_exam",
+
     examination_id: Number(exam.id),
 
     title,
-    name_class: nameClass,
+    name_class,
     description,
 
     school_subject_id: Number(selectedSubject.id),
@@ -1110,13 +1205,8 @@ async function editExamination(examId) {
     max_attempts: maxAttempts,
     marks_per_question: marksPerQuestion,
 
-    /*
-    Preserve existing examination dates.
-    This page does not change the date fields.
-    */
-
-    starts_at: exam.starts_at || null,
-    ends_at: exam.ends_at || null
+    starts_at: startsAt,
+    ends_at: endsAt
   };
 
   const result = await callExamFunction(payload);
@@ -1215,6 +1305,11 @@ async function editQuestion(questionId) {
     "Enter explanation (leave blank if none):",
     question.explanation
   );
+
+  /*
+  No image field is sent.
+  The backend should preserve the existing image_path.
+  */
 
   const result = await callExamFunction({
     action: "update_question",
