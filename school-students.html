@@ -229,6 +229,18 @@ td .actions {
   white-space: nowrap;
 }
 
+.student-id-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.student-id-actions button {
+  padding: 6px 8px;
+  font-size: 10px;
+}
+
 .status {
   display: inline-block;
   padding: 5px 8px;
@@ -393,7 +405,8 @@ td .actions {
     <h2>SAINTIG EXAMS</h2>
     <small>School Management</small>
   </div>
-  <button class="secondary" onclick="location.href='dashboard.html'">
+
+  <button class="secondary" id="dashboardBtn">
     Dashboard
   </button>
 </header>
@@ -427,6 +440,27 @@ td .actions {
     <div class="stat-card">
       <small>Active Student Capacity</small>
       <strong id="capacityCount">0 / 0</strong>
+    </div>
+  </section>
+
+  <!-- STUDENT LIST TOOLS -->
+  <section class="panel">
+    <div class="panel-heading">
+      <h3>Student List Tools</h3>
+    </div>
+
+    <div class="panel-body" style="display:flex;flex-wrap:wrap;gap:10px;">
+      <button class="primary" id="printAllStudentsBtn">
+        Print All Students
+      </button>
+
+      <button class="gold" id="downloadAllStudentsBtn">
+        Download All Students
+      </button>
+
+      <button class="success" id="shareAllStudentsBtn">
+        Share All Students
+      </button>
     </div>
   </section>
 
@@ -669,7 +703,15 @@ function renderActiveTable(list) {
 
     return `
       <tr>
-        <td class="student-id">${escapeHTML(student.student_id)}</td>
+        <td>
+          <div class="student-id-actions">
+            <span class="student-id">${escapeHTML(student.student_id)}</span>
+            <button class="secondary" data-action="copy"
+              data-id="${student.id}">Copy ID</button>
+            <button class="success" data-action="share"
+              data-id="${student.id}">Share</button>
+          </div>
+        </td>
         <td>${escapeHTML(student.full_name)}</td>
         <td>${formatDate(student.created_at)}</td>
         <td>${status}</td>
@@ -714,7 +756,15 @@ function renderArchivedTable(list) {
 
   body.innerHTML = list.map(student => `
     <tr>
-      <td class="student-id">${escapeHTML(student.student_id)}</td>
+      <td>
+        <div class="student-id-actions">
+          <span class="student-id">${escapeHTML(student.student_id)}</span>
+          <button class="secondary" data-action="copy"
+            data-id="${student.id}">Copy ID</button>
+          <button class="success" data-action="share"
+            data-id="${student.id}">Share</button>
+        </div>
+      </td>
       <td>${escapeHTML(student.full_name)}</td>
       <td>${formatDate(student.archived_at)}</td>
       <td>${Number(student.attempt_count || 0)} examination(s)</td>
@@ -838,6 +888,11 @@ async function studentAction(action, id) {
     return;
   }
 
+  if (action === "copy" || action === "share") {
+    await handleIndividualCopyOrShare(action, id);
+    return;
+  }
+
   if (action === "view") {
     await viewStudent(student);
     return;
@@ -947,14 +1002,312 @@ async function viewStudent(student) {
   }
 }
 
+/* ==========================================
+   COPY AND SHARE STUDENT INFORMATION
+========================================== */
+
+function getAllStudentText() {
+  if (!students.length) {
+    return "No students have been registered.";
+  }
+
+  const lines = [
+    "SAINTIG EXAMS - STUDENT REGISTER",
+    "Student Name and Student ID",
+    ""
+  ];
+
+  students.forEach((student, index) => {
+    lines.push(
+      `${index + 1}. ${student.full_name} - ${student.student_id}${student.is_archived ? " (Archived)" : ""}`
+    );
+  });
+
+  return lines.join("\n");
+}
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      const copied = document.execCommand("copy");
+      textarea.remove();
+
+      if (!copied) {
+        throw new Error("Copy operation was unsuccessful.");
+      }
+    }
+
+    showMessage("Copied successfully.");
+
+  } catch (error) {
+    showMessage("Unable to copy. Please try again.", "error");
+  }
+}
+
+async function shareText(text, title) {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title,
+        text
+      });
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        showMessage("Unable to share this information.", "error");
+      }
+    }
+  } else {
+    await copyText(text);
+    showMessage("Sharing is unavailable on this browser. The information has been copied.");
+  }
+}
+
+async function handleIndividualCopyOrShare(action, id) {
+  const student = students.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!student) {
+    showMessage("Student record not found.", "error");
+    return;
+  }
+
+  const text =
+    `Student Name: ${student.full_name}\nStudent ID: ${student.student_id}`;
+
+  if (action === "copy") {
+    await copyText(student.student_id);
+  }
+
+  if (action === "share") {
+    await shareText(
+      text,
+      "SAINTIG EXAMS Student Details"
+    );
+  }
+}
+
+/* ==========================================
+   PRINT ALL STUDENTS
+========================================== */
+
+function printAllStudents() {
+  if (!students.length) {
+    showMessage("There are no registered students to print.", "error");
+    return;
+  }
+
+  const printWindow = window.open("", "_blank");
+
+  if (!printWindow) {
+    showMessage("Allow pop-ups to print the student list.", "error");
+    return;
+  }
+
+  const rows = students.map((student, index) => `
+    <tr>
+      <td>${index + 1}</td>
+      <td>${escapeHTML(student.full_name)}</td>
+      <td>${escapeHTML(student.student_id)}</td>
+      <td>${student.is_archived ? "Archived" : student.is_active ? "Active" : "Deactivated"}</td>
+    </tr>
+  `).join("");
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>SAINTIG EXAMS - Student Register</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 25px;
+          color: #222;
+        }
+
+        h2, p {
+          text-align: center;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 20px;
+        }
+
+        th, td {
+          border: 1px solid #999;
+          padding: 10px;
+          text-align: left;
+          font-size: 12px;
+        }
+
+        th {
+          background: #eee;
+        }
+
+        @media print {
+          body { padding: 0; }
+        }
+      </style>
+    </head>
+    <body>
+      <h2>SAINTIG EXAMS</h2>
+      <p>Complete Student Register</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>Full Name</th>
+            <th>Student ID</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>${rows}</tbody>
+      </table>
+
+      <p>Total Registered Students: ${students.length}</p>
+
+      <script>
+        window.onload = function() {
+          window.print();
+        };
+      <\/script>
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+}
+
+/* ==========================================
+   DOWNLOAD ALL STUDENTS AS CSV
+========================================== */
+
+function downloadAllStudents() {
+  if (!students.length) {
+    showMessage("There are no registered students to download.", "error");
+    return;
+  }
+
+  const escapeCSV = value =>
+    '"' + String(value ?? "").replace(/"/g, '""') + '"';
+
+  const rows = [
+    ["S/N", "Full Name", "Student ID", "Status"],
+    ...students.map((student, index) => [
+      index + 1,
+      student.full_name,
+      student.student_id,
+      student.is_archived
+        ? "Archived"
+        : student.is_active
+          ? "Active"
+          : "Deactivated"
+    ])
+  ];
+
+  const csv = "\uFEFF" + rows
+    .map(row => row.map(escapeCSV).join(","))
+    .join("\r\n");
+
+  const blob = new Blob([csv], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "SAINTIG-EXAMS-Student-Register.csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  showMessage("Student list downloaded successfully.");
+}
+
+/* ==========================================
+   DASHBOARD NAVIGATION
+========================================== */
+
+async function openDashboard() {
+  try {
+    let session = await getCurrentSession();
+
+    if (!session?.access_token) {
+      const refreshed = await supabase.auth.refreshSession();
+
+      if (refreshed.error || !refreshed.data?.session?.access_token) {
+        showMessage(
+          "Your session has expired. Please sign in again.",
+          "error"
+        );
+        return;
+      }
+
+      session = refreshed.data.session;
+    }
+
+    location.href = new URL("dashboard.html", location.href).href;
+
+  } catch (error) {
+    showMessage(
+      "Unable to open the dashboard. " + error.message,
+      "error"
+    );
+  }
+}
+
+/* ==========================================
+   EVENT LISTENERS
+========================================== */
+
+$("dashboardBtn").addEventListener("click", openDashboard);
+
+$("printAllStudentsBtn").addEventListener("click", printAllStudents);
+
+$("downloadAllStudentsBtn").addEventListener("click", downloadAllStudents);
+
+$("shareAllStudentsBtn").addEventListener("click", () => {
+  if (!students.length) {
+    showMessage("There are no registered students to share.", "error");
+    return;
+  }
+
+  shareText(
+    getAllStudentText(),
+    "SAINTIG EXAMS - Complete Student Register"
+  );
+});
+
 $("addStudentBtn").addEventListener("click", openAddForm);
+
 $("studentForm").addEventListener("submit", saveStudent);
 
 $("closeStudentModal").addEventListener("click", () => closeModal("studentModal"));
+
 $("cancelStudentBtn").addEventListener("click", () => closeModal("studentModal"));
+
 $("closeDetailsModal").addEventListener("click", () => closeModal("detailsModal"));
 
 $("activeSearch").addEventListener("input", renderStudents);
+
 $("archivedSearch").addEventListener("input", renderStudents);
 
 $("activeStudentsBody").addEventListener("click", event => {
@@ -984,6 +1337,10 @@ document.addEventListener("keydown", event => {
   }
 });
 
+/* ==========================================
+   INITIALIZE PAGE
+========================================== */
+
 async function initialize() {
   try {
     const session = await getCurrentSession();
@@ -996,7 +1353,10 @@ async function initialize() {
     await loadStudents();
 
   } catch (error) {
-    showMessage(error.message || "Unable to initialize the students page.", "error");
+    showMessage(
+      error.message || "Unable to initialize the students page.",
+      "error"
+    );
   }
 }
 
