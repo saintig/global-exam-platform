@@ -1,1367 +1,2153 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Examination | SAINTIG EXAMS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Examination | SAINTIG EXAMS</title>
 
-<style>
-:root {
-  --navy:#101d36;
-  --navy2:#1b2d4d;
-  --gold:#d4af37;
-  --bg:#f4f6fa;
-  --white:#fff;
-  --text:#263247;
-  --muted:#718096;
-  --border:#e1e6ef;
-  --green:#16834a;
-  --red:#c0392b;
-}
+  <style>
+    :root {
+      --navy: #101d35;
+      --navy-light: #1b2d4d;
+      --gold: #d4af37;
+      --gold-dark: #a98220;
+      --cream: #f8f0df;
+      --white: #ffffff;
+      --text: #253047;
+      --muted: #718096;
+      --border: #e4e8ef;
+      --success: #16834b;
+      --danger: #c0392b;
+      --warning: #a56a00;
+      --background: #f4f6fa;
+    }
 
-* {box-sizing:border-box}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
-button,input,select,textarea {font:inherit}
-button {cursor:pointer}
+    button, input, select, textarea {
+      font: inherit;
+    }
 
-.layout {display:flex;min-height:100vh}
+    button {
+      cursor: pointer;
+    }
 
-.sidebar {
-  width:255px;
-  background:var(--navy);
-  color:white;
-  padding:22px 15px;
-  position:fixed;
-  inset:0 auto 0 0;
-  overflow-y:auto;
-  z-index:100;
-}
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
 
-.brand {
-  padding:5px 12px 24px;
-  border-bottom:1px solid #ffffff20;
-  margin-bottom:20px;
-}
+    .sidebar {
+      width: 245px;
+      background: var(--navy);
+      color: white;
+      padding: 24px 15px;
+      flex-shrink: 0;
+    }
 
-.brand strong {font-size:21px;letter-spacing:1px}
-.brand strong span {color:var(--gold)}
-.brand small {display:block;color:#c5cddd;margin-top:6px}
+    .brand {
+      padding: 5px 12px 25px;
+      border-bottom: 1px solid rgba(255,255,255,.13);
+      margin-bottom: 22px;
+    }
 
-.nav-label {
-  color:#9ba9c0;
-  font-size:10px;
-  font-weight:bold;
-  letter-spacing:1.4px;
-  padding:12px;
-}
+    .brand h2 {
+      color: var(--gold);
+      font-size: 20px;
+      letter-spacing: .5px;
+    }
 
-.nav-link {
-  display:block;
-  padding:12px;
-  margin:4px 0;
-  color:#dce4f1;
-  text-decoration:none;
-  border-radius:7px;
-  font-size:13px;
-}
+    .brand p {
+      font-size: 11px;
+      color: #cbd3e0;
+      margin-top: 6px;
+    }
 
-.nav-link:hover,.nav-link.active {
-  background:var(--navy2);
-  color:var(--gold);
-}
+    .nav-label {
+      font-size: 10px;
+      color: #aeb9cb;
+      letter-spacing: 1px;
+      padding: 0 12px;
+      margin: 18px 0 9px;
+      text-transform: uppercase;
+    }
 
-.nav-link.active {border-left:3px solid var(--gold)}
+    .nav-link {
+      display: block;
+      padding: 12px;
+      color: #e7ebf2;
+      text-decoration: none;
+      font-size: 13px;
+      border-radius: 7px;
+      margin-bottom: 4px;
+    }
 
-.main {flex:1;margin-left:255px;min-width:0}
+    .nav-link:hover,
+    .nav-link.active {
+      background: var(--navy-light);
+      color: var(--gold);
+    }
 
-.topbar {
-  background:white;
-  border-bottom:1px solid var(--border);
-  padding:17px 25px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  position:sticky;
-  top:0;
-  z-index:50;
-}
+    .main {
+      flex: 1;
+      min-width: 0;
+    }
 
-.topbar h1 {font-size:19px;margin:0;color:var(--navy)}
-.topbar small {display:block;color:var(--muted);margin-top:5px}
+    .topbar {
+      background: white;
+      padding: 17px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
 
-.content {padding:25px;max-width:1150px;margin:auto}
-.welcome {margin-bottom:22px}
-.welcome h2 {color:var(--navy);margin:0 0 7px;font-size:22px}
-.welcome p {color:var(--muted);font-size:13px;margin:0}
+    .topbar h1 {
+      font-size: 20px;
+      color: var(--navy);
+    }
 
-.card {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:22px;
-  margin-bottom:20px;
-  box-shadow:0 2px 8px #14233c09;
-}
+    .topbar p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
 
-.card-heading {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
+    .page {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px;
+    }
 
-.card-heading h3 {color:var(--navy);font-size:16px;margin:0}
-.card-heading p {color:var(--muted);font-size:12px;margin:5px 0 0}
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(16,29,53,.035);
+    }
 
-.form-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:15px;
-}
+    .card-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
 
-.field {min-width:0;margin-bottom:8px}
-.field.full {grid-column:1/-1}
+    .card-heading h2 {
+      color: var(--navy);
+      font-size: 17px;
+    }
 
-label {
-  display:block;
-  font-size:12px;
-  font-weight:bold;
-  color:var(--navy);
-  margin-bottom:7px;
-}
+    .card-heading p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
 
-input,select,textarea {
-  width:100%;
-  border:1px solid #ccd4e0;
-  border-radius:6px;
-  padding:11px 12px;
-  background:white;
-  color:var(--text);
-  outline:none;
-  font-size:13px;
-}
+    .section-number {
+      background: var(--cream);
+      color: var(--gold-dark);
+      border: 1px solid #ead8a6;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
 
-input:focus,select:focus,textarea:focus {
-  border-color:var(--gold);
-  box-shadow:0 0 0 2px #d4af3720;
-}
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 17px;
+    }
 
-textarea {resize:vertical;min-height:85px}
+    .field {
+      min-width: 0;
+    }
 
-.help {
-  color:var(--muted);
-  font-size:11px;
-  margin-top:5px;
-  line-height:1.5;
-}
+    .field.full {
+      grid-column: 1 / -1;
+    }
 
-.btn {
-  border:0;
-  border-radius:6px;
-  padding:11px 16px;
-  font-size:12px;
-  font-weight:bold;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-}
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      color: #34415a;
+      margin-bottom: 7px;
+    }
 
-.btn:disabled {opacity:.5;cursor:not-allowed}
-.primary {background:var(--navy);color:white}
-.gold {background:var(--gold);color:var(--navy)}
-.outline {background:white;color:var(--navy);border:1px solid var(--border)}
-.danger {background:#fff0ee;color:var(--red);border:1px solid #f2c7c1}
-.success {background:#e8f6ed;color:var(--green);border:1px solid #c5e8d0}
+    .required {
+      color: var(--danger);
+    }
 
-.button-row {display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #dce1e9;
+      border-radius: 6px;
+      background: white;
+      color: var(--text);
+      outline: none;
+      font-size: 13px;
+    }
 
-.message {
-  display:none;
-  padding:12px 14px;
-  border-radius:6px;
-  font-size:12px;
-  line-height:1.5;
-  margin-bottom:16px;
-}
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold-dark);
+      box-shadow: 0 0 0 2px rgba(212,175,55,.12);
+    }
 
-.message.show {display:block}
-.message.info {background:#edf3ff;color:#244b83;border:1px solid #cbdaf4}
-.message.error {background:#fff0ee;color:#a52c22;border:1px solid #f2c7c1}
-.message.success {background:#e8f6ed;color:#176b3c;border:1px solid #c5e8d0}
+    textarea {
+      min-height: 95px;
+      resize: vertical;
+      line-height: 1.5;
+    }
 
-.calculated {
-  background:#f5f7fa;
-  font-weight:bold;
-  color:var(--navy);
-}
+    .help {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
 
-.checkbox-line {
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:12px;
-  font-weight:bold;
-  color:var(--navy);
-}
+    .calculation {
+      background: #fbf8ef;
+      border: 1px solid #eadfbf;
+      padding: 15px;
+      border-radius: 7px;
+      margin-top: 17px;
+    }
 
-.checkbox-line input {width:auto}
+    .calculation span {
+      font-size: 12px;
+      color: #6f6040;
+    }
 
-.hidden {display:none!important}
+    .calculation strong {
+      display: block;
+      font-size: 25px;
+      color: var(--navy);
+      margin-top: 5px;
+    }
 
-.section-note {
-  padding:12px;
-  background:#f7f9fc;
-  border:1px solid var(--border);
-  border-radius:7px;
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-  margin-bottom:16px;
-}
+    .schedule-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 15px;
+      border-radius: 7px;
+      margin-top: 18px;
+    }
 
-.question-card {
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:15px;
-  margin-bottom:12px;
-  background:#fff;
-}
+    .schedule-title {
+      font-weight: bold;
+      color: var(--navy);
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
 
-.question-card h4 {
-  margin:0 0 10px;
-  font-size:13px;
-  color:var(--navy);
-}
+    .check-line {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
 
-.question-card p {
-  font-size:12px;
-  line-height:1.5;
-  overflow-wrap:anywhere;
-}
+    .check-line input {
+      width: auto;
+    }
 
-.question-meta {
-  font-size:11px;
-  color:var(--muted);
-  margin-top:10px;
-}
+    .schedule-fields {
+      display: none;
+    }
 
-.queue-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
+    .schedule-fields.show {
+      display: grid;
+    }
 
-.count {
-  font-size:12px;
-  color:var(--navy);
-  font-weight:bold;
-}
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
 
-.preview-grid {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:12px;
-}
+    .btn {
+      border: none;
+      padding: 11px 17px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+      transition: .2s;
+    }
 
-.preview-item {
-  background:#f7f9fc;
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:13px;
-  min-width:0;
-}
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
 
-.preview-item.full {grid-column:1/-1}
-.preview-label {color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:bold;margin-bottom:6px}
-.preview-value {color:var(--navy);font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+    .btn-primary {
+      background: var(--navy);
+      color: white;
+    }
 
-.status {
-  display:inline-block;
-  border-radius:20px;
-  padding:5px 10px;
-  font-size:10px;
-  font-weight:bold;
-  background:#fff4d7;
-  color:#86620b;
-}
+    .btn-primary:hover:not(:disabled) {
+      background: var(--navy-light);
+    }
 
-.exam-id-box {
-  display:none;
-  background:#f8f6ee;
-  border:1px solid #eadca7;
-  border-radius:9px;
-  padding:18px;
-  margin-top:18px;
-}
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
 
-.exam-id-label {color:#76621a;font-size:11px;font-weight:bold;margin-bottom:8px}
-.exam-id {font-size:20px;font-weight:bold;color:var(--navy);letter-spacing:1px;overflow-wrap:anywhere}
+    .btn-gold:hover:not(:disabled) {
+      background: #e2c04e;
+    }
 
-.footer {text-align:center;padding:20px;color:var(--muted);font-size:11px}
+    .btn-outline {
+      background: white;
+      border: 1px solid #cbd3df;
+      color: var(--navy);
+    }
 
-@media(max-width:850px) {
-  .sidebar {display:none}
-  .main {margin-left:0}
-  .content {padding:16px}
-  .topbar {padding:14px 16px}
-}
+    .btn-danger {
+      background: #fff0ee;
+      color: var(--danger);
+      border: 1px solid #f0c7c2;
+    }
 
-@media(max-width:600px) {
-  .form-grid,.preview-grid {grid-template-columns:1fr}
-  .field.full,.preview-item.full {grid-column:auto}
-  .card {padding:16px}
-  .welcome h2 {font-size:19px}
-}
-</style>
+    .btn-small {
+      padding: 7px 10px;
+      font-size: 11px;
+    }
+
+    .question-box {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 17px;
+      margin-top: 15px;
+      background: #fff;
+    }
+
+    .question-box h3 {
+      font-size: 14px;
+      color: var(--navy);
+      margin-bottom: 15px;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 13px;
+    }
+
+    .queue-list {
+      margin-top: 17px;
+    }
+
+    .queue-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      margin-bottom: 8px;
+    }
+
+    .queue-item p {
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .queue-item small {
+      color: var(--muted);
+    }
+
+    .queue-count {
+      font-size: 13px;
+      color: var(--navy);
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    .info-box {
+      background: #f0f5fc;
+      border: 1px solid #d9e5f4;
+      border-radius: 7px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #3d526e;
+      margin-top: 13px;
+    }
+
+    .warning-box {
+      background: #fff8e8;
+      border: 1px solid #f0dfb5;
+      color: #77591a;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 7px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.success {
+      background: #eaf7ef;
+      color: #176b3d;
+      border: 1px solid #c5e8d2;
+    }
+
+    .status.error {
+      background: #fff0ee;
+      color: #a42d24;
+      border: 1px solid #f0c7c2;
+    }
+
+    .status.info {
+      background: #eef4fc;
+      color: #31547c;
+      border: 1px solid #d3e1f2;
+    }
+
+    .status.warning {
+      background: #fff8e8;
+      color: #77591a;
+      border: 1px solid #f0dfb5;
+    }
+
+    .exam-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .summary-item {
+      background: #f7f8fb;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 13px;
+    }
+
+    .summary-item span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .summary-item strong {
+      display: block;
+      font-size: 19px;
+      color: var(--navy);
+      margin-top: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .exam-code {
+      background: var(--navy);
+      color: var(--gold);
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .exam-code small {
+      display: block;
+      font-size: 11px;
+      color: #d8dfeb;
+      margin-bottom: 8px;
+    }
+
+    .exam-code strong {
+      font-size: 23px;
+      letter-spacing: 1px;
+      overflow-wrap: anywhere;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 15px;
+    }
+
+    .mobile-menu {
+      display: none;
+      background: var(--navy);
+      color: white;
+      border: none;
+      padding: 9px 12px;
+      border-radius: 5px;
+    }
+
+    @media(max-width: 800px) {
+      .sidebar {
+        width: 220px;
+      }
+
+      .page {
+        padding: 17px;
+      }
+    }
+
+    @media(max-width: 650px) {
+      .layout {
+        display: block;
+      }
+
+      .sidebar {
+        display: none;
+        width: 100%;
+      }
+
+      .sidebar.open {
+        display: block;
+      }
+
+      .mobile-menu {
+        display: inline-block;
+      }
+
+      .topbar {
+        padding: 14px 16px;
+      }
+
+      .topbar h1 {
+        font-size: 17px;
+      }
+
+      .page {
+        padding: 13px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .form-grid,
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .exam-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .button-row .btn {
+        flex: 1 1 100%;
+      }
+
+      .card-heading {
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="layout">
 
-<aside class="sidebar">
-  <div class="brand">
-    <strong>SAINTIG <span>EXAMS</span></strong>
-    <small>Teacher/School Portal</small>
-  </div>
-
-  <div class="nav-label">MAIN MENU</div>
-  <a class="nav-link" href="school-dashboard.html">Dashboard</a>
-  <a class="nav-link" href="school-students.html">School Students</a>
-  <a class="nav-link" href="school-subjects.html">School Subjects</a>
-  <a class="nav-link active" href="register-examination.html">Register Examination</a>
-  <a class="nav-link" href="school-question-bank.html">Question Bank</a>
-  <a class="nav-link" href="school-archive-management.html">Archive Management</a>
-  <a class="nav-link" href="school-results-performance.html">Results &amp; Performance</a>
-  <a class="nav-link" href="school-subscription-plans.html">Subscription Plans</a>
-  <a class="nav-link" href="school-notifications.html">Notifications</a>
-  <a class="nav-link" href="school-my-profile.html">School Profile</a>
-  <a class="nav-link" href="school-help-support.html">Help &amp; Support</a>
-</aside>
-
-<main class="main">
-
-<header class="topbar">
-  <div>
-    <h1>Register Examination</h1>
-    <small>Create, prepare and publish examinations</small>
-  </div>
-  <button class="btn outline" type="button" id="backBtn">Dashboard</button>
-</header>
-
-<div class="content">
-
-<div class="welcome">
-  <h2>Examination Registration</h2>
-  <p>Enter examination details and prepare the questions students will answer.</p>
-</div>
-
-<div id="pageMessage" class="message"></div>
-
-<!-- EXAMINATION DETAILS -->
-
-<section class="card">
-  <div class="card-heading">
-    <div>
-      <h3>1. Examination Information</h3>
-      <p>Enter the examination details.</p>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <h2>SAINTIG EXAMS</h2>
+      <p>Teacher / School Dashboard</p>
     </div>
-    <span class="status" id="draftStatus">NEW EXAMINATION</span>
-  </div>
 
-  <form id="examForm">
-    <div class="form-grid">
+    <div class="nav-label">Main Menu</div>
 
-      <div class="field">
-        <label for="examSubject">Subject *</label>
-        <select id="examSubject" required>
-          <option value="">Subjects will load after backend connection</option>
-        </select>
-        <div class="help">Select an existing published subject belonging to your account.</div>
+    <a class="nav-link" href="school-dashboard.html">Dashboard</a>
+    <a class="nav-link" href="school-students.html">School Students</a>
+    <a class="nav-link" href="school-subjects.html">School Subjects</a>
+    <a class="nav-link active" href="register-examination.html">Register Examination</a>
+    <a class="nav-link" href="school-question-bank.html">Question Bank</a>
+    <a class="nav-link" href="school-archive-management.html">Archive Management</a>
+    <a class="nav-link" href="school-results-performance.html">Results &amp; Performance</a>
+    <a class="nav-link" href="school-subscription-plans.html">Subscription Plans</a>
+    <a class="nav-link" href="school-notifications.html">Notifications</a>
+    <a class="nav-link" href="school-my-profile.html">My Profile</a>
+    <a class="nav-link" href="school-help-support.html">Help &amp; Support</a>
+  </aside>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div>
+        <button class="mobile-menu" id="menuBtn" type="button">☰ Menu</button>
+        <h1>Register Examination</h1>
+        <p>Create an examination and manage its questions.</p>
       </div>
+    </header>
 
-      <div class="field">
-        <label for="examTitle">Examination Title *</label>
-        <input id="examTitle" maxlength="200" required
-          placeholder="e.g. Test, Quiz, First Term Examination">
-      </div>
+    <div class="page">
 
-      <div class="field full">
-        <label for="examNameClass">Examination Name and Class *</label>
-        <input id="examNameClass" maxlength="200" required
-          placeholder="e.g. Government SS1">
-        <div class="help">Enter this freely. There is no separate class-selection dropdown.</div>
-      </div>
+      <div id="pageStatus" class="status"></div>
 
-      <div class="field full">
-        <label for="examDescription">Examination Description / Instructions</label>
-        <textarea id="examDescription" maxlength="5000"
-          placeholder="Enter instructions students should read before starting..."></textarea>
-      </div>
+      <!-- EXAMINATION DETAILS -->
+      <section class="card">
 
-      <div class="field">
-        <label for="examDuration">Examination Duration (Minutes) *</label>
-        <input id="examDuration" type="number" min="1" value="60" required>
-      </div>
-
-      <div class="field">
-        <label for="questionCount">Number of Questions Students Will Answer *</label>
-        <input id="questionCount" type="number" min="1" value="10" required>
-        <div class="help">This is the number each student receives randomly from the question bank. Package limits will be checked by the backend.</div>
-      </div>
-
-      <div class="field">
-        <label for="marksPerQuestion">Marks Per Question *</label>
-        <input id="marksPerQuestion" type="number" min="0.01" step="0.01" value="1" required>
-      </div>
-
-      <div class="field">
-        <label for="totalMarks">Automatically Calculated Total Marks</label>
-        <input id="totalMarks" class="calculated" type="text" value="10" readonly>
-      </div>
-
-      <div class="field full">
-        <label class="checkbox-line">
-          <input id="customizeTime" type="checkbox">
-          Customize Examination Time
-        </label>
-        <div class="help">Start and end date/time are optional.</div>
-      </div>
-
-      <div class="field hidden" id="startField">
-        <label for="startDateTime">Start Date and Time</label>
-        <input id="startDateTime" type="datetime-local">
-      </div>
-
-      <div class="field hidden" id="endField">
-        <label for="endDateTime">End Date and Time</label>
-        <input id="endDateTime" type="datetime-local">
-      </div>
-
-    </div>
-
-    <div class="button-row">
-      <button class="btn primary" type="submit">Save Draft</button>
-      <button class="btn outline" type="button" id="cancelBtn">Cancel</button>
-    </div>
-  </form>
-</section>
-
-<!-- INDIVIDUAL QUESTION UPLOAD -->
-
-<section class="card">
-  <div class="card-heading">
-    <div>
-      <h3>2. Individual Question Upload</h3>
-      <p>Add questions one at a time.</p>
-    </div>
-  </div>
-
-  <div class="section-note">
-    Add text questions only. Image upload is not available. Questions added here are placed in the temporary upload queue until they are saved to the examination.
-  </div>
-
-  <form id="questionForm">
-    <div class="form-grid">
-
-      <div class="field full">
-        <label for="questionText">Question *</label>
-        <textarea id="questionText" required placeholder="Enter the question"></textarea>
-      </div>
-
-      <div class="field">
-        <label for="optionA">Option A *</label>
-        <input id="optionA" required>
-      </div>
-
-      <div class="field">
-        <label for="optionB">Option B *</label>
-        <input id="optionB" required>
-      </div>
-
-      <div class="field">
-        <label for="optionC">Option C *</label>
-        <input id="optionC" required>
-      </div>
-
-      <div class="field">
-        <label for="optionD">Option D *</label>
-        <input id="optionD" required>
-      </div>
-
-      <div class="field">
-        <label for="correctOption">Correct Answer *</label>
-        <select id="correctOption" required>
-          <option value="">Select correct option</option>
-          <option value="A">Option A</option>
-          <option value="B">Option B</option>
-          <option value="C">Option C</option>
-          <option value="D">Option D</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="questionMarks">Question Marks *</label>
-        <input id="questionMarks" type="number" min="0.01" step="0.01" value="1" required>
-      </div>
-
-      <div class="field full">
-        <label for="explanation">Explanation (Optional)</label>
-        <textarea id="explanation" placeholder="Enter an explanation if needed"></textarea>
-      </div>
-
-    </div>
-
-    <button class="btn primary" type="submit">Add Question to Queue</button>
-  </form>
-</section>
-
-<!-- BULK CSV UPLOAD -->
-
-<section class="card">
-  <div class="card-heading">
-    <div>
-      <h3>3. Bulk Question Upload</h3>
-      <p>Upload multiple questions using a CSV file.</p>
-    </div>
-  </div>
-
-  <div class="section-note">
-    Use the SAINTIG EXAMS CSV template. The file must contain the required question and answer columns. Do not include images or image filenames.
-  </div>
-
-  <div class="button-row">
-    <button class="btn outline" type="button" id="downloadTemplateBtn">
-      Download Bulk Upload Template
-    </button>
-  </div>
-
-  <div class="field" style="margin-top:18px">
-    <label for="csvFile">Select CSV File</label>
-    <input id="csvFile" type="file" accept=".csv,text/csv">
-    <div class="help">Only CSV files are accepted.</div>
-  </div>
-
-  <div id="csvMessage" class="message"></div>
-
-  <div id="csvPreviewArea" class="hidden">
-    <div class="queue-header">
-      <strong>CSV Preview</strong>
-      <span class="count" id="csvCount">0 questions</span>
-    </div>
-    <div id="csvPreview"></div>
-    <div class="button-row">
-      <button class="btn gold" type="button" id="addCsvBtn">Add Valid Questions to Queue</button>
-      <button class="btn outline" type="button" id="clearCsvBtn">Clear Preview</button>
-    </div>
-  </div>
-</section>
-
-<!-- QUESTION QUEUE -->
-
-<section class="card">
-  <div class="card-heading">
-    <div>
-      <h3>4. Question Upload Queue</h3>
-      <p>Review questions before saving them to the examination.</p>
-    </div>
-  </div>
-
-  <div class="queue-header">
-    <span class="count" id="queueCount">0 questions in queue</span>
-    <button class="btn danger" type="button" id="clearQueueBtn">Clear Queue</button>
-  </div>
-
-  <div id="queueMessage" class="message info show">
-    No questions have been added yet.
-  </div>
-
-  <div id="questionQueue"></div>
-
-  <div class="button-row">
-    <button class="btn primary" type="button" id="saveQuestionsBtn" disabled>
-      Save Questions to Examination
-    </button>
-  </div>
-
-  <div class="help">
-    Saving questions to the database will be connected in the backend stage. The queue currently exists only in this browser session.
-  </div>
-</section>
-
-<!-- EXAMINATION PREVIEW AND PUBLISH -->
-
-<section class="card">
-  <div class="card-heading">
-    <div>
-      <h3>5. Examination Preview and Publishing</h3>
-      <p>Review the examination before publishing.</p>
-    </div>
-    <span class="status" id="publicationStatus">NOT SAVED</span>
-  </div>
-
-  <div class="preview-grid">
-    <div class="preview-item">
-      <div class="preview-label">Subject</div>
-      <div class="preview-value" id="previewSubject">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Examination Title</div>
-      <div class="preview-value" id="previewTitle">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Examination Name and Class</div>
-      <div class="preview-value" id="previewNameClass">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Duration</div>
-      <div class="preview-value" id="previewDuration">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Questions Students Will Answer</div>
-      <div class="preview-value" id="previewQuestionCount">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Questions Currently in Queue</div>
-      <div class="preview-value" id="previewUploadedCount">0</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Total Marks</div>
-      <div class="preview-value" id="previewTotalMarks">—</div>
-    </div>
-
-    <div class="preview-item">
-      <div class="preview-label">Publication Status</div>
-      <div class="preview-value" id="previewStatus">Not saved</div>
-    </div>
-
-    <div class="preview-item full">
-      <div class="preview-label">Description / Instructions</div>
-      <div class="preview-value" id="previewDescription">—</div>
-    </div>
-  </div>
-
-  <div class="button-row">
-    <button class="btn gold" type="button" id="publishBtn" disabled>
-      Publish Examination
-    </button>
-  </div>
-
-  <div class="exam-id-box" id="examIdBox">
-    <div class="exam-id-label">GENERATED EXAMINATION ID</div>
-    <div class="exam-id" id="examId">—</div>
-    <div class="button-row">
-      <button class="btn primary" type="button" id="copyIdBtn">Copy Examination ID</button>
-      <button class="btn outline" type="button" id="shareIdBtn">Share Examination ID</button>
-    </div>
-  </div>
-</section>
-
-<div class="footer">SAINTIG EXAMS · Teacher/School Portal</div>
-
-</div>
-</main>
-</div>
-
-<script>
-"use strict";
-
-/* =====================================
-   FRONTEND STATE
-===================================== */
-
-const $ = id => document.getElementById(id);
-
-let questionQueue = [];
-let csvQuestions = [];
-let csvErrors = [];
-
-/*
-  Backend connection will be added later.
-  No database operation is claimed to work
-  in this frontend-only stage.
-*/
-
-/* =====================================
-   GENERAL HELPERS
-===================================== */
-
-function showMessage(id, message, type = "info") {
-  const element = $(id);
-  element.textContent = message;
-  element.className = "message show " + type;
-}
-
-function hideMessage(id) {
-  const element = $(id);
-  element.textContent = "";
-  element.className = "message";
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[character]);
-}
-
-function formatNumber(value) {
-  return Number.isInteger(value)
-    ? String(value)
-    : Number(value).toFixed(2);
-}
-
-/* =====================================
-   TOTAL MARKS
-===================================== */
-
-function calculateTotal() {
-  const count = Number($("questionCount").value);
-  const marks = Number($("marksPerQuestion").value);
-
-  const total = count * marks;
-
-  $("totalMarks").value =
-    Number.isFinite(total) && total >= 0
-      ? formatNumber(total)
-      : "0";
-
-  updatePreview();
-}
-
-$("questionCount").addEventListener("input", calculateTotal);
-$("marksPerQuestion").addEventListener("input", calculateTotal);
-
-/* =====================================
-   OPTIONAL SCHEDULE
-===================================== */
-
-$("customizeTime").addEventListener("change", () => {
-  const enabled = $("customizeTime").checked;
-
-  $("startField").classList.toggle("hidden", !enabled);
-  $("endField").classList.toggle("hidden", !enabled);
-
-  if (!enabled) {
-    $("startDateTime").value = "";
-    $("endDateTime").value = "";
-  }
-
-  updatePreview();
-});
-
-/* =====================================
-   INDIVIDUAL QUESTION
-===================================== */
-
-$("questionForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const question = {
-    question_text: $("questionText").value.trim(),
-    option_a: $("optionA").value.trim(),
-    option_b: $("optionB").value.trim(),
-    option_c: $("optionC").value.trim(),
-    option_d: $("optionD").value.trim(),
-    correct_option: $("correctOption").value,
-    marks: Number($("questionMarks").value),
-    explanation: $("explanation").value.trim(),
-    question_order: questionQueue.length + 1
-  };
-
-  if (
-    !question.question_text ||
-    !question.option_a ||
-    !question.option_b ||
-    !question.option_c ||
-    !question.option_d ||
-    !question.correct_option ||
-    !Number.isFinite(question.marks) ||
-    question.marks <= 0
-  ) {
-    showMessage("pageMessage", "Complete all required question fields correctly.", "error");
-    return;
-  }
-
-  questionQueue.push(question);
-
-  $("questionForm").reset();
-  $("questionMarks").value = "1";
-
-  renderQueue();
-  updatePreview();
-
-  showMessage("pageMessage", "Question added to the temporary queue.", "success");
-});
-
-/* =====================================
-   QUESTION QUEUE DISPLAY
-===================================== */
-
-function renderQueue() {
-  $("queueCount").textContent =
-    `${questionQueue.length} question(s) in queue`;
-
-  $("previewUploadedCount").textContent =
-    questionQueue.length;
-
-  $("saveQuestionsBtn").disabled =
-    questionQueue.length === 0;
-
-  if (!questionQueue.length) {
-    $("questionQueue").innerHTML = "";
-    showMessage("queueMessage", "No questions have been added yet.", "info");
-    return;
-  }
-
-  hideMessage("queueMessage");
-
-  $("questionQueue").innerHTML =
-    questionQueue.map((question, index) => `
-      <div class="question-card">
-        <h4>Question ${index + 1}</h4>
-        <p>${escapeHTML(question.question_text)}</p>
-        <p>
-          A. ${escapeHTML(question.option_a)}<br>
-          B. ${escapeHTML(question.option_b)}<br>
-          C. ${escapeHTML(question.option_c)}<br>
-          D. ${escapeHTML(question.option_d)}
-        </p>
-        <div class="question-meta">
-          Correct answer: ${escapeHTML(question.correct_option)}
-          · Marks: ${escapeHTML(question.marks)}
+        <div class="card-heading">
+          <div>
+            <h2>Examination Details</h2>
+            <p>Enter the basic information for your examination.</p>
+          </div>
+          <span class="section-number">STEP 1</span>
         </div>
-        ${question.explanation ? `
-          <div class="question-meta">
-            Explanation: ${escapeHTML(question.explanation)}
-          </div>` : ""}
+
+        <form id="examForm">
+
+          <div class="form-grid">
+
+            <div class="field full">
+              <label for="subject">Subject <span class="required">*</span></label>
+              <select id="subject" required>
+                <option value="">Loading subjects...</option>
+              </select>
+              <p class="help">Only your published, active subjects are available here.</p>
+            </div>
+
+            <div class="field">
+              <label for="title">Examination Title <span class="required">*</span></label>
+              <input
+                id="title"
+                type="text"
+                maxlength="200"
+                placeholder="e.g. First Term Examination"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="nameClass">Examination Name and Class</label>
+              <input
+                id="nameClass"
+                type="text"
+                maxlength="200"
+                placeholder="e.g. First Term Examination - JSS 2"
+              >
+            </div>
+
+            <div class="field full">
+              <label for="description">Description / Instructions</label>
+              <textarea
+                id="description"
+                maxlength="5000"
+                placeholder="Enter examination instructions for students..."
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label for="duration">Duration (Minutes) <span class="required">*</span></label>
+              <input
+                id="duration"
+                type="number"
+                min="1"
+                step="1"
+                value="60"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="questionCount">Questions Each Student Will Answer <span class="required">*</span></label>
+              <input
+                id="questionCount"
+                type="number"
+                min="1"
+                step="1"
+                value="20"
+                required
+              >
+              <p class="help">Each student will receive this number of questions selected from the question bank.</p>
+            </div>
+
+            <div class="field">
+              <label for="marksPerQuestion">Marks Per Question <span class="required">*</span></label>
+              <input
+                id="marksPerQuestion"
+                type="number"
+                min="0.01"
+                step="0.01"
+                value="1"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label>Maximum Attempts</label>
+              <input type="number" value="2" disabled>
+              <p class="help">The current Teacher/School examination setting is two attempts.</p>
+            </div>
+
+          </div>
+
+          <div class="calculation">
+            <span>Calculated Total Marks</span>
+            <strong id="totalMarks">20</strong>
+            <p class="help">Questions each student answers × marks per question.</p>
+          </div>
+
+          <div class="schedule-box">
+
+            <div class="schedule-title">Optional Examination Schedule</div>
+
+            <label class="check-line">
+              <input type="checkbox" id="enableSchedule">
+              Set examination start and end dates
+            </label>
+
+            <div class="form-grid schedule-fields" id="scheduleFields">
+
+              <div class="field">
+                <label for="startsAt">Start Date and Time</label>
+                <input type="datetime-local" id="startsAt">
+              </div>
+
+              <div class="field">
+                <label for="endsAt">End Date and Time</label>
+                <input type="datetime-local" id="endsAt">
+              </div>
+
+            </div>
+
+            <p class="help">
+              Leave scheduling disabled if students should be able to access the published examination immediately.
+            </p>
+
+          </div>
+
+          <div class="button-row">
+            <button class="btn btn-primary" type="submit" id="saveDraftBtn">
+              Save Examination Draft
+            </button>
+
+            <button class="btn btn-outline" type="button" id="cancelBtn">
+              Cancel
+            </button>
+          </div>
+
+        </form>
+
+      </section>
+
+      <!-- QUESTION ENTRY -->
+      <section class="card">
+
+        <div class="card-heading">
+          <div>
+            <h2>Add Examination Questions</h2>
+            <p>Add questions individually or upload them using a CSV file.</p>
+          </div>
+          <span class="section-number">STEP 2</span>
+        </div>
+
+        <div id="questionStatus" class="status"></div>
+
+        <div class="question-box">
+
+          <h3>Add One Question</h3>
+
+          <form id="singleQuestionForm">
+
+            <div class="field">
+              <label for="questionText">Question <span class="required">*</span></label>
+              <textarea
+                id="questionText"
+                maxlength="10000"
+                placeholder="Enter your question..."
+                required
+              ></textarea>
+            </div>
+
+            <div class="option-grid">
+
+              <div class="field">
+                <label for="optionA">Option A <span class="required">*</span></label>
+                <input id="optionA" type="text" maxlength="2000" required>
+              </div>
+
+              <div class="field">
+                <label for="optionB">Option B <span class="required">*</span></label>
+                <input id="optionB" type="text" maxlength="2000" required>
+              </div>
+
+              <div class="field">
+                <label for="optionC">Option C <span class="required">*</span></label>
+                <input id="optionC" type="text" maxlength="2000" required>
+              </div>
+
+              <div class="field">
+                <label for="optionD">Option D <span class="required">*</span></label>
+                <input id="optionD" type="text" maxlength="2000" required>
+              </div>
+
+              <div class="field">
+                <label for="correctOption">Correct Option <span class="required">*</span></label>
+                <select id="correctOption" required>
+                  <option value="">Select correct answer</option>
+                  <option value="A">Option A</option>
+                  <option value="B">Option B</option>
+                  <option value="C">Option C</option>
+                  <option value="D">Option D</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="questionMarks">Question Marks</label>
+                <input id="questionMarks" type="number" min="0.01" step="0.01" value="1">
+                <p class="help">Defaults to the examination's marks per question.</p>
+              </div>
+
+            </div>
+
+            <div class="field" style="margin-top:13px">
+              <label for="explanation">Explanation (Optional)</label>
+              <textarea
+                id="explanation"
+                maxlength="5000"
+                placeholder="Enter an explanation if needed..."
+              ></textarea>
+            </div>
+
+            <div class="button-row">
+              <button class="btn btn-gold" type="submit">Add Question to List</button>
+            </div>
+
+          </form>
+
+        </div>
+
+        <div class="question-box">
+
+          <h3>Bulk Upload Questions (CSV)</h3>
+
+          <p class="help">
+            Prepare your questions using the CSV template. The correct option must be A, B, C or D.
+          </p>
+
+          <div class="button-row">
+            <button class="btn btn-outline" type="button" id="downloadTemplateBtn">
+              Download CSV Template
+            </button>
+          </div>
+
+          <div class="field" style="margin-top:17px">
+            <label for="csvFile">Select CSV File</label>
+            <input id="csvFile" type="file" accept=".csv,text/csv">
+          </div>
+
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" id="uploadCsvBtn">
+              Read CSV Questions
+            </button>
+          </div>
+
+          <div class="info-box">
+            CSV columns:
+            <br>
+            <strong>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order</strong>
+            <br>
+            Questions are first placed in a temporary list. You must save them to the examination before publishing.
+          </div>
+
+        </div>
+
+        <div class="queue-list">
+
+          <div class="card-heading">
+            <div>
+              <h2>Questions Waiting to Be Saved</h2>
+              <p>These questions are currently held in this page.</p>
+            </div>
+          </div>
+
+          <div id="queueList">
+            <p class="help">No questions have been added yet.</p>
+          </div>
+
+          <div class="queue-count" id="queueCount">0 questions waiting</div>
+
+          <div class="button-row">
+            <button class="btn btn-primary" type="button" id="saveQuestionsBtn" disabled>
+              Save Questions to Examination
+            </button>
+
+            <button class="btn btn-danger" type="button" id="clearQueueBtn" disabled>
+              Clear Waiting List
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SAVED QUESTIONS -->
+      <section class="card">
+
+        <div class="card-heading">
+          <div>
+            <h2>Saved Examination Questions</h2>
+            <p>Questions already stored in this examination's question bank.</p>
+          </div>
+          <span class="section-number" id="savedCountBadge">0 SAVED</span>
+        </div>
+
+        <div id="savedQuestionsList">
+          <p class="help">Save an examination draft to manage its questions.</p>
+        </div>
+
         <div class="button-row">
-          <button class="btn danger" type="button"
-            onclick="removeQuestion(${index})">
-            Remove Question
+          <button class="btn btn-outline" type="button" id="refreshQuestionsBtn" disabled>
+            Refresh Saved Questions
           </button>
         </div>
+
+      </section>
+
+      <!-- PREVIEW AND PUBLISH -->
+      <section class="card">
+
+        <div class="card-heading">
+          <div>
+            <h2>Review and Publish Examination</h2>
+            <p>Confirm the examination details before publishing.</p>
+          </div>
+          <span class="section-number">STEP 3</span>
+        </div>
+
+        <div id="publishStatus" class="status"></div>
+
+        <div class="exam-summary">
+
+          <div class="summary-item">
+            <span>Questions Per Student</span>
+            <strong id="previewQuestionCount">20</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Total Marks</span>
+            <strong id="previewTotalMarks">20</strong>
+          </div>
+
+          <div class="summary-item">
+            <span>Saved Questions</span>
+            <strong id="previewSavedCount">0</strong>
+          </div>
+
+        </div>
+
+        <div class="info-box">
+          Publishing requires at least as many saved, published questions as the number each student will answer.
+          For example, if each student will answer 20 questions, the examination must have at least 20 eligible questions.
+        </div>
+
+        <div class="button-row">
+          <button class="btn btn-gold" type="button" id="publishBtn" disabled>
+            Publish Examination
+          </button>
+        </div>
+
+        <div id="examCodeBox" class="exam-code hidden">
+          <small>PERMANENT EXAMINATION ID</small>
+          <strong id="examCode">STIG-EXM0000000</strong>
+
+          <div class="button-row" style="justify-content:center">
+            <button class="btn btn-gold" type="button" id="copyCodeBtn">Copy Examination ID</button>
+            <button class="btn btn-outline" type="button" id="shareCodeBtn">Share Examination ID</button>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="footer-note">
+        SAINTIG EXAMS — Building Your Business for the Digital World.
       </div>
-    `).join("");
-}
 
-function removeQuestion(index) {
-  questionQueue.splice(index, 1);
+    </div>
 
-  questionQueue.forEach((question, position) => {
-    question.question_order = position + 1;
-  });
+  </main>
+</div>
 
-  renderQueue();
-  updatePreview();
-}
+<script type="module">
 
-$("clearQueueBtn").addEventListener("click", () => {
-  if (!questionQueue.length) return;
+  import { supabase } from "./auth.js";
 
-  if (!confirm("Remove all questions from the temporary queue?")) return;
+  const FUNCTION_NAME = "school-exam-management";
 
-  questionQueue = [];
-  renderQueue();
-  updatePreview();
-});
+  const $ = id => document.getElementById(id);
 
-/* =====================================
-   CSV TEMPLATE
-===================================== */
+  let currentExam = null;
+  let questionQueue = [];
+  let savedQuestions = [];
+  let subjects = [];
+  let isPublished = false;
 
-const CSV_HEADERS = [
-  "question_text",
-  "option_a",
-  "option_b",
-  "option_c",
-  "option_d",
-  "correct_option",
-  "explanation",
-  "marks",
-  "question_order"
-];
+  // --------------------------------------------------
+  // GENERAL HELPERS
+  // --------------------------------------------------
 
-function csvEscape(value) {
-  const text = String(value ?? "");
-  return '"' + text.replace(/"/g, '""') + '"';
-}
-
-$("downloadTemplateBtn").addEventListener("click", () => {
-  const sample = [
-    "Sample question?",
-    "Option A",
-    "Option B",
-    "Option C",
-    "Option D",
-    "A",
-    "Optional explanation",
-    "1",
-    "1"
-  ];
-
-  const csv = [
-    CSV_HEADERS.join(","),
-    sample.map(csvEscape).join(",")
-  ].join("\r\n");
-
-  const blob = new Blob(
-    ["\uFEFF" + csv],
-    {type:"text/csv;charset=utf-8;"}
-  );
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-
-  link.href = url;
-  link.download = "saintig-exams-question-template.csv";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  URL.revokeObjectURL(url);
-});
-
-/* =====================================
-   CSV PARSER
-===================================== */
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [];
-  let value = "";
-  let quoted = false;
-
-  for (let i = 0; i < text.length; i++) {
-    const character = text[i];
-    const next = text[i + 1];
-
-    if (character === '"') {
-      if (quoted && next === '"') {
-        value += '"';
-        i++;
-      } else {
-        quoted = !quoted;
-      }
-    } else if (character === "," && !quoted) {
-      row.push(value);
-      value = "";
-    } else if (
-      (character === "\n" || character === "\r") &&
-      !quoted
-    ) {
-      if (character === "\r" && next === "\n") i++;
-
-      row.push(value);
-
-      if (row.some(cell => cell.trim() !== "")) {
-        rows.push(row);
-      }
-
-      row = [];
-      value = "";
-    } else {
-      value += character;
-    }
+  function showStatus(element, message, type = "info") {
+    element.textContent = message;
+    element.className = "status show " + type;
   }
 
-  row.push(value);
-
-  if (row.some(cell => cell.trim() !== "")) {
-    rows.push(row);
+  function hideStatus(element) {
+    element.textContent = "";
+    element.className = "status";
   }
 
-  return rows;
-}
-
-/* =====================================
-   CSV VALIDATION
-===================================== */
-
-$("csvFile").addEventListener("change", async event => {
-  const file = event.target.files[0];
-
-  csvQuestions = [];
-  csvErrors = [];
-
-  $("csvPreviewArea").classList.add("hidden");
-  hideMessage("csvMessage");
-
-  if (!file) return;
-
-  if (!file.name.toLowerCase().endsWith(".csv")) {
-    showMessage("csvMessage", "Please select a CSV file.", "error");
-    return;
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
   }
 
-  try {
-    const text = await file.text();
-    const rows = parseCSV(text);
+  function positiveNumber(value, label) {
+    const number = Number(value);
 
-    if (rows.length < 2) {
-      throw new Error("The CSV file contains no question rows.");
+    if (!Number.isFinite(number) || number <= 0) {
+      throw new Error(label + " must be greater than zero.");
     }
 
-    const headers = rows[0].map(value =>
-      value.trim().replace(/^\uFEFF/, "")
-    );
+    return number;
+  }
 
-    const missingHeaders = CSV_HEADERS.filter(
-      header => !headers.includes(header)
-    );
+  function integerNumber(value, label) {
+    const number = Number(value);
 
-    if (missingHeaders.length) {
+    if (!Number.isSafeInteger(number) || number <= 0) {
+      throw new Error(label + " must be a positive whole number.");
+    }
+
+    return number;
+  }
+
+  function getExamTotal() {
+    const count = Number($("questionCount").value);
+    const marks = Number($("marksPerQuestion").value);
+
+    if (!Number.isFinite(count) || !Number.isFinite(marks)) {
+      return 0;
+    }
+
+    return count * marks;
+  }
+
+  function updateTotalMarks() {
+    const total = getExamTotal();
+    const display = Number.isInteger(total)
+      ? total
+      : total.toFixed(2);
+
+    $("totalMarks").textContent = display;
+    $("previewTotalMarks").textContent = display;
+    $("previewQuestionCount").textContent =
+      $("questionCount").value || "0";
+  }
+
+  function updateQuestionMarksDefault() {
+    $("questionMarks").value =
+      $("marksPerQuestion").value || "1";
+  }
+
+  function parseFunctionData(data) {
+    if (!data || data.success === false) {
       throw new Error(
-        "Missing required columns: " + missingHeaders.join(", ")
+        data?.error ||
+        data?.message ||
+        "The server could not complete the request."
       );
     }
 
-    const indexes = {};
-    CSV_HEADERS.forEach(header => {
-      indexes[header] = headers.indexOf(header);
+    return data;
+  }
+
+  async function callFunction(action, payload = {}) {
+    const { data, error } = await supabase.functions.invoke(
+      FUNCTION_NAME,
+      {
+        body: {
+          action,
+          ...payload
+        }
+      }
+    );
+
+    if (error) {
+      throw new Error(error.message || "Unable to contact the examination service.");
+    }
+
+    return parseFunctionData(data);
+  }
+
+  function getArray(data, ...keys) {
+    for (const key of keys) {
+      if (Array.isArray(data?.[key])) return data[key];
+      if (Array.isArray(data?.data?.[key])) return data.data[key];
+    }
+
+    if (Array.isArray(data?.data)) return data.data;
+
+    return [];
+  }
+
+  function getExamObject(data) {
+    if (data?.exam && typeof data.exam === "object") {
+      return data.exam;
+    }
+
+    if (data?.data?.exam && typeof data.data.exam === "object") {
+      return data.data.exam;
+    }
+
+    if (data?.data && typeof data.data === "object" &&
+        !Array.isArray(data.data)) {
+      return data.data;
+    }
+
+    return data;
+  }
+
+  function getQuestionArray(data) {
+    return getArray(data, "questions", "exam_questions", "items");
+  }
+
+  function getSubjectArray(data) {
+    return getArray(data, "subjects", "school_subjects", "items");
+  }
+
+  function getSavedQuestionOrder(question) {
+    const order = Number(question.question_order);
+    return Number.isSafeInteger(order) && order > 0 ? order : 0;
+  }
+
+  // --------------------------------------------------
+  // AUTHENTICATION
+  // --------------------------------------------------
+
+  async function protectPage() {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error || !data.user) {
+      await supabase.auth.signOut();
+
+      window.location.replace("school-login.html");
+      return false;
+    }
+
+    return true;
+  }
+
+  // --------------------------------------------------
+  // LOAD SUBJECTS
+  // --------------------------------------------------
+
+  async function loadSubjects() {
+    const select = $("subject");
+
+    select.innerHTML = '<option value="">Loading subjects...</option>';
+
+    const result = await callFunction("list_subjects");
+
+    subjects = getSubjectArray(result);
+
+    if (!subjects.length) {
+      select.innerHTML = '<option value="">No published subjects available</option>';
+      return;
+    }
+
+    select.innerHTML = '<option value="">Select a subject</option>';
+
+    subjects.forEach(subject => {
+      const option = document.createElement("option");
+
+      option.value = subject.id;
+      option.textContent = subject.subject_name || subject.name || "Unnamed Subject";
+
+      select.appendChild(option);
     });
+  }
 
-    rows.slice(1).forEach((cells, rowIndex) => {
-      const lineNumber = rowIndex + 2;
+  // --------------------------------------------------
+  // EXAMINATION FORM
+  // --------------------------------------------------
 
-      const item = {};
-      CSV_HEADERS.forEach(header => {
-        item[header] = (cells[indexes[header]] ?? "").trim();
+  function collectExamFields() {
+    const subjectId = $("subject").value;
+
+    if (!subjectId) {
+      throw new Error("Please select a subject.");
+    }
+
+    const selectedSubject = subjects.find(
+      subject => String(subject.id) === String(subjectId)
+    );
+
+    if (!selectedSubject) {
+      throw new Error("The selected subject is not available. Refresh the page and try again.");
+    }
+
+    const title = $("title").value.trim();
+
+    if (!title) {
+      throw new Error("Please enter the examination title.");
+    }
+
+    const duration = integerNumber(
+      $("duration").value,
+      "Duration"
+    );
+
+    const questionCount = integerNumber(
+      $("questionCount").value,
+      "Questions each student will answer"
+    );
+
+    const marks = positiveNumber(
+      $("marksPerQuestion").value,
+      "Marks per question"
+    );
+
+    let startsAt = null;
+    let endsAt = null;
+
+    if ($("enableSchedule").checked) {
+      const startValue = $("startsAt").value;
+      const endValue = $("endsAt").value;
+
+      if (!startValue || !endValue) {
+        throw new Error("Please enter both the start and end date and time.");
+      }
+
+      const startDate = new Date(startValue);
+      const endDate = new Date(endValue);
+
+      if (
+        !Number.isFinite(startDate.getTime()) ||
+        !Number.isFinite(endDate.getTime())
+      ) {
+        throw new Error("Please enter valid examination dates.");
+      }
+
+      if (endDate <= startDate) {
+        throw new Error("The examination end time must be after the start time.");
+      }
+
+      startsAt = startDate.toISOString();
+      endsAt = endDate.toISOString();
+    }
+
+    return {
+      title,
+      name_class: $("nameClass").value.trim() || null,
+      description: $("description").value.trim() || null,
+      school_subject_id: Number(subjectId),
+      duration_minutes: duration,
+      student_question_count: questionCount,
+      marks_per_question: marks,
+      starts_at: startsAt,
+      ends_at: endsAt,
+      max_attempts: 2
+    };
+  }
+
+  async function saveDraft(event) {
+    event.preventDefault();
+
+    hideStatus($("pageStatus"));
+
+    const button = $("saveDraftBtn");
+    button.disabled = true;
+    button.textContent = "Saving...";
+
+    try {
+      const fields = collectExamFields();
+
+      let result;
+
+      if (!currentExam) {
+        result = await callFunction("create_exam", fields);
+      } else {
+        result = await callFunction("update_exam", {
+          examination_id: currentExam.id,
+          ...fields
+        });
+      }
+
+      const exam = getExamObject(result);
+
+      if (!exam.id) {
+        throw new Error("The server did not return the examination ID. Please refresh and check your saved examinations before trying again.");
+      }
+
+      currentExam = {
+        ...currentExam,
+        ...exam
+      };
+
+      isPublished = Boolean(currentExam.is_published);
+
+      $("saveDraftBtn").textContent = "Update Examination Draft";
+
+      $("saveQuestionsBtn").disabled =
+        isPublished || questionQueue.length === 0;
+
+      $("refreshQuestionsBtn").disabled = false;
+
+      showStatus(
+        $("pageStatus"),
+        currentExam.examination_code
+          ? "Examination draft saved successfully. Examination ID: " + currentExam.examination_code
+          : "Examination draft saved successfully. You can now save questions.",
+        "success"
+      );
+
+      await refreshSavedQuestions();
+
+      updatePublishControls();
+
+      if (currentExam.examination_code) {
+        displayExamCode(currentExam.examination_code);
+      }
+
+    } catch (error) {
+      showStatus($("pageStatus"), error.message, "error");
+    } finally {
+      button.disabled = false;
+
+      if (!currentExam) {
+        button.textContent = "Save Examination Draft";
+      } else if (!isPublished) {
+        button.textContent = "Update Examination Draft";
+      } else {
+        button.textContent = "Examination Published";
+        button.disabled = true;
+      }
+    }
+  }
+
+  // --------------------------------------------------
+  // QUESTION VALIDATION AND QUEUE
+  // --------------------------------------------------
+
+  function validateQuestion(question) {
+    const text = String(question.question_text || "").trim();
+
+    if (!text) {
+      throw new Error("A question cannot be empty.");
+    }
+
+    for (const key of ["option_a", "option_b", "option_c", "option_d"]) {
+      if (!String(question[key] || "").trim()) {
+        throw new Error("Every question must have four answer options.");
+      }
+    }
+
+    const correct = String(question.correct_option || "").toUpperCase();
+
+    if (!["A", "B", "C", "D"].includes(correct)) {
+      throw new Error("The correct option must be A, B, C or D.");
+    }
+
+    const marks = positiveNumber(
+      question.marks ?? $("marksPerQuestion").value,
+      "Question marks"
+    );
+
+    return {
+      question_text: text,
+      option_a: String(question.option_a).trim(),
+      option_b: String(question.option_b).trim(),
+      option_c: String(question.option_c).trim(),
+      option_d: String(question.option_d).trim(),
+      correct_option: correct,
+      explanation: String(question.explanation || "").trim() || null,
+      marks
+    };
+  }
+
+  function addQuestionToQueue(question) {
+    const clean = validateQuestion(question);
+
+    questionQueue.push(clean);
+
+    renderQueue();
+
+    $("saveQuestionsBtn").disabled =
+      !currentExam || isPublished || questionQueue.length === 0;
+  }
+
+  $("singleQuestionForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    try {
+      addQuestionToQueue({
+        question_text: $("questionText").value,
+        option_a: $("optionA").value,
+        option_b: $("optionB").value,
+        option_c: $("optionC").value,
+        option_d: $("optionD").value,
+        correct_option: $("correctOption").value,
+        explanation: $("explanation").value,
+        marks: $("questionMarks").value
       });
 
-      const errors = [];
+      event.target.reset();
+      updateQuestionMarksDefault();
 
-      [
+      showStatus(
+        $("questionStatus"),
+        "Question added to the waiting list. Save it to the examination when ready.",
+        "success"
+      );
+
+    } catch (error) {
+      showStatus($("questionStatus"), error.message, "error");
+    }
+  });
+
+  function renderQueue() {
+    const container = $("queueList");
+
+    $("queueCount").textContent =
+      questionQueue.length + " question(s) waiting";
+
+    $("clearQueueBtn").disabled = questionQueue.length === 0;
+
+    if (!questionQueue.length) {
+      container.innerHTML =
+        '<p class="help">No questions have been added yet.</p>';
+    } else {
+      container.innerHTML = "";
+
+      questionQueue.forEach((question, index) => {
+        const item = document.createElement("div");
+
+        item.className = "queue-item";
+
+        item.innerHTML = `
+          <div>
+            <p><strong>Question ${index + 1}:</strong>
+              ${escapeHTML(question.question_text)}
+            </p>
+            <small>Correct option: ${escapeHTML(question.correct_option)}
+              · Marks: ${escapeHTML(question.marks)}
+            </small>
+          </div>
+          <button class="btn btn-danger btn-small"
+            type="button" data-remove="${index}">
+            Remove
+          </button>
+        `;
+
+        container.appendChild(item);
+      });
+    }
+  }
+
+  $("queueList").addEventListener("click", event => {
+    const button = event.target.closest("[data-remove]");
+
+    if (!button) return;
+
+    const index = Number(button.dataset.remove);
+
+    if (!Number.isInteger(index) || index < 0 ||
+        index >= questionQueue.length) return;
+
+    questionQueue.splice(index, 1);
+
+    renderQueue();
+
+    $("saveQuestionsBtn").disabled =
+      !currentExam || isPublished || questionQueue.length === 0;
+  });
+
+  $("clearQueueBtn").addEventListener("click", () => {
+    if (!questionQueue.length) return;
+
+    if (!confirm("Clear all questions waiting to be saved?")) return;
+
+    questionQueue = [];
+    renderQueue();
+
+    $("saveQuestionsBtn").disabled = true;
+
+    showStatus(
+      $("questionStatus"),
+      "The waiting list has been cleared. Previously saved questions are not affected.",
+      "info"
+    );
+  });
+
+  // --------------------------------------------------
+  // CSV PARSER
+  // --------------------------------------------------
+
+  function parseCSV(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let quoted = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const character = text[i];
+      const next = text[i + 1];
+
+      if (character === '"') {
+        if (quoted && next === '"') {
+          cell += '"';
+          i++;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (character === "," && !quoted) {
+        row.push(cell);
+        cell = "";
+      } else if (
+        (character === "\n" || character === "\r") &&
+        !quoted
+      ) {
+        if (character === "\r" && next === "\n") i++;
+
+        row.push(cell);
+        cell = "";
+
+        if (row.some(value => value.trim() !== "")) {
+          rows.push(row);
+        }
+
+        row = [];
+      } else {
+        cell += character;
+      }
+    }
+
+    if (quoted) {
+      throw new Error("Your CSV file contains an unclosed quotation mark.");
+    }
+
+    row.push(cell);
+
+    if (row.some(value => value.trim() !== "")) {
+      rows.push(row);
+    }
+
+    return rows;
+  }
+
+  function downloadCSVTemplate() {
+    const header = [
+      "question_text",
+      "option_a",
+      "option_b",
+      "option_c",
+      "option_d",
+      "correct_option",
+      "explanation",
+      "marks",
+      "question_order"
+    ];
+
+    const example = [
+      "What is government?",
+      "The study of plants",
+      "The process of governing a country",
+      "The study of animals",
+      "The study of rocks",
+      "B",
+      "Government deals with the governing of a country.",
+      "1",
+      "1"
+    ];
+
+    const csv = [header, example]
+      .map(row => row.map(value =>
+        '"' + String(value).replace(/"/g, '""') + '"'
+      ).join(","))
+      .join("\r\n");
+
+    const blob = new Blob([csv], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "saintig-exams-question-template.csv";
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  $("downloadTemplateBtn").addEventListener(
+    "click",
+    downloadCSVTemplate
+  );
+
+  $("uploadCsvBtn").addEventListener("click", async () => {
+    hideStatus($("questionStatus"));
+
+    const file = $("csvFile").files[0];
+
+    if (!file) {
+      showStatus($("questionStatus"), "Please select a CSV file first.", "error");
+      return;
+    }
+
+    if (!file.name.toLowerCase().endsWith(".csv")) {
+      showStatus($("questionStatus"), "Please select a CSV file.", "error");
+      return;
+    }
+
+    const button = $("uploadCsvBtn");
+    button.disabled = true;
+    button.textContent = "Reading file...";
+
+    try {
+      const content = await file.text();
+      const rows = parseCSV(content);
+
+      if (rows.length < 2) {
+        throw new Error("The CSV file does not contain any question rows.");
+      }
+
+      const expectedHeaders = [
         "question_text",
         "option_a",
         "option_b",
         "option_c",
         "option_d",
-        "correct_option"
-      ].forEach(field => {
-        if (!item[field]) errors.push(`${field} is required`);
-      });
+        "correct_option",
+        "explanation",
+        "marks",
+        "question_order"
+      ];
 
-      const correct = item.correct_option.toUpperCase();
-
-      if (!["A","B","C","D"].includes(correct)) {
-        errors.push("correct_option must be A, B, C or D");
-      }
-
-      const marks = item.marks === ""
-        ? 1
-        : Number(item.marks);
-
-      if (!Number.isFinite(marks) || marks <= 0) {
-        errors.push("marks must be greater than zero");
-      }
-
-      const order = item.question_order === ""
-        ? lineNumber - 1
-        : Number(item.question_order);
-
-      if (!Number.isInteger(order) || order < 1) {
-        errors.push("question_order must be a positive whole number");
-      }
-
-      if (errors.length) {
-        csvErrors.push(`CSV row ${lineNumber}: ${errors.join("; ")}`);
-        return;
-      }
-
-      csvQuestions.push({
-        question_text: item.question_text,
-        option_a: item.option_a,
-        option_b: item.option_b,
-        option_c: item.option_c,
-        option_d: item.option_d,
-        correct_option: correct,
-        explanation: item.explanation || "",
-        marks,
-        question_order: order
-      });
-    });
-
-    $("csvCount").textContent =
-      `${csvQuestions.length} valid question(s)`;
-
-    $("csvPreview").innerHTML = `
-      <div class="section-note">
-        ${csvQuestions.length} valid question(s) found.
-        ${csvErrors.length} row(s) contain errors.
-        ${csvErrors.length ? "<br>" + csvErrors.map(escapeHTML).join("<br>") : ""}
-      </div>
-      ${csvQuestions.slice(0,5).map((question,index) => `
-        <div class="question-card">
-          <h4>Preview ${index + 1}</h4>
-          <p>${escapeHTML(question.question_text)}</p>
-          <div class="question-meta">
-            Correct answer: ${escapeHTML(question.correct_option)}
-            · Marks: ${escapeHTML(question.marks)}
-          </div>
-        </div>
-      `).join("")}
-      ${csvQuestions.length > 5
-        ? `<p class="help">Showing the first 5 questions. ${csvQuestions.length - 5} more valid questions are ready.</p>`
-        : ""}
-    `;
-
-    $("csvPreviewArea").classList.remove("hidden");
-
-    if (csvErrors.length) {
-      showMessage(
-        "csvMessage",
-        `${csvErrors.length} CSV row(s) need correction. Valid rows can still be added to the queue.`,
-        "error"
+      const headers = rows[0].map(value =>
+        value.trim().replace(/^\uFEFF/, "").toLowerCase()
       );
-    } else {
-      showMessage(
-        "csvMessage",
-        "CSV validation completed successfully.",
+
+      if (
+        headers.length !== expectedHeaders.length ||
+        !expectedHeaders.every((header, index) => headers[index] === header)
+      ) {
+        throw new Error(
+          "The CSV headings do not match the downloaded SAINTIG EXAMS template."
+        );
+      }
+
+      const imported = [];
+
+      for (let i = 1; i < rows.length; i++) {
+        const values = rows[i];
+
+        if (values.length !== expectedHeaders.length) {
+          throw new Error(
+            "CSV row " + (i + 1) +
+            " has an incorrect number of columns. Please correct it and upload again."
+          );
+        }
+
+        const question = validateQuestion({
+          question_text: values[0],
+          option_a: values[1],
+          option_b: values[2],
+          option_c: values[3],
+          option_d: values[4],
+          correct_option: values[5],
+          explanation: values[6],
+          marks: values[7] || $("marksPerQuestion").value
+        });
+
+        imported.push(question);
+      }
+
+      questionQueue.push(...imported);
+
+      renderQueue();
+
+      $("saveQuestionsBtn").disabled =
+        !currentExam || isPublished || questionQueue.length === 0;
+
+      $("csvFile").value = "";
+
+      showStatus(
+        $("questionStatus"),
+        imported.length + " question(s) were read successfully and added to the waiting list. Save them to the examination.",
         "success"
       );
+
+    } catch (error) {
+      showStatus($("questionStatus"), error.message, "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = "Read CSV Questions";
     }
-
-  } catch (error) {
-    showMessage("csvMessage", error.message, "error");
-  }
-});
-
-/* =====================================
-   ADD CSV QUESTIONS TO QUEUE
-===================================== */
-
-$("addCsvBtn").addEventListener("click", () => {
-  if (!csvQuestions.length) {
-    showMessage("csvMessage", "There are no valid questions to add.", "error");
-    return;
-  }
-
-  csvQuestions.forEach(question => {
-    questionQueue.push({
-      ...question,
-      question_order: questionQueue.length + 1
-    });
   });
 
-  renderQueue();
-  updatePreview();
+  // --------------------------------------------------
+  // LOAD SAVED QUESTIONS
+  // --------------------------------------------------
 
-  showMessage(
-    "csvMessage",
-    `${csvQuestions.length} question(s) added to the temporary queue.`,
-    "success"
-  );
+  async function refreshSavedQuestions() {
+    if (!currentExam?.id) return;
 
-  csvQuestions = [];
-  $("csvPreviewArea").classList.add("hidden");
-  $("csvFile").value = "";
-});
+    const result = await callFunction("list_questions", {
+      examination_id: currentExam.id
+    });
 
-$("clearCsvBtn").addEventListener("click", () => {
-  csvQuestions = [];
-  csvErrors = [];
-  $("csvFile").value = "";
-  $("csvPreviewArea").classList.add("hidden");
-  hideMessage("csvMessage");
-});
+    savedQuestions = getQuestionArray(result);
 
-/* =====================================
-   EXAMINATION PREVIEW
-===================================== */
-
-function updatePreview() {
-  const subjectSelect = $("examSubject");
-  const subjectName =
-    subjectSelect.selectedOptions[0]?.textContent || "Not selected";
-
-  $("previewSubject").textContent = subjectName;
-  $("previewTitle").textContent = $("examTitle").value.trim() || "—";
-  $("previewNameClass").textContent = $("examNameClass").value.trim() || "—";
-
-  $("previewDuration").textContent =
-    $("examDuration").value
-      ? $("examDuration").value + " minutes"
-      : "—";
-
-  $("previewQuestionCount").textContent =
-    $("questionCount").value || "—";
-
-  $("previewTotalMarks").textContent =
-    $("totalMarks").value || "—";
-
-  $("previewDescription").textContent =
-    $("examDescription").value.trim() || "—";
-
-  $("previewUploadedCount").textContent =
-    questionQueue.length;
-
-  $("previewStatus").textContent = "Not saved";
-}
-
-[
-  "examSubject",
-  "examTitle",
-  "examNameClass",
-  "examDescription",
-  "examDuration",
-  "questionCount",
-  "marksPerQuestion",
-  "startDateTime",
-  "endDateTime"
-].forEach(id => {
-  $(id).addEventListener("input", updatePreview);
-  $(id).addEventListener("change", updatePreview);
-});
-
-/* =====================================
-   SAVE QUESTIONS PLACEHOLDER
-===================================== */
-
-$("saveQuestionsBtn").addEventListener("click", () => {
-  showMessage(
-    "pageMessage",
-    "The question queue is ready. Database saving will be connected when we update the school-exam-management backend.",
-    "info"
-  );
-});
-
-/* =====================================
-   DRAFT AND PUBLISH PLACEHOLDERS
-===================================== */
-
-$("examForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  showMessage(
-    "pageMessage",
-    "Examination details are ready. Saving the draft will be connected to the backend in the next stage.",
-    "info"
-  );
-});
-
-$("publishBtn").addEventListener("click", () => {
-  showMessage(
-    "pageMessage",
-    "Publishing, package validation, schedule enforcement and permanent Examination ID generation will be connected to the backend in the next stage.",
-    "info"
-  );
-});
-
-/* =====================================
-   CANCEL
-===================================== */
-
-$("cancelBtn").addEventListener("click", () => {
-  if (!confirm("Clear the examination details and temporary question queue?")) {
-    return;
+    renderSavedQuestions();
+    updatePublishControls();
   }
 
-  $("examForm").reset();
-  $("questionForm").reset();
+  function renderSavedQuestions() {
+    $("savedCountBadge").textContent =
+      savedQuestions.length + " SAVED";
 
-  $("examDuration").value = "60";
-  $("questionCount").value = "10";
-  $("marksPerQuestion").value = "1";
-  $("questionMarks").value = "1";
+    $("previewSavedCount").textContent =
+      savedQuestions.length;
 
-  $("customizeTime").checked = false;
-  $("startField").classList.add("hidden");
-  $("endField").classList.add("hidden");
+    const container = $("savedQuestionsList");
 
-  questionQueue = [];
-  csvQuestions = [];
-  csvErrors = [];
-
-  $("csvFile").value = "";
-  $("csvPreviewArea").classList.add("hidden");
-  $("examIdBox").style.display = "none";
-
-  $("publicationStatus").textContent = "NOT SAVED";
-  $("draftStatus").textContent = "NEW EXAMINATION";
-
-  calculateTotal();
-  renderQueue();
-  updatePreview();
-
-  hideMessage("pageMessage");
-});
-
-/* =====================================
-   EXAMINATION ID COPY AND SHARE
-===================================== */
-
-$("copyIdBtn").addEventListener("click", async () => {
-  const id = $("examId").textContent.trim();
-
-  if (!id || id === "—") return;
-
-  try {
-    await navigator.clipboard.writeText(id);
-    showMessage("pageMessage", "Examination ID copied.", "success");
-  } catch (_) {
-    showMessage("pageMessage", "Unable to copy the Examination ID.", "error");
-  }
-});
-
-$("shareIdBtn").addEventListener("click", async () => {
-  const id = $("examId").textContent.trim();
-
-  if (!id || id === "—") return;
-
-  try {
-    if (navigator.share) {
-      await navigator.share({
-        title:"SAINTIG EXAMS Examination",
-        text:"Examination ID: " + id
-      });
-    } else {
-      await navigator.clipboard.writeText("Examination ID: " + id);
-      showMessage("pageMessage", "Examination ID copied. You can now share it.", "success");
+    if (!savedQuestions.length) {
+      container.innerHTML =
+        '<p class="help">No saved questions yet.</p>';
+      return;
     }
-  } catch (_) {
-    // Sharing may be cancelled by the user.
+
+    container.innerHTML = "";
+
+    savedQuestions.forEach((question, index) => {
+      const item = document.createElement("div");
+
+      item.className = "queue-item";
+
+      item.innerHTML = `
+        <div>
+          <p><strong>Question ${index + 1}:</strong>
+            ${escapeHTML(question.question_text)}
+          </p>
+          <small>
+            Correct option: ${escapeHTML(question.correct_option)}
+            · Marks: ${escapeHTML(question.marks)}
+            ${question.is_published === false ? " · Unpublished" : ""}
+          </small>
+        </div>
+      `;
+
+      container.appendChild(item);
+    });
   }
-});
 
-/* =====================================
-   NAVIGATION
-===================================== */
+  $("refreshQuestionsBtn").addEventListener("click", async () => {
+    const button = $("refreshQuestionsBtn");
+    button.disabled = true;
 
-$("backBtn").addEventListener("click", () => {
-  location.href = "school-dashboard.html";
-});
+    try {
+      await refreshSavedQuestions();
 
-/* =====================================
-   INITIAL DISPLAY
-===================================== */
+      showStatus(
+        $("questionStatus"),
+        "Saved questions refreshed.",
+        "success"
+      );
+    } catch (error) {
+      showStatus($("questionStatus"), error.message, "error");
+    } finally {
+      button.disabled = !currentExam;
+    }
+  });
 
-calculateTotal();
-renderQueue();
-updatePreview();
+  // --------------------------------------------------
+  // SAVE QUESTIONS
+  // --------------------------------------------------
+
+  async function saveQuestions() {
+    if (!currentExam?.id) {
+      showStatus(
+        $("questionStatus"),
+        "Save the examination draft before saving questions.",
+        "error"
+      );
+      return;
+    }
+
+    if (isPublished) {
+      showStatus(
+        $("questionStatus"),
+        "This examination is already published. Its question list cannot be changed from this page.",
+        "warning"
+      );
+      return;
+    }
+
+    if (!questionQueue.length) {
+      showStatus(
+        $("questionStatus"),
+        "There are no questions waiting to be saved.",
+        "warning"
+      );
+      return;
+    }
+
+    const button = $("saveQuestionsBtn");
+    button.disabled = true;
+    button.textContent = "Saving questions...";
+
+    try {
+      // Retrieve current saved questions to avoid reusing question_order.
+      await refreshSavedQuestions();
+
+      const existingOrders = savedQuestions.map(getSavedQuestionOrder);
+      const highestOrder = Math.max(0, ...existingOrders);
+
+      const questionsToSave = questionQueue.map((question, index) => ({
+        ...question,
+        question_order: highestOrder + index + 1
+      }));
+
+      await callFunction("save_questions", {
+        examination_id: currentExam.id,
+        questions: questionsToSave
+      });
+
+      // Clear the waiting list only after the server confirms success.
+      const savedCount = questionsToSave.length;
+
+      questionQueue = [];
+      renderQueue();
+
+      $("csvFile").value = "";
+
+      await refreshSavedQuestions();
+
+      showStatus(
+        $("questionStatus"),
+        savedCount + " question(s) saved successfully.",
+        "success"
+      );
+
+    } catch (error) {
+      showStatus(
+        $("questionStatus"),
+        error.message + " Your waiting questions have been kept on this page.",
+        "error"
+      );
+    } finally {
+      button.disabled =
+        !currentExam || isPublished || questionQueue.length === 0;
+
+      button.textContent = "Save Questions to Examination";
+    }
+  }
+
+  $("saveQuestionsBtn").addEventListener("click", saveQuestions);
+
+  // --------------------------------------------------
+  // PUBLISHING
+  // --------------------------------------------------
+
+  function updatePublishControls() {
+    const required = Number($("questionCount").value);
+    const eligible = savedQuestions.filter(
+      question =>
+        question.is_archived !== true &&
+        question.is_published !== false
+    ).length;
+
+    $("previewSavedCount").textContent = eligible;
+
+    $("publishBtn").disabled =
+      !currentExam ||
+      isPublished ||
+      !Number.isSafeInteger(required) ||
+      required <= 0 ||
+      eligible < required ||
+      questionQueue.length > 0;
+
+    if (questionQueue.length > 0) {
+      $("publishBtn").title =
+        "Save or clear the waiting questions before publishing.";
+    } else if (eligible < required) {
+      $("publishBtn").title =
+        "Add enough saved questions before publishing.";
+    } else {
+      $("publishBtn").title = "";
+    }
+  }
+
+  async function publishExam() {
+    if (!currentExam?.id) {
+      showStatus(
+        $("publishStatus"),
+        "Save the examination draft first.",
+        "error"
+      );
+      return;
+    }
+
+    if (questionQueue.length > 0) {
+      showStatus(
+        $("publishStatus"),
+        "Please save or clear your waiting questions before publishing.",
+        "warning"
+      );
+      return;
+    }
+
+    const required = Number($("questionCount").value);
+
+    if (savedQuestions.length < required) {
+      showStatus(
+        $("publishStatus"),
+        "There are not enough saved questions for the number each student will answer.",
+        "error"
+      );
+      return;
+    }
+
+    if (!confirm(
+      "Are you sure you want to publish this examination? Check the examination details and questions before continuing."
+    )) {
+      return;
+    }
+
+    const button = $("publishBtn");
+    button.disabled = true;
+    button.textContent = "Publishing...";
+
+    try {
+      // Save the latest examination settings before publishing.
+      const fields = collectExamFields();
+
+      await callFunction("update_exam", {
+        examination_id: currentExam.id,
+        ...fields
+      });
+
+      const result = await callFunction("publish_exam", {
+        examination_id: currentExam.id
+      });
+
+      const exam = getExamObject(result);
+
+      currentExam = {
+        ...currentExam,
+        ...exam,
+        is_published: true
+      };
+
+      isPublished = true;
+
+      if (currentExam.examination_code) {
+        displayExamCode(currentExam.examination_code);
+      } else {
+        // Preserve an existing code if the response does not include it.
+        showStatus(
+          $("publishStatus"),
+          "The examination was published, but the server did not return its Examination ID. Refresh your examination list to retrieve it.",
+          "warning"
+        );
+      }
+
+      $("saveDraftBtn").textContent = "Examination Published";
+      $("saveDraftBtn").disabled = true;
+      $("saveQuestionsBtn").disabled = true;
+      $("publishBtn").textContent = "Published";
+
+      if (currentExam.examination_code) {
+        showStatus(
+          $("publishStatus"),
+          "Your examination has been published successfully.",
+          "success"
+        );
+      }
+
+      updatePublishControls();
+
+    } catch (error) {
+      showStatus($("publishStatus"), error.message, "error");
+
+      button.disabled = false;
+      button.textContent = "Publish Examination";
+    }
+  }
+
+  $("publishBtn").addEventListener("click", publishExam);
+
+  // --------------------------------------------------
+  // EXAMINATION ID
+  // --------------------------------------------------
+
+  function displayExamCode(code) {
+    if (!code) return;
+
+    $("examCode").textContent = code;
+    $("examCodeBox").classList.remove("hidden");
+  }
+
+  $("copyCodeBtn").addEventListener("click", async () => {
+    const code = $("examCode").textContent;
+
+    try {
+      await navigator.clipboard.writeText(code);
+
+      showStatus(
+        $("publishStatus"),
+        "Examination ID copied successfully.",
+        "success"
+      );
+    } catch {
+      showStatus(
+        $("publishStatus"),
+        "Unable to copy automatically. Please select and copy the Examination ID.",
+        "warning"
+      );
+    }
+  });
+
+  $("shareCodeBtn").addEventListener("click", async () => {
+    const code = $("examCode").textContent;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "SAINTIG EXAMS Examination ID",
+          text: "Examination ID: " + code
+        });
+      } else {
+        await navigator.clipboard.writeText(code);
+
+        showStatus(
+          $("publishStatus"),
+          "Sharing is unavailable on this browser. Examination ID copied instead.",
+          "info"
+        );
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        showStatus(
+          $("publishStatus"),
+          "Unable to share the Examination ID.",
+          "error"
+        );
+      }
+    }
+  });
+
+  // --------------------------------------------------
+  // FORM CONTROLS
+  // --------------------------------------------------
+
+  $("examForm").addEventListener("submit", saveDraft);
+
+  $("questionCount").addEventListener("input", () => {
+    updateTotalMarks();
+    updatePublishControls();
+  });
+
+  $("marksPerQuestion").addEventListener("input", () => {
+    updateTotalMarks();
+    updateQuestionMarksDefault();
+  });
+
+  $("enableSchedule").addEventListener("change", event => {
+    $("scheduleFields").classList.toggle(
+      "show",
+      event.target.checked
+    );
+  });
+
+  $("cancelBtn").addEventListener("click", () => {
+    if (currentExam || questionQueue.length) {
+      const confirmed = confirm(
+        "Leave this page? Any questions still waiting to be saved will be lost."
+      );
+
+      if (!confirmed) return;
+    }
+
+    window.location.href = "school-dashboard.html";
+  });
+
+  $("menuBtn").addEventListener("click", () => {
+    $("sidebar").classList.toggle("open");
+  });
+
+  // --------------------------------------------------
+  // INITIALIZE PAGE
+  // --------------------------------------------------
+
+  async function initializePage() {
+    try {
+      const authenticated = await protectPage();
+
+      if (!authenticated) return;
+
+      updateTotalMarks();
+      updateQuestionMarksDefault();
+      renderQueue();
+
+      await loadSubjects();
+
+      showStatus(
+        $("pageStatus"),
+        "Your Teacher/School account is connected. You can now register an examination.",
+        "success"
+      );
+
+    } catch (error) {
+      showStatus(
+        $("pageStatus"),
+        error.message || "Unable to load the examination registration page.",
+        "error"
+      );
+    }
+  }
+
+  initializePage();
 
 </script>
 
