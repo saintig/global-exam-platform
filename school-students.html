@@ -1264,7 +1264,8 @@ async function openDashboard() {
       session = refreshed.data.session;
     }
 
-    location.href = new URL("dashboard.html", location.href).href;
+    // CORRECT TEACHER DASHBOARD FILE
+    location.href = "school-dashboard.html";
 
   } catch (error) {
     showMessage(
