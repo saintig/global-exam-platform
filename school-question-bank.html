@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Question Bank | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#ffffff;
+  --text:#25334a;
+  --muted:#718096;
+  --border:#dfe5ee;
+  --green:#16834a;
+  --red:#c0392b;
+  --orange:#b7791f;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header{
+  height:65px;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.menu-btn{
+  border:0;
+  background:transparent;
+  color:white;
+  font-size:27px;
+  cursor:pointer;
+}
+
+.brand{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.brand span{color:var(--gold)}
+
+.account-label{
+  margin-left:auto;
+  font-size:13px;
+  color:#e8edf7;
+}
+
+.layout{
+  display:flex;
+  min-height:calc(100vh - 65px);
+}
+
+.sidebar{
+  width:255px;
+  background:var(--navy);
+  color:white;
+  padding:18px 12px;
+  flex-shrink:0;
+}
+
+.sidebar h3{
+  color:var(--gold);
+  font-size:12px;
+  padding:0 12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.sidebar a{
+  display:block;
+  padding:12px;
+  margin:4px 0;
+  border-radius:6px;
+  color:#e9eef8;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+  background:var(--blue);
+  border-left:4px solid var(--gold);
+}
+
+.sidebar hr{
+  border:0;
+  border-top:1px solid rgba(255,255,255,.15);
+  margin:15px 0;
+}
+
+main{
+  flex:1;
+  padding:24px;
+  min-width:0;
+}
+
+.page-title{
+  margin:0 0 7px;
+  color:var(--navy);
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:22px;
+  font-size:14px;
+}
+
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 2px 7px rgba(0,0,0,.035);
+}
+
+.card h2{
+  margin:0 0 17px;
+  font-size:18px;
+  color:var(--navy);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.field{
+  margin-bottom:14px;
+  min-width:0;
+}
+
+.field label{
+  display:block;
+  font-weight:bold;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+select,
+input{
+  width:100%;
+  padding:11px;
+  border:1px solid #cbd4e1;
+  border-radius:6px;
+  background:white;
+  font:inherit;
+  font-size:14px;
+  color:var(--text);
+}
+
+select:focus,
+input:focus{
+  outline:2px solid #c9d9f5;
+  border-color:var(--blue);
+}
+
+button{
+  border:0;
+  border-radius:6px;
+  padding:9px 12px;
+  cursor:pointer;
+  font-weight:bold;
+  font-size:12px;
+}
+
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.primary{background:var(--blue);color:white}
+.gold{background:var(--gold);color:var(--navy)}
+.success{background:var(--green);color:white}
+.danger{background:var(--red);color:white}
+.secondary{background:#e9edf4;color:var(--navy)}
+.warning-btn{background:#f6ad55;color:#442000}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.notice{
+  padding:12px;
+  border-radius:7px;
+  background:#eef4ff;
+  border-left:4px solid var(--blue);
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.status{
+  display:none;
+  padding:11px;
+  border-radius:6px;
+  font-size:13px;
+  line-height:1.5;
+  margin-top:12px;
+}
+
+.status.ok{
+  display:block;
+  background:#e8f7ee;
+  color:#17683b;
+}
+
+.status.error{
+  display:block;
+  background:#fdecea;
+  color:#a5281c;
+}
+
+.status.info{
+  display:block;
+  background:#edf3ff;
+  color:#214e91;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:18px;
+}
+
+.stat-label{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  font-weight:bold;
+}
+
+.stat-number{
+  font-size:28px;
+  font-weight:bold;
+  color:var(--navy);
+  margin-top:6px;
+}
+
+.stat-help{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.exam-container{
+  border:1px solid var(--border);
+  border-radius:9px;
+  margin-bottom:14px;
+  overflow:hidden;
+  background:white;
+}
+
+.exam-header{
+  padding:15px;
+  display:flex;
+  align-items:flex-start;
+  gap:15px;
+}
+
+.exam-main{
+  flex:1;
+  min-width:0;
+}
+
+.exam-title{
+  color:var(--navy);
+  font-weight:bold;
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.exam-details{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+.exam-details strong{
+  color:var(--text);
+}
+
+.exam-controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  justify-content:flex-end;
+}
+
+.questions-area{
+  border-top:1px solid var(--border);
+  padding:15px;
+  background:#fafbfd;
+  display:none;
+}
+
+.questions-area.open{
+  display:block;
+}
+
+.question-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:15px;
+  margin-bottom:12px;
+}
+
+.question-title{
+  color:var(--navy);
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.question-text{
+  line-height:1.6;
+  margin-bottom:12px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.question-image{
+  max-width:100%;
+  max-height:300px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  margin:8px 0 12px;
+}
+
+.options{
+  line-height:1.8;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+.question-meta{
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  margin:10px 0;
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.published{
+  background:#e5f6eb;
+  color:#17683b;
+}
+
+.unpublished{
+  background:#fff3d8;
+  color:#8a5a00;
+}
+
+.archived{
+  background:#edf0f4;
+  color:#52606d;
+}
+
+.empty{
+  padding:20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+#overlay{
+  display:none;
+  position:fixed;
+  inset:65px 0 0;
+  background:rgba(0,0,0,.4);
+  z-index:14;
+}
+
+@media(max-width:800px){
+  .sidebar{
+    position:fixed;
+    z-index:15;
+    top:65px;
+    bottom:0;
+    left:-270px;
+    overflow-y:auto;
+    transition:left .2s;
+  }
+
+  .sidebar.open{left:0}
+  #overlay.show{display:block}
+  main{padding:15px}
+}
+
+@media(max-width:650px){
+  .grid,
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .card{padding:15px}
+
+  .exam-header{
+    flex-direction:column;
+  }
+
+  .exam-controls{
+    justify-content:flex-start;
+  }
+
+  .brand{font-size:15px}
+  .account-label{font-size:11px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+
+  <div class="account-label" id="accountLabel">
+    Teacher/School
+  </div>
+</header>
+
+<div id="overlay"></div>
+
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+
+  <h3>Teacher/School</h3>
+
+  <a href="school-dashboard.html">Dashboard Overview</a>
+  <a href="school-subjects.html">School Subjects</a>
+  <a href="register-examination.html">Register Examination</a>
+  <a href="school-question-bank.html" class="active">Question Bank</a>
+  <a href="school-students.html">School Students</a>
+
+  <hr>
+
+  <a href="#" id="logoutBtn">Logout</a>
+
+</aside>
+
+<main>
+
+<h1 class="page-title">Question Bank</h1>
+
+<div class="subtitle">
+View and manage your examinations and their associated questions.
+Question registration is done in Register Examination.
+</div>
+
+<section class="card">
+
+<h2>Question Bank Selection</h2>
+
+<div class="grid">
+
+<div class="field">
+<label for="subjectSelect">Subject</label>
+<select id="subjectSelect">
+<option value="">Loading subjects...</option>
+</select>
+</div>
+
+<div class="field">
+<label for="examSelect">Examination</label>
+<select id="examSelect">
+<option value="">All examinations</option>
+</select>
+</div>
+
+</div>
+
+<div class="field">
+<label for="searchQuestions">Search Questions</label>
+<input
+  id="searchQuestions"
+  type="search"
+  placeholder="Search questions"
+>
+</div>
+
+<div id="pageStatus" class="status"></div>
+
+</section>
+
+<div class="stats">
+
+<div class="stat-box">
+<div class="stat-label">Total Questions</div>
+<div class="stat-number" id="totalQuestions">0</div>
+<div class="stat-help">Questions currently stored in your Question Bank.</div>
+</div>
+
+<div class="stat-box">
+<div class="stat-label">Remaining Question Bank Capacity</div>
+<div class="stat-number" id="remainingCapacity">—</div>
+<div class="stat-help" id="capacityHelp">
+Your available question storage capacity.
+</div>
+</div>
+
+</div>
+
+<section class="card">
+
+<h2>Examination Question Bank</h2>
+
+<div class="notice">
+Each examination can be expanded to view its associated questions.
+The maximum questions allowed in an examination is separate from your total Question Bank capacity.
+</div>
+
+<div id="examList">
+<div class="empty">Loading examinations...</div>
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<script type="module">
+
+import { supabase, getCurrentSession } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+let currentUser = null;
+let account = null;
+
+let subjects = [];
+let examinations = [];
+let examinationQuestions = new Map();
+
+/*
+ DEFAULT PACKAGE LIMITS
+
+ These are maximum defaults.
+
+ Free:
+ - Total Question Bank: 20
+ - Per Examination: 10
+
+ Silver:
+ - Total Question Bank: 1,000
+ - Per Examination: 50
+
+ Gold:
+ - Total Question Bank: 4,000
+ - Per Examination: 100
+
+ Administrator-assigned account limits should override
+ these defaults when such values are available.
+*/
+
+const PACKAGE_LIMITS = {
+  free: {
+    questionBank: 20,
+    perExamination: 10
+  },
+
+  silver: {
+    questionBank: 1000,
+    perExamination: 50
+  },
+
+  gold: {
+    questionBank: 4000,
+    perExamination: 100
+  }
+};
+
+function showStatus(message, type = "info") {
+  const el = $("pageStatus");
+  el.textContent = message;
+  el.className = "status " + type;
+}
+
+function hideStatus() {
+  $("pageStatus").textContent = "";
+  $("pageStatus").className = "status";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
+}
+
+function formatPackageName(value) {
+  if (!value) return "Free";
+
+  return value.charAt(0).toUpperCase() +
+    value.slice(1).toLowerCase();
+}
+
+/*
+ This function uses administrator-assigned limits when
+ the account provides them. Otherwise, it uses the agreed
+ package defaults.
+*/
+function getAccountLimits() {
+
+  const packageName = String(
+    account?.subscription_package ||
+    account?.package ||
+    account?.plan ||
+    "free"
+  ).toLowerCase();
+
+  const defaults = PACKAGE_LIMITS[packageName] || null;
+
+  const customQuestionBank =
+    Number(account?.question_bank_capacity);
+
+  const customPerExamination =
+    Number(account?.max_questions_per_examination);
+
+  return {
+
+    packageName,
+
+    questionBank:
+      Number.isFinite(customQuestionBank) &&
+      customQuestionBank > 0
+        ? customQuestionBank
+        : defaults?.questionBank ?? null,
+
+    perExamination:
+      Number.isFinite(customPerExamination) &&
+      customPerExamination > 0
+        ? customPerExamination
+        : defaults?.perExamination ?? null
+  };
+}
+
+async function callExamFunction(body) {
+
+  const { data, error } =
+    await supabase.functions.invoke(
+      "school-exam-management",
+      { body }
+    );
+
+  if (error) {
+    throw new Error(error.message ||
+      "Unable to communicate with the server.");
+  }
+
+  if (!data?.success) {
+    throw new Error(
+      data?.error ||
+      "The request could not be completed."
+    );
+  }
+
+  return data;
+}
+
+/* AUTHENTICATION */
+
+async function verifyAccount() {
+
+  const session = await getCurrentSession();
+
+  if (!session) {
+    location.replace("school-login.html");
+    return false;
+  }
+
+  const user = session.user || session;
+
+  if (!user?.id) {
+    location.replace("school-login.html");
+    return false;
+  }
+
+  currentUser = user;
+
+  /*
+  Account information is loaded here for display purposes.
+  The Edge Function remains responsible for ownership checks.
+  */
+
+  const { data, error } = await supabase
+    .from("school_accounts")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    await supabase.auth.signOut();
+    location.replace("school-login.html");
+    return false;
+  }
+
+  account = data;
+
+  $("accountLabel").textContent =
+    account.account_name ||
+    "Teacher/School";
+
+  return true;
+}
+
+/* MENU */
+
+function closeMenu() {
+  $("sidebar").classList.remove("open");
+  $("overlay").classList.remove("show");
+}
+
+$("menuBtn").addEventListener("click", () => {
+  $("sidebar").classList.toggle("open");
+  $("overlay").classList.toggle("show");
+});
+
+$("overlay").addEventListener("click", closeMenu);
+
+$("sidebar")
+  .querySelectorAll("a")
+  .forEach(link => {
+    if (link.id !== "logoutBtn") {
+      link.addEventListener("click", closeMenu);
+    }
+  });
+
+$("logoutBtn").addEventListener("click", async event => {
+
+  event.preventDefault();
+
+  if (!confirm("Are you sure you want to log out?")) {
+    return;
+  }
+
+  await supabase.auth.signOut();
+
+  location.replace("school-login.html");
+});
+
+/* LOAD SUBJECTS */
+
+async function loadSubjects() {
+
+  const result = await callExamFunction({
+    action: "list_subjects"
+  });
+
+  subjects = result.subjects || [];
+
+  $("subjectSelect").innerHTML =
+    '<option value="">All subjects</option>' +
+    subjects.map(subject =>
+      `<option value="${escapeHTML(subject.id)}">
+        ${escapeHTML(subject.subject_name)}
+      </option>`
+    ).join("");
+}
+
+/* LOAD EXAMINATIONS */
+
+async function loadExaminations() {
+
+  const result = await callExamFunction({
+    action: "list_exams"
+  });
+
+  examinations = result.examinations || [];
+
+  updateExamDropdown();
+
+  await updateQuestionBank();
+}
+
+function updateExamDropdown() {
+
+  const selectedSubject =
+    $("subjectSelect").value;
+
+  const selectedExam =
+    $("examSelect").value;
+
+  const filtered = examinations.filter(exam => {
+
+    if (!selectedSubject) return true;
+
+    return String(exam.school_subject_id) ===
+      String(selectedSubject);
+  });
+
+  $("examSelect").innerHTML =
+    '<option value="">All examinations</option>' +
+    filtered.map(exam =>
+      `<option value="${escapeHTML(exam.id)}">
+        ${escapeHTML(exam.title)}
+      </option>`
+    ).join("");
+
+  if (
+    filtered.some(exam =>
+      String(exam.id) === String(selectedExam)
+    )
+  ) {
+    $("examSelect").value = selectedExam;
+  }
+}
+
+/* LOAD QUESTIONS FOR ONE EXAMINATION */
+
+async function loadQuestions(examinationId) {
+
+  if (examinationQuestions.has(examinationId)) {
+    return examinationQuestions.get(examinationId);
+  }
+
+  const result = await callExamFunction({
+    action: "list_questions",
+    examination_id: examinationId
+  });
+
+  const questions = result.questions || [];
+
+  examinationQuestions.set(
+    examinationId,
+    questions
+  );
+
+  return questions;
+}
+
+/* QUESTION BANK TOTAL */
+
+async function updateQuestionBank() {
+
+  let total = 0;
+
+  /*
+  The examination list does not return question totals,
+  so each examination is checked when calculating the
+  current Question Bank total.
+  */
+
+  for (const exam of examinations) {
+
+    try {
+
+      const questions =
+        await loadQuestions(exam.id);
+
+      total += questions.length;
+
+    } catch (error) {
+
+      console.error(
+        "Unable to count questions for examination:",
+        exam.id,
+        error
+      );
+    }
+  }
+
+  $("totalQuestions").textContent = total;
+
+  const limits = getAccountLimits();
+
+  if (
+    limits.questionBank !== null
+  ) {
+
+    const remaining =
+      Math.max(
+        0,
+        limits.questionBank - total
+      );
+
+    $("remainingCapacity").textContent =
+      remaining.toLocaleString();
+
+    $("capacityHelp").textContent =
+      `${formatPackageName(limits.packageName)} account maximum: ` +
+      `${limits.questionBank.toLocaleString()} total questions.`;
+
+  } else {
+
+    $("remainingCapacity").textContent =
+      "Custom";
+
+    $("capacityHelp").textContent =
+      "Your Question Bank capacity is assigned by the administrator.";
+  }
+
+  renderExaminations();
+}
+
+/* GET SUBJECT NAME */
+
+function getSubjectName(subjectId) {
+
+  const subject = subjects.find(item =>
+    String(item.id) === String(subjectId)
+  );
+
+  return subject?.subject_name ||
+    "Unknown Subject";
+}
+
+/* EXAMINATION STATUS */
+
+function examStatus(exam) {
+
+  if (exam.is_archived) {
+    return '<span class="badge archived">Archived</span>';
+  }
+
+  if (exam.is_published) {
+    return '<span class="badge published">Published</span>';
+  }
+
+  return '<span class="badge unpublished">Unpublished</span>';
+}
+
+/* QUESTION STATUS */
+
+function questionStatus(question) {
+
+  if (question.is_archived) {
+    return '<span class="badge archived">Archived</span>';
+  }
+
+  if (question.is_published) {
+    return '<span class="badge published">Published</span>';
+  }
+
+  return '<span class="badge unpublished">Unpublished</span>';
+}
+
+/* RENDER EXAMINATIONS */
+
+function renderExaminations() {
+
+  const selectedSubject =
+    $("subjectSelect").value;
+
+  const selectedExam =
+    $("examSelect").value;
+
+  const search =
+    $("searchQuestions")
+      .value
+      .trim()
+      .toLowerCase();
+
+  let filtered = examinations.filter(exam => {
+
+    if (
+      selectedSubject &&
+      String(exam.school_subject_id) !==
+      String(selectedSubject)
+    ) {
+      return false;
+    }
+
+    if (
+      selectedExam &&
+      String(exam.id) !== String(selectedExam)
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  if (!filtered.length) {
+
+    $("examList").innerHTML =
+      '<div class="empty">No examinations found.</div>';
+
+    return;
+  }
+
+  $("examList").innerHTML =
+    filtered.map(exam => {
+
+      const questions =
+        examinationQuestions.get(exam.id) || [];
+
+      const searchedQuestions =
+        !search
+          ? questions
+          : questions.filter(question =>
+              String(question.question_text || "")
+                .toLowerCase()
+                .includes(search)
+            );
+
+      return `
+      <div class="exam-container">
+
+        <div class="exam-header">
+
+          <div class="exam-main">
+
+            <div class="exam-title">
+              ${escapeHTML(exam.title)}
+            </div>
+
+            <div class="exam-details">
+
+              <span>
+                <strong>Examination ID:</strong>
+                ${escapeHTML(
+                  exam.examination_code || "Not available"
+                )}
+              </span>
+
+              <span>
+                <strong>Subject:</strong>
+                ${escapeHTML(
+                  getSubjectName(
+                    exam.school_subject_id
+                  )
+                )}
+              </span>
+
+              <span>
+                <strong>Questions:</strong>
+                ${questions.length}
+              </span>
+
+              <span>
+                <strong>Status:</strong>
+                ${examStatus(exam)}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="exam-controls">
+
+            <button
+              class="secondary exam-view"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              View
+            </button>
+
+            <button
+              class="primary exam-edit"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              Edit
+            </button>
+
+            <button
+              class="success exam-publish"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              Publish
+            </button>
+
+            <button
+              class="warning-btn exam-unpublish"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              Unpublish
+            </button>
+
+            <button
+              class="secondary exam-archive"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              Archive
+            </button>
+
+            <button
+              class="danger exam-delete"
+              data-exam="${escapeHTML(exam.id)}"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+        <div
+          class="questions-area"
+          id="questions-${escapeHTML(exam.id)}"
+        >
+
+          ${
+            questions.length
+              ? searchedQuestions.length
+                ? renderQuestions(
+                    searchedQuestions
+                  )
+                : '<div class="empty">No questions match your search.</div>'
+              : '<div class="empty">No questions registered for this examination.</div>'
+          }
+
+        </div>
+
+      </div>
+      `;
+
+    }).join("");
+
+  attachExaminationEvents();
+  attachQuestionEvents();
+}
+
+/* RENDER QUESTIONS */
+
+function renderQuestions(questions) {
+
+  return questions.map(question => {
+
+    return `
+    <div class="question-card">
+
+      <div class="question-title">
+        Question Number:
+        ${escapeHTML(question.question_order)}
+      </div>
+
+      <div class="question-text">
+        <strong>Question Text:</strong><br>
+        ${escapeHTML(question.question_text)}
+      </div>
+
+      ${
+        question.image_path
+          ? `
+          <div>
+            <strong style="font-size:13px">
+              Question Image:
+            </strong><br>
+            <span style="font-size:12px;color:#718096">
+              Image available for this question.
+            </span>
+          </div>
+          `
+          : `
+          <div style="font-size:12px;color:#718096;margin-bottom:10px">
+            <strong>Question Image:</strong> None
+          </div>
+          `
+      }
+
+      <div class="options">
+
+        <strong>Option A:</strong>
+        ${escapeHTML(question.option_a)}<br>
+
+        <strong>Option B:</strong>
+        ${escapeHTML(question.option_b)}<br>
+
+        <strong>Option C:</strong>
+        ${escapeHTML(question.option_c)}<br>
+
+        <strong>Option D:</strong>
+        ${escapeHTML(question.option_d)}
+
+      </div>
+
+      <div class="question-meta">
+
+        <span>
+          <strong>Correct Answer:</strong>
+          ${escapeHTML(question.correct_option)}
+        </span>
+
+        <span>
+          <strong>Marks:</strong>
+          ${escapeHTML(question.marks)}
+        </span>
+
+        <span>
+          <strong>Order:</strong>
+          ${escapeHTML(question.question_order)}
+        </span>
+
+        <span>
+          <strong>Status:</strong>
+          ${questionStatus(question)}
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="secondary question-view"
+          data-question="${escapeHTML(question.id)}"
+        >
+          View
+        </button>
+
+        <button
+          class="primary question-edit"
+          data-question="${escapeHTML(question.id)}"
+        >
+          Edit
+        </button>
+
+        <button
+          class="success question-publish"
+          data-question="${escapeHTML(question.id)}"
+        >
+          Publish
+        </button>
+
+        <button
+          class="warning-btn question-unpublish"
+          data-question="${escapeHTML(question.id)}"
+        >
+          Unpublish
+        </button>
+
+        <button
+          class="secondary question-archive"
+          data-question="${escapeHTML(question.id)}"
+        >
+          Archive
+        </button>
+
+        <button
+          class="danger question-delete"
+          data-question="${escapeHTML(question.id)}"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+    `;
+
+  }).join("");
+}
+
+/* EXAMINATION EVENTS */
+
+function attachExaminationEvents() {
+
+  document.querySelectorAll(".exam-view")
+    .forEach(button => {
+
+      button.addEventListener("click", async () => {
+
+        const examId = button.dataset.exam;
+
+        const area =
+          $("questions-" + examId);
+
+        if (!area) return;
+
+        try {
+
+          button.disabled = true;
+          button.textContent = "Loading...";
+
+          await loadQuestions(
+            Number(examId)
+          );
+
+          renderExaminations();
+
+          const refreshedArea =
+            $("questions-" + examId);
+
+          refreshedArea?.classList.add("open");
+
+        } catch (error) {
+
+          showStatus(
+            error.message,
+            "error"
+          );
+
+        } finally {
+
+          button.disabled = false;
+          button.textContent = "View";
+        }
+
+      });
+
+    });
+
+  /*
+  The following buttons are intentionally prepared as
+  placeholders. Their database actions should only be
+  connected after the corresponding secure Edge Function
+  actions are added.
+  */
+
+  document.querySelectorAll(
+    ".exam-edit,.exam-publish,.exam-unpublish,.exam-archive,.exam-delete"
+  ).forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      showStatus(
+        "This examination action will be connected to the secure examination management function.",
+        "info"
+      );
+
+    });
+
+  });
+}
+
+/* QUESTION EVENTS */
+
+function attachQuestionEvents() {
+
+  document.querySelectorAll(
+    ".question-view"
+  ).forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      const card =
+        button.closest(".question-card");
+
+      card?.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+      });
+
+    });
+
+  });
+
+  /*
+  Question actions are placeholders until their secure
+  backend actions are added. No direct browser database
+  updates are performed from this page.
+  */
+
+  document.querySelectorAll(
+    ".question-edit,.question-publish,.question-unpublish,.question-archive,.question-delete"
+  ).forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      showStatus(
+        "This question action will be connected to the secure examination management function.",
+        "info"
+      );
+
+    });
+
+  });
+}
+
+/* FILTER EVENTS */
+
+$("subjectSelect").addEventListener(
+  "change",
+  () => {
+
+    updateExamDropdown();
+    renderExaminations();
+
+  }
+);
+
+$("examSelect").addEventListener(
+  "change",
+  renderExaminations
+);
+
+$("searchQuestions").addEventListener(
+  "input",
+  renderExaminations
+);
+
+/* INITIALIZE */
+
+async function initializePage() {
+
+  try {
+
+    if (!await verifyAccount()) {
+      return;
+    }
+
+    await loadSubjects();
+    await loadExaminations();
+
+    hideStatus();
+
+  } catch (error) {
+
+    console.error(
+      "Question Bank:",
+      error
+    );
+
+    $("examList").innerHTML =
+      `<div class="empty">
+        Unable to load the Question Bank.
+      </div>`;
+
+    showStatus(
+      error.message ||
+      "Unable to load the Question Bank.",
+      "error"
+    );
+  }
+}
+
+initializePage();
+
+</script>
+
+</body>
+</html>
