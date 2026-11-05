@@ -302,10 +302,21 @@ function clearExamForm(){
 $("resetExamBtn").addEventListener("click",()=>{if(confirm("Clear the examination form and selected examination?"))clearExamForm();});
 
 async function loadExistingExams(){
- const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published,duration_minutes").order("created_at",{ascending:false});
+ const {data,error}=await supabase
+  .from("examinations")
+  .select("id,title,access_type,is_published,duration_minutes")
+  .is("school_account_id",null)
+  .order("created_at",{ascending:false});
+
  if(error)throw error;
- $("existingExam").innerHTML='<option value="">Select an examination</option>'+(data||[]).map(x=>`<option value="${escapeHTML(x.id)}">[${displayExamType(x.access_type)}] ${escapeHTML(x.title)} — ${x.is_published?"Published":"Draft"}</option>`).join("");
+
+ $("existingExam").innerHTML=
+  '<option value="">Select an examination</option>'+
+  (data||[]).map(x=>
+   `<option value="${escapeHTML(x.id)}">[${displayExamType(x.access_type)}] ${escapeHTML(x.title)} — ${x.is_published?"Published":"Draft"}</option>`
+  ).join("");
 }
+
 async function populateExamForm(exam){
  const {data,error}=await supabase.from("education_levels").select("id,education_system_id").eq("id",exam.education_level_id).single();
  if(error)throw error;
