@@ -1,0 +1,1385 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>School Class Examination | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --navy:#14243a;
+  --navy2:#203a59;
+  --gold:#d5a83b;
+  --gold-light:#f4e4b8;
+  --bg:#f3f5f8;
+  --white:#fff;
+  --text:#263447;
+  --muted:#718096;
+  --border:#e1e6ed;
+  --green:#168653;
+  --red:#c43d45;
+  --shadow:0 5px 20px rgba(20,36,58,.08);
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial, sans-serif;
+  font-size:14px;
+}
+button,input,select,textarea {font:inherit}
+button {cursor:pointer}
+.topbar {
+  background:var(--navy);
+  color:white;
+  padding:16px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.brand {font-weight:bold;font-size:18px;letter-spacing:.3px}
+.brand span {color:var(--gold)}
+.topbar small {display:block;color:#d7dfeb;margin-top:4px}
+.top-actions {display:flex;gap:8px;align-items:center}
+.top-actions a {
+  color:white;text-decoration:none;
+  border:1px solid #62748b;
+  padding:9px 12px;border-radius:7px;
+}
+.container {max-width:1200px;margin:24px auto;padding:0 16px}
+.page-heading {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;flex-wrap:wrap;
+  margin-bottom:18px;
+}
+h1 {font-size:23px;color:var(--navy);margin:0}
+.subtitle {color:var(--muted);margin-top:6px;line-height:1.5}
+.btn {
+  border:0;border-radius:7px;padding:10px 14px;
+  font-weight:bold;display:inline-flex;
+  align-items:center;justify-content:center;gap:7px;
+}
+.btn-gold {background:var(--gold);color:var(--navy)}
+.btn-navy {background:var(--navy);color:white}
+.btn-light {background:#edf1f6;color:var(--navy)}
+.btn-red {background:#fdebec;color:var(--red)}
+.btn-green {background:#e5f5ed;color:#14794a}
+.btn-small {padding:7px 10px;font-size:12px}
+.btn:disabled {opacity:.5;cursor:not-allowed}
+.results-banner {
+  background:linear-gradient(120deg,#14243a,#274768);
+  color:white;border-radius:12px;padding:21px;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:15px;flex-wrap:wrap;
+  box-shadow:var(--shadow);margin-bottom:20px;
+  border-left:5px solid var(--gold);
+}
+.results-banner h2 {margin:0 0 7px;font-size:19px}
+.results-banner p {margin:0;color:#d8e1ed;line-height:1.5}
+.results-banner .btn {min-width:190px}
+.create-panel,.content-panel {
+  background:white;border:1px solid var(--border);
+  border-radius:11px;padding:18px;
+  box-shadow:var(--shadow);margin-bottom:20px;
+}
+.panel-heading {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;
+}
+.panel-heading h2 {font-size:17px;color:var(--navy);margin:0}
+.create-grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;margin-top:15px;
+}
+.create-action {
+  border:1px solid var(--border);border-radius:9px;
+  background:#fff;padding:15px;text-align:left;
+  display:flex;align-items:center;gap:12px;
+  color:var(--navy);font-weight:bold;
+  transition:.15s;
+}
+.create-action:hover {border-color:var(--gold);background:#fffaf0}
+.create-icon {
+  width:42px;height:42px;border-radius:9px;
+  display:grid;place-items:center;
+  background:var(--gold-light);font-size:21px;
+}
+.create-action small {
+  display:block;font-weight:normal;color:var(--muted);
+  margin-top:5px;line-height:1.4;
+}
+.management-title {
+  color:var(--navy);font-size:17px;
+  margin:25px 0 12px;
+}
+.management-grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px;margin-bottom:18px;
+}
+.management-card {
+  border:2px solid transparent;border-radius:11px;
+  background:var(--navy);color:white;
+  min-height:125px;padding:17px 12px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;
+  transition:.15s;
+}
+.management-card:hover {transform:translateY(-2px);border-color:var(--gold)}
+.management-card.active {border-color:var(--gold);background:#203c5d}
+.management-card .number {font-size:29px;font-weight:bold;color:var(--gold)}
+.management-card .label {font-size:14px;font-weight:bold;letter-spacing:.5px}
+.management-card small {color:#d4dce7}
+.toolbar {
+  display:flex;gap:10px;flex-wrap:wrap;
+  margin:16px 0;
+}
+.toolbar input,.toolbar select {
+  padding:10px 12px;border:1px solid var(--border);
+  border-radius:7px;background:white;min-width:150px;
+}
+.toolbar input {flex:1;min-width:190px}
+.table-wrap {overflow-x:auto}
+table {width:100%;border-collapse:collapse;min-width:760px}
+th {
+  background:#f1f4f8;color:var(--navy);
+  text-align:left;font-size:12px;
+  padding:12px 10px;white-space:nowrap;
+}
+td {
+  border-bottom:1px solid var(--border);
+  padding:12px 10px;vertical-align:middle;
+}
+tbody tr:hover {background:#fbfcfe}
+.id-text {font-weight:bold;color:var(--navy);font-size:12px}
+.muted {color:var(--muted)}
+.status {
+  display:inline-block;padding:5px 8px;
+  border-radius:20px;font-size:11px;font-weight:bold;
+}
+.status-active {background:#e4f5eb;color:#137748}
+.status-inactive {background:#fff2db;color:#98640a}
+.status-archived {background:#edf0f4;color:#657184}
+.actions {display:flex;gap:5px;flex-wrap:wrap}
+.empty {
+  text-align:center;padding:35px 15px;color:var(--muted);
+}
+.empty strong {display:block;color:var(--navy);margin-bottom:7px}
+.pagination {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;flex-wrap:wrap;margin-top:15px;
+}
+.pagination button {
+  border:1px solid var(--border);background:white;
+  border-radius:6px;padding:8px 12px;color:var(--navy);
+}
+.pagination button:disabled {opacity:.4}
+.modal {
+  display:none;position:fixed;inset:0;
+  background:rgba(8,18,32,.65);z-index:1000;
+  padding:18px;overflow-y:auto;
+}
+.modal.show {display:flex;align-items:flex-start;justify-content:center}
+.modal-box {
+  background:white;border-radius:12px;
+  width:100%;max-width:650px;margin:auto;
+  padding:21px;box-shadow:0 15px 45px #0003;
+}
+.modal-header {
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;margin-bottom:18px;
+}
+.modal-header h2 {margin:0;color:var(--navy);font-size:19px}
+.close {
+  border:0;background:#edf1f6;border-radius:50%;
+  width:33px;height:33px;font-size:20px;color:var(--navy);
+}
+.form-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px;
+}
+.field {display:flex;flex-direction:column;gap:6px}
+.field.full {grid-column:1/-1}
+.field label {font-weight:bold;color:var(--navy);font-size:12px}
+.field input,.field select,.field textarea {
+  border:1px solid #d8dee7;border-radius:7px;
+  padding:11px;width:100%;background:white;
+}
+.field textarea {min-height:75px;resize:vertical}
+.modal-footer {
+  display:flex;justify-content:flex-end;
+  gap:9px;margin-top:20px;flex-wrap:wrap;
+}
+.detail-list {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.detail-item {
+  background:#f5f7fa;padding:12px;border-radius:7px;
+  overflow-wrap:anywhere;
+}
+.detail-item small {display:block;color:var(--muted);margin-bottom:5px}
+.detail-item strong {color:var(--navy)}
+.notice {
+  padding:12px;border-radius:8px;
+  background:#fff7e5;color:#79540b;
+  line-height:1.5;margin-bottom:14px;
+}
+.toast {
+  position:fixed;bottom:20px;left:50%;
+  transform:translateX(-50%);
+  background:var(--navy);color:white;
+  padding:12px 18px;border-radius:8px;
+  z-index:2000;display:none;max-width:90%;
+  box-shadow:var(--shadow);
+}
+.loading {padding:30px;text-align:center;color:var(--muted)}
+.footer {text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
+@media(max-width:700px) {
+  .container {margin:17px auto;padding:0 11px}
+  .create-grid {grid-template-columns:1fr}
+  .management-grid {gap:7px}
+  .management-card {min-height:105px;padding:12px 5px}
+  .management-card .number {font-size:24px}
+  .management-card .label {font-size:11px}
+  .management-card small {font-size:10px}
+  .form-grid,.detail-list {grid-template-columns:1fr}
+  .field.full {grid-column:auto}
+  .topbar {padding:13px}
+  .brand {font-size:15px}
+  .top-actions a {font-size:11px;padding:8px}
+  h1 {font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div>
+    <div class="brand">SAINTIG <span>EXAMS</span></div>
+    <small>Teacher / School Management</small>
+  </div>
+  <div class="top-actions">
+    <a href="school-dashboard.html">Dashboard</a>
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="page-heading">
+    <div>
+      <h1>School Class Examination</h1>
+      <div class="subtitle">
+        Create classes, attach examinations and manage class students.
+      </div>
+    </div>
+    <button class="btn btn-light" onclick="loadDashboard()">↻ Refresh</button>
+  </div>
+
+  <section class="results-banner">
+    <div>
+      <h2>CLASS ACADEMIC RESULTS</h2>
+      <p>Generate, review, publish, print and manage your class results.</p>
+    </div>
+    <a href="school-class-results.html" class="btn btn-gold">
+      GENERATE CLASS RESULTS →
+    </a>
+  </section>
+
+  <section class="create-panel">
+    <div class="panel-heading">
+      <h2>CREATE AND ADD RECORDS</h2>
+    </div>
+
+    <div class="create-grid">
+      <button class="create-action" onclick="openClassModal()">
+        <span class="create-icon">＋</span>
+        <span>
+          Create New Class
+          <small>Create a class and academic session.</small>
+        </span>
+      </button>
+
+      <button class="create-action" onclick="openMembershipModal('student')">
+        <span class="create-icon">👤</span>
+        <span>
+          Add Students
+          <small>Add existing registered students to a class.</small>
+        </span>
+      </button>
+
+      <button class="create-action" onclick="openMembershipModal('exam')">
+        <span class="create-icon">▤</span>
+        <span>
+          Attach Examination
+          <small>Attach an existing examination to a class.</small>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <h2 class="management-title">MANAGEMENT CENTRE</h2>
+
+  <section class="management-grid">
+    <button class="management-card active" id="tab-classes"
+      onclick="switchTab('classes')">
+      <span class="number" id="classCount">0</span>
+      <span class="label">CLASSES</span>
+      <small>View and manage classes</small>
+    </button>
+
+    <button class="management-card" id="tab-exams"
+      onclick="switchTab('exams')">
+      <span class="number" id="examCount">0</span>
+      <span class="label">EXAMINATIONS</span>
+      <small>View attached examinations</small>
+    </button>
+
+    <button class="management-card" id="tab-students"
+      onclick="switchTab('students')">
+      <span class="number" id="studentCount">0</span>
+      <span class="label">STUDENTS</span>
+      <small>View class students</small>
+    </button>
+  </section>
+
+  <section class="content-panel">
+    <div class="panel-heading">
+      <h2 id="listTitle">REGISTERED CLASSES</h2>
+      <button class="btn btn-gold btn-small" id="primaryAddButton"
+        onclick="openClassModal()">＋ Create Class</button>
+    </div>
+
+    <div class="toolbar">
+      <input id="searchInput" type="search"
+        placeholder="Search records..." oninput="applySearch()">
+
+      <select id="statusFilter" onchange="applySearch()">
+        <option value="all">All statuses</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+        <option value="archived">Archived</option>
+      </select>
+
+      <select id="periodFilter" onchange="applySearch()">
+        <option value="all">All academic periods</option>
+        <option>1st Term</option>
+        <option>2nd Term</option>
+        <option>3rd Term</option>
+        <option>1st Semester</option>
+        <option>2nd Semester</option>
+      </select>
+    </div>
+
+    <div id="recordsArea">
+      <div class="loading">Loading your records...</div>
+    </div>
+
+    <div class="pagination" id="pagination" style="display:none">
+      <span id="pageInfo" class="muted"></span>
+      <div>
+        <button onclick="changePage(-1)" id="prevPage">Previous</button>
+        <button onclick="changePage(1)" id="nextPage">Next</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="footer">Powered by SAINTIG EXAMS</div>
+<div class="toast" id="toast"></div>
+
+<!-- CLASS FORM -->
+<div class="modal" id="classModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="classModalTitle">CREATE NEW CLASS</h2>
+      <button class="close" onclick="closeModal('classModal')">×</button>
+    </div>
+
+    <form id="classForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label>School / Institution Name *</label>
+          <input name="school_name" id="school_name" required>
+        </div>
+
+        <div class="field">
+          <label>School Phone</label>
+          <input name="school_phone" id="school_phone">
+        </div>
+
+        <div class="field">
+          <label>School Email</label>
+          <input name="school_email" id="school_email" type="email">
+        </div>
+
+        <div class="field full">
+          <label>School Address</label>
+          <textarea name="school_address" id="school_address"></textarea>
+        </div>
+
+        <div class="field full">
+          <label>School Logo URL (Optional)</label>
+          <input name="school_logo_url" id="school_logo_url"
+            placeholder="https://...">
+        </div>
+
+        <div class="field">
+          <label>Class Name *</label>
+          <input name="class_name" id="class_name"
+            placeholder="e.g. SS1" required>
+        </div>
+
+        <div class="field">
+          <label>Class Arm</label>
+          <input name="class_arm" id="class_arm"
+            placeholder="e.g. A">
+        </div>
+
+        <div class="field">
+          <label>Academic Session *</label>
+          <input name="academic_session" id="academic_session"
+            placeholder="e.g. 2026/2027" required>
+        </div>
+
+        <div class="field">
+          <label>Academic Period *</label>
+          <select name="academic_period" id="academic_period" required>
+            <option value="">Select period</option>
+            <option>1st Term</option>
+            <option>2nd Term</option>
+            <option>3rd Term</option>
+            <option>1st Semester</option>
+            <option>2nd Semester</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Class Teacher's Name</label>
+          <input name="class_teacher_name" id="class_teacher_name">
+        </div>
+
+        <div class="field">
+          <label>Principal's Name</label>
+          <input name="principal_name" id="principal_name">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light"
+          onclick="closeModal('classModal')">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="saveClassButton">
+          Save Class
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- VIEW CLASS -->
+<div class="modal" id="viewModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>CLASS DETAILS</h2>
+      <button class="close" onclick="closeModal('viewModal')">×</button>
+    </div>
+    <div id="classDetails"></div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="closeModal('viewModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD STUDENT / EXAM -->
+<div class="modal" id="membershipModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="membershipTitle">ADD RECORD</h2>
+      <button class="close" onclick="closeModal('membershipModal')">×</button>
+    </div>
+
+    <div class="notice" id="membershipNotice">
+      Select a class and the existing record to attach.
+    </div>
+
+    <form id="membershipForm">
+      <div class="form-grid">
+        <div class="field full">
+          <label>Select Class *</label>
+          <select id="membershipClass" required>
+            <option value="">Select a class</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label id="membershipRecordLabel">Select record *</label>
+          <select id="membershipRecord" required>
+            <option value="">Select a record</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light"
+          onclick="closeModal('membershipModal')">Cancel</button>
+        <button type="submit" class="btn btn-gold" id="membershipSave">
+          Continue
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const CLASS_FUNCTION = "school-class-manager";
+const SCHOOL_FUNCTION = "school-exam-manager";
+
+let currentTab = "classes";
+let allClasses = [];
+let allStudents = [];
+let allExams = [];
+let classMemberships = [];
+let filteredRecords = [];
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let editingClassId = null;
+let membershipType = "student";
+
+function toast(message) {
+  const el = document.getElementById("toast");
+  el.textContent = message;
+  el.style.display = "block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => el.style.display = "none", 3500);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",
+    '"':"&quot;","'":"&#039;"
+  })[char]);
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add("show");
+}
+
+async function callFunction(functionName, payload) {
+  const { data, error } = await db.functions.invoke(functionName, {
+    body: payload
+  });
+
+  if (error) {
+    let message = error.message || "Request failed.";
+    if (data?.message) message = data.message;
+    throw new Error(message);
+  }
+
+  if (data?.success === false) {
+    throw new Error(data.message || "The request could not be completed.");
+  }
+
+  return data;
+}
+
+async function getSession() {
+  const { data, error } = await db.auth.getSession();
+  if (error || !data.session) {
+    location.href = "index.html";
+    throw new Error("Please sign in first.");
+  }
+  return data.session;
+}
+
+async function loadClasses() {
+  const data = await callFunction(CLASS_FUNCTION, {
+    action: "list_classes",
+    archived: false,
+    page: 1,
+    limit: 50
+  });
+
+  const active = data.classes || [];
+  const archivedData = await callFunction(CLASS_FUNCTION, {
+    action: "list_classes",
+    archived: true,
+    page: 1,
+    limit: 50
+  });
+
+  allClasses = [
+    ...active,
+    ...(archivedData.classes || [])
+  ];
+
+  return data;
+}
+
+async function loadExistingStudents() {
+  try {
+    const data = await callFunction(SCHOOL_FUNCTION, {
+      action: "list_students"
+    });
+
+    allStudents = data.students || data.data || [];
+  } catch (error) {
+    console.warn("Student list could not be loaded:", error.message);
+    allStudents = [];
+  }
+}
+
+async function loadExistingExams() {
+  try {
+    const data = await callFunction(SCHOOL_FUNCTION, {
+      action: "list_exams"
+    });
+
+    allExams = data.examinations || data.exams || data.data || [];
+  } catch (error) {
+    console.warn("Examination list could not be loaded:", error.message);
+    allExams = [];
+  }
+}
+
+async function loadMemberships() {
+  classMemberships = [];
+
+  for (const item of allClasses) {
+    try {
+      const data = await callFunction(CLASS_FUNCTION, {
+        action: "get_class",
+        class_id: item.id
+      });
+
+      (data.students || []).forEach(student => {
+        classMemberships.push({
+          ...student,
+          class_id: item.id,
+          class_name: item.class_name,
+          class_arm: item.class_arm,
+          class_code: item.class_id
+        });
+      });
+
+      (data.examinations || []).forEach(exam => {
+        classMemberships.push({
+          ...exam,
+          class_id: item.id,
+          class_name: item.class_name,
+          class_arm: item.class_arm,
+          class_code: item.class_id
+        });
+      });
+    } catch (error) {
+      console.warn("Could not load class relationships:", error.message);
+    }
+  }
+}
+
+async function loadDashboard() {
+  const area = document.getElementById("recordsArea");
+  area.innerHTML = '<div class="loading">Loading your records...</div>';
+
+  try {
+    await getSession();
+
+    await loadClasses();
+    await Promise.all([
+      loadExistingStudents(),
+      loadExistingExams()
+    ]);
+    await loadMemberships();
+
+    updateCounts();
+    renderCurrentTab();
+  } catch (error) {
+    area.innerHTML = `
+      <div class="empty">
+        <strong>Unable to load records</strong>
+        ${escapeHTML(error.message)}
+        <br><br>
+        <button class="btn btn-navy" onclick="loadDashboard()">Try Again</button>
+      </div>`;
+  }
+}
+
+function updateCounts() {
+  const uniqueStudents = new Set(
+    classMemberships
+      .filter(x => x.school_student_id && x.is_active)
+      .map(x => String(x.school_student_id))
+  );
+
+  const uniqueExams = new Set(
+    classMemberships
+      .filter(x => x.examination_id && x.is_attached)
+      .map(x => String(x.examination_id))
+  );
+
+  document.getElementById("classCount").textContent =
+    allClasses.filter(x => !x.is_archived).length;
+
+  document.getElementById("studentCount").textContent =
+    uniqueStudents.size;
+
+  document.getElementById("examCount").textContent =
+    uniqueExams.size;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  currentPage = 1;
+
+  ["classes","exams","students"].forEach(name => {
+    document.getElementById("tab-" + name)
+      .classList.toggle("active", name === tab);
+  });
+
+  const titles = {
+    classes:"REGISTERED CLASSES",
+    exams:"ATTACHED EXAMINATIONS",
+    students:"CLASS STUDENTS"
+  };
+
+  const buttons = {
+    classes:["＋ Create Class","openClassModal()"],
+    exams:["＋ Attach Examination","openMembershipModal('exam')"],
+    students:["＋ Add Students","openMembershipModal('student')"]
+  };
+
+  document.getElementById("listTitle").textContent = titles[tab];
+
+  const add = document.getElementById("primaryAddButton");
+  add.textContent = buttons[tab][0];
+  add.setAttribute("onclick", buttons[tab][1]);
+
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "all";
+  document.getElementById("periodFilter").value = "all";
+
+  document.getElementById("periodFilter").style.display =
+    tab === "classes" ? "" : "none";
+
+  renderCurrentTab();
+}
+
+function getRecordsForTab() {
+  if (currentTab === "classes") return allClasses;
+
+  if (currentTab === "students") {
+    return classMemberships
+      .filter(x => x.school_student_id)
+      .map(x => {
+        const student = allStudents.find(s =>
+          String(s.id) === String(x.school_student_id)
+        ) || {};
+
+        return {
+          ...x,
+          student_name: student.full_name || student.name || "Student details unavailable",
+          student_code: student.student_id || student.id || x.school_student_id,
+          membership_status: x.is_active ? "active" : "inactive"
+        };
+      });
+  }
+
+  return classMemberships
+    .filter(x => x.examination_id)
+    .map(x => {
+      const exam = allExams.find(e =>
+        String(e.id) === String(x.examination_id)
+      ) || {};
+
+      return {
+        ...x,
+        exam_title: exam.title || exam.examination_name || "Examination details unavailable",
+        exam_code: exam.examination_code || exam.id || x.examination_id,
+        membership_status: x.is_attached ? "active" : "inactive"
+      };
+    });
+}
+
+function applySearch() {
+  currentPage = 1;
+  renderCurrentTab();
+}
+
+function renderCurrentTab() {
+  const search = document.getElementById("searchInput").value
+    .toLowerCase().trim();
+  const status = document.getElementById("statusFilter").value;
+  const period = document.getElementById("periodFilter").value;
+
+  let records = getRecordsForTab();
+
+  if (currentTab === "classes") {
+    records = records.filter(item => {
+      if (status === "archived" && !item.is_archived) return false;
+      if (status === "active" &&
+        (item.is_archived || item.status !== "active")) return false;
+      if (status === "inactive" &&
+        (item.is_archived || item.status !== "inactive")) return false;
+      if (period !== "all" && item.academic_period !== period) return false;
+
+      const text = [
+        item.class_id,item.class_name,item.class_arm,
+        item.school_name,item.academic_session,item.academic_period
+      ].join(" ").toLowerCase();
+
+      return !search || text.includes(search);
+    });
+  } else {
+    records = records.filter(item => {
+      if (status === "active" &&
+        item.membership_status !== "active") return false;
+      if (status === "inactive" &&
+        item.membership_status !== "inactive") return false;
+      if (status === "archived") return false;
+
+      const text = currentTab === "students"
+        ? [item.student_name,item.student_code,item.class_name,item.class_code]
+            .join(" ").toLowerCase()
+        : [item.exam_title,item.exam_code,item.class_name,item.class_code]
+            .join(" ").toLowerCase();
+
+      return !search || text.includes(search);
+    });
+  }
+
+  filteredRecords = records;
+  renderTable();
+}
+
+function statusBadge(status, archived) {
+  if (archived) return '<span class="status status-archived">Archived</span>';
+  if (status === "active") return '<span class="status status-active">Active</span>';
+  return '<span class="status status-inactive">Inactive</span>';
+}
+
+function renderTable() {
+  const area = document.getElementById("recordsArea");
+  const total = filteredRecords.length;
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+
+  if (currentPage > pages) currentPage = pages;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const rows = filteredRecords.slice(start, start + PAGE_SIZE);
+
+  if (!rows.length) {
+    area.innerHTML = `
+      <div class="empty">
+        <strong>No records found</strong>
+        Records matching your selection will appear here.
+      </div>`;
+    document.getElementById("pagination").style.display = "none";
+    return;
+  }
+
+  let html = "";
+
+  if (currentTab === "classes") {
+    html = `
+      <div class="table-wrap"><table>
+      <thead><tr>
+        <th>CLASS ID</th><th>CLASS</th><th>ACADEMIC SESSION</th>
+        <th>PERIOD</th><th>STUDENTS</th><th>EXAMS</th>
+        <th>STATUS</th><th>ACTIONS</th>
+      </tr></thead><tbody>`;
+
+    rows.forEach(item => {
+      html += `<tr>
+        <td class="id-text">${escapeHTML(item.class_id || "Pending")}</td>
+        <td><strong>${escapeHTML(item.class_name)}</strong>
+          <div class="muted">${escapeHTML(item.class_arm || "No arm")}</div>
+        </td>
+        <td>${escapeHTML(item.academic_session)}</td>
+        <td>${escapeHTML(item.academic_period)}</td>
+        <td>${Number(item.registered_student_count || 0)}</td>
+        <td>${Number(item.attached_examination_count || 0)}</td>
+        <td>${statusBadge(item.status,item.is_archived)}</td>
+        <td><div class="actions">
+          <button class="btn btn-light btn-small"
+            onclick="viewClass('${item.id}')">View</button>
+          <button class="btn btn-light btn-small"
+            onclick="editClass('${item.id}')">Edit</button>
+          ${item.is_archived
+            ? `<button class="btn btn-green btn-small"
+                onclick="restoreClass('${item.id}')">Restore</button>`
+            : `<button class="btn btn-light btn-small"
+                onclick="changeClassStatus('${item.id}','${item.status === "active" ? "inactive" : "active"}')">
+                ${item.status === "active" ? "Deactivate" : "Activate"}
+              </button>
+              <button class="btn btn-red btn-small"
+                onclick="archiveClass('${item.id}')">Archive</button>`
+          }
+        </div></td>
+      </tr>`;
+    });
+
+    html += "</tbody></table></div>";
+  }
+
+  if (currentTab === "students") {
+    html = `
+      <div class="table-wrap"><table>
+      <thead><tr>
+        <th>STUDENT ID</th><th>STUDENT NAME</th>
+        <th>CLASS</th><th>MEMBERSHIP</th><th>ACTIONS</th>
+      </tr></thead><tbody>`;
+
+    rows.forEach(item => {
+      html += `<tr>
+        <td class="id-text">${escapeHTML(item.student_code)}</td>
+        <td><strong>${escapeHTML(item.student_name)}</strong></td>
+        <td>${escapeHTML(item.class_name)}
+          ${item.class_arm ? " - " + escapeHTML(item.class_arm) : ""}
+        </td>
+        <td>${statusBadge(item.membership_status,false)}</td>
+        <td><div class="actions">
+          <button class="btn btn-light btn-small"
+            onclick="viewMembership('student','${item.class_id}','${item.school_student_id}')">View</button>
+          <button class="btn btn-light btn-small"
+            onclick="changeMembershipStatus('student','${item.class_id}','${item.school_student_id}',${!item.is_active})">
+            ${item.is_active ? "Deactivate" : "Activate"}
+          </button>
+          <button class="btn btn-red btn-small"
+            onclick="removeMembership('student','${item.class_id}','${item.school_student_id}')">Remove</button>
+        </div></td>
+      </tr>`;
+    });
+
+    html += "</tbody></table></div>";
+  }
+
+  if (currentTab === "exams") {
+    html = `
+      <div class="table-wrap"><table>
+      <thead><tr>
+        <th>EXAMINATION ID</th><th>EXAMINATION</th>
+        <th>CLASS</th><th>ATTACHMENT</th><th>ACTIONS</th>
+      </tr></thead><tbody>`;
+
+    rows.forEach(item => {
+      html += `<tr>
+        <td class="id-text">${escapeHTML(item.exam_code)}</td>
+        <td><strong>${escapeHTML(item.exam_title)}</strong></td>
+        <td>${escapeHTML(item.class_name)}
+          ${item.class_arm ? " - " + escapeHTML(item.class_arm) : ""}
+        </td>
+        <td>${statusBadge(item.membership_status,false)}</td>
+        <td><div class="actions">
+          <button class="btn btn-light btn-small"
+            onclick="viewMembership('exam','${item.class_id}','${item.examination_id}')">View</button>
+          <button class="btn btn-light btn-small"
+            onclick="changeMembershipStatus('exam','${item.class_id}','${item.examination_id}',${!item.is_attached})">
+            ${item.is_attached ? "Deactivate" : "Activate"}
+          </button>
+          <button class="btn btn-red btn-small"
+            onclick="removeMembership('exam','${item.class_id}','${item.examination_id}')">Remove</button>
+        </div></td>
+      </tr>`;
+    });
+
+    html += "</tbody></table></div>";
+  }
+
+  area.innerHTML = html;
+
+  document.getElementById("pagination").style.display =
+    total > PAGE_SIZE ? "flex" : "none";
+
+  document.getElementById("pageInfo").textContent =
+    `Showing ${start + 1}-${Math.min(start + PAGE_SIZE,total)} of ${total}`;
+
+  document.getElementById("prevPage").disabled = currentPage <= 1;
+  document.getElementById("nextPage").disabled = currentPage >= pages;
+}
+
+function changePage(direction) {
+  currentPage += direction;
+  renderTable();
+  window.scrollTo({top:document.querySelector(".content-panel").offsetTop - 15,behavior:"smooth"});
+}
+
+function openClassModal(item = null) {
+  editingClassId = item?.id || null;
+  document.getElementById("classForm").reset();
+
+  document.getElementById("classModalTitle").textContent =
+    item ? "EDIT CLASS INFORMATION" : "CREATE NEW CLASS";
+
+  document.getElementById("saveClassButton").textContent =
+    item ? "Save Changes" : "Save Class";
+
+  const fields = [
+    "school_name","school_phone","school_email","school_address",
+    "school_logo_url","class_name","class_arm","academic_session",
+    "academic_period","class_teacher_name","principal_name"
+  ];
+
+  fields.forEach(key => {
+    document.getElementById(key).value = item?.[key] || "";
+  });
+
+  if (!item) {
+    const first = allClasses.find(x => x.school_name);
+    if (first) {
+      document.getElementById("school_name").value = first.school_name;
+    }
+  }
+
+  openModal("classModal");
+}
+
+async function editClass(id) {
+  const item = allClasses.find(x => x.id === id);
+  if (!item) return toast("Class not found.");
+  openClassModal(item);
+}
+
+document.getElementById("classForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const button = document.getElementById("saveClassButton");
+  button.disabled = true;
+  button.textContent = "Saving...";
+
+  const form = new FormData(event.target);
+  const payload = Object.fromEntries(form.entries());
+
+  try {
+    if (editingClassId) {
+      await callFunction(CLASS_FUNCTION, {
+        action:"update_class",
+        class_id:editingClassId,
+        ...payload
+      });
+      toast("Class information updated.");
+    } else {
+      await callFunction(CLASS_FUNCTION, {
+        action:"create_class",
+        ...payload
+      });
+      toast("Class created successfully.");
+    }
+
+    closeModal("classModal");
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = editingClassId ? "Save Changes" : "Save Class";
+  }
+});
+
+async function viewClass(id) {
+  try {
+    const data = await callFunction(CLASS_FUNCTION, {
+      action:"get_class",
+      class_id:id
+    });
+
+    const item = data.class;
+    const details = [
+      ["Class ID",item.class_id],
+      ["School Name",item.school_name],
+      ["Class Name",item.class_name],
+      ["Class Arm",item.class_arm],
+      ["Academic Session",item.academic_session],
+      ["Academic Period",item.academic_period],
+      ["Class Teacher",item.class_teacher_name],
+      ["Principal",item.principal_name],
+      ["School Phone",item.school_phone],
+      ["School Email",item.school_email],
+      ["School Address",item.school_address],
+      ["Status",item.is_archived ? "Archived" : item.status],
+      ["Registered Students",data.registered_student_count],
+      ["Attached Examinations",data.attached_examination_count]
+    ];
+
+    document.getElementById("classDetails").innerHTML =
+      '<div class="detail-list">' +
+      details.map(([label,value]) => `
+        <div class="detail-item">
+          <small>${escapeHTML(label)}</small>
+          <strong>${escapeHTML(value || "Not provided")}</strong>
+        </div>`).join("") +
+      '</div>';
+
+    openModal("viewModal");
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function changeClassStatus(id,status) {
+  const action = status === "active" ? "activate" : "deactivate";
+  if (!confirm(`Are you sure you want to ${action} this class?`)) return;
+
+  try {
+    await callFunction(CLASS_FUNCTION,{
+      action:"set_class_status",
+      class_id:id,
+      status
+    });
+    toast(`Class ${action}d successfully.`);
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function archiveClass(id) {
+  if (!confirm(
+    "Archive this class? Its student memberships, examinations and academic records will be retained. Archiving will not publish or unpublish results."
+  )) return;
+
+  try {
+    let data = await callFunction(CLASS_FUNCTION,{
+      action:"archive_class",
+      class_id:id
+    });
+
+    if (data.confirmation_required) {
+      if (!confirm(data.message)) return;
+
+      await callFunction(CLASS_FUNCTION,{
+        action:"archive_class",
+        class_id:id,
+        confirm_without_published_result:true
+      });
+    }
+
+    toast("Class archived.");
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function restoreClass(id) {
+  if (!confirm("Restore this class to the active class list?")) return;
+
+  try {
+    await callFunction(CLASS_FUNCTION,{
+      action:"restore_class",
+      class_id:id
+    });
+    toast("Class restored.");
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function openMembershipModal(type) {
+  membershipType = type;
+
+  document.getElementById("membershipForm").reset();
+  document.getElementById("membershipTitle").textContent =
+    type === "student" ? "ADD EXISTING STUDENTS" : "ATTACH EXISTING EXAMINATION";
+
+  document.getElementById("membershipRecordLabel").textContent =
+    type === "student" ? "Select Student *" : "Select Examination *";
+
+  const classSelect = document.getElementById("membershipClass");
+  classSelect.innerHTML = '<option value="">Select a class</option>';
+
+  allClasses.filter(x => !x.is_archived).forEach(item => {
+    classSelect.innerHTML += `
+      <option value="${escapeHTML(item.id)}">
+        ${escapeHTML(item.class_name)}
+        ${item.class_arm ? "- " + escapeHTML(item.class_arm) : ""}
+        (${escapeHTML(item.academic_session)} - ${escapeHTML(item.academic_period)})
+      </option>`;
+  });
+
+  const recordSelect = document.getElementById("membershipRecord");
+  recordSelect.innerHTML = '<option value="">Select a record</option>';
+
+  const records = type === "student" ? allStudents : allExams;
+
+  records.forEach(item => {
+    const id = item.id;
+    const name = type === "student"
+      ? (item.full_name || item.name || "Student")
+      : (item.title || item.examination_name || "Examination");
+
+    const code = type === "student"
+      ? (item.student_id || id)
+      : (item.examination_code || id);
+
+    recordSelect.innerHTML += `
+      <option value="${escapeHTML(id)}">
+        ${escapeHTML(name)} — ${escapeHTML(code)}
+      </option>`;
+  });
+
+  document.getElementById("membershipNotice").textContent =
+    type === "student"
+      ? "Select an existing registered student. This adds class membership; it does not create a new student account."
+      : "Select an existing examination. This attaches it to the selected class without creating a duplicate examination.";
+
+  openModal("membershipModal");
+}
+
+document.getElementById("membershipForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const classId = document.getElementById("membershipClass").value;
+  const recordId = document.getElementById("membershipRecord").value;
+
+  if (!classId || !recordId) return toast("Select both required records.");
+
+  const button = document.getElementById("membershipSave");
+  button.disabled = true;
+  button.textContent = "Processing...";
+
+  try {
+    if (membershipType === "student") {
+      await callFunction(CLASS_FUNCTION,{
+        action:"add_student_to_class",
+        class_id:classId,
+        school_student_id:recordId
+      });
+    } else {
+      await callFunction(CLASS_FUNCTION,{
+        action:"attach_examination",
+        class_id:classId,
+        examination_id:recordId
+      });
+    }
+
+    toast(membershipType === "student"
+      ? "Student added to class."
+      : "Examination attached to class.");
+
+    closeModal("membershipModal");
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = "Continue";
+  }
+});
+
+async function viewMembership(type,classId,recordId) {
+  const classItem = allClasses.find(x => x.id === classId);
+
+  let record = type === "student"
+    ? allStudents.find(x => String(x.id) === String(recordId))
+    : allExams.find(x => String(x.id) === String(recordId));
+
+  const title = type === "student"
+    ? "STUDENT MEMBERSHIP DETAILS"
+    : "EXAMINATION ATTACHMENT DETAILS";
+
+  const rows = type === "student"
+    ? [
+      ["Student Name",record?.full_name || record?.name],
+      ["Student ID",record?.student_id || recordId],
+      ["Class",classItem?.class_name],
+      ["Class ID",classItem?.class_id]
+    ]
+    : [
+      ["Examination",record?.title || record?.examination_name],
+      ["Examination ID",record?.examination_code || recordId],
+      ["Class",classItem?.class_name],
+      ["Class ID",classItem?.class_id]
+    ];
+
+  document.getElementById("classDetails").innerHTML =
+    `<h3 style="color:var(--navy)">${title}</h3>
+    <div class="detail-list">${rows.map(([label,value]) => `
+      <div class="detail-item">
+        <small>${escapeHTML(label)}</small>
+        <strong>${escapeHTML(value || "Not available")}</strong>
+      </div>`).join("")}</div>`;
+
+  openModal("viewModal");
+}
+
+async function changeMembershipStatus(type,classId,recordId,activate) {
+  const verb = activate ? "activate" : "deactivate";
+
+  if (!confirm(`Are you sure you want to ${verb} this ${type} membership?`)) return;
+
+  try {
+    if (type === "student") {
+      await callFunction(CLASS_FUNCTION,{
+        action:"set_student_membership_status",
+        class_id:classId,
+        school_student_id:recordId,
+        is_active:activate
+      });
+    } else {
+      await callFunction(CLASS_FUNCTION,{
+        action:"set_examination_attachment_status",
+        class_id:classId,
+        examination_id:recordId,
+        is_attached:activate
+      });
+    }
+
+    toast(`${type === "student" ? "Student membership" : "Examination attachment"} updated.`);
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+async function removeMembership(type,classId,recordId) {
+  const message = type === "student"
+    ? "Remove this student from the class? The student account and historical records will remain."
+    : "Detach this examination from the class? The examination and its existing results will remain.";
+
+  if (!confirm(message)) return;
+
+  try {
+    if (type === "student") {
+      await callFunction(CLASS_FUNCTION,{
+        action:"remove_student_from_class",
+        class_id:classId,
+        school_student_id:recordId
+      });
+    } else {
+      await callFunction(CLASS_FUNCTION,{
+        action:"detach_examination",
+        class_id:classId,
+        examination_id:recordId
+      });
+    }
+
+    toast("Record removed from this class.");
+    await loadDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadDashboard();
+});
+</script>
+
+</body>
+</html>
