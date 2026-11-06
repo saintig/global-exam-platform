@@ -275,6 +275,95 @@ h1{
   margin-top:2px;
 }
 
+/* SCHOOL CLASS EXAMINATION FEATURE */
+
+.class-feature{
+  margin-top:25px;
+  background:var(--navy);
+  color:white;
+  border:1px solid #263e5c;
+  border-radius:15px;
+  padding:24px;
+  box-shadow:0 8px 24px #14243a16;
+}
+
+.class-feature-heading{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:8px;
+}
+
+.class-feature-icon{
+  width:45px;
+  height:45px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:11px;
+  background:#ffffff12;
+  color:var(--gold);
+  font-size:25px;
+}
+
+.class-feature h2{
+  color:var(--gold);
+  font-size:19px;
+  margin:0;
+  letter-spacing:.4px;
+}
+
+.class-feature-description{
+  color:#d4deea;
+  font-size:13px;
+  margin:9px 0 18px;
+}
+
+.class-feature-button{
+  width:100%;
+  min-height:51px;
+  padding:13px 17px;
+  border:0;
+  border-radius:9px;
+  background:var(--gold);
+  color:var(--navy);
+  font-weight:800;
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  transition:.18s;
+}
+
+.class-feature-button:hover{
+  background:#e6c65d;
+  transform:translateY(-1px);
+}
+
+.class-feature-benefits{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:13px 20px;
+  margin-top:21px;
+}
+
+.class-benefit{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  color:#e5ebf3;
+  font-size:12px;
+}
+
+.class-benefit-icon{
+  color:var(--gold);
+  font-weight:bold;
+  font-size:15px;
+  flex-shrink:0;
+  line-height:1.2;
+}
+
 /* LOWER DASHBOARD */
 
 .columns{
@@ -501,6 +590,23 @@ h1{
     font-size:25px;
   }
 
+  .class-feature{
+    margin-top:21px;
+    padding:19px;
+  }
+
+  .class-feature h2{
+    font-size:16px;
+  }
+
+  .class-feature-benefits{
+    gap:13px 12px;
+  }
+
+  .class-benefit{
+    font-size:11px;
+  }
+
   .columns{
     grid-template-columns:1fr;
     gap:15px;
@@ -525,6 +631,10 @@ h1{
   .value{font-size:22px}
 
   .actions{grid-template-columns:1fr}
+
+  .class-feature-benefits{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
@@ -553,6 +663,7 @@ h1{
     <button data-page="School Subjects">▤ &nbsp; School Subjects</button>
     <button data-page="Register Examination">＋ &nbsp; Register Examination</button>
     <button data-page="Question Bank">▣ &nbsp; Question Bank</button>
+    <button data-page="School Class Examination">▦ &nbsp; School Class Examination</button>
     <button data-page="Archive Management">▧ &nbsp; Archive Management</button>
     <button data-page="Results & Performance">▥ &nbsp; Results &amp; Performance</button>
   </nav>
@@ -662,6 +773,57 @@ h1{
 
   </div>
 
+  <!-- SCHOOL CLASS EXAMINATION -->
+
+  <section class="class-feature">
+
+    <div class="class-feature-heading">
+      <div class="class-feature-icon">▦</div>
+
+      <div>
+        <h2>SCHOOL CLASS EXAMINATION</h2>
+      </div>
+    </div>
+
+    <p class="class-feature-description">
+      Manage your classes, students, subjects, examinations and complete academic results in one place.
+    </p>
+
+    <button
+      class="class-feature-button"
+      data-page="School Class Examination"
+    >
+      <span>▦</span>
+      CREATE AND MANAGE CLASSES
+      <span>→</span>
+    </button>
+
+    <div class="class-feature-benefits">
+
+      <div class="class-benefit">
+        <span class="class-benefit-icon">✓</span>
+        <span>Create and manage classes.</span>
+      </div>
+
+      <div class="class-benefit">
+        <span class="class-benefit-icon">✓</span>
+        <span>Add existing students and register subjects.</span>
+      </div>
+
+      <div class="class-benefit">
+        <span class="class-benefit-icon">✓</span>
+        <span>Attach examinations and generate results.</span>
+      </div>
+
+      <div class="class-benefit">
+        <span class="class-benefit-icon">✓</span>
+        <span>Publish, manage and print academic results.</span>
+      </div>
+
+    </div>
+
+  </section>
+
   <!-- SUBSCRIPTION AND QUICK ACTIONS -->
 
   <div class="columns">
@@ -726,7 +888,7 @@ h1{
 
         <button data-page="Register Examination">＋ Register Examination</button>
 
-        <button data-page="Question Bank">↑ Upload Questions</button>
+        <button data-page="Question Bank">▣ Questions Bank</button>
 
         <button data-page="Subscription Plans">◇ Manage Subscription</button>
 
@@ -1055,6 +1217,7 @@ const PAGE_LINKS = {
   "School Subjects": "school-subjects.html",
   "Register Examination": "register-examination.html",
   "Question Bank": "school-question-bank.html",
+  "School Class Examination": "school-class-examinations.html",
   "Archive Management": "school-archive-management.html",
   "Results & Performance": "school-results-performance.html",
   "Subscription Plans": "school-subscription-plans.html",
