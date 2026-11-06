@@ -233,8 +233,7 @@ h1{
   gap:18px;
 }
 
-.stat,
-.panel{
+.stat,.panel{
   background:white;
   border:1px solid var(--line);
   border-radius:13px;
@@ -242,9 +241,7 @@ h1{
   box-shadow:0 7px 22px #14243a0b;
 }
 
-.stat{
-  min-height:135px;
-}
+.stat{min-height:135px}
 
 .stathead{
   display:flex;
@@ -275,7 +272,7 @@ h1{
   margin-top:2px;
 }
 
-/* SCHOOL CLASS EXAMINATION FEATURE */
+/* SCHOOL CLASS EXAMINATION */
 
 .class-feature{
   margin-top:25px;
@@ -399,6 +396,11 @@ h1{
   margin-bottom:7px;
 }
 
+.usagehead b{
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+
 .bar{
   height:8px;
   background:#edf0f4;
@@ -412,6 +414,7 @@ h1{
   width:0;
   background:var(--gold);
   border-radius:8px;
+  transition:width .3s ease;
 }
 
 .actions{
@@ -455,6 +458,54 @@ h1{
   font-size:13px;
 }
 
+/* RECENT EXAMINATIONS */
+
+.recent-wrap{
+  width:100%;
+  overflow-x:auto;
+  margin-top:18px;
+}
+
+.recent-table{
+  width:100%;
+  min-width:600px;
+  border-collapse:collapse;
+  font-size:12px;
+}
+
+.recent-table th{
+  background:#f5f7fa;
+  color:var(--navy);
+  text-align:left;
+  padding:12px 9px;
+  border-bottom:1px solid var(--line);
+  white-space:nowrap;
+}
+
+.recent-table td{
+  padding:12px 9px;
+  border-bottom:1px solid var(--line);
+  color:#475569;
+}
+
+.exam-status{
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.exam-status.published{
+  background:#e8f7ee;
+  color:#16834a;
+}
+
+.exam-status.draft{
+  background:#fff5d9;
+  color:#8a680e;
+}
+
 /* STATUS */
 
 .status{
@@ -479,6 +530,13 @@ h1{
   color:#31577b;
 }
 
+.status.success{
+  display:block;
+  background:#eaf8ef;
+  border:1px solid #c8ebd2;
+  color:#176b3a;
+}
+
 .footer{
   text-align:center;
   color:#8995a3;
@@ -486,18 +544,14 @@ h1{
   padding:35px 8px 15px;
 }
 
-/* MOBILE SIDEBAR OVERLAY */
+/* MOBILE SIDEBAR */
 
-.sidebar-overlay{
-  display:none;
-}
+.sidebar-overlay{display:none}
 
 /* RESPONSIVE */
 
 @media(max-width:1000px){
-  .columns{
-    grid-template-columns:1fr;
-  }
+  .columns{grid-template-columns:1fr}
 }
 
 @media(max-width:720px){
@@ -517,9 +571,7 @@ h1{
     box-shadow:10px 0 25px #0002;
   }
 
-  .sidebar.open{
-    transform:translateX(0);
-  }
+  .sidebar.open{transform:translateX(0)}
 
   .sidebar-overlay{
     display:block;
@@ -552,9 +604,7 @@ h1{
     padding:0 14px;
   }
 
-  .content{
-    padding:23px 15px;
-  }
+  .content{padding:23px 15px}
 
   .welcome{
     display:block;
@@ -586,26 +636,18 @@ h1{
     font-size:14px;
   }
 
-  .value{
-    font-size:25px;
-  }
+  .value{font-size:25px}
 
   .class-feature{
     margin-top:21px;
     padding:19px;
   }
 
-  .class-feature h2{
-    font-size:16px;
-  }
+  .class-feature h2{font-size:16px}
 
-  .class-feature-benefits{
-    gap:13px 12px;
-  }
+  .class-feature-benefits{gap:13px 12px}
 
-  .class-benefit{
-    font-size:11px;
-  }
+  .class-benefit{font-size:11px}
 
   .columns{
     grid-template-columns:1fr;
@@ -613,9 +655,7 @@ h1{
     margin-top:19px;
   }
 
-  .panel{
-    padding:18px;
-  }
+  .panel{padding:18px}
 
   .topright{display:none}
 }
@@ -623,13 +663,9 @@ h1{
 @media(max-width:380px){
 
   .stats{gap:8px}
-
   .stat{padding:12px}
-
   .stathead{font-size:10px}
-
   .value{font-size:22px}
-
   .actions{grid-template-columns:1fr}
 
   .class-feature-benefits{
@@ -689,8 +725,6 @@ h1{
 
 </aside>
 
-<!-- MOBILE OVERLAY -->
-
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- MAIN CONTENT -->
@@ -698,14 +732,12 @@ h1{
 <main class="main">
 
 <header class="topbar">
-
   <div>
     <button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
     <span class="top-title" id="topTitle">Dashboard</span>
   </div>
 
   <div class="topright" id="topAccount">Loading account…</div>
-
 </header>
 
 <section class="content">
@@ -715,7 +747,6 @@ h1{
   <!-- WELCOME -->
 
   <div class="welcome">
-
     <div>
       <h1>Welcome, <span id="welcomeName">…</span></h1>
       <div class="muted">
@@ -724,9 +755,8 @@ h1{
     </div>
 
     <div class="pill" id="packageName">
-      Subscription details pending
+      Loading subscription…
     </div>
-
   </div>
 
   <!-- ACCOUNT OVERVIEW -->
@@ -768,7 +798,7 @@ h1{
         <span class="staticon">▤</span>
       </div>
       <div class="value" id="questionCount">—</div>
-      <div class="note">Questions in your account</div>
+      <div class="note">Non-archived questions in your account</div>
     </article>
 
   </div>
@@ -779,7 +809,6 @@ h1{
 
     <div class="class-feature-heading">
       <div class="class-feature-icon">▦</div>
-
       <div>
         <h2>SCHOOL CLASS EXAMINATION</h2>
       </div>
@@ -789,10 +818,7 @@ h1{
       Manage your classes, students, subjects, examinations and complete academic results in one place.
     </p>
 
-    <button
-      class="class-feature-button"
-      data-page="School Class Examination"
-    >
+    <button class="class-feature-button" data-page="School Class Examination">
       <span>▦</span>
       CREATE AND MANAGE CLASSES
       <span>→</span>
@@ -838,7 +864,7 @@ h1{
         <div>
           <div class="usagehead">
             <span>Active Students</span>
-            <b id="studentUsage">Awaiting package settings</b>
+            <b id="studentUsage">Loading…</b>
           </div>
           <div class="bar"><span id="studentBar"></span></div>
         </div>
@@ -846,7 +872,7 @@ h1{
         <div>
           <div class="usagehead">
             <span>Subjects</span>
-            <b id="subjectUsage">Awaiting package settings</b>
+            <b id="subjectUsage">Loading…</b>
           </div>
           <div class="bar"><span id="subjectBar"></span></div>
         </div>
@@ -854,7 +880,7 @@ h1{
         <div>
           <div class="usagehead">
             <span>Examinations</span>
-            <b id="examUsage">Awaiting package settings</b>
+            <b id="examUsage">Loading…</b>
           </div>
           <div class="bar"><span id="examBar"></span></div>
         </div>
@@ -862,15 +888,15 @@ h1{
         <div>
           <div class="usagehead">
             <span>Question Bank</span>
-            <b id="questionUsage">Awaiting package settings</b>
+            <b id="questionUsage">Loading…</b>
           </div>
           <div class="bar"><span id="questionBar"></span></div>
         </div>
 
       </div>
 
-      <div class="notice">
-        Package prices, limits and expiry dates will be loaded from administrator-controlled settings. No figures are assumed.
+      <div class="notice" id="packageNotice">
+        Loading package limits...
       </div>
 
     </section>
@@ -881,17 +907,11 @@ h1{
       <p>Shortcuts to common dashboard tasks.</p>
 
       <div class="actions">
-
         <button data-page="School Students">＋ Add Student</button>
-
         <button data-page="School Subjects">＋ Add Subject</button>
-
         <button data-page="Register Examination">＋ Register Examination</button>
-
         <button data-page="Question Bank">▣ Questions Bank</button>
-
         <button data-page="Subscription Plans">◇ Manage Subscription</button>
-
       </div>
 
     </section>
@@ -905,8 +925,8 @@ h1{
     <h2>Recent Examinations</h2>
     <p>Your latest examination records.</p>
 
-    <div class="empty">
-      This section will be connected during examination-page development.
+    <div id="recentExaminations" class="empty">
+      Loading recent examinations...
     </div>
 
   </section>
@@ -920,7 +940,9 @@ h1{
 </div>
 
 <script>
-/* SUPABASE CONFIGURATION */
+/* =====================================================
+   SUPABASE CONFIGURATION
+===================================================== */
 
 const SUPABASE_URL =
   "https://scuiswponnqyrbqjypkx.supabase.co";
@@ -932,19 +954,34 @@ const LOGIN_PAGE = "school-login.html";
 
 const $ = id => document.getElementById(id);
 
-let supabaseClient;
+let supabaseClient = null;
+let currentAccount = null;
+let currentPackage = null;
 
 $("year").textContent = new Date().getFullYear();
 
-/* GENERAL HELPERS */
+/* =====================================================
+   GENERAL HELPERS
+===================================================== */
 
 function message(text,type="info"){
+
   const el=$("statusMessage");
+
   el.textContent=text;
   el.className="status "+type;
 }
 
+function clearMessage(){
+
+  const el=$("statusMessage");
+
+  el.textContent="";
+  el.className="status";
+}
+
 function initials(value){
+
   return String(value||"SE")
     .trim()
     .split(/\s+/)
@@ -955,13 +992,47 @@ function initials(value){
 }
 
 function put(id,value){
-  $(id).textContent =
-    value===null || value===undefined || value===""
+
+  const el=$(id);
+
+  if(!el)return;
+
+  el.textContent =
+    value===null ||
+    value===undefined ||
+    value===""
       ? "—"
       : value;
 }
 
-/* ACCOUNT-SCOPED COUNTING */
+function safeNumber(value,fallback=0){
+
+  const number=Number(value);
+
+  return Number.isFinite(number)&&number>=0
+    ? number
+    : fallback;
+}
+
+function formatNumber(value){
+
+  return safeNumber(value).toLocaleString();
+}
+
+function formatDate(value){
+
+  if(!value)return "—";
+
+  const date=new Date(value);
+
+  if(Number.isNaN(date.getTime()))return "—";
+
+  return date.toLocaleDateString();
+}
+
+/* =====================================================
+   ACCOUNT-SCOPED COUNTING
+===================================================== */
 
 async function countRows(table,build){
 
@@ -974,16 +1045,77 @@ async function countRows(table,build){
   const {count,error}=await query;
 
   if(error){
-    console.error(table+" count:",error.message);
-    return null;
+
+    console.error(table+" count:",error);
+
+    throw error;
   }
 
   return count??0;
 }
 
+/* =====================================================
+   QUESTION BANK COUNT
+
+   Counts non-archived questions belonging to all
+   examinations owned by this Teacher/School account.
+===================================================== */
+
+async function countStoredQuestions(accountId){
+
+  const pageSize=1000;
+
+  let start=0;
+  let examIds=[];
+
+  while(true){
+
+    const {data,error}=await supabaseClient
+      .from("examinations")
+      .select("id")
+      .eq("school_account_id",accountId)
+      .range(start,start+pageSize-1);
+
+    if(error)throw error;
+
+    const rows=data||[];
+
+    examIds.push(...rows.map(row=>row.id));
+
+    if(rows.length<pageSize)break;
+
+    start+=pageSize;
+  }
+
+  if(!examIds.length)return 0;
+
+  let total=0;
+
+  for(let i=0;i<examIds.length;i+=100){
+
+    const batch=examIds.slice(i,i+100);
+
+    const {count,error}=await supabaseClient
+      .from("exam_questions")
+      .select("id",{count:"exact",head:true})
+      .in("examination_id",batch)
+      .eq("is_archived",false);
+
+    if(error)throw error;
+
+    total+=count??0;
+  }
+
+  return total;
+}
+
+/* =====================================================
+   LOAD DASHBOARD STATISTICS
+===================================================== */
+
 async function loadCounts(accountId){
 
-  const tasks=[
+  const results=await Promise.all([
 
     countRows(
       "school_students",
@@ -1006,59 +1138,429 @@ async function loadCounts(accountId){
         .eq("school_account_id",accountId)
         .eq("is_published",true)
         .eq("is_archived",false)
-    )
+    ),
 
-  ];
+    countRows(
+      "examinations",
+      q=>q
+        .eq("school_account_id",accountId)
+        .eq("is_archived",false)
+    ),
 
-  const values=await Promise.all(tasks);
+    countStoredQuestions(accountId)
 
-  put("activeStudents",values[0]);
-  put("activeSubjects",values[1]);
-  put("publishedExams",values[2]);
+  ]);
 
-  /* QUESTION BANK COUNT */
+  const usage={
 
-  const {data:exams,error:examError}=
-    await supabaseClient
-      .from("examinations")
-      .select("id")
-      .eq("school_account_id",accountId);
+    students:results[0],
 
-  if(examError){
+    subjects:results[1],
 
-    console.error(
-      "Question count examination lookup:",
-      examError.message
-    );
+    publishedExaminations:results[2],
 
-    put("questionCount",null);
+    examinations:results[3],
 
-  }else if(!exams?.length){
+    questions:results[4]
 
-    put("questionCount",0);
+  };
 
-  }else{
+  put("activeStudents",formatNumber(usage.students));
 
-    const {count,error}=
-      await supabaseClient
-        .from("exam_questions")
-        .select("id",{count:"exact",head:true})
-        .in("examination_id",exams.map(x=>x.id));
+  put("activeSubjects",formatNumber(usage.subjects));
 
-    if(error){
+  put(
+    "publishedExams",
+    formatNumber(usage.publishedExaminations)
+  );
 
-      console.error("Question count:",error.message);
-      put("questionCount",null);
+  put("questionCount",formatNumber(usage.questions));
 
-    }else{
-
-      put("questionCount",count??0);
-
-    }
-  }
+  return usage;
 }
 
-/* DASHBOARD INITIALIZATION */
+/* =====================================================
+   LOAD PACKAGE ASSIGNMENT AND LIMITS
+
+   Uses:
+   school_account_packages
+   school_package_limits
+
+   Custom package values override standard limits.
+   Missing Custom limits fall back to Free limits.
+===================================================== */
+
+async function loadPackageInfo(accountId){
+
+  const {data:assignment,error:assignmentError}=
+    await supabaseClient
+      .from("school_account_packages")
+      .select(`
+        package_name,
+        custom_max_active_students,
+        custom_max_subjects,
+        custom_max_stored_questions,
+        custom_max_examinations,
+        custom_max_exam_duration_minutes,
+        custom_max_questions_per_exam
+      `)
+      .eq("school_account_id",accountId)
+      .maybeSingle();
+
+  if(assignmentError)throw assignmentError;
+
+  const packageName=assignment?.package_name||"Free";
+
+  let {data:limits,error:limitsError}=
+    await supabaseClient
+      .from("school_package_limits")
+      .select(`
+        package_name,
+        max_active_students,
+        max_subjects,
+        max_stored_questions,
+        max_examinations,
+        max_exam_duration_minutes,
+        max_questions_per_exam
+      `)
+      .eq("package_name",packageName)
+      .maybeSingle();
+
+  if(limitsError)throw limitsError;
+
+  if(!limits && packageName!=="Free"){
+
+    const fallback=await supabaseClient
+      .from("school_package_limits")
+      .select(`
+        package_name,
+        max_active_students,
+        max_subjects,
+        max_stored_questions,
+        max_examinations,
+        max_exam_duration_minutes,
+        max_questions_per_exam
+      `)
+      .eq("package_name","Free")
+      .maybeSingle();
+
+    if(fallback.error)throw fallback.error;
+
+    limits=fallback.data;
+  }
+
+  if(!limits){
+
+    throw new Error(
+      "No package limits were found in school_package_limits."
+    );
+  }
+
+  function resolveLimit(customField,standardField){
+
+    const customValue=assignment?.[customField];
+
+    if(
+      customValue!==null &&
+      customValue!==undefined &&
+      customValue!==""
+    ){
+
+      const value=Number(customValue);
+
+      if(Number.isFinite(value)&&value>=0){
+
+        return value;
+      }
+    }
+
+    const standardValue=Number(limits[standardField]);
+
+    if(
+      !Number.isFinite(standardValue)||
+      standardValue<0
+    ){
+
+      throw new Error(
+        "Invalid package limit: "+standardField
+      );
+    }
+
+    return standardValue;
+  }
+
+  return {
+
+    package_name:packageName,
+
+    max_active_students:resolveLimit(
+      "custom_max_active_students",
+      "max_active_students"
+    ),
+
+    max_subjects:resolveLimit(
+      "custom_max_subjects",
+      "max_subjects"
+    ),
+
+    max_stored_questions:resolveLimit(
+      "custom_max_stored_questions",
+      "max_stored_questions"
+    ),
+
+    max_examinations:resolveLimit(
+      "custom_max_examinations",
+      "max_examinations"
+    ),
+
+    max_exam_duration_minutes:resolveLimit(
+      "custom_max_exam_duration_minutes",
+      "max_exam_duration_minutes"
+    ),
+
+    max_questions_per_exam:resolveLimit(
+      "custom_max_questions_per_exam",
+      "max_questions_per_exam"
+    )
+  };
+}
+
+/* =====================================================
+   DISPLAY SUBSCRIPTION USAGE
+===================================================== */
+
+function displayUsage(
+  labelId,
+  barId,
+  used,
+  maximum
+){
+
+  const label=$(labelId);
+  const bar=$(barId);
+
+  if(!label||!bar)return;
+
+  used=safeNumber(used);
+  maximum=safeNumber(maximum);
+
+  label.textContent=
+    formatNumber(used)+" / "+formatNumber(maximum);
+
+  const percentage=maximum>0
+    ? Math.min(100,(used/maximum)*100)
+    : used>0?100:0;
+
+  bar.style.width=percentage+"%";
+
+  bar.style.background=
+    used>maximum
+      ? "#dc5b52"
+      : "var(--gold)";
+}
+
+function displayPackage(packageInfo,usage){
+
+  currentPackage=packageInfo;
+
+  put(
+    "packageName",
+    packageInfo.package_name+" Package"
+  );
+
+  displayUsage(
+    "studentUsage",
+    "studentBar",
+    usage.students,
+    packageInfo.max_active_students
+  );
+
+  displayUsage(
+    "subjectUsage",
+    "subjectBar",
+    usage.subjects,
+    packageInfo.max_subjects
+  );
+
+  displayUsage(
+    "examUsage",
+    "examBar",
+    usage.examinations,
+    packageInfo.max_examinations
+  );
+
+  displayUsage(
+    "questionUsage",
+    "questionBar",
+    usage.questions,
+    packageInfo.max_stored_questions
+  );
+
+  const remainingStudents=Math.max(
+    0,
+    packageInfo.max_active_students-usage.students
+  );
+
+  const remainingSubjects=Math.max(
+    0,
+    packageInfo.max_subjects-usage.subjects
+  );
+
+  const remainingExams=Math.max(
+    0,
+    packageInfo.max_examinations-usage.examinations
+  );
+
+  const remainingQuestions=Math.max(
+    0,
+    packageInfo.max_stored_questions-usage.questions
+  );
+
+  $("packageNotice").textContent=
+    "Remaining capacity: "+
+    formatNumber(remainingStudents)+" students, "+
+    formatNumber(remainingSubjects)+" subjects, "+
+    formatNumber(remainingExams)+" examinations and "+
+    formatNumber(remainingQuestions)+" questions. "+
+    "Maximum examination duration: "+
+    formatNumber(packageInfo.max_exam_duration_minutes)+
+    " minutes. Maximum questions per examination: "+
+    formatNumber(packageInfo.max_questions_per_exam)+".";
+}
+
+/* =====================================================
+   RECENT EXAMINATIONS
+===================================================== */
+
+async function loadRecentExaminations(accountId){
+
+  const container=$("recentExaminations");
+
+  container.className="empty";
+  container.textContent="Loading recent examinations...";
+
+  const {data,error}=await supabaseClient
+    .from("examinations")
+    .select(`
+      id,
+      title,
+      name_class,
+      created_at,
+      is_published,
+      duration_minutes,
+      student_question_count,
+      examination_code
+    `)
+    .eq("school_account_id",accountId)
+    .eq("is_archived",false)
+    .order("created_at",{ascending:false})
+    .limit(5);
+
+  if(error){
+
+    console.error("Recent examinations:",error);
+
+    container.className="empty";
+
+    container.textContent=
+      "Unable to load recent examinations. Check the examination table permissions.";
+
+    return;
+  }
+
+  if(!data||data.length===0){
+
+    container.className="empty";
+    container.textContent="No examinations found yet.";
+
+    return;
+  }
+
+  const wrapper=document.createElement("div");
+  wrapper.className="recent-wrap";
+
+  const table=document.createElement("table");
+  table.className="recent-table";
+
+  const thead=document.createElement("thead");
+  const heading=document.createElement("tr");
+
+  [
+    "Examination",
+    "Class",
+    "Questions",
+    "Duration",
+    "Date",
+    "Status"
+  ].forEach(text=>{
+
+    const th=document.createElement("th");
+    th.textContent=text;
+    heading.appendChild(th);
+
+  });
+
+  thead.appendChild(heading);
+  table.appendChild(thead);
+
+  const tbody=document.createElement("tbody");
+
+  data.forEach(exam=>{
+
+    const row=document.createElement("tr");
+
+    const values=[
+
+      exam.title||"Untitled examination",
+
+      exam.name_class||"—",
+
+      exam.student_question_count??"—",
+
+      exam.duration_minutes
+        ? exam.duration_minutes+" minutes"
+        : "—",
+
+      formatDate(exam.created_at)
+
+    ];
+
+    values.forEach(value=>{
+
+      const td=document.createElement("td");
+      td.textContent=String(value);
+      row.appendChild(td);
+
+    });
+
+    const statusCell=document.createElement("td");
+
+    const badge=document.createElement("span");
+
+    badge.className=
+      "exam-status "+
+      (exam.is_published?"published":"draft");
+
+    badge.textContent=
+      exam.is_published?"Published":"Draft";
+
+    statusCell.appendChild(badge);
+    row.appendChild(statusCell);
+
+    tbody.appendChild(row);
+
+  });
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+
+  container.className="";
+  container.replaceChildren(wrapper);
+}
+
+/* =====================================================
+   DASHBOARD INITIALIZATION
+===================================================== */
 
 async function initializeDashboard(){
 
@@ -1089,7 +1591,7 @@ async function initializeDashboard(){
     error:sessionError
   }=await supabaseClient.auth.getSession();
 
-  if(sessionError || !sessionData.session){
+  if(sessionError||!sessionData.session){
 
     location.replace(LOGIN_PAGE);
     return;
@@ -1108,10 +1610,10 @@ async function initializeDashboard(){
 
   if(error){
 
-    console.error("Account lookup:",error.message);
+    console.error("Account lookup:",error);
 
     message(
-      "Unable to load your Teacher/School account. Check the school_accounts table permissions and account record.",
+      "Unable to load your Teacher/School account. Check school_accounts permissions and your account record.",
       "error"
     );
 
@@ -1131,9 +1633,12 @@ async function initializeDashboard(){
   if(account.status!=="active"){
 
     await supabaseClient.auth.signOut();
+
     location.replace(LOGIN_PAGE);
     return;
   }
+
+  currentAccount=account;
 
   const name=account.account_name||"Teacher/School";
 
@@ -1150,15 +1655,74 @@ async function initializeDashboard(){
 
   $("sideAvatar").textContent=initials(name);
 
-  await loadCounts(account.id);
+  clearMessage();
 
   /*
-    Subscription schema has not yet been inspected.
-    Package values and limits are intentionally not assumed.
+    Load statistics and package information separately.
+    A package-loading error will not erase working
+    dashboard statistics.
   */
+
+  let usage=null;
+
+  try{
+
+    usage=await loadCounts(account.id);
+
+  }catch(error){
+
+    console.error("Dashboard statistics:",error);
+
+    message(
+      "Some dashboard statistics could not be loaded. Check the browser console for details.",
+      "error"
+    );
+  }
+
+  try{
+
+    const packageInfo=await loadPackageInfo(account.id);
+
+    if(usage){
+
+      displayPackage(packageInfo,usage);
+
+    }else{
+
+      put("packageName",packageInfo.package_name+" Package");
+
+      $("packageNotice").textContent=
+        "Package limits loaded, but usage statistics are unavailable.";
+    }
+
+  }catch(error){
+
+    console.error("Package loading:",error);
+
+    put("packageName","Package unavailable");
+
+    [
+      "studentUsage",
+      "subjectUsage",
+      "examUsage",
+      "questionUsage"
+    ].forEach(id=>put(id,"Unable to load"));
+
+    $("packageNotice").textContent=
+      "Package information could not be retrieved. Check school_account_packages, school_package_limits and their permissions.";
+
+    message(
+      "Package information could not be loaded. Your dashboard account is still active. Check the browser console for the exact database error.",
+      "error"
+    );
+  }
+
+  await loadRecentExaminations(account.id);
 }
 
-/* SIGN OUT */
+/* =====================================================
+   SIGN OUT
+===================================================== */
 
 async function signOut(){
 
@@ -1190,7 +1754,9 @@ async function signOut(){
   }
 }
 
-/* SIDEBAR NAVIGATION */
+/* =====================================================
+   SIDEBAR NAVIGATION
+===================================================== */
 
 function closeSidebar(){
 
@@ -1204,26 +1770,31 @@ function openSidebar(){
   $("sidebarOverlay").classList.add("show");
 }
 
-/*
-  CENTRAL PAGE ROUTING
+const PAGE_LINKS={
 
-  All dashboard navigation uses the agreed filenames.
-  Dashboard always returns to school-dashboard.html.
-*/
+  "Dashboard":"school-dashboard.html",
 
-const PAGE_LINKS = {
-  "Dashboard": "school-dashboard.html",
-  "School Students": "school-students.html",
-  "School Subjects": "school-subjects.html",
-  "Register Examination": "register-examination.html",
-  "Question Bank": "school-question-bank.html",
-  "School Class Examination": "school-class-examinations.html",
-  "Archive Management": "school-archive-management.html",
-  "Results & Performance": "school-results-performance.html",
-  "Subscription Plans": "school-subscription-plans.html",
-  "Notifications": "school-notifications.html",
-  "School Profile": "school-my-profile.html",
-  "Help & Support": "school-help-support.html"
+  "School Students":"school-students.html",
+
+  "School Subjects":"school-subjects.html",
+
+  "Register Examination":"register-examination.html",
+
+  "Question Bank":"school-question-bank.html",
+
+  "School Class Examination":"school-class-examinations.html",
+
+  "Archive Management":"school-archive-management.html",
+
+  "Results & Performance":"school-results-performance.html",
+
+  "Subscription Plans":"school-subscription-plans.html",
+
+  "Notifications":"school-notifications.html",
+
+  "School Profile":"school-my-profile.html",
+
+  "Help & Support":"school-help-support.html"
 };
 
 function navigate(page){
@@ -1262,11 +1833,11 @@ $("menuToggle").addEventListener("click",()=>{
   }
 });
 
-/* CLICK OUTSIDE SIDEBAR TO CLOSE */
+/* CLICK OUTSIDE SIDEBAR */
 
 $("sidebarOverlay").addEventListener("click",closeSidebar);
 
-/* ESCAPE KEY CLOSES SIDEBAR */
+/* ESCAPE KEY */
 
 document.addEventListener("keydown",event=>{
 
@@ -1274,7 +1845,7 @@ document.addEventListener("keydown",event=>{
 
 });
 
-/* MENU ITEMS AND QUICK ACTIONS */
+/* NAVIGATION BUTTONS */
 
 document.querySelectorAll("[data-page]").forEach(button=>{
 
@@ -1297,13 +1868,13 @@ document.addEventListener(
   async()=>{
 
     if(
-      document.visibilityState==="visible" &&
+      document.visibilityState==="visible"&&
       supabaseClient
     ){
 
-      const {data}=await supabaseClient.auth.getSession();
+      const {data,error}=await supabaseClient.auth.getSession();
 
-      if(!data.session){
+      if(error||!data.session){
 
         location.replace(LOGIN_PAGE);
 
