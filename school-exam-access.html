@@ -91,6 +91,24 @@ th{background:#f1f4f8;color:var(--navy);text-align:left;padding:10px 8px}
 td{padding:10px 8px;border-bottom:1px solid var(--line)}
 .table-wrap{overflow-x:auto;margin-top:12px}
 
+/* ANSWER REVIEW */
+.rev-item{border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
+.rev-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;color:var(--navy)}
+.rev-q{white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 10px}
+.rev-badge{font-size:12px;font-weight:bold;padding:4px 10px;border-radius:20px;white-space:nowrap}
+.rev-badge.good{background:#e8f7ee;color:#17683b}
+.rev-badge.bad{background:#fdecea;color:#a5281c}
+.rev-badge.none{background:#eef1f6;color:#5b6b82}
+.rev-option{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:10px;margin-bottom:8px}
+.rev-option .letter{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#e9eef6;color:var(--navy);display:grid;place-items:center;font-weight:bold;font-size:13px}
+.rev-option .otext{overflow-wrap:anywhere}
+.rev-option small{display:block;font-weight:bold;font-size:12px;margin-top:2px}
+.rev-option.correct{background:#eaf7ef;border-color:#a9dcc0}
+.rev-option.correct .letter{background:#16834b;color:#fff}
+.rev-option.wrong{background:#fdecea;border-color:#f1b8b1}
+.rev-option.wrong .letter{background:#c0392b;color:#fff}
+.rev-exp{background:#f4f7fc;border-radius:11px;padding:12px;font-size:14px;margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+
 .footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 12px 30px}
 .footer a{color:var(--muted);text-decoration:none}
 
@@ -110,7 +128,6 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
   <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   <nav class="menu-list hidden" id="menuList">
     <a href="#" id="menuHome">Home</a>
-    <a href="#" id="menuDashboard">Student Dashboard</a>
   </nav>
 </header>
 
@@ -199,7 +216,7 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
 
   <div class="footer">
     © <span id="year"></span> SAINTIG EXAMS · SAINT IG DIGITAL<br><br>
-    <a href="#" id="footHome">Return Home</a> · <a href="#" id="footDashboard">Return to Dashboard</a>
+    <a href="#" id="footHome">Return Home</a>
   </div>
 </main>
 
@@ -262,9 +279,8 @@ const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const FUNCTION_NAME = "school-student-exam";
 
-/* Change these two if your page names are different. */
+/* Change this if your home page has a different name. */
 const HOME_PAGE = "index.html";
-const DASHBOARD_PAGE = "student-dashboard.html";
 
 const SESSION_KEY = "saintig_school_exam_session";
 
@@ -327,7 +343,6 @@ async function api(action, payload = {}) {
 /* NAVIGATION AND TABS */
 $("year").textContent = new Date().getFullYear();
 ["menuHome", "footHome"].forEach(id => $(id).href = HOME_PAGE);
-["menuDashboard", "footDashboard"].forEach(id => $(id).href = DASHBOARD_PAGE);
 
 $("menuBtn").addEventListener("click", () => $("menuList").classList.toggle("hidden"));
 document.addEventListener("click", e => {
@@ -395,11 +410,11 @@ function renderConfirm(info) {
     <div class="fact"><small>School</small><strong>${escapeHTML(info.school_name || "—")}</strong></div>
     <div class="fact"><small>Duration</small><strong>${escapeHTML(e.duration_minutes)} minutes</strong></div>
     <div class="fact"><small>Questions</small><strong>${escapeHTML(e.question_count)}</strong></div>
-    <div class="fact"><small>Attempts used</small><strong>${escapeHTML(info.attempts_used)} of ${escapeHTML(info.attempts_allowed)}</strong></div>`;
+    <div class="fact"><small>Entries used</small><strong>${escapeHTML(info.attempts_used)} of ${escapeHTML(info.attempts_allowed)}</strong></div>`;
 
   $("confirmNotice").textContent = info.resumable
     ? "Your timer is still running. Resume now to continue where you stopped."
-    : "Your timer starts as soon as you tap Start Exam and cannot be paused. Make sure you are ready.";
+    : "Your timer starts as soon as you tap Start Exam and cannot be paused. You can submit only once, and you cannot retake this exam after submitting or when your time ends. If you leave, you can re-enter up to " + info.attempts_allowed + " times in total while your time is still running.";
 
   $("startBtn").textContent = info.resumable ? "Resume Exam" : "Start Exam";
   hideMsg("confirmMsg");
