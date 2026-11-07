@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#163a6b">
+<title>Teacher / School Exams | SAINTIG EXAMS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#163a6b;--gold:#d4a72c;--bg:#f4f7fc;--ink:#25324a;
+  --muted:#6b7a90;--line:#e2e8f1;--red:#c0392b;--green:#16834b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+
+header{background:var(--navy);color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:relative}
+.brand{font-size:22px;font-weight:bold}
+.brand span{color:var(--gold)}
+.menu-btn{background:transparent;color:#fff;border:1px solid #ffffff55;border-radius:10px;padding:10px 16px;font-size:16px}
+.menu-list{position:absolute;right:16px;top:70px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px #0003;z-index:30;min-width:210px;overflow:hidden}
+.menu-list a{display:block;padding:13px 16px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:14px;border-bottom:1px solid var(--line)}
+.menu-list a:last-child{border-bottom:0}
+
+main{max-width:760px;margin:auto;padding:24px 18px 10px}
+h1{font-size:29px;color:#1d2b45;margin:0 0 8px}
+h2{font-size:27px;color:#1d2b45;margin:26px 0 8px}
+.lead{color:var(--muted);margin:0 0 6px}
+
+.tabs{display:flex;gap:8px;margin:20px 0 4px;flex-wrap:wrap}
+.tab{flex:1;min-width:130px;border:1px solid var(--line);background:#fff;color:var(--navy);padding:12px 8px;border-radius:12px;font-weight:bold;font-size:14px}
+.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;margin:18px 0}
+label{display:block;font-weight:bold;margin:0 0 9px}
+input{width:100%;padding:17px 16px;border:1px solid #d5dce8;border-radius:13px;background:#fff;color:var(--ink);margin-bottom:24px}
+input:focus{outline:2px solid #bcd0ee;border-color:var(--navy)}
+.btn{width:100%;border:0;border-radius:13px;background:var(--navy);color:#fff;font-weight:bold;padding:18px;font-size:18px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.light{background:#e9eef6;color:var(--navy)}
+.btn.small{width:auto;padding:12px 18px;font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.row .btn{flex:1;min-width:140px}
+
+.msg{display:none;padding:13px 15px;border-radius:12px;margin-bottom:18px;font-size:14px;line-height:1.5}
+.msg.show{display:block}
+.msg.error{background:#fdecea;color:#a5281c}
+.msg.info{background:#edf3ff;color:#214e91}
+.msg.ok{background:#e8f7ee;color:#17683b}
+
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.fact{background:#f4f7fc;border-radius:12px;padding:12px}
+.fact small{display:block;color:var(--muted);font-size:12px}
+.fact strong{color:var(--navy);overflow-wrap:anywhere}
+.notice{background:#fff8e6;border:1px solid #f0dfa8;color:#6e5410;border-radius:12px;padding:13px;font-size:14px;margin:14px 0}
+
+/* EXAM RUNNER */
+.runner{max-width:760px;margin:auto;padding:16px 16px 40px}
+.runner-top{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5}
+.runner-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--navy);color:#fff;border-radius:14px;padding:12px 16px}
+.timer{font-size:24px;font-weight:bold;color:var(--gold);font-variant-numeric:tabular-nums}
+.timer.low{color:#ff8a80}
+.runner-title{font-weight:bold;font-size:14px;overflow-wrap:anywhere}
+.progress{font-size:13px;color:var(--muted);margin:10px 2px 0}
+.q-text{font-size:19px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 18px}
+.option{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px;margin-bottom:11px;color:var(--ink)}
+.option .letter{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:#e9eef6;color:var(--navy);display:grid;place-items:center;font-weight:bold}
+.option .otext{overflow-wrap:anywhere;padding-top:3px}
+.option.selected{border-color:var(--navy);background:#eef3fb}
+.option.selected .letter{background:var(--navy);color:#fff}
+.nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:8px;margin-top:6px}
+.nav-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 0;font-weight:bold;color:var(--navy)}
+.nav-btn.answered{background:#e0f0e8;border-color:#bfe0cd;color:#14794a}
+.nav-btn.current{outline:3px solid var(--gold)}
+.overlay{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:50}
+.dialog{background:#fff;border-radius:18px;padding:24px;max-width:420px;width:100%}
+.dialog h3{margin:0 0 10px;color:var(--navy)}
+.save-note{font-size:12px;color:var(--muted);min-height:18px;margin-top:6px}
+
+/* RESULTS */
+.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.result-head h3{margin:0;color:var(--navy);font-size:19px}
+.score-big{font-size:34px;font-weight:bold;color:var(--navy)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#f1f4f8;color:var(--navy);text-align:left;padding:10px 8px}
+td{padding:10px 8px;border-bottom:1px solid var(--line)}
+.table-wrap{overflow-x:auto;margin-top:12px}
+
+.footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 12px 30px}
+.footer a{color:var(--muted);text-decoration:none}
+
+@media(max-width:480px){
+  h1{font-size:26px}
+  h2{font-size:24px}
+  .card{padding:20px}
+  .facts{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
+  <nav class="menu-list hidden" id="menuList">
+    <a href="#" id="menuHome">Home</a>
+    <a href="#" id="menuDashboard">Student Dashboard</a>
+  </nav>
+</header>
+
+<!-- ENTRY PAGE -->
+<main id="entryView">
+  <h1>Welcome to SAINTIG EXAMS</h1>
+  <p class="lead">Teacher / School examinations.</p>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="exam" type="button">Take Exam</button>
+    <button class="tab" data-tab="examResult" type="button">Exam Results</button>
+    <button class="tab" data-tab="classResult" type="button">Class Results</button>
+  </div>
+
+  <!-- TAKE EXAM -->
+  <section id="panel-exam">
+    <h2>Teacher / School Exam Login</h2>
+    <p class="lead">Enter the examination details supplied by your school.</p>
+
+    <div class="card" id="examFormCard">
+      <div class="msg" id="examMsg"></div>
+      <form id="examForm" autocomplete="off">
+        <label for="examCode">Exam ID</label>
+        <input id="examCode" placeholder="Enter Exam ID" autocapitalize="characters">
+        <label for="studentCode">Student ID</label>
+        <input id="studentCode" placeholder="Enter Student ID" autocapitalize="characters">
+        <button class="btn" id="examBtn" type="submit">Take Exam</button>
+      </form>
+    </div>
+
+    <div class="card hidden" id="examConfirm">
+      <div class="result-head"><h3 id="confirmTitle">Ready to begin</h3></div>
+      <div class="facts" id="confirmFacts"></div>
+      <div class="notice" id="confirmNotice"></div>
+      <div class="msg" id="confirmMsg"></div>
+      <div class="row">
+        <button class="btn" id="startBtn" type="button">Start Exam</button>
+        <button class="btn light" id="cancelStartBtn" type="button">Cancel</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="resumeCard">
+      <div class="result-head"><h3>Exam in progress</h3></div>
+      <p class="lead">You have an examination in progress on this device.</p>
+      <div class="row">
+        <button class="btn" id="resumeBtn" type="button">Resume Exam</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAM RESULTS -->
+  <section id="panel-examResult" class="hidden">
+    <h2>Check / Print Exam Results</h2>
+    <p class="lead">Enter your school examination ID and student ID to look up a result.</p>
+
+    <div class="card">
+      <div class="msg" id="examResultMsg"></div>
+      <form id="examResultForm" autocomplete="off">
+        <label for="erExamCode">Exam ID</label>
+        <input id="erExamCode" placeholder="Enter Exam ID" autocapitalize="characters">
+        <label for="erStudentCode">Student ID</label>
+        <input id="erStudentCode" placeholder="Enter Student ID" autocapitalize="characters">
+        <button class="btn" id="examResultBtn" type="submit">View Results</button>
+      </form>
+    </div>
+    <div id="examResultOut"></div>
+  </section>
+
+  <!-- CLASS RESULTS -->
+  <section id="panel-classResult" class="hidden">
+    <h2>Check / Print Class Results</h2>
+    <p class="lead">Enter your Class ID and Student ID to view your published class result.</p>
+
+    <div class="card">
+      <div class="msg" id="classResultMsg"></div>
+      <form id="classResultForm" autocomplete="off">
+        <label for="crClassCode">Class ID</label>
+        <input id="crClassCode" placeholder="Enter Class ID" autocapitalize="characters">
+        <label for="crStudentCode">Student ID</label>
+        <input id="crStudentCode" placeholder="Enter Student ID" autocapitalize="characters">
+        <button class="btn" id="classResultBtn" type="submit">View Class Result</button>
+      </form>
+    </div>
+    <div id="classResultOut"></div>
+  </section>
+
+  <div class="footer">
+    © <span id="year"></span> SAINTIG EXAMS · SAINT IG DIGITAL<br><br>
+    <a href="#" id="footHome">Return Home</a> · <a href="#" id="footDashboard">Return to Dashboard</a>
+  </div>
+</main>
+
+<!-- EXAM RUNNER -->
+<div class="runner hidden" id="runnerView">
+  <div class="runner-top">
+    <div class="runner-bar">
+      <div class="runner-title" id="runnerTitle">Examination</div>
+      <div class="timer" id="timer">--:--</div>
+    </div>
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div class="card">
+    <p class="q-text" id="qText"></p>
+    <div id="options"></div>
+    <div class="save-note" id="saveNote"></div>
+    <div class="row">
+      <button class="btn light" id="prevBtn" type="button">Previous</button>
+      <button class="btn" id="nextBtn" type="button">Next</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <strong style="color:var(--navy)">Question Navigator</strong>
+    <div class="nav-grid" id="navGrid"></div>
+    <div class="row"><button class="btn gold" id="submitBtn" type="button">Submit Exam</button></div>
+  </div>
+</div>
+
+<!-- SUBMIT CONFIRMATION -->
+<div class="overlay hidden" id="submitOverlay">
+  <div class="dialog">
+    <h3>Submit your examination?</h3>
+    <p id="submitText" class="lead"></p>
+    <div class="msg" id="submitMsg"></div>
+    <div class="row">
+      <button class="btn gold" id="confirmSubmitBtn" type="button">Submit Exam</button>
+      <button class="btn light" id="keepWorkingBtn" type="button">Keep Working</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINISHED -->
+<div class="runner hidden" id="finishedView">
+  <div class="card" style="text-align:center">
+    <h2 style="margin-top:0">Examination Submitted</h2>
+    <p class="lead" id="finishedText"></p>
+    <div class="score-big" id="finishedScore"></div>
+    <div class="row">
+      <button class="btn" id="checkResultBtn" type="button">View and Print My Result</button>
+      <button class="btn light" id="doneBtn" type="button">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* CONFIGURATION */
+const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+const FUNCTION_NAME = "school-student-exam";
+
+/* Change these two if your page names are different. */
+const HOME_PAGE = "index.html";
+const DASHBOARD_PAGE = "student-dashboard.html";
+
+const SESSION_KEY = "saintig_school_exam_session";
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+});
+
+const $ = id => document.getElementById(id);
+
+/* HELPERS */
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+  })[c]);
+}
+
+function num(value) {
+  return Number(value ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+}
+
+function percent(score, total) {
+  return total > 0 ? (Math.round((score / total) * 1000) / 10) + "%" : "—";
+}
+
+function dateText(value) {
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+}
+
+function showMsg(id, text, type = "info") {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "msg show " + type;
+}
+
+function hideMsg(id) {
+  const el = $(id);
+  el.textContent = "";
+  el.className = "msg";
+}
+
+async function api(action, payload = {}) {
+  const { data, error } = await db.functions.invoke(FUNCTION_NAME, { body: { action, ...payload } });
+
+  if (error) {
+    let message = "Unable to reach the examination service. Check your connection and try again.";
+    try {
+      if (error.context && typeof error.context.json === "function") {
+        const body = await error.context.json();
+        if (body?.error) message = body.error;
+      }
+    } catch (_) {}
+    throw new Error(message);
+  }
+
+  if (!data?.success) throw new Error(data?.error || "The request could not be completed.");
+  return data;
+}
+
+/* NAVIGATION AND TABS */
+$("year").textContent = new Date().getFullYear();
+["menuHome", "footHome"].forEach(id => $(id).href = HOME_PAGE);
+["menuDashboard", "footDashboard"].forEach(id => $(id).href = DASHBOARD_PAGE);
+
+$("menuBtn").addEventListener("click", () => $("menuList").classList.toggle("hidden"));
+document.addEventListener("click", e => {
+  if (!e.target.closest("#menuBtn") && !e.target.closest("#menuList")) $("menuList").classList.add("hidden");
+});
+
+function setTab(name) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
+  ["exam", "examResult", "classResult"].forEach(p => $("panel-" + p).classList.toggle("hidden", p !== name));
+}
+
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
+
+function showView(name) {
+  $("entryView").classList.toggle("hidden", name !== "entry");
+  $("runnerView").classList.toggle("hidden", name !== "runner");
+  $("finishedView").classList.toggle("hidden", name !== "finished");
+  window.scrollTo({ top: 0 });
+}
+
+/* =========================================================
+   TAKE EXAM
+========================================================= */
+let pending = null;
+let lastCodes = null;
+
+$("examForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideMsg("examMsg");
+
+  const exam_code = $("examCode").value.trim();
+  const student_code = $("studentCode").value.trim();
+
+  if (!exam_code || !student_code) {
+    showMsg("examMsg", "Enter both the Exam ID and the Student ID.", "error");
+    return;
+  }
+
+  const button = $("examBtn");
+  button.disabled = true;
+  button.textContent = "Checking...";
+
+  try {
+    const info = await api("exam_info", { exam_code, student_code });
+    pending = { exam_code, student_code };
+    lastCodes = { exam_code, student_code };
+    renderConfirm(info);
+  } catch (error) {
+    showMsg("examMsg", error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Take Exam";
+  }
+});
+
+function renderConfirm(info) {
+  const e = info.exam;
+
+  $("confirmTitle").textContent = info.resumable ? "Resume your examination" : "Ready to begin";
+
+  $("confirmFacts").innerHTML = `
+    <div class="fact"><small>Student</small><strong>${escapeHTML(info.student.full_name)}</strong></div>
+    <div class="fact"><small>Student ID</small><strong>${escapeHTML(info.student.student_id)}</strong></div>
+    <div class="fact"><small>Examination</small><strong>${escapeHTML(e.title)}</strong></div>
+    <div class="fact"><small>School</small><strong>${escapeHTML(info.school_name || "—")}</strong></div>
+    <div class="fact"><small>Duration</small><strong>${escapeHTML(e.duration_minutes)} minutes</strong></div>
+    <div class="fact"><small>Questions</small><strong>${escapeHTML(e.question_count)}</strong></div>
+    <div class="fact"><small>Attempts used</small><strong>${escapeHTML(info.attempts_used)} of ${escapeHTML(info.attempts_allowed)}</strong></div>`;
+
+  $("confirmNotice").textContent = info.resumable
+    ? "Your timer is still running. Resume now to continue where you stopped."
+    : "Your timer starts as soon as you tap Start Exam and cannot be paused. Make sure you are ready.";
+
+  $("startBtn").textContent = info.resumable ? "Resume Exam" : "Start Exam";
+  hideMsg("confirmMsg");
+  $("examFormCard").classList.add("hidden");
+  $("examConfirm").classList.remove("hidden");
+}
+
+$("cancelStartBtn").addEventListener("click", () => {
+  pending = null;
+  $("examConfirm").classList.add("hidden");
+  $("examFormCard").classList.remove("hidden");
+});
+
+$("startBtn").addEventListener("click", async () => {
+  if (!pending) return;
+
+  const button = $("startBtn");
+  const label = button.textContent;
+  button.disabled = true;
+  button.textContent = "Starting...";
+  hideMsg("confirmMsg");
+
+  try {
+    const started = await api("start_exam", pending);
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+      attempt_id: started.attempt_id,
+      token: started.token,
+      codes: pending
+    }));
+    await loadExam();
+  } catch (error) {
+    showMsg("confirmMsg", error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = label;
+  }
+});
+
+/* RESUME ON THE SAME DEVICE */
+function readSession() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null"); }
+  catch (_) { return null; }
+}
+
+$("resumeBtn").addEventListener("click", async () => {
+  try { await loadExam(); }
+  catch (error) { showMsg("examMsg", error.message, "error"); }
+});
+
+/* =========================================================
+   EXAM RUNNER
+========================================================= */
+const R = {
+  session: null, questions: [], answers: new Map(), saved: new Set(),
+  index: 0, deadline: 0, offset: 0, timer: null, submitting: false
+};
+
+async function loadExam() {
+  const session = readSession();
+  if (!session) throw new Error("No examination in progress. Please log in again.");
+
+  let data;
+  try {
+    data = await api("get_exam", { attempt_id: session.attempt_id, token: session.token });
+  } catch (error) {
+    sessionStorage.removeItem(SESSION_KEY);
+    $("resumeCard").classList.add("hidden");
+    throw error;
+  }
+
+  R.session = session;
+  lastCodes = session.codes || lastCodes;
+
+  if (data.finished) {
+    sessionStorage.removeItem(SESSION_KEY);
+    showFinished(data);
+    return;
+  }
+
+  R.questions = data.questions;
+  R.answers = new Map();
+  R.saved = new Set();
+  R.questions.forEach(q => { if (q.selected) { R.answers.set(q.id, q.selected); R.saved.add(q.id); } });
+  R.index = 0;
+  R.deadline = Date.parse(data.deadline);
+  R.offset = Date.parse(data.server_now) - Date.now();
+  R.submitting = false;
+
+  $("runnerTitle").textContent = data.exam.title;
+  buildNav();
+  renderQuestion();
+  startTimer();
+  window.addEventListener("beforeunload", warnLeave);
+  showView("runner");
+}
+
+function warnLeave(event) {
+  event.preventDefault();
+  event.returnValue = "";
+}
+
+function remainingMs() {
+  return R.deadline - (Date.now() + R.offset);
+}
+
+function startTimer() {
+  clearInterval(R.timer);
+  tick();
+  R.timer = setInterval(tick, 1000);
+}
+
+function tick() {
+  const ms = Math.max(0, remainingMs());
+  const total = Math.floor(ms / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  const pad = n => String(n).padStart(2, "0");
+
+  $("timer").textContent = (h ? h + ":" : "") + pad(m) + ":" + pad(s);
+  $("timer").classList.toggle("low", ms <= 300000);
+
+  if (ms <= 0 && !R.submitting) {
+    clearInterval(R.timer);
+    submitExam(true);
+  }
+}
+
+function buildNav() {
+  $("navGrid").innerHTML = R.questions.map((q, i) =>
+    `<button type="button" class="nav-btn" data-i="${i}">${i + 1}</button>`).join("");
+
+  $("navGrid").querySelectorAll(".nav-btn").forEach(b =>
+    b.addEventListener("click", () => { R.index = Number(b.dataset.i); renderQuestion(); }));
+}
+
+function renderQuestion() {
+  const q = R.questions[R.index];
+  const chosen = R.answers.get(q.id);
+  const answered = R.answers.size;
+
+  $("progress").textContent =
+    `Question ${R.index + 1} of ${R.questions.length} · ${answered} answered`;
+
+  $("qText").textContent = q.text;
+
+  $("options").innerHTML = ["A", "B", "C", "D"].map(letter => `
+    <button type="button" class="option ${chosen === letter ? "selected" : ""}" data-letter="${letter}">
+      <span class="letter">${letter}</span>
+      <span class="otext">${escapeHTML(q.options[letter])}</span>
+    </button>`).join("");
+
+  $("options").querySelectorAll(".option").forEach(b =>
+    b.addEventListener("click", () => selectOption(b.dataset.letter)));
+
+  $("prevBtn").disabled = R.index === 0;
+  $("nextBtn").disabled = R.index === R.questions.length - 1;
+
+  $("navGrid").querySelectorAll(".nav-btn").forEach((b, i) => {
+    b.classList.toggle("answered", R.answers.has(R.questions[i].id));
+    b.classList.toggle("current", i === R.index);
+  });
+}
+
+$("prevBtn").addEventListener("click", () => { if (R.index > 0) { R.index--; renderQuestion(); } });
+$("nextBtn").addEventListener("click", () => { if (R.index < R.questions.length - 1) { R.index++; renderQuestion(); } });
+
+async function persistAnswer(questionId, letter) {
+  await api("save_answer", {
+    attempt_id: R.session.attempt_id,
+    token: R.session.token,
+    question_id: questionId,
+    selected_option: letter
+  });
+  R.saved.add(questionId);
+}
+
+async function selectOption(letter) {
+  const q = R.questions[R.index];
+  R.answers.set(q.id, letter);
+  R.saved.delete(q.id);
+  renderQuestion();
+  $("saveNote").textContent = "Saving...";
+
+  try {
+    await persistAnswer(q.id, letter);
+    $("saveNote").textContent = "Answer saved.";
+  } catch (error) {
+    $("saveNote").textContent = "Answer not saved yet. It will be retried when you submit.";
+  }
+}
+
+/* SUBMIT */
+$("submitBtn").addEventListener("click", () => {
+  const unanswered = R.questions.length - R.answers.size;
+  $("submitText").textContent = unanswered > 0
+    ? `You have ${unanswered} unanswered question(s). You cannot change your answers after submitting.`
+    : "You have answered every question. You cannot change your answers after submitting.";
+  hideMsg("submitMsg");
+  $("submitOverlay").classList.remove("hidden");
+});
+
+$("keepWorkingBtn").addEventListener("click", () => $("submitOverlay").classList.add("hidden"));
+$("confirmSubmitBtn").addEventListener("click", () => submitExam(false));
+
+async function submitExam(auto) {
+  if (R.submitting) return;
+  R.submitting = true;
+
+  const button = $("confirmSubmitBtn");
+  button.disabled = true;
+  button.textContent = "Submitting...";
+
+  $("keepWorkingBtn").classList.toggle("hidden", auto);
+
+  if (auto) {
+    $("submitText").textContent = "Time is up. Your examination is being submitted.";
+    hideMsg("submitMsg");
+    $("submitOverlay").classList.remove("hidden");
+  }
+
+  /* Retry any answers that were not saved earlier. */
+  for (const [questionId, letter] of R.answers) {
+    if (!R.saved.has(questionId)) {
+      try { await persistAnswer(questionId, letter); } catch (_) {}
+    }
+  }
+
+  try {
+    const result = await api("submit_exam", {
+      attempt_id: R.session.attempt_id,
+      token: R.session.token
+    });
+
+    clearInterval(R.timer);
+    window.removeEventListener("beforeunload", warnLeave);
+    sessionStorage.removeItem(SESSION_KEY);
+    $("submitOverlay").classList.add("hidden");
+    showFinished(result);
+  } catch (error) {
+    showMsg("submitMsg", error.message + " Tap Submit Exam to try again.", "error");
+    R.submitting = false;
+  } finally {
+    button.disabled = false;
+    button.textContent = "Submit Exam";
+  }
+}
+
+function showFinished(result) {
+  clearInterval(R.timer);
+  window.removeEventListener("beforeunload", warnLeave);
+
+  if (result.pending || result.score === null || result.score === undefined) {
+    $("finishedText").textContent = "Your examination has ended. Your result is being prepared.";
+    $("finishedScore").textContent = "";
+  } else {
+    $("finishedText").textContent = "Your answers were marked on the server.";
+    $("finishedScore").textContent =
+      `${num(result.score)} / ${num(result.total_marks)} (${percent(result.score, result.total_marks)})`;
+  }
+
+  showView("finished");
+}
+
+$("doneBtn").addEventListener("click", () => location.reload());
+
+$("checkResultBtn").addEventListener("click", () => {
+  showView("entry");
+  setTab("examResult");
+
+  if (lastCodes) {
+    $("erExamCode").value = lastCodes.exam_code;
+    $("erStudentCode").value = lastCodes.student_code;
+    $("examResultForm").requestSubmit();
+  }
+});
+
+/* =========================================================
+   EXAM RESULTS
+========================================================= */
+let lastExamResult = null;
+
+$("examResultForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideMsg("examResultMsg");
+  $("examResultOut").innerHTML = "";
+
+  const exam_code = $("erExamCode").value.trim();
+  const student_code = $("erStudentCode").value.trim();
+
+  if (!exam_code || !student_code) {
+    showMsg("examResultMsg", "Enter both the Exam ID and the Student ID.", "error");
+    return;
+  }
+
+  const button = $("examResultBtn");
+  button.disabled = true;
+  button.textContent = "Searching...";
+
+  try {
+    lastExamResult = await api("exam_result", { exam_code, student_code });
+    renderExamResult(lastExamResult);
+  } catch (error) {
+    showMsg("examResultMsg", error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "View Results";
+  }
+});
+
+function renderExamResult(d) {
+  const b = d.best;
+
+  $("examResultOut").innerHTML = `
+    <div class="card">
+      <div class="result-head">
+        <h3>${escapeHTML(d.exam.title)}</h3>
+        <div class="score-big">${num(b.score)} / ${num(b.total_marks)}</div>
+      </div>
+      <p class="lead">${escapeHTML(percent(b.score, b.total_marks))} · best attempt</p>
+      <div class="facts">
+        <div class="fact"><small>Student</small><strong>${escapeHTML(d.student.full_name)}</strong></div>
+        <div class="fact"><small>Student ID</small><strong>${escapeHTML(d.student.student_id)}</strong></div>
+        <div class="fact"><small>School</small><strong>${escapeHTML(d.school_name || "—")}</strong></div>
+        <div class="fact"><small>Subject</small><strong>${escapeHTML(d.exam.subject_name || "—")}</strong></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Attempt</th><th>Date</th><th>Score</th><th>Total</th></tr></thead>
+        <tbody>${d.attempts.map(a => `
+          <tr><td>${a.attempt_number}</td><td>${escapeHTML(dateText(a.submitted_at))}</td>
+          <td>${num(a.score)}</td><td>${num(a.total_marks)}</td></tr>`).join("")}</tbody>
+      </table></div>
+      <div class="row"><button class="btn gold" id="printExamBtn" type="button">Print Result</button></div>
+    </div>`;
+
+  $("printExamBtn").addEventListener("click", () => printExamResult(lastExamResult));
+}
+
+/* =========================================================
+   CLASS RESULTS
+========================================================= */
+let lastClassResult = null;
+
+$("classResultForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideMsg("classResultMsg");
+  $("classResultOut").innerHTML = "";
+
+  const class_code = $("crClassCode").value.trim();
+  const student_code = $("crStudentCode").value.trim();
+
+  if (!class_code || !student_code) {
+    showMsg("classResultMsg", "Enter both the Class ID and the Student ID.", "error");
+    return;
+  }
+
+  const button = $("classResultBtn");
+  button.disabled = true;
+  button.textContent = "Searching...";
+
+  try {
+    lastClassResult = await api("class_result", { class_code, student_code });
+    renderClassResult(lastClassResult);
+  } catch (error) {
+    showMsg("classResultMsg", error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "View Class Result";
+  }
+});
+
+function statusLabel(value) {
+  const text = String(value || "").replace(/_/g, " ").trim();
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : "—";
+}
+
+function renderClassResult(d) {
+  const s = d.student;
+  const c = d.class;
+
+  $("classResultOut").innerHTML = `
+    <div class="card">
+      <div class="result-head">
+        <h3>${escapeHTML(c.school_name || "Class Result")}</h3>
+        <div class="score-big">${num(s.average)}<small style="font-size:14px"> avg</small></div>
+      </div>
+      <p class="lead">${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")} ·
+        ${escapeHTML(c.academic_session || "")} · ${escapeHTML(c.academic_period || "")}</p>
+      <div class="facts">
+        <div class="fact"><small>Student</small><strong>${escapeHTML(s.full_name)}</strong></div>
+        <div class="fact"><small>Student ID</small><strong>${escapeHTML(s.student_id)}</strong></div>
+        <div class="fact"><small>Total</small><strong>${num(s.total_score)} / ${num(s.total_possible)}</strong></div>
+        <div class="fact"><small>Position</small><strong>${s.class_position ? s.class_position + " of " + d.class_total_students : "—"}</strong></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Subject / Exam</th><th>Score</th><th>Out of</th><th>Grade</th><th>Status</th></tr></thead>
+        <tbody>${d.scores.map(r => `
+          <tr><td>${escapeHTML(r.subject_name || r.examination_title)}</td>
+          <td>${num(r.score)}</td><td>${num(r.maximum_score)}</td>
+          <td>${escapeHTML(r.grade || "—")}</td><td>${escapeHTML(statusLabel(r.participation_status))}</td></tr>`).join("")}</tbody>
+      </table></div>
+      <div class="row"><button class="btn gold" id="printClassBtn" type="button">Print Class Result</button></div>
+    </div>`;
+
+  $("printClassBtn").addEventListener("click", () => printClassResult(lastClassResult));
+}
+
+/* =========================================================
+   PRINTING
+========================================================= */
+const PRINT_CSS = `
+  body{font-family:Arial,sans-serif;color:#1e293b;margin:0;padding:28px}
+  .head{text-align:center;border-bottom:3px solid #163a6b;padding-bottom:12px;margin-bottom:18px}
+  .head img{max-height:70px;margin-bottom:6px}
+  .head h1{margin:0;font-size:24px;color:#163a6b}
+  .head p{margin:3px 0;font-size:12px;color:#475569}
+  h2{text-align:center;font-size:17px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0}
+  th,td{border:1px solid #94a3b8;padding:8px;font-size:12px;text-align:left}
+  th{background:#e8edf5}
+  .info td{border:0;padding:4px 6px;font-size:13px}
+  .remark{margin-top:18px;font-size:13px}
+  .line{border-bottom:1px solid #64748b;height:24px;margin-top:6px}
+  .signs{display:flex;gap:40px;margin-top:34px}
+  .sign{flex:1;font-size:13px}
+  .foot{text-align:center;margin-top:34px;font-size:11px;color:#64748b}
+  @media print{body{padding:10px}}
+`;
+
+function openPrint(title, body) {
+  const w = window.open("", "_blank");
+
+  if (!w) {
+    alert("Please allow pop-ups to print your result.");
+    return;
+  }
+
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
+    <style>${PRINT_CSS}</style></head><body>${body}
+    <div class="foot">Powered by SAINTIG EXAMS</div></body></html>`);
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 400);
+}
+
+function printExamResult(d) {
+  const b = d.best;
+
+  openPrint("Examination Result", `
+    <div class="head"><h1>${escapeHTML(d.school_name || "SAINTIG EXAMS")}</h1></div>
+    <h2>EXAMINATION RESULT</h2>
+    <table class="info">
+      <tr><td><strong>Student:</strong> ${escapeHTML(d.student.full_name)}</td>
+          <td><strong>Student ID:</strong> ${escapeHTML(d.student.student_id)}</td></tr>
+      <tr><td><strong>Examination:</strong> ${escapeHTML(d.exam.title)}</td>
+          <td><strong>Subject:</strong> ${escapeHTML(d.exam.subject_name || "—")}</td></tr>
+      <tr><td><strong>Class / Level:</strong> ${escapeHTML(d.exam.name_class || "—")}</td>
+          <td><strong>Date:</strong> ${escapeHTML(dateText(b.submitted_at))}</td></tr>
+    </table>
+    <table>
+      <thead><tr><th>Attempt</th><th>Date</th><th>Score</th><th>Total Marks</th><th>Percentage</th></tr></thead>
+      <tbody>${d.attempts.map(a => `
+        <tr><td>${a.attempt_number}</td><td>${escapeHTML(dateText(a.submitted_at))}</td>
+        <td>${num(a.score)}</td><td>${num(a.total_marks)}</td>
+        <td>${escapeHTML(percent(a.score, a.total_marks))}</td></tr>`).join("")}</tbody>
+    </table>
+    <p><strong>Best score:</strong> ${num(b.score)} / ${num(b.total_marks)} (${escapeHTML(percent(b.score, b.total_marks))})</p>
+  `);
+}
+
+function printClassResult(d) {
+  const c = d.class;
+  const s = d.student;
+  const logo = /^https:\/\//i.test(c.school_logo_url || "")
+    ? `<img src="${escapeHTML(c.school_logo_url)}" alt=""><br>` : "";
+
+  const contact = [c.school_address, c.school_phone, c.school_email]
+    .filter(Boolean).map(escapeHTML).join(" · ");
+
+  const blank = '<span style="display:inline-block;min-width:200px;border-bottom:1px solid #64748b">&nbsp;</span>';
+
+  openPrint("Class Result", `
+    <div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>
+      ${contact ? `<p>${contact}</p>` : ""}</div>
+    <h2>ACADEMIC REPORT</h2>
+    <table class="info">
+      <tr><td><strong>Student:</strong> ${escapeHTML(s.full_name)}</td>
+          <td><strong>Student ID:</strong> ${escapeHTML(s.student_id)}</td></tr>
+      <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td>
+          <td><strong>Class ID:</strong> ${escapeHTML(c.class_id || "")}</td></tr>
+      <tr><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td>
+          <td><strong>Academic Period:</strong> ${escapeHTML(c.academic_period || "")}</td></tr>
+    </table>
+    <table>
+      <thead><tr><th>Subject / Examination</th><th>Score</th><th>Out of</th><th>Grade</th><th>Status</th></tr></thead>
+      <tbody>${d.scores.map(r => `
+        <tr><td>${escapeHTML(r.subject_name || r.examination_title)}</td>
+        <td>${num(r.score)}</td><td>${num(r.maximum_score)}</td>
+        <td>${escapeHTML(r.grade || "—")}</td><td>${escapeHTML(statusLabel(r.participation_status))}</td></tr>`).join("")}</tbody>
+    </table>
+    <table class="info">
+      <tr><td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
+          <td><strong>Average:</strong> ${num(s.average)}</td>
+          <td><strong>Position:</strong> ${s.class_position ? s.class_position + " of " + d.class_total_students : "—"}</td></tr>
+    </table>
+    <div class="remark"><strong>Class Teacher's Remark:</strong><div class="line"></div></div>
+    <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
+    <div class="signs">
+      <div class="sign"><strong>CLASS TEACHER</strong><br>Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : blank}<br><br>Signature: ${blank}</div>
+      <div class="sign"><strong>PRINCIPAL</strong><br>Name: ${c.principal_name ? escapeHTML(c.principal_name) : blank}<br><br>Signature: ${blank}</div>
+    </div>
+    <p style="font-size:12px;margin-top:20px">Report date: ${escapeHTML(dateText(d.result.published_at))}</p>
+  `);
+}
+
+/* START */
+(function init() {
+  if (readSession()) $("resumeCard").classList.remove("hidden");
+})();
+</script>
+</body>
+</html>
