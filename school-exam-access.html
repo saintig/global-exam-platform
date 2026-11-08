@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1675,6 +1674,33 @@ function printClassResult(d) {
 
   if (["exam", "examResult", "classResult"].includes(requestedTab)) {
     setTab(requestedTab);
+  }
+
+  // ACCEPT IDS SENT FROM THE HOMEPAGE FORMS
+  const examId = params.get("exam_id");
+  const studentId = params.get("student_id");
+  const classId = params.get("class_id");
+
+  if (requestedTab === "exam" && examId && studentId && !readSession()) {
+    $("examCode").value = examId;
+    $("studentCode").value = studentId;
+    $("examForm").requestSubmit();
+  }
+
+  if (requestedTab === "examResult" && examId && studentId) {
+    $("erExamCode").value = examId;
+    $("erStudentCode").value = studentId;
+    $("examResultForm").requestSubmit();
+  }
+
+  if (requestedTab === "classResult" && classId && studentId) {
+    $("crClassCode").value = classId;
+    $("crStudentCode").value = studentId;
+    $("classResultForm").requestSubmit();
+  }
+
+  if (examId || studentId || classId) {
+    history.replaceState(null, "", location.pathname + "?tab=" + (requestedTab || "exam"));
   }
 })();
 </script>
