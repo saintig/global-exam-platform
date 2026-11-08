@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,84 +7,308 @@
 <title>Register Examination | SAINTIG EXAMS</title>
 
 <style>
-:root {
-  --navy:#101d35;--navy-light:#1b2d4d;--gold:#d4af37;
-  --gold-dark:#a98220;--cream:#f8f0df;--white:#fff;
-  --text:#253047;--muted:#718096;--border:#e4e8ef;
-  --success:#16834b;--danger:#c0392b;--background:#f4f6fa;
+:root{
+  --navy:#101d35;
+  --navy-light:#1b2d4d;
+  --gold:#d4af37;
+  --gold-dark:#a98220;
+  --cream:#f8f0df;
+  --white:#fff;
+  --text:#253047;
+  --muted:#65748b;
+  --border:#e0e5ed;
+  --success:#16834b;
+  --danger:#c0392b;
+  --background:#f4f6fa;
+  --warning:#946b13;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:var(--background);color:var(--text);min-height:100vh}
+body{
+  font-family:Arial,sans-serif;
+  background:var(--background);
+  color:var(--text);
+  min-height:100vh;
+  font-size:15px;
+}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .layout{display:flex;min-height:100vh}
-.sidebar{width:245px;background:var(--navy);color:white;padding:24px 15px;flex-shrink:0}
-.brand{padding:5px 12px 25px;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:22px}
-.brand h2{color:var(--gold);font-size:20px;letter-spacing:.5px}
-.brand p{font-size:11px;color:#cbd3e0;margin-top:6px}
-.nav-label{font-size:10px;color:#aeb9cb;letter-spacing:1px;padding:0 12px;margin:18px 0 9px;text-transform:uppercase}
-.nav-link{display:block;padding:12px;color:#e7ebf2;text-decoration:none;font-size:13px;border-radius:7px;margin-bottom:4px}
+.sidebar{
+  width:245px;background:var(--navy);color:white;
+  padding:24px 15px;flex-shrink:0
+}
+.brand{
+  padding:5px 12px 25px;
+  border-bottom:1px solid rgba(255,255,255,.13);
+  margin-bottom:22px
+}
+.brand h2{color:var(--gold);font-size:21px;letter-spacing:.5px}
+.brand p{font-size:13px;color:#cbd3e0;margin-top:7px}
+.nav-label{
+  font-size:12px;color:#aeb9cb;letter-spacing:1px;
+  padding:0 12px;margin:18px 0 9px;text-transform:uppercase
+}
+.nav-link{
+  display:block;padding:13px 12px;color:#e7ebf2;
+  text-decoration:none;font-size:14px;border-radius:7px;margin-bottom:4px
+}
 .nav-link:hover,.nav-link.active{background:var(--navy-light);color:var(--gold)}
 .main{flex:1;min-width:0}
-.topbar{background:white;padding:17px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border)}
-.topbar h1{font-size:20px;color:var(--navy)}
-.topbar p{font-size:12px;color:var(--muted);margin-top:5px}
-.page{max-width:1100px;margin:auto;padding:25px}
-.card{background:white;border:1px solid var(--border);border-radius:10px;padding:22px;margin-bottom:20px;box-shadow:0 2px 8px rgba(16,29,53,.035)}
-.card-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
-.card-heading h2{color:var(--navy);font-size:17px}
-.card-heading p{color:var(--muted);font-size:12px;margin-top:5px}
-.section-number{background:var(--cream);color:var(--gold-dark);border:1px solid #ead8a6;padding:6px 10px;border-radius:6px;font-size:12px;font-weight:bold;white-space:nowrap}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.topbar{
+  background:white;padding:19px 28px;display:flex;
+  align-items:center;justify-content:space-between;
+  gap:12px;border-bottom:1px solid var(--border)
+}
+.topbar h1{font-size:23px;color:var(--navy)}
+.topbar p{font-size:14px;color:var(--muted);margin-top:6px}
+.page{max-width:1200px;margin:auto;padding:26px}
+.card{
+  background:white;border:1px solid var(--border);
+  border-radius:12px;padding:23px;margin-bottom:22px;
+  box-shadow:0 2px 9px rgba(16,29,53,.04)
+}
+.card-heading{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;margin-bottom:20px
+}
+.card-heading h2{color:var(--navy);font-size:19px}
+.card-heading p{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.5}
+.section-number{
+  background:var(--cream);color:var(--gold-dark);
+  border:1px solid #ead8a6;padding:7px 11px;
+  border-radius:7px;font-size:13px;font-weight:bold;white-space:nowrap
+}
+.form-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:19px
+}
 .field{min-width:0}
 .field.full{grid-column:1/-1}
-label{display:block;font-size:13px;font-weight:bold;color:#34415a;margin-bottom:7px}
+label{
+  display:block;font-size:14px;font-weight:bold;
+  color:#34415a;margin-bottom:8px
+}
 .required{color:var(--danger)}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid #dce1e9;border-radius:6px;background:white;color:var(--text);outline:none;font-size:13px}
-input:focus,select:focus,textarea:focus{border-color:var(--gold-dark);box-shadow:0 0 0 2px rgba(212,175,55,.12)}
-textarea{min-height:95px;resize:vertical;line-height:1.5}
-.help{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.5}
-.calculation{background:#fbf8ef;border:1px solid #eadfbf;padding:15px;border-radius:7px;margin-top:17px}
-.calculation span{font-size:12px;color:#6f6040}
-.calculation strong{display:block;font-size:25px;color:var(--navy);margin-top:5px}
-.schedule-box{background:#f8fafc;border:1px solid var(--border);padding:15px;border-radius:7px;margin-top:18px}
-.schedule-title{font-weight:bold;color:var(--navy);font-size:13px;margin-bottom:12px}
-.check-line{display:flex;align-items:center;gap:9px;font-size:13px;margin-bottom:12px}
-.check-line input{width:auto}
+input,select,textarea{
+  width:100%;padding:13px 13px;border:1px solid #dce1e9;
+  border-radius:7px;background:white;color:var(--text);
+  outline:none;font-size:15px;min-height:46px
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--gold-dark);
+  box-shadow:0 0 0 3px rgba(212,175,55,.13)
+}
+textarea{min-height:105px;resize:vertical;line-height:1.6}
+.help{
+  font-size:13px;color:var(--muted);
+  margin-top:7px;line-height:1.6
+}
+.calculation{
+  background:#fbf8ef;border:1px solid #eadfbf;
+  padding:17px;border-radius:8px;margin-top:19px
+}
+.calculation span{font-size:14px;color:#6f6040}
+.calculation strong{
+  display:block;font-size:29px;color:var(--navy);margin-top:6px
+}
+.schedule-box{
+  background:#f8fafc;border:1px solid var(--border);
+  padding:17px;border-radius:8px;margin-top:19px
+}
+.schedule-title{
+  font-weight:bold;color:var(--navy);
+  font-size:15px;margin-bottom:13px
+}
+.check-line{
+  display:flex;align-items:center;gap:10px;
+  font-size:14px;margin-bottom:13px
+}
+.check-line input{width:19px;height:19px;min-height:0}
 .schedule-fields{display:none}
 .schedule-fields.show{display:grid}
-.button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.btn{border:none;padding:11px 17px;border-radius:6px;font-size:13px;font-weight:bold;transition:.2s}
-.btn:disabled{opacity:.55;cursor:not-allowed}
+.button-row{display:flex;flex-wrap:wrap;gap:11px;margin-top:19px}
+.btn{
+  border:none;padding:13px 18px;border-radius:7px;
+  font-size:14px;font-weight:bold;transition:.2s
+}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--navy);color:white}
 .btn-primary:hover:not(:disabled){background:var(--navy-light)}
 .btn-gold{background:var(--gold);color:var(--navy)}
 .btn-gold:hover:not(:disabled){background:#e2c04e}
 .btn-outline{background:white;border:1px solid #cbd3df;color:var(--navy)}
 .btn-danger{background:#fff0ee;color:var(--danger);border:1px solid #f0c7c2}
-.question-box{border:1px solid var(--border);border-radius:8px;padding:17px;margin-top:15px;background:#fff}
-.question-box h3{font-size:14px;color:var(--navy);margin-bottom:15px}
-.option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:13px}
-.info-box{background:#f0f5fc;border:1px solid #d9e5f4;border-radius:7px;padding:12px;font-size:12px;line-height:1.6;color:#3d526e;margin-top:13px}
-.status{padding:12px;border-radius:7px;font-size:12px;line-height:1.5;margin-bottom:15px;display:none}
+.btn-success{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.btn-small{padding:9px 12px;font-size:13px}
+.question-box{
+  border:1px solid var(--border);border-radius:9px;
+  padding:19px;margin-top:17px;background:#fff
+}
+.question-box h3{font-size:16px;color:var(--navy);margin-bottom:15px}
+.option-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;margin-top:14px
+}
+.info-box{
+  background:#f0f5fc;border:1px solid #d9e5f4;
+  border-radius:8px;padding:14px;font-size:14px;
+  line-height:1.7;color:#3d526e;margin-top:14px
+}
+.status{
+  padding:14px;border-radius:8px;font-size:14px;
+  line-height:1.6;margin-bottom:16px;display:none
+}
 .status.show{display:block}
 .status.success{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
 .status.error{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
 .status.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
 .status.warning{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
-.exam-code{background:var(--navy);color:var(--gold);padding:18px;border-radius:8px;margin-top:15px;text-align:center}
-.exam-code small{display:block;font-size:11px;color:#d8dfeb;margin-bottom:8px}
-.exam-code strong{font-size:23px;letter-spacing:1px;overflow-wrap:anywhere}
+.exam-code{
+  background:var(--navy);color:var(--gold);
+  padding:20px;border-radius:9px;margin-top:18px;text-align:center
+}
+.exam-code small{display:block;font-size:13px;color:#d8dfeb;margin-bottom:9px}
+.exam-code strong{font-size:25px;letter-spacing:1px;overflow-wrap:anywhere}
 .hidden{display:none!important}
-.footer-note{text-align:center;color:var(--muted);font-size:11px;padding:15px}
-.mobile-menu{display:none;background:var(--navy);color:white;border:none;padding:9px 12px;border-radius:5px}
-@media(max-width:800px){.sidebar{width:220px}.page{padding:17px}}
+.footer-note{text-align:center;color:var(--muted);font-size:13px;padding:18px}
+.mobile-menu{
+  display:none;background:var(--navy);color:white;
+  border:none;padding:10px 13px;border-radius:6px
+}
+
+/* REVIEW QUEUE */
+.review-section{
+  border:1px solid #e4e8ef;border-radius:10px;
+  margin-top:20px;overflow:hidden;background:white
+}
+.review-header{
+  background:#f8fafc;padding:17px;
+  border-bottom:1px solid var(--border)
+}
+.review-header h3{font-size:17px;color:var(--navy)}
+.review-header p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
+.review-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:11px;padding:15px;background:white;
+  border-bottom:1px solid var(--border)
+}
+.stat-card{
+  padding:13px;background:#f8fafc;
+  border:1px solid var(--border);border-radius:8px
+}
+.stat-card span{display:block;color:var(--muted);font-size:12px}
+.stat-card strong{
+  display:block;color:var(--navy);
+  font-size:23px;margin-top:6px
+}
+.review-controls{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:12px;flex-wrap:wrap;
+  padding:15px;border-bottom:1px solid var(--border)
+}
+.review-controls p{font-size:13px;color:var(--muted)}
+.review-list{padding:15px}
+.review-item{
+  border:1px solid var(--border);border-radius:9px;
+  padding:16px;margin-bottom:13px;background:white
+}
+.review-item:last-child{margin-bottom:0}
+.review-item.approved{border-left:5px solid var(--success)}
+.review-item.pending{border-left:5px solid var(--gold)}
+.review-item-top{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;margin-bottom:12px
+}
+.question-number{font-size:14px;font-weight:bold;color:var(--navy)}
+.review-badge{
+  display:inline-block;padding:5px 9px;border-radius:20px;
+  font-size:12px;font-weight:bold
+}
+.review-badge.pending{background:#fff6df;color:#85620d}
+.review-badge.approved{background:#eaf7ef;color:#176b3d}
+.review-question{
+  font-size:15px;line-height:1.65;
+  font-weight:bold;color:#253047;margin-bottom:12px;
+  overflow-wrap:anywhere
+}
+.review-options{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;margin-bottom:12px
+}
+.review-option{
+  padding:9px 10px;background:#f8fafc;
+  border:1px solid #edf0f4;border-radius:6px;
+  font-size:13px;line-height:1.5;overflow-wrap:anywhere
+}
+.review-option.correct{
+  background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold
+}
+.review-meta{
+  color:var(--muted);font-size:12px;
+  margin:9px 0;line-height:1.5
+}
+.review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
+.review-empty{
+  padding:28px 15px;text-align:center;
+  color:var(--muted);font-size:14px;line-height:1.6
+}
+.pagination{
+  display:flex;justify-content:center;
+  align-items:center;gap:7px;flex-wrap:wrap;
+  padding:15px;border-top:1px solid var(--border)
+}
+.page-btn{
+  min-width:38px;height:38px;padding:0 10px;
+  border:1px solid #dce1e9;background:white;
+  border-radius:6px;color:var(--navy);font-size:13px
+}
+.page-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+.queue-footer{
+  background:#f8fafc;border-top:1px solid var(--border);
+  padding:16px
+}
+.queue-footer p{font-size:13px;color:var(--muted);line-height:1.6}
+.queue-footer .button-row{margin-top:13px}
+
+/* EDIT MODAL */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(8,18,35,.65);
+  z-index:1000;display:none;align-items:center;
+  justify-content:center;padding:15px;overflow-y:auto
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:100%;max-width:700px;max-height:95vh;
+  overflow-y:auto;background:white;border-radius:12px;
+  padding:22px;box-shadow:0 15px 45px rgba(0,0,0,.2)
+}
+.modal h2{font-size:19px;color:var(--navy);margin-bottom:17px}
+.modal-actions{
+  display:flex;gap:10px;flex-wrap:wrap;
+  justify-content:flex-end;margin-top:20px
+}
+@media(max-width:850px){
+  .sidebar{width:220px}
+  .page{padding:18px}
+  .review-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 @media(max-width:650px){
-.layout{display:block}.sidebar{display:none;width:100%}.sidebar.open{display:block}
-.mobile-menu{display:inline-block}.topbar{padding:14px 16px}
-.topbar h1{font-size:17px}.page{padding:13px}.card{padding:16px}
-.form-grid,.option-grid{grid-template-columns:1fr}
-.button-row .btn{flex:1 1 100%}.card-heading{align-items:flex-start}
+  .layout{display:block}
+  .sidebar{display:none;width:100%}
+  .sidebar.open{display:block}
+  .mobile-menu{display:inline-block;margin-bottom:9px}
+  .topbar{padding:15px 16px}
+  .topbar h1{font-size:19px}
+  .page{padding:13px}
+  .card{padding:16px}
+  .form-grid,.option-grid,.review-options{grid-template-columns:1fr}
+  .button-row .btn{flex:1 1 100%}
+  .card-heading{align-items:flex-start}
+  .review-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .review-controls{align-items:flex-start}
+  .review-actions .btn{flex:1 1 auto}
+  .modal{padding:16px}
 }
 </style>
 </head>
@@ -175,10 +400,17 @@ textarea{min-height:95px;resize:vertical;line-height:1.5}
 </div>
 
 <div class="field">
-<label>Maximum Attempts</label>
-<input type="number" value="2" disabled>
-<p class="help">The current Teacher/School examination setting is two attempts.</p>
+<label for="maxAttempts">Maximum Attempts <span class="required">*</span></label>
+<select id="maxAttempts" required>
+<option value="1">1 Attempt</option>
+<option value="2" selected>2 Attempts</option>
+<option value="3">3 Attempts</option>
+<option value="4">4 Attempts</option>
+<option value="5">5 Attempts</option>
+</select>
+<p class="help">Choose how many times a student may attempt this examination. You can select between 1 and 5 attempts.</p>
 </div>
+
 </div>
 
 <div class="calculation">
@@ -278,20 +510,20 @@ Set examination start and end dates
 </div>
 </div>
 
-<div class="field" style="margin-top:13px">
+<div class="field" style="margin-top:14px">
 <label for="explanation">Explanation (Optional)</label>
 <textarea id="explanation" maxlength="5000" placeholder="Enter an explanation if needed..."></textarea>
 </div>
 
 <div class="button-row">
-<button class="btn btn-gold" type="submit" id="addQuestionBtn">Add Question</button>
+<button class="btn btn-gold" type="submit" id="addQuestionBtn">Add Question to Review</button>
 </div>
 </form>
 </div>
 
 <div class="question-box">
 <h3>Bulk Upload Questions (CSV)</h3>
-<p class="help">Download the template, enter your questions and upload the completed CSV file. You may upload more questions than the number each student will answer.</p>
+<p class="help">Download the template, enter your questions and upload the completed CSV file. Uploaded questions will first enter your review queue. They will not be saved to the database until you approve and save them.</p>
 
 <div class="button-row">
 <button class="btn btn-outline" type="button" id="downloadTemplateBtn">Download CSV Template</button>
@@ -312,18 +544,57 @@ question_text, option_a, option_b, option_c, option_d, correct_option, explanati
 </div>
 </div>
 
-<div class="info-box" id="pendingInfo">
-No new questions have been added yet.
+<!-- QUESTION REVIEW QUEUE -->
+<div class="review-section">
+  <div class="review-header">
+    <h3>Question Review Queue</h3>
+    <p>Review every question before saving it. You can preview, edit, approve or delete questions. Only approved questions will be saved to the examination question bank.</p>
+  </div>
+
+  <div class="review-stats">
+    <div class="stat-card">
+      <span>Total in Queue</span>
+      <strong id="totalQueueCount">0</strong>
+    </div>
+    <div class="stat-card">
+      <span>Approved</span>
+      <strong id="approvedQueueCount">0</strong>
+    </div>
+    <div class="stat-card">
+      <span>Pending Review</span>
+      <strong id="pendingQueueCount">0</strong>
+    </div>
+    <div class="stat-card">
+      <span>Saved Questions</span>
+      <strong id="savedQueueCount">0</strong>
+    </div>
+  </div>
+
+  <div class="review-controls">
+    <p id="reviewSummary">No questions have been added to the review queue.</p>
+    <div class="button-row" style="margin-top:0">
+      <button class="btn btn-success btn-small" type="button" id="approveAllBtn" disabled>Approve All</button>
+      <button class="btn btn-danger btn-small" type="button" id="clearQueueBtn" disabled>Clear All</button>
+    </div>
+  </div>
+
+  <div class="review-list" id="reviewList">
+    <div class="review-empty">Your uploaded and individually added questions will appear here for review.</div>
+  </div>
+
+  <div class="pagination" id="pagination"></div>
+
+  <div class="queue-footer">
+    <p id="queueSaveInfo">Approve questions before saving them to the examination question bank.</p>
+    <div class="button-row">
+      <button class="btn btn-primary" type="button" id="saveQuestionsBtn" disabled>Save Approved Questions to Question Bank</button>
+      <button class="btn btn-gold" type="button" id="savePublishBtn" disabled>Save Approved Questions and Publish</button>
+    </div>
+  </div>
 </div>
 
-<!-- NEW: MINIMUM QUESTION COUNTER -->
 <div class="info-box" id="minimumQuestionStatus">
 Select an examination to check its minimum question requirement.
-</div>
-
-<div class="button-row">
-<button class="btn btn-primary" type="button" id="saveQuestionsBtn" disabled>Save to Questions Bank</button>
-<button class="btn btn-gold" type="button" id="savePublishBtn" disabled>Save and Publish Immediately</button>
 </div>
 
 <div id="examCodeBox" class="exam-code hidden">
@@ -342,6 +613,58 @@ Select an examination to check its minimum question requirement.
 </main>
 </div>
 
+<!-- EDIT QUESTION MODAL -->
+<div class="modal-backdrop" id="editModal">
+  <div class="modal">
+    <h2>Edit Question</h2>
+    <form id="editQuestionForm">
+      <div class="field">
+        <label for="editQuestionText">Question</label>
+        <textarea id="editQuestionText" required maxlength="10000"></textarea>
+      </div>
+      <div class="form-grid" style="margin-top:14px">
+        <div class="field">
+          <label for="editOptionA">Option A</label>
+          <input id="editOptionA" required maxlength="2000">
+        </div>
+        <div class="field">
+          <label for="editOptionB">Option B</label>
+          <input id="editOptionB" required maxlength="2000">
+        </div>
+        <div class="field">
+          <label for="editOptionC">Option C</label>
+          <input id="editOptionC" required maxlength="2000">
+        </div>
+        <div class="field">
+          <label for="editOptionD">Option D</label>
+          <input id="editOptionD" required maxlength="2000">
+        </div>
+        <div class="field">
+          <label for="editCorrectOption">Correct Option</label>
+          <select id="editCorrectOption" required>
+            <option value="A">Option A</option>
+            <option value="B">Option B</option>
+            <option value="C">Option C</option>
+            <option value="D">Option D</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="editQuestionMarks">Question Marks</label>
+          <input id="editQuestionMarks" type="number" min="0.01" step="0.01" required>
+        </div>
+        <div class="field full">
+          <label for="editExplanation">Explanation (Optional)</label>
+          <textarea id="editExplanation" maxlength="5000"></textarea>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" type="button" id="closeEditBtn">Cancel</button>
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script type="module">
 import { supabase } from "./auth.js";
 
@@ -351,14 +674,22 @@ const $ = id => document.getElementById(id);
 let currentExam = null;
 let examinations = [];
 let subjects = [];
-let pendingQuestions = [];
 
-/* NEW: null means saved question count has not yet been checked. */
+/*
+  Questions remain in this temporary browser-side queue
+  until the teacher approves and saves them.
+*/
+let pendingQuestions = [];
 let savedEligibleQuestionCount = null;
 
 let isPublished = false;
 let isProcessing = false;
+let currentPage = 1;
+const PAGE_SIZE = 10;
+let editingQuestionId = null;
+let nextQueueId = 1;
 
+/* STATUS HELPERS */
 function showStatus(element,message,type="info"){
   element.textContent=message;
   element.className="status show "+type;
@@ -394,8 +725,8 @@ function getExamTotal(){
 
 function updateTotalMarks(){
   const total=getExamTotal();
-  const display=Number.isInteger(total)?total:total.toFixed(2);
-  $("totalMarks").textContent=display;
+  $("totalMarks").textContent=
+    Number.isInteger(total)?total:total.toFixed(2);
 }
 
 function updateQuestionMarksDefault(){
@@ -404,7 +735,10 @@ function updateQuestionMarksDefault(){
 
 function parseFunctionData(data){
   if(!data||data.success===false){
-    throw new Error(data?.error||data?.message||"The server could not complete the request.");
+    throw new Error(
+      data?.error||data?.message||
+      "The server could not complete the request."
+    );
   }
   return data;
 }
@@ -432,7 +766,6 @@ function getArray(data,...keys){
 
 function getExamObject(data){
   if(!data||typeof data!=="object")return null;
-
   return data.examination||
     data.exam||
     data.data?.examination||
@@ -453,7 +786,17 @@ function getSavedQuestionOrder(question){
   return Number.isSafeInteger(order)&&order>0?order:0;
 }
 
-// AUTHENTICATION
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+/* AUTHENTICATION */
 async function protectPage(){
   const {data,error}=await supabase.auth.getUser();
 
@@ -466,7 +809,7 @@ async function protectPage(){
   return true;
 }
 
-// LOAD SUBJECTS
+/* LOAD SUBJECTS */
 async function loadSubjects(){
   const select=$("subject");
   select.innerHTML='<option value="">Loading subjects...</option>';
@@ -489,10 +832,9 @@ async function loadSubjects(){
   });
 }
 
-// DATE AND EXAMINATION HELPERS
+/* DATE HELPERS */
 function localDateTime(value){
   if(!value)return "";
-
   const date=new Date(value);
   if(!Number.isFinite(date.getTime()))return "";
 
@@ -502,6 +844,7 @@ function localDateTime(value){
     pad(date.getDate())+"T"+pad(date.getHours())+":"+pad(date.getMinutes());
 }
 
+/* POPULATE EXAMINATION FORM */
 function populateExamForm(exam){
   $("subject").value=exam.school_subject_id??"";
   $("title").value=exam.title||"";
@@ -511,8 +854,12 @@ function populateExamForm(exam){
   $("questionCount").value=exam.student_question_count||100;
   $("marksPerQuestion").value=exam.marks_per_question||1;
 
-  const hasSchedule=Boolean(exam.starts_at||exam.ends_at);
+  const attempts=Number(exam.max_attempts);
+  $("maxAttempts").value=
+    Number.isInteger(attempts)&&attempts>=1&&attempts<=5?
+    String(attempts):"2";
 
+  const hasSchedule=Boolean(exam.starts_at||exam.ends_at);
   $("enableSchedule").checked=hasSchedule;
   $("scheduleFields").classList.toggle("show",hasSchedule);
   $("startsAt").value=localDateTime(exam.starts_at);
@@ -520,21 +867,17 @@ function populateExamForm(exam){
 
   updateTotalMarks();
   updateQuestionMarksDefault();
-
-  // NEW: refresh the counter using this examination's required count.
   updateMinimumQuestionCounter();
 }
 
 function displayExamCode(code){
   if(!code)return;
-
   $("examCode").textContent=code;
   $("examCodeBox").classList.remove("hidden");
 }
 
 function updateExamSelectorOptions(preferredId){
   const select=$("examinationSelector");
-
   select.innerHTML='<option value="">Select a registered examination</option>';
 
   examinations.forEach(exam=>{
@@ -558,27 +901,323 @@ function updateExamSelectorOptions(preferredId){
   }
 }
 
-function updatePendingInfo(){
-  const count=pendingQuestions.length;
+/* QUEUE COUNTS */
+function getApprovedCount(){
+  return pendingQuestions.filter(question=>question.reviewed===true).length;
+}
 
-  if(!count){
-    $("pendingInfo").textContent="No new questions have been added yet.";
+function getPendingCount(){
+  return pendingQuestions.filter(question=>question.reviewed!==true).length;
+}
+
+function updateQueueStats(){
+  $("totalQueueCount").textContent=pendingQuestions.length;
+  $("approvedQueueCount").textContent=getApprovedCount();
+  $("pendingQueueCount").textContent=getPendingCount();
+  $("savedQueueCount").textContent=
+    savedEligibleQuestionCount===null?"—":savedEligibleQuestionCount;
+
+  if(!pendingQuestions.length){
+    $("reviewSummary").textContent=
+      "No questions have been added to the review queue.";
   }else{
-    $("pendingInfo").textContent=
-      count+" new question(s) ready to be saved to the selected examination.";
+    $("reviewSummary").textContent=
+      "Showing "+pendingQuestions.length+
+      " question(s): "+getApprovedCount()+
+      " approved and "+getPendingCount()+" awaiting review.";
   }
 
-  updateActionButtons();
+  $("approveAllBtn").disabled=
+    !pendingQuestions.length||getPendingCount()===0||isPublished||isProcessing;
 
-  // NEW: update the minimum question counter whenever pending questions change.
+  $("clearQueueBtn").disabled=
+    !pendingQuestions.length||isProcessing;
+
+  $("queueSaveInfo").textContent=
+    getApprovedCount()+" approved question(s) are ready to save. "+
+    getPendingCount()+" question(s) still require review. "+
+    "Only approved questions will be saved.";
+
+  updateActionButtons();
   updateMinimumQuestionCounter();
 }
 
-/*
-  NEW FEATURE:
-  Count saved eligible questions plus newly added questions
-  that are waiting to be saved.
-*/
+/* REVIEW QUEUE RENDERING */
+function renderPagination(){
+  const container=$("pagination");
+  container.innerHTML="";
+
+  const totalPages=Math.ceil(pendingQuestions.length/PAGE_SIZE);
+
+  if(totalPages<=1)return;
+
+  const previous=document.createElement("button");
+  previous.className="page-btn";
+  previous.textContent="Previous";
+  previous.disabled=currentPage===1;
+  previous.addEventListener("click",()=>{
+    currentPage--;
+    renderReviewQueue();
+  });
+  container.appendChild(previous);
+
+  for(let page=1;page<=totalPages;page++){
+    const button=document.createElement("button");
+    button.className="page-btn"+(page===currentPage?" active":"");
+    button.textContent=page;
+    button.addEventListener("click",()=>{
+      currentPage=page;
+      renderReviewQueue();
+    });
+    container.appendChild(button);
+  }
+
+  const next=document.createElement("button");
+  next.className="page-btn";
+  next.textContent="Next";
+  next.disabled=currentPage===totalPages;
+  next.addEventListener("click",()=>{
+    currentPage++;
+    renderReviewQueue();
+  });
+  container.appendChild(next);
+}
+
+function renderReviewQueue(){
+  const container=$("reviewList");
+  container.innerHTML="";
+
+  const total=pendingQuestions.length;
+  const totalPages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+
+  if(currentPage>totalPages)currentPage=totalPages;
+  if(currentPage<1)currentPage=1;
+
+  if(!total){
+    container.innerHTML=
+      '<div class="review-empty">Your uploaded and individually added questions will appear here for review.</div>';
+    $("reviewSummary").textContent=
+      "No questions have been added to the review queue.";
+    $("pagination").innerHTML="";
+    updateQueueStats();
+    return;
+  }
+
+  const start=(currentPage-1)*PAGE_SIZE;
+  const end=Math.min(start+PAGE_SIZE,total);
+  const visibleQuestions=pendingQuestions.slice(start,end);
+
+  $("reviewSummary").textContent=
+    "Showing questions "+(start+1)+"–"+end+
+    " of "+total+". Page "+currentPage+" of "+totalPages+
+    ". Approved: "+getApprovedCount()+
+    ". Pending: "+getPendingCount()+".";
+
+  visibleQuestions.forEach((question,index)=>{
+    const actualIndex=start+index;
+    const item=document.createElement("article");
+
+    item.className="review-item "+
+      (question.reviewed?"approved":"pending");
+
+    const badge=question.reviewed?
+      '<span class="review-badge approved">Approved</span>':
+      '<span class="review-badge pending">Pending Review</span>';
+
+    const explanation=question.explanation?
+      '<div class="review-meta"><strong>Explanation:</strong> '+
+      escapeHTML(question.explanation)+'</div>':
+      "";
+
+    item.innerHTML=`
+      <div class="review-item-top">
+        <span class="question-number">Question ${actualIndex+1}</span>
+        ${badge}
+      </div>
+      <div class="review-question">${escapeHTML(question.question_text)}</div>
+      <div class="review-options">
+        <div class="review-option ${question.correct_option==="A"?"correct":""}">
+          <strong>A.</strong> ${escapeHTML(question.option_a)}
+        </div>
+        <div class="review-option ${question.correct_option==="B"?"correct":""}">
+          <strong>B.</strong> ${escapeHTML(question.option_b)}
+        </div>
+        <div class="review-option ${question.correct_option==="C"?"correct":""}">
+          <strong>C.</strong> ${escapeHTML(question.option_c)}
+        </div>
+        <div class="review-option ${question.correct_option==="D"?"correct":""}">
+          <strong>D.</strong> ${escapeHTML(question.option_d)}
+        </div>
+      </div>
+      <div class="review-meta">
+        <strong>Correct answer:</strong> ${escapeHTML(question.correct_option)}
+        &nbsp; | &nbsp;
+        <strong>Marks:</strong> ${escapeHTML(question.marks)}
+      </div>
+      ${explanation}
+      <div class="review-actions">
+        <button class="btn btn-outline btn-small" data-action="edit" data-id="${question.queueId}">Edit</button>
+        ${
+          question.reviewed?
+          '<button class="btn btn-outline btn-small" data-action="unapprove" data-id="'+question.queueId+'">Undo Approval</button>':
+          '<button class="btn btn-success btn-small" data-action="approve" data-id="'+question.queueId+'">Approve</button>'
+        }
+        <button class="btn btn-danger btn-small" data-action="delete" data-id="${question.queueId}">Delete</button>
+      </div>
+    `;
+
+    container.appendChild(item);
+  });
+
+  renderPagination();
+  updateQueueStats();
+}
+
+$("reviewList").addEventListener("click",event=>{
+  const button=event.target.closest("button[data-action]");
+  if(!button)return;
+
+  const id=Number(button.dataset.id);
+  const action=button.dataset.action;
+  const question=pendingQuestions.find(q=>q.queueId===id);
+
+  if(!question)return;
+
+  if(action==="edit"){
+    openEditModal(question);
+  }
+
+  if(action==="approve"){
+    question.reviewed=true;
+    renderReviewQueue();
+  }
+
+  if(action==="unapprove"){
+    question.reviewed=false;
+    renderReviewQueue();
+  }
+
+  if(action==="delete"){
+    if(!confirm("Delete this question from the review queue?"))return;
+
+    pendingQuestions=pendingQuestions.filter(q=>q.queueId!==id);
+    renderReviewQueue();
+    showStatus(
+      $("questionStatus"),
+      "Question deleted from the review queue. No database record was affected.",
+      "success"
+    );
+  }
+});
+
+/* APPROVE ALL */
+$("approveAllBtn").addEventListener("click",()=>{
+  if(!pendingQuestions.length)return;
+
+  if(!confirm("Approve all "+pendingQuestions.length+" questions in the review queue?"))return;
+
+  pendingQuestions.forEach(question=>question.reviewed=true);
+  renderReviewQueue();
+
+  showStatus(
+    $("questionStatus"),
+    "All questions in the review queue have been approved. They are not yet saved to the database.",
+    "success"
+  );
+});
+
+/* CLEAR QUEUE */
+$("clearQueueBtn").addEventListener("click",()=>{
+  if(!pendingQuestions.length)return;
+
+  if(!confirm(
+    "Clear all "+pendingQuestions.length+
+    " questions from the temporary review queue? This will not delete questions already saved in the database."
+  ))return;
+
+  pendingQuestions=[];
+  currentPage=1;
+  renderReviewQueue();
+
+  showStatus(
+    $("questionStatus"),
+    "The temporary review queue has been cleared. Previously saved questions remain unchanged.",
+    "success"
+  );
+});
+
+/* EDIT QUESTION MODAL */
+function openEditModal(question){
+  editingQuestionId=question.queueId;
+
+  $("editQuestionText").value=question.question_text;
+  $("editOptionA").value=question.option_a;
+  $("editOptionB").value=question.option_b;
+  $("editOptionC").value=question.option_c;
+  $("editOptionD").value=question.option_d;
+  $("editCorrectOption").value=question.correct_option;
+  $("editQuestionMarks").value=question.marks;
+  $("editExplanation").value=question.explanation||"";
+
+  $("editModal").classList.add("show");
+}
+
+function closeEditModal(){
+  $("editModal").classList.remove("show");
+  editingQuestionId=null;
+}
+
+$("closeEditBtn").addEventListener("click",closeEditModal);
+
+$("editModal").addEventListener("click",event=>{
+  if(event.target===$("editModal"))closeEditModal();
+});
+
+$("editQuestionForm").addEventListener("submit",event=>{
+  event.preventDefault();
+
+  const question=pendingQuestions.find(
+    q=>q.queueId===editingQuestionId
+  );
+
+  if(!question)return;
+
+  try{
+    const updated=validateQuestion({
+      question_text:$("editQuestionText").value,
+      option_a:$("editOptionA").value,
+      option_b:$("editOptionB").value,
+      option_c:$("editOptionC").value,
+      option_d:$("editOptionD").value,
+      correct_option:$("editCorrectOption").value,
+      marks:$("editQuestionMarks").value,
+      explanation:$("editExplanation").value
+    });
+
+    Object.assign(question,updated);
+
+    /*
+      An edited question must be reviewed again.
+      This prevents an unreviewed edit from being saved
+      using an earlier approval.
+    */
+    question.reviewed=false;
+
+    closeEditModal();
+    renderReviewQueue();
+
+    showStatus(
+      $("questionStatus"),
+      "Question updated. Please review and approve it again before saving.",
+      "success"
+    );
+
+  }catch(error){
+    showStatus($("questionStatus"),error.message,"error");
+  }
+});
+
+/* MINIMUM QUESTION COUNTER */
 function updateMinimumQuestionCounter(){
   const counter=$("minimumQuestionStatus");
   const required=Number($("questionCount").value)||0;
@@ -604,8 +1243,8 @@ function updateMinimumQuestionCounter(){
     return;
   }
 
-  const pendingCount=pendingQuestions.length;
-  const totalAvailable=savedEligibleQuestionCount+pendingCount;
+  const approvedCount=getApprovedCount();
+  const totalAvailable=savedEligibleQuestionCount+approvedCount;
   const remaining=Math.max(0,required-totalAvailable);
 
   if(remaining>0){
@@ -613,40 +1252,66 @@ function updateMinimumQuestionCounter(){
       "Minimum questions still needed: "+remaining+
       ". Available: "+totalAvailable+
       " (Saved: "+savedEligibleQuestionCount+
-      ", Not yet saved: "+pendingCount+
+      ", Approved but not yet saved: "+approvedCount+
       "). Required: "+required+".";
-
     counter.className="info-box";
   }else{
     counter.textContent=
-      "Minimum question requirement met. "+
-      totalAvailable+" eligible question(s) available "+
+      "Minimum question requirement can be met. "+
+      totalAvailable+" eligible question(s) are available or approved "+
       "(Saved: "+savedEligibleQuestionCount+
-      ", Not yet saved: "+pendingCount+
+      ", Approved but not yet saved: "+approvedCount+
       "). Students will answer "+required+" questions.";
-
     counter.className="status show success";
   }
 }
 
+/* BUTTON STATES */
 function updateActionButtons(){
   const canUse=Boolean(currentExam?.id)&&!isPublished&&!isProcessing;
+  const approved=getApprovedCount();
+  const pending=getPendingCount();
 
   $("addQuestionBtn").disabled=!canUse;
   $("uploadCsvBtn").disabled=!canUse;
-  $("saveQuestionsBtn").disabled=!canUse||pendingQuestions.length===0;
-  $("savePublishBtn").disabled=!canUse;
+  $("saveQuestionsBtn").disabled=!canUse||approved===0;
+  $("savePublishBtn").disabled=!canUse||pending>0;
   $("examinationSelector").disabled=examinations.length===0||isProcessing;
   $("saveDraftBtn").disabled=isPublished||isProcessing;
 }
 
+function updatePendingInfo(){
+  updateQueueStats();
+  renderReviewQueue();
+}
+
+/* GET SAVED QUESTIONS */
+async function getSavedQuestions(){
+  if(!currentExam?.id){
+    throw new Error("Select a registered examination first.");
+  }
+
+  const result=await callFunction("list_questions",{
+    examination_id:currentExam.id
+  });
+
+  return getQuestionArray(result);
+}
+
+function countEligibleQuestions(questions){
+  return questions.filter(question=>
+    question.is_archived!==true&&
+    question.is_published!==false
+  ).length;
+}
+
+/* ACTIVATE SELECTED EXAMINATION */
 async function activateExamination(exam){
   currentExam=exam;
   isPublished=Boolean(exam.is_published);
 
   pendingQuestions=[];
-
-  // Reset the count while the selected examination is being checked.
+  currentPage=1;
   savedEligibleQuestionCount=null;
 
   updatePendingInfo();
@@ -670,22 +1335,18 @@ async function activateExamination(exam){
     "info"
   );
 
-  // NEW: retrieve the saved eligible question count for this examination.
   try{
     const savedQuestions=await getSavedQuestions();
 
-    // Ensure the result still belongs to the currently selected examination.
     if(String(currentExam?.id)===String(exam.id)){
       savedEligibleQuestionCount=countEligibleQuestions(savedQuestions);
-      updateMinimumQuestionCounter();
+      updateQueueStats();
     }
   }catch(error){
     if(String(currentExam?.id)===String(exam.id)){
       savedEligibleQuestionCount=null;
-
       $("minimumQuestionStatus").textContent=
         "Unable to check the saved questions. Please refresh or try selecting this examination again.";
-
       $("minimumQuestionStatus").className="info-box";
     }
 
@@ -693,15 +1354,14 @@ async function activateExamination(exam){
   }
 }
 
+/* LOAD EXAMINATIONS */
 async function loadExaminations(preferredId){
   const select=$("examinationSelector");
 
   select.disabled=true;
   select.innerHTML='<option value="">Loading registered examinations...</option>';
 
-  // Uses the existing examination-list action in the current page.
   const result=await callFunction("list_exams");
-
   examinations=getArray(result,"examinations","exams","items");
 
   updateExamSelectorOptions(preferredId);
@@ -715,7 +1375,6 @@ async function loadExaminations(preferredId){
 
     select.innerHTML='<option value="">No registered examinations found</option>';
     select.disabled=true;
-
     return;
   }
 
@@ -747,21 +1406,20 @@ async function loadExaminations(preferredId){
   }
 }
 
+/* SELECT EXAMINATION */
 $("examinationSelector").addEventListener("change",async()=>{
   const selectedId=$("examinationSelector").value;
-
   if(!selectedId)return;
 
   if(pendingQuestions.length){
     showStatus(
       $("questionStatus"),
-      "Please save your newly added questions before changing examinations.",
+      "Please save or clear your review queue before changing examinations. Your unsaved questions are kept in this page until you do so.",
       "warning"
     );
 
     $("examinationSelector").value=currentExam?
       String(currentExam.id):"";
-
     return;
   }
 
@@ -776,7 +1434,7 @@ $("examinationSelector").addEventListener("change",async()=>{
   }
 });
 
-// EXAMINATION REGISTRATION
+/* COLLECT EXAMINATION FIELDS */
 function collectExamFields(){
   const subjectId=$("subject").value;
 
@@ -799,6 +1457,7 @@ function collectExamFields(){
   }
 
   const duration=integerNumber($("duration").value,"Duration");
+
   const questionCount=integerNumber(
     $("questionCount").value,
     "Questions each student will answer"
@@ -812,6 +1471,15 @@ function collectExamFields(){
     $("marksPerQuestion").value,
     "Marks per question"
   );
+
+  const maxAttempts=integerNumber(
+    $("maxAttempts").value,
+    "Maximum attempts"
+  );
+
+  if(maxAttempts<1||maxAttempts>5){
+    throw new Error("Maximum attempts must be between 1 and 5.");
+  }
 
   let startsAt=null;
   let endsAt=null;
@@ -850,23 +1518,21 @@ function collectExamFields(){
     marks_per_question:marks,
     starts_at:startsAt,
     ends_at:endsAt,
-    max_attempts:2
+    max_attempts:maxAttempts
   };
 }
 
+/* SAVE EXAMINATION DRAFT */
 async function saveDraft(event){
   event.preventDefault();
-
   hideStatus($("pageStatus"));
 
   const button=$("saveDraftBtn");
-
   button.disabled=true;
   button.textContent="Saving...";
 
   try{
     const fields=collectExamFields();
-
     let result;
 
     if(!currentExam){
@@ -884,7 +1550,7 @@ async function saveDraft(event){
       throw new Error("The server did not return the examination ID. Please refresh and check your registered examinations.");
     }
 
-    currentExam={...currentExam,...exam};
+    currentExam={...currentExam,...exam,...fields};
     isPublished=Boolean(currentExam.is_published);
 
     await loadExaminations(currentExam.id);
@@ -903,12 +1569,11 @@ async function saveDraft(event){
     button.textContent=isPublished?
       "Examination Published":
       (currentExam?"Update Examination Draft":"Save Examination Draft");
-
     button.disabled=isPublished||isProcessing;
   }
 }
 
-// QUESTION VALIDATION
+/* VALIDATE QUESTION */
 function validateQuestion(question){
   const text=String(question.question_text||"").trim();
 
@@ -945,6 +1610,7 @@ function validateQuestion(question){
   };
 }
 
+/* ADD TO TEMPORARY QUEUE */
 function addPendingQuestion(question){
   if(!currentExam?.id){
     throw new Error("Please select a registered examination first.");
@@ -954,11 +1620,18 @@ function addPendingQuestion(question){
     throw new Error("This examination is already published.");
   }
 
-  pendingQuestions.push(validateQuestion(question));
+  const validated=validateQuestion(question);
+
+  pendingQuestions.push({
+    ...validated,
+    queueId:nextQueueId++,
+    reviewed:false
+  });
+
   updatePendingInfo();
 }
 
-// INDIVIDUAL QUESTION
+/* SINGLE QUESTION */
 $("singleQuestionForm").addEventListener("submit",event=>{
   event.preventDefault();
 
@@ -979,16 +1652,18 @@ $("singleQuestionForm").addEventListener("submit",event=>{
 
     showStatus(
       $("questionStatus"),
-      "Question added successfully. You can add more questions or save them to the question bank.",
+      "Question added to the review queue. Please review and approve it before saving.",
       "success"
     );
+
+    $("reviewList").scrollIntoView({behavior:"smooth",block:"start"});
 
   }catch(error){
     showStatus($("questionStatus"),error.message,"error");
   }
 });
 
-// CSV PARSER
+/* CSV PARSER */
 function parseCSV(text){
   const rows=[];
   let row=[];
@@ -1011,7 +1686,6 @@ function parseCSV(text){
       cell="";
     }else if((character==="\n"||character==="\r")&&!quoted){
       if(character==="\r"&&next==="\n")i++;
-
       row.push(cell);
       cell="";
 
@@ -1038,7 +1712,7 @@ function parseCSV(text){
   return rows;
 }
 
-// DOWNLOAD CSV TEMPLATE
+/* DOWNLOAD CSV TEMPLATE */
 function downloadCSVTemplate(){
   const header=[
     "question_text","option_a","option_b","option_c","option_d",
@@ -1074,7 +1748,7 @@ function downloadCSVTemplate(){
 
 $("downloadTemplateBtn").addEventListener("click",downloadCSVTemplate);
 
-// BULK CSV UPLOAD
+/* BULK CSV UPLOAD */
 $("uploadCsvBtn").addEventListener("click",async()=>{
   hideStatus($("questionStatus"));
 
@@ -1109,7 +1783,6 @@ $("uploadCsvBtn").addEventListener("click",async()=>{
   }
 
   const button=$("uploadCsvBtn");
-
   button.disabled=true;
   button.textContent="Reading file...";
 
@@ -1146,7 +1819,7 @@ $("uploadCsvBtn").addEventListener("click",async()=>{
         );
       }
 
-      imported.push(validateQuestion({
+      const question=validateQuestion({
         question_text:values[0],
         option_a:values[1],
         option_b:values[2],
@@ -1155,19 +1828,28 @@ $("uploadCsvBtn").addEventListener("click",async()=>{
         correct_option:values[5],
         explanation:values[6],
         marks:values[7]||$("marksPerQuestion").value
-      }));
+      });
+
+      imported.push({
+        ...question,
+        queueId:nextQueueId++,
+        reviewed:false
+      });
     }
 
     pendingQuestions.push(...imported);
+    currentPage=Math.ceil(pendingQuestions.length/PAGE_SIZE);
 
     updatePendingInfo();
     $("csvFile").value="";
 
     showStatus(
       $("questionStatus"),
-      imported.length+" question(s) read successfully. You may upload more questions or save the questions to the selected examination.",
+      imported.length+" question(s) successfully added to the review queue. They have not been saved to the database.",
       "success"
     );
+
+    $("reviewList").scrollIntoView({behavior:"smooth",block:"start"});
 
   }catch(error){
     showStatus($("questionStatus"),error.message,"error");
@@ -1177,45 +1859,35 @@ $("uploadCsvBtn").addEventListener("click",async()=>{
   }
 });
 
-// GET SAVED QUESTIONS FROM THE SELECTED EXAMINATION
-async function getSavedQuestions(){
-  if(!currentExam?.id){
-    throw new Error("Select a registered examination first.");
-  }
+/* SAVE APPROVED QUESTIONS */
+async function saveApprovedQuestions(){
+  const approvedQuestions=pendingQuestions.filter(
+    question=>question.reviewed===true
+  );
 
-  const result=await callFunction("list_questions",{
-    examination_id:currentExam.id
-  });
-
-  return getQuestionArray(result);
-}
-
-function countEligibleQuestions(questions){
-  return questions.filter(question=>
-    question.is_archived!==true&&
-    question.is_published!==false
-  ).length;
-}
-
-// SAVE NEW QUESTIONS TO THE QUESTION BANK
-async function savePendingQuestions(){
-  if(!pendingQuestions.length){
-    return 0;
+  if(!approvedQuestions.length){
+    throw new Error("There are no approved questions to save.");
   }
 
   const existingQuestions=await getSavedQuestions();
 
-  // NEW: refresh the saved question count before adding new questions.
   savedEligibleQuestionCount=countEligibleQuestions(existingQuestions);
-  updateMinimumQuestionCounter();
+  updateQueueStats();
 
   const highestOrder=Math.max(
     0,
     ...existingQuestions.map(getSavedQuestionOrder)
   );
 
-  const questionsToSave=pendingQuestions.map((question,index)=>({
-    ...question,
+  const questionsToSave=approvedQuestions.map((question,index)=>({
+    question_text:question.question_text,
+    option_a:question.option_a,
+    option_b:question.option_b,
+    option_c:question.option_c,
+    option_d:question.option_d,
+    correct_option:question.correct_option,
+    explanation:question.explanation,
+    marks:question.marks,
     question_order:highestOrder+index+1
   }));
 
@@ -1226,22 +1898,32 @@ async function savePendingQuestions(){
     questions:questionsToSave
   });
 
-  // Clear only after the server confirms the save.
-  pendingQuestions=[];
-
   /*
-    NEW: count the successfully saved questions immediately.
-    This keeps the counter accurate without requiring another
-    request just to update the display.
+    Remove only the questions confirmed as saved.
+    Pending-review questions remain in the queue.
   */
+  const savedIds=new Set(
+    approvedQuestions.map(question=>question.queueId)
+  );
+
+  pendingQuestions=pendingQuestions.filter(
+    question=>!savedIds.has(question.queueId)
+  );
+
   savedEligibleQuestionCount+=count;
+
+  const totalPages=Math.max(
+    1,Math.ceil(pendingQuestions.length/PAGE_SIZE)
+  );
+
+  if(currentPage>totalPages)currentPage=totalPages;
 
   updatePendingInfo();
 
   return count;
 }
 
-// SAVE TO QUESTION BANK BUTTON
+/* SAVE QUESTIONS BUTTON */
 async function saveToQuestionBank(){
   if(!currentExam?.id){
     showStatus($("questionStatus"),"Select a registered examination first.","error");
@@ -1253,25 +1935,36 @@ async function saveToQuestionBank(){
     return;
   }
 
-  if(!pendingQuestions.length){
-    showStatus($("questionStatus"),"Add or upload questions before saving.","warning");
+  if(!getApprovedCount()){
+    showStatus(
+      $("questionStatus"),
+      "Approve at least one question before saving to the question bank.",
+      "warning"
+    );
     return;
   }
 
   if(isProcessing)return;
 
+  if(!confirm(
+    "Save "+getApprovedCount()+
+    " approved question(s) to the selected examination's question bank?"
+  ))return;
+
   isProcessing=true;
   updateActionButtons();
 
   const button=$("saveQuestionsBtn");
-  button.textContent="Saving questions...";
+  button.textContent="Saving approved questions...";
 
   try{
-    const savedCount=await savePendingQuestions();
+    const savedCount=await saveApprovedQuestions();
 
     showStatus(
       $("questionStatus"),
-      savedCount+" question(s) successfully saved to "+(currentExam.title||"the selected examination")+"'s question bank.",
+      savedCount+" approved question(s) successfully saved to "+
+      (currentExam.title||"the selected examination")+
+      "'s question bank. Any questions still awaiting review remain in the queue.",
       "success"
     );
 
@@ -1279,14 +1972,14 @@ async function saveToQuestionBank(){
     showStatus($("questionStatus"),error.message,"error");
   }finally{
     isProcessing=false;
-    button.textContent="Save to Questions Bank";
+    button.textContent="Save Approved Questions to Question Bank";
     updateActionButtons();
   }
 }
 
 $("saveQuestionsBtn").addEventListener("click",saveToQuestionBank);
 
-// SAVE AND PUBLISH IMMEDIATELY
+/* SAVE AND PUBLISH */
 async function saveAndPublishImmediately(){
   if(!currentExam?.id){
     showStatus($("questionStatus"),"Select a registered examination first.","error");
@@ -1300,10 +1993,17 @@ async function saveAndPublishImmediately(){
 
   if(isProcessing)return;
 
-  let questionsSavedNow=0;
+  if(getPendingCount()>0){
+    showStatus(
+      $("questionStatus"),
+      "You still have questions awaiting review. Approve or delete them before publishing. Unreviewed questions will not be saved.",
+      "warning"
+    );
+    return;
+  }
 
   if(!confirm(
-    "Save the new questions to this examination and publish it immediately if there are enough eligible questions?"
+    "Save all approved questions and publish this examination if the question bank meets the required question count?"
   )){
     return;
   }
@@ -1314,8 +2014,9 @@ async function saveAndPublishImmediately(){
   const button=$("savePublishBtn");
   button.textContent="Saving and publishing...";
 
+  let questionsSavedNow=0;
+
   try{
-    // Save the latest examination settings first.
     const fields=collectExamFields();
 
     await callFunction("update_exam",{
@@ -1328,31 +2029,31 @@ async function saveAndPublishImmediately(){
       ...fields
     };
 
-    // Save newly added questions before checking the full question bank.
-    questionsSavedNow=await savePendingQuestions();
+    if(getApprovedCount()>0){
+      questionsSavedNow=await saveApprovedQuestions();
+    }
 
-    // Check all questions already saved for this examination.
     const savedQuestions=await getSavedQuestions();
     const eligible=countEligibleQuestions(savedQuestions);
     const required=Number(currentExam.student_question_count);
 
-    // NEW: keep the counter synchronized with the actual saved question bank.
     savedEligibleQuestionCount=eligible;
-    updateMinimumQuestionCounter();
+    updateQueueStats();
 
     if(eligible<required){
       showStatus(
         $("questionStatus"),
         (questionsSavedNow?
-          questionsSavedNow+" new question(s) have been saved to the question bank. ":"")+
-        "This examination has "+eligible+" eligible saved question(s), but students are required to answer "+required+". Add at least "+(required-eligible)+" more question(s) before publishing.",
+          questionsSavedNow+" approved question(s) have been saved. ":"")+
+        "This examination has "+eligible+
+        " eligible saved question(s), but students are required to answer "+
+        required+". Add and approve at least "+(required-eligible)+
+        " more question(s) before publishing.",
         "warning"
       );
-
       return;
     }
 
-    // Publish only after the backend question bank has enough questions.
     const result=await callFunction("publish_exam",{
       examination_id:currentExam.id
     });
@@ -1377,19 +2078,19 @@ async function saveAndPublishImmediately(){
     showStatus(
       $("questionStatus"),
       "Success! "+(questionsSavedNow?
-        questionsSavedNow+" new question(s) were saved. ":"")+
-      "Your examination has been published successfully with "+eligible+" eligible questions. Students will answer "+required+" questions.",
+        questionsSavedNow+" approved question(s) were saved. ":"")+
+      "Your examination has been published successfully with "+
+      eligible+" eligible questions. Students will answer "+
+      required+" questions.",
       "success"
     );
 
-    // Refresh the examination list to show its published status.
     try{
       await loadExaminations(currentExam.id);
       isPublished=true;
       $("saveDraftBtn").textContent="Examination Published";
       $("saveDraftBtn").disabled=true;
     }catch(refreshError){
-      // Publishing has already succeeded. Do not report it as a failure.
       console.error("Examination list refresh failed:",refreshError);
     }
 
@@ -1404,20 +2105,19 @@ async function saveAndPublishImmediately(){
   }finally{
     isProcessing=false;
     button.textContent=isPublished?
-      "Examination Published":"Save and Publish Immediately";
+      "Examination Published":"Save Approved Questions and Publish";
     updateActionButtons();
   }
 }
 
 $("savePublishBtn").addEventListener("click",saveAndPublishImmediately);
 
-// EXAMINATION ID BUTTONS
+/* EXAMINATION ID BUTTONS */
 $("copyCodeBtn").addEventListener("click",async()=>{
   const code=$("examCode").textContent;
 
   try{
     await navigator.clipboard.writeText(code);
-
     showStatus(
       $("questionStatus"),
       "Examination ID copied successfully.",
@@ -1443,7 +2143,6 @@ $("shareCodeBtn").addEventListener("click",async()=>{
       });
     }else{
       await navigator.clipboard.writeText(code);
-
       showStatus(
         $("questionStatus"),
         "Sharing is unavailable on this browser. Examination ID copied instead.",
@@ -1461,13 +2160,9 @@ $("shareCodeBtn").addEventListener("click",async()=>{
   }
 });
 
-// FORM CONTROLS
+/* FORM CONTROLS */
 $("examForm").addEventListener("submit",saveDraft);
 
-/*
-  NEW: changing the required student question count
-  immediately recalculates the minimum question counter.
-*/
 $("questionCount").addEventListener("input",()=>{
   updateTotalMarks();
   updateMinimumQuestionCounter();
@@ -1487,7 +2182,6 @@ $("cancelBtn").addEventListener("click",()=>{
     const confirmed=confirm(
       "Leave this page? Questions not yet saved to the question bank will be lost."
     );
-
     if(!confirmed)return;
   }
 
@@ -1498,11 +2192,10 @@ $("menuBtn").addEventListener("click",()=>{
   $("sidebar").classList.toggle("open");
 });
 
-// INITIALIZE PAGE
+/* INITIALIZE PAGE */
 async function initializePage(){
   try{
     const authenticated=await protectPage();
-
     if(!authenticated)return;
 
     updateTotalMarks();
