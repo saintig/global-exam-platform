@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10264a">
   <meta name="description" content="SAINTIG EXAMS is a digital examination platform supporting students, teachers and schools with online examinations, practice and assessment management.">
-  <title>SAINT IG EXAMS | Learn. Teach. Assess. Succeed.</title>
+  <title>SAINTIG EXAMS | Learn. Teach. Assess. Succeed.</title>
 
   <style>
     :root {
@@ -915,46 +915,6 @@
       font-size: 14px;
     }
 
-    /* ABOUT */
-
-    .about-content {
-      max-width: 850px;
-      margin: auto;
-    }
-
-    .about-content > p {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 15px;
-      line-height: 1.85;
-      text-align: center;
-    }
-
-    .about-mission-grid {
-      display: grid;
-      grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 18px;
-      margin-top: 28px;
-    }
-
-    .about-info-card {
-      padding: 23px;
-      background: #f0f3f8;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-    }
-
-    .about-info-card h3 {
-      font-size: 17px;
-      margin-bottom: 9px;
-    }
-
-    .about-info-card p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
     /* CALL TO ACTION */
 
     .cta {
@@ -1341,6 +1301,23 @@
       text-decoration: underline;
     }
 
+    /* FOOTER HELP LINE */
+
+    .footer-help {
+      font-size: 13px;
+      margin-bottom: 18px;
+      color: #c8d1df;
+    }
+
+    .footer-help a {
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .footer-help a:hover {
+      text-decoration: underline;
+    }
+
     /* RESPONSIVE */
 
     @media (max-width: 900px) {
@@ -1358,10 +1335,6 @@
       .feature-grid,
       .form-grid,
       .comparison-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .about-mission-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1564,8 +1537,8 @@
 
     <hr class="menu-divider">
 
-    <a class="menu-link" href="#about"><span class="menu-icon">ⓘ</span>About Us</a>
-    <a class="menu-link" href="#contact"><span class="menu-icon">✉</span>Contact Us</a>
+    <a class="menu-link" href="about.html"><span class="menu-icon">ⓘ</span>About Us</a>
+    <a class="menu-link" href="contact.html"><span class="menu-icon">✉</span>Contact Us</a>
     <a class="menu-link" href="admin-login.html"><span class="menu-icon">♢</span>Admin Sign In</a>
   </nav>
 
@@ -2083,61 +2056,6 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="section" id="about">
-      <div class="container about-content">
-
-        <div class="section-heading">
-          <div class="kicker">About Our Platform</div>
-          <h2>About SAINTIG EXAMS</h2>
-          <p>Transforming learning and examination through technology.</p>
-        </div>
-
-        <p>
-          SAINTIG EXAMS is a digital examination and learning platform
-          developed to make academic assessment easier, more accessible
-          and more organised for students, teachers and schools.
-        </p>
-
-        <p>
-          Our platform provides students with opportunities to practise,
-          prepare for important examinations, test their knowledge and
-          monitor their academic progress. It also provides teachers
-          and schools with digital tools to create and manage examinations,
-          organise question banks, conduct online assessments, monitor
-          student performance and manage examination results.
-        </p>
-
-        <p>
-          Whether you are a student preparing for an important examination
-          or a Teacher/School account looking for a better way to organise
-          assessments, SAINTIG EXAMS is designed to support your
-          educational needs.
-        </p>
-
-        <div class="about-mission-grid">
-          <article class="about-info-card">
-            <h3>Our Mission</h3>
-            <p>
-              To improve access to quality examination practice and
-              modern digital assessment tools by making examination
-              management and learning more efficient, accessible
-              and convenient.
-            </p>
-          </article>
-
-          <article class="about-info-card">
-            <h3>Our Vision</h3>
-            <p>
-              To become a trusted digital examination platform connecting
-              students, teachers and educational institutions across
-              Nigeria and beyond.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- CALL TO ACTION -->
     <section class="cta" id="get-started">
       <div class="container">
@@ -2232,7 +2150,7 @@
             results after they have been officially released.
           </p>
 
-          <a class="btn btn-gold" href="school-results.html">
+          <a class="btn btn-gold" href="school-exam-access.html?tab=examResult">
             Check and Print Results →
           </a>
 
@@ -2298,12 +2216,12 @@
 
       <nav class="footer-links" aria-label="Footer navigation">
         <a href="index.html">Home</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact Us</a>
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
         <a href="#examinations">Examinations</a>
         <a href="#why-digital-exams">Why Digital Exams?</a>
         <a href="school-exam-access.html?tab=exam">Teacher/School Exam Login</a>
-        <a href="school-exam-access.html">Check and print Results &amp; Print</a>
+        <a href="school-exam-access.html?tab=examResult">Check Results &amp; Print</a>
         <a href="#pricing-subscription">Pricing &amp; Subscription</a>
         <a href="student-login.html?mode=login">Student Sign In</a>
         <a href="school-login.html">Teacher/School Portal</a>
@@ -2312,6 +2230,11 @@
       <p style="font-size:13px; margin-bottom:18px; color:#c8d1df;">
         For Exam ID or Student ID assistance, contact your teacher
         or school where applicable.
+      </p>
+
+      <p class="footer-help">
+        Need help? <a href="contact.html">Contact Us</a> or
+        <a href="#" data-wa-link>chat on WhatsApp</a>
       </p>
 
       <a class="footer-admin" href="admin-login.html">
@@ -2450,6 +2373,9 @@
       });
     });
   </script>
+
+  <!-- SHARED SETTINGS: CONTACT DETAILS (FOOTER WHATSAPP LINK) -->
+  <script src="site-config.js"></script>
 
 </body>
 </html>
