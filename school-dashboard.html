@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +20,7 @@
   --line:#e5e9ef;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,sans-serif}
 button{font:inherit;cursor:pointer}
 .app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}
 
@@ -30,74 +31,74 @@ button{font:inherit;cursor:pointer}
 .brand{display:flex;gap:11px;align-items:center;padding:5px 8px 22px;border-bottom:1px solid #ffffff20}
 .mark{width:42px;height:42px;border-radius:11px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800}
 .brand b{font-size:16px;letter-spacing:.4px}
-.brand small{display:block;color:#bdc8d5;font-size:10px;letter-spacing:1.2px}
-.navlabel{font-size:10px;color:#9eacbd;letter-spacing:1.4px;font-weight:bold;padding:22px 10px 8px}
+.brand small{display:block;color:#bdc8d5;font-size:11px;letter-spacing:1.2px}
+.navlabel{font-size:11px;color:#9eacbd;letter-spacing:1.4px;font-weight:bold;padding:22px 10px 8px}
 nav{display:grid;gap:4px}
-nav button{border:0;background:none;color:#dce4ed;text-align:left;padding:11px;border-radius:8px;transition:.15s}
+nav button{border:0;background:none;color:#dce4ed;text-align:left;padding:11px;border-radius:8px;transition:.15s;font-size:14px}
 nav button:hover,nav button.active{background:var(--navy2);color:white}
 nav button.active{box-shadow:inset 3px 0 var(--gold)}
 .account{margin-top:auto;border-top:1px solid #ffffff20;padding:15px 5px 10px;display:flex;align-items:center;gap:10px}
 .avatar{width:37px;height:37px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:bold;flex-shrink:0}
-.accountname{font-size:12px;font-weight:bold;overflow-wrap:anywhere}
-.accounttype{font-size:11px;color:#bdc8d5}
-.signout{width:100%;padding:10px;border:1px solid #ffffff30;background:none;color:#ffd4d1;border-radius:8px}
+.accountname{font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+.accounttype{font-size:12px;color:#bdc8d5}
+.signout{width:100%;padding:10px;border:1px solid #ffffff30;background:none;color:#ffd4d1;border-radius:8px;font-size:14px}
 .signout:hover{background:#ffffff10}
 
 .main{min-width:0}
 .topbar{height:70px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:4}
-.top-title{font-weight:bold;color:var(--navy)}
-.topright{color:var(--muted);font-size:13px}
+.top-title{font-weight:bold;color:var(--navy);font-size:16px}
+.topright{color:var(--muted);font-size:14px}
 .menu{display:none}
 .content{padding:32px;max-width:1500px;margin:auto}
 
 .welcome{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:32px}
-h1{font-size:29px;color:var(--navy);margin:0 0 6px}
-.muted{color:var(--muted);font-size:14px}
-.pill{background:#fff8df;color:#795d0c;border:1px solid #f0df9f;border-radius:25px;padding:8px 14px;font-size:12px;font-weight:bold}
+h1{font-size:30px;color:var(--navy);margin:0 0 6px}
+.muted{color:var(--muted);font-size:15px}
+.pill{background:#fff8df;color:#795d0c;border:1px solid #f0df9f;border-radius:25px;padding:9px 15px;font-size:13px;font-weight:bold}
 
-.section-title{font-weight:bold;color:var(--navy);font-size:17px;margin:0 0 16px}
+.section-title{font-weight:bold;color:var(--navy);font-size:18px;margin:0 0 16px}
 .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .stat,.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:22px;box-shadow:0 7px 22px #14243a0b}
 .stat{min-height:135px}
-.stathead{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}
-.staticon{background:#f6efd9;color:#98751a;border-radius:9px;padding:7px 11px;font-size:17px}
-.value{font-size:31px;font-weight:800;color:var(--navy);margin-top:12px}
-.note{font-size:12px;color:var(--muted);margin-top:2px}
+.stathead{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px}
+.staticon{background:#f6efd9;color:#98751a;border-radius:9px;padding:7px 11px;font-size:18px}
+.value{font-size:32px;font-weight:800;color:var(--navy);margin-top:12px}
+.note{font-size:13px;color:var(--muted);margin-top:2px}
 
 .class-feature{margin-top:25px;background:var(--navy);color:white;border:1px solid #263e5c;border-radius:15px;padding:24px;box-shadow:0 8px 24px #14243a16}
 .class-feature-heading{display:flex;align-items:center;gap:12px;margin-bottom:8px}
 .class-feature-icon{width:45px;height:45px;flex-shrink:0;display:grid;place-items:center;border-radius:11px;background:#ffffff12;color:var(--gold);font-size:25px}
-.class-feature h2{color:var(--gold);font-size:19px;margin:0;letter-spacing:.4px}
-.class-feature-description{color:#d4deea;font-size:13px;margin:9px 0 18px}
-.class-feature-button{width:100%;min-height:51px;padding:13px 17px;border:0;border-radius:9px;background:var(--gold);color:var(--navy);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.18s}
+.class-feature h2{color:var(--gold);font-size:20px;margin:0;letter-spacing:.4px}
+.class-feature-description{color:#d4deea;font-size:14px;margin:9px 0 18px}
+.class-feature-button{width:100%;min-height:51px;padding:13px 17px;border:0;border-radius:9px;background:var(--gold);color:var(--navy);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:10px;transition:.18s}
 .class-feature-button:hover{background:#e6c65d;transform:translateY(-1px)}
 .class-feature-benefits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 20px;margin-top:21px}
-.class-benefit{display:flex;align-items:flex-start;gap:9px;color:#e5ebf3;font-size:12px}
-.class-benefit-icon{color:var(--gold);font-weight:bold;font-size:15px;flex-shrink:0;line-height:1.2}
+.class-benefit{display:flex;align-items:flex-start;gap:9px;color:#e5ebf3;font-size:13px}
+.class-benefit-icon{color:var(--gold);font-weight:bold;font-size:16px;flex-shrink:0;line-height:1.2}
 
 .columns{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:24px}
-.panel h2{font-size:17px;color:var(--navy);margin:0 0 5px}
-.panel p{font-size:13px;color:var(--muted);margin:0}
+.panel h2{font-size:18px;color:var(--navy);margin:0 0 5px}
+.panel p{font-size:14px;color:var(--muted);margin:0}
 .usage{display:grid;gap:17px;margin-top:22px}
-.usagehead{display:flex;justify-content:space-between;gap:10px;font-size:12px;margin-bottom:7px}
+.usagehead{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-bottom:7px}
 .usagehead b{text-align:right;overflow-wrap:anywhere}
 .bar{height:8px;background:#edf0f4;border-radius:8px;overflow:hidden}
 .bar span{display:block;height:100%;width:0;background:var(--gold);border-radius:8px;transition:width .3s ease}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
-.actions button{border:1px solid var(--line);background:white;color:var(--navy);border-radius:9px;padding:13px 11px;text-align:left;font-size:12px;font-weight:bold;min-height:48px}
+.actions button{border:1px solid var(--line);background:white;color:var(--navy);border-radius:9px;padding:13px 11px;text-align:left;font-size:13px;font-weight:bold;min-height:48px}
 .actions button:hover{border-color:var(--gold);background:#fffcf2}
-.notice{margin-top:19px;padding:12px;background:#fffaf0;border:1px solid #f0df9f;border-radius:8px;color:#72570d;font-size:12px}
-.empty{text-align:center;color:var(--muted);padding:25px 8px;font-size:13px}
+.notice{margin-top:19px;padding:13px;background:#fffaf0;border:1px solid #f0df9f;border-radius:8px;color:#72570d;font-size:13px}
+.empty{text-align:center;color:var(--muted);padding:25px 8px;font-size:14px}
 
 .recent-wrap{width:100%;overflow-x:auto;margin-top:18px}
-.recent-table{width:100%;min-width:600px;border-collapse:collapse;font-size:12px}
-.recent-table th{background:#f5f7fa;color:var(--navy);text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+.recent-table{width:100%;min-width:600px;border-collapse:collapse;font-size:13px}
+.recent-table th{background:#f5f7fa;color:var(--navy);text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);white-space:nowrap;font-size:13px}
 .recent-table td{padding:12px 9px;border-bottom:1px solid var(--line);color:#475569}
-.exam-status{display:inline-block;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:bold}
+.exam-status{display:inline-block;padding:4px 9px;border-radius:20px;font-size:12px;font-weight:bold}
 .exam-status.published{background:#e8f7ee;color:#16834a}
 .exam-status.draft{background:#fff5d9;color:#8a680e}
 
-.status{display:none;padding:11px 13px;border-radius:8px;margin-bottom:18px;font-size:13px}
+.status{display:none;padding:12px 14px;border-radius:8px;margin-bottom:18px;font-size:14px}
 .status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
 .status.info{display:block;background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
 .status.success{display:block;background:#eaf8ef;border:1px solid #c8ebd2;color:#176b3a}
@@ -108,52 +109,65 @@ h1{font-size:29px;color:var(--navy);margin:0 0 6px}
   background:#fff;border:1px solid #efb8b3;border-radius:10px;
 }
 .diagnostic.show{display:block}
-.diagnostic h3{font-size:14px;color:#a32118;margin:0 0 8px}
-.diagnostic p{font-size:12px;color:#64748b;margin:0 0 10px}
+.diagnostic h3{font-size:15px;color:#a32118;margin:0 0 8px}
+.diagnostic p{font-size:13px;color:#64748b;margin:0 0 10px}
 .diagnostic pre{
   white-space:pre-wrap;overflow-wrap:anywhere;
   background:#f8fafc;border:1px solid var(--line);
-  padding:12px;border-radius:7px;font-size:11px;
+  padding:12px;border-radius:7px;font-size:12px;
   color:#8c211a;max-height:260px;overflow:auto;
 }
 .copy-error{
   border:0;border-radius:7px;background:var(--navy);
-  color:white;padding:9px 13px;font-size:12px
+  color:white;padding:10px 14px;font-size:13px
 }
 
-.footer{text-align:center;color:#8995a3;font-size:11px;padding:35px 8px 15px}
+.footer{text-align:center;color:#8995a3;font-size:12px;padding:35px 8px 15px}
 .sidebar-overlay{display:none}
 
-@media(max-width:1000px){.columns{grid-template-columns:1fr}}
+@media(max-width:1000px){
+  .columns{grid-template-columns:1fr}
+}
+
 @media(max-width:720px){
   .app{display:block}
   .sidebar{position:fixed;z-index:12;inset:0 auto 0 0;width:270px;min-height:0;height:100dvh;overflow-y:auto;transform:translateX(-105%);transition:transform .22s ease;box-shadow:10px 0 25px #0002}
   .sidebar.open{transform:translateX(0)}
   .sidebar-overlay{display:block;position:fixed;inset:0;z-index:11;background:#0007;opacity:0;visibility:hidden;transition:.2s}
   .sidebar-overlay.show{opacity:1;visibility:visible}
-  .menu{display:inline-block;border:1px solid var(--line);background:white;border-radius:7px;padding:7px 11px;margin-right:11px;color:var(--navy)}
+  .menu{display:inline-block;border:1px solid var(--line);background:white;border-radius:7px;padding:7px 11px;margin-right:11px;color:var(--navy);font-size:15px}
   .topbar{height:62px;padding:0 14px}
   .content{padding:23px 15px}
   .welcome{display:block;margin-bottom:27px}
-  .pill{display:inline-block;margin-top:14px}
+  h1{font-size:27px}
+  .muted{font-size:14px}
+  .pill{display:inline-block;margin-top:14px;font-size:12px}
   .stats{grid-template-columns:1fr 1fr;gap:11px}
   .stat{padding:15px;min-height:125px}
-  .stathead{font-size:11px;gap:5px}
-  .staticon{padding:5px 8px;font-size:14px}
-  .value{font-size:25px}
+  .stathead{font-size:12px;gap:5px}
+  .staticon{padding:5px 8px;font-size:15px}
+  .value{font-size:26px}
+  .note{font-size:12px}
   .class-feature{margin-top:21px;padding:19px}
-  .class-feature h2{font-size:16px}
+  .class-feature h2{font-size:17px}
+  .class-feature-description{font-size:13px}
+  .class-feature-button{font-size:13px}
   .class-feature-benefits{gap:13px 12px}
-  .class-benefit{font-size:11px}
+  .class-benefit{font-size:12px}
   .columns{grid-template-columns:1fr;gap:15px;margin-top:19px}
   .panel{padding:18px}
+  .panel h2{font-size:17px}
+  .panel p{font-size:13px}
+  .usagehead{font-size:12px}
+  .actions button{font-size:12px}
   .topright{display:none}
 }
+
 @media(max-width:380px){
   .stats{gap:8px}
   .stat{padding:12px}
-  .stathead{font-size:10px}
-  .value{font-size:22px}
+  .stathead{font-size:11px}
+  .value{font-size:23px}
   .actions{grid-template-columns:1fr}
   .class-feature-benefits{grid-template-columns:1fr}
 }
@@ -214,7 +228,6 @@ h1{font-size:29px;color:var(--navy);margin:0 0 6px}
 
   <div class="status" id="statusMessage"></div>
 
-  <!-- Exact database error appears here when package loading fails -->
   <section class="diagnostic" id="packageDiagnostic">
     <h3>Package Database Error Details</h3>
     <p>Copy this information and send it to the developer for correction.</p>
@@ -251,7 +264,7 @@ h1{font-size:29px;color:var(--navy);margin:0 0 6px}
     <article class="stat">
       <div class="stathead">Question Bank <span class="staticon">▤</span></div>
       <div class="value" id="questionCount">—</div>
-      <div class="note">Stored questions, including archived</div>
+      <div class="note">Stored questions, excluding archived records</div>
     </article>
   </div>
 
@@ -488,47 +501,43 @@ async function countActiveStudents(accountId){
 
 /*
  * QUESTION BANK COUNT
- * Counts every stored question in the account, including archived
- * questions and questions in archived examinations. This matches
- * the count the edge function uses to enforce the package limit.
+ * Uses the secure SQL function installed in Supabase.
+ *
+ * Includes:
+ * - Published questions in active examinations.
+ * - Unpublished questions in active examinations.
+ *
+ * Excludes:
+ * - Individually archived questions.
+ * - Questions belonging to archived examinations.
+ * - Public examinations.
  */
 
 async function countStoredQuestions(accountId){
-  const pageSize=1000;
-  let start=0;
-  let examIds=[];
 
-  while(true){
-    const {data,error}=await supabaseClient
-      .from("examinations")
-      .select("id")
-      .eq("school_account_id",accountId)
-      .order("id",{ascending:true})
-      .range(start,start+pageSize-1);
+  const {data,error}=await supabaseClient.rpc(
+    "get_school_question_storage_summary",
+    {
+      p_school_account_id:accountId
+    }
+  );
 
-    if(error)throw error;
+  if(error)throw error;
 
-    const rows=data||[];
-    examIds.push(...rows.map(row=>row.id));
+  const summary=Array.isArray(data)?data[0]:data;
 
-    if(rows.length<pageSize)break;
-    start+=pageSize;
+  if(!summary){
+    throw new Error(
+      "The database did not return the Question Bank storage summary."
+    );
   }
 
-  if(!examIds.length)return 0;
+  const total=Number(summary.active_stored_questions);
 
-  let total=0;
-
-  for(let i=0;i<examIds.length;i+=100){
-    const batch=examIds.slice(i,i+100);
-
-    const {count,error}=await supabaseClient
-      .from("exam_questions")
-      .select("id",{count:"exact",head:true})
-      .in("examination_id",batch);
-
-    if(error)throw error;
-    total+=count??0;
+  if(!Number.isFinite(total)||total<0){
+    throw new Error(
+      "The database returned an invalid Question Bank storage count."
+    );
   }
 
   return total;
