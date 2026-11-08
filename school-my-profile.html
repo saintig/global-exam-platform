@@ -75,6 +75,7 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 .footer{text-align:center;color:#8995a3;font-size:12px;padding:35px 8px 15px}
 .sidebar-overlay{display:none}
+
 @media(max-width:720px){
 .app{display:block}
 .sidebar{position:fixed;z-index:12;inset:0 auto 0 0;width:270px;min-height:0;height:100dvh;overflow-y:auto;transform:translateX(-105%);transition:transform .22s ease;box-shadow:10px 0 25px #0002}
@@ -97,11 +98,16 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 }
 </style>
 </head>
+
 <body>
 <div class="app">
 
 <aside class="sidebar" id="sidebar">
-<div class="brand"><div class="mark">SE</div><div><b>SAINTIG EXAMS</b><small>EXAMINATION PLATFORM</small></div></div>
+<div class="brand">
+<div class="mark">SE</div>
+<div><b>SAINTIG EXAMS</b><small>EXAMINATION PLATFORM</small></div>
+</div>
+
 <div class="navlabel">MAIN MENU</div>
 <nav>
 <button data-page="Dashboard">▦ &nbsp; Dashboard</button>
@@ -113,6 +119,7 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 <button data-page="Archive Management">▧ &nbsp; Archive Management</button>
 <button data-page="Results & Performance">▥ &nbsp; Results &amp; Performance</button>
 </nav>
+
 <div class="navlabel">ACCOUNT</div>
 <nav>
 <button data-page="Subscription Plans">◇ &nbsp; Subscription Plans</button>
@@ -120,7 +127,15 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 <button class="active" data-page="School Profile">⚙ &nbsp; Teacher/School Profile</button>
 <button data-page="Help & Support">? &nbsp; Help &amp; Support</button>
 </nav>
-<div class="account"><div class="avatar" id="sideAvatar">SE</div><div><div class="accountname" id="sideName">Loading account…</div><div class="accounttype">Teacher/School Account</div></div></div>
+
+<div class="account">
+<div class="avatar" id="sideAvatar">SE</div>
+<div>
+<div class="accountname" id="sideName">Loading account…</div>
+<div class="accounttype">Teacher/School Account</div>
+</div>
+</div>
+
 <button class="signout" id="signOutBtn">↪ &nbsp; Sign Out</button>
 </aside>
 
@@ -128,29 +143,44 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 
 <main class="main">
 <header class="topbar">
-<div><button class="menu" id="menuToggle" aria-label="Open menu">☰</button><span class="top-title">Teacher/School Profile</span></div>
+<div>
+<button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
+<span class="top-title">Teacher/School Profile</span>
+</div>
 <div class="topright" id="topAccount">Loading account…</div>
 </header>
 
 <section class="content">
-<div class="heading"><h1>Teacher/School Profile</h1><p>View and manage your SAINTIG EXAMS account information.</p></div>
+
+<div class="heading">
+<h1>Teacher/School Profile</h1>
+<p>View and manage your SAINTIG EXAMS account information.</p>
+</div>
+
 <div class="status" id="statusMessage"></div>
 
 <section class="profile-card">
 <div class="profile-banner"></div>
+
 <div class="profile-header">
 <div class="profile-avatar" id="profileAvatar">SE</div>
-<div class="profile-heading"><h2 id="profileHeading">Loading profile…</h2><p>Teacher/School Account</p></div>
+<div class="profile-heading">
+<h2 id="profileHeading">Loading profile…</h2>
+<p>Teacher/School Account</p>
+</div>
 </div>
 
 <div class="profile-body">
 <form id="profileForm">
+
 <h3 class="section-heading">Profile Information</h3>
+
 <div class="fields">
 
 <div class="field full">
 <label for="accountName">Teacher/School Name</label>
-<input type="text" id="accountName" maxlength="150" placeholder="Enter your Teacher/School Name" required disabled>
+<input type="text" id="accountName" maxlength="150"
+placeholder="Enter your Teacher/School Name" required disabled>
 <div class="field-note">Enter the name you want displayed throughout your account.</div>
 </div>
 
@@ -168,55 +198,61 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 
 <div class="field">
 <label for="phoneNumber">Phone Number</label>
-<input type="tel" id="phoneNumber" maxlength="30" placeholder="Enter phone number" disabled>
+<input type="tel" id="phoneNumber" maxlength="30"
+placeholder="Enter phone number" disabled>
 <div class="field-note">Include your country code where applicable.</div>
 </div>
 
 <div class="field">
 <label for="address">Address</label>
-<input type="text" id="address" maxlength="250" placeholder="Enter your address" disabled>
+<input type="text" id="address" maxlength="250"
+placeholder="Enter your address" disabled>
 <div class="field-note">Your contact or business address (optional).</div>
 </div>
 
 <div class="field">
 <label for="country">Country</label>
 <select id="country" disabled>
-<option value="">Select country</option>
-<option value="Nigeria">Nigeria</option>
-<option value="United States">United States</option>
-<option value="United Kingdom">United Kingdom</option>
-<option value="Canada">Canada</option>
-<option value="Other">Other</option>
+<option value="">Loading countries…</option>
 </select>
+<div class="field-note">Select your country from the complete alphabetical list.</div>
 </div>
 
 <div class="field">
-<label for="state">State / Region</label>
-<select id="state" disabled>
-<option value="">Select country first</option>
-</select>
-<div class="field-note">Choose your state or region.</div>
+<label for="state">State / Province / Region</label>
+<input type="text" id="state" maxlength="100"
+placeholder="Enter state, province or region" disabled>
+<div class="field-note">Enter the appropriate administrative region for your country.</div>
 </div>
+
 </div>
 
 <h3 class="section-heading">Account Information</h3>
+
 <div class="fields">
+
 <div class="field">
 <label>Account ID</label>
 <div class="readonly-value" id="accountId">Loading…</div>
 </div>
+
 <div class="field">
 <label>Account Status</label>
-<div class="readonly-value"><span class="account-status" id="accountStatus">Loading…</span></div>
+<div class="readonly-value">
+<span class="account-status" id="accountStatus">Loading…</span>
 </div>
+</div>
+
 <div class="field">
 <label>Subscription Plan</label>
 <div class="readonly-value" id="subscriptionPlan">Loading…</div>
 </div>
+
 <div class="field">
 <label>Profile Photo / School Logo</label>
 <div class="readonly-value">Not connected yet — planned for a future update.</div>
 </div>
+
 </div>
 
 <div class="actions">
@@ -224,20 +260,28 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 <button type="button" class="btn btn-secondary" id="editBtn" disabled>Edit Profile</button>
 <button type="submit" class="btn btn-primary" id="saveBtn" hidden>Save Changes</button>
 </div>
+
 </form>
 </div>
 </section>
 
-<div class="footer">© <span id="year"></span> SAINTIG EXAMS · Building a better examination experience</div>
+<div class="footer">
+© <span id="year"></span> SAINTIG EXAMS · Building a better examination experience
+</div>
+
 </section>
 </main>
 </div>
 
 <script>
+"use strict";
+
+/* SUPABASE CONFIGURATION */
 const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const LOGIN_PAGE="school-login.html";
 
+/* EXISTING DASHBOARD NAVIGATION */
 const PAGE_LINKS={
 "Dashboard":"school-dashboard.html",
 "School Students":"school-students.html",
@@ -255,48 +299,45 @@ const PAGE_LINKS={
 
 const $=id=>document.getElementById(id);
 
-const COUNTRY_STATES={
-"Nigeria":[
-"Abia","Adamawa","Akwa Ibom","Anambra","Bauchi","Bayelsa",
-"Benue","Borno","Cross River","Delta","Ebonyi","Edo",
-"Ekiti","Enugu","Gombe","Imo","Jigawa","Kaduna","Kano",
-"Katsina","Kebbi","Kogi","Kwara","Lagos","Nasarawa",
-"Niger","Ogun","Ondo","Osun","Oyo","Plateau","Rivers",
-"Sokoto","Taraba","Yobe","Zamfara","Federal Capital Territory"
-],
-"United States":[
-"Alabama","Alaska","Arizona","Arkansas","California","Colorado",
-"Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho",
-"Illinois","Indiana","Iowa","Kansas","Kentucky","Louisiana",
-"Maine","Maryland","Massachusetts","Michigan","Minnesota",
-"Mississippi","Missouri","Montana","Nebraska","Nevada",
-"New Hampshire","New Jersey","New Mexico","New York",
-"North Carolina","North Dakota","Ohio","Oklahoma","Oregon",
-"Pennsylvania","Rhode Island","South Carolina","South Dakota",
-"Tennessee","Texas","Utah","Vermont","Virginia","Washington",
-"West Virginia","Wisconsin","Wyoming","District of Columbia"
-],
-"United Kingdom":[
-"England","Scotland","Wales","Northern Ireland"
-],
-"Canada":[
-"Alberta","British Columbia","Manitoba","New Brunswick",
-"Newfoundland and Labrador","Northwest Territories","Nova Scotia",
-"Nunavut","Ontario","Prince Edward Island","Quebec",
-"Saskatchewan","Yukon"
-]
-};
+/*
+ ISO 3166-1 ALPHA-2 COUNTRY AND TERRITORY CODES.
+ Country names are generated using the browser's
+ international language data and sorted alphabetically.
+*/
+const COUNTRY_CODES=`
+AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ
+BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ
+CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ
+DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR
+GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY
+HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP
+KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY
+MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ
+NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY
+QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ
+TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ
+VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW
+`;
 
+/* APPLICATION STATE */
 let supabaseClient=null;
 let currentAccount=null;
 let currentUser=null;
 let originalValues={};
+let isEditing=false;
 
+/* INITIAL PAGE SETUP */
 $("year").textContent=new Date().getFullYear();
 
+/* HELPER FUNCTIONS */
 function initials(value){
-return String(value||"SE").trim().split(/\s+/).slice(0,2)
-.map(x=>x[0]||"").join("").toUpperCase()||"SE";
+return String(value||"SE")
+.trim()
+.split(/\s+/)
+.slice(0,2)
+.map(x=>x[0]||"")
+.join("")
+.toUpperCase()||"SE";
 }
 
 function showMessage(message,type="info"){
@@ -312,7 +353,9 @@ $("statusMessage").className="status";
 }
 
 function put(id,value){
-$(id).textContent=value===null||value===undefined||value===""?"—":String(value);
+$(id).textContent=
+value===null||value===undefined||value===""
+?"—":String(value);
 }
 
 function displayName(name){
@@ -324,63 +367,112 @@ $("profileAvatar").textContent=initials(safeName);
 $("sideAvatar").textContent=initials(safeName);
 }
 
+/*
+ LOAD ALL AVAILABLE COUNTRY NAMES.
+ The stored database value remains the country name,
+ preserving compatibility with the existing country column.
+*/
+function loadCountries(){
+const countrySelect=$("country");
+
+try{
+if(!("DisplayNames" in Intl)){
+throw new Error("Your browser does not support the country list.");
+}
+
+const displayNames=new Intl.DisplayNames(["en"],{
+type:"region"
+});
+
+const countries=COUNTRY_CODES.trim()
+.split(/\s+/)
+.map(code=>({
+code,
+name:displayNames.of(code)
+}))
+.filter(item=>
+item.name &&
+item.name!==item.code &&
+item.name!=="Unknown Region"
+)
+.sort((a,b)=>a.name.localeCompare(b.name,"en"));
+
+countrySelect.innerHTML="";
+countrySelect.add(new Option("Select country",""));
+
+countries.forEach(item=>{
+countrySelect.add(new Option(item.name,item.name));
+});
+
+}catch(error){
+console.error("Country list error:",error);
+countrySelect.innerHTML="";
+countrySelect.add(new Option("Country list unavailable",""));
+showMessage(
+"Unable to load the country list. Please refresh the page or update your browser.",
+"error"
+);
+}
+}
+
+/* GET FORM VALUES */
 function getFormValues(){
-return {
+return{
 account_name:$("accountName").value.trim(),
 phone_number:$("phoneNumber").value.trim(),
 address:$("address").value.trim(),
 country:$("country").value,
-state:$("state").value
+state:$("state").value.trim()
 };
 }
 
+/*
+ RESTORE VALUES FROM SUPABASE.
+ If an older saved country is not in the current
+ dropdown list, preserve it rather than losing it.
+*/
 function setFormValues(values){
 $("accountName").value=values.account_name||"";
 $("phoneNumber").value=values.phone_number||"";
 $("address").value=values.address||"";
-$("country").value=values.country||"";
-updateStateOptions(values.state||"");
-}
 
-function updateStateOptions(selectedState=""){
-const country=$("country").value;
-const stateSelect=$("state");
-stateSelect.innerHTML="";
+const country=values.country||"";
+const countrySelect=$("country");
 
-const states=COUNTRY_STATES[country];
+if(country){
+const exists=Array.from(countrySelect.options)
+.some(option=>option.value===country);
 
-if(states){
-stateSelect.add(new Option("Select state / region",""));
-states.forEach(state=>{
-stateSelect.add(new Option(state,state));
-});
-stateSelect.disabled=!isEditing;
-if(selectedState){
-const exists=states.includes(selectedState);
-if(!exists)stateSelect.add(new Option(selectedState,selectedState));
-stateSelect.value=selectedState;
-}
-}else if(country==="Other"){
-stateSelect.add(new Option("Enter state / region in Address",""));
-stateSelect.disabled=true;
-}else{
-stateSelect.add(new Option("Select country first",""));
-stateSelect.disabled=true;
+if(!exists){
+countrySelect.add(new Option(country,country));
 }
 }
 
-let isEditing=false;
+countrySelect.value=country;
+$("state").value=values.state||"";
+}
 
+/* EDIT MODE */
 function setEditMode(enabled){
 isEditing=enabled;
-["accountName","phoneNumber","address","country"].forEach(id=>{
+
+[
+"accountName",
+"phoneNumber",
+"address",
+"country",
+"state"
+].forEach(id=>{
 $(id).disabled=!enabled;
 });
-$("state").disabled=!enabled||!COUNTRY_STATES[$("country").value];
+
 $("editBtn").hidden=enabled;
 $("saveBtn").hidden=!enabled;
 $("cancelBtn").hidden=!enabled;
-if(enabled)$("accountName").focus();
+
+if(enabled){
+$("accountName").focus();
+}
 }
 
 function cancelEditing(){
@@ -389,30 +481,48 @@ setEditMode(false);
 clearMessage();
 }
 
-$("country").addEventListener("change",()=>{
-updateStateOptions("");
-});
+/* COUNTRY DROPDOWN INITIALIZATION */
+loadCountries();
 
+/* EDIT PROFILE */
 $("editBtn").addEventListener("click",()=>{
 if(!currentAccount)return;
 clearMessage();
 setEditMode(true);
 });
 
+/* CANCEL EDITING */
 $("cancelBtn").addEventListener("click",cancelEditing);
 
+/*
+ INITIALIZE SUPABASE AND LOAD ACCOUNT.
+*/
 async function initializeProfile(){
+
 if(!window.supabase?.createClient){
-showMessage("Supabase could not load. Check your internet connection and refresh.","error");
+showMessage(
+"Supabase could not load. Check your internet connection and refresh.",
+"error"
+);
 return;
 }
 
 supabaseClient=window.supabase.createClient(
-SUPABASE_URL,SUPABASE_ANON_KEY,
-{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+SUPABASE_URL,
+SUPABASE_ANON_KEY,
+{
+auth:{
+persistSession:true,
+autoRefreshToken:true,
+detectSessionInUrl:true
+}
+}
 );
 
-const {data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
+const{
+data:sessionData,
+error:sessionError
+}=await supabaseClient.auth.getSession();
 
 if(sessionError||!sessionData.session){
 location.replace(LOGIN_PAGE);
@@ -421,23 +531,44 @@ return;
 
 currentUser=sessionData.session.user;
 
-const {data:account,error}=await supabaseClient
+/* LOAD TEACHER/SCHOOL ACCOUNT */
+const{
+data:account,
+error
+}=await supabaseClient
 .from("school_accounts")
-.select("id,user_id,account_name,account_type,status,phone_number,address,country,state")
+.select(`
+id,
+user_id,
+account_name,
+account_type,
+status,
+phone_number,
+address,
+country,
+state
+`)
 .eq("user_id",currentUser.id)
 .maybeSingle();
 
 if(error){
 console.error("Profile account lookup:",error);
-showMessage("Unable to load your account profile: "+error.message,"error");
+showMessage(
+"Unable to load your account profile: "+error.message,
+"error"
+);
 return;
 }
 
 if(!account){
-showMessage("No Teacher/School account is linked to this login.","error");
+showMessage(
+"No Teacher/School account is linked to this login.",
+"error"
+);
 return;
 }
 
+/* ONLY ACTIVE ACCOUNTS CAN USE THIS PAGE */
 if(account.status!=="active"){
 await supabaseClient.auth.signOut();
 location.replace(LOGIN_PAGE);
@@ -446,6 +577,7 @@ return;
 
 currentAccount=account;
 
+/* SAVE ORIGINAL VALUES FOR CANCEL */
 originalValues={
 account_name:account.account_name||"",
 phone_number:account.phone_number||"",
@@ -454,23 +586,35 @@ country:account.country||"",
 state:account.state||""
 };
 
+/* DISPLAY PROFILE INFORMATION */
 setFormValues(originalValues);
 displayName(originalValues.account_name);
 
 put("accountEmail",currentUser.email||"—");
 put("accountId",account.id);
-put("accountStatus","Active");
+put("accountStatus",account.status);
+
+/* ENABLE EDIT BUTTON */
 $("editBtn").disabled=false;
 
+/* LOAD SUBSCRIPTION PACKAGE */
 try{
-const {data:assignment,error:packageError}=await supabaseClient
+const{
+data:assignment,
+error:packageError
+}=await supabaseClient
 .from("school_account_packages")
 .select("package_name")
 .eq("school_account_id",account.id)
 .maybeSingle();
 
 if(packageError)throw packageError;
-put("subscriptionPlan",(assignment?.package_name||"Free")+" Package");
+
+put(
+"subscriptionPlan",
+(assignment?.package_name||"Free")+" Package"
+);
+
 }catch(error){
 console.error("Profile subscription:",error);
 put("subscriptionPlan","Unable to load");
@@ -480,51 +624,83 @@ setEditMode(false);
 clearMessage();
 }
 
+/*
+ SAVE PROFILE INFORMATION TO SUPABASE.
+*/
 $("profileForm").addEventListener("submit",async event=>{
+
 event.preventDefault();
 
 if(!currentAccount||!currentUser){
-showMessage("Your account information is not available.","error");
+showMessage(
+"Your account information is not available.",
+"error"
+);
 return;
 }
 
 const values=getFormValues();
 
+/* VALIDATE ACCOUNT NAME */
 if(!values.account_name){
-showMessage("Teacher/School Name cannot be empty.","error");
+showMessage(
+"Teacher/School Name cannot be empty.",
+"error"
+);
 $("accountName").focus();
 return;
 }
 
 if(values.account_name.length>150){
-showMessage("Teacher/School Name cannot exceed 150 characters.","error");
+showMessage(
+"Teacher/School Name cannot exceed 150 characters.",
+"error"
+);
 return;
 }
 
-if(values.phone_number.length>30||values.address.length>250){
-showMessage("Please check the phone number or address length.","error");
+/* VALIDATE PHONE NUMBER AND ADDRESS */
+if(values.phone_number.length>30){
+showMessage(
+"Phone Number cannot exceed 30 characters.",
+"error"
+);
 return;
 }
 
-if(values.country&&COUNTRY_STATES[values.country]&&
-!COUNTRY_STATES[values.country].includes(values.state)&&values.state){
-showMessage("Please select a valid state or region for the selected country.","error");
+if(values.address.length>250){
+showMessage(
+"Address cannot exceed 250 characters.",
+"error"
+);
 return;
 }
 
-if(values.country==="Other")values.state="";
+if(values.state.length>100){
+showMessage(
+"State / Province / Region cannot exceed 100 characters.",
+"error"
+);
+return;
+}
 
+/* CHECK WHETHER ANYTHING CHANGED */
 if(JSON.stringify(values)===JSON.stringify(originalValues)){
 setEditMode(false);
 showMessage("There are no changes to save.","info");
 return;
 }
 
+/* PREVENT DOUBLE SUBMISSION */
 $("saveBtn").disabled=true;
 $("saveBtn").textContent="Saving…";
 
 try{
-const {data,error}=await supabaseClient
+
+const{
+data,
+error
+}=await supabaseClient
 .from("school_accounts")
 .update({
 account_name:values.account_name,
@@ -535,17 +711,31 @@ state:values.state||null
 })
 .eq("id",currentAccount.id)
 .eq("user_id",currentUser.id)
-.select("id,account_name,phone_number,address,country,state")
+.select(`
+id,
+account_name,
+phone_number,
+address,
+country,
+state
+`)
 .maybeSingle();
 
 if(error)throw error;
 
 if(!data){
-throw new Error("No account was updated. Please check your account permissions.");
+throw new Error(
+"No account was updated. Please check your account permissions."
+);
 }
 
-currentAccount={...currentAccount,...data};
+/* UPDATE CURRENT ACCOUNT */
+currentAccount={
+...currentAccount,
+...data
+};
 
+/* UPDATE ORIGINAL VALUES */
 originalValues={
 account_name:data.account_name||"",
 phone_number:data.phone_number||"",
@@ -554,21 +744,36 @@ country:data.country||"",
 state:data.state||""
 };
 
+/* REFRESH PROFILE DISPLAY */
 setFormValues(originalValues);
 displayName(originalValues.account_name);
 setEditMode(false);
 
-showMessage("Your profile information has been updated successfully.","success");
+showMessage(
+"Your profile information has been updated successfully.",
+"success"
+);
 
 }catch(error){
+
 console.error("Profile update:",error);
-showMessage("Unable to save your profile: "+(error.message||"Please try again."),"error");
+
+showMessage(
+"Unable to save your profile: "+
+(error.message||"Please try again."),
+"error"
+);
+
 }finally{
+
 $("saveBtn").disabled=false;
 $("saveBtn").textContent="Save Changes";
+
 }
+
 });
 
+/* MOBILE SIDEBAR */
 function closeSidebar(){
 $("sidebar").classList.remove("open");
 $("sidebarOverlay").classList.remove("show");
@@ -576,16 +781,24 @@ $("sidebarOverlay").classList.remove("show");
 
 function navigate(page){
 closeSidebar();
+
 const destination=PAGE_LINKS[page];
+
 if(!destination){
-showMessage("This dashboard link has not been configured.","error");
+showMessage(
+"This dashboard link has not been configured.",
+"error"
+);
 return;
 }
+
 location.href=destination;
 }
 
 document.querySelectorAll("[data-page]").forEach(button=>{
-button.addEventListener("click",()=>navigate(button.dataset.page));
+button.addEventListener("click",()=>{
+navigate(button.dataset.page);
+});
 });
 
 $("menuToggle").addEventListener("click",()=>{
@@ -599,33 +812,59 @@ document.addEventListener("keydown",event=>{
 if(event.key==="Escape")closeSidebar();
 });
 
+/* SIGN OUT */
 async function signOut(){
+
 $("signOutBtn").disabled=true;
 $("signOutBtn").textContent="Signing out…";
+
 try{
+
 if(supabaseClient){
-const {error}=await supabaseClient.auth.signOut();
+const{error}=await supabaseClient.auth.signOut();
 if(error)throw error;
 }
+
 location.replace(LOGIN_PAGE);
+
 }catch(error){
+
 console.error("Sign out:",error);
+
 $("signOutBtn").disabled=false;
 $("signOutBtn").textContent="↪  Sign Out";
-showMessage("Sign-out failed. Please try again.","error");
+
+showMessage(
+"Sign-out failed. Please try again.",
+"error"
+);
+
 }
 }
 
 $("signOutBtn").addEventListener("click",signOut);
 
+/* CHECK LOGIN SESSION WHEN USER RETURNS TO PAGE */
 document.addEventListener("visibilitychange",async()=>{
-if(document.visibilityState==="visible"&&supabaseClient){
-const {data,error}=await supabaseClient.auth.getSession();
-if(error||!data.session)location.replace(LOGIN_PAGE);
+
+if(
+document.visibilityState==="visible" &&
+supabaseClient
+){
+
+const{data,error}=await supabaseClient.auth.getSession();
+
+if(error||!data.session){
+location.replace(LOGIN_PAGE);
 }
+
+}
+
 });
 
+/* START PAGE */
 initializeProfile();
+
 </script>
 </body>
 </html>
