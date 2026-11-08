@@ -1299,6 +1299,48 @@
       display: none;
     }
 
+    /* READ MORE ON HERO CARDS */
+
+    .hero-audience {
+      align-items: start;
+    }
+
+    .read-more-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      visibility: hidden;
+      transition: grid-template-rows .3s ease, visibility .3s;
+    }
+
+    .read-more-panel.open {
+      grid-template-rows: 1fr;
+      visibility: visible;
+    }
+
+    .read-more-inner {
+      overflow: hidden;
+    }
+
+    .read-more-inner p {
+      margin-top: 10px;
+    }
+
+    .read-more-btn {
+      margin-top: 12px;
+      padding: 6px 0;
+      border: 0;
+      background: transparent;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .read-more-btn:hover,
+    .read-more-btn:focus-visible {
+      text-decoration: underline;
+    }
+
     /* RESPONSIVE */
 
     @media (max-width: 900px) {
@@ -1550,19 +1592,50 @@
           <article class="audience-card">
             <h3>For Students</h3>
             <p>
-              Practise for important examinations, test your knowledge,
-              improve your examination skills and monitor your academic
-              progress through available online assessments.
+              Practise for WAEC, NECO, JAMB, GCE, IELTS and TOEFL.
+              Test yourself, see your score and track your progress.
             </p>
+
+            <div class="read-more-panel" id="students-more">
+              <div class="read-more-inner">
+                <p>
+                  Choose your country and education level, whether you are in
+                  Nigeria, the United States, the United Kingdom, Canada or
+                  Australia, and practise with assessments made for you.
+                  Build your exam skills, learn to manage your time and learn
+                  from your mistakes.
+                </p>
+              </div>
+            </div>
+
+            <button class="read-more-btn" type="button"
+              aria-expanded="false" aria-controls="students-more">
+              Read more ▾
+            </button>
           </article>
 
           <article class="audience-card">
             <h3>For Teachers/Schools</h3>
             <p>
-              Create and manage examinations, organise question banks,
-              conduct online assessments, monitor student performance
-              and manage examination results.
+              Create exams, mark objective questions automatically and
+              publish results in minutes. Save time on printing and marking,
+              and keep every result in one place.
             </p>
+
+            <div class="read-more-panel" id="teachers-more">
+              <div class="read-more-inner">
+                <p>
+                  Build question banks, conduct online assessments and monitor
+                  student performance. Students can check and print their
+                  results for free. Built for schools in Nigeria and beyond.
+                </p>
+              </div>
+            </div>
+
+            <button class="read-more-btn" type="button"
+              aria-expanded="false" aria-controls="teachers-more">
+              Read more ▾
+            </button>
           </article>
         </div>
 
@@ -1573,11 +1646,6 @@
           <a class="btn btn-teacher btn-big" href="school-login.html">
             Teacher/School Sign In / Create Account
           </a>
-        </div>
-
-        <div class="hero-school-services">
-          <a href="school-exam-access.html?tab=exam">✓ Take Teacher/School Exam</a>
-          <a href="school-results.html">▧ Check and Print Results</a>
         </div>
 
       </div>
@@ -2365,6 +2433,20 @@
         document.querySelectorAll(".ea-panel").forEach(function (p) {
           p.hidden = p.id !== "ea-" + tab.dataset.tab;
         });
+      });
+    });
+
+
+    // READ MORE / READ LESS
+
+    document.querySelectorAll(".read-more-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const panel = document.getElementById(btn.getAttribute("aria-controls"));
+        const isOpen = btn.getAttribute("aria-expanded") === "true";
+
+        panel.classList.toggle("open", !isOpen);
+        btn.setAttribute("aria-expanded", String(!isOpen));
+        btn.textContent = isOpen ? "Read more ▾" : "Read less ▴";
       });
     });
   </script>
