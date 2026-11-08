@@ -90,6 +90,18 @@ table{width:100%;border-collapse:collapse;font-size:14px}
 th{background:#f1f4f8;color:var(--navy);text-align:left;padding:10px 8px}
 td{padding:10px 8px;border-bottom:1px solid var(--line)}
 .table-wrap{overflow-x:auto;margin-top:12px}
+.review h3{margin:26px 0 4px;color:var(--navy);font-size:19px}
+.rq{border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+.rq.right{border-color:#bfe0cd;background:#f6fbf8}
+.rq.wrong{border-color:#f0c7c2;background:#fdf7f6}
+.rq-top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-bottom:8px}
+.rq-text{white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 10px;font-weight:bold}
+.ro{display:flex;gap:10px;padding:9px 10px;border-radius:10px;margin-bottom:6px;border:1px solid var(--line);background:#fff;font-size:15px;overflow-wrap:anywhere}
+.ro .rl{font-weight:bold;width:22px;flex-shrink:0}
+.ro.is-correct{border-color:#16834b;background:#e8f7ee}
+.ro.is-wrong{border-color:#c0392b;background:#fdecea}
+.tag{font-size:12px;font-weight:bold;margin-left:auto;padding-left:8px;text-align:right}
+.rexp{background:#f4f7fc;border-radius:10px;padding:10px 12px;font-size:14px;margin-top:8px;white-space:pre-wrap}
 
 /* ANSWER REVIEW */
 .rev-item{border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
@@ -748,9 +760,52 @@ function renderExamResult(d) {
           <td>${num(a.score)}</td><td>${num(a.total_marks)}</td></tr>`).join("")}</tbody>
       </table></div>
       <div class="row"><button class="btn gold" id="printExamBtn" type="button">Print Result</button></div>
+      ${renderReview(d.review)}
     </div>`;
 
   $("printExamBtn").addEventListener("click", () => printExamResult(lastExamResult));
+}
+
+/* ANSWER REVIEW: the student's own answers, correct options and explanations */
+function renderReview(review) {
+  if (!Array.isArray(review) || !review.length) return "";
+
+  const right = review.filter(q => q.is_correct).length;
+  const skipped = review.filter(q => !q.selected).length;
+
+  const items = review.map(q => {
+    const state = !q.selected ? "wrong" : q.is_correct ? "right" : "wrong";
+    const verdict = !q.selected ? "Not answered" : q.is_correct ? "Correct" : "Wrong";
+
+    const options = ["A", "B", "C", "D"].map(letter => {
+      const isCorrect = letter === q.correct;
+      const isPicked = letter === q.selected;
+      const cls = isCorrect ? "is-correct" : (isPicked ? "is-wrong" : "");
+
+      let tag = "";
+      if (isPicked && isCorrect) tag = "Your answer · Correct";
+      else if (isPicked) tag = "Your answer";
+      else if (isCorrect) tag = "Correct answer";
+
+      return `<div class="ro ${cls}"><span class="rl">${letter}.</span>
+        <span>${escapeHTML(q.options[letter])}</span>
+        ${tag ? `<span class="tag">${tag}</span>` : ""}</div>`;
+    }).join("");
+
+    return `<div class="rq ${state}">
+      <div class="rq-top"><span>Question ${q.number}</span>
+        <span>${escapeHTML(verdict)} · ${num(q.marks_awarded)} / ${num(q.marks)}</span></div>
+      <p class="rq-text">${escapeHTML(q.text)}</p>
+      ${options}
+      ${q.explanation ? `<div class="rexp"><strong>Explanation:</strong> ${escapeHTML(q.explanation)}</div>` : ""}
+    </div>`;
+  }).join("");
+
+  return `<div class="review">
+    <h3>Your Answers</h3>
+    <p class="lead">${right} correct · ${review.length - right - skipped} wrong · ${skipped} not answered</p>
+    ${items}
+  </div>`;
 }
 
 /* =========================================================
