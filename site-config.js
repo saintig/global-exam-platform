@@ -51,7 +51,7 @@
     });
 
     // 2. Floating WhatsApp button (bottom right)
-    if (document.body.hasAttribute("data-no-float")) return;
+        if (!document.body.hasAttribute("data-float")) return;
     if (document.getElementById("waFloat")) return;
 
     var style = document.createElement("style");
