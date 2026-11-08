@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#10264a">
   <meta name="description" content="SAINTIG EXAMS is a digital examination platform supporting students, teachers and schools with online examinations, practice and assessment management.">
-  <title>SAINTIG EXAMS | Learn. Teach. Assess. Succeed.</title>
+  <title>SAINT IG EXAMS | Learn. Teach. Assess. Succeed.</title>
 
   <style>
     :root {
@@ -1229,6 +1229,76 @@
       margin-top: 4px;
     }
 
+    /* MAIN SIGN IN BUTTONS */
+
+    .hero-main-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin: 8px auto 0;
+    }
+
+    .btn-big {
+      width: min(100%, 460px);
+      min-height: 60px;
+      padding: 16px 22px;
+      font-size: 16px;
+    }
+
+    .btn-teacher {
+      background: var(--white);
+      color: var(--navy);
+      border: 2px solid var(--gold);
+    }
+
+    .btn-teacher:hover {
+      background: #fff4d6;
+    }
+
+    /* ACCESS FORMS SECTION */
+
+    .ea-section {
+      background: #f0f3f8;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ea-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      max-width: 560px;
+      margin: 0 auto 18px;
+    }
+
+    .ea-tab {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--white);
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .ea-tab.active {
+      background: var(--navy);
+      border-color: var(--navy);
+      color: var(--white);
+    }
+
+    .ea-card {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .ea-panel[hidden] {
+      display: none;
+    }
+
     /* RESPONSIVE */
 
     @media (max-width: 900px) {
@@ -1441,13 +1511,13 @@
     <hr class="menu-divider">
 
     <a class="menu-link" href="school-login.html"><span class="menu-icon">♟</span>Teacher/School Sign In</a>
-    <a class="menu-link" href="school-login.html"><span class="menu-icon">＋</span>Create Teacher/School Account</a>
+    <a class="menu-link" href="school-login.html?mode=register"><span class="menu-icon">＋</span>Create Teacher/School Account</a>
     <a class="menu-link" href="#teacher-portal"><span class="menu-icon">▤</span>Teacher/School Portal</a>
 
     <hr class="menu-divider">
 
-    <a class="menu-link" href="school-exam-login.html"><span class="menu-icon">✓</span>Take Teacher/School Exam</a>
-    <a class="menu-link" href="school-results.html"><span class="menu-icon">▧</span>Check Results &amp; Print</a>
+    <a class="menu-link" href="school-exam-access.html?tab=exam"><span class="menu-icon">✓</span>Take Teacher/School Exam</a>
+    <a class="menu-link" href="school-exam-access.html?tab=examResult"><span class="menu-icon">▧</span>Check Results &amp; Print</a>
     <a class="menu-link" href="#pricing-subscription"><span class="menu-icon">₦</span>Pricing &amp; Subscription</a>
 
     <hr class="menu-divider">
@@ -1496,27 +1566,97 @@
           </article>
         </div>
 
-        <div class="hero-buttons">
-          <a class="btn btn-gold" href="student-login.html?mode=register">
-            Create Student Account
+        <div class="hero-main-actions">
+          <a class="btn btn-gold btn-big" href="student-login.html?mode=login">
+            Student Sign In / Create Account
           </a>
-          <a class="btn btn-outline" href="student-login.html?mode=login">
-            Student Sign In
-          </a>
-        </div>
-
-        <div class="hero-school-links">
-          <a href="school-login.html" class="school-account-link">
-            ＋ Create Teacher/School Account
-          </a>
-          <a href="school-login.html" class="school-account-link">
-            ♟ Teacher/School Sign In
+          <a class="btn btn-teacher btn-big" href="school-login.html">
+            Teacher/School Sign In / Create Account
           </a>
         </div>
 
         <div class="hero-school-services">
-          <a href="school-exam-login.html">✓ Take Teacher/School Exam</a>
+          <a href="school-exam-access.html?tab=exam">✓ Take Teacher/School Exam</a>
           <a href="school-results.html">▧ Check and Print Results</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ACCESS FORMS: TAKE EXAM, EXAM RESULTS, CLASS RESULTS -->
+    <section class="section ea-section" id="exam-access">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="kicker">Teacher / School Examinations</div>
+          <h2>Welcome to SAINTIG EXAMS</h2>
+          <p>Take an exam or check and print your results.</p>
+        </div>
+
+        <div class="ea-tabs" role="tablist">
+          <button class="ea-tab active" type="button" role="tab" aria-selected="true" data-tab="exam">Take Exam</button>
+          <button class="ea-tab" type="button" role="tab" aria-selected="false" data-tab="examResult">Exam Results</button>
+          <button class="ea-tab" type="button" role="tab" aria-selected="false" data-tab="classResult">Class Results</button>
+        </div>
+
+        <!-- TAKE EXAM -->
+        <div class="ea-panel" id="ea-exam">
+          <div class="access-card ea-card">
+            <h3>Teacher / School Exam Login</h3>
+            <p class="description">Enter the examination details supplied by your school.</p>
+            <form action="school-exam-access.html" method="get" autocomplete="off">
+              <input type="hidden" name="tab" value="exam">
+              <div class="field">
+                <label for="eaExamId">Exam ID</label>
+                <input type="text" id="eaExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" required>
+              </div>
+              <div class="field">
+                <label for="eaStudentId">Student ID</label>
+                <input type="text" id="eaStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+              </div>
+              <button class="btn btn-navy form-button" type="submit">Take Exam</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- EXAM RESULTS -->
+        <div class="ea-panel" id="ea-examResult" hidden>
+          <div class="access-card ea-card">
+            <h3>Check / Print Exam Results</h3>
+            <p class="description">Enter your school examination ID and student ID to look up a result.</p>
+            <form action="school-exam-access.html" method="get" autocomplete="off">
+              <input type="hidden" name="tab" value="examResult">
+              <div class="field">
+                <label for="eaResExamId">Exam ID</label>
+                <input type="text" id="eaResExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" required>
+              </div>
+              <div class="field">
+                <label for="eaResStudentId">Student ID</label>
+                <input type="text" id="eaResStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+              </div>
+              <button class="btn btn-navy form-button" type="submit">View Results</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- CLASS RESULTS -->
+        <div class="ea-panel" id="ea-classResult" hidden>
+          <div class="access-card ea-card">
+            <h3>Check / Print Class Results</h3>
+            <p class="description">Enter your Class ID and Student ID to view your published class result.</p>
+            <form action="school-exam-access.html" method="get" autocomplete="off">
+              <input type="hidden" name="tab" value="classResult">
+              <div class="field">
+                <label for="eaClassId">Class ID</label>
+                <input type="text" id="eaClassId" name="class_id" placeholder="Enter Class ID" autocapitalize="characters" required>
+              </div>
+              <div class="field">
+                <label for="eaClassStudentId">Student ID</label>
+                <input type="text" id="eaClassStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+              </div>
+              <button class="btn btn-navy form-button" type="submit">View Class Result</button>
+            </form>
+          </div>
         </div>
 
       </div>
@@ -1787,142 +1927,6 @@
               </a>
             </div>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- EXAM ACCESS -->
-    <section class="section" id="exam-access">
-      <div class="container">
-
-        <div class="section-heading">
-          <div class="kicker">Student Examination Access</div>
-          <h2>Take a Teacher/School Exam</h2>
-          <p>
-            Enter the Exam ID and Student ID provided by your teacher
-            or school to access an assigned examination.
-          </p>
-        </div>
-
-        <div class="form-grid">
-          <div class="access-card">
-            <h3>Enter Your Examination Details</h3>
-            <p class="description">
-              Use the IDs issued to you by your teacher or school.
-            </p>
-
-            <form id="examAccessForm" action="school-exam-login.html" method="get">
-              <div class="field">
-                <label for="examId">Exam ID</label>
-                <input type="text" id="examId" name="exam_id"
-                  placeholder="Enter your Exam ID" autocomplete="off" required>
-              </div>
-
-              <div class="field">
-                <label for="studentId">Student ID</label>
-                <input type="text" id="studentId" name="student_id"
-                  placeholder="Enter your Student ID" autocomplete="off" required>
-              </div>
-
-              <button class="btn btn-navy form-button" type="submit">
-                Access Exam →
-              </button>
-
-              <p class="form-note">
-                Access is subject to examination status, student
-                authorization and applicable attempt rules.
-              </p>
-
-              <div class="form-status" id="examAccessStatus"
-                role="status" aria-live="polite"></div>
-            </form>
-          </div>
-
-          <div class="access-card">
-            <h3>Need Help Accessing Your Exam?</h3>
-            <p class="description">
-              Make sure both IDs match the details provided by your
-              teacher or school.
-            </p>
-            <div class="feature-icon" aria-hidden="true">🔐</div>
-            <p class="description">
-              If your details are not accepted after the examination
-              service is connected, contact your teacher or school
-              to confirm your Exam ID and Student ID.
-            </p>
-            <a class="btn btn-light form-button" href="#contact">
-              Contact Information
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESULTS ACCESS -->
-    <section class="section teacher-section" id="print-results">
-      <div class="container">
-
-        <div class="section-heading">
-          <div class="kicker">Your Examination Performance</div>
-          <h2>Check &amp; Print Results</h2>
-          <p>
-            Enter your Exam ID and Student ID to look up an authorized,
-            released result. Printing or saving as PDF will be available
-            once result verification is connected.
-          </p>
-        </div>
-
-        <div class="form-grid">
-          <div class="access-card">
-            <h3>Find Your Result</h3>
-            <p class="description">
-              Enter the examination and student details supplied
-              by your teacher or school.
-            </p>
-
-            <form id="resultsForm" action="school-results.html" method="get">
-              <div class="field">
-                <label for="resultExamId">Exam ID</label>
-                <input type="text" id="resultExamId" name="exam_id"
-                  placeholder="Enter your Exam ID" autocomplete="off" required>
-              </div>
-
-              <div class="field">
-                <label for="resultStudentId">Student ID</label>
-                <input type="text" id="resultStudentId" name="student_id"
-                  placeholder="Enter your Student ID" autocomplete="off" required>
-              </div>
-
-              <button class="btn btn-navy form-button" type="submit">
-                View Result →
-              </button>
-
-              <p class="form-note">
-                Only results that pass verification and are released
-                for viewing should be displayed.
-              </p>
-
-              <div class="form-status" id="resultsStatus"
-                role="status" aria-live="polite"></div>
-            </form>
-          </div>
-
-          <div class="access-card">
-            <h3>Print or Save Your Result</h3>
-            <p class="description">
-              After your result has been securely verified and displayed,
-              you will be able to print it or save it as a PDF.
-            </p>
-            <div class="feature-icon" aria-hidden="true">🖨️</div>
-            <p class="description">
-              Keep your IDs private and use only your own student details.
-              You do not need to open your student dashboard to use the
-              planned result lookup service.
-            </p>
-            <a class="btn btn-light form-button" href="#exam-access">
-              Access an Examination
-            </a>
-          </div>
         </div>
       </div>
     </section>
@@ -2230,7 +2234,7 @@
         <a href="#contact">Contact Us</a>
         <a href="#examinations">Examinations</a>
         <a href="#why-digital-exams">Why Digital Exams?</a>
-        <a href="school-exam-login.html">Teacher/School Exam Login</a>
+        <a href="school-exam-access.html?tab=exam">Teacher/School Exam Login</a>
         <a href="school-results.html">Check Results &amp; Print</a>
         <a href="#pricing-subscription">Pricing &amp; Subscription</a>
         <a href="student-login.html?mode=login">Student Sign In</a>
@@ -2348,37 +2352,21 @@
     });
 
 
-    // PLANNED EXAM AND RESULT FORMS
-    // These forms remain unconnected until the secure backend
-    // examination-access and result-verification services are ready.
+    // ACCESS FORM TABS
 
-    function prepareFutureForm(formId, statusId, message) {
-      const form = document.getElementById(formId);
-      const status = document.getElementById(statusId);
+    document.querySelectorAll(".ea-tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        document.querySelectorAll(".ea-tab").forEach(function (t) {
+          const on = t === tab;
+          t.classList.toggle("active", on);
+          t.setAttribute("aria-selected", String(on));
+        });
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        if (!form.reportValidity()) {
-          return;
-        }
-
-        status.textContent = message;
-        status.classList.add("visible");
+        document.querySelectorAll(".ea-panel").forEach(function (p) {
+          p.hidden = p.id !== "ea-" + tab.dataset.tab;
+        });
       });
-    }
-
-    prepareFutureForm(
-      "examAccessForm",
-      "examAccessStatus",
-      "Exam access is not connected yet. The secure exam-access page and backend verification must be implemented before you can start an examination."
-    );
-
-    prepareFutureForm(
-      "resultsForm",
-      "resultsStatus",
-      "Result lookup is not connected yet. Secure result verification must be implemented before results can be displayed or printed."
-    );
+    });
   </script>
 
 </body>
