@@ -524,13 +524,15 @@ th{
     📊 Results
   </button>
 
-  <button class="nav-link" data-section="school" type="button">
-    🏫 Teacher/School Exam Login
-  </button>
+  <!-- PUBLIC TEACHER/SCHOOL EXAM ACCESS -->
+  <a class="nav-link" href="school-student-exam.html">
+    🏫 Take Teacher/School Exam
+  </a>
 
-  <button class="nav-link" data-section="check-results" type="button">
-    🔎 Check / Print Results
-  </button>
+  <!-- PUBLIC TEACHER/SCHOOL RESULTS ACCESS -->
+  <a class="nav-link" href="school-student-exam.html?tab=examResult">
+    🔎 Check and Print Results
+  </a>
 
   <button class="nav-link" data-section="pricing" type="button">
     💳 Pricing and Subscription
@@ -711,6 +713,9 @@ th{
   </div>
 
 </section>
+
+<!-- Retained existing sections for compatibility. The menu now uses
+     the public school-student-exam.html page for Teacher/School access. -->
 
 <section class="section" id="school">
 
@@ -1081,11 +1086,6 @@ async function verifyStudentAccount(user) {
     throw new Error("Your account could not be verified.");
   }
 
-  /*
-    FIRST CHECK:
-    Reject accounts registered in school_accounts.
-  */
-
   const {data:schoolAccount,error:schoolError} = await supabase
     .from("school_accounts")
     .select("id,account_type,status")
@@ -1111,11 +1111,6 @@ async function verifyStudentAccount(user) {
 
     return false;
   }
-
-  /*
-    SECOND CHECK:
-    Require an explicitly identified student profile.
-  */
 
   const {data:profile,error:profileError} = await supabase
     .from("profiles")
@@ -1232,12 +1227,6 @@ document.addEventListener("keydown",event => {
 
 });
 
-/*
-  CORRECTION:
-  Take an Exam now opens the exams section.
-  It no longer opens the school login section.
-*/
-
 document.querySelectorAll(".nav-link[data-section]")
   .forEach(button => {
 
@@ -1248,6 +1237,13 @@ document.querySelectorAll(".nav-link[data-section]")
     });
 
   });
+
+/*
+  The two Teacher/School menu items are ordinary
+  navigation links. They intentionally do not use
+  openSection(), because they open the separate
+  public school-student-exam.html page.
+*/
 
 document.querySelectorAll("[data-go]")
   .forEach(button => {
@@ -1303,12 +1299,6 @@ async function loadProfile() {
   updateDisplayedName(name);
 
 }
-
-/*
-  Update only display_name.
-  Do not upsert the profile because account_type
-  must never be accidentally overwritten.
-*/
 
 $("profileForm").addEventListener("submit",async event => {
 
@@ -1881,11 +1871,6 @@ async function loadAttempts() {
 
   attemptsCache = allAttempts || [];
 
-  /*
-    Filter submitted attempts in JavaScript.
-    This also handles status values consistently.
-  */
-
   completedCache = attemptsCache
     .filter(attempt => isSubmitted(attempt))
     .sort((a,b) => {
@@ -2228,7 +2213,7 @@ $("toggleAllResults").addEventListener(
 );
 
 /* =========================================
-   TEACHER/SCHOOL EXAM PLACEHOLDERS
+   LEGACY TEACHER/SCHOOL FORM HANDLERS
 ========================================= */
 
 $("schoolExamForm").addEventListener(
@@ -2239,7 +2224,7 @@ $("schoolExamForm").addEventListener(
 
     showMessage(
       $("schoolExamMessage"),
-      "School examination login is not active yet. The Teacher/School examination system will be connected when it is created.",
+      "Please use the Take Teacher/School Exam menu to access the public examination page.",
       "error"
     );
 
@@ -2254,7 +2239,7 @@ $("schoolResultForm").addEventListener(
 
     showMessage(
       $("schoolResultMessage"),
-      "School results are not available for lookup yet. The results database will be connected in a later stage.",
+      "Please use the Check and Print Results menu to access the public results page.",
       "error"
     );
 
@@ -2341,11 +2326,6 @@ async function initializeDashboard() {
 
   try {
 
-    /*
-      First confirm that the visitor has an
-      authenticated Supabase student session.
-    */
-
     const session = await requireStudentSession();
 
     if (!session?.user) {
@@ -2354,12 +2334,6 @@ async function initializeDashboard() {
 
     currentUser = session.user;
 
-    /*
-      Verify account type BEFORE loading
-      student profile, education options,
-      examination history or results.
-    */
-
     const isStudent = await verifyStudentAccount(
       currentUser
     );
@@ -2367,12 +2341,6 @@ async function initializeDashboard() {
     if (!isStudent) {
       return;
     }
-
-    /*
-      Load dashboard information.
-      A failure in one section does not prevent
-      the other sections from loading.
-    */
 
     const results = await Promise.allSettled([
 
