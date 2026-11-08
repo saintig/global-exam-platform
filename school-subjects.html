@@ -28,7 +28,7 @@ body{
   margin:0;
   background:var(--paper);
   color:var(--ink);
-  font:15px/1.5 Arial,sans-serif;
+  font:16px/1.6 Arial,sans-serif;
 }
 
 button,input{font:inherit}
@@ -37,7 +37,7 @@ button{cursor:pointer}
 .app{
   min-height:100vh;
   display:grid;
-  grid-template-columns:240px 1fr;
+  grid-template-columns:250px 1fr;
 }
 
 /* SIDEBAR */
@@ -45,7 +45,7 @@ button{cursor:pointer}
 .sidebar{
   background:var(--navy);
   color:white;
-  padding:20px 15px;
+  padding:22px 15px;
   min-height:100vh;
   display:flex;
   flex-direction:column;
@@ -60,40 +60,41 @@ button{cursor:pointer}
 }
 
 .mark{
-  width:42px;
-  height:42px;
+  width:44px;
+  height:44px;
   border-radius:11px;
   background:var(--gold);
   color:var(--navy);
   display:grid;
   place-items:center;
   font-weight:800;
+  font-size:17px;
 }
 
-.brand b{font-size:16px}
+.brand b{font-size:17px}
 .brand small{
   display:block;
   color:#bdc8d5;
-  font-size:10px;
-  letter-spacing:1.2px;
+  font-size:12px;
+  letter-spacing:1.1px;
 }
 
 .navlabel{
-  font-size:10px;
+  font-size:12px;
   color:#9eacbd;
-  letter-spacing:1.4px;
+  letter-spacing:1.3px;
   font-weight:bold;
-  padding:22px 10px 8px;
+  padding:23px 10px 9px;
 }
 
 .sidebar a{
   display:block;
   text-decoration:none;
   color:#dce4ed;
-  padding:11px;
+  padding:12px 11px;
   border-radius:8px;
   margin-bottom:4px;
-  font-size:14px;
+  font-size:15px;
 }
 
 .sidebar a:hover,
@@ -109,17 +110,17 @@ button{cursor:pointer}
 .sidebottom{
   margin-top:auto;
   border-top:1px solid #ffffff20;
-  padding:15px 5px 5px;
+  padding:16px 5px 5px;
 }
 
 .accountname{
-  font-size:12px;
+  font-size:14px;
   font-weight:bold;
   overflow-wrap:anywhere;
 }
 
 .accounttype{
-  font-size:11px;
+  font-size:13px;
   color:#bdc8d5;
 }
 
@@ -128,13 +129,13 @@ button{cursor:pointer}
 .main{min-width:0}
 
 .topbar{
-  height:70px;
+  min-height:74px;
   background:white;
   border-bottom:1px solid var(--line);
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
+  padding:0 30px;
   position:sticky;
   top:0;
   z-index:5;
@@ -143,11 +144,12 @@ button{cursor:pointer}
 .top-title{
   color:var(--navy);
   font-weight:bold;
+  font-size:17px;
 }
 
 .topright{
   color:var(--muted);
-  font-size:13px;
+  font-size:15px;
 }
 
 .menu{
@@ -155,15 +157,16 @@ button{cursor:pointer}
   border:1px solid var(--line);
   background:white;
   border-radius:7px;
-  padding:7px 11px;
+  padding:8px 12px;
   color:var(--navy);
   margin-right:10px;
+  font-size:17px;
 }
 
 .content{
   max-width:1450px;
   margin:auto;
-  padding:30px;
+  padding:32px;
 }
 
 /* PAGE HEADER */
@@ -173,27 +176,29 @@ button{cursor:pointer}
   justify-content:space-between;
   align-items:flex-start;
   gap:15px;
-  margin-bottom:24px;
+  margin-bottom:25px;
 }
 
 h1{
-  margin:0 0 5px;
+  margin:0 0 6px;
   color:var(--navy);
-  font-size:28px;
+  font-size:30px;
+  line-height:1.3;
 }
 
 .subtitle{
   color:var(--muted);
-  font-size:13px;
+  font-size:15px;
 }
 
 .primary{
   border:0;
   background:var(--navy);
   color:white;
-  padding:11px 17px;
+  padding:12px 18px;
   border-radius:8px;
   font-weight:bold;
+  font-size:15px;
 }
 
 .primary:hover{background:var(--navy2)}
@@ -203,8 +208,9 @@ h1{
   background:white;
   border:1px solid var(--line);
   color:var(--navy);
-  padding:10px 14px;
+  padding:11px 15px;
   border-radius:8px;
+  font-size:14px;
 }
 
 .secondary:hover{border-color:var(--gold)}
@@ -213,26 +219,28 @@ h1{
   background:#fff0ef;
   color:var(--red);
   border:1px solid #ffd2ce;
-  padding:9px 12px;
+  padding:10px 13px;
   border-radius:7px;
+  font-size:14px;
 }
 
 .success{
   background:#edf9f1;
   color:var(--green);
   border:1px solid #ccebd7;
-  padding:9px 12px;
+  padding:10px 13px;
   border-radius:7px;
+  font-size:14px;
 }
 
 /* STATUS */
 
 .status{
   display:none;
-  padding:12px 14px;
+  padding:13px 15px;
   border-radius:8px;
-  margin-bottom:18px;
-  font-size:13px;
+  margin-bottom:19px;
+  font-size:15px;
   overflow-wrap:anywhere;
 }
 
@@ -262,26 +270,26 @@ h1{
 .summary{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
-  margin-bottom:23px;
+  gap:17px;
+  margin-bottom:25px;
 }
 
 .summary-card{
   background:white;
   border:1px solid var(--line);
   border-radius:12px;
-  padding:19px 21px;
+  padding:21px 22px;
   box-shadow:0 5px 18px #14243a08;
 }
 
 .summary-label{
   color:var(--muted);
-  font-size:13px;
+  font-size:15px;
 }
 
 .summary-number{
   color:var(--navy);
-  font-size:30px;
+  font-size:33px;
   font-weight:800;
   margin-top:5px;
 }
@@ -290,11 +298,11 @@ h1{
 
 .toolbar{
   display:flex;
-  gap:12px;
+  gap:13px;
   justify-content:space-between;
   align-items:center;
   flex-wrap:wrap;
-  margin-bottom:17px;
+  margin-bottom:19px;
 }
 
 .search{
@@ -305,11 +313,12 @@ h1{
 
 .search input{
   width:100%;
-  padding:12px 14px;
+  padding:13px 15px;
   border:1px solid var(--line);
   border-radius:8px;
   background:white;
   outline:none;
+  font-size:15px;
 }
 
 .search input:focus,
@@ -320,16 +329,16 @@ h1{
 
 .tabs{
   display:flex;
-  gap:7px;
+  gap:8px;
 }
 
 .tab{
-  padding:10px 14px;
+  padding:11px 15px;
   border:1px solid var(--line);
   background:white;
   color:var(--muted);
   border-radius:8px;
-  font-size:13px;
+  font-size:14px;
 }
 
 .tab.active{
@@ -343,14 +352,14 @@ h1{
 .subject-list{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
+  gap:17px;
 }
 
 .subject-card{
   background:white;
   border:1px solid var(--line);
   border-radius:12px;
-  padding:20px;
+  padding:22px;
   box-shadow:0 5px 18px #14243a08;
   min-width:0;
 }
@@ -364,22 +373,22 @@ h1{
 
 .subject-name{
   color:var(--navy);
-  font-size:18px;
+  font-size:20px;
   font-weight:bold;
   overflow-wrap:anywhere;
 }
 
 .subject-date{
   color:var(--muted);
-  font-size:11px;
+  font-size:13px;
   margin-top:5px;
 }
 
 .badge{
   display:inline-block;
-  padding:5px 9px;
+  padding:6px 10px;
   border-radius:20px;
-  font-size:10px;
+  font-size:12px;
   font-weight:bold;
   white-space:nowrap;
 }
@@ -402,39 +411,39 @@ h1{
 .subject-stats{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:15px 0;
-  margin-top:12px;
+  gap:12px;
+  padding:17px 0;
+  margin-top:14px;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
 }
 
 .subject-stat{
-  font-size:12px;
+  font-size:14px;
   color:var(--muted);
 }
 
 .subject-stat b{
   display:block;
   color:var(--navy);
-  font-size:19px;
-  margin-top:3px;
+  font-size:22px;
+  margin-top:4px;
 }
 
 .actions{
   display:flex;
   flex-wrap:wrap;
-  gap:7px;
-  margin-top:15px;
+  gap:8px;
+  margin-top:17px;
 }
 
 .action-btn{
-  padding:8px 10px;
+  padding:9px 11px;
   border:1px solid var(--line);
   background:white;
   color:var(--navy);
   border-radius:7px;
-  font-size:11px;
+  font-size:13px;
 }
 
 .action-btn:hover{
@@ -452,10 +461,10 @@ h1{
   background:white;
   border:1px solid var(--line);
   border-radius:12px;
-  padding:35px 15px;
+  padding:38px 16px;
   text-align:center;
   color:var(--muted);
-  font-size:13px;
+  font-size:15px;
 }
 
 /* MODAL */
@@ -476,66 +485,67 @@ h1{
 
 .modal-box{
   width:100%;
-  max-width:470px;
+  max-width:490px;
   background:white;
   border-radius:13px;
-  padding:24px;
+  padding:26px;
   box-shadow:0 15px 50px #0003;
 }
 
-.modal-box.wide{max-width:650px}
+.modal-box.wide{max-width:680px}
 
 .modal-title{
   color:var(--navy);
-  font-size:20px;
+  font-size:23px;
   font-weight:bold;
-  margin:0 0 5px;
+  margin:0 0 6px;
 }
 
 .modal-subtitle{
   color:var(--muted);
-  font-size:12px;
-  margin-bottom:20px;
+  font-size:14px;
+  margin-bottom:21px;
 }
 
-.form-field{margin-bottom:17px}
+.form-field{margin-bottom:18px}
 
 .form-field label{
   display:block;
-  font-size:13px;
+  font-size:15px;
   font-weight:bold;
   color:var(--navy);
-  margin-bottom:7px;
+  margin-bottom:8px;
 }
 
 .form-field input{
   width:100%;
-  padding:12px;
+  padding:13px;
   border:1px solid var(--line);
   border-radius:8px;
   outline:none;
+  font-size:15px;
 }
 
 .form-buttons{
   display:flex;
-  gap:9px;
+  gap:10px;
   justify-content:flex-end;
   flex-wrap:wrap;
-  margin-top:20px;
+  margin-top:21px;
 }
 
 .modal-note{
   background:#fffaf0;
   border:1px solid #f0df9f;
   color:#72570d;
-  padding:11px;
+  padding:12px;
   border-radius:8px;
-  font-size:12px;
-  margin-top:15px;
+  font-size:14px;
+  margin-top:16px;
 }
 
 .exam-row{
-  padding:13px 0;
+  padding:15px 0;
   border-bottom:1px solid var(--line);
 }
 
@@ -544,20 +554,22 @@ h1{
 .exam-title{
   color:var(--navy);
   font-weight:bold;
-  font-size:14px;
+  font-size:16px;
+  overflow-wrap:anywhere;
 }
 
 .exam-meta{
   color:var(--muted);
-  font-size:11px;
-  margin-top:4px;
+  font-size:13px;
+  margin-top:5px;
+  line-height:1.6;
 }
 
 .footer{
   text-align:center;
   color:#8995a3;
-  font-size:11px;
-  padding:35px 8px 15px;
+  font-size:13px;
+  padding:36px 8px 16px;
 }
 
 /* MOBILE */
@@ -578,7 +590,7 @@ h1{
     position:fixed;
     z-index:22;
     inset:0 auto 0 0;
-    width:270px;
+    width:280px;
     height:100dvh;
     min-height:0;
     overflow-y:auto;
@@ -607,21 +619,23 @@ h1{
   .menu{display:inline-block}
 
   .topbar{
-    height:62px;
+    min-height:66px;
     padding:0 14px;
   }
 
   .topright{display:none}
 
-  .content{padding:22px 15px}
+  .content{padding:24px 16px}
 
   .pagehead{display:block}
 
   .pagehead .primary{
-    margin-top:15px;
+    margin-top:16px;
   }
 
-  h1{font-size:25px}
+  h1{font-size:27px}
+
+  .subtitle{font-size:14px}
 
   .toolbar{align-items:stretch}
 
@@ -632,19 +646,47 @@ h1{
 
   .tabs{width:100%}
 
-  .tab{flex:1}
+  .tab{
+    flex:1;
+    padding:11px 8px;
+    font-size:13px;
+  }
 
-  .summary{gap:10px}
+  .summary{gap:11px}
 
-  .summary-card{padding:15px}
+  .summary-card{padding:17px}
 
-  .summary-number{font-size:25px}
+  .summary-label{font-size:14px}
+
+  .summary-number{font-size:27px}
+
+  .subject-card{padding:19px}
+
+  .subject-name{font-size:19px}
+
+  .subject-stat{font-size:13px}
+
+  .subject-stat b{font-size:21px}
+
+  .action-btn{
+    font-size:13px;
+    padding:10px 11px;
+  }
+
+  .modal-box{padding:22px}
 }
 
 @media(max-width:380px){
-  .subject-card{padding:15px}
-  .actions{gap:5px}
-  .action-btn{font-size:10px}
+
+  .content{padding:20px 12px}
+
+  .subject-card{padding:16px}
+
+  .actions{gap:6px}
+
+  .action-btn{font-size:12px}
+
+  .summary-card{padding:14px}
 }
 </style>
 </head>
@@ -652,8 +694,6 @@ h1{
 <body>
 
 <div class="app">
-
-<!-- SIDEBAR -->
 
 <aside class="sidebar" id="sidebar">
 
@@ -691,8 +731,6 @@ h1{
 
 <div class="overlay" id="overlay"></div>
 
-<!-- MAIN -->
-
 <main class="main">
 
 <header class="topbar">
@@ -720,8 +758,6 @@ h1{
     </button>
   </div>
 
-  <!-- SUMMARY -->
-
   <div class="summary">
 
     <div class="summary-card">
@@ -735,8 +771,6 @@ h1{
     </div>
 
   </div>
-
-  <!-- SEARCH AND TABS -->
 
   <div class="toolbar">
 
@@ -855,6 +889,7 @@ const $ = id => document.getElementById(id);
 let supabaseClient;
 let accountId = null;
 let subjects = [];
+let subjectStatistics = new Map();
 let currentView = "active";
 let editingSubjectId = null;
 let busy = false;
@@ -914,7 +949,6 @@ function setBusy(value){
   busy=value;
 
   $("addSubjectBtn").disabled=value;
-
   $("saveSubjectBtn").disabled=value;
 
 }
@@ -1008,6 +1042,57 @@ async function initializePage(){
 
 }
 
+/* LOAD SUBJECT STATISTICS */
+
+async function loadSubjectStatistics(){
+
+  subjectStatistics.clear();
+
+  const {data,error}=await supabaseClient.rpc(
+    "get_school_subject_question_statistics",
+    {
+      p_school_account_id:accountId
+    }
+  );
+
+  if(error){
+
+    console.error("Subject statistics RPC:",error);
+
+    return {
+      success:false,
+      error
+    };
+  }
+
+  if(!Array.isArray(data)){
+
+    console.error(
+      "Subject statistics returned an unexpected response:",
+      data
+    );
+
+    return {
+      success:false,
+      error:new Error("Unexpected subject statistics response.")
+    };
+  }
+
+  data.forEach(row=>{
+
+    subjectStatistics.set(String(row.subject_id),{
+      examinations:Number(row.examination_count)||0,
+      questions:Number(row.question_count)||0
+    });
+
+  });
+
+  return {
+    success:true
+  };
+
+}
+
 /* LOAD SUBJECTS */
 
 async function loadSubjects(){
@@ -1046,65 +1131,53 @@ async function loadSubjects(){
   $("archivedCount").textContent=
     subjects.filter(s=>s.is_archived).length;
 
-  await renderSubjects();
+  const statisticsResult=await loadSubjectStatistics();
+
+  if(!statisticsResult.success){
+
+    showMessage(
+      "Subjects loaded, but examination and question statistics could not be retrieved. Check the get_school_subject_question_statistics function permissions.",
+      "error"
+    );
+
+  }else{
+
+    clearMessage();
+
+  }
+
+  renderSubjects();
 
 }
 
-/* LOAD EXAMINATION AND QUESTION COUNTS */
+/* GET COUNTS FROM THE LOADED RPC RESULTS */
 
-async function getSubjectCounts(subjectId){
+function getSubjectCounts(subject){
 
-  const {data:exams,error}=await supabaseClient
-    .from("examinations")
-    .select("id")
-    .eq("school_account_id",accountId)
-    .eq("school_subject_id",subjectId);
+  /*
+    The statistics RPC returns nonarchived subjects only.
+    Archived subjects therefore display unavailable statistics.
+  */
 
-  if(error){
-
-    console.error("Examination count:",error);
+  if(subject.is_archived){
 
     return {
       examinations:null,
       questions:null
     };
+
   }
 
-  const examIds=(exams||[]).map(exam=>exam.id);
-
-  if(!examIds.length){
-
-    return {
-      examinations:0,
-      questions:0
-    };
-  }
-
-  const {count,error:questionError}=await supabaseClient
-    .from("exam_questions")
-    .select("id",{count:"exact",head:true})
-    .in("examination_id",examIds);
-
-  if(questionError){
-
-    console.error("Question count:",questionError);
-
-    return {
-      examinations:examIds.length,
-      questions:null
-    };
-  }
-
-  return {
-    examinations:examIds.length,
-    questions:count??0
+  return subjectStatistics.get(String(subject.id))||{
+    examinations:null,
+    questions:null
   };
 
 }
 
 /* RENDER SUBJECTS */
 
-async function renderSubjects(){
+function renderSubjects(){
 
   const query=$("searchInput").value
     .trim()
@@ -1116,7 +1189,7 @@ async function renderSubjects(){
       ? subject.is_archived
       : !subject.is_archived;
 
-    const matches=subject.subject_name
+    const matches=String(subject.subject_name||"")
       .toLowerCase()
       .includes(query);
 
@@ -1136,9 +1209,9 @@ async function renderSubjects(){
 
   $("subjectList").innerHTML="";
 
-  for(const subject of list){
+  list.forEach(subject=>{
 
-    const counts=await getSubjectCounts(subject.id);
+    const counts=getSubjectCounts(subject);
 
     const card=document.createElement("article");
 
@@ -1231,13 +1304,15 @@ async function renderSubjects(){
 
     $("subjectList").appendChild(card);
 
-  }
+  });
 
 }
 
 /* ADD SUBJECT */
 
 function openAddModal(){
+
+  if(busy)return;
 
   editingSubjectId=null;
 
@@ -1254,6 +1329,8 @@ function openAddModal(){
 /* EDIT SUBJECT */
 
 function openEditModal(subject){
+
+  if(busy)return;
 
   editingSubjectId=subject.id;
 
@@ -1382,7 +1459,7 @@ async function handleSubjectAction(action,subject){
 
   if(action==="view"){
 
-    const counts=await getSubjectCounts(subject.id);
+    const counts=getSubjectCounts(subject);
 
     alert(
       "Subject: "+subject.subject_name+
@@ -1521,6 +1598,8 @@ async function updateSubjectStatus(subject,changes,successText){
 
 async function deleteSubject(subject){
 
+  if(busy)return;
+
   const {data:linkedExams,error:lookupError}=await supabaseClient
     .from("examinations")
     .select("id")
@@ -1649,7 +1728,7 @@ async function showLinkedExaminations(subject){
 
       <div class="exam-meta">
         Status: ${status}
-        · Duration: ${exam.duration_minutes} minutes
+        · Duration: ${escapeHTML(exam.duration_minutes)} minutes
         · Created: ${formatDate(exam.created_at)}
       </div>
 
