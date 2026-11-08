@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Teacher/School Profile | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#14243a;
+  --navy2:#1d3554;
+  --gold:#d4af37;
+  --paper:#f5f7fa;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e5e9ef;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font:15px/1.5 Arial,sans-serif
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}
+
+.sidebar{
+  background:var(--navy);color:white;padding:20px 15px;
+  display:flex;flex-direction:column;min-height:100vh
+}
+.brand{
+  display:flex;gap:11px;align-items:center;
+  padding:5px 8px 22px;border-bottom:1px solid #ffffff20
+}
+.mark{
+  width:42px;height:42px;border-radius:11px;
+  background:var(--gold);color:var(--navy);
+  display:grid;place-items:center;font-weight:800
+}
+.brand b{font-size:16px;letter-spacing:.4px}
+.brand small{
+  display:block;color:#bdc8d5;font-size:11px;letter-spacing:1.2px
+}
+.navlabel{
+  font-size:11px;color:#9eacbd;letter-spacing:1.4px;
+  font-weight:bold;padding:22px 10px 8px
+}
+nav{display:grid;gap:4px}
+nav button{
+  border:0;background:none;color:#dce4ed;text-align:left;
+  padding:11px;border-radius:8px;font-size:14px
+}
+nav button:hover,nav button.active{
+  background:var(--navy2);color:white
+}
+nav button.active{box-shadow:inset 3px 0 var(--gold)}
+.account{
+  margin-top:auto;border-top:1px solid #ffffff20;
+  padding:15px 5px 10px;display:flex;align-items:center;gap:10px
+}
+.avatar{
+  width:37px;height:37px;border-radius:50%;
+  background:var(--gold);color:var(--navy);
+  display:grid;place-items:center;font-weight:bold;flex-shrink:0
+}
+.accountname{font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+.accounttype{font-size:12px;color:#bdc8d5}
+.signout{
+  width:100%;padding:10px;border:1px solid #ffffff30;
+  background:none;color:#ffd4d1;border-radius:8px;font-size:14px
+}
+.signout:hover{background:#ffffff10}
+
+.main{min-width:0}
+.topbar{
+  height:70px;background:white;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;position:sticky;top:0;z-index:4
+}
+.top-title{font-weight:bold;color:var(--navy);font-size:16px}
+.topright{color:var(--muted);font-size:13px}
+.menu{
+  display:none;border:1px solid var(--line);background:white;
+  border-radius:7px;padding:7px 11px;margin-right:11px;color:var(--navy)
+}
+.content{padding:32px;max-width:1150px;margin:auto}
+
+.heading{margin-bottom:25px}
+.heading h1{font-size:29px;color:var(--navy);margin:0 0 5px}
+.heading p{color:var(--muted);margin:0;font-size:14px}
+
+.status{
+  display:none;padding:12px 14px;border-radius:8px;
+  margin-bottom:18px;font-size:14px
+}
+.status.show{display:block}
+.status.error{background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
+.status.info{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+.status.success{background:#eaf8ef;border:1px solid #c8ebd2;color:#176b3a}
+
+.profile-card{
+  background:white;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;
+  box-shadow:0 7px 22px #14243a0b
+}
+.profile-banner{
+  height:125px;background:var(--navy);
+  position:relative
+}
+.profile-banner:after{
+  content:"";position:absolute;right:8%;top:-90px;
+  width:240px;height:240px;border:1px solid #ffffff18;
+  border-radius:50%
+}
+.profile-header{
+  padding:0 27px 22px;display:flex;align-items:flex-end;
+  gap:17px;margin-top:-42px;position:relative;z-index:1
+}
+.profile-avatar{
+  width:88px;height:88px;border-radius:17px;
+  background:var(--gold);color:var(--navy);
+  border:5px solid white;display:grid;place-items:center;
+  font-size:27px;font-weight:800;flex-shrink:0
+}
+.profile-heading{padding-bottom:5px;min-width:0}
+.profile-heading h2{
+  color:var(--navy);font-size:21px;margin:0;
+  overflow-wrap:anywhere
+}
+.profile-heading p{color:var(--muted);font-size:13px;margin:3px 0 0}
+.profile-body{padding:0 27px 27px}
+
+.section-heading{
+  color:var(--navy);font-size:17px;
+  margin:22px 0 15px;padding-bottom:10px;
+  border-bottom:1px solid var(--line)
+}
+.fields{
+  display:grid;grid-template-columns:1fr 1fr;gap:18px
+}
+.field{min-width:0}
+.field label{
+  display:block;color:#475569;font-size:13px;
+  font-weight:bold;margin-bottom:7px
+}
+.field input{
+  width:100%;height:45px;border:1px solid #dce2e9;
+  border-radius:8px;padding:10px 12px;color:var(--ink);
+  background:white;outline:none
+}
+.field input:focus{
+  border-color:var(--gold);box-shadow:0 0 0 3px #d4af3720
+}
+.field input[readonly]{
+  background:#f6f8fa;color:#64748b;cursor:not-allowed
+}
+.field input:disabled{
+  background:#f6f8fa;color:#94a3b8;cursor:not-allowed
+}
+.field-note{font-size:11px;color:#94a3b8;margin-top:5px}
+.field.full{grid-column:1/-1}
+
+.readonly-value{
+  min-height:45px;padding:11px 12px;
+  border:1px solid var(--line);border-radius:8px;
+  background:#f6f8fa;color:#475569;
+  overflow-wrap:anywhere
+}
+.account-status{
+  display:inline-block;padding:5px 12px;border-radius:20px;
+  background:#e8f7ee;color:#16834a;
+  font-size:12px;font-weight:bold
+}
+.placeholder-tag{
+  display:inline-block;background:#fff8df;color:#795d0c;
+  border:1px solid #f0df9f;border-radius:20px;
+  padding:4px 9px;font-size:11px;font-weight:bold
+}
+.placeholder-panel{
+  padding:17px;background:#fafbfc;
+  border:1px dashed #cbd5e1;border-radius:10px
+}
+.placeholder-panel p{
+  margin:5px 0 0;color:var(--muted);font-size:13px
+}
+.actions{
+  display:flex;justify-content:flex-end;gap:10px;
+  margin-top:25px;padding-top:20px;border-top:1px solid var(--line)
+}
+.btn{
+  min-height:44px;padding:11px 20px;border-radius:8px;
+  font-size:13px;font-weight:bold
+}
+.btn-primary{
+  border:0;background:var(--navy);color:white
+}
+.btn-primary:hover{background:var(--navy2)}
+.btn-secondary{
+  border:1px solid var(--line);background:white;color:var(--navy)
+}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+
+.footer{text-align:center;color:#8995a3;font-size:12px;padding:35px 8px 15px}
+.sidebar-overlay{display:none}
+
+@media(max-width:720px){
+  .app{display:block}
+  .sidebar{
+    position:fixed;z-index:12;inset:0 auto 0 0;width:270px;
+    min-height:0;height:100dvh;overflow-y:auto;
+    transform:translateX(-105%);transition:transform .22s ease;
+    box-shadow:10px 0 25px #0002
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{
+    display:block;position:fixed;inset:0;z-index:11;
+    background:#0007;opacity:0;visibility:hidden;transition:.2s
+  }
+  .sidebar-overlay.show{opacity:1;visibility:visible}
+  .menu{display:inline-block}
+  .topbar{height:62px;padding:0 14px}
+  .topright{display:none}
+  .content{padding:23px 14px}
+  .heading h1{font-size:25px}
+  .profile-header{padding:0 17px 18px;gap:12px}
+  .profile-avatar{width:73px;height:73px;font-size:23px}
+  .profile-heading h2{font-size:18px}
+  .profile-body{padding:0 17px 20px}
+  .fields{grid-template-columns:1fr;gap:15px}
+  .field.full{grid-column:auto}
+  .actions{flex-direction:column-reverse}
+  .actions button{width:100%}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="mark">SE</div>
+    <div>
+      <b>SAINTIG EXAMS</b>
+      <small>EXAMINATION PLATFORM</small>
+    </div>
+  </div>
+
+  <div class="navlabel">MAIN MENU</div>
+  <nav>
+    <button data-page="Dashboard">▦ &nbsp; Dashboard</button>
+    <button data-page="School Students">♙ &nbsp; My Students</button>
+    <button data-page="School Subjects">▤ &nbsp; My Subjects</button>
+    <button data-page="Register Examination">＋ &nbsp; Register Examination</button>
+    <button data-page="Question Bank">▣ &nbsp; Question Bank</button>
+    <button data-page="School Class Examination">▦ &nbsp; Teacher/School Class Examination</button>
+    <button data-page="Archive Management">▧ &nbsp; Archive Management</button>
+    <button data-page="Results & Performance">▥ &nbsp; Results &amp; Performance</button>
+  </nav>
+
+  <div class="navlabel">ACCOUNT</div>
+  <nav>
+    <button data-page="Subscription Plans">◇ &nbsp; Subscription Plans</button>
+    <button data-page="Notifications">♧ &nbsp; Notifications</button>
+    <button class="active" data-page="School Profile">⚙ &nbsp; Teacher/School Profile</button>
+    <button data-page="Help & Support">? &nbsp; Help &amp; Support</button>
+  </nav>
+
+  <div class="account">
+    <div class="avatar" id="sideAvatar">SE</div>
+    <div>
+      <div class="accountname" id="sideName">Loading account…</div>
+      <div class="accounttype">Teacher/School Account</div>
+    </div>
+  </div>
+
+  <button class="signout" id="signOutBtn">↪ &nbsp; Sign Out</button>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="main">
+<header class="topbar">
+  <div>
+    <button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
+    <span class="top-title">Teacher/School Profile</span>
+  </div>
+  <div class="topright" id="topAccount">Loading account…</div>
+</header>
+
+<section class="content">
+
+  <div class="heading">
+    <h1>Teacher/School Profile</h1>
+    <p>View and manage your SAINTIG EXAMS account information.</p>
+  </div>
+
+  <div class="status" id="statusMessage"></div>
+
+  <section class="profile-card">
+
+    <div class="profile-banner"></div>
+
+    <div class="profile-header">
+      <div class="profile-avatar" id="profileAvatar">SE</div>
+      <div class="profile-heading">
+        <h2 id="profileHeading">Loading profile…</h2>
+        <p>Teacher/School Account</p>
+      </div>
+    </div>
+
+    <div class="profile-body">
+
+      <form id="profileForm">
+
+        <h3 class="section-heading">Profile Information</h3>
+
+        <div class="fields">
+
+          <div class="field full">
+            <label for="accountName">Teacher/School Name</label>
+            <input
+              type="text"
+              id="accountName"
+              maxlength="150"
+              placeholder="Enter your Teacher/School Name"
+              required
+              disabled
+            >
+            <div class="field-note">
+              Enter the name you want displayed throughout your account.
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Email Address</label>
+            <div class="readonly-value" id="accountEmail">Loading…</div>
+            <div class="field-note">Your registered login email address.</div>
+          </div>
+
+          <div class="field">
+            <label>Account Category</label>
+            <div class="readonly-value">Teacher/School</div>
+            <div class="field-note">Both account categories enjoy the same features.</div>
+          </div>
+
+          <div class="field">
+            <label>Phone Number</label>
+            <input type="text" disabled placeholder="Not yet connected">
+            <div class="field-note">Profile field awaiting database integration.</div>
+          </div>
+
+          <div class="field">
+            <label>Address</label>
+            <input type="text" disabled placeholder="Not yet connected">
+            <div class="field-note">Profile field awaiting database integration.</div>
+          </div>
+
+          <div class="field">
+            <label>Country</label>
+            <input type="text" disabled placeholder="Not yet connected">
+          </div>
+
+          <div class="field">
+            <label>State</label>
+            <input type="text" disabled placeholder="Not yet connected">
+          </div>
+
+        </div>
+
+        <h3 class="section-heading">Account Information</h3>
+
+        <div class="fields">
+
+          <div class="field">
+            <label>Account ID</label>
+            <div class="readonly-value" id="accountId">Loading…</div>
+          </div>
+
+          <div class="field">
+            <label>Account Status</label>
+            <div class="readonly-value">
+              <span class="account-status" id="accountStatus">Loading…</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Subscription Plan</label>
+            <div class="readonly-value" id="subscriptionPlan">Loading…</div>
+          </div>
+
+          <div class="field">
+            <label>Profile Photo / School Logo</label>
+            <div class="placeholder-panel">
+              <span class="placeholder-tag">Coming later</span>
+              <p>Photo and logo upload will be connected after the storage and profile fields are established.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="cancelBtn" hidden>
+            Cancel
+          </button>
+
+          <button type="button" class="btn btn-secondary" id="editBtn" disabled>
+            Edit Profile
+          </button>
+
+          <button type="submit" class="btn btn-primary" id="saveBtn" hidden>
+            Save Changes
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </section>
+
+  <div class="footer">
+    © <span id="year"></span> SAINTIG EXAMS · Building a better examination experience
+  </div>
+
+</section>
+</main>
+</div>
+
+<script>
+/* SUPABASE CONFIGURATION */
+
+const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
+const LOGIN_PAGE="school-login.html";
+
+const PAGE_LINKS={
+  "Dashboard":"school-dashboard.html",
+  "School Students":"school-students.html",
+  "School Subjects":"school-subjects.html",
+  "Register Examination":"register-examination.html",
+  "Question Bank":"school-question-bank.html",
+  "School Class Examination":"school-class-examinations.html",
+  "Archive Management":"school-archive-management.html",
+  "Results & Performance":"school-results-performance.html",
+  "Subscription Plans":"school-subscription-plans.html",
+  "Notifications":"school-notifications.html",
+  "School Profile":"school-my-profile.html",
+  "Help & Support":"school-help-support.html"
+};
+
+const $=id=>document.getElementById(id);
+
+let supabaseClient=null;
+let currentAccount=null;
+let currentUser=null;
+let originalName="";
+
+$("year").textContent=new Date().getFullYear();
+
+/* HELPERS */
+
+function initials(value){
+  return String(value||"SE")
+    .trim()
+    .split(/\s+/)
+    .slice(0,2)
+    .map(x=>x[0]||"")
+    .join("")
+    .toUpperCase()||"SE";
+}
+
+function showMessage(text,type="info"){
+  const el=$("statusMessage");
+  el.textContent=text;
+  el.className="status show "+type;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function clearMessage(){
+  $("statusMessage").textContent="";
+  $("statusMessage").className="status";
+}
+
+function put(id,value){
+  $(id).textContent=
+    value===null||value===undefined||value===""
+      ?"—":String(value);
+}
+
+/* DISPLAY NAME */
+
+function displayName(name){
+  const safeName=name||"Teacher/School";
+
+  put("profileHeading",safeName);
+  put("sideName",safeName);
+  put("topAccount",safeName);
+
+  $("profileAvatar").textContent=initials(safeName);
+  $("sideAvatar").textContent=initials(safeName);
+}
+
+/* PROFILE EDITING */
+
+function setEditMode(enabled){
+
+  $("accountName").disabled=!enabled;
+
+  $("editBtn").hidden=enabled;
+  $("saveBtn").hidden=!enabled;
+  $("cancelBtn").hidden=!enabled;
+
+  if(enabled){
+    $("accountName").focus();
+  }
+}
+
+function cancelEditing(){
+  $("accountName").value=originalName;
+  setEditMode(false);
+  clearMessage();
+}
+
+$("editBtn").addEventListener("click",()=>{
+  if(!currentAccount)return;
+  clearMessage();
+  setEditMode(true);
+});
+
+$("cancelBtn").addEventListener("click",cancelEditing);
+
+/* LOAD PROFILE */
+
+async function initializeProfile(){
+
+  if(!window.supabase?.createClient){
+    showMessage(
+      "Supabase could not load. Check your internet connection and refresh.",
+      "error"
+    );
+    return;
+  }
+
+  supabaseClient=window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+  const {data:sessionData,error:sessionError}=
+    await supabaseClient.auth.getSession();
+
+  if(sessionError||!sessionData.session){
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  currentUser=sessionData.session.user;
+
+  const {data:account,error}=await supabaseClient
+    .from("school_accounts")
+    .select("id,user_id,account_name,account_type,status")
+    .eq("user_id",currentUser.id)
+    .maybeSingle();
+
+  if(error){
+    console.error("Profile account lookup:",error);
+    showMessage(
+      "Unable to load your account profile: "+error.message,
+      "error"
+    );
+    return;
+  }
+
+  if(!account){
+    showMessage(
+      "No Teacher/School account is linked to this login.",
+      "error"
+    );
+    return;
+  }
+
+  if(account.status!=="active"){
+    await supabaseClient.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  currentAccount=account;
+
+  originalName=account.account_name||"";
+
+  $("accountName").value=originalName;
+
+  put("accountEmail",currentUser.email||"—");
+  put("accountId",account.id);
+  put("accountStatus","Active");
+
+  displayName(originalName);
+
+  $("accountName").disabled=true;
+  $("editBtn").disabled=false;
+
+  /* Load current package assignment. */
+
+  try{
+    const {data:assignment,error:packageError}=await supabaseClient
+      .from("school_account_packages")
+      .select("package_name")
+      .eq("school_account_id",account.id)
+      .maybeSingle();
+
+    if(packageError)throw packageError;
+
+    put(
+      "subscriptionPlan",
+      (assignment?.package_name||"Free")+" Package"
+    );
+
+  }catch(error){
+    console.error("Profile subscription:",error);
+    put("subscriptionPlan","Unable to load");
+  }
+
+  clearMessage();
+}
+
+/* SAVE PROFILE NAME */
+
+$("profileForm").addEventListener("submit",async event=>{
+
+  event.preventDefault();
+
+  if(!currentAccount||!currentUser){
+    showMessage("Your account information is not available.","error");
+    return;
+  }
+
+  const newName=$("accountName").value.trim();
+
+  if(!newName){
+    showMessage("Teacher/School Name cannot be empty.","error");
+    $("accountName").focus();
+    return;
+  }
+
+  if(newName.length>150){
+    showMessage("Teacher/School Name cannot exceed 150 characters.","error");
+    return;
+  }
+
+  if(newName===originalName){
+    setEditMode(false);
+    showMessage("There are no changes to save.","info");
+    return;
+  }
+
+  $("saveBtn").disabled=true;
+  $("saveBtn").textContent="Saving…";
+
+  try{
+
+    const {error}=await supabaseClient
+      .from("school_accounts")
+      .update({account_name:newName})
+      .eq("id",currentAccount.id)
+      .eq("user_id",currentUser.id);
+
+    if(error)throw error;
+
+    originalName=newName;
+    currentAccount.account_name=newName;
+
+    displayName(newName);
+
+    setEditMode(false);
+
+    showMessage(
+      "Your Teacher/School Name has been updated successfully.",
+      "success"
+    );
+
+  }catch(error){
+
+    console.error("Profile update:",error);
+
+    showMessage(
+      "Unable to save your profile: "+
+      (error.message||"Please try again."),
+      "error"
+    );
+
+  }finally{
+
+    $("saveBtn").disabled=false;
+    $("saveBtn").textContent="Save Changes";
+
+  }
+
+});
+
+/* NAVIGATION */
+
+function closeSidebar(){
+  $("sidebar").classList.remove("open");
+  $("sidebarOverlay").classList.remove("show");
+}
+
+function navigate(page){
+
+  closeSidebar();
+
+  const destination=PAGE_LINKS[page];
+
+  if(!destination){
+    showMessage("This dashboard link has not been configured.","error");
+    return;
+  }
+
+  location.href=destination;
+}
+
+document.querySelectorAll("[data-page]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    navigate(button.dataset.page);
+  });
+});
+
+$("menuToggle").addEventListener("click",()=>{
+  $("sidebar").classList.add("open");
+  $("sidebarOverlay").classList.add("show");
+});
+
+$("sidebarOverlay").addEventListener("click",closeSidebar);
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape")closeSidebar();
+});
+
+/* SIGN OUT */
+
+async function signOut(){
+
+  $("signOutBtn").disabled=true;
+  $("signOutBtn").textContent="Signing out…";
+
+  try{
+
+    if(supabaseClient){
+      const {error}=await supabaseClient.auth.signOut();
+      if(error)throw error;
+    }
+
+    location.replace(LOGIN_PAGE);
+
+  }catch(error){
+
+    console.error("Sign out:",error);
+
+    $("signOutBtn").disabled=false;
+    $("signOutBtn").textContent="↪  Sign Out";
+
+    showMessage("Sign-out failed. Please try again.","error");
+
+  }
+}
+
+$("signOutBtn").addEventListener("click",signOut);
+
+/* SESSION MONITOR */
+
+document.addEventListener("visibilitychange",async()=>{
+
+  if(
+    document.visibilityState==="visible"&&
+    supabaseClient
+  ){
+
+    const {data,error}=await supabaseClient.auth.getSession();
+
+    if(error||!data.session){
+      location.replace(LOGIN_PAGE);
+    }
+
+  }
+
+});
+
+/* START */
+
+initializeProfile();
+</script>
+
+</body>
+</html>
