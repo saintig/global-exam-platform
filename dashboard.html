@@ -524,13 +524,13 @@ th{
     📊 Results
   </button>
 
-  <!-- PUBLIC TEACHER/SCHOOL EXAM ACCESS -->
-  <a class="nav-link" href="school-student-exam.html">
+  <!-- CORRECTED TEACHER/SCHOOL EXAM ACCESS LINK -->
+  <a class="nav-link" href="./school-exam-access.html">
     🏫 Take Teacher/School Exam
   </a>
 
-  <!-- PUBLIC TEACHER/SCHOOL RESULTS ACCESS -->
-  <a class="nav-link" href="school-student-exam.html?tab=examResult">
+  <!-- CORRECTED TEACHER/SCHOOL RESULTS ACCESS LINK -->
+  <a class="nav-link" href="./school-exam-access.html?tab=examResult">
     🔎 Check and Print Results
   </a>
 
@@ -714,8 +714,7 @@ th{
 
 </section>
 
-<!-- Retained existing sections for compatibility. The menu now uses
-     the public school-student-exam.html page for Teacher/School access. -->
+<!-- Retained existing sections for compatibility. -->
 
 <section class="section" id="school">
 
@@ -1239,10 +1238,11 @@ document.querySelectorAll(".nav-link[data-section]")
   });
 
 /*
-  The two Teacher/School menu items are ordinary
-  navigation links. They intentionally do not use
-  openSection(), because they open the separate
-  public school-student-exam.html page.
+  Teacher/School examination and results access
+  are handled by school-exam-access.html.
+
+  The two sidebar links are ordinary navigation
+  links and open that separate page directly.
 */
 
 document.querySelectorAll("[data-go]")
