@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +10,14 @@
 
 <style>
 :root{
-  --navy:#163a6b;--gold:#d4a72c;--bg:#f4f7fc;--ink:#25324a;
-  --muted:#6b7a90;--line:#e2e8f1;--red:#c0392b;--green:#16834b;
+  --navy:#163a6b;
+  --gold:#d4a72c;
+  --bg:#f4f7fc;
+  --ink:#25324a;
+  --muted:#6b7a90;
+  --line:#e2e8f1;
+  --red:#c0392b;
+  --green:#16834b;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}
@@ -18,12 +25,46 @@ button,input{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
 
-header{background:var(--navy);color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:relative}
+header{
+  background:var(--navy);
+  color:#fff;
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative
+}
 .brand{font-size:22px;font-weight:bold}
 .brand span{color:var(--gold)}
-.menu-btn{background:transparent;color:#fff;border:1px solid #ffffff55;border-radius:10px;padding:10px 16px;font-size:16px}
-.menu-list{position:absolute;right:16px;top:70px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px #0003;z-index:30;min-width:210px;overflow:hidden}
-.menu-list a{display:block;padding:13px 16px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:14px;border-bottom:1px solid var(--line)}
+.menu-btn{
+  background:transparent;
+  color:#fff;
+  border:1px solid #ffffff55;
+  border-radius:10px;
+  padding:10px 16px;
+  font-size:16px
+}
+.menu-list{
+  position:absolute;
+  right:16px;
+  top:70px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 10px 30px #0003;
+  z-index:30;
+  min-width:210px;
+  overflow:hidden
+}
+.menu-list a{
+  display:block;
+  padding:13px 16px;
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+  border-bottom:1px solid var(--line)
+}
 .menu-list a:last-child{border-bottom:0}
 
 main{max-width:760px;margin:auto;padding:24px 18px 10px}
@@ -32,14 +73,47 @@ h2{font-size:27px;color:#1d2b45;margin:26px 0 8px}
 .lead{color:var(--muted);margin:0 0 6px}
 
 .tabs{display:flex;gap:8px;margin:20px 0 4px;flex-wrap:wrap}
-.tab{flex:1;min-width:130px;border:1px solid var(--line);background:#fff;color:var(--navy);padding:12px 8px;border-radius:12px;font-weight:bold;font-size:14px}
+.tab{
+  flex:1;
+  min-width:130px;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--navy);
+  padding:12px 8px;
+  border-radius:12px;
+  font-weight:bold;
+  font-size:14px
+}
 .tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 
-.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;margin:18px 0}
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:26px;
+  margin:18px 0
+}
 label{display:block;font-weight:bold;margin:0 0 9px}
-input{width:100%;padding:17px 16px;border:1px solid #d5dce8;border-radius:13px;background:#fff;color:var(--ink);margin-bottom:24px}
+input{
+  width:100%;
+  padding:17px 16px;
+  border:1px solid #d5dce8;
+  border-radius:13px;
+  background:#fff;
+  color:var(--ink);
+  margin-bottom:24px
+}
 input:focus{outline:2px solid #bcd0ee;border-color:var(--navy)}
-.btn{width:100%;border:0;border-radius:13px;background:var(--navy);color:#fff;font-weight:bold;padding:18px;font-size:18px}
+.btn{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  background:var(--navy);
+  color:#fff;
+  font-weight:bold;
+  padding:18px;
+  font-size:18px
+}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .btn.gold{background:var(--gold);color:var(--navy)}
 .btn.light{background:#e9eef6;color:var(--navy)}
@@ -47,7 +121,14 @@ input:focus{outline:2px solid #bcd0ee;border-color:var(--navy)}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .row .btn{flex:1;min-width:140px}
 
-.msg{display:none;padding:13px 15px;border-radius:12px;margin-bottom:18px;font-size:14px;line-height:1.5}
+.msg{
+  display:none;
+  padding:13px 15px;
+  border-radius:12px;
+  margin-bottom:18px;
+  font-size:14px;
+  line-height:1.5
+}
 .msg.show{display:block}
 .msg.error{background:#fdecea;color:#a5281c}
 .msg.info{background:#edf3ff;color:#214e91}
@@ -57,19 +138,64 @@ input:focus{outline:2px solid #bcd0ee;border-color:var(--navy)}
 .fact{background:#f4f7fc;border-radius:12px;padding:12px}
 .fact small{display:block;color:var(--muted);font-size:12px}
 .fact strong{color:var(--navy);overflow-wrap:anywhere}
-.notice{background:#fff8e6;border:1px solid #f0dfa8;color:#6e5410;border-radius:12px;padding:13px;font-size:14px;margin:14px 0}
+.notice{
+  background:#fff8e6;
+  border:1px solid #f0dfa8;
+  color:#6e5410;
+  border-radius:12px;
+  padding:13px;
+  font-size:14px;
+  margin:14px 0
+}
 
 /* EXAM RUNNER */
 .runner{max-width:760px;margin:auto;padding:16px 16px 40px}
 .runner-top{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5}
-.runner-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--navy);color:#fff;border-radius:14px;padding:12px 16px}
+.runner-bar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  background:var(--navy);
+  color:#fff;
+  border-radius:14px;
+  padding:12px 16px
+}
 .timer{font-size:24px;font-weight:bold;color:var(--gold);font-variant-numeric:tabular-nums}
 .timer.low{color:#ff8a80}
 .runner-title{font-weight:bold;font-size:14px;overflow-wrap:anywhere}
 .progress{font-size:13px;color:var(--muted);margin:10px 2px 0}
-.q-text{font-size:19px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 18px}
-.option{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px;margin-bottom:11px;color:var(--ink)}
-.option .letter{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:#e9eef6;color:var(--navy);display:grid;place-items:center;font-weight:bold}
+.q-text{
+  font-size:19px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  margin:0 0 18px
+}
+.option{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  width:100%;
+  text-align:left;
+  border:2px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:11px;
+  color:var(--ink)
+}
+.option .letter{
+  flex-shrink:0;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#e9eef6;
+  color:var(--navy);
+  display:grid;
+  place-items:center;
+  font-weight:bold
+}
 .option .otext{overflow-wrap:anywhere;padding-top:3px}
 .option.selected{border-color:var(--navy);background:#eef3fb}
 .option.selected .letter{background:var(--navy);color:#fff}
@@ -77,13 +203,28 @@ input:focus{outline:2px solid #bcd0ee;border-color:var(--navy)}
 .nav-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 0;font-weight:bold;color:var(--navy)}
 .nav-btn.answered{background:#e0f0e8;border-color:#bfe0cd;color:#14794a}
 .nav-btn.current{outline:3px solid var(--gold)}
-.overlay{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:50}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:#0009;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  z-index:50
+}
 .dialog{background:#fff;border-radius:18px;padding:24px;max-width:420px;width:100%}
 .dialog h3{margin:0 0 10px;color:var(--navy)}
 .save-note{font-size:12px;color:var(--muted);min-height:18px;margin-top:6px}
 
-/* RESULTS */
-.result-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+/* EXAM RESULTS */
+.result-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:6px
+}
 .result-head h3{margin:0;color:var(--navy);font-size:19px}
 .score-big{font-size:34px;font-weight:bold;color:var(--navy)}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -96,7 +237,17 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
 .rq.wrong{border-color:#f0c7c2;background:#fdf7f6}
 .rq-top{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted);margin-bottom:8px}
 .rq-text{white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 10px;font-weight:bold}
-.ro{display:flex;gap:10px;padding:9px 10px;border-radius:10px;margin-bottom:6px;border:1px solid var(--line);background:#fff;font-size:15px;overflow-wrap:anywhere}
+.ro{
+  display:flex;
+  gap:10px;
+  padding:9px 10px;
+  border-radius:10px;
+  margin-bottom:6px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:15px;
+  overflow-wrap:anywhere
+}
 .ro .rl{font-weight:bold;width:22px;flex-shrink:0}
 .ro.is-correct{border-color:#16834b;background:#e8f7ee}
 .ro.is-wrong{border-color:#c0392b;background:#fdecea}
@@ -121,14 +272,145 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
 .rev-option.wrong .letter{background:#c0392b;color:#fff}
 .rev-exp{background:#f4f7fc;border-radius:11px;padding:12px;font-size:14px;margin-top:10px;white-space:pre-wrap;overflow-wrap:anywhere}
 
+/* CLASS RESULTS - PUBLIC RESULT STYLE */
+.class-result-card{
+  background:#fff;
+  border:1px solid #e3e9f2;
+  border-radius:16px;
+  padding:20px;
+  margin-top:18px;
+  box-shadow:0 5px 20px rgba(22,58,107,.07);
+  color:#25324a
+}
+.class-result-brand{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:3px solid #d4a72c;
+  padding-bottom:13px;
+  margin-bottom:20px
+}
+.class-result-brand strong{
+  color:#163a6b;
+  font-size:19px;
+  letter-spacing:.4px
+}
+.class-result-brand strong span{color:#d4a72c}
+.class-result-school{text-align:center;margin:18px 0}
+.class-result-school h2{
+  color:#163a6b;
+  font-size:21px;
+  margin:5px 0
+}
+.class-result-school p{color:#66758b;font-size:12px;margin:4px 0}
+.class-result-heading{
+  text-align:center;
+  background:#f4f7fc;
+  border-radius:10px;
+  padding:12px;
+  margin:15px 0
+}
+.class-result-heading h3{color:#163a6b;margin:0;font-size:16px}
+.class-result-heading p{color:#64748b;margin:5px 0 0;font-size:12px}
+.class-result-section-title{
+  color:#163a6b;
+  font-size:14px;
+  font-weight:700;
+  margin:22px 0 10px;
+  border-left:4px solid #d4a72c;
+  padding-left:9px
+}
+.class-result-summary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:15px 0
+}
+.class-result-summary .summary-box{
+  background:#f4f7fc;
+  border:1px solid #e5eaf2;
+  border-radius:10px;
+  padding:13px 8px;
+  text-align:center
+}
+.class-result-summary small{
+  display:block;
+  color:#64748b;
+  font-size:11px;
+  margin-bottom:6px
+}
+.class-result-summary strong{
+  display:block;
+  color:#163a6b;
+  font-size:20px
+}
+.class-result-facts{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px
+}
+.class-result-fact{
+  background:#f8fafc;
+  border:1px solid #e8edf4;
+  border-radius:9px;
+  padding:11px;
+  min-width:0
+}
+.class-result-fact small{
+  display:block;
+  color:#718096;
+  font-size:11px;
+  margin-bottom:5px
+}
+.class-result-fact strong{
+  color:#25324a;
+  font-size:13px;
+  overflow-wrap:anywhere
+}
+.class-result-table-wrap{overflow-x:auto;margin-top:10px}
+.class-result-table{
+  width:100%;
+  min-width:560px;
+  border-collapse:collapse;
+  font-size:12px
+}
+.class-result-table th{
+  background:#163a6b;
+  color:#fff;
+  text-align:left;
+  padding:11px 9px;
+  white-space:nowrap
+}
+.class-result-table td{
+  padding:11px 9px;
+  border-bottom:1px solid #e7edf5
+}
+.class-result-table tbody tr:nth-child(even){background:#f7f9fc}
+.class-result-powered{
+  text-align:center;
+  color:#718096;
+  font-size:11px;
+  margin-top:20px;
+  padding-top:12px;
+  border-top:1px solid #e8edf4
+}
+.class-result-powered strong{color:#163a6b}
+.class-result-actions{display:flex;justify-content:center;margin-top:18px}
+
+/* FOOTER */
 .footer{text-align:center;color:var(--muted);font-size:14px;padding:28px 12px 30px}
-.footer a{color:var(--muted);text-decoration:none}
+.footer a{color:var(--navy);text-decoration:none;font-weight:bold}
 
 @media(max-width:480px){
   h1{font-size:26px}
   h2{font-size:24px}
   .card{padding:20px}
   .facts{grid-template-columns:1fr}
+  .class-result-card{padding:13px}
+  .class-result-summary{gap:6px}
+  .class-result-summary .summary-box{padding:10px 5px}
+  .class-result-summary strong{font-size:17px}
+  .class-result-facts{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -139,7 +421,7 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
   <div class="brand">SAINTIG <span>EXAMS</span></div>
   <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   <nav class="menu-list hidden" id="menuList">
-    <a href="#" id="menuHome">Home</a>
+    <a href="index.html" id="menuHome">Home</a>
   </nav>
 </header>
 
@@ -228,7 +510,7 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
 
   <div class="footer">
     © <span id="year"></span> SAINTIG EXAMS · SAINT IG DIGITAL<br><br>
-    <a href="#" id="footHome">Return Home</a>
+    <a href="index.html" id="footHome">Return Home</a>
   </div>
 </main>
 
@@ -290,14 +572,15 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
 const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const FUNCTION_NAME = "school-student-exam";
-
-/* Change this if your home page has a different name. */
 const HOME_PAGE = "index.html";
-
 const SESSION_KEY = "saintig_school_exam_session";
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false
+  }
 });
 
 const $ = id => document.getElementById(id);
@@ -305,21 +588,35 @@ const $ = id => document.getElementById(id);
 /* HELPERS */
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
   })[c]);
 }
 
 function num(value) {
-  return Number(value ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
+  return Number(value ?? 0).toLocaleString(undefined, {
+    maximumFractionDigits: 2
+  });
 }
 
 function percent(score, total) {
-  return total > 0 ? (Math.round((score / total) * 1000) / 10) + "%" : "—";
+  return total > 0
+    ? (Math.round((score / total) * 1000) / 10) + "%"
+    : "—";
 }
 
 function dateText(value) {
   const d = new Date(value);
-  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleDateString(undefined, { day: "numeric", month: "long", year: "numeric" });
+  return Number.isNaN(d.getTime())
+    ? "—"
+    : d.toLocaleDateString(undefined, {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
 }
 
 function showMsg(id, text, type = "info") {
@@ -335,38 +632,61 @@ function hideMsg(id) {
 }
 
 async function api(action, payload = {}) {
-  const { data, error } = await db.functions.invoke(FUNCTION_NAME, { body: { action, ...payload } });
+  const { data, error } = await db.functions.invoke(
+    FUNCTION_NAME,
+    { body: { action, ...payload } }
+  );
 
   if (error) {
     let message = "Unable to reach the examination service. Check your connection and try again.";
+
     try {
       if (error.context && typeof error.context.json === "function") {
         const body = await error.context.json();
         if (body?.error) message = body.error;
       }
     } catch (_) {}
+
     throw new Error(message);
   }
 
-  if (!data?.success) throw new Error(data?.error || "The request could not be completed.");
+  if (!data?.success) {
+    throw new Error(data?.error || "The request could not be completed.");
+  }
+
   return data;
 }
 
 /* NAVIGATION AND TABS */
 $("year").textContent = new Date().getFullYear();
-["menuHome", "footHome"].forEach(id => $(id).href = HOME_PAGE);
 
-$("menuBtn").addEventListener("click", () => $("menuList").classList.toggle("hidden"));
+["menuHome", "footHome"].forEach(id => {
+  $(id).href = HOME_PAGE;
+});
+
+$("menuBtn").addEventListener("click", () => {
+  $("menuList").classList.toggle("hidden");
+});
+
 document.addEventListener("click", e => {
-  if (!e.target.closest("#menuBtn") && !e.target.closest("#menuList")) $("menuList").classList.add("hidden");
+  if (!e.target.closest("#menuBtn") && !e.target.closest("#menuList")) {
+    $("menuList").classList.add("hidden");
+  }
 });
 
 function setTab(name) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-  ["exam", "examResult", "classResult"].forEach(p => $("panel-" + p).classList.toggle("hidden", p !== name));
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", t.dataset.tab === name);
+  });
+
+  ["exam", "examResult", "classResult"].forEach(p => {
+    $("panel-" + p).classList.toggle("hidden", p !== name);
+  });
 }
 
-document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
+document.querySelectorAll(".tab").forEach(t => {
+  t.addEventListener("click", () => setTab(t.dataset.tab));
+});
 
 function showView(name) {
   $("entryView").classList.toggle("hidden", name !== "entry");
@@ -413,7 +733,9 @@ $("examForm").addEventListener("submit", async event => {
 function renderConfirm(info) {
   const e = info.exam;
 
-  $("confirmTitle").textContent = info.resumable ? "Resume your examination" : "Ready to begin";
+  $("confirmTitle").textContent = info.resumable
+    ? "Resume your examination"
+    : "Ready to begin";
 
   $("confirmFacts").innerHTML = `
     <div class="fact"><small>Student</small><strong>${escapeHTML(info.student.full_name)}</strong></div>
@@ -428,7 +750,10 @@ function renderConfirm(info) {
     ? "Your timer is still running. Resume now to continue where you stopped."
     : "Your timer starts as soon as you tap Start Exam and cannot be paused. You can submit only once, and you cannot retake this exam after submitting or when your time ends. If you leave, you can re-enter up to " + info.attempts_allowed + " times in total while your time is still running.";
 
-  $("startBtn").textContent = info.resumable ? "Resume Exam" : "Start Exam";
+  $("startBtn").textContent = info.resumable
+    ? "Resume Exam"
+    : "Start Exam";
+
   hideMsg("confirmMsg");
   $("examFormCard").classList.add("hidden");
   $("examConfirm").classList.remove("hidden");
@@ -445,17 +770,20 @@ $("startBtn").addEventListener("click", async () => {
 
   const button = $("startBtn");
   const label = button.textContent;
+
   button.disabled = true;
   button.textContent = "Starting...";
   hideMsg("confirmMsg");
 
   try {
     const started = await api("start_exam", pending);
+
     sessionStorage.setItem(SESSION_KEY, JSON.stringify({
       attempt_id: started.attempt_id,
       token: started.token,
       codes: pending
     }));
+
     await loadExam();
   } catch (error) {
     showMsg("confirmMsg", error.message, "error");
@@ -467,30 +795,50 @@ $("startBtn").addEventListener("click", async () => {
 
 /* RESUME ON THE SAME DEVICE */
 function readSession() {
-  try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null"); }
-  catch (_) { return null; }
+  try {
+    return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
+  } catch (_) {
+    return null;
+  }
 }
 
 $("resumeBtn").addEventListener("click", async () => {
-  try { await loadExam(); }
-  catch (error) { showMsg("examMsg", error.message, "error"); }
+  try {
+    await loadExam();
+  } catch (error) {
+    showMsg("examMsg", error.message, "error");
+  }
 });
 
 /* =========================================================
    EXAM RUNNER
 ========================================================= */
 const R = {
-  session: null, questions: [], answers: new Map(), saved: new Set(),
-  index: 0, deadline: 0, offset: 0, timer: null, submitting: false
+  session: null,
+  questions: [],
+  answers: new Map(),
+  saved: new Set(),
+  index: 0,
+  deadline: 0,
+  offset: 0,
+  timer: null,
+  submitting: false
 };
 
 async function loadExam() {
   const session = readSession();
-  if (!session) throw new Error("No examination in progress. Please log in again.");
+
+  if (!session) {
+    throw new Error("No examination in progress. Please log in again.");
+  }
 
   let data;
+
   try {
-    data = await api("get_exam", { attempt_id: session.attempt_id, token: session.token });
+    data = await api("get_exam", {
+      attempt_id: session.attempt_id,
+      token: session.token
+    });
   } catch (error) {
     sessionStorage.removeItem(SESSION_KEY);
     $("resumeCard").classList.add("hidden");
@@ -509,16 +857,25 @@ async function loadExam() {
   R.questions = data.questions;
   R.answers = new Map();
   R.saved = new Set();
-  R.questions.forEach(q => { if (q.selected) { R.answers.set(q.id, q.selected); R.saved.add(q.id); } });
+
+  R.questions.forEach(q => {
+    if (q.selected) {
+      R.answers.set(q.id, q.selected);
+      R.saved.add(q.id);
+    }
+  });
+
   R.index = 0;
   R.deadline = Date.parse(data.deadline);
   R.offset = Date.parse(data.server_now) - Date.now();
   R.submitting = false;
 
   $("runnerTitle").textContent = data.exam.title;
+
   buildNav();
   renderQuestion();
   startTimer();
+
   window.addEventListener("beforeunload", warnLeave);
   showView("runner");
 }
@@ -557,10 +914,15 @@ function tick() {
 
 function buildNav() {
   $("navGrid").innerHTML = R.questions.map((q, i) =>
-    `<button type="button" class="nav-btn" data-i="${i}">${i + 1}</button>`).join("");
+    `<button type="button" class="nav-btn" data-i="${i}">${i + 1}</button>`
+  ).join("");
 
-  $("navGrid").querySelectorAll(".nav-btn").forEach(b =>
-    b.addEventListener("click", () => { R.index = Number(b.dataset.i); renderQuestion(); }));
+  $("navGrid").querySelectorAll(".nav-btn").forEach(b => {
+    b.addEventListener("click", () => {
+      R.index = Number(b.dataset.i);
+      renderQuestion();
+    });
+  });
 }
 
 function renderQuestion() {
@@ -577,10 +939,12 @@ function renderQuestion() {
     <button type="button" class="option ${chosen === letter ? "selected" : ""}" data-letter="${letter}">
       <span class="letter">${letter}</span>
       <span class="otext">${escapeHTML(q.options[letter])}</span>
-    </button>`).join("");
+    </button>
+  `).join("");
 
-  $("options").querySelectorAll(".option").forEach(b =>
-    b.addEventListener("click", () => selectOption(b.dataset.letter)));
+  $("options").querySelectorAll(".option").forEach(b => {
+    b.addEventListener("click", () => selectOption(b.dataset.letter));
+  });
 
   $("prevBtn").disabled = R.index === 0;
   $("nextBtn").disabled = R.index === R.questions.length - 1;
@@ -591,8 +955,19 @@ function renderQuestion() {
   });
 }
 
-$("prevBtn").addEventListener("click", () => { if (R.index > 0) { R.index--; renderQuestion(); } });
-$("nextBtn").addEventListener("click", () => { if (R.index < R.questions.length - 1) { R.index++; renderQuestion(); } });
+$("prevBtn").addEventListener("click", () => {
+  if (R.index > 0) {
+    R.index--;
+    renderQuestion();
+  }
+});
+
+$("nextBtn").addEventListener("click", () => {
+  if (R.index < R.questions.length - 1) {
+    R.index++;
+    renderQuestion();
+  }
+});
 
 async function persistAnswer(questionId, letter) {
   await api("save_answer", {
@@ -601,13 +976,16 @@ async function persistAnswer(questionId, letter) {
     question_id: questionId,
     selected_option: letter
   });
+
   R.saved.add(questionId);
 }
 
 async function selectOption(letter) {
   const q = R.questions[R.index];
+
   R.answers.set(q.id, letter);
   R.saved.delete(q.id);
+
   renderQuestion();
   $("saveNote").textContent = "Saving...";
 
@@ -622,18 +1000,24 @@ async function selectOption(letter) {
 /* SUBMIT */
 $("submitBtn").addEventListener("click", () => {
   const unanswered = R.questions.length - R.answers.size;
+
   $("submitText").textContent = unanswered > 0
     ? `You have ${unanswered} unanswered question(s). You cannot change your answers after submitting.`
     : "You have answered every question. You cannot change your answers after submitting.";
+
   hideMsg("submitMsg");
   $("submitOverlay").classList.remove("hidden");
 });
 
-$("keepWorkingBtn").addEventListener("click", () => $("submitOverlay").classList.add("hidden"));
+$("keepWorkingBtn").addEventListener("click", () => {
+  $("submitOverlay").classList.add("hidden");
+});
+
 $("confirmSubmitBtn").addEventListener("click", () => submitExam(false));
 
 async function submitExam(auto) {
   if (R.submitting) return;
+
   R.submitting = true;
 
   const button = $("confirmSubmitBtn");
@@ -648,10 +1032,11 @@ async function submitExam(auto) {
     $("submitOverlay").classList.remove("hidden");
   }
 
-  /* Retry any answers that were not saved earlier. */
   for (const [questionId, letter] of R.answers) {
     if (!R.saved.has(questionId)) {
-      try { await persistAnswer(questionId, letter); } catch (_) {}
+      try {
+        await persistAnswer(questionId, letter);
+      } catch (_) {}
     }
   }
 
@@ -664,6 +1049,7 @@ async function submitExam(auto) {
     clearInterval(R.timer);
     window.removeEventListener("beforeunload", warnLeave);
     sessionStorage.removeItem(SESSION_KEY);
+
     $("submitOverlay").classList.add("hidden");
     showFinished(result);
   } catch (error) {
@@ -680,10 +1066,13 @@ function showFinished(result) {
   window.removeEventListener("beforeunload", warnLeave);
 
   if (result.pending || result.score === null || result.score === undefined) {
-    $("finishedText").textContent = "Your examination has ended. Your result is being prepared.";
+    $("finishedText").textContent =
+      "Your examination has ended. Your result is being prepared.";
     $("finishedScore").textContent = "";
   } else {
-    $("finishedText").textContent = "Your answers were marked on the server.";
+    $("finishedText").textContent =
+      "Your answers were marked on the server.";
+
     $("finishedScore").textContent =
       `${num(result.score)} / ${num(result.total_marks)} (${percent(result.score, result.total_marks)})`;
   }
@@ -727,7 +1116,11 @@ $("examResultForm").addEventListener("submit", async event => {
   button.textContent = "Searching...";
 
   try {
-    lastExamResult = await api("exam_result", { exam_code, student_code });
+    lastExamResult = await api("exam_result", {
+      exam_code,
+      student_code
+    });
+
     renderExamResult(lastExamResult);
   } catch (error) {
     showMsg("examResultMsg", error.message, "error");
@@ -746,27 +1139,48 @@ function renderExamResult(d) {
         <h3>${escapeHTML(d.exam.title)}</h3>
         <div class="score-big">${num(b.score)} / ${num(b.total_marks)}</div>
       </div>
+
       <p class="lead">${escapeHTML(percent(b.score, b.total_marks))} · best attempt</p>
+
       <div class="facts">
         <div class="fact"><small>Student</small><strong>${escapeHTML(d.student.full_name)}</strong></div>
         <div class="fact"><small>Student ID</small><strong>${escapeHTML(d.student.student_id)}</strong></div>
         <div class="fact"><small>School</small><strong>${escapeHTML(d.school_name || "—")}</strong></div>
         <div class="fact"><small>Subject</small><strong>${escapeHTML(d.exam.subject_name || "—")}</strong></div>
       </div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Attempt</th><th>Date</th><th>Score</th><th>Total</th></tr></thead>
-        <tbody>${d.attempts.map(a => `
-          <tr><td>${a.attempt_number}</td><td>${escapeHTML(dateText(a.submitted_at))}</td>
-          <td>${num(a.score)}</td><td>${num(a.total_marks)}</td></tr>`).join("")}</tbody>
-      </table></div>
-      <div class="row"><button class="btn gold" id="printExamBtn" type="button">Print Result</button></div>
-      ${renderReview(d.review)}
-    </div>`;
 
-  $("printExamBtn").addEventListener("click", () => printExamResult(lastExamResult));
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Attempt</th><th>Date</th><th>Score</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            ${d.attempts.map(a => `
+              <tr>
+                <td>${a.attempt_number}</td>
+                <td>${escapeHTML(dateText(a.submitted_at))}</td>
+                <td>${num(a.score)}</td>
+                <td>${num(a.total_marks)}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="row">
+        <button class="btn gold" id="printExamBtn" type="button">Print Result</button>
+      </div>
+
+      ${renderReview(d.review)}
+    </div>
+  `;
+
+  $("printExamBtn").addEventListener("click", () => {
+    printExamResult(lastExamResult);
+  });
 }
 
-/* ANSWER REVIEW: the student's own answers, correct options and explanations */
+/* ANSWER REVIEW */
 function renderReview(review) {
   if (!Array.isArray(review) || !review.length) return "";
 
@@ -783,29 +1197,44 @@ function renderReview(review) {
       const cls = isCorrect ? "is-correct" : (isPicked ? "is-wrong" : "");
 
       let tag = "";
+
       if (isPicked && isCorrect) tag = "Your answer · Correct";
       else if (isPicked) tag = "Your answer";
       else if (isCorrect) tag = "Correct answer";
 
-      return `<div class="ro ${cls}"><span class="rl">${letter}.</span>
-        <span>${escapeHTML(q.options[letter])}</span>
-        ${tag ? `<span class="tag">${tag}</span>` : ""}</div>`;
+      return `
+        <div class="ro ${cls}">
+          <span class="rl">${letter}.</span>
+          <span>${escapeHTML(q.options[letter])}</span>
+          ${tag ? `<span class="tag">${tag}</span>` : ""}
+        </div>
+      `;
     }).join("");
 
-    return `<div class="rq ${state}">
-      <div class="rq-top"><span>Question ${q.number}</span>
-        <span>${escapeHTML(verdict)} · ${num(q.marks_awarded)} / ${num(q.marks)}</span></div>
-      <p class="rq-text">${escapeHTML(q.text)}</p>
-      ${options}
-      ${q.explanation ? `<div class="rexp"><strong>Explanation:</strong> ${escapeHTML(q.explanation)}</div>` : ""}
-    </div>`;
+    return `
+      <div class="rq ${state}">
+        <div class="rq-top">
+          <span>Question ${escapeHTML(q.number)}</span>
+          <span>${escapeHTML(verdict)} · ${num(q.marks_awarded)} / ${num(q.marks)}</span>
+        </div>
+
+        <p class="rq-text">${escapeHTML(q.text)}</p>
+        ${options}
+
+        ${q.explanation
+          ? `<div class="rexp"><strong>Explanation:</strong> ${escapeHTML(q.explanation)}</div>`
+          : ""}
+      </div>
+    `;
   }).join("");
 
-  return `<div class="review">
-    <h3>Your Answers</h3>
-    <p class="lead">${right} correct · ${review.length - right - skipped} wrong · ${skipped} not answered</p>
-    ${items}
-  </div>`;
+  return `
+    <div class="review">
+      <h3>Your Answers</h3>
+      <p class="lead">${right} correct · ${review.length - right - skipped} wrong · ${skipped} not answered</p>
+      ${items}
+    </div>
+  `;
 }
 
 /* =========================================================
@@ -831,7 +1260,11 @@ $("classResultForm").addEventListener("submit", async event => {
   button.textContent = "Searching...";
 
   try {
-    lastClassResult = await api("class_result", { class_code, student_code });
+    lastClassResult = await api("class_result", {
+      class_code,
+      student_code
+    });
+
     renderClassResult(lastClassResult);
   } catch (error) {
     showMsg("classResultMsg", error.message, "error");
@@ -843,60 +1276,272 @@ $("classResultForm").addEventListener("submit", async event => {
 
 function statusLabel(value) {
   const text = String(value || "").replace(/_/g, " ").trim();
-  return text ? text.charAt(0).toUpperCase() + text.slice(1) : "—";
+
+  return text
+    ? text.charAt(0).toUpperCase() + text.slice(1)
+    : "—";
 }
 
+/* REDESIGNED CLASS RESULT */
 function renderClassResult(d) {
-  const s = d.student;
-  const c = d.class;
+  const s = d.student || {};
+  const c = d.class || {};
+  const scores = Array.isArray(d.scores) ? d.scores : [];
+
+  const position = s.class_position
+    ? `${escapeHTML(s.class_position)} of ${escapeHTML(d.class_total_students ?? "—")}`
+    : "—";
+
+  const contact = [
+    c.school_address,
+    c.school_phone,
+    c.school_email
+  ].filter(Boolean).map(escapeHTML).join(" · ");
 
   $("classResultOut").innerHTML = `
-    <div class="card">
-      <div class="result-head">
-        <h3>${escapeHTML(c.school_name || "Class Result")}</h3>
-        <div class="score-big">${num(s.average)}<small style="font-size:14px"> avg</small></div>
-      </div>
-      <p class="lead">${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")} ·
-        ${escapeHTML(c.academic_session || "")} · ${escapeHTML(c.academic_period || "")}</p>
-      <div class="facts">
-        <div class="fact"><small>Student</small><strong>${escapeHTML(s.full_name)}</strong></div>
-        <div class="fact"><small>Student ID</small><strong>${escapeHTML(s.student_id)}</strong></div>
-        <div class="fact"><small>Total</small><strong>${num(s.total_score)} / ${num(s.total_possible)}</strong></div>
-        <div class="fact"><small>Position</small><strong>${s.class_position ? s.class_position + " of " + d.class_total_students : "—"}</strong></div>
-      </div>
-      <div class="table-wrap"><table>
-        <thead><tr><th>Subject / Exam</th><th>Score</th><th>Out of</th><th>Grade</th><th>Status</th></tr></thead>
-        <tbody>${d.scores.map(r => `
-          <tr><td>${escapeHTML(r.subject_name || r.examination_title)}</td>
-          <td>${num(r.score)}</td><td>${num(r.maximum_score)}</td>
-          <td>${escapeHTML(r.grade || "—")}</td><td>${escapeHTML(statusLabel(r.participation_status))}</td></tr>`).join("")}</tbody>
-      </table></div>
-      <div class="row"><button class="btn gold" id="printClassBtn" type="button">Print Class Result</button></div>
-    </div>`;
+    <div class="class-result-card">
 
-  $("printClassBtn").addEventListener("click", () => printClassResult(lastClassResult));
+      <div class="class-result-brand">
+        <strong>SAINTIG <span>EXAMS</span></strong>
+      </div>
+
+      <div class="class-result-school">
+        <h2>${escapeHTML(c.school_name || "School Name")}</h2>
+        ${contact ? `<p>${contact}</p>` : ""}
+      </div>
+
+      <div class="class-result-heading">
+        <h3>ACADEMIC CLASS RESULT</h3>
+        <p>
+          ${escapeHTML(c.academic_session || "")}
+          ${c.academic_period ? " · " + escapeHTML(c.academic_period) : ""}
+        </p>
+      </div>
+
+      <div class="class-result-section-title">STUDENT INFORMATION</div>
+
+      <div class="class-result-facts">
+        <div class="class-result-fact">
+          <small>Student Name</small>
+          <strong>${escapeHTML(s.full_name || "—")}</strong>
+        </div>
+
+        <div class="class-result-fact">
+          <small>Student ID</small>
+          <strong>${escapeHTML(s.student_id || "—")}</strong>
+        </div>
+
+        <div class="class-result-fact">
+          <small>Class</small>
+          <strong>${escapeHTML(c.class_name || "—")} ${escapeHTML(c.class_arm || "")}</strong>
+        </div>
+
+        <div class="class-result-fact">
+          <small>Class ID</small>
+          <strong>${escapeHTML(c.class_id || "—")}</strong>
+        </div>
+
+        <div class="class-result-fact">
+          <small>Academic Session</small>
+          <strong>${escapeHTML(c.academic_session || "—")}</strong>
+        </div>
+
+        <div class="class-result-fact">
+          <small>Academic Period</small>
+          <strong>${escapeHTML(c.academic_period || "—")}</strong>
+        </div>
+      </div>
+
+      <div class="class-result-section-title">PERFORMANCE SUMMARY</div>
+
+      <div class="class-result-summary">
+        <div class="summary-box">
+          <small>Total Score</small>
+          <strong>${num(s.total_score)} / ${num(s.total_possible)}</strong>
+        </div>
+
+        <div class="summary-box">
+          <small>Average</small>
+          <strong>${num(s.average)}%</strong>
+        </div>
+
+        <div class="summary-box">
+          <small>Class Position</small>
+          <strong>${position}</strong>
+        </div>
+      </div>
+
+      <div class="class-result-section-title">SUBJECT RESULTS</div>
+
+      <div class="class-result-table-wrap">
+        <table class="class-result-table">
+          <thead>
+            <tr>
+              <th>Subject / Examination</th>
+              <th>Score</th>
+              <th>Maximum</th>
+              <th>Grade</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${scores.length ? scores.map(r => `
+              <tr>
+                <td>${escapeHTML(r.subject_name || r.examination_title || "—")}</td>
+                <td>${num(r.score)}</td>
+                <td>${num(r.maximum_score)}</td>
+                <td>${escapeHTML(r.grade || "—")}</td>
+                <td>${escapeHTML(statusLabel(r.participation_status))}</td>
+              </tr>
+            `).join("") : `
+              <tr><td colspan="5">No subject results available.</td></tr>
+            `}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="class-result-powered">
+        Powered by <strong>saintigexams.com</strong>
+      </div>
+
+      <div class="class-result-actions">
+        <button class="btn gold" id="printClassBtn" type="button">
+          Print Class Result
+        </button>
+      </div>
+
+    </div>
+  `;
+
+  $("printClassBtn").addEventListener("click", () => {
+    printClassResult(lastClassResult);
+  });
 }
 
 /* =========================================================
    PRINTING
 ========================================================= */
 const PRINT_CSS = `
-  body{font-family:Arial,sans-serif;color:#1e293b;margin:0;padding:28px}
-  .head{text-align:center;border-bottom:3px solid #163a6b;padding-bottom:12px;margin-bottom:18px}
-  .head img{max-height:70px;margin-bottom:6px}
-  .head h1{margin:0;font-size:24px;color:#163a6b}
-  .head p{margin:3px 0;font-size:12px;color:#475569}
-  h2{text-align:center;font-size:17px;margin:14px 0}
-  table{width:100%;border-collapse:collapse;margin:12px 0}
-  th,td{border:1px solid #94a3b8;padding:8px;font-size:12px;text-align:left}
+  body{
+    font-family:Arial,sans-serif;
+    color:#1e293b;
+    margin:0;
+    padding:28px
+  }
+
+  .head{
+    text-align:center;
+    border-bottom:3px solid #163a6b;
+    padding-bottom:12px;
+    margin-bottom:18px
+  }
+
+  .head img{
+    max-height:70px;
+    max-width:100px;
+    margin-bottom:6px
+  }
+
+  .head h1{
+    margin:0;
+    font-size:24px;
+    color:#163a6b
+  }
+
+  .head p{
+    margin:3px 0;
+    font-size:12px;
+    color:#475569
+  }
+
+  h2{
+    text-align:center;
+    font-size:17px;
+    margin:14px 0
+  }
+
+  h3{
+    color:#163a6b;
+    font-size:14px;
+    margin-top:20px
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:12px 0
+  }
+
+  th,td{
+    border:1px solid #94a3b8;
+    padding:8px;
+    font-size:12px;
+    text-align:left
+  }
+
   th{background:#e8edf5}
-  .info td{border:0;padding:4px 6px;font-size:13px}
+
+  .info td{
+    border:0;
+    padding:5px 6px;
+    font-size:13px
+  }
+
   .remark{margin-top:18px;font-size:13px}
-  .line{border-bottom:1px solid #64748b;height:24px;margin-top:6px}
-  .signs{display:flex;gap:40px;margin-top:34px}
+
+  .line{
+    border-bottom:1px solid #64748b;
+    height:24px;
+    margin-top:6px
+  }
+
+  .signs{
+    display:flex;
+    gap:40px;
+    margin-top:34px
+  }
+
   .sign{flex:1;font-size:13px}
-  .foot{text-align:center;margin-top:34px;font-size:11px;color:#64748b}
-  @media print{body{padding:10px}}
+
+  .foot{
+    text-align:center;
+    margin-top:34px;
+    font-size:11px;
+    color:#64748b;
+    border-top:1px solid #ddd;
+    padding-top:12px
+  }
+
+  .report-brand{
+    text-align:left;
+    border-bottom:3px solid #d4a72c;
+    padding-bottom:10px;
+    margin-bottom:15px;
+    font-size:19px;
+    font-weight:bold;
+    color:#163a6b
+  }
+
+  .report-brand span{color:#d4a72c}
+
+  .report-powered{
+    text-align:center;
+    margin-top:30px;
+    padding-top:12px;
+    border-top:1px solid #ddd;
+    font-size:11px;
+    color:#64748b
+  }
+
+  .report-powered strong{color:#163a6b}
+
+  @media print{
+    body{padding:10px}
+    .signs{gap:20px}
+    table{page-break-inside:auto}
+    tr{page-break-inside:avoid}
+  }
 `;
 
 function openPrint(title, body) {
@@ -907,11 +1552,25 @@ function openPrint(title, body) {
     return;
   }
 
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
-    <style>${PRINT_CSS}</style></head><body>${body}
-    <div class="foot">Powered by SAINTIG EXAMS</div></body></html>`);
+  w.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>${escapeHTML(title)}</title>
+      <style>${PRINT_CSS}</style>
+    </head>
+    <body>
+      ${body}
+      <div class="foot">Powered by saintigexams.com</div>
+    </body>
+    </html>
+  `);
+
   w.document.close();
   w.focus();
+
   setTimeout(() => w.print(), 400);
 }
 
@@ -919,75 +1578,198 @@ function printExamResult(d) {
   const b = d.best;
 
   openPrint("Examination Result", `
-    <div class="head"><h1>${escapeHTML(d.school_name || "SAINTIG EXAMS")}</h1></div>
+    <div class="head">
+      <h1>${escapeHTML(d.school_name || "SAINTIG EXAMS")}</h1>
+    </div>
+
     <h2>EXAMINATION RESULT</h2>
+
     <table class="info">
-      <tr><td><strong>Student:</strong> ${escapeHTML(d.student.full_name)}</td>
-          <td><strong>Student ID:</strong> ${escapeHTML(d.student.student_id)}</td></tr>
-      <tr><td><strong>Examination:</strong> ${escapeHTML(d.exam.title)}</td>
-          <td><strong>Subject:</strong> ${escapeHTML(d.exam.subject_name || "—")}</td></tr>
-      <tr><td><strong>Class / Level:</strong> ${escapeHTML(d.exam.name_class || "—")}</td>
-          <td><strong>Date:</strong> ${escapeHTML(dateText(b.submitted_at))}</td></tr>
+      <tr>
+        <td><strong>Student:</strong> ${escapeHTML(d.student.full_name)}</td>
+        <td><strong>Student ID:</strong> ${escapeHTML(d.student.student_id)}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Examination:</strong> ${escapeHTML(d.exam.title)}</td>
+        <td><strong>Subject:</strong> ${escapeHTML(d.exam.subject_name || "—")}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Class / Level:</strong> ${escapeHTML(d.exam.name_class || "—")}</td>
+        <td><strong>Date:</strong> ${escapeHTML(dateText(b.submitted_at))}</td>
+      </tr>
     </table>
+
     <table>
-      <thead><tr><th>Attempt</th><th>Date</th><th>Score</th><th>Total Marks</th><th>Percentage</th></tr></thead>
-      <tbody>${d.attempts.map(a => `
-        <tr><td>${a.attempt_number}</td><td>${escapeHTML(dateText(a.submitted_at))}</td>
-        <td>${num(a.score)}</td><td>${num(a.total_marks)}</td>
-        <td>${escapeHTML(percent(a.score, a.total_marks))}</td></tr>`).join("")}</tbody>
+      <thead>
+        <tr>
+          <th>Attempt</th>
+          <th>Date</th>
+          <th>Score</th>
+          <th>Total Marks</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${d.attempts.map(a => `
+          <tr>
+            <td>${a.attempt_number}</td>
+            <td>${escapeHTML(dateText(a.submitted_at))}</td>
+            <td>${num(a.score)}</td>
+            <td>${num(a.total_marks)}</td>
+            <td>${escapeHTML(percent(a.score, a.total_marks))}</td>
+          </tr>
+        `).join("")}
+      </tbody>
     </table>
-    <p><strong>Best score:</strong> ${num(b.score)} / ${num(b.total_marks)} (${escapeHTML(percent(b.score, b.total_marks))})</p>
+
+    <p>
+      <strong>Best score:</strong>
+      ${num(b.score)} / ${num(b.total_marks)}
+      (${escapeHTML(percent(b.score, b.total_marks))})
+    </p>
   `);
 }
 
+/* PRINT CLASS RESULT */
 function printClassResult(d) {
-  const c = d.class;
-  const s = d.student;
+  const c = d.class || {};
+  const s = d.student || {};
+  const scores = Array.isArray(d.scores) ? d.scores : [];
+
   const logo = /^https:\/\//i.test(c.school_logo_url || "")
-    ? `<img src="${escapeHTML(c.school_logo_url)}" alt=""><br>` : "";
+    ? `<img src="${escapeHTML(c.school_logo_url)}" alt="School Logo"><br>`
+    : "";
 
-  const contact = [c.school_address, c.school_phone, c.school_email]
-    .filter(Boolean).map(escapeHTML).join(" · ");
+  const contact = [
+    c.school_address,
+    c.school_phone,
+    c.school_email
+  ].filter(Boolean).map(escapeHTML).join(" · ");
 
-  const blank = '<span style="display:inline-block;min-width:200px;border-bottom:1px solid #64748b">&nbsp;</span>';
+  const blank =
+    '<span style="display:inline-block;min-width:160px;border-bottom:1px solid #64748b">&nbsp;</span>';
 
-  openPrint("Class Result", `
-    <div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>
-      ${contact ? `<p>${contact}</p>` : ""}</div>
-    <h2>ACADEMIC REPORT</h2>
-    <table class="info">
-      <tr><td><strong>Student:</strong> ${escapeHTML(s.full_name)}</td>
-          <td><strong>Student ID:</strong> ${escapeHTML(s.student_id)}</td></tr>
-      <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td>
-          <td><strong>Class ID:</strong> ${escapeHTML(c.class_id || "")}</td></tr>
-      <tr><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td>
-          <td><strong>Academic Period:</strong> ${escapeHTML(c.academic_period || "")}</td></tr>
-    </table>
-    <table>
-      <thead><tr><th>Subject / Examination</th><th>Score</th><th>Out of</th><th>Grade</th><th>Status</th></tr></thead>
-      <tbody>${d.scores.map(r => `
-        <tr><td>${escapeHTML(r.subject_name || r.examination_title)}</td>
-        <td>${num(r.score)}</td><td>${num(r.maximum_score)}</td>
-        <td>${escapeHTML(r.grade || "—")}</td><td>${escapeHTML(statusLabel(r.participation_status))}</td></tr>`).join("")}</tbody>
-    </table>
-    <table class="info">
-      <tr><td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
-          <td><strong>Average:</strong> ${num(s.average)}</td>
-          <td><strong>Position:</strong> ${s.class_position ? s.class_position + " of " + d.class_total_students : "—"}</td></tr>
-    </table>
-    <div class="remark"><strong>Class Teacher's Remark:</strong><div class="line"></div></div>
-    <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
-    <div class="signs">
-      <div class="sign"><strong>CLASS TEACHER</strong><br>Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : blank}<br><br>Signature: ${blank}</div>
-      <div class="sign"><strong>PRINCIPAL</strong><br>Name: ${c.principal_name ? escapeHTML(c.principal_name) : blank}<br><br>Signature: ${blank}</div>
+  const position = s.class_position
+    ? `${escapeHTML(s.class_position)} of ${escapeHTML(d.class_total_students ?? "—")}`
+    : "—";
+
+  const body = `
+    <div class="report-brand">
+      SAINTIG <span>EXAMS</span>
     </div>
-    <p style="font-size:12px;margin-top:20px">Report date: ${escapeHTML(dateText(d.result.published_at))}</p>
-  `);
+
+    <div class="head">
+      ${logo}
+      <h1>${escapeHTML(c.school_name || "School Name")}</h1>
+      ${contact ? `<p>${contact}</p>` : ""}
+    </div>
+
+    <h2>ACADEMIC CLASS RESULT</h2>
+
+    <table class="info">
+      <tr>
+        <td><strong>Student:</strong> ${escapeHTML(s.full_name || "—")}</td>
+        <td><strong>Student ID:</strong> ${escapeHTML(s.student_id || "—")}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Class:</strong> ${escapeHTML(c.class_name || "—")} ${escapeHTML(c.class_arm || "")}</td>
+        <td><strong>Class ID:</strong> ${escapeHTML(c.class_id || "—")}</td>
+      </tr>
+
+      <tr>
+        <td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "—")}</td>
+        <td><strong>Academic Period:</strong> ${escapeHTML(c.academic_period || "—")}</td>
+      </tr>
+    </table>
+
+    <h3>PERFORMANCE SUMMARY</h3>
+
+    <table class="info">
+      <tr>
+        <td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
+        <td><strong>Average:</strong> ${num(s.average)}%</td>
+        <td><strong>Position:</strong> ${position}</td>
+      </tr>
+    </table>
+
+    <h3>SUBJECT RESULTS</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Subject / Examination</th>
+          <th>Score</th>
+          <th>Out of</th>
+          <th>Grade</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        ${scores.length ? scores.map(r => `
+          <tr>
+            <td>${escapeHTML(r.subject_name || r.examination_title || "—")}</td>
+            <td>${num(r.score)}</td>
+            <td>${num(r.maximum_score)}</td>
+            <td>${escapeHTML(r.grade || "—")}</td>
+            <td>${escapeHTML(statusLabel(r.participation_status))}</td>
+          </tr>
+        `).join("") : `
+          <tr><td colspan="5">No subject results available.</td></tr>
+        `}
+      </tbody>
+    </table>
+
+    <h3>REMARKS</h3>
+
+    <div class="remark">
+      <strong>Class Teacher's Remark:</strong>
+      <div class="line"></div>
+    </div>
+
+    <div class="remark">
+      <strong>Principal's Remark:</strong>
+      <div class="line"></div>
+    </div>
+
+    <div class="signs">
+      <div class="sign">
+        <strong>CLASS TEACHER</strong><br>
+        Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : blank}
+        <br><br>
+        Signature: ${blank}
+      </div>
+
+      <div class="sign">
+        <strong>PRINCIPAL</strong><br>
+        Name: ${c.principal_name ? escapeHTML(c.principal_name) : blank}
+        <br><br>
+        Signature: ${blank}
+      </div>
+    </div>
+
+    <p style="font-size:12px;margin-top:20px">
+      <strong>Report Date:</strong>
+      ${escapeHTML(dateText(d.result?.published_at))}
+    </p>
+
+    <div class="report-powered">
+      Powered by <strong>saintigexams.com</strong>
+    </div>
+  `;
+
+  openPrint("Academic Class Result", body);
 }
 
 /* START */
 (function init() {
-  if (readSession()) $("resumeCard").classList.remove("hidden");
+  if (readSession()) {
+    $("resumeCard").classList.remove("hidden");
+  }
 })();
 </script>
 </body>
