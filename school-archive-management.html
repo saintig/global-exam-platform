@@ -1,0 +1,1167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Archive Management | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --navy: #10294b;
+  --navy2: #183b65;
+  --gold: #c49a42;
+  --gold-light: #f6edda;
+  --bg: #f5f7fa;
+  --white: #fff;
+  --text: #243449;
+  --muted: #718096;
+  --border: #e1e7ef;
+  --green: #16834b;
+  --red: #c43e43;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.topbar {
+  background: var(--navy);
+  color: white;
+  padding: 17px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 3px solid var(--gold);
+}
+
+.brand {
+  font-size: 19px;
+  font-weight: bold;
+  letter-spacing: .3px;
+}
+
+.brand span {
+  color: #e2bd70;
+}
+
+.topbar small {
+  display: block;
+  color: #d4dce8;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.back-btn {
+  border: 1px solid #ffffff66;
+  background: transparent;
+  color: white;
+  padding: 9px 13px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 22px 16px 45px;
+}
+
+.page-heading {
+  margin-bottom: 20px;
+}
+
+.page-heading h1 {
+  color: var(--navy);
+  font-size: 23px;
+  margin-bottom: 7px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.section-title {
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 13px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 27px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 15px;
+  box-shadow: 0 2px 7px #10294b08;
+  min-width: 0;
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 13px;
+}
+
+.stat-name {
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--gold-light);
+  color: var(--navy);
+  font-size: 17px;
+}
+
+.stat-total {
+  color: var(--navy);
+  font-size: 27px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.stat-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.active-number {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.archived-number {
+  color: var(--gold);
+  font-weight: bold;
+}
+
+.category-heading {
+  margin-top: 7px;
+  margin-bottom: 14px;
+}
+
+.category-heading h2 {
+  font-size: 17px;
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+
+.category-heading p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.category-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 16px 13px;
+  text-align: left;
+  transition: .2s;
+  min-height: 110px;
+  color: var(--text);
+}
+
+.category-card:hover,
+.category-card.selected {
+  border-color: var(--gold);
+  box-shadow: 0 3px 12px #c49a4220;
+  background: #fffdf8;
+}
+
+.category-card.selected {
+  border-width: 2px;
+}
+
+.category-card .category-icon {
+  font-size: 23px;
+  margin-bottom: 9px;
+}
+
+.category-card strong {
+  display: block;
+  color: var(--navy);
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.category-card small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.workspace {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 17px;
+  display: none;
+}
+
+.workspace.show {
+  display: block;
+}
+
+.workspace-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.workspace-title h2 {
+  color: var(--navy);
+  font-size: 18px;
+}
+
+.close-workspace {
+  background: #edf1f6;
+  border: 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: var(--navy);
+}
+
+.view-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tab {
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--muted);
+  border-radius: 7px;
+  padding: 9px 13px;
+  font-size: 12px;
+}
+
+.tab.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: white;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.field {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: white;
+  color: var(--text);
+  outline: none;
+  font-size: 12px;
+  min-width: 0;
+}
+
+.field:focus {
+  border-color: var(--gold);
+}
+
+.record-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 12px 0;
+}
+
+.record-list {
+  display: grid;
+  gap: 10px;
+}
+
+.record-card {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 13px;
+}
+
+.record-card h3 {
+  color: var(--navy);
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.record-meta {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.record-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.action-btn {
+  border: 0;
+  padding: 8px 11px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.view-btn {
+  background: #edf2f8;
+  color: var(--navy);
+}
+
+.archive-btn {
+  background: #fff3dc;
+  color: #805d16;
+}
+
+.restore-btn {
+  background: #e5f5eb;
+  color: var(--green);
+}
+
+.delete-btn {
+  background: #fdebed;
+  color: var(--red);
+}
+
+.empty-state {
+  padding: 30px 12px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status-message {
+  display: none;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.status-message.error {
+  display: block;
+  background: #fff0f0;
+  color: var(--red);
+}
+
+.status-message.success {
+  display: block;
+  background: #eaf7ef;
+  color: var(--green);
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 25px 10px;
+}
+
+@media (min-width: 700px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .filters {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .container {
+    padding-top: 30px;
+  }
+}
+
+@media (max-width: 370px) {
+  .stat-details {
+    display: grid;
+    gap: 5px;
+  }
+
+  .category-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    SAINTIG <span>EXAMS</span>
+    <small>Teacher / School Management</small>
+  </div>
+  <button class="back-btn" onclick="goBack()">← Dashboard</button>
+</header>
+
+<main class="container">
+
+  <div class="page-heading">
+    <h1>Archive Management</h1>
+    <p>
+      Manage archived and active students, subjects, examinations
+      and questions. Restore records when needed while preserving
+      examination history.
+    </p>
+  </div>
+
+  <div id="message" class="status-message"></div>
+
+  <h2 class="section-title">Statistics Overview</h2>
+
+  <section class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-name">Students</span>
+        <span class="stat-icon">♟</span>
+      </div>
+      <div class="stat-total" id="studentsTotal">—</div>
+      <div class="stat-details">
+        <span>Active: <b class="active-number" id="studentsActive">—</b></span>
+        <span>Archived: <b class="archived-number" id="studentsArchived">—</b></span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-name">Subjects</span>
+        <span class="stat-icon">▤</span>
+      </div>
+      <div class="stat-total" id="subjectsTotal">—</div>
+      <div class="stat-details">
+        <span>Active: <b class="active-number" id="subjectsActive">—</b></span>
+        <span>Archived: <b class="archived-number" id="subjectsArchived">—</b></span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-name">Examinations</span>
+        <span class="stat-icon">▣</span>
+      </div>
+      <div class="stat-total" id="examsTotal">—</div>
+      <div class="stat-details">
+        <span>Active: <b class="active-number" id="examsActive">—</b></span>
+        <span>Archived: <b class="archived-number" id="examsArchived">—</b></span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-name">Questions</span>
+        <span class="stat-icon">☷</span>
+      </div>
+      <div class="stat-total" id="questionsTotal">—</div>
+      <div class="stat-details">
+        <span>Active: <b class="active-number" id="questionsActive">—</b></span>
+        <span>Archived: <b class="archived-number" id="questionsArchived">—</b></span>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="category-heading">
+    <h2>Manage Archived Records</h2>
+    <p>Select a category to view, archive, restore or manage records.</p>
+  </div>
+
+  <section class="category-grid">
+
+    <button class="category-card" onclick="openCategory('students',this)">
+      <div class="category-icon">♟</div>
+      <strong>Students</strong>
+      <small>Manage student records</small>
+    </button>
+
+    <button class="category-card" onclick="openCategory('subjects',this)">
+      <div class="category-icon">▤</div>
+      <strong>Subjects</strong>
+      <small>Manage school subjects</small>
+    </button>
+
+    <button class="category-card" onclick="openCategory('exams',this)">
+      <div class="category-icon">▣</div>
+      <strong>Examinations</strong>
+      <small>Manage examinations</small>
+    </button>
+
+    <button class="category-card" onclick="openCategory('questions',this)">
+      <div class="category-icon">☷</div>
+      <strong>Questions</strong>
+      <small>Manage question bank</small>
+    </button>
+
+  </section>
+
+  <section class="workspace" id="workspace">
+
+    <div class="workspace-title">
+      <h2 id="workspaceHeading">Students</h2>
+      <button class="close-workspace" onclick="closeWorkspace()">Close ✕</button>
+    </div>
+
+    <div class="view-tabs">
+      <button class="tab active" id="activeTab" onclick="changeView('active')">
+        Active Records
+      </button>
+      <button class="tab" id="archivedTab" onclick="changeView('archived')">
+        Archived Records
+      </button>
+    </div>
+
+    <div class="filters">
+      <input
+        class="field"
+        id="searchInput"
+        type="search"
+        placeholder="Search records..."
+        oninput="filterRecords()"
+      >
+
+      <select class="field" id="filterSelect" onchange="filterRecords()">
+        <option value="all">All Records</option>
+      </select>
+    </div>
+
+    <div class="record-summary">
+      <span id="recordCount">0 records</span>
+      <span id="viewLabel">Active records</span>
+    </div>
+
+    <div class="record-list" id="recordList">
+      <div class="empty-state">
+        Select a category to load its records.
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  SAINTIG EXAMS · Teacher / School Management
+</footer>
+
+<script>
+const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const EDGE_FUNCTION = "school-exam-management";
+
+let currentCategory = "students";
+let currentView = "active";
+let records = [];
+let currentUser = null;
+let account = null;
+let loading = false;
+
+/*
+  Backend action mapping.
+  These actions will be connected to the updated Edge Function.
+*/
+const CATEGORY_CONFIG = {
+  students: {
+    title: "Students",
+    listAction: "list_students",
+    archiveAction: "archive_student",
+    restoreAction: "restore_student",
+    deleteAction: "delete_student",
+    searchFields: ["full_name", "student_id", "class_name"]
+  },
+
+  subjects: {
+    title: "Subjects",
+    listAction: "list_subjects",
+    archiveAction: "archive_subject",
+    restoreAction: "restore_subject",
+    deleteAction: "delete_subject",
+    searchFields: ["subject_name"]
+  },
+
+  exams: {
+    title: "Examinations",
+    listAction: "list_exams",
+    archiveAction: "archive_exam",
+    restoreAction: "restore_exam",
+    deleteAction: "delete_exam",
+    searchFields: ["title", "name_class", "examination_code"]
+  },
+
+  questions: {
+    title: "Questions",
+    listAction: "list_questions",
+    archiveAction: "archive_question",
+    restoreAction: "restore_question",
+    deleteAction: "delete_question",
+    searchFields: ["question_text"]
+  }
+};
+
+function goBack() {
+  window.location.href = "school-dashboard.html";
+}
+
+function showMessage(message, type = "success") {
+  const box = document.getElementById("message");
+  box.className = "status-message " + type;
+  box.textContent = message;
+  box.style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function clearMessage() {
+  const box = document.getElementById("message");
+  box.style.display = "none";
+  box.textContent = "";
+}
+
+async function getSession() {
+  const { data, error } = await db.auth.getSession();
+
+  if (error || !data.session) {
+    window.location.href = "school-login.html";
+    return null;
+  }
+
+  return data.session;
+}
+
+async function callEdge(action, extra = {}) {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error("Please sign in again.");
+  }
+
+  const response = await fetch(
+    SUPABASE_URL + "/functions/v1/" + EDGE_FUNCTION,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + session.access_token
+      },
+      body: JSON.stringify({
+        action,
+        ...extra
+      })
+    }
+  );
+
+  let result;
+
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+
+  if (!response.ok || result.success === false || result.error) {
+    throw new Error(
+      result.error || result.message || "The request could not be completed."
+    );
+  }
+
+  return result;
+}
+
+async function initializePage() {
+  try {
+    const session = await getSession();
+    if (!session) return;
+
+    currentUser = session.user;
+
+    await loadStatistics();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+/*
+  Statistics use the existing Edge Function.
+  The updated backend should return:
+  statistics: {
+    students: { total, active, archived },
+    subjects: { total, active, archived },
+    exams: { total, active, archived },
+    questions: { total, active, archived }
+  }
+*/
+async function loadStatistics() {
+  const result = await callEdge("archive_statistics");
+
+  const stats = result.statistics || result.data?.statistics;
+
+  if (!stats) {
+    throw new Error(
+      "Statistics are not yet available. The Edge Function update is required."
+    );
+  }
+
+  setStat("students", stats.students);
+  setStat("subjects", stats.subjects);
+  setStat("exams", stats.exams);
+  setStat("questions", stats.questions);
+}
+
+function setStat(prefix, item = {}) {
+  const total = Number(item.total ?? 0);
+  const active = Number(item.active ?? 0);
+  const archived = Number(item.archived ?? 0);
+
+  document.getElementById(prefix + "Total").textContent = total;
+  document.getElementById(prefix + "Active").textContent = active;
+  document.getElementById(prefix + "Archived").textContent = archived;
+}
+
+function openCategory(category, element) {
+  currentCategory = category;
+  currentView = "active";
+
+  document.querySelectorAll(".category-card").forEach(card => {
+    card.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
+
+  const config = CATEGORY_CONFIG[category];
+
+  document.getElementById("workspaceHeading").textContent = config.title;
+  document.getElementById("workspace").classList.add("show");
+
+  document.getElementById("searchInput").value = "";
+  document.getElementById("filterSelect").innerHTML =
+    '<option value="all">All Records</option>';
+
+  updateTabs();
+  loadRecords();
+
+  document.getElementById("workspace").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+function closeWorkspace() {
+  document.getElementById("workspace").classList.remove("show");
+
+  document.querySelectorAll(".category-card").forEach(card => {
+    card.classList.remove("selected");
+  });
+}
+
+function changeView(view) {
+  currentView = view;
+  updateTabs();
+  loadRecords();
+}
+
+function updateTabs() {
+  document.getElementById("activeTab").classList.toggle(
+    "active", currentView === "active"
+  );
+
+  document.getElementById("archivedTab").classList.toggle(
+    "active", currentView === "archived"
+  );
+
+  document.getElementById("viewLabel").textContent =
+    currentView === "active" ? "Active records" : "Archived records";
+}
+
+async function loadRecords() {
+  if (loading) return;
+
+  loading = true;
+
+  const list = document.getElementById("recordList");
+  list.innerHTML = '<div class="loading">Loading records...</div>';
+
+  try {
+    const config = CATEGORY_CONFIG[currentCategory];
+
+    let payload = {
+      include_archived: true,
+      archived: currentView === "archived"
+    };
+
+    /*
+      Existing questions listing requires examination_id.
+      The updated Edge Function should support a dedicated
+      account-wide archive question listing.
+    */
+    if (currentCategory === "questions") {
+      payload.archive_view = true;
+    }
+
+    const result = await callEdge(config.listAction, payload);
+
+    records =
+      result.records ||
+      result.students ||
+      result.subjects ||
+      result.examinations ||
+      result.questions ||
+      result.data?.records ||
+      [];
+
+    records = Array.isArray(records) ? records : [];
+
+    filterRecords();
+
+  } catch (error) {
+    records = [];
+
+    list.innerHTML = `
+      <div class="empty-state">
+        Unable to load these records.<br><br>
+        ${escapeHTML(error.message)}
+      </div>
+    `;
+
+    document.getElementById("recordCount").textContent = "0 records";
+
+  } finally {
+    loading = false;
+  }
+}
+
+function filterRecords() {
+  const search = document.getElementById("searchInput").value
+    .trim()
+    .toLowerCase();
+
+  const selectedFilter = document.getElementById("filterSelect").value;
+
+  let filtered = records.filter(record => {
+    const archived = record.is_archived === true;
+
+    if (currentView === "archived" && !archived) return false;
+    if (currentView === "active" && archived) return false;
+
+    const config = CATEGORY_CONFIG[currentCategory];
+
+    const searchText = config.searchFields
+      .map(field => record[field] ?? "")
+      .join(" ")
+      .toLowerCase();
+
+    if (search && !searchText.includes(search)) return false;
+
+    if (selectedFilter !== "all") {
+      const status = String(record.status || "").toLowerCase();
+      if (status !== selectedFilter) return false;
+    }
+
+    return true;
+  });
+
+  document.getElementById("recordCount").textContent =
+    filtered.length + (filtered.length === 1 ? " record" : " records");
+
+  renderRecords(filtered);
+}
+
+function getRecordId(record) {
+  return record.id ?? record.student_id;
+}
+
+function getRecordTitle(record) {
+  switch (currentCategory) {
+    case "students":
+      return record.full_name || "Unnamed student";
+
+    case "subjects":
+      return record.subject_name || "Unnamed subject";
+
+    case "exams":
+      return record.title || "Untitled examination";
+
+    case "questions":
+      return record.question_text || "Question";
+  }
+}
+
+function getRecordDescription(record) {
+  switch (currentCategory) {
+    case "students":
+      return [
+        "Student ID: " + (record.student_id || "—"),
+        "Class: " + (record.class_name || record.class || "—"),
+        "Status: " + (record.is_active ? "Active" : "Inactive")
+      ].join(" · ");
+
+    case "subjects":
+      return [
+        "Subject ID: " + (record.id || "—"),
+        "Publication: " + (record.is_published ? "Published" : "Unpublished")
+      ].join(" · ");
+
+    case "exams":
+      return [
+        "Examination ID: " + (record.examination_code || record.id || "—"),
+        "Class: " + (record.name_class || "—"),
+        "Publication: " + (record.is_published ? "Published" : "Unpublished")
+      ].join(" · ");
+
+    case "questions":
+      return [
+        "Question ID: " + (record.id || "—"),
+        "Examination ID: " + (record.examination_id || "—"),
+        "Publication: " + (record.is_published ? "Published" : "Unpublished")
+      ].join(" · ");
+  }
+
+  return "";
+}
+
+function renderRecords(items) {
+  const list = document.getElementById("recordList");
+
+  if (!items.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        No ${currentView} ${CATEGORY_CONFIG[currentCategory].title.toLowerCase()}
+        found.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = items.map(record => {
+    const id = getRecordId(record);
+    const archived = record.is_archived === true;
+
+    return `
+      <article class="record-card">
+        <h3>${escapeHTML(getRecordTitle(record))}</h3>
+
+        <div class="record-meta">
+          ${escapeHTML(getRecordDescription(record))}
+        </div>
+
+        <div class="record-actions">
+          <button class="action-btn view-btn"
+            onclick="viewRecord('${escapeHTML(String(id))}')">
+            View
+          </button>
+
+          ${
+            archived
+            ? `
+              <button class="action-btn restore-btn"
+                onclick="restoreRecord('${escapeHTML(String(id))}')">
+                Restore
+              </button>
+            `
+            : `
+              <button class="action-btn archive-btn"
+                onclick="archiveRecord('${escapeHTML(String(id))}')">
+                Archive
+              </button>
+            `
+          }
+
+          <button class="action-btn delete-btn"
+            onclick="deleteRecord('${escapeHTML(String(id))}')">
+            Delete
+          </button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function findRecord(id) {
+  return records.find(record => String(getRecordId(record)) === String(id));
+}
+
+function viewRecord(id) {
+  const record = findRecord(id);
+
+  if (!record) return;
+
+  let details = [];
+
+  for (const [key, value] of Object.entries(record)) {
+    if (value !== null && typeof value !== "object") {
+      details.push(key + ": " + value);
+    }
+  }
+
+  alert(details.join("\n"));
+}
+
+async function archiveRecord(id) {
+  const config = CATEGORY_CONFIG[currentCategory];
+
+  if (!confirm(
+    "Archive this " + config.title.toLowerCase().slice(0, -1) +
+    " record?\n\nThe record and its history will be preserved."
+  )) return;
+
+  try {
+    await callEdge(config.archiveAction, {
+      id: Number(id)
+    });
+
+    showMessage("Record archived successfully.");
+    await refreshPageData();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+async function restoreRecord(id) {
+  const config = CATEGORY_CONFIG[currentCategory];
+
+  if (!confirm(
+    "Restore this record?\n\nIts previous publication status should be preserved."
+  )) return;
+
+  try {
+    await callEdge(config.restoreAction, {
+      id: Number(id)
+    });
+
+    showMessage("Record restored successfully.");
+    await refreshPageData();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+async function deleteRecord(id) {
+  const config = CATEGORY_CONFIG[currentCategory];
+
+  const confirmed = confirm(
+    "PERMANENT DELETE WARNING\n\n" +
+    "This action cannot be undone.\n\n" +
+    "Records connected to examination attempts, answers, scores or results " +
+    "must be protected.\n\nContinue?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await callEdge(config.deleteAction, {
+      id: Number(id)
+    });
+
+    showMessage("Record deleted successfully.");
+    await refreshPageData();
+
+  } catch (error) {
+    showMessage(error.message, "error");
+  }
+}
+
+async function refreshPageData() {
+  await loadStatistics();
+  await loadRecords();
+}
+
+initializePage();
+</script>
+
+</body>
+</html>
