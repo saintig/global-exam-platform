@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Notifications | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#14243a;
+  --gold:#d4af37;
+  --paper:#f5f7fa;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e5e9ef;
+  --danger:#dc3b30;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+
+header{
+  background:var(--navy);color:#fff;padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:4px solid var(--gold)
+}
+.brand{font-size:20px;font-weight:800;letter-spacing:.4px}
+.brand span{color:var(--gold)}
+.back{
+  border:1px solid #ffffff55;background:none;color:#fff;border-radius:8px;
+  padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:16px
+}
+
+main{max-width:860px;margin:auto;padding:26px 16px 10px}
+h1{font-size:30px;color:var(--navy);margin:0 0 6px}
+.muted{color:var(--muted)}
+
+.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:16px}
+.status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
+
+.toolbar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  justify-content:space-between;margin:22px 0 4px
+}
+.filters{display:flex;gap:8px}
+.chip{
+  border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:25px;
+  padding:10px 16px;min-height:44px;font:inherit;font-size:16px;font-weight:bold;cursor:pointer
+}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.button{
+  border:0;border-radius:9px;background:var(--navy);color:#fff;
+  padding:11px 16px;min-height:46px;font:inherit;font-size:16px;font-weight:bold;cursor:pointer
+}
+.button.secondary{background:#edf1f7;color:var(--navy)}
+.button.small{min-height:42px;padding:9px 14px;font-size:15px}
+.button:disabled{opacity:.6;cursor:not-allowed}
+a.button{display:inline-flex;align-items:center}
+
+.empty{
+  text-align:center;color:var(--muted);padding:40px 12px;font-size:17px;
+  background:#fff;border:1px solid var(--line);border-radius:13px;margin-top:14px
+}
+
+.notice{
+  display:flex;gap:14px;background:#fff;border:1px solid var(--line);
+  border-radius:13px;padding:16px;margin-top:14px;
+  box-shadow:0 7px 22px #14243a0b
+}
+.notice.unread{border-left:5px solid var(--gold);background:#fffdf7}
+.icon{
+  flex-shrink:0;width:46px;height:46px;border-radius:11px;background:#f6efd9;
+  display:grid;place-items:center;font-size:22px
+}
+.body{min-width:0;flex:1}
+.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.top strong{font-size:18px;color:var(--navy);overflow-wrap:anywhere}
+.date{color:var(--muted);font-size:15px}
+.text{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+footer{text-align:center;color:#8995a3;font-size:15px;padding:30px 10px 26px}
+footer a{color:var(--navy);font-weight:bold;margin:0 8px}
+
+@media(max-width:600px){
+  h1{font-size:27px}
+  .icon{width:40px;height:40px;font-size:19px}
+  .notice{padding:14px;gap:11px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
+  <button class="back" id="backBtn" type="button">← Dashboard</button>
+</header>
+
+<main>
+
+  <h1>Notifications</h1>
+  <div class="muted">Messages about your account, packages and examinations.</div>
+
+  <div class="status" id="statusMessage"></div>
+
+  <div class="toolbar">
+    <div class="filters">
+      <button class="chip active" id="filterAll" type="button">All</button>
+      <button class="chip" id="filterUnread" type="button">Unread <span id="unreadCount"></span></button>
+    </div>
+    <button class="button secondary small" id="markAll" type="button" hidden>
+      Mark All as Read
+    </button>
+  </div>
+
+  <div id="list" class="empty">Loading notifications…</div>
+
+</main>
+
+<footer>
+  <a href="about.html">About</a> ·
+  <a href="contact.html">Contact</a> ·
+  <a href="school-dashboard.html">Dashboard</a>
+</footer>
+
+<script>
+const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+const LOGIN_PAGE="school-login.html";
+const DASHBOARD="school-dashboard.html";
+
+const $=id=>document.getElementById(id);
+
+let sb=null;
+let user=null;
+let items=[];
+let filter="all";
+let channel=null;
+
+function esc(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function formatDate(value){
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime()))return "—";
+  return d.toLocaleString(undefined,{
+    year:"numeric",month:"short",day:"numeric",
+    hour:"2-digit",minute:"2-digit"
+  });
+}
+
+/* Only allow https links or pages on this site. */
+function safeLink(url){
+  const v=String(url||"").trim();
+  if(/^https:\/\//i.test(v))return v;
+  if(/^(?:\.\/)?[\w-]+\.html(?:[?#][\w\-./?=&%#]*)?$/i.test(v))return v;
+  return "";
+}
+
+function kindIcon(kind){
+  return ({
+    subscription:"💳",
+    exam:"📝",
+    result:"📊",
+    announcement:"📢"
+  })[kind]||"🔔";
+}
+
+function message(text){
+  const el=$("statusMessage");
+  el.textContent=text;
+  el.className="status error";
+}
+
+function render(){
+
+  const unread=items.filter(i=>!i.read_at).length;
+
+  $("unreadCount").textContent=unread?"("+unread+")":"";
+  $("markAll").hidden=unread===0;
+
+  const shown=filter==="unread"?items.filter(i=>!i.read_at):items;
+
+  const list=$("list");
+
+  if(!shown.length){
+    list.className="empty";
+    list.textContent=filter==="unread"
+      ?"You have no unread notifications."
+      :"You have no notifications yet.";
+    return;
+  }
+
+  list.className="";
+
+  list.innerHTML=shown.map(item=>{
+
+    const isUnread=!item.read_at;
+    const link=safeLink(item.link);
+
+    return (
+      '<div class="notice'+(isUnread?" unread":"")+'">'+
+        '<div class="icon">'+kindIcon(item.kind)+"</div>"+
+        '<div class="body">'+
+          '<div class="top">'+
+            "<strong>"+esc(item.title)+"</strong>"+
+            '<span class="date">'+esc(formatDate(item.created_at))+"</span>"+
+          "</div>"+
+          (item.body?'<p class="text">'+esc(item.body)+"</p>":"")+
+          '<div class="actions">'+
+            (link?'<a class="button small" href="'+esc(link)+'">Open</a>':"")+
+            (isUnread
+              ?'<button class="button secondary small" type="button" data-read="'+esc(item.id)+'">Mark as read</button>'
+              :"")+
+          "</div>"+
+        "</div>"+
+      "</div>"
+    );
+
+  }).join("");
+}
+
+async function load(){
+
+  const {data,error}=await sb
+    .from("notifications")
+    .select("id,kind,title,body,link,created_at,read_at")
+    .eq("user_id",user.id)
+    .order("created_at",{ascending:false})
+    .limit(100);
+
+  if(error){
+    console.error("Notifications query:",error);
+    $("list").className="empty";
+    $("list").textContent="Notifications could not be loaded right now.";
+    return;
+  }
+
+  items=data||[];
+  render();
+}
+
+async function markRead(ids){
+
+  if(!ids.length)return;
+
+  const now=new Date().toISOString();
+
+  const {error}=await sb
+    .from("notifications")
+    .update({read_at:now})
+    .in("id",ids)
+    .eq("user_id",user.id);
+
+  if(error)throw error;
+
+  items.forEach(item=>{
+    if(ids.includes(item.id))item.read_at=now;
+  });
+
+  render();
+}
+
+$("list").addEventListener("click",async event=>{
+
+  const button=event.target.closest("[data-read]");
+
+  if(!button)return;
+
+  button.disabled=true;
+
+  try{
+    await markRead([button.dataset.read]);
+  }catch(error){
+    console.error("Mark as read:",error);
+    button.disabled=false;
+    alert("Could not update the notification. Please try again.");
+  }
+});
+
+$("markAll").addEventListener("click",async()=>{
+
+  const ids=items.filter(i=>!i.read_at).map(i=>i.id);
+
+  $("markAll").disabled=true;
+
+  try{
+    await markRead(ids);
+  }catch(error){
+    console.error("Mark all as read:",error);
+    alert("Could not update the notifications. Please try again.");
+  }finally{
+    $("markAll").disabled=false;
+  }
+});
+
+$("filterAll").addEventListener("click",()=>{
+  filter="all";
+  $("filterAll").classList.add("active");
+  $("filterUnread").classList.remove("active");
+  render();
+});
+
+$("filterUnread").addEventListener("click",()=>{
+  filter="unread";
+  $("filterUnread").classList.add("active");
+  $("filterAll").classList.remove("active");
+  render();
+});
+
+function subscribe(){
+
+  channel=sb
+    .channel("school-notifications-page")
+
+    .on("postgres_changes",{
+      event:"INSERT",schema:"public",table:"notifications",
+      filter:"user_id=eq."+user.id
+    },payload=>{
+      items.unshift(payload.new);
+      render();
+    })
+
+    .on("postgres_changes",{
+      event:"UPDATE",schema:"public",table:"notifications",
+      filter:"user_id=eq."+user.id
+    },payload=>{
+      items=items.map(i=>i.id===payload.new.id?payload.new:i);
+      render();
+    })
+
+    .subscribe();
+}
+
+window.addEventListener("pagehide",()=>{
+  if(channel&&sb)sb.removeChannel(channel);
+});
+
+async function init(){
+
+  if(!window.supabase?.createClient){
+    message("Supabase library did not load. Check your internet connection and refresh.");
+    return;
+  }
+
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+  });
+
+  const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+
+  if(sessionError||!sessionData.session){
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  user=sessionData.session.user;
+
+  const {data:account,error:accountError}=await sb
+    .from("school_accounts")
+    .select("id,status")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(accountError){
+    message("Unable to load your account: "+accountError.message);
+    return;
+  }
+
+  if(!account){
+    message("No Teacher/School account is linked to this login.");
+    return;
+  }
+
+  if(account.status!=="active"){
+    await sb.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  await load();
+  subscribe();
+}
+
+$("backBtn").addEventListener("click",()=>{location.href=DASHBOARD;});
+
+init();
+</script>
+
+</body>
+</html>
