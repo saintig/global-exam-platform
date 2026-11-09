@@ -52,7 +52,9 @@
       letter-spacing: .5px;
     }
 
-    .brand span { color: var(--gold); }
+    .brand span {
+      color: var(--gold);
+    }
 
     .brand small {
       display: block;
@@ -126,7 +128,9 @@
       display: none !important;
     }
 
-    .field { margin-bottom: 17px; }
+    .field {
+      margin-bottom: 17px;
+    }
 
     label {
       display: block;
@@ -135,7 +139,8 @@
       font-size: 13px;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 13px 12px;
       border: 1px solid var(--border);
@@ -147,14 +152,19 @@
       outline: none;
     }
 
-    input:focus, select:focus {
+    input:focus,
+    select:focus {
       border-color: var(--navy-light);
       box-shadow: 0 0 0 3px rgba(24, 57, 99, .10);
     }
 
-    .password-wrap { position: relative; }
+    .password-wrap {
+      position: relative;
+    }
 
-    .password-wrap input { padding-right: 76px; }
+    .password-wrap input {
+      padding-right: 76px;
+    }
 
     .toggle-password {
       position: absolute;
@@ -176,7 +186,9 @@
       margin: -4px 0 19px;
     }
 
-    a { color: var(--navy-light); }
+    a {
+      color: var(--navy-light);
+    }
 
     .text-link {
       font-size: 13px;
@@ -184,7 +196,9 @@
       text-decoration: none;
     }
 
-    .text-link:hover { text-decoration: underline; }
+    .text-link:hover {
+      text-decoration: underline;
+    }
 
     .primary-btn {
       display: block;
@@ -199,7 +213,9 @@
       cursor: pointer;
     }
 
-    .primary-btn:hover { background: var(--navy-light); }
+    .primary-btn:hover {
+      background: var(--navy-light);
+    }
 
     .primary-btn:disabled {
       opacity: .65;
@@ -216,15 +232,55 @@
       overflow-wrap: anywhere;
     }
 
-    .message.show { display: block; }
-    .message.error { background: #fef3f2; color: var(--danger); }
-    .message.success { background: #ecfdf3; color: var(--success); }
+    .message.show {
+      display: block;
+    }
+
+    .message.error {
+      background: #fef3f2;
+      color: var(--danger);
+    }
+
+    .message.success {
+      background: #ecfdf3;
+      color: var(--success);
+    }
 
     .hint {
       color: var(--muted);
       font-size: 12px;
       line-height: 1.5;
       margin-top: 7px;
+    }
+
+    /* STUDENT SIGN-IN LINK */
+
+    .student-login-link {
+      text-align: center;
+      margin-top: 22px;
+      padding: 17px 12px;
+      background: #f5f7fb;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .student-login-link p {
+      margin-bottom: 8px;
+    }
+
+    .student-login-link a {
+      display: inline-block;
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .student-login-link a:hover {
+      text-decoration: underline;
+      color: var(--navy-light);
     }
 
     .back-home {
@@ -247,9 +303,17 @@
     }
 
     @media (max-width: 400px) {
-      .card { padding: 23px 16px; }
-      .intro h1 { font-size: 22px; }
-      .brand { font-size: 20px; }
+      .card {
+        padding: 23px 16px;
+      }
+
+      .intro h1 {
+        font-size: 22px;
+      }
+
+      .brand {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
@@ -287,27 +351,38 @@
          role="status" aria-live="polite"></div>
 
     <!-- SIGN IN -->
+
     <form id="login-form" class="form-panel">
 
       <div class="field">
         <label for="login-email">Email Address</label>
 
-        <input id="login-email" type="email"
-               autocomplete="email"
-               placeholder="Enter your registered email"
-               required>
+        <input
+          id="login-email"
+          type="email"
+          autocomplete="email"
+          placeholder="Enter your registered email"
+          required
+        >
       </div>
 
       <div class="field">
         <label for="login-password">Password</label>
 
         <div class="password-wrap">
-          <input id="login-password" type="password"
-                 autocomplete="current-password"
-                 placeholder="Enter your password" required>
+          <input
+            id="login-password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Enter your password"
+            required
+          >
 
-          <button type="button" class="toggle-password"
-                  data-target="login-password">Show</button>
+          <button
+            type="button"
+            class="toggle-password"
+            data-target="login-password"
+          >Show</button>
         </div>
       </div>
 
@@ -325,6 +400,7 @@
 
 
     <!-- REGISTRATION -->
+
     <form id="register-form" class="form-panel" hidden>
 
       <div class="field">
@@ -342,10 +418,15 @@
           Teacher's Full Name / School's Official Name
         </label>
 
-        <input id="register-name" type="text"
-               autocomplete="organization"
-               placeholder="Enter your teacher or school name"
-               minlength="2" maxlength="150" required>
+        <input
+          id="register-name"
+          type="text"
+          autocomplete="organization"
+          placeholder="Enter your teacher or school name"
+          minlength="2"
+          maxlength="150"
+          required
+        >
 
         <p class="hint" id="name-hint">
           Select an account type above to continue.
@@ -355,23 +436,33 @@
       <div class="field">
         <label for="register-email">Email Address</label>
 
-        <input id="register-email" type="email"
-               autocomplete="email"
-               placeholder="Enter your email address"
-               required>
+        <input
+          id="register-email"
+          type="email"
+          autocomplete="email"
+          placeholder="Enter your email address"
+          required
+        >
       </div>
 
       <div class="field">
         <label for="register-password">Create Password</label>
 
         <div class="password-wrap">
-          <input id="register-password" type="password"
-                 autocomplete="new-password"
-                 minlength="8"
-                 placeholder="At least 8 characters" required>
+          <input
+            id="register-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            placeholder="At least 8 characters"
+            required
+          >
 
-          <button type="button" class="toggle-password"
-                  data-target="register-password">Show</button>
+          <button
+            type="button"
+            class="toggle-password"
+            data-target="register-password"
+          >Show</button>
         </div>
       </div>
 
@@ -379,13 +470,20 @@
         <label for="confirm-password">Confirm Password</label>
 
         <div class="password-wrap">
-          <input id="confirm-password" type="password"
-                 autocomplete="new-password"
-                 minlength="8"
-                 placeholder="Enter your password again" required>
+          <input
+            id="confirm-password"
+            type="password"
+            autocomplete="new-password"
+            minlength="8"
+            placeholder="Enter your password again"
+            required
+          >
 
-          <button type="button" class="toggle-password"
-                  data-target="confirm-password">Show</button>
+          <button
+            type="button"
+            class="toggle-password"
+            data-target="confirm-password"
+          >Show</button>
         </div>
       </div>
 
@@ -397,32 +495,40 @@
 
 
     <!-- PASSWORD RESET AND RECOVERY -->
+
     <form id="reset-form" class="form-panel" hidden>
 
-      <!-- Used when requesting a reset email -->
       <div class="field" id="reset-email-field">
         <label for="reset-email">Registered Email Address</label>
 
-        <input id="reset-email" type="email"
-               autocomplete="email"
-               placeholder="Enter your registered email"
-               required>
+        <input
+          id="reset-email"
+          type="email"
+          autocomplete="email"
+          placeholder="Enter your registered email"
+          required
+        >
       </div>
 
-      <!-- Used after opening a valid recovery link -->
       <div id="new-password-fields" hidden>
 
         <div class="field">
           <label for="new-password">New Password</label>
 
           <div class="password-wrap">
-            <input id="new-password" type="password"
-                   autocomplete="new-password"
-                   minlength="8"
-                   placeholder="Enter your new password">
+            <input
+              id="new-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="Enter your new password"
+            >
 
-            <button type="button" class="toggle-password"
-                    data-target="new-password">Show</button>
+            <button
+              type="button"
+              class="toggle-password"
+              data-target="new-password"
+            >Show</button>
           </div>
         </div>
 
@@ -432,13 +538,19 @@
           </label>
 
           <div class="password-wrap">
-            <input id="confirm-new-password" type="password"
-                   autocomplete="new-password"
-                   minlength="8"
-                   placeholder="Confirm your new password">
+            <input
+              id="confirm-new-password"
+              type="password"
+              autocomplete="new-password"
+              minlength="8"
+              placeholder="Confirm your new password"
+            >
 
-            <button type="button" class="toggle-password"
-                    data-target="confirm-new-password">Show</button>
+            <button
+              type="button"
+              class="toggle-password"
+              data-target="confirm-new-password"
+            >Show</button>
           </div>
         </div>
 
@@ -461,8 +573,23 @@
     </form>
 
 
+    <!-- STUDENT SIGN-IN -->
+
+    <div class="student-login-link">
+      <p>Are you a student?</p>
+
+      <a href="student-login.html?mode=login">
+        Student Sign In →
+      </a>
+    </div>
+
+
+    <!-- PUBLIC HOMEPAGE -->
+
     <div class="back-home">
-      <a href="index.html">← Back to Public Homepage</a>
+      <a href="index.html">
+        ← Back to Public Homepage
+      </a>
     </div>
 
   </section>
@@ -578,7 +705,7 @@
   }
 
 
-  // FORGOT PASSWORD: REQUEST RESET EMAIL
+  // FORGOT PASSWORD
 
   function showReset() {
 
@@ -611,7 +738,7 @@
   }
 
 
-  // VALID RECOVERY LINK: ENTER NEW PASSWORD
+  // VALID RECOVERY LINK
 
   function showRecovery() {
 
@@ -736,7 +863,7 @@
     });
 
 
-  // VERIFY TEACHER/SCHOOL ACCOUNT FROM DATABASE
+  // VERIFY TEACHER/SCHOOL ACCOUNT
 
   async function verifyTeacherSchoolAccount(user) {
 
@@ -990,7 +1117,7 @@
 
     try {
 
-      // STEP 1: UPDATE PASSWORD AFTER RECOVERY LINK
+      // UPDATE PASSWORD AFTER RECOVERY LINK
 
       if (recoveryMode) {
 
@@ -1012,7 +1139,6 @@
           );
         }
 
-        // Confirm that the recovery session still exists.
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getSession();
 
@@ -1031,7 +1157,6 @@
           );
         }
 
-        // Save the new password in Supabase Auth.
         const { error: updateError } =
           await supabase.auth.updateUser({
             password: newPassword
@@ -1039,10 +1164,8 @@
 
         if (updateError) throw updateError;
 
-        // Password has been updated successfully.
         recoveryMode = false;
 
-        // Sign out so the user signs in again with the new password.
         const { error: signOutError } =
           await supabase.auth.signOut();
 
@@ -1055,7 +1178,6 @@
 
         resetForm.reset();
 
-        // Remove recovery parameters from the address bar.
         window.history.replaceState(
           {},
           document.title,
@@ -1073,7 +1195,7 @@
       }
 
 
-      // STEP 2: REQUEST PASSWORD RESET EMAIL
+      // REQUEST PASSWORD RESET EMAIL
 
       const email = $("reset-email").value.trim();
 
@@ -1123,14 +1245,12 @@
 
     const mode = params.get("mode");
 
-    // Handle password recovery links.
+    // PASSWORD RECOVERY
+
     if (mode === "reset") {
 
       try {
 
-        // A valid recovery redirect contains either:
-        // a PKCE code in the query string, or
-        // recovery tokens in the URL fragment.
         const hashParams = new URLSearchParams(
           window.location.hash.replace(/^#/, "")
         );
@@ -1153,8 +1273,6 @@
           return;
         }
 
-        // Supabase processes the recovery callback and restores
-        // the recovery session through auth.js.
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getSession();
 
@@ -1210,13 +1328,15 @@
     }
 
 
+    // OPEN REGISTRATION TAB
+
     if (mode === "register") {
       showRegister();
       return;
     }
 
 
-    // Check existing login session.
+    // CHECK EXISTING LOGIN SESSION
 
     try {
 
