@@ -522,7 +522,8 @@ th{
 
 .plan-price{
   color:var(--muted);
-  font-size:16px;
+  font-size:17px;
+  font-weight:700;
   margin:0 0 14px
 }
 
@@ -1136,37 +1137,122 @@ $("currentYear").textContent = new Date().getFullYear();
 
 /* =========================================
    PLAN DETAILS
-   If the admin changes questions or minutes,
-   update the numbers here.
+   The numbers of questions and minutes are
+   read live from platform_settings, so when
+   the admin changes them the cards change too.
+   The prices are read from plan_prices.
+   The values below are used only if the
+   database cannot be read.
 ========================================= */
 
-const PLAN_INFO = {
+const PLAN_DEFAULTS = {
+  free:{questions:50,minutes:45},
+  premium:{questions:100,minutes:90}
+};
 
-  free:{
+let planSettings = {
+  free:{...PLAN_DEFAULTS.free},
+  premium:{...PLAN_DEFAULTS.premium}
+};
+
+let planPrices = {};
+
+const BILLING_TEXT = {
+  week:"per week",
+  month:"per month",
+  term:"per term",
+  year:"per year",
+  one_time:"one-time"
+};
+
+function toPositiveNumber(value) {
+
+  if (value && typeof value === "object" && "value" in value) {
+    value = value.value;
+  }
+
+  const number = Number(value);
+
+  return Number.isFinite(number) && number > 0 ? number : null;
+
+}
+
+function priceLabel(key) {
+
+  if (key === "free") return "No payment needed";
+
+  const row = planPrices[key];
+
+  if (
+    !row ||
+    row.price_amount === null ||
+    row.price_amount === undefined ||
+    row.price_amount === ""
+  ) {
+    return "Price to be announced";
+  }
+
+  const amount = Number(row.price_amount);
+
+  if (!Number.isFinite(amount)) return "Price to be announced";
+
+  if (amount === 0) return "Free";
+
+  let money;
+
+  try {
+
+    money = new Intl.NumberFormat("en-NG",{
+      style:"currency",
+      currency:row.currency || "NGN",
+      maximumFractionDigits:amount % 1 === 0 ? 0 : 2
+    }).format(amount);
+
+  } catch(error) {
+
+    money = (row.currency || "NGN") + " " + amount.toLocaleString();
+
+  }
+
+  const period = BILLING_TEXT[row.billing_period] || "";
+
+  return period ? money + " " + period : money;
+
+}
+
+function getPlan(key) {
+
+  const settings = planSettings[key];
+
+  if (key === "premium") {
+
+    return {
+      name:"Premium",
+      price:priceLabel("premium"),
+      features:[
+        settings.questions + " questions per examination",
+        settings.minutes + " minutes duration",
+        "Unlimited attempts while your subscription is active",
+        "Access to Premium examinations",
+        "Questions are randomized from the approved question bank"
+      ]
+    };
+
+  }
+
+  return {
     name:"Free",
-    price:"No payment needed",
+    price:priceLabel("free"),
     features:[
-      "50 questions per examination",
-      "45 minutes duration",
+      settings.questions + " questions per examination",
+      settings.minutes + " minutes duration",
       "1 attempt per day",
       "Access to approved Free examinations",
       "Questions are randomized from the approved question bank"
     ]
-  },
+  };
 
-  premium:{
-    name:"Premium",
-    price:"Contact us for the current price",
-    features:[
-      "100 questions per examination",
-      "90 minutes duration",
-      "Unlimited attempts while your subscription is active",
-      "Access to Premium examinations",
-      "Questions are randomized from the approved question bank"
-    ]
-  }
-
-};
+}
 
 /* =========================================
    GENERAL HELPERS
@@ -1687,7 +1773,7 @@ function renderPricing() {
 
   const cards = ["free","premium"].map(key => {
 
-    const plan = PLAN_INFO[key];
+    const plan = getPlan(key);
 
     const isCurrent = state === key;
 
@@ -1774,14 +1860,107 @@ async function loadSubscription() {
 
 }
 
+/* Live question and time limits set by the admin. */
+
+async function loadPlanSettings() {
+
+  try {
+
+    const {data,error} = await supabase
+      .from("platform_settings")
+      .select("setting_key,setting_value")
+      .in("setting_key",[
+        "free_student_question_limit",
+        "free_student_duration_minutes",
+        "premium_student_question_limit",
+        "premium_student_duration_minutes"
+      ]);
+
+    if (error) throw error;
+
+    const map = {};
+
+    (data || []).forEach(row => {
+      map[row.setting_key] = toPositiveNumber(row.setting_value);
+    });
+
+    planSettings = {
+
+      free:{
+        questions:
+          map.free_student_question_limit ||
+          PLAN_DEFAULTS.free.questions,
+        minutes:
+          map.free_student_duration_minutes ||
+          PLAN_DEFAULTS.free.minutes
+      },
+
+      premium:{
+        questions:
+          map.premium_student_question_limit ||
+          PLAN_DEFAULTS.premium.questions,
+        minutes:
+          map.premium_student_duration_minutes ||
+          PLAN_DEFAULTS.premium.minutes
+      }
+
+    };
+
+  } catch(error) {
+
+    console.error("Plan settings query:",error);
+
+  }
+
+}
+
+/* Prices set by the admin. */
+
+async function loadPlanPrices() {
+
+  try {
+
+    const {data,error} = await supabase
+      .from("plan_prices")
+      .select("plan_name,price_amount,currency,billing_period")
+      .eq("audience","student");
+
+    if (error) throw error;
+
+    planPrices = {};
+
+    (data || []).forEach(row => {
+      planPrices[String(row.plan_name).toLowerCase()] = row;
+    });
+
+  } catch(error) {
+
+    console.error("Plan prices query:",error);
+
+  }
+
+}
+
 /* =========================================
    NOTIFICATIONS
 ========================================= */
 
-function isSafeLink(url) {
-  return /^(https:\/\/|\.?\/?[\w\-./?=&%#]+$)/i.test(
-    String(url || "")
-  );
+/* Only https links or pages on this site are allowed. */
+
+function safeLink(url) {
+
+  const value = String(url || "").trim();
+
+  if (/^https:\/\//i.test(value)) return value;
+
+  if (
+    /^(?:\.\/)?[\w-]+\.html(?:[?#][\w\-./?=&%#]*)?$/i.test(value)
+  ) {
+    return value;
+  }
+
+  return "";
+
 }
 
 function renderNotifications() {
@@ -1815,6 +1994,8 @@ function renderNotifications() {
 
     const isUnread = !item.read_at;
 
+    const link = safeLink(item.link);
+
     return `
 
       <div class="notice-item${isUnread ? " unread" : ""}">
@@ -1835,8 +2016,8 @@ function renderNotifications() {
         <div class="notice-actions">
 
           ${
-            item.link && isSafeLink(item.link)
-            ? `<a class="button small" href="${escapeHtml(item.link)}">Open</a>`
+            link
+            ? `<a class="button small" href="${escapeHtml(link)}">Open</a>`
             : ""
           }
 
@@ -2943,7 +3124,11 @@ async function initializeDashboard() {
 
       loadSubscription(),
 
-      loadNotifications()
+      loadNotifications(),
+
+      loadPlanSettings(),
+
+      loadPlanPrices()
 
     ]);
 
@@ -2952,7 +3137,9 @@ async function initializeDashboard() {
       "Education options",
       "Exam history and results",
       "Subscription",
-      "Notifications"
+      "Notifications",
+      "Plan settings",
+      "Plan prices"
     ];
 
     results.forEach((result,index) => {
@@ -3018,6 +3205,10 @@ async function initializeDashboard() {
       }
 
     });
+
+    /* Show the plan cards with the live numbers and prices. */
+
+    renderPricing();
 
     subscribeToEducationChanges();
 
