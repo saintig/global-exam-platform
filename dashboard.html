@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +18,7 @@
   --border:#e1e7ef;
   --success:#16794b;
   --danger:#b42318;
+  --topbar-h:60px;
 }
 
 *{box-sizing:border-box}
@@ -26,6 +26,7 @@
 body{
   margin:0;
   font-family:Arial,sans-serif;
+  font-size:16px;
   background:var(--background);
   color:var(--text);
   line-height:1.5
@@ -38,7 +39,8 @@ button,a{-webkit-tap-highlight-color:transparent}
 .topbar{
   background:var(--primary);
   color:white;
-  padding:13px 18px;
+  padding:8px 18px;
+  min-height:var(--topbar-h);
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -50,7 +52,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 }
 
 .brand{
-  font-size:18px;
+  font-size:20px;
   font-weight:800;
   letter-spacing:.3px
 }
@@ -63,23 +65,47 @@ button,a{-webkit-tap-highlight-color:transparent}
   gap:8px
 }
 
-.top-link,.menu-button{
+.top-link,.menu-button,.bell-button{
   color:white;
   border:1px solid #ffffff55;
   background:transparent;
   border-radius:8px;
-  padding:8px 11px;
+  padding:8px 12px;
+  min-height:44px;
   cursor:pointer;
-  font-size:14px
+  font-size:16px
 }
+
+.bell-button{
+  position:relative;
+  min-width:46px
+}
+
+.bell-count{
+  position:absolute;
+  top:-7px;
+  right:-7px;
+  min-width:22px;
+  height:22px;
+  padding:0 5px;
+  border-radius:11px;
+  background:var(--danger);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  line-height:22px;
+  text-align:center
+}
+
+.bell-count[hidden],.nav-badge[hidden]{display:none}
 
 .layout{
   display:flex;
-  min-height:calc(100vh - 58px)
+  min-height:calc(100vh - var(--topbar-h))
 }
 
 .sidebar{
-  width:250px;
+  width:270px;
   flex-shrink:0;
   background:white;
   border-right:1px solid var(--border);
@@ -89,7 +115,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .sidebar-title{
   padding:8px 12px;
   color:var(--muted);
-  font-size:12px;
+  font-size:14px;
   text-transform:uppercase;
   font-weight:700;
   letter-spacing:.8px
@@ -97,7 +123,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 
 .nav-link{
   display:block;
-  padding:11px 12px;
+  padding:12px;
   margin:3px 0;
   border-radius:8px;
   cursor:pointer;
@@ -105,7 +131,8 @@ button,a{-webkit-tap-highlight-color:transparent}
   background:transparent;
   border:0;
   text-align:left;
-  width:100%
+  width:100%;
+  font-size:16px
 }
 
 .nav-link:hover,.nav-link.active{
@@ -115,6 +142,21 @@ button,a{-webkit-tap-highlight-color:transparent}
 }
 
 .nav-link.logout{color:var(--danger)}
+
+.nav-badge{
+  display:inline-block;
+  margin-left:6px;
+  min-width:22px;
+  padding:0 7px;
+  border-radius:11px;
+  background:var(--danger);
+  color:white;
+  font-size:13px;
+  font-weight:700;
+  line-height:22px;
+  text-align:center;
+  vertical-align:middle
+}
 
 main{
   flex:1;
@@ -126,12 +168,13 @@ main{
 
 .welcome h1{
   margin:0 0 5px;
-  font-size:26px;
+  font-size:27px;
   font-weight:800
 }
 
 .welcome p{
   margin:0;
+  font-size:17px;
   color:var(--muted)
 }
 
@@ -142,7 +185,7 @@ main{
   border-radius:8px;
   background:#eaf0f9;
   color:var(--primary);
-  font-size:17px;
+  font-size:18px;
   font-weight:800;
   overflow-wrap:anywhere
 }
@@ -152,11 +195,12 @@ main{
 
 .section-heading{
   margin:0 0 6px;
-  font-size:23px
+  font-size:25px
 }
 
 .section-description{
   color:var(--muted);
+  font-size:16px;
   margin:0 0 20px
 }
 
@@ -177,18 +221,18 @@ main{
 
 .stat-label{
   color:var(--muted);
-  font-size:13px
+  font-size:15px
 }
 
 .stat-value{
-  font-size:27px;
+  font-size:29px;
   font-weight:800;
   margin-top:4px;
   color:var(--primary)
 }
 
 .card{margin-bottom:18px}
-.card h3{margin:0 0 10px}
+.card h3{margin:0 0 10px;font-size:19px}
 
 .country-list{
   display:grid;
@@ -210,6 +254,7 @@ main{
   gap:10px;
   cursor:pointer;
   font-weight:700;
+  font-size:17px;
   background:white;
   border:0;
   width:100%;
@@ -249,6 +294,7 @@ main{
 .level-link{
   display:block;
   color:var(--primary);
+  font-size:17px;
   font-weight:700
 }
 
@@ -257,6 +303,7 @@ main{
 .level-link small{
   display:block;
   color:var(--muted);
+  font-size:15px;
   font-weight:400;
   margin-top:4px
 }
@@ -271,10 +318,12 @@ main{
 .button{
   border:0;
   border-radius:8px;
-  padding:11px 15px;
+  padding:12px 16px;
+  min-height:46px;
   cursor:pointer;
   background:var(--primary);
   color:white;
+  font-size:16px;
   font-weight:700;
   display:inline-block;
   text-align:center
@@ -285,6 +334,7 @@ main{
 .button.secondary{background:#edf1f7;color:var(--primary)}
 .button.gold{background:var(--accent);color:#1f2937}
 .button.full{width:100%}
+.button.small{padding:9px 13px;min-height:40px;font-size:15px}
 
 .form-group{margin-bottom:15px}
 
@@ -292,7 +342,7 @@ main{
   display:block;
   margin-bottom:6px;
   font-weight:700;
-  font-size:14px
+  font-size:16px
 }
 
 .form-group input{
@@ -301,7 +351,8 @@ main{
   border:1px solid #cfd8e5;
   border-radius:8px;
   background:white;
-  min-height:44px
+  font-size:16px;
+  min-height:48px
 }
 
 .form-group input:focus{
@@ -311,7 +362,7 @@ main{
 
 .status-message{
   margin:12px 0;
-  font-size:14px;
+  font-size:16px;
   overflow-wrap:anywhere
 }
 
@@ -337,7 +388,7 @@ th,td{
   padding:12px 10px;
   border-bottom:1px solid var(--border);
   text-align:left;
-  font-size:14px;
+  font-size:16px;
   white-space:nowrap
 }
 
@@ -349,8 +400,8 @@ th{
 .pill{
   display:inline-block;
   border-radius:20px;
-  padding:4px 9px;
-  font-size:12px;
+  padding:4px 10px;
+  font-size:14px;
   background:#edf1f7;
   color:var(--text)
 }
@@ -360,9 +411,15 @@ th{
   color:var(--success)
 }
 
+.pill.gold{
+  background:#fdf3d0;
+  color:#7a5b00
+}
+
 .empty-state{
   text-align:center;
   color:var(--muted);
+  font-size:16px;
   padding:25px 12px
 }
 
@@ -382,7 +439,7 @@ th{
 }
 
 .recent-attempts-preview.expanded{max-height:420px}
-.recent-attempts-preview table{min-width:650px}
+.recent-attempts-preview table{min-width:760px}
 
 .recent-attempts-actions{
   display:flex;
@@ -399,7 +456,7 @@ th{
 }
 
 .results-preview.expanded{max-height:420px}
-.results-preview table{min-width:650px}
+.results-preview table{min-width:760px}
 
 .results-preview th,.results-preview td{
   padding:10px 9px
@@ -416,7 +473,7 @@ th{
 
 .results-count{
   color:var(--muted);
-  font-size:13px
+  font-size:15px
 }
 
 .pricing-note{
@@ -427,12 +484,119 @@ th{
   margin-top:12px
 }
 
+.pricing-note p{margin:6px 0 12px;font-size:16px}
+
+/* PLANS */
+
+.plan-summary{
+  font-size:17px;
+  line-height:1.7
+}
+
+.plan-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+  margin-bottom:18px
+}
+
+.plan-card{
+  display:flex;
+  flex-direction:column;
+  background:white;
+  border:1px solid var(--border);
+  border-top:5px solid var(--primary);
+  border-radius:12px;
+  padding:20px;
+  box-shadow:0 3px 10px #173b6908
+}
+
+.plan-card.premium{border-top-color:var(--accent)}
+
+.plan-card.current{box-shadow:0 0 0 2px var(--primary)}
+
+.plan-card h3{
+  margin:0 0 4px;
+  font-size:22px
+}
+
+.plan-price{
+  color:var(--muted);
+  font-size:16px;
+  margin:0 0 14px
+}
+
+.plan-features{
+  list-style:none;
+  padding:0;
+  margin:0 0 18px
+}
+
+.plan-features li{
+  position:relative;
+  padding:6px 0 6px 28px;
+  font-size:16px
+}
+
+.plan-features li::before{
+  content:"✓";
+  position:absolute;
+  left:2px;
+  top:6px;
+  color:var(--success);
+  font-weight:800
+}
+
+.plan-card .plan-action{margin-top:auto}
+
+/* NOTIFICATIONS */
+
+.notice-item{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px;
+  margin-top:12px;
+  background:white
+}
+
+.notice-item.unread{
+  border-left:5px solid var(--accent);
+  background:#fffdf7
+}
+
+.notice-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap
+}
+
+.notice-top strong{font-size:17px}
+
+.notice-date{
+  color:var(--muted);
+  font-size:14px
+}
+
+.notice-body{
+  margin:8px 0 0;
+  overflow-wrap:anywhere;
+  white-space:pre-wrap
+}
+
+.notice-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px
+}
+
 .footer{
   margin-top:28px;
   padding:18px;
   text-align:center;
   color:var(--muted);
-  font-size:13px
+  font-size:15px
 }
 
 .mobile-backdrop{display:none}
@@ -440,7 +604,7 @@ th{
 @media(max-width:800px){
   .sidebar{
     position:fixed;
-    top:58px;
+    top:var(--topbar-h);
     bottom:0;
     left:0;
     z-index:35;
@@ -457,18 +621,18 @@ th{
   .mobile-backdrop.open{
     display:block;
     position:fixed;
-    inset:58px 0 0;
+    inset:var(--topbar-h) 0 0;
     z-index:30;
     background:#00000045
   }
 
   main{padding:18px 13px}
 
-  .stats-grid,.form-grid,.level-list{
+  .stats-grid,.form-grid,.level-list,.plan-grid{
     grid-template-columns:1fr
   }
 
-  .welcome h1{font-size:23px}
+  .welcome h1{font-size:24px}
   .top-link{display:none}
 }
 
@@ -492,6 +656,11 @@ th{
   <div class="top-actions">
     <a class="top-link" href="dashboard.html">Return Home</a>
     <a class="top-link" href="dashboard.html">Dashboard</a>
+
+    <button class="bell-button" id="bellButton" type="button"
+      aria-label="Notifications">
+      🔔<span class="bell-count" id="bellCount" hidden>0</span>
+    </button>
 
     <button class="menu-button" id="menuButton" type="button"
       aria-label="Toggle navigation" aria-expanded="false">
@@ -539,20 +708,20 @@ th{
   </button>
 
   <button class="nav-link" data-section="notifications" type="button">
-    🔔 Notifications
+    🔔 Notifications <span class="nav-badge" id="navNotifCount" hidden>0</span>
   </button>
 
   <button class="nav-link" data-section="account" type="button">
     👤 My Account
   </button>
 
-  <button class="nav-link" data-section="about" type="button">
+  <a class="nav-link" href="./about.html">
     ℹ️ About
-  </button>
+  </a>
 
-  <button class="nav-link" data-section="contact" type="button">
+  <a class="nav-link" href="./contact.html">
     ✉️ Contact
-  </button>
+  </a>
 
   <div class="sidebar-title">Account</div>
 
@@ -795,38 +964,31 @@ th{
   <h2 class="section-heading">Pricing and Subscription</h2>
 
   <p class="section-description">
-    Information about SAINTIG EXAMS access and subscription plans.
+    Choose the plan that fits how you practise.
   </p>
 
   <div class="card">
+    <h3>Your Plan</h3>
 
-    <h3>Your Subscription</h3>
+    <div id="planSummary" class="plan-summary">
+      Loading your plan…
+    </div>
+  </div>
 
-    <p id="subscriptionStatus">
-      Subscription management is not active yet.
+  <div class="plan-grid" id="planCards"></div>
+
+  <div class="pricing-note">
+
+    <strong>How to upgrade to Premium</strong>
+
+    <p class="muted">
+      Contact us to upgrade your account. Once your payment is confirmed,
+      your Premium plan is activated. Online payment will be available soon.
     </p>
 
-    <div class="pricing-note">
-
-      <strong>Free access</strong>
-
-      <p class="muted">
-        You can use the examination features currently made available
-        on the platform without a subscription payment.
-      </p>
-
-    </div>
-
-    <div class="pricing-note">
-
-      <strong>Premium subscription</strong>
-
-      <p class="muted">
-        Premium plan details, prices and payment options will be displayed
-        here when the subscription service is activated.
-      </p>
-
-    </div>
+    <a class="button gold" href="./contact.html">
+      Contact Us to Upgrade
+    </a>
 
   </div>
 
@@ -836,10 +998,25 @@ th{
 
   <h2 class="section-heading">Notifications</h2>
 
+  <p class="section-description">
+    Messages about your examinations, results and account.
+  </p>
+
   <div class="card">
-    <div class="empty-state">
-      Notifications will appear here when the notification feature is connected.
+
+    <div class="results-actions">
+      <h3>Your Notifications</h3>
+
+      <button class="button secondary small" id="markAllRead"
+        type="button" hidden>
+        Mark All as Read
+      </button>
     </div>
+
+    <div id="notificationsContent" class="empty-state">
+      Loading notifications…
+    </div>
+
   </div>
 
 </section>
@@ -915,43 +1092,6 @@ th{
 
 </section>
 
-<section class="section" id="about">
-
-  <h2 class="section-heading">About SAINTIG EXAMS</h2>
-
-  <div class="card">
-
-    <p>
-      SAINTIG EXAMS is an examination platform designed to provide learners
-      with access to examinations across supported countries, education levels
-      and subjects.
-    </p>
-
-    <p>Developed by SAINT IG DIGITAL.</p>
-
-  </div>
-
-</section>
-
-<section class="section" id="contact">
-
-  <h2 class="section-heading">Contact</h2>
-
-  <div class="card">
-
-    <p>
-      For assistance with your account or examination access, use the official
-      SAINTIG EXAMS support channel when available.
-    </p>
-
-    <p class="muted">
-      Official contact details can be added here later.
-    </p>
-
-  </div>
-
-</section>
-
 <footer class="footer">
 
   © <span id="currentYear"></span> SAINTIG EXAMS · SAINT IG DIGITAL
@@ -985,9 +1125,48 @@ let educationRealtimeChannel = null;
 let educationReloadTimer = null;
 let educationLoadVersion = 0;
 
+let notificationsCache = [];
+let notificationsChannel = null;
+
+let subscription = { state:"loading", expiresAt:null };
+
 let isSigningOut = false;
 
 $("currentYear").textContent = new Date().getFullYear();
+
+/* =========================================
+   PLAN DETAILS
+   If the admin changes questions or minutes,
+   update the numbers here.
+========================================= */
+
+const PLAN_INFO = {
+
+  free:{
+    name:"Free",
+    price:"No payment needed",
+    features:[
+      "50 questions per examination",
+      "45 minutes duration",
+      "1 attempt per day",
+      "Access to approved Free examinations",
+      "Questions are randomized from the approved question bank"
+    ]
+  },
+
+  premium:{
+    name:"Premium",
+    price:"Contact us for the current price",
+    features:[
+      "100 questions per examination",
+      "90 minutes duration",
+      "Unlimited attempts while your subscription is active",
+      "Access to Premium examinations",
+      "Questions are randomized from the approved question bank"
+    ]
+  }
+
+};
 
 /* =========================================
    GENERAL HELPERS
@@ -1023,6 +1202,20 @@ function formatDate(value) {
     day:"numeric",
     hour:"2-digit",
     minute:"2-digit"
+  });
+}
+
+function formatDay(value) {
+  if (!value) return "—";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "—";
+
+  return date.toLocaleDateString(undefined,{
+    year:"numeric",
+    month:"long",
+    day:"numeric"
   });
 }
 
@@ -1241,8 +1434,11 @@ document.querySelectorAll(".nav-link[data-section]")
   Teacher/School examination and results access
   are handled by school-exam-access.html.
 
-  The two sidebar links are ordinary navigation
-  links and open that separate page directly.
+  About and Contact open their own pages
+  (about.html and contact.html).
+
+  These sidebar links are ordinary navigation
+  links and open those pages directly.
 */
 
 document.querySelectorAll("[data-go]")
@@ -1255,6 +1451,12 @@ document.querySelectorAll("[data-go]")
     });
 
   });
+
+$("bellButton").addEventListener("click",() => {
+
+  openSection("notifications");
+
+});
 
 /* =========================================
    PROFILE
@@ -1438,6 +1640,387 @@ $("passwordForm").addEventListener("submit",async event => {
   }
 
 });
+
+/* =========================================
+   SUBSCRIPTION (FREE / PREMIUM)
+========================================= */
+
+function renderPricing() {
+
+  const state = subscription.state;
+
+  let summary;
+
+  if (state === "premium") {
+
+    summary = `
+      <span class="pill gold">⭐ Premium</span>
+      ${
+        subscription.expiresAt
+        ? "Active until <strong>" +
+          escapeHtml(formatDay(subscription.expiresAt)) +
+          "</strong>."
+        : "Your Premium plan is active."
+      }
+    `;
+
+  } else if (state === "free") {
+
+    summary = `
+      <span class="pill">Free</span>
+      You are on the Free plan. Upgrade to Premium for more questions,
+      more time and unlimited attempts.
+    `;
+
+  } else if (state === "error") {
+
+    summary =
+      "Your plan could not be loaded right now. Please refresh the page.";
+
+  } else {
+
+    summary = "Loading your plan…";
+
+  }
+
+  $("planSummary").innerHTML = summary;
+
+  const cards = ["free","premium"].map(key => {
+
+    const plan = PLAN_INFO[key];
+
+    const isCurrent = state === key;
+
+    let action = "";
+
+    if (isCurrent) {
+
+      action = `
+        <span class="pill success">Your current plan</span>
+      `;
+
+    } else if (key === "premium" && state !== "premium") {
+
+      action = `
+        <a class="button gold full" href="./contact.html">
+          Upgrade to Premium
+        </a>
+      `;
+
+    }
+
+    return `
+
+      <div class="plan-card ${key}${isCurrent ? " current" : ""}">
+
+        <h3>${key === "premium" ? "⭐ " : ""}${escapeHtml(plan.name)}</h3>
+
+        <p class="plan-price">${escapeHtml(plan.price)}</p>
+
+        <ul class="plan-features">
+          ${plan.features.map(feature =>
+            `<li>${escapeHtml(feature)}</li>`
+          ).join("")}
+        </ul>
+
+        <div class="plan-action">${action}</div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+  $("planCards").innerHTML = cards;
+
+}
+
+async function loadSubscription() {
+
+  try {
+
+    const {data,error} = await supabase
+      .from("student_subscriptions")
+      .select("plan,status,expires_at")
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
+
+    if (error) throw error;
+
+    const active =
+      data &&
+      data.plan === "premium" &&
+      data.status === "active" &&
+      (
+        !data.expires_at ||
+        new Date(data.expires_at) > new Date()
+      );
+
+    subscription = active
+
+      ? {state:"premium",expiresAt:data.expires_at}
+
+      : {state:"free",expiresAt:null};
+
+  } catch(error) {
+
+    console.error("Subscription query:",error);
+
+    subscription = {state:"error",expiresAt:null};
+
+  }
+
+  renderPricing();
+
+}
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+function isSafeLink(url) {
+  return /^(https:\/\/|\.?\/?[\w\-./?=&%#]+$)/i.test(
+    String(url || "")
+  );
+}
+
+function renderNotifications() {
+
+  const unread = notificationsCache
+    .filter(item => !item.read_at).length;
+
+  $("bellCount").textContent = unread > 99 ? "99+" : unread;
+  $("bellCount").hidden = unread === 0;
+
+  $("navNotifCount").textContent = unread > 99 ? "99+" : unread;
+  $("navNotifCount").hidden = unread === 0;
+
+  $("markAllRead").hidden = unread === 0;
+
+  const container = $("notificationsContent");
+
+  if (!notificationsCache.length) {
+
+    container.className = "empty-state";
+
+    container.innerHTML =
+      "You have no notifications yet.";
+
+    return;
+  }
+
+  container.className = "";
+
+  container.innerHTML = notificationsCache.map(item => {
+
+    const isUnread = !item.read_at;
+
+    return `
+
+      <div class="notice-item${isUnread ? " unread" : ""}">
+
+        <div class="notice-top">
+          <strong>${escapeHtml(item.title)}</strong>
+          <span class="notice-date">
+            ${escapeHtml(formatDate(item.created_at))}
+          </span>
+        </div>
+
+        ${
+          item.body
+          ? `<p class="notice-body">${escapeHtml(item.body)}</p>`
+          : ""
+        }
+
+        <div class="notice-actions">
+
+          ${
+            item.link && isSafeLink(item.link)
+            ? `<a class="button small" href="${escapeHtml(item.link)}">Open</a>`
+            : ""
+          }
+
+          ${
+            isUnread
+            ? `<button class="button secondary small" type="button"
+                data-read-id="${escapeHtml(item.id)}">Mark as read</button>`
+            : ""
+          }
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+async function loadNotifications() {
+
+  try {
+
+    const {data,error} = await supabase
+      .from("notifications")
+      .select("id,kind,title,body,link,created_at,read_at")
+      .eq("user_id",currentUser.id)
+      .order("created_at",{ascending:false})
+      .limit(50);
+
+    if (error) throw error;
+
+    notificationsCache = data || [];
+
+    renderNotifications();
+
+  } catch(error) {
+
+    console.error("Notifications query:",error);
+
+    const container = $("notificationsContent");
+
+    container.className = "empty-state";
+
+    container.textContent =
+      "Notifications could not be loaded right now.";
+
+  }
+
+}
+
+async function markNotificationsRead(ids) {
+
+  if (!ids.length) return;
+
+  const now = new Date().toISOString();
+
+  const {error} = await supabase
+    .from("notifications")
+    .update({read_at:now})
+    .in("id",ids)
+    .eq("user_id",currentUser.id);
+
+  if (error) throw error;
+
+  notificationsCache.forEach(item => {
+
+    if (ids.includes(item.id)) {
+      item.read_at = now;
+    }
+
+  });
+
+  renderNotifications();
+
+}
+
+$("notificationsContent").addEventListener("click",async event => {
+
+  const button = event.target.closest("[data-read-id]");
+
+  if (!button) return;
+
+  button.disabled = true;
+
+  try {
+
+    await markNotificationsRead([button.dataset.readId]);
+
+  } catch(error) {
+
+    console.error("Mark notification read:",error);
+
+    button.disabled = false;
+
+    alert("Could not update the notification. Please try again.");
+
+  }
+
+});
+
+$("markAllRead").addEventListener("click",async () => {
+
+  const ids = notificationsCache
+    .filter(item => !item.read_at)
+    .map(item => item.id);
+
+  const button = $("markAllRead");
+
+  button.disabled = true;
+
+  try {
+
+    await markNotificationsRead(ids);
+
+  } catch(error) {
+
+    console.error("Mark all notifications read:",error);
+
+    alert("Could not update the notifications. Please try again.");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+function subscribeToNotifications() {
+
+  if (notificationsChannel) {
+
+    supabase.removeChannel(notificationsChannel);
+
+  }
+
+  notificationsChannel = supabase
+    .channel("student-notifications")
+
+    .on(
+      "postgres_changes",
+      {
+        event:"INSERT",
+        schema:"public",
+        table:"notifications",
+        filter:"user_id=eq." + currentUser.id
+      },
+      payload => {
+
+        notificationsCache.unshift(payload.new);
+
+        renderNotifications();
+
+      }
+    )
+
+    .on(
+      "postgres_changes",
+      {
+        event:"UPDATE",
+        schema:"public",
+        table:"notifications",
+        filter:"user_id=eq." + currentUser.id
+      },
+      payload => {
+
+        notificationsCache = notificationsCache.map(item =>
+
+          item.id === payload.new.id
+            ? payload.new
+            : item
+
+        );
+
+        renderNotifications();
+
+      }
+    )
+
+    .subscribe();
+
+}
 
 /* =========================================
    COUNTRIES AND EDUCATION LEVELS
@@ -2316,6 +2899,14 @@ window.addEventListener("pagehide",() => {
 
   }
 
+  if (notificationsChannel) {
+
+    supabase.removeChannel(
+      notificationsChannel
+    );
+
+  }
+
 });
 
 /* =========================================
@@ -2348,14 +2939,20 @@ async function initializeDashboard() {
 
       loadEducationOptions(),
 
-      loadAttempts()
+      loadAttempts(),
+
+      loadSubscription(),
+
+      loadNotifications()
 
     ]);
 
     const names = [
       "Profile",
       "Education options",
-      "Exam history and results"
+      "Exam history and results",
+      "Subscription",
+      "Notifications"
     ];
 
     results.forEach((result,index) => {
@@ -2423,6 +3020,8 @@ async function initializeDashboard() {
     });
 
     subscribeToEducationChanges();
+
+    subscribeToNotifications();
 
   } catch(error) {
 
