@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Subscription Plans | SAINTIG EXAMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --navy:#14243a;
+  --gold:#d4af37;
+  --paper:#f5f7fa;
+  --ink:#1e293b;
+  --muted:#64748b;
+  --line:#e5e9ef;
+  --ok:#16834a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+
+header{
+  background:var(--navy);color:#fff;padding:12px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  border-bottom:4px solid var(--gold)
+}
+.brand{font-size:20px;font-weight:800;letter-spacing:.4px}
+.brand span{color:var(--gold)}
+.back{
+  border:1px solid #ffffff55;background:none;color:#fff;border-radius:8px;
+  padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:16px
+}
+
+main{max-width:1100px;margin:auto;padding:26px 16px 10px}
+h1{font-size:30px;color:var(--navy);margin:0 0 6px}
+.muted{color:var(--muted)}
+
+.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:16px}
+.status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
+.status.info{display:block;background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:13px;
+  padding:22px;box-shadow:0 7px 22px #14243a0b;margin:20px 0
+}
+.card h2{font-size:21px;color:var(--navy);margin:0 0 10px}
+.card p{margin:8px 0 0;font-size:16px}
+
+.pill{
+  display:inline-block;border-radius:25px;padding:6px 14px;font-size:15px;
+  font-weight:bold;background:#fff8df;color:#795d0c;border:1px solid #f0df9f
+}
+.pill.ok{background:#e8f7ee;color:var(--ok);border-color:#c8ebd2}
+
+.plan-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;margin:20px 0
+}
+.plan-card{
+  display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-top:5px solid var(--navy);border-radius:13px;padding:22px;
+  box-shadow:0 7px 22px #14243a0b
+}
+.plan-card.top{border-top-color:var(--gold)}
+.plan-card.current{box-shadow:0 0 0 2px var(--gold)}
+.plan-card h3{font-size:23px;margin:0 0 4px;color:var(--navy)}
+.price{font-size:20px;font-weight:800;color:var(--navy);margin:0 0 14px}
+.price small{font-size:15px;font-weight:400;color:var(--muted)}
+.features{list-style:none;padding:0;margin:0 0 18px}
+.features li{position:relative;padding:6px 0 6px 28px;font-size:16px}
+.features li::before{
+  content:"✓";position:absolute;left:2px;top:6px;color:var(--ok);font-weight:800
+}
+.plan-action{margin-top:auto}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;width:100%;
+  min-height:50px;padding:12px 16px;border-radius:9px;font-weight:bold;
+  font-size:16px;border:0;cursor:pointer
+}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.gold:hover{background:#e6c65d}
+
+.how{border-left:5px solid var(--gold)}
+.how .btn{max-width:340px;margin-top:14px}
+
+footer{text-align:center;color:#8995a3;font-size:15px;padding:30px 10px 26px}
+footer a{color:var(--navy);font-weight:bold;margin:0 8px}
+
+@media(max-width:600px){
+  h1{font-size:27px}
+  .card,.plan-card{padding:18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
+  <button class="back" id="backBtn" type="button">← Dashboard</button>
+</header>
+
+<main>
+
+  <h1>Subscription Plans</h1>
+  <div class="muted">Choose the package that fits your school.</div>
+
+  <div class="status" id="statusMessage"></div>
+
+  <section class="card">
+    <h2>Your Plan</h2>
+    <div id="planSummary">Loading your plan…</div>
+  </section>
+
+  <div class="plan-grid" id="planCards"></div>
+
+  <section class="card how">
+    <h2>How to upgrade</h2>
+    <p class="muted">
+      Contact us to upgrade your package. Once your payment is confirmed,
+      your new package is activated and you will receive a notification.
+      Online payment will be available soon.
+    </p>
+    <a class="btn gold" href="contact.html">Contact Us to Upgrade</a>
+  </section>
+
+</main>
+
+<footer>
+  <a href="about.html">About</a> ·
+  <a href="contact.html">Contact</a> ·
+  <a href="school-dashboard.html">Dashboard</a>
+</footer>
+
+<script>
+const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+const LOGIN_PAGE="school-login.html";
+const DASHBOARD="school-dashboard.html";
+
+const $=id=>document.getElementById(id);
+
+const FIELDS=[
+  {limit:"max_active_students",custom:"custom_max_active_students",
+   text:n=>"Up to "+fmt(n)+" active students"},
+  {limit:"max_subjects",custom:"custom_max_subjects",
+   text:n=>"Up to "+fmt(n)+" subjects"},
+  {limit:"max_examinations",custom:"custom_max_examinations",
+   text:n=>"Up to "+fmt(n)+" examinations"},
+  {limit:"max_stored_questions",custom:"custom_max_stored_questions",
+   text:n=>"Up to "+fmt(n)+" stored questions"},
+  {limit:"max_questions_per_exam",custom:"custom_max_questions_per_exam",
+   text:n=>"Up to "+fmt(n)+" questions per examination"},
+  {limit:"max_exam_duration_minutes",custom:"custom_max_exam_duration_minutes",
+   text:n=>"Up to "+fmt(n)+" minutes per examination"}
+];
+
+const BILLING={
+  week:"per week",month:"per month",term:"per term",
+  year:"per year",one_time:"one-time"
+};
+
+function esc(value){
+  return String(value??"").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function fmt(value){
+  const n=Number(value);
+  return Number.isFinite(n)?n.toLocaleString():"—";
+}
+
+function message(text,type="info"){
+  const el=$("statusMessage");
+  el.textContent=text;
+  el.className="status "+type;
+}
+
+function hasValue(v){
+  return v!==null&&v!==undefined&&v!=="";
+}
+
+function priceHtml(planName,row){
+  if(!row||!hasValue(row.price_amount)){
+    return planName.toLowerCase()==="free"
+      ?"Free"
+      :"Price to be announced";
+  }
+
+  const amount=Number(row.price_amount);
+
+  if(amount===0)return "Free";
+
+  let money;
+
+  try{
+    money=new Intl.NumberFormat("en-NG",{
+      style:"currency",
+      currency:row.currency||"NGN",
+      maximumFractionDigits:amount%1===0?0:2
+    }).format(amount);
+  }catch{
+    money=(row.currency||"NGN")+" "+amount.toLocaleString();
+  }
+
+  const period=BILLING[row.billing_period]||"";
+
+  return esc(money)+(period?" <small>"+esc(period)+"</small>":"");
+}
+
+function render(assignment,limits,prices){
+
+  const currentName=assignment?.package_name||"Free";
+  const currentKey=String(currentName).toLowerCase();
+
+  const ordered=[...limits].sort((a,b)=>
+    Number(a.max_active_students)-Number(b.max_active_students)
+  );
+
+  const currentIndex=ordered.findIndex(
+    p=>String(p.package_name).toLowerCase()===currentKey
+  );
+
+  const hasCustom=!!assignment&&FIELDS.some(f=>hasValue(assignment[f.custom]));
+
+  $("planSummary").innerHTML=
+    '<span class="pill">'+esc(currentName)+' Package</span>'+
+    '<p class="muted">Your account is on the '+esc(currentName)+' package.'+
+    (hasCustom
+      ?" Your administrator has set custom limits for your account. They are shown on your current plan card below."
+      :"")+
+    '</p>';
+
+  $("planCards").innerHTML=ordered.map((plan,index)=>{
+
+    const isCurrent=index===currentIndex;
+    const name=String(plan.package_name);
+
+    const items=FIELDS.map(f=>{
+      let value=plan[f.limit];
+
+      if(isCurrent&&assignment&&hasValue(assignment[f.custom])){
+        value=assignment[f.custom];
+      }
+
+      return "<li>"+esc(f.text(value))+"</li>";
+    }).join("");
+
+    let action="";
+
+    if(isCurrent){
+      action='<span class="pill ok">Your current plan</span>';
+    }else if(index>currentIndex&&name.toLowerCase()!=="free"){
+      action='<a class="btn gold" href="contact.html">Contact Us to Upgrade</a>';
+    }
+
+    const classes="plan-card"+
+      (index===ordered.length-1?" top":"")+
+      (isCurrent?" current":"");
+
+    return (
+      '<div class="'+classes+'">'+
+        "<h3>"+esc(name)+"</h3>"+
+        '<p class="price">'+priceHtml(name,prices[name.toLowerCase()])+"</p>"+
+        '<ul class="features">'+items+"</ul>"+
+        '<div class="plan-action">'+action+"</div>"+
+      "</div>"
+    );
+
+  }).join("");
+}
+
+async function init(){
+
+  if(!window.supabase?.createClient){
+    message("Supabase library did not load. Check your internet connection and refresh.","error");
+    return;
+  }
+
+  const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+  });
+
+  const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+
+  if(sessionError||!sessionData.session){
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  const {data:account,error:accountError}=await sb
+    .from("school_accounts")
+    .select("id,account_name,status")
+    .eq("user_id",sessionData.session.user.id)
+    .maybeSingle();
+
+  if(accountError){
+    message("Unable to load your account: "+accountError.message,"error");
+    return;
+  }
+
+  if(!account){
+    message("No Teacher/School account is linked to this login.","error");
+    return;
+  }
+
+  if(account.status!=="active"){
+    await sb.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  const [assignRes,limitsRes,priceRes]=await Promise.all([
+
+    sb.from("school_account_packages")
+      .select(`
+        package_name,
+        custom_max_active_students,
+        custom_max_subjects,
+        custom_max_stored_questions,
+        custom_max_examinations,
+        custom_max_exam_duration_minutes,
+        custom_max_questions_per_exam
+      `)
+      .eq("school_account_id",account.id)
+      .maybeSingle(),
+
+    sb.from("school_package_limits").select("*"),
+
+    sb.from("plan_prices")
+      .select("plan_name,price_amount,currency,billing_period")
+      .eq("audience","school")
+
+  ]);
+
+  const problem=assignRes.error||limitsRes.error;
+
+  if(problem){
+    message("Plan information could not be loaded: "+problem.message,"error");
+    return;
+  }
+
+  const prices={};
+
+  if(priceRes.error){
+    console.error("Plan prices:",priceRes.error);
+  }else{
+    (priceRes.data||[]).forEach(row=>{
+      prices[String(row.plan_name).toLowerCase()]=row;
+    });
+  }
+
+  render(assignRes.data,limitsRes.data||[],prices);
+}
+
+$("backBtn").addEventListener("click",()=>{location.href=DASHBOARD;});
+
+init();
+</script>
+
+</body>
+</html>
