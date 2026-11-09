@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -322,7 +321,7 @@ tbody tr:hover{background:#fbfcfe}
         </div>
         <div class="field full">
           <label id="membershipRecordLabel">Select record *</label>
-          <select id="membershipRecord" required><option value="">Select a record</option></select>
+          <select id="membershipRecord" required><option value="">Select a class first</option></select>
         </div>
       </div>
       <div class="modal-footer">
@@ -899,7 +898,13 @@ async function restoreClass(id) {
   } catch (error) { toast(error.message); }
 }
 
-async function openMembershipModal(type) {
+/*
+ * ADD STUDENT / ATTACH EXAMINATION
+ * The record list only shows students or examinations that are NOT
+ * already in the selected class. They still appear for other classes
+ * they have not been added to.
+ */
+function openMembershipModal(type) {
   membershipType = type;
   document.getElementById("membershipForm").reset();
 
@@ -908,29 +913,55 @@ async function openMembershipModal(type) {
   document.getElementById("membershipRecordLabel").textContent =
     type === "student" ? "Select Student *" : "Select Examination *";
 
-  const recordSelect = document.getElementById("membershipRecord");
-  const records = type === "student" ? allStudents : allExams;
-
-  recordSelect.innerHTML = '<option value="">Select a record</option>';
-
-  records.forEach(item => {
-    const id = item.id;
-    const name = type === "student" ? item.full_name : item.title;
-    const code = type === "student" ? item.student_id : item.examination_code;
-
-    recordSelect.innerHTML += `
-      <option value="${escapeHTML(id)}">
-        ${escapeHTML(name || "Record")} — ${escapeHTML(code || id)}
-      </option>`;
-  });
-
   document.getElementById("membershipNotice").textContent =
     type === "student"
-      ? "Select an existing registered student. This adds class membership; it does not create a new student account."
-      : "Select an existing examination. This attaches it to the selected class without creating a duplicate examination.";
+      ? "Select an existing registered student. This adds class membership; it does not create a new student account. Students already in the selected class are not listed."
+      : "Select an existing examination. This attaches it to the selected class without creating a duplicate examination. Examinations already attached to the selected class are not listed.";
 
+  populateMembershipRecords();
   openModal("membershipModal");
 }
+
+function populateMembershipRecords() {
+  const type = membershipType;
+  const classId = document.getElementById("membershipClass").value;
+  const recordSelect = document.getElementById("membershipRecord");
+
+  if (!classId) {
+    recordSelect.innerHTML = '<option value="">Select a class first</option>';
+    return;
+  }
+
+  /* Records already linked to this class (active or not). */
+  const taken = new Set(
+    classMemberships
+      .filter(m => String(m.class_database_id) === String(classId))
+      .map(m => String(type === "student" ? m.school_student_id : m.examination_id))
+      .filter(id => id && id !== "undefined" && id !== "null")
+  );
+
+  const records = (type === "student" ? allStudents : allExams)
+    .filter(item => !taken.has(String(item.id)));
+
+  if (!records.length) {
+    recordSelect.innerHTML = type === "student"
+      ? '<option value="">All your students are already in this class</option>'
+      : '<option value="">All your examinations are already attached to this class</option>';
+    return;
+  }
+
+  recordSelect.innerHTML = '<option value="">Select a record</option>' +
+    records.map(item => {
+      const name = type === "student" ? item.full_name : item.title;
+      const code = type === "student" ? item.student_id : item.examination_code;
+
+      return `<option value="${escapeHTML(item.id)}">
+        ${escapeHTML(name || "Record")} — ${escapeHTML(code || item.id)}
+      </option>`;
+    }).join("");
+}
+
+document.getElementById("membershipClass").addEventListener("change", populateMembershipRecords);
 
 document.getElementById("membershipForm").addEventListener("submit", async event => {
   event.preventDefault();
@@ -1076,6 +1107,13 @@ async function loadArchive() {
   }
 }
 
+/* The archive list does not include class details, so look them up here. */
+function classOf(item) {
+  return item.class ||
+    allClasses.find(c => String(c.id) === String(item.school_class_id)) ||
+    {};
+}
+
 function renderArchive() {
   const classId = document.getElementById("archiveClassFilter").value;
   const session = document.getElementById("archiveSessionFilter").value;
@@ -1109,7 +1147,7 @@ function renderArchive() {
   }
 
   const results = archivedResults.filter(item => {
-    const cls = item.class || {};
+    const cls = classOf(item);
     if (classId !== "all" && String(item.school_class_id) !== String(classId)) return false;
     if (session !== "all" && cls.academic_session !== session) return false;
     if (period !== "all" && cls.academic_period !== period) return false;
@@ -1122,16 +1160,19 @@ function renderArchive() {
   } else {
     resultArea.innerHTML = `<div class="table-wrap"><table><thead><tr>
       <th>CLASS</th><th>RESULT TYPE</th><th>VERSION</th><th>STATUS</th><th>ARCHIVED DATE</th><th>ACADEMIC SESSION</th><th>PERIOD</th>
-      </tr></thead><tbody>` + results.map(item => `
+      </tr></thead><tbody>` + results.map(item => {
+        const cls = classOf(item);
+        return `
       <tr>
-        <td><strong>${escapeHTML(item.class?.class_name || "Class")}</strong><div class="muted">${escapeHTML(item.class?.class_id || "")}</div></td>
+        <td><strong>${escapeHTML(cls.class_name || "Class")}</strong><div class="muted">${escapeHTML(cls.class_id || "")}</div></td>
         <td>${escapeHTML(item.result_type || "—")}</td>
         <td>${escapeHTML(item.version_number ?? "—")}</td>
         <td>${statusBadge("archived",true)}</td>
         <td>${escapeHTML(item.archived_at ? new Date(item.archived_at).toLocaleDateString() : "—")}</td>
-        <td>${escapeHTML(item.class?.academic_session || "—")}</td>
-        <td>${escapeHTML(item.class?.academic_period || "—")}</td>
-      </tr>`).join("") + '</tbody></table></div>';
+        <td>${escapeHTML(cls.academic_session || "—")}</td>
+        <td>${escapeHTML(cls.academic_period || "—")}</td>
+      </tr>`;
+      }).join("") + '</tbody></table></div>';
   }
 }
 
