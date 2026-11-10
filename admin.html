@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,8 +57,8 @@ header {
   background:transparent;
   color:white;
   font-size:25px;
-  width:42px;
-  height:40px;
+  width:44px;
+  height:44px;
   border-radius:7px;
   cursor:pointer;
 }
@@ -70,7 +69,7 @@ header {
 }
 
 .sidebar {
-  width:260px;
+  width:270px;
   background:var(--navy);
   color:white;
   padding:18px 12px;
@@ -85,7 +84,7 @@ header {
   padding:13px 14px;
   margin-bottom:5px;
   border-radius:7px;
-  font-size:14px;
+  font-size:15px;
 }
 
 .sidebar a:hover,
@@ -113,13 +112,18 @@ header {
 
 .page-heading h1 {
   color:var(--navy);
-  font-size:24px;
+  font-size:26px;
   margin-bottom:7px;
 }
 
 .page-heading p {
   color:var(--muted);
-  font-size:14px;
+  font-size:15px;
+}
+
+.page-heading a {
+  color:var(--blue);
+  font-weight:bold;
 }
 
 .stats {
@@ -136,8 +140,12 @@ header {
   box-shadow:0 3px 12px #142b5208;
 }
 
+.card.wide {
+  grid-column:1 / -1;
+}
+
 .stat-name {
-  font-size:13px;
+  font-size:14px;
   color:var(--muted);
   margin-bottom:12px;
 }
@@ -149,9 +157,27 @@ header {
 }
 
 .stat-note {
-  font-size:11px;
+  font-size:13px;
   color:var(--muted);
   margin-top:8px;
+}
+
+.mini-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:4px;
+}
+
+.mini-value {
+  font-size:28px;
+  font-weight:bold;
+  color:var(--navy);
+}
+
+.mini-label {
+  font-size:14px;
+  color:var(--muted);
 }
 
 .section {
@@ -160,7 +186,7 @@ header {
 
 .section h2 {
   color:var(--navy);
-  font-size:18px;
+  font-size:19px;
   margin-bottom:13px;
 }
 
@@ -178,7 +204,7 @@ header {
   color:var(--navy);
   text-decoration:none;
   font-weight:bold;
-  font-size:14px;
+  font-size:15px;
   transition:.2s;
 }
 
@@ -194,7 +220,7 @@ header {
   background:white;
   border:1px solid var(--border);
   color:var(--muted);
-  font-size:13px;
+  font-size:14px;
 }
 
 .error {
@@ -210,7 +236,7 @@ header {
     position:fixed;
     top:65px;
     bottom:0;
-    left:-270px;
+    left:-290px;
     z-index:90;
     overflow-y:auto;
   }
@@ -254,7 +280,11 @@ header {
   }
 
   .stat-value {
-    font-size:25px;
+    font-size:26px;
+  }
+
+  .mini-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
   }
 
   .quick-links {
@@ -262,7 +292,7 @@ header {
   }
 
   .page-heading h1 {
-    font-size:21px;
+    font-size:22px;
   }
 }
 
@@ -299,11 +329,13 @@ header {
     <a href="register-exam.html">Register Examination</a>
     <a href="registered-users.html">Registered Users</a>
     <a href="paid-subscribers.html">Paid Subscribers</a>
-    <a href="results-reports.html">Results & Reports</a>
+    <a href="admin-notifications.html">Send Notifications</a>
+    <a href="results-reports.html">Results &amp; Reports</a>
     <a href="visitor-analytics.html">Visitor Analytics</a>
     <a href="ai-question-generator.html">AI Question Generator</a>
-    <a href="settings-security.html">Settings & Security</a>
+    <a href="settings-security.html">Settings &amp; Security</a>
     <a href="archived-records.html">Archived Records</a>
+    <a href="admin-account-settings.html">Admin Account Settings</a>
 
     <div class="public-link">
       <a href="index.html">View Public Website ↗</a>
@@ -318,7 +350,8 @@ header {
 
     <div class="page-heading">
       <h1>Dashboard Overview</h1>
-      <p>Welcome to the SAINTIG EXAMS administration panel.</p>
+      <p id="welcomeText">Welcome to the SAINTIG EXAMS administration panel.</p>
+      <p id="nameHint" hidden><a href="admin-account-settings.html">Add your name →</a></p>
     </div>
 
     <div class="stats">
@@ -338,7 +371,7 @@ header {
       <article class="card">
         <div class="stat-name">Paid Subscribers</div>
         <div class="stat-value" id="subscribersCount">—</div>
-        <div class="stat-note">Verified active subscribers</div>
+        <div class="stat-note" id="subscribersNote">Active paid accounts</div>
       </article>
 
       <article class="card">
@@ -374,7 +407,35 @@ header {
       <article class="card">
         <div class="stat-name">Today's Views</div>
         <div class="stat-value" id="viewsCount">—</div>
-        <div class="stat-note">Today's recorded page views</div>
+        <div class="stat-note" id="viewsNote">Today's recorded page views</div>
+      </article>
+
+      <article class="card wide">
+        <div class="stat-name">Attempts Overview</div>
+
+        <div class="mini-grid">
+          <div>
+            <div class="mini-value" id="attToday">—</div>
+            <div class="mini-label">Started today</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attWeek">—</div>
+            <div class="mini-label">Last 7 days</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attTotal">—</div>
+            <div class="mini-label">All attempts</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attCompleted">—</div>
+            <div class="mini-label" id="attCompletedLabel">Completed</div>
+          </div>
+        </div>
+
+        <div class="stat-note" id="attNote">Public students and Teacher/School attempts</div>
       </article>
 
     </div>
@@ -388,13 +449,15 @@ header {
         <a href="subjects.html">Subjects →</a>
         <a href="question-bank.html">Question Bank →</a>
         <a href="register-exam.html">Register Examination →</a>
-        <a href="register-users.html">Register Users →</a>
+        <a href="registered-users.html">Registered Users →</a>
         <a href="paid-subscribers.html">Paid Subscribers →</a>
-        <a href="results-reports.html">Results & Reports →</a>
+        <a href="admin-notifications.html">Send Notifications →</a>
+        <a href="results-reports.html">Results &amp; Reports →</a>
         <a href="visitor-analytics.html">Visitor Analytics →</a>
         <a href="ai-question-generator.html">AI Question Generator →</a>
-        <a href="settings-security.html">Settings & Security →</a>
+        <a href="settings-security.html">Settings &amp; Security →</a>
         <a href="archived-records.html">Archived Records →</a>
+        <a href="admin-account-settings.html">Admin Account Settings →</a>
       </div>
     </section>
 
@@ -435,7 +498,7 @@ sidebar.querySelectorAll("a[href]").forEach(link => {
   });
 });
 
-// Verify administrator
+// Verify administrator (suspended administrators are signed out)
 async function verifyAdministrator() {
   const session = await getCurrentSession();
 
@@ -448,13 +511,13 @@ async function verifyAdministrator() {
 
   const { data, error } = await supabase
     .from("admin_users")
-    .select("user_id")
+    .select("user_id, is_suspended")
     .eq("user_id", user.id)
     .maybeSingle();
 
   if (error) throw error;
 
-  if (!data) {
+  if (!data || data.is_suspended) {
     await supabase.auth.signOut();
     location.replace("admin-login.html");
     return false;
@@ -473,6 +536,12 @@ function displayCount(id, count, error) {
     !error && count !== null && count !== undefined
       ? Number(count).toLocaleString()
       : "—";
+}
+
+function show(id, value) {
+  const element = $(id);
+
+  if (element) element.textContent = Number(value || 0).toLocaleString();
 }
 
 // Load dashboard statistics
@@ -594,10 +663,64 @@ async function loadStatistics() {
     $("questionsCount").textContent = "—";
 
   }
+}
 
-  // Awaiting subscription and analytics database implementation
-  $("subscribersCount").textContent = "—";
-  $("viewsCount").textContent = "—";
+// Paid subscribers, today's views and attempts overview
+async function loadSummary() {
+
+  const { data, error } = await supabase.rpc("admin_dashboard_summary");
+
+  if (error) throw error;
+
+  const s = data || {};
+
+  const paidStudents = Number(s.paid_students) || 0;
+  const paidSchools = Number(s.paid_schools) || 0;
+
+  show("subscribersCount", paidStudents + paidSchools);
+
+  $("subscribersNote").textContent =
+    "Students " + paidStudents.toLocaleString() +
+    " · Teachers/Schools " + paidSchools.toLocaleString();
+
+  show("viewsCount", s.views_today);
+
+  const visitors = Number(s.visitors_today) || 0;
+
+  $("viewsNote").textContent =
+    visitors.toLocaleString() + " unique visitor" +
+    (visitors === 1 ? "" : "s") + " today";
+
+  show("attToday", s.attempts_today);
+  show("attWeek", s.attempts_week);
+  show("attTotal", s.attempts_total);
+
+  const total = Number(s.attempts_total) || 0;
+  const completed = Number(s.attempts_completed) || 0;
+  const percent = total ? Math.round((completed / total) * 100) : 0;
+
+  $("attCompleted").textContent = completed.toLocaleString();
+  $("attCompletedLabel").textContent = "Completed (" + percent + "%)";
+
+  $("attNote").textContent =
+    "Public students: " + (Number(s.attempts_public) || 0).toLocaleString() +
+    " · Teacher/School: " + (Number(s.attempts_school) || 0).toLocaleString();
+}
+
+// Show the administrator's name
+async function loadAdminName() {
+
+  const { data, error } = await supabase.rpc("admin_get_my_account");
+
+  if (error) throw error;
+
+  const name = String(data?.display_name || "").trim();
+
+  $("welcomeText").textContent = name
+    ? "Welcome, " + name + ". This is the SAINTIG EXAMS administration panel."
+    : "Welcome to the SAINTIG EXAMS administration panel.";
+
+  $("nameHint").hidden = !!name;
 }
 
 // Initialize dashboard
@@ -609,7 +732,42 @@ async function initializeDashboard() {
 
     if (!authorized) return;
 
-    await loadStatistics();
+    const results = await Promise.allSettled([
+      loadStatistics(),
+      loadSummary(),
+      loadAdminName()
+    ]);
+
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        console.error(
+          ["Statistics", "Summary", "Admin name"][index] + " failed:",
+          result.reason
+        );
+      }
+    });
+
+    if (results[0].status === "rejected") {
+
+      $("statusMessage").textContent =
+        "Unable to load all statistics. Check your connection and database permissions.";
+
+      $("statusMessage").classList.add("error");
+
+      return;
+    }
+
+    if (results[1].status === "rejected") {
+
+      $("viewsNote").textContent = "Needs the Stage 5 SQL";
+      $("subscribersNote").textContent = "Needs the Stage 5 SQL";
+      $("attNote").textContent = "Needs the Stage 5 SQL";
+
+      $("statusMessage").textContent =
+        "Dashboard loaded, but Paid Subscribers, Today's Views and Attempts need the Stage 5 SQL.";
+
+      return;
+    }
 
     $("statusMessage").textContent =
       "Administrator access verified. Dashboard loaded.";
