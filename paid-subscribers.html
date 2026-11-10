@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Paid Subscribers | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;
+  --text:#263449;--muted:#6b7789;--border:#e1e7ef;
+  --green:#16794b;--red:#b42318;--amber:#9a6200;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.toplinks{display:flex;gap:8px;flex-wrap:wrap}
+.toplinks a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.container{max-width:1100px;margin:auto;padding:22px 16px 40px}
+h1{margin:0 0 6px;color:var(--navy);font-size:27px}
+.sub{margin:0 0 18px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.tab{flex:1;min-width:150px;min-height:46px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:25px;padding:10px 16px;min-height:44px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.chip.active{background:var(--gold);border-color:var(--gold);color:#202938}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.form-group{margin:12px 0}
+.form-group label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
+input,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:16px}
+textarea{min-height:100px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid #2457a733;border-color:var(--blue)}
+.hint{font-size:14px;color:var(--muted);margin-top:6px}
+.button{display:inline-block;padding:12px 17px;min-height:46px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button.gold{background:var(--gold);color:#202938}
+.button.secondary{background:#edf1f7;color:var(--navy)}
+.button.danger{background:#fdebea;color:var(--red)}
+.button.small{min-height:42px;padding:9px 14px;font-size:15px}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status.success{color:var(--green)}
+.status.error{color:var(--red)}
+.list{display:grid;gap:12px;margin-top:14px}
+.sub-card{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fff}
+.sub-card strong{display:block;font-size:17px;color:var(--navy);overflow-wrap:anywhere}
+.email{color:var(--muted);font-size:15px;overflow-wrap:anywhere}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:15px;margin:8px 0}
+.meta .warn{color:var(--amber);font-weight:700}
+.note{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.pill{display:inline-block;padding:4px 10px;border-radius:20px;font-size:14px;font-weight:700;background:#fdf3d0;color:#7a5b00}
+.empty{text-align:center;color:var(--muted);padding:22px;background:#f8faff;border-radius:8px}
+.pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.overlay{position:fixed;inset:0;background:#0008;z-index:1000;padding:14px;overflow:auto;display:grid;place-items:start center}
+.overlay[hidden]{display:none}
+.modal{width:min(560px,100%);background:#fff;border-radius:12px;padding:22px;margin:24px 0}
+.modal h2{margin:0 0 10px;color:var(--navy);font-size:22px}
+.modal h3{margin:16px 0 6px;color:var(--navy);font-size:17px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:15px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;overflow-wrap:anywhere}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:560px){.kv{grid-template-columns:1fr}.kv dt{margin-top:6px}.container{padding:16px 11px 36px}.card{padding:15px}.modal{padding:16px}}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <div class="toplinks">
+    <a href="registered-users.html">Registered Users</a>
+    <a href="admin.html">← Admin Dashboard</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <h1>Paid Subscribers</h1>
+  <p class="sub">Active paid accounts, package by package. Free accounts are not listed.</p>
+
+  <div class="tabs">
+    <button class="tab active" id="tabStudent" data-kind="student" type="button">🎓 Students <span id="cntStudent"></span></button>
+    <button class="tab" id="tabSchool" data-kind="school" type="button">🏫 Teachers/Schools <span id="cntSchool"></span></button>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <section class="card">
+    <div class="form-group" style="margin-top:0">
+      <label for="searchBox">Search</label>
+      <input id="searchBox" type="search" maxlength="100" placeholder="Search by email or name" autocomplete="off">
+    </div>
+
+    <div class="list" id="list"><div class="empty">Loading…</div></div>
+
+    <div class="pager">
+      <button class="button secondary" id="moreBtn" type="button" style="display:none">Show 20 more</button>
+      <div class="status" id="countText" style="margin:0"></div>
+    </div>
+
+    <div class="status" id="pageStatus" role="status" aria-live="polite"></div>
+  </section>
+
+</div>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const PAGE = 20;
+
+const LIMIT_LABELS = {
+  max_active_students: "Active students",
+  max_subjects: "Subjects",
+  max_examinations: "Examinations",
+  max_stored_questions: "Question Bank",
+  max_questions_per_exam: "Questions per examination",
+  max_exam_duration_minutes: "Maximum duration (minutes)",
+  max_attempts_per_exam: "Attempts per student per exam"
+};
+
+const PERM_KEYS = [
+  "manage_students","manage_student_subscriptions",
+  "manage_teachers","manage_school_packages","send_notifications"
+];
+
+let isSuper = false;
+let perms = {};
+let kind = "student";
+let planFilter = "";
+let search = "";
+let offset = 0;
+let total = 0;
+let rows = [];
+let counts = { student_premium: 0, school: {} };
+let loadToken = 0;
+let busy = false;
+
+const can = key => isSuper || perms[key] === true;
+
+const canViewKind = k => k === "student"
+  ? can("manage_students") || can("manage_student_subscriptions")
+  : can("manage_teachers") || can("manage_school_packages");
+
+const canManageKind = k => k === "student"
+  ? can("manage_student_subscriptions")
+  : can("manage_school_packages");
+
+/* ---------- helpers ---------- */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function fmtDate(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+function setStatus(id, text, type = "") {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = "status" + (type ? " " + type : "");
+}
+
+async function rpc(name, args) {
+  const { data, error } = await supabase.rpc(name, args || {});
+  if (error) throw error;
+  return data;
+}
+
+function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+/* ---------- admin check ---------- */
+
+async function verifyAdmin() {
+  const { data: sd, error: se } = await supabase.auth.getSession();
+  if (se) throw se;
+
+  const session = sd?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id, role, is_suspended")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!admin || admin.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  isSuper = admin.role === "super_admin";
+
+  if (!isSuper) {
+    const results = await Promise.all(
+      PERM_KEYS.map(k => supabase.rpc("has_admin_permission", { p_permission: k }))
+    );
+
+    results.forEach((r, i) => {
+      if (r.error) throw r.error;
+      perms[PERM_KEYS[i]] = r.data === true;
+    });
+  }
+
+  return true;
+}
+
+/* ---------- counts and chips ---------- */
+
+function schoolCount(name) {
+  const key = Object.keys(counts.school || {})
+    .find(k => k.toLowerCase() === name.toLowerCase());
+  return key ? Number(counts.school[key]) || 0 : 0;
+}
+
+function schoolTotal() {
+  return Object.values(counts.school || {})
+    .reduce((sum, n) => sum + (Number(n) || 0), 0);
+}
+
+function renderChips() {
+  const defs = kind === "student"
+    ? [["", "All", Number(counts.student_premium) || 0],
+       ["premium", "Premium", Number(counts.student_premium) || 0]]
+    : [["", "All", schoolTotal()],
+       ["silver", "Silver", schoolCount("silver")],
+       ["gold", "Gold", schoolCount("gold")],
+       ["custom", "Custom", schoolCount("custom")]];
+
+  $("chips").innerHTML = defs.map(([value, label, count]) =>
+    `<button class="chip${planFilter === value ? " active" : ""}" data-plan="${value}" type="button">${esc(label)} (${count})</button>`
+  ).join("");
+
+  $("cntStudent").textContent = "(" + (Number(counts.student_premium) || 0) + ")";
+  $("cntSchool").textContent = "(" + schoolTotal() + ")";
+}
+
+async function loadCounts() {
+  try {
+    const data = await rpc("admin_subscriber_counts");
+    counts = data || { student_premium: 0, school: {} };
+  } catch (error) {
+    console.error("Counts error:", error);
+  }
+  renderChips();
+}
+
+$("chips").addEventListener("click", event => {
+  const chip = event.target.closest("[data-plan]");
+  if (!chip) return;
+  planFilter = chip.dataset.plan;
+  renderChips();
+  loadList(true);
+});
+
+/* ---------- list ---------- */
+
+function daysText(r) {
+  if (!r.expires_at) return "No end date";
+
+  const days = r.days_left;
+
+  const left = days === null || days === undefined
+    ? ""
+    : days === 0 ? " · ends today" : " · " + days + " day" + (days === 1 ? "" : "s") + " left";
+
+  return "Ends " + fmtDate(r.expires_at) + left;
+}
+
+function renderList() {
+  const list = $("list");
+
+  if (!rows.length) {
+    list.innerHTML = '<div class="empty">No paid subscribers found.</div>';
+    $("countText").textContent = "";
+    $("moreBtn").style.display = "none";
+    return;
+  }
+
+  const manage = canManageKind(kind);
+  const notify = can("send_notifications");
+
+  list.innerHTML = rows.map((r, i) => {
+    const soon = r.days_left !== null && r.days_left !== undefined && r.days_left <= 7;
+
+    const detail = [
+      r.source ? "Set by " + r.source : "",
+      r.note ? "Note: " + r.note : ""
+    ].filter(Boolean).join(" · ");
+
+    return `
+      <div class="sub-card">
+        <strong>${esc(r.full_name || "No name")}</strong>
+        <div class="email">${esc(r.email)}</div>
+        <div class="meta">
+          <span class="pill">${esc(r.plan)}</span>
+          <span class="${soon ? "warn" : ""}">${esc(daysText(r))}</span>
+        </div>
+        ${detail ? `<div class="note">${esc(detail)}</div>` : ""}
+        <div class="btns">
+          <button class="button secondary small" data-act="details" data-i="${i}" type="button">Details</button>
+          ${manage ? `<button class="button secondary small" data-act="extend" data-i="${i}" type="button">Extend</button>` : ""}
+          ${notify ? `<button class="button secondary small" data-act="notify" data-i="${i}" type="button">Send Notification</button>` : ""}
+          ${manage ? `<button class="button danger small" data-act="free" data-i="${i}" type="button">Return to Free</button>` : ""}
+        </div>
+      </div>`;
+  }).join("");
+
+  $("countText").textContent = "Showing " + rows.length + " of " + total;
+  $("moreBtn").style.display = offset < total ? "inline-block" : "none";
+}
+
+async function loadList(reset = true) {
+  const token = ++loadToken;
+
+  if (reset) {
+    offset = 0;
+    rows = [];
+    total = 0;
+    $("list").innerHTML = '<div class="empty">Loading…</div>';
+  }
+
+  $("moreBtn").disabled = true;
+
+  try {
+    const data = await rpc("admin_list_subscribers", {
+      p_kind: kind,
+      p_plan: planFilter || null,
+      p_search: search || null,
+      p_limit: PAGE,
+      p_offset: offset
+    }) || [];
+
+    if (token !== loadToken) return;
+
+    if (data.length) total = Number(data[0].total_count) || 0;
+
+    rows = rows.concat(data);
+    offset += data.length;
+
+    renderList();
+
+  } catch (error) {
+    if (token !== loadToken) return;
+
+    console.error("Subscribers error:", error);
+
+    $("list").innerHTML =
+      '<div class="empty">Could not load subscribers: ' + esc(error.message) + "</div>";
+
+  } finally {
+    $("moreBtn").disabled = false;
+  }
+}
+
+$("moreBtn").addEventListener("click", () => loadList(false));
+
+$("searchBox").addEventListener("input", debounce(() => {
+  search = $("searchBox").value.trim();
+  loadList(true);
+}, 400));
+
+/* ---------- popup ---------- */
+
+function openModal(title, html) {
+  $("modalTitle").textContent = title;
+  $("modalBody").innerHTML = html;
+  $("overlay").hidden = false;
+}
+
+function closeModal() {
+  if (busy) return;
+  $("overlay").hidden = true;
+  $("modalBody").innerHTML = "";
+}
+
+$("overlay").addEventListener("click", event => {
+  if (event.target === $("overlay") || event.target.closest("[data-close]")) closeModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !$("overlay").hidden) closeModal();
+});
+
+function refreshAll() {
+  return Promise.all([loadCounts(), loadList(true)]);
+}
+
+/* ---------- details ---------- */
+
+function openDetails(r) {
+  const custom = r.custom || {};
+
+  const limitRows = Object.keys(LIMIT_LABELS)
+    .filter(key => custom[key] !== undefined && custom[key] !== null)
+    .map(key => `<dt>${esc(LIMIT_LABELS[key])}</dt><dd>${esc(Number(custom[key]).toLocaleString())}</dd>`)
+    .join("");
+
+  openModal("Subscription details", `
+    <dl class="kv">
+      <dt>Name</dt><dd>${esc(r.full_name || "No name")}</dd>
+      <dt>Email</dt><dd>${esc(r.email)}</dd>
+      <dt>Plan</dt><dd>${esc(r.plan)}</dd>
+      <dt>Started</dt><dd>${esc(fmtDate(r.starts_at))}</dd>
+      <dt>Ends</dt><dd>${esc(r.expires_at ? fmtDate(r.expires_at) : "No end date")}</dd>
+      <dt>Days left</dt><dd>${esc(r.days_left === null || r.days_left === undefined ? "—" : r.days_left)}</dd>
+      <dt>Set by</dt><dd>${esc(r.source || "—")}</dd>
+      <dt>Note</dt><dd>${esc(r.note || "—")}</dd>
+    </dl>
+    ${limitRows ? `<h3>Limits set for this account</h3><dl class="kv">${limitRows}</dl>` :
+      (kind === "school" ? '<div class="hint" style="margin-top:12px">This account follows the standard limits of its package.</div>' : "")}
+    <div class="actions"><button class="button secondary" data-close type="button">Close</button></div>
+  `);
+}
+
+/* ---------- extend ---------- */
+
+function openExtend(r) {
+  const noEnd = !r.expires_at;
+
+  openModal("Extend " + r.plan, `
+    <div class="email">${esc(r.email)}</div>
+    <p>Current end date: <strong>${esc(r.expires_at ? fmtDate(r.expires_at) : "No end date")}</strong></p>
+    ${noEnd ? '<div class="hint">This plan has no end date. Adding days will set one, counting from today.</div>' : ""}
+    <div class="form-group">
+      <label for="xDays">Days to add</label>
+      <input id="xDays" type="number" min="1" max="3650" inputmode="numeric" placeholder="For example: 30 (1 year = 365)">
+    </div>
+    <div class="form-group">
+      <label for="xNote">Note (optional)</label>
+      <input id="xNote" type="text" maxlength="200" placeholder="For example: renewed by transfer">
+    </div>
+    <div class="actions">
+      <button class="button gold" id="xSave" type="button">Add Days</button>
+      <button class="button secondary" data-close type="button">Cancel</button>
+    </div>
+    <div class="status" id="xStatus" role="status" aria-live="polite"></div>
+  `);
+
+  $("xDays").focus();
+
+  $("xSave").addEventListener("click", async () => {
+    if (busy) return;
+
+    const days = Number($("xDays").value.trim());
+    const note = $("xNote").value.trim() || null;
+
+    if (!Number.isInteger(days) || days < 1 || days > 3650) {
+      setStatus("xStatus", "Days must be a whole number from 1 to 3650.", "error");
+      return;
+    }
+
+    if (!confirm("Add " + days + " day(s) to " + r.email + "?")) return;
+
+    busy = true;
+    $("xSave").disabled = true;
+    setStatus("xStatus", "Saving…");
+
+    try {
+      let result;
+
+      if (kind === "student") {
+        result = await rpc("admin_set_student_plan", {
+          p_email: r.email, p_plan: "premium", p_days: days, p_note: note
+        });
+      } else {
+        result = await rpc("admin_set_school_package", {
+          p_email: r.email,
+          p_package: r.plan,
+          p_days: days,
+          p_limits: r.custom || {},
+          p_note: note
+        });
+      }
+
+      setStatus(
+        "xStatus",
+        "Saved. Now active until " + fmtDate(result?.expires_at) + ". The account has been notified.",
+        "success"
+      );
+
+      busy = false;
+      await refreshAll();
+      setTimeout(closeModal, 1400);
+
+    } catch (error) {
+      console.error("Extend error:", error);
+      setStatus("xStatus", error.message, "error");
+      busy = false;
+      $("xSave").disabled = false;
+    }
+  });
+}
+
+/* ---------- notify one subscriber ---------- */
+
+function openNotify(r) {
+  openModal("Send a private notification", `
+    <div class="email">To: ${esc(r.email)}</div>
+    <div class="form-group">
+      <label for="nTitle">Title</label>
+      <input id="nTitle" type="text" maxlength="120" placeholder="Short title">
+    </div>
+    <div class="form-group">
+      <label for="nBody">Message</label>
+      <textarea id="nBody" maxlength="1000" placeholder="Write your message"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="nLink">Link (optional)</label>
+      <input id="nLink" type="text" maxlength="300" placeholder="For example: contact.html">
+      <div class="hint">A page on this site (such as contact.html) or a link starting with https://</div>
+    </div>
+    <div class="actions">
+      <button class="button gold" id="nSend" type="button">Send</button>
+      <button class="button secondary" data-close type="button">Cancel</button>
+    </div>
+    <div class="status" id="nStatus" role="status" aria-live="polite"></div>
+  `);
+
+  $("nTitle").focus();
+
+  $("nSend").addEventListener("click", async () => {
+    if (busy) return;
+
+    const title = $("nTitle").value.trim();
+    const body = $("nBody").value.trim();
+    const link = $("nLink").value.trim();
+
+    if (!title) {
+      setStatus("nStatus", "Enter a title.", "error");
+      return;
+    }
+
+    busy = true;
+    $("nSend").disabled = true;
+    setStatus("nStatus", "Sending…");
+
+    try {
+      await rpc("admin_send_notification", {
+        p_audience: "one",
+        p_email: r.email,
+        p_title: title,
+        p_body: body || null,
+        p_link: link || null,
+        p_preview: false
+      });
+
+      setStatus("nStatus", "Notification sent.", "success");
+
+      busy = false;
+      setTimeout(closeModal, 1100);
+
+    } catch (error) {
+      console.error("Notify error:", error);
+      setStatus("nStatus", error.message, "error");
+      busy = false;
+      $("nSend").disabled = false;
+    }
+  });
+}
+
+/* ---------- return to free ---------- */
+
+async function returnToFree(r) {
+  const question =
+    "Return " + r.email + " to the Free " + (kind === "student" ? "plan" : "package") +
+    " now? The account will be notified.";
+
+  if (!confirm(question)) return;
+
+  setStatus("pageStatus", "Updating…");
+
+  try {
+    if (kind === "student") {
+      await rpc("admin_set_student_plan", {
+        p_email: r.email, p_plan: "free",
+        p_note: "Returned to Free by administrator"
+      });
+    } else {
+      await rpc("admin_set_school_package", {
+        p_email: r.email, p_package: "Free", p_limits: {},
+        p_note: "Returned to Free by administrator"
+      });
+    }
+
+    setStatus("pageStatus", r.email + " is now on the Free " + (kind === "student" ? "plan" : "package") + ".", "success");
+
+    await refreshAll();
+
+  } catch (error) {
+    console.error("Return to Free error:", error);
+    setStatus("pageStatus", "Could not update: " + error.message, "error");
+  }
+}
+
+/* ---------- list actions ---------- */
+
+$("list").addEventListener("click", event => {
+  const button = event.target.closest("[data-act]");
+  if (!button) return;
+
+  const r = rows[Number(button.dataset.i)];
+  if (!r) return;
+
+  setStatus("pageStatus", "");
+
+  const act = button.dataset.act;
+
+  if (act === "details") openDetails(r);
+  else if (act === "extend") openExtend(r);
+  else if (act === "notify") openNotify(r);
+  else if (act === "free") returnToFree(r);
+});
+
+/* ---------- tabs ---------- */
+
+function setKind(next) {
+  kind = next;
+  planFilter = "";
+  search = "";
+  $("searchBox").value = "";
+
+  $("tabStudent").classList.toggle("active", kind === "student");
+  $("tabSchool").classList.toggle("active", kind === "school");
+
+  setStatus("pageStatus", "");
+
+  renderChips();
+  loadList(true);
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => setKind(button.dataset.kind));
+});
+
+/* ---------- start ---------- */
+
+async function init() {
+  try {
+    if (!(await verifyAdmin())) return;
+
+    const showStudents = canViewKind("student");
+    const showSchools = canViewKind("school");
+
+    if (!showStudents && !showSchools) {
+      alert("You do not have permission to view paid subscribers.");
+      location.replace("admin.html");
+      return;
+    }
+
+    $("tabStudent").style.display = showStudents ? "" : "none";
+    $("tabSchool").style.display = showSchools ? "" : "none";
+
+    await loadCounts();
+
+    setKind(showStudents ? "student" : "school");
+
+  } catch (error) {
+    console.error("Page initialization error:", error);
+    alert("Unable to open Paid Subscribers: " + error.message);
+    location.replace("admin.html");
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
