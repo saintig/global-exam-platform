@@ -24,74 +24,85 @@ body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text
 .topbar{background:var(--navy);color:white;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .brand{font-size:19px;font-weight:800}
 .brand span{color:var(--gold)}
-.topbar a{color:white;text-decoration:none;border:1px solid #ffffff55;padding:9px 13px;border-radius:7px;font-size:13px}
+.topbar a{color:white;text-decoration:none;border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
 .container{max-width:1250px;margin:auto;padding:25px 18px}
 .page-heading{margin-bottom:22px}
 .page-heading h1{margin:0 0 6px;color:var(--navy);font-size:27px}
-.page-heading p{margin:0;color:var(--muted)}
-.layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:20px;align-items:start}
+.page-heading p{margin:0;color:var(--muted);font-size:15px}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
 .sidebar,.content-card{background:white;border:1px solid var(--border);border-radius:12px}
 .sidebar{padding:12px}
-.sidebar-title{padding:10px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase}
-.side-link{display:block;width:100%;border:0;background:white;text-align:left;padding:12px;margin:3px 0;border-radius:8px;cursor:pointer;color:var(--text);font-size:14px}
+.sidebar-title{padding:10px;font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.side-link{display:block;width:100%;border:0;background:white;text-align:left;padding:13px 12px;margin:3px 0;border-radius:8px;cursor:pointer;color:var(--text);font-size:15px}
 .side-link:hover,.side-link.active{background:#edf2fa;color:var(--navy);font-weight:700}
 .content-card{padding:22px;margin-bottom:18px}
 .panel{display:none}
 .panel.active{display:block}
-.panel h2{margin:0 0 7px;color:var(--navy);font-size:21px}
-.description{color:var(--muted);margin:0 0 22px;font-size:14px;line-height:1.6}
+.panel h2{margin:0 0 7px;color:var(--navy);font-size:22px}
+.description{color:var(--muted);margin:0 0 22px;font-size:15px;line-height:1.6}
 .setting-box{border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:16px}
-.setting-box h3{margin:0 0 8px;color:var(--navy);font-size:16px}
-.setting-box p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.6}
+.setting-box h3{margin:0 0 8px;color:var(--navy);font-size:17px}
+.setting-box h4{margin:18px 0 4px;color:var(--navy);font-size:15px}
+.setting-box p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.6}
 .form-group{margin:14px 0}
-.form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-.form-group input,.form-group select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:white;font:inherit}
-.form-group input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
-.button{display:inline-block;padding:11px 16px;border:0;border-radius:8px;background:var(--navy);color:white;font-weight:700;cursor:pointer}
+.form-group label{display:block;font-size:14px;font-weight:700;margin-bottom:7px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:white;font:inherit;font-size:16px}
+.form-group textarea{min-height:110px;resize:vertical;line-height:1.5}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:2px solid #2457a733;border-color:var(--blue)}
+.form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.hint{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
+.button{display:inline-block;padding:12px 17px;min-height:44px;border:0;border-radius:8px;background:var(--navy);color:white;font-weight:700;font-size:15px;cursor:pointer}
 .button.gold{background:var(--gold);color:#202938}
 .button.secondary{background:#edf1f7;color:var(--navy)}
 .button.danger{background:var(--red);color:white}
 .button:disabled{opacity:.6;cursor:not-allowed}
-.status{margin-top:12px;font-size:13px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.status{margin-top:12px;font-size:14px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
 .status.success{color:var(--green)}
 .status.error{color:var(--red)}
-.notice{background:#fff8e5;border:1px solid #f0dfa8;padding:13px;border-radius:8px;font-size:13px;line-height:1.6;margin-top:15px}
+.notice{background:#fff8e5;border:1px solid #f0dfa8;padding:13px;border-radius:8px;font-size:14px;line-height:1.6;margin-top:15px}
 .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .info-item{padding:16px;background:#f8faff;border:1px solid var(--border);border-radius:9px}
-.info-item strong{display:block;color:var(--navy);margin-bottom:6px}
-.info-item span{color:var(--muted);font-size:13px}
-.coming{padding:15px;border-radius:8px;background:#f8faff;color:var(--muted);font-size:13px;line-height:1.6}
-.footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
-.config-summary{background:#f8faff;border:1px solid var(--border);padding:14px;border-radius:9px;margin-top:15px;font-size:13px;line-height:1.8}
+.info-item strong{display:block;color:var(--navy);margin-bottom:6px;font-size:15px}
+.info-item span{color:var(--muted);font-size:14px}
+.coming{padding:15px;border-radius:8px;background:#f8faff;color:var(--muted);font-size:14px;line-height:1.6}
+.footer{text-align:center;color:var(--muted);font-size:13px;padding:20px}
+.config-summary{background:#f8faff;border:1px solid var(--border);padding:14px;border-radius:9px;margin-top:15px;font-size:14px;line-height:1.8}
 .config-summary strong{color:var(--navy)}
 .permission-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
-.permission-option{display:flex;align-items:flex-start;gap:9px;padding:12px;border:1px solid var(--border);border-radius:8px;background:#f8faff;font-size:13px;line-height:1.5}
+.permission-option{display:flex;align-items:flex-start;gap:9px;padding:12px;border:1px solid var(--border);border-radius:8px;background:#f8faff;font-size:14px;line-height:1.5}
 .permission-option input{margin-top:2px;accent-color:var(--navy)}
 .table-wrap{width:100%;overflow-x:auto;margin-top:15px}
-table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}
+table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}
 th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
 th{background:#f3f6fb;color:var(--navy)}
 td{overflow-wrap:anywhere}
-.role-label{display:inline-block;padding:5px 8px;border-radius:5px;font-size:11px;font-weight:700;background:#edf2fa;color:var(--navy)}
+.role-label{display:inline-block;padding:5px 8px;border-radius:5px;font-size:12px;font-weight:700;background:#edf2fa;color:var(--navy)}
 .role-label.super{background:#fff4d1;color:#725400}
 .role-label.suspended{background:#fdebea;color:var(--red)}
 .role-label.active{background:#e7f6ed;color:var(--green)}
 .action-buttons{display:flex;flex-wrap:wrap;gap:6px}
-.small-button{border:0;border-radius:6px;padding:7px 9px;font-size:11px;font-weight:700;cursor:pointer;background:#edf1f7;color:var(--navy)}
+.small-button{border:0;border-radius:6px;padding:9px 11px;font-size:13px;font-weight:700;cursor:pointer;background:#edf1f7;color:var(--navy)}
 .small-button.danger{background:#fdebea;color:var(--red)}
 .small-button:disabled{opacity:.5;cursor:not-allowed}
-.empty-state{padding:18px;text-align:center;color:var(--muted);font-size:13px;background:#f8faff;border-radius:8px}
-.record-details{white-space:pre-wrap;max-width:300px;font-size:12px}
+.empty-state{padding:18px;text-align:center;color:var(--muted);font-size:14px;background:#f8faff;border-radius:8px}
+.record-details{white-space:pre-wrap;max-width:320px;font-size:12px;background:#f8faff;border:1px solid var(--border);border-radius:6px;padding:8px;margin:6px 0 0;overflow-wrap:anywhere}
+details summary{cursor:pointer;color:var(--blue);font-weight:700;font-size:13px}
+.pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.pager .status{margin:0}
 
 @media(max-width:800px){
   .layout{grid-template-columns:1fr}
   .sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
   .sidebar-title{grid-column:1/-1}
 }
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr}
+}
 @media(max-width:480px){
   .topbar{padding:13px}
   .container{padding:17px 11px}
   .content-card{padding:15px}
+  .setting-box{padding:14px}
   .sidebar{grid-template-columns:1fr}
   .info-grid,.permission-list{grid-template-columns:1fr}
 }
@@ -109,7 +120,7 @@ td{overflow-wrap:anywhere}
 
   <div class="page-heading">
     <h1>Settings &amp; Security</h1>
-    <p>Manage platform configuration, administrator access and security controls.</p>
+    <p>Manage platform configuration, plans, notifications, administrator access and security controls.</p>
   </div>
 
   <div class="layout">
@@ -118,9 +129,9 @@ td{overflow-wrap:anywhere}
       <div class="sidebar-title">Administration</div>
 
       <button class="side-link active" data-panel="permissions">🛡️ Administrator Permissions</button>
-      <button class="side-link" data-panel="configuration">⚙️ Platform Configuration</button>
+      <button class="side-link" data-panel="students">🎓 Public Students Configuration</button>
       <button class="side-link" data-panel="login">🔐 Login Protection</button>
-      <button class="side-link" data-panel="restrictions">🚫 Access Restrictions</button>
+      <button class="side-link" data-panel="school">🏫 Teacher/School Configuration</button>
       <button class="side-link" data-panel="activity">📊 Activity Logs</button>
       <button class="side-link" data-panel="security">🔒 Security Settings</button>
       <button class="side-link" data-panel="records">📋 Administrative Action Records</button>
@@ -233,67 +244,136 @@ td{overflow-wrap:anywhere}
       </section>
 
 
-      <!-- PLATFORM CONFIGURATION -->
+      <!-- PUBLIC STUDENTS CONFIGURATION -->
 
-      <section class="panel" id="configuration">
+      <section class="panel" id="students">
         <div class="content-card">
 
-          <h2>Platform Configuration</h2>
+          <h2>Public Students Configuration</h2>
           <p class="description">
-            Configure general platform settings and examination limits.
+            Control examination limits, plans, prices and notifications for public student accounts.
           </p>
 
-          <div class="setting-box">
-            <h3>Free Examination Configuration</h3>
-            <p>Control the number of questions and examination duration available to Free students.</p>
+          <div class="setting-box" data-need="manage_platform_settings">
+            <h3>Examination Limits</h3>
+            <p>Questions, time and daily attempts for public students. Changes apply to newly started examinations. Existing attempts keep their original question counts and durations.</p>
 
-            <div class="form-group">
-              <label for="freeQuestionLimit">Free Student Question Limit</label>
-              <input type="number" id="freeQuestionLimit" min="1" max="500" value="30" required>
+            <h4>Free plan</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="freeQuestionLimit">Questions per examination</label>
+                <input type="number" id="freeQuestionLimit" min="1" max="500" value="50" required>
+              </div>
+              <div class="form-group">
+                <label for="freeDuration">Duration (minutes)</label>
+                <input type="number" id="freeDuration" min="1" max="600" value="45" required>
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="freeDuration">Free Examination Duration (Minutes)</label>
-              <input type="number" id="freeDuration" min="1" max="600" value="45" required>
+              <label for="freeAttempts">Attempts per day</label>
+              <input type="number" id="freeAttempts" min="1" max="50" value="1" required>
+              <div class="hint" id="attemptsHint">The day runs from midnight to midnight, Nigeria time.</div>
             </div>
+
+            <h4>Premium plan</h4>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="premiumQuestionLimit">Questions per examination</label>
+                <input type="number" id="premiumQuestionLimit" min="1" max="500" value="100" required>
+              </div>
+              <div class="form-group">
+                <label for="premiumDuration">Duration (minutes)</label>
+                <input type="number" id="premiumDuration" min="1" max="600" value="90" required>
+              </div>
+            </div>
+
+            <button class="button gold" id="saveExamSettings" type="button" disabled>
+              Save Examination Settings
+            </button>
+
+            <div class="status" id="examSettingsMessage" role="status" aria-live="polite">
+              Loading examination settings...
+            </div>
+
+            <div class="config-summary" id="configSummary"></div>
           </div>
 
-          <div class="setting-box">
-            <h3>Premium Examination Configuration</h3>
-            <p>Control the number of questions and examination duration available to Premium students.</p>
+          <div class="setting-box" data-need="manage_platform_settings">
+            <h3>Premium Price and Benefits</h3>
+            <p>
+              The price and benefit lines are saved here. Questions and minutes are added automatically from the limits above, so do not repeat them.
+            </p>
 
-            <div class="form-group">
-              <label for="premiumQuestionLimit">Premium Student Question Limit</label>
-              <input type="number" id="premiumQuestionLimit" min="1" max="500" value="100" required>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="studentPremiumPrice">Premium price (₦)</label>
+                <input type="number" id="studentPremiumPrice" min="0" step="0.01" inputmode="decimal" placeholder="Leave empty for “Price to be announced”">
+              </div>
+              <div class="form-group">
+                <label for="studentPremiumBilling">Price is charged</label>
+                <select id="studentPremiumBilling">
+                  <option value="week">per week</option>
+                  <option value="month" selected>per month</option>
+                  <option value="term">per term</option>
+                  <option value="year">per year</option>
+                  <option value="one_time">one-time</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="premiumDuration">Premium Examination Duration (Minutes)</label>
-              <input type="number" id="premiumDuration" min="1" max="600" value="90" required>
+              <label for="studentBenefitsFree">Extra benefit lines: Free plan</label>
+              <textarea id="studentBenefitsFree" placeholder="One benefit per line"></textarea>
             </div>
+
+            <div class="form-group">
+              <label for="studentBenefitsPremium">Extra benefit lines: Premium plan</label>
+              <textarea id="studentBenefitsPremium" placeholder="One benefit per line"></textarea>
+              <div class="hint">One benefit per line. Up to 12 lines of 120 characters each.</div>
+            </div>
+
+            <button class="button gold" id="saveStudentPlanBtn" type="button">
+              Save Price and Benefits
+            </button>
+
+            <div class="status" id="studentPlanMessage" role="status" aria-live="polite"></div>
           </div>
 
-          <button class="button gold" id="saveExamSettings" type="button" disabled>
-            Save All Examination Settings
-          </button>
+          <div class="setting-box" data-need="manage_student_subscriptions">
+            <h3>Stop a Student's Premium Plan</h3>
+            <p>
+              Return a student to the Free plan at any time, even before the Premium days run out. The student receives a notification.
+            </p>
 
-          <div class="status" id="examSettingsMessage" role="status" aria-live="polite">
-            Loading examination settings...
+            <div class="form-group">
+              <label for="stopStudentEmail">Student email address</label>
+              <input type="email" id="stopStudentEmail" maxlength="254" placeholder="Enter the student's registered email" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+              <label for="stopStudentNote">Reason (optional)</label>
+              <input type="text" id="stopStudentNote" maxlength="200" placeholder="For example: refund requested">
+            </div>
+
+            <button class="button danger" id="stopStudentBtn" type="button">
+              Return Student to Free
+            </button>
+
+            <div class="status" id="stopStudentMessage" role="status" aria-live="polite"></div>
           </div>
 
-          <div class="config-summary">
-            <strong>Initial configuration</strong><br>
-            Free: 30 questions / 45 minutes<br>
-            Premium: 100 questions / 90 minutes
+          <div class="setting-box" data-need="send_notifications">
+            <h3>Send Notification to Students</h3>
+            <p>
+              Messages appear in the student's Notifications list and on the 🔔 bell.
+            </p>
+
+            <div id="studentNotifForm"></div>
           </div>
 
           <div class="notice">
-            Changes are intended for newly started examinations. Existing attempts should retain their original question counts and durations.
-          </div>
-
-          <div class="setting-box" style="margin-top:18px">
-            <h3>General Platform Information</h3>
-            <p>Additional platform-wide configuration options will be added when their database settings are connected.</p>
+            Registered Users and Paid Subscribers (coming next) let you upgrade, extend or return individual accounts.
           </div>
 
         </div>
@@ -340,36 +420,172 @@ td{overflow-wrap:anywhere}
       </section>
 
 
-      <!-- ACCESS RESTRICTIONS -->
+      <!-- TEACHER/SCHOOL CONFIGURATION -->
 
-      <section class="panel" id="restrictions">
+      <section class="panel" id="school">
         <div class="content-card">
 
-          <h2>Access Restrictions</h2>
+          <h2>Teacher/School Configuration</h2>
           <p class="description">
-            Manage which categories of users can access platform features.
+            Control package limits, prices, benefits and notifications for Teacher/School accounts.
           </p>
 
-          <div class="info-grid">
-            <div class="info-item">
-              <strong>Students</strong>
-              <span>Control student access and examination eligibility.</span>
+          <div class="setting-box" data-need="manage_school_packages">
+            <h3>Package Limits</h3>
+            <p>
+              Choose a package and change its limits. Leave a box empty to keep its current value. Schools see the new limits on their dashboard and on their Subscription Plans page.
+            </p>
+
+            <div class="form-group">
+              <label for="limitPackage">Package</label>
+              <select id="limitPackage"></select>
             </div>
 
-            <div class="info-item">
-              <strong>Teachers</strong>
-              <span>Control teacher account access and permitted activities.</span>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="limStudents">Active students</label>
+                <input type="number" id="limStudents" min="1" inputmode="numeric">
+              </div>
+              <div class="form-group">
+                <label for="limSubjects">Subjects</label>
+                <input type="number" id="limSubjects" min="1" inputmode="numeric">
+              </div>
             </div>
 
-            <div class="info-item">
-              <strong>Administrators</strong>
-              <span>Restrict administrative access according to assigned roles.</span>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="limExams">Examinations</label>
+                <input type="number" id="limExams" min="1" inputmode="numeric">
+              </div>
+              <div class="form-group">
+                <label for="limStored">Questions in the Question Bank</label>
+                <input type="number" id="limStored" min="1" inputmode="numeric">
+              </div>
             </div>
 
-            <div class="info-item">
-              <strong>Premium Access</strong>
-              <span>Verify active subscription status before allowing paid features.</span>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="limPerExam">Questions per examination</label>
+                <input type="number" id="limPerExam" min="1" inputmode="numeric">
+              </div>
+              <div class="form-group">
+                <label for="limDuration">Maximum duration (minutes)</label>
+                <input type="number" id="limDuration" min="1" max="600" inputmode="numeric">
+              </div>
             </div>
+
+            <div class="form-group">
+              <label for="limAttempts">Default attempts per student per examination</label>
+              <input type="number" id="limAttempts" min="1" inputmode="numeric" placeholder="Not set yet">
+              <div class="hint">Saved here now. Teacher examination registration will use it once that page is updated.</div>
+            </div>
+
+            <button class="button gold" id="saveLimitsBtn" type="button">
+              Save Package Limits
+            </button>
+
+            <div class="status" id="limitsMessage" role="status" aria-live="polite">
+              Loading package limits...
+            </div>
+          </div>
+
+          <div class="setting-box" data-need="manage_school_packages">
+            <h3>Prices and Benefits</h3>
+            <p>
+              Prices are per month (30 days). When a school pays for several months online, the amount is the monthly price × the number of months, from 1 to 12 months, where 12 months is 365 days. Leave a price empty to show “Price to be announced”.
+            </p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="schoolSilverPrice">Silver price (₦)</label>
+                <input type="number" id="schoolSilverPrice" min="0" step="0.01" inputmode="decimal" placeholder="Price to be announced">
+              </div>
+              <div class="form-group">
+                <label for="schoolSilverBilling">Silver is charged</label>
+                <select id="schoolSilverBilling">
+                  <option value="week">per week</option>
+                  <option value="month" selected>per month</option>
+                  <option value="term">per term</option>
+                  <option value="year">per year</option>
+                  <option value="one_time">one-time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="schoolGoldPrice">Gold price (₦)</label>
+                <input type="number" id="schoolGoldPrice" min="0" step="0.01" inputmode="decimal" placeholder="Price to be announced">
+              </div>
+              <div class="form-group">
+                <label for="schoolGoldBilling">Gold is charged</label>
+                <select id="schoolGoldBilling">
+                  <option value="week">per week</option>
+                  <option value="month" selected>per month</option>
+                  <option value="term">per term</option>
+                  <option value="year">per year</option>
+                  <option value="one_time">one-time</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="schoolBenefitsFree">Extra benefit lines: Free</label>
+              <textarea id="schoolBenefitsFree" placeholder="One benefit per line"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="schoolBenefitsSilver">Extra benefit lines: Silver</label>
+              <textarea id="schoolBenefitsSilver" placeholder="One benefit per line"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="schoolBenefitsGold">Extra benefit lines: Gold</label>
+              <textarea id="schoolBenefitsGold" placeholder="One benefit per line"></textarea>
+              <div class="hint">One benefit per line. Up to 12 lines of 120 characters each. The numbers (students, subjects and so on) are added automatically from the Package Limits.</div>
+            </div>
+
+            <button class="button gold" id="saveSchoolPlanBtn" type="button">
+              Save Prices and Benefits
+            </button>
+
+            <div class="status" id="schoolPlanMessage" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="setting-box" data-need="manage_school_packages">
+            <h3>Stop a School's Package</h3>
+            <p>
+              Return a Teacher/School account to the Free package at any time, even before its days run out. Nothing is deleted. The school keeps its data but cannot add more until it is within the Free limits.
+            </p>
+
+            <div class="form-group">
+              <label for="stopSchoolEmail">Teacher/School email address</label>
+              <input type="email" id="stopSchoolEmail" maxlength="254" placeholder="Enter the account's registered email" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+              <label for="stopSchoolNote">Reason (optional)</label>
+              <input type="text" id="stopSchoolNote" maxlength="200" placeholder="For example: payment not confirmed">
+            </div>
+
+            <button class="button danger" id="stopSchoolBtn" type="button">
+              Return School to Free
+            </button>
+
+            <div class="status" id="stopSchoolMessage" role="status" aria-live="polite"></div>
+          </div>
+
+          <div class="setting-box" data-need="send_notifications">
+            <h3>Send Notification to Teachers/Schools</h3>
+            <p>
+              Messages appear on the school's Notifications page and on its 🔔 bell.
+            </p>
+
+            <div id="schoolNotifForm"></div>
+          </div>
+
+          <div class="notice">
+            To give one school a Silver, Gold or Custom package with its own days and limits, use Registered Users (coming next).
           </div>
 
         </div>
@@ -437,42 +653,47 @@ td{overflow-wrap:anywhere}
 
           <h2>Administrative Action Records</h2>
           <p class="description">
-            Review the audit trail of important administrator actions.
+            Review the audit trail of important administrator actions, newest first.
           </p>
 
           <button class="button secondary" id="refreshLogsBtn" type="button">
             Refresh Action Records
           </button>
 
-          <div
-            class="status"
-            id="logsMessage"
-            role="status"
-            aria-live="polite">
-            Loading administrative records...
-          </div>
-
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>Date &amp; Time</th>
-                  <th>Administrator ID</th>
-                  <th>Target User ID</th>
+                  <th>Administrator</th>
+                  <th>Target</th>
                   <th>Action</th>
-                  <th>Previous Values</th>
-                  <th>New Values</th>
+                  <th>Details</th>
                 </tr>
               </thead>
 
               <tbody id="logsTableBody">
-                <tr><td colspan="6">Loading...</td></tr>
+                <tr><td colspan="5">Loading...</td></tr>
               </tbody>
             </table>
           </div>
 
+          <div class="pager">
+            <button class="button secondary" id="moreLogsBtn" type="button" style="display:none">
+              Show 10 more
+            </button>
+
+            <div
+              class="status"
+              id="logsMessage"
+              role="status"
+              aria-live="polite">
+              Loading administrative records...
+            </div>
+          </div>
+
           <div class="notice">
-            These records are retrieved through the protected get_admin_action_logs database function. Direct table access remains restricted.
+            These records are retrieved through a protected database function. Direct table access remains restricted.
           </div>
 
         </div>
@@ -495,13 +716,13 @@ td{overflow-wrap:anywhere}
   style="display:none;position:fixed;inset:0;background:#0008;z-index:1000;padding:15px;overflow:auto"
 >
 
-  <div style="max-width:550px;background:white;margin:40px auto;padding:22px;border-radius:12px">
+  <div style="max-width:580px;background:white;margin:40px auto;padding:22px;border-radius:12px">
 
     <h2 style="color:#142b52;margin-top:0">
       Edit Administrator Permissions
     </h2>
 
-    <p id="permissionAdminEmail" style="font-size:13px;color:#6b7789"></p>
+    <p id="permissionAdminEmail" style="font-size:14px;color:#6b7789"></p>
 
     <div class="permission-list">
 
@@ -532,7 +753,7 @@ td{overflow-wrap:anywhere}
 
       <label class="permission-option">
         <input type="checkbox" data-permission="manage_platform_settings">
-        Manage platform settings
+        Manage platform settings (student limits, prices)
       </label>
 
       <label class="permission-option">
@@ -558,6 +779,26 @@ td{overflow-wrap:anywhere}
       <label class="permission-option">
         <input type="checkbox" data-permission="manage_level_subjects">
         Manage education level subjects
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_school_packages">
+        Manage school packages and prices
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="manage_student_subscriptions">
+        Manage student subscriptions
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="send_notifications">
+        Send notifications
+      </label>
+
+      <label class="permission-option">
+        <input type="checkbox" data-permission="view_reports">
+        View reports and analytics
       </label>
 
     </div>
@@ -587,6 +828,8 @@ td{overflow-wrap:anywhere}
 
 import { supabase } from "./auth.js";
 
+const $ = id => document.getElementById(id);
+
 
 // =====================================
 // GLOBAL VARIABLES
@@ -596,6 +839,13 @@ let currentSession = null;
 let administratorList = [];
 let selectedAdminId = null;
 let pageIsSuperAdmin = false;
+let myPermissions = {};
+let planRows = {};
+let schoolLimits = {};
+let logsOffset = 0;
+let logsTotal = 0;
+
+const LOG_PAGE_SIZE = 10;
 
 const permissionKeys = [
   "manage_examinations",
@@ -608,49 +858,35 @@ const permissionKeys = [
   "manage_education_systems",
   "manage_education_levels",
   "manage_education_classes",
-  "manage_level_subjects"
+  "manage_level_subjects",
+  "manage_school_packages",
+  "manage_student_subscriptions",
+  "send_notifications",
+  "view_reports"
 ];
 
+const checkedPermissionKeys = [
+  "view_activity_logs",
+  "manage_platform_settings",
+  "manage_student_subscriptions",
+  "manage_school_packages",
+  "send_notifications"
+];
 
-// =====================================
-// PANEL NAVIGATION
-// =====================================
+function can(key) {
+  return pageIsSuperAdmin || myPermissions[key] === true;
+}
 
-const panelButtons = document.querySelectorAll("[data-panel]");
-const panels = document.querySelectorAll(".panel");
-
-panelButtons.forEach(button => {
-
-  button.addEventListener("click", () => {
-
-    const target = button.dataset.panel;
-
-    panelButtons.forEach(item => {
-      item.classList.toggle("active", item === button);
-    });
-
-    panels.forEach(panel => {
-      panel.classList.toggle("active", panel.id === target);
-    });
-
-    if (target === "permissions") loadAdministrators();
-
-    if (target === "records") loadAdministrativeLogs();
-
-  });
-
-});
-
-document.getElementById("year").textContent = new Date().getFullYear();
+$("year").textContent = new Date().getFullYear();
 
 
 // =====================================
-// MESSAGE HELPERS
+// HELPERS
 // =====================================
 
 function setStatus(elementId, text, type = "") {
 
-  const element = document.getElementById(elementId);
+  const element = $(elementId);
 
   element.textContent = text;
   element.className = "status";
@@ -668,6 +904,95 @@ function escapeHTML(value) {
     '"': "&quot;",
     "'": "&#039;"
   })[character]);
+
+}
+
+async function callRpc(name, args) {
+
+  const { data, error } = await supabase.rpc(name, args || {});
+
+  if (error) throw error;
+
+  return data;
+
+}
+
+function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+
+// =====================================
+// PANEL NAVIGATION AND ACCESS
+// =====================================
+
+const panelButtons = document.querySelectorAll("[data-panel]");
+const panels = document.querySelectorAll(".panel");
+
+const panelRules = {
+
+  permissions: () => pageIsSuperAdmin,
+
+  students: () =>
+    can("manage_platform_settings") ||
+    can("manage_student_subscriptions") ||
+    can("send_notifications"),
+
+  login: () => pageIsSuperAdmin,
+
+  school: () =>
+    can("manage_school_packages") ||
+    can("send_notifications"),
+
+  activity: () => can("view_activity_logs"),
+
+  security: () => pageIsSuperAdmin,
+
+  records: () => can("view_activity_logs")
+
+};
+
+function showPanel(target) {
+
+  panelButtons.forEach(item => {
+    item.classList.toggle("active", item.dataset.panel === target);
+  });
+
+  panels.forEach(panel => {
+    panel.classList.toggle("active", panel.id === target);
+  });
+
+  if (target === "permissions") loadAdministrators();
+
+  if (target === "records") loadAdministrativeLogs(true);
+
+}
+
+panelButtons.forEach(button => {
+  button.addEventListener("click", () => showPanel(button.dataset.panel));
+});
+
+function applyAccess() {
+
+  let first = null;
+
+  panelButtons.forEach(button => {
+
+    const allowed = panelRules[button.dataset.panel]();
+
+    button.style.display = allowed ? "block" : "none";
+
+    if (allowed && !first) first = button.dataset.panel;
+
+  });
+
+  document.querySelectorAll("[data-need]").forEach(element => {
+
+    if (!can(element.dataset.need)) element.style.display = "none";
+
+  });
+
+  return first;
 
 }
 
@@ -710,21 +1035,30 @@ async function verifyAdmin() {
 
   if (!pageIsSuperAdmin) {
 
-    const { data: canViewLogs, error: permissionError } =
-      await supabase.rpc("has_admin_permission", {
-        p_permission: "view_activity_logs"
-      });
+    const results = await Promise.all(
+      checkedPermissionKeys.map(key =>
+        supabase.rpc("has_admin_permission", { p_permission: key })
+      )
+    );
 
-    if (permissionError) throw permissionError;
+    results.forEach((result, index) => {
 
-    if (!canViewLogs) {
+      if (result.error) throw result.error;
+
+      myPermissions[checkedPermissionKeys[index]] = result.data === true;
+
+    });
+
+    if (!Object.values(myPermissions).some(Boolean)) {
       alert("You do not have permission to access Settings & Security.");
       location.replace("admin.html");
       return null;
     }
+
   }
 
   return session;
+
 }
 
 
@@ -736,8 +1070,8 @@ async function loadAdministrators() {
 
   if (!pageIsSuperAdmin) return;
 
-  const refreshButton = document.getElementById("refreshAdminsBtn");
-  const tableBody = document.getElementById("adminTableBody");
+  const refreshButton = $("refreshAdminsBtn");
+  const tableBody = $("adminTableBody");
 
   refreshButton.disabled = true;
 
@@ -745,10 +1079,7 @@ async function loadAdministrators() {
 
   try {
 
-    const { data, error } =
-      await supabase.rpc("get_platform_administrators");
-
-    if (error) throw error;
+    const data = await callRpc("get_platform_administrators");
 
     administratorList = data || [];
 
@@ -785,7 +1116,7 @@ async function loadAdministrators() {
 
 function renderAdministrators() {
 
-  const tableBody = document.getElementById("adminTableBody");
+  const tableBody = $("adminTableBody");
 
   if (!administratorList.length) {
 
@@ -860,7 +1191,7 @@ function renderAdministrators() {
     } else {
 
       actionsHTML = `
-        <span style="font-size:12px;color:#6b7789">
+        <span style="font-size:13px;color:#6b7789">
           Protected account
         </span>
       `;
@@ -886,12 +1217,11 @@ function renderAdministrators() {
 // ADD ADMINISTRATOR USING EMAIL
 // =====================================
 
-document.getElementById("addAdminBtn")
-.addEventListener("click", async () => {
+$("addAdminBtn").addEventListener("click", async () => {
 
-  const button = document.getElementById("addAdminBtn");
+  const button = $("addAdminBtn");
 
-  const emailInput = document.getElementById("newAdminEmail");
+  const emailInput = $("newAdminEmail");
 
   const email = emailInput.value.trim().toLowerCase();
 
@@ -930,14 +1260,7 @@ document.getElementById("addAdminBtn")
 
   try {
 
-    const { data, error } = await supabase.rpc(
-      "add_platform_administrator",
-      {
-        p_email: email
-      }
-    );
-
-    if (error) throw error;
+    const data = await callRpc("add_platform_administrator", { p_email: email });
 
     setStatus(
       "addAdminMessage",
@@ -972,8 +1295,7 @@ document.getElementById("addAdminBtn")
 // ADMINISTRATOR ACTION BUTTONS
 // =====================================
 
-document.getElementById("adminTableBody")
-.addEventListener("click", async event => {
+$("adminTableBody").addEventListener("click", async event => {
 
   const button = event.target.closest("[data-action]");
 
@@ -1041,14 +1363,7 @@ document.getElementById("adminTableBody")
 
   try {
 
-    const { data, error } = await supabase.rpc(
-      functionName,
-      {
-        p_user_id: userId
-      }
-    );
-
-    if (error) throw error;
+    const data = await callRpc(functionName, { p_user_id: userId });
 
     alert(data || "Administrator account updated successfully.");
 
@@ -1081,75 +1396,61 @@ function openPermissionEditor(userId) {
 
   selectedAdminId = userId;
 
-  document.getElementById("permissionAdminEmail").textContent =
-    admin.email || userId;
+  $("permissionAdminEmail").textContent = admin.email || userId;
 
   const permissions = admin.permissions || {};
 
   document.querySelectorAll("[data-permission]")
   .forEach(checkbox => {
 
-    const key = checkbox.dataset.permission;
-
-    checkbox.checked = permissions[key] === true;
+    checkbox.checked = permissions[checkbox.dataset.permission] === true;
 
   });
 
   setStatus("permissionMessage", "");
 
-  document.getElementById("permissionModal").style.display = "block";
+  $("permissionModal").style.display = "block";
 
 }
 
 
 function closePermissionEditor() {
 
-  document.getElementById("permissionModal").style.display = "none";
+  $("permissionModal").style.display = "none";
 
   selectedAdminId = null;
 
 }
 
 
-document.getElementById("closePermissionModal")
-.addEventListener("click", closePermissionEditor);
+$("closePermissionModal").addEventListener("click", closePermissionEditor);
 
 
-document.getElementById("savePermissionsBtn")
-.addEventListener("click", async () => {
+$("savePermissionsBtn").addEventListener("click", async () => {
 
   if (!selectedAdminId || !pageIsSuperAdmin) return;
 
-  const button = document.getElementById("savePermissionsBtn");
+  const button = $("savePermissionsBtn");
 
   const permissions = {};
 
   document.querySelectorAll("[data-permission]")
   .forEach(checkbox => {
 
-    permissions[checkbox.dataset.permission] =
-      checkbox.checked;
+    permissions[checkbox.dataset.permission] = checkbox.checked;
 
   });
 
   button.disabled = true;
 
-  setStatus(
-    "permissionMessage",
-    "Saving permissions..."
-  );
+  setStatus("permissionMessage", "Saving permissions...");
 
   try {
 
-    const { data, error } = await supabase.rpc(
-      "set_administrator_permissions",
-      {
-        p_user_id: selectedAdminId,
-        p_permissions: permissions
-      }
-    );
-
-    if (error) throw error;
+    const data = await callRpc("set_administrator_permissions", {
+      p_user_id: selectedAdminId,
+      p_permissions: permissions
+    });
 
     setStatus(
       "permissionMessage",
@@ -1179,104 +1480,114 @@ document.getElementById("savePermissionsBtn")
 
 });
 
-
-// =====================================
-// REFRESH ADMINISTRATORS
-// =====================================
-
-document.getElementById("refreshAdminsBtn")
-.addEventListener("click", loadAdministrators);
+$("refreshAdminsBtn").addEventListener("click", loadAdministrators);
 
 
 // =====================================
-// ADMINISTRATIVE ACTION RECORDS
+// ADMINISTRATIVE ACTION RECORDS (10 AT A TIME)
 // =====================================
 
-async function loadAdministrativeLogs() {
+function actionLabel(value) {
 
-  if (!pageIsSuperAdmin) {
-  const { data: allowed, error } = await supabase.rpc(
-    "has_admin_permission",
-    { p_permission: "view_activity_logs" }
-  );
+  const text = String(value || "").replace(/_/g, " ").trim();
 
-  if (error || !allowed) return;
+  return text ? text.charAt(0).toUpperCase() + text.slice(1) : "—";
+
 }
 
-  const button = document.getElementById("refreshLogsBtn");
+function shortId(value) {
 
-  const tableBody = document.getElementById("logsTableBody");
+  return value ? String(value).slice(0, 8) + "…" : "N/A";
 
-  button.disabled = true;
+}
 
-  setStatus(
-    "logsMessage",
-    "Loading administrative records..."
-  );
+function renderLogRow(log) {
+
+  const date = log.created_at
+    ? new Date(log.created_at).toLocaleString()
+    : "Unknown";
+
+  const previous = JSON.stringify(log.previous_values ?? {}, null, 2);
+  const current = JSON.stringify(log.new_values ?? {}, null, 2);
+
+  return `
+    <tr>
+      <td>${escapeHTML(date)}</td>
+      <td>${escapeHTML(log.actor_email || shortId(log.actor_user_id))}</td>
+      <td>${escapeHTML(log.target_email || (log.target_user_id ? shortId(log.target_user_id) : "N/A"))}</td>
+      <td>${escapeHTML(actionLabel(log.action_type))}</td>
+      <td>
+        <details>
+          <summary>View</summary>
+          <div class="record-details">Before:
+${escapeHTML(previous)}
+
+After:
+${escapeHTML(current)}</div>
+        </details>
+      </td>
+    </tr>
+  `;
+
+}
+
+async function loadAdministrativeLogs(reset = true) {
+
+  if (!can("view_activity_logs")) return;
+
+  const refreshButton = $("refreshLogsBtn");
+  const moreButton = $("moreLogsBtn");
+  const tableBody = $("logsTableBody");
+
+  if (reset) {
+
+    logsOffset = 0;
+    logsTotal = 0;
+
+    tableBody.innerHTML = '<tr><td colspan="5">Loading...</td></tr>';
+
+  }
+
+  refreshButton.disabled = true;
+  moreButton.disabled = true;
+
+  setStatus("logsMessage", "Loading administrative records...");
 
   try {
 
-    const { data, error } = await supabase.rpc(
-      "get_admin_action_logs",
-      {
-        p_limit: 100
-      }
-    );
+    const rows = (await callRpc("get_admin_action_logs_page", {
+      p_limit: LOG_PAGE_SIZE,
+      p_offset: logsOffset
+    })) || [];
 
-    if (error) throw error;
+    if (reset) tableBody.innerHTML = "";
 
-    if (!data || data.length === 0) {
+    if (rows.length) logsTotal = Number(rows[0].total_count) || 0;
+
+    if (reset && !rows.length) {
 
       tableBody.innerHTML = `
         <tr>
-          <td colspan="6">
+          <td colspan="5">
             No administrative actions have been recorded yet.
           </td>
         </tr>
       `;
 
-    } else {
-
-      tableBody.innerHTML = data.map(log => {
-
-        const formattedDate = log.created_at
-          ? new Date(log.created_at).toLocaleString()
-          : "Unknown";
-
-        return `
-          <tr>
-
-            <td>${escapeHTML(formattedDate)}</td>
-
-            <td>${escapeHTML(log.actor_user_id)}</td>
-
-            <td>${escapeHTML(log.target_user_id || "N/A")}</td>
-
-            <td>${escapeHTML(log.action_type)}</td>
-
-            <td>
-              <div class="record-details">
-                ${escapeHTML(JSON.stringify(log.previous_values ?? {}, null, 2))}
-              </div>
-            </td>
-
-            <td>
-              <div class="record-details">
-                ${escapeHTML(JSON.stringify(log.new_values ?? {}, null, 2))}
-              </div>
-            </td>
-
-          </tr>
-        `;
-
-      }).join("");
-
     }
+
+    tableBody.insertAdjacentHTML(
+      "beforeend",
+      rows.map(renderLogRow).join("")
+    );
+
+    logsOffset += rows.length;
+
+    moreButton.style.display = logsOffset < logsTotal ? "inline-block" : "none";
 
     setStatus(
       "logsMessage",
-      (data?.length || 0) +
-      " administrative record(s) retrieved.",
+      "Showing " + logsOffset + " of " + logsTotal + " record(s).",
       "success"
     );
 
@@ -1284,35 +1595,39 @@ async function loadAdministrativeLogs() {
 
     console.error("Administrative records error:", error);
 
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="6">
-          Unable to retrieve administrative records.
-        </td>
-      </tr>
-    `;
+    if (reset) {
+
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="5">
+            Unable to retrieve administrative records.
+          </td>
+        </tr>
+      `;
+
+    }
 
     setStatus(
       "logsMessage",
-      "Error: " + error.message,
+      "Error: " + error.message + " (If it mentions a missing function, run the Stage 1 SQL.)",
       "error"
     );
 
   } finally {
 
-    button.disabled = false;
+    refreshButton.disabled = false;
+    moreButton.disabled = false;
 
   }
 
 }
 
-
-document.getElementById("refreshLogsBtn")
-.addEventListener("click", loadAdministrativeLogs);
+$("refreshLogsBtn").addEventListener("click", () => loadAdministrativeLogs(true));
+$("moreLogsBtn").addEventListener("click", () => loadAdministrativeLogs(false));
 
 
 // =====================================
-// EXAMINATION SETTINGS
+// STUDENT EXAMINATION LIMITS
 // =====================================
 
 const settingDefinitions = {
@@ -1331,6 +1646,14 @@ const settingDefinitions = {
     label: "Free examination duration"
   },
 
+  free_student_attempts_per_day: {
+    inputId: "freeAttempts",
+    minimum: 1,
+    maximum: 50,
+    label: "Free attempts per day",
+    optional: true
+  },
+
   premium_student_question_limit: {
     inputId: "premiumQuestionLimit",
     minimum: 1,
@@ -1347,25 +1670,27 @@ const settingDefinitions = {
 
 };
 
-const saveButton = document.getElementById("saveExamSettings");
-
-const message = document.getElementById("examSettingsMessage");
-
+const saveButton = $("saveExamSettings");
 
 function showExamMessage(text, type = "") {
 
-  message.textContent = text;
-
-  message.className = "status";
-
-  if (type) message.classList.add(type);
+  setStatus("examSettingsMessage", text, type);
 
 }
 
+function renderConfigSummary() {
 
-// =====================================
-// LOAD SAVED SETTINGS
-// =====================================
+  const value = id => escapeHTML($(id).value);
+
+  $("configSummary").innerHTML =
+    "<strong>Current configuration</strong><br>" +
+    "Free: " + value("freeQuestionLimit") + " questions / " +
+    value("freeDuration") + " minutes / " +
+    value("freeAttempts") + " attempt(s) per day<br>" +
+    "Premium: " + value("premiumQuestionLimit") + " questions / " +
+    value("premiumDuration") + " minutes / unlimited attempts";
+
+}
 
 async function loadExamSettings() {
 
@@ -1384,27 +1709,31 @@ async function loadExamSettings() {
 
     if (error) throw error;
 
-    if (!data || data.length !== settingKeys.length) {
-
-      throw new Error(
-        "One or more examination settings are missing from Supabase."
-      );
-
-    }
-
     for (const key of settingKeys) {
 
-      const row = data.find(
-        item => item.setting_key === key
-      );
+      const definition = settingDefinitions[key];
+
+      const input = $(definition.inputId);
+
+      const row = (data || []).find(item => item.setting_key === key);
 
       if (!row) {
+
+        if (definition.optional) {
+
+          input.value = 1;
+          input.disabled = true;
+
+          $("attemptsHint").textContent =
+            "This setting is not in the database yet. Run the Stage 1 SQL to turn it on.";
+
+          continue;
+
+        }
 
         throw new Error("Missing setting: " + key);
 
       }
-
-      const definition = settingDefinitions[key];
 
       const value = Number(row.setting_value);
 
@@ -1414,20 +1743,18 @@ async function loadExamSettings() {
         value > definition.maximum
       ) {
 
-        throw new Error(
-          "Invalid saved value for " + definition.label
-        );
+        throw new Error("Invalid saved value for " + definition.label);
 
       }
 
-      document.getElementById(definition.inputId).value = value;
+      input.disabled = false;
+      input.value = value;
 
     }
 
-    showExamMessage(
-      "All four examination settings loaded successfully from Supabase.",
-      "success"
-    );
+    renderConfigSummary();
+
+    showExamMessage("Examination settings loaded from Supabase.", "success");
 
     saveButton.disabled = false;
 
@@ -1435,10 +1762,7 @@ async function loadExamSettings() {
 
     console.error("Settings loading error:", error);
 
-    showExamMessage(
-      "Unable to load settings: " + error.message,
-      "error"
-    );
+    showExamMessage("Unable to load settings: " + error.message, "error");
 
     saveButton.disabled = true;
 
@@ -1446,18 +1770,15 @@ async function loadExamSettings() {
 
 }
 
-
-// =====================================
-// VALIDATE SETTINGS
-// =====================================
-
 function collectSettings() {
 
   const updates = [];
 
   for (const [key, definition] of Object.entries(settingDefinitions)) {
 
-    const input = document.getElementById(definition.inputId);
+    const input = $(definition.inputId);
+
+    if (input.disabled) continue;
 
     const rawValue = input.value.trim();
 
@@ -1483,21 +1804,13 @@ function collectSettings() {
 
     }
 
-    updates.push({
-      setting_key: key,
-      setting_value: value
-    });
+    updates.push({ setting_key: key, setting_value: value });
 
   }
 
   return updates;
 
 }
-
-
-// =====================================
-// SAVE ALL FOUR SETTINGS
-// =====================================
 
 saveButton.addEventListener("click", async () => {
 
@@ -1509,10 +1822,10 @@ saveButton.addEventListener("click", async () => {
 
     const session = currentSession;
 
-    if (!session?.user?.id || !pageIsSuperAdmin) {
+    if (!session?.user?.id || !can("manage_platform_settings")) {
 
       throw new Error(
-        "Your active Super Administrator session could not be verified."
+        "You do not have permission to change examination settings."
       );
 
     }
@@ -1550,8 +1863,10 @@ saveButton.addEventListener("click", async () => {
 
     }
 
+    renderConfigSummary();
+
     showExamMessage(
-      "All four examination settings saved and confirmed successfully.",
+      "Examination settings saved and confirmed successfully.",
       "success"
     );
 
@@ -1559,18 +1874,650 @@ saveButton.addEventListener("click", async () => {
 
     console.error("Settings save error:", error);
 
-    showExamMessage(
-      "Save failed: " + error.message,
-      "error"
-    );
+    showExamMessage("Save failed: " + error.message, "error");
 
   } finally {
 
-    saveButton.disabled = !pageIsSuperAdmin;
+    saveButton.disabled = false;
 
   }
 
 });
+
+
+// =====================================
+// PLAN PRICES AND BENEFITS (STUDENT AND SCHOOL)
+// =====================================
+
+function fillPrice(inputId, billingId, key) {
+
+  const row = planRows[key];
+
+  const hasPrice =
+    row &&
+    row.price_amount !== null &&
+    row.price_amount !== undefined &&
+    row.price_amount !== "";
+
+  $(inputId).value = hasPrice ? Number(row.price_amount) : "";
+
+  $(billingId).value = row?.billing_period || "month";
+
+}
+
+function fillBenefits(textareaId, key) {
+
+  const row = planRows[key];
+
+  $(textareaId).value = (row?.benefits || []).join("\n");
+
+}
+
+async function loadPlanContent() {
+
+  try {
+
+    const { data, error } = await supabase
+      .from("plan_prices")
+      .select("audience, plan_name, price_amount, currency, billing_period, benefits");
+
+    if (error) throw error;
+
+    planRows = {};
+
+    (data || []).forEach(row => {
+
+      planRows[row.audience + ":" + String(row.plan_name).toLowerCase()] = row;
+
+    });
+
+    fillPrice("studentPremiumPrice", "studentPremiumBilling", "student:premium");
+    fillBenefits("studentBenefitsFree", "student:free");
+    fillBenefits("studentBenefitsPremium", "student:premium");
+
+    fillPrice("schoolSilverPrice", "schoolSilverBilling", "school:silver");
+    fillPrice("schoolGoldPrice", "schoolGoldBilling", "school:gold");
+    fillBenefits("schoolBenefitsFree", "school:free");
+    fillBenefits("schoolBenefitsSilver", "school:silver");
+    fillBenefits("schoolBenefitsGold", "school:gold");
+
+  } catch (error) {
+
+    console.error("Plan content error:", error);
+
+    const text =
+      "Plan details could not be loaded: " + error.message +
+      " (If it mentions a missing table or column, run the SQL from the plan prices and Stage 1 steps.)";
+
+    setStatus("studentPlanMessage", text, "error");
+    setStatus("schoolPlanMessage", text, "error");
+
+  }
+
+}
+
+function readPrice(inputId) {
+
+  const raw = $(inputId).value.trim();
+
+  if (raw === "") return null;
+
+  const number = Number(raw);
+
+  if (!Number.isFinite(number) || number < 0) {
+
+    throw new Error("Enter a valid price (0 or more), or leave it empty.");
+
+  }
+
+  return Math.round(number * 100) / 100;
+
+}
+
+function readBenefits(textareaId) {
+
+  return $(textareaId).value
+    .split("\n")
+    .map(line => line.trim())
+    .filter(Boolean);
+
+}
+
+async function savePrice(audience, plan, inputId, billingId) {
+
+  await callRpc("admin_set_plan_price", {
+    p_audience: audience,
+    p_plan: plan,
+    p_amount: readPrice(inputId),
+    p_billing: $(billingId).value,
+    p_currency: "NGN"
+  });
+
+}
+
+async function saveBenefits(audience, plan, textareaId) {
+
+  await callRpc("admin_set_plan_benefits", {
+    p_audience: audience,
+    p_plan: plan,
+    p_benefits: readBenefits(textareaId)
+  });
+
+}
+
+$("saveStudentPlanBtn").addEventListener("click", async () => {
+
+  const button = $("saveStudentPlanBtn");
+
+  button.disabled = true;
+
+  setStatus("studentPlanMessage", "Saving...");
+
+  try {
+
+    await savePrice("student", "Premium", "studentPremiumPrice", "studentPremiumBilling");
+    await saveBenefits("student", "Free", "studentBenefitsFree");
+    await saveBenefits("student", "Premium", "studentBenefitsPremium");
+
+    await loadPlanContent();
+
+    setStatus("studentPlanMessage", "Price and benefits saved.", "success");
+
+  } catch (error) {
+
+    console.error("Student plan save error:", error);
+
+    setStatus("studentPlanMessage", "Save failed: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+$("saveSchoolPlanBtn").addEventListener("click", async () => {
+
+  const button = $("saveSchoolPlanBtn");
+
+  button.disabled = true;
+
+  setStatus("schoolPlanMessage", "Saving...");
+
+  try {
+
+    await savePrice("school", "Silver", "schoolSilverPrice", "schoolSilverBilling");
+    await savePrice("school", "Gold", "schoolGoldPrice", "schoolGoldBilling");
+    await saveBenefits("school", "Free", "schoolBenefitsFree");
+    await saveBenefits("school", "Silver", "schoolBenefitsSilver");
+    await saveBenefits("school", "Gold", "schoolBenefitsGold");
+
+    await loadPlanContent();
+
+    setStatus("schoolPlanMessage", "Prices and benefits saved.", "success");
+
+  } catch (error) {
+
+    console.error("School plan save error:", error);
+
+    setStatus("schoolPlanMessage", "Save failed: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+
+// =====================================
+// SCHOOL PACKAGE LIMITS
+// =====================================
+
+const limitFields = [
+  ["limStudents", "max_active_students", "Active students"],
+  ["limSubjects", "max_subjects", "Subjects"],
+  ["limExams", "max_examinations", "Examinations"],
+  ["limStored", "max_stored_questions", "Question Bank"],
+  ["limPerExam", "max_questions_per_exam", "Questions per examination"],
+  ["limDuration", "max_exam_duration_minutes", "Maximum duration"],
+  ["limAttempts", "max_attempts_per_exam", "Attempts"]
+];
+
+function fillLimitForm() {
+
+  const row = schoolLimits[$("limitPackage").value] || {};
+
+  limitFields.forEach(([inputId, key]) => {
+
+    const value = row[key];
+
+    $(inputId).value =
+      value === null || value === undefined ? "" : value;
+
+  });
+
+}
+
+async function loadSchoolLimits() {
+
+  try {
+
+    const { data, error } = await supabase
+      .from("school_package_limits")
+      .select("*");
+
+    if (error) throw error;
+
+    schoolLimits = {};
+
+    const rows = (data || []).slice().sort(
+      (a, b) => Number(a.max_active_students) - Number(b.max_active_students)
+    );
+
+    rows.forEach(row => {
+      schoolLimits[String(row.package_name)] = row;
+    });
+
+    const select = $("limitPackage");
+
+    const keep = select.value;
+
+    select.innerHTML = rows.map(row =>
+      '<option value="' + escapeHTML(row.package_name) + '">' +
+      escapeHTML(row.package_name) + "</option>"
+    ).join("");
+
+    if (keep && schoolLimits[keep]) select.value = keep;
+
+    fillLimitForm();
+
+    setStatus("limitsMessage", "Package limits loaded.", "success");
+
+  } catch (error) {
+
+    console.error("School limits error:", error);
+
+    setStatus(
+      "limitsMessage",
+      "Package limits could not be loaded: " + error.message,
+      "error"
+    );
+
+  }
+
+}
+
+$("limitPackage").addEventListener("change", fillLimitForm);
+
+$("saveLimitsBtn").addEventListener("click", async () => {
+
+  const button = $("saveLimitsBtn");
+
+  button.disabled = true;
+
+  setStatus("limitsMessage", "Saving...");
+
+  try {
+
+    const limits = {};
+
+    for (const [inputId, key, label] of limitFields) {
+
+      const raw = $(inputId).value.trim();
+
+      if (raw === "") continue;
+
+      const number = Number(raw);
+
+      if (!Number.isInteger(number) || number < 1 || number > 999999999) {
+
+        $(inputId).focus();
+
+        throw new Error(label + " must be a whole number of 1 or more.");
+
+      }
+
+      if (key === "max_exam_duration_minutes" && number > 600) {
+
+        $(inputId).focus();
+
+        throw new Error("Maximum duration cannot be more than 600 minutes.");
+
+      }
+
+      limits[key] = number;
+
+    }
+
+    if (!Object.keys(limits).length) {
+
+      throw new Error("Enter at least one limit to save.");
+
+    }
+
+    const packageName = $("limitPackage").value;
+
+    await callRpc("admin_set_school_package_limits", {
+      p_package: packageName,
+      p_limits: limits
+    });
+
+    await loadSchoolLimits();
+
+    setStatus(
+      "limitsMessage",
+      packageName + " package limits saved. Schools see the change when they open their dashboard.",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error("Save limits error:", error);
+
+    setStatus("limitsMessage", "Save failed: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+
+// =====================================
+// STOP A PLAN (RETURN TO FREE)
+// =====================================
+
+$("stopStudentBtn").addEventListener("click", async () => {
+
+  const email = $("stopStudentEmail").value.trim().toLowerCase();
+  const note = $("stopStudentNote").value.trim();
+
+  if (!isEmail(email)) {
+
+    setStatus("stopStudentMessage", "Enter a valid student email address.", "error");
+
+    return;
+
+  }
+
+  if (!confirm("Return " + email + " to the Free plan now?")) return;
+
+  const button = $("stopStudentBtn");
+
+  button.disabled = true;
+
+  setStatus("stopStudentMessage", "Updating...");
+
+  try {
+
+    await callRpc("admin_set_student_plan", {
+      p_email: email,
+      p_plan: "free",
+      p_note: note || "Stopped by administrator"
+    });
+
+    $("stopStudentEmail").value = "";
+    $("stopStudentNote").value = "";
+
+    setStatus("stopStudentMessage", email + " is now on the Free plan.", "success");
+
+  } catch (error) {
+
+    console.error("Stop student plan error:", error);
+
+    setStatus("stopStudentMessage", "Could not update: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+$("stopSchoolBtn").addEventListener("click", async () => {
+
+  const email = $("stopSchoolEmail").value.trim().toLowerCase();
+  const note = $("stopSchoolNote").value.trim();
+
+  if (!isEmail(email)) {
+
+    setStatus("stopSchoolMessage", "Enter a valid Teacher/School email address.", "error");
+
+    return;
+
+  }
+
+  if (!confirm("Return " + email + " to the Free package now?")) return;
+
+  const button = $("stopSchoolBtn");
+
+  button.disabled = true;
+
+  setStatus("stopSchoolMessage", "Updating...");
+
+  try {
+
+    await callRpc("admin_set_school_package", {
+      p_email: email,
+      p_package: "Free",
+      p_limits: {},
+      p_note: note || "Stopped by administrator"
+    });
+
+    $("stopSchoolEmail").value = "";
+    $("stopSchoolNote").value = "";
+
+    setStatus("stopSchoolMessage", email + " is now on the Free package.", "success");
+
+  } catch (error) {
+
+    console.error("Stop school package error:", error);
+
+    setStatus("stopSchoolMessage", "Could not update: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+});
+
+
+// =====================================
+// NOTIFICATIONS
+// =====================================
+
+function buildNotificationForm(containerId, prefix, audiences, noun) {
+
+  $(containerId).innerHTML = `
+
+    <div class="form-group">
+      <label for="${prefix}Audience">Send to</label>
+      <select id="${prefix}Audience">
+        ${audiences.map(item =>
+          `<option value="${item[0]}">${escapeHTML(item[1])}</option>`
+        ).join("")}
+      </select>
+    </div>
+
+    <div class="form-group" id="${prefix}EmailWrap" style="display:none">
+      <label for="${prefix}Email">${escapeHTML(noun)} email address</label>
+      <input type="email" id="${prefix}Email" maxlength="254"
+        placeholder="Enter the registered email" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label for="${prefix}Title">Title</label>
+      <input type="text" id="${prefix}Title" maxlength="120"
+        placeholder="Short title">
+    </div>
+
+    <div class="form-group">
+      <label for="${prefix}Body">Message</label>
+      <textarea id="${prefix}Body" maxlength="1000"
+        placeholder="Write your message"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="${prefix}Link">Link (optional)</label>
+      <input type="text" id="${prefix}Link" maxlength="300"
+        placeholder="For example: contact.html">
+      <div class="hint">
+        A page on this site (such as contact.html) or a link starting with https://
+      </div>
+    </div>
+
+    <button class="button gold" id="${prefix}Send" type="button">
+      Send Notification
+    </button>
+
+    <div class="status" id="${prefix}Message" role="status" aria-live="polite"></div>
+
+  `;
+
+  $(prefix + "Audience").addEventListener("change", () => {
+
+    $(prefix + "EmailWrap").style.display =
+      $(prefix + "Audience").value === "one" ? "block" : "none";
+
+  });
+
+  $(prefix + "Send").addEventListener("click", () => sendNotification(prefix));
+
+}
+
+async function sendNotification(prefix) {
+
+  const button = $(prefix + "Send");
+
+  const audience = $(prefix + "Audience").value;
+  const email = $(prefix + "Email").value.trim().toLowerCase();
+  const title = $(prefix + "Title").value.trim();
+  const body = $(prefix + "Body").value.trim();
+  const link = $(prefix + "Link").value.trim();
+
+  const statusId = prefix + "Message";
+
+  if (!title) {
+
+    setStatus(statusId, "Enter a title.", "error");
+
+    return;
+
+  }
+
+  if (audience === "one" && !isEmail(email)) {
+
+    setStatus(statusId, "Enter a valid email address.", "error");
+
+    return;
+
+  }
+
+  button.disabled = true;
+
+  setStatus(statusId, "Checking recipients...");
+
+  try {
+
+    const common = {
+      p_audience: audience,
+      p_email: audience === "one" ? email : null,
+      p_title: title,
+      p_body: body || null,
+      p_link: link || null
+    };
+
+    const preview = await callRpc("admin_send_notification", {
+      ...common,
+      p_preview: true
+    });
+
+    const count = Number(preview?.recipients) || 0;
+
+    if (count === 0) {
+
+      throw new Error("No recipients matched that choice.");
+
+    }
+
+    const question =
+      "Send this notification to " + count +
+      " recipient" + (count === 1 ? "" : "s") + "?";
+
+    if (!confirm(question)) {
+
+      setStatus(statusId, "Cancelled. Nothing was sent.");
+
+      return;
+
+    }
+
+    setStatus(statusId, "Sending...");
+
+    const result = await callRpc("admin_send_notification", {
+      ...common,
+      p_preview: false
+    });
+
+    const sent = Number(result?.recipients) || count;
+
+    $(prefix + "Title").value = "";
+    $(prefix + "Body").value = "";
+    $(prefix + "Link").value = "";
+
+    setStatus(
+      statusId,
+      "Notification sent to " + sent + " recipient" + (sent === 1 ? "" : "s") + ".",
+      "success"
+    );
+
+  } catch (error) {
+
+    console.error("Send notification error:", error);
+
+    setStatus(statusId, "Could not send: " + error.message, "error");
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+}
+
+buildNotificationForm(
+  "studentNotifForm",
+  "stuNotif",
+  [
+    ["all_students", "All public students"],
+    ["premium_students", "Premium students"],
+    ["free_students", "Free students"],
+    ["one", "One student (by email)"]
+  ],
+  "Student"
+);
+
+buildNotificationForm(
+  "schoolNotifForm",
+  "schNotif",
+  [
+    ["all_schools", "All Teacher/School accounts"],
+    ["school_free", "Free package"],
+    ["school_silver", "Silver package"],
+    ["school_gold", "Gold package"],
+    ["school_custom", "Custom package"],
+    ["one", "One account (by email)"]
+  ],
+  "Teacher/School"
+);
 
 
 // =====================================
@@ -1585,50 +2532,21 @@ async function initializePage() {
 
     if (!session) return;
 
-    if (!pageIsSuperAdmin) {
+    const firstPanel = applyAccess();
 
-      // Hide all Super Administrator navigation options.
-      panelButtons.forEach(button => {
+    if (firstPanel) showPanel(firstPanel);
 
-        const allowed =
-          button.dataset.panel === "activity" ||
-          button.dataset.panel === "records";
+    const tasks = [];
 
-        button.style.display = allowed ? "block" : "none";
+    if (can("manage_platform_settings")) tasks.push(loadExamSettings());
 
-      });
-
-      // Hide all Super Administrator panels.
-      panels.forEach(panel => {
-
-        const allowed =
-          panel.id === "activity" ||
-          panel.id === "records";
-
-        panel.classList.remove("active");
-        panel.style.display = allowed ? "" : "none";
-
-      });
-
-      // Open Activity Logs by default.
-      panelButtons.forEach(button => {
-        button.classList.toggle(
-          "active",
-          button.dataset.panel === "activity"
-        );
-      });
-
-      document.getElementById("activity").classList.add("active");
-
-    } else {
-
-      // Super Administrators retain full Settings access.
-      await Promise.all([
-        loadAdministrators(),
-        loadExamSettings()
-      ]);
-
+    if (can("manage_platform_settings") || can("manage_school_packages")) {
+      tasks.push(loadPlanContent());
     }
+
+    if (can("manage_school_packages")) tasks.push(loadSchoolLimits());
+
+    await Promise.allSettled(tasks);
 
   } catch (error) {
 
