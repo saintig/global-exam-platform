@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Send Notifications | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;
+  --text:#263449;--muted:#6b7789;--border:#e1e7ef;
+  --green:#16794b;--red:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.toplinks{display:flex;gap:8px;flex-wrap:wrap}
+.toplinks a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.container{max-width:900px;margin:auto;padding:22px 16px 40px}
+h1{margin:0 0 6px;color:var(--navy);font-size:27px}
+.sub{margin:0 0 18px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.tab{flex:1;min-width:150px;min-height:46px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.card h2{margin:0 0 6px;color:var(--navy);font-size:20px}
+.card p.d{margin:0 0 14px;color:var(--muted);font-size:15px}
+.form-group{margin:14px 0}
+.form-group label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:16px}
+textarea{min-height:130px;resize:vertical;line-height:1.5}
+input:focus,select:focus,textarea:focus{outline:2px solid #2457a733;border-color:var(--blue)}
+.hint{font-size:14px;color:var(--muted);margin-top:6px}
+.count{float:right;font-weight:400;color:var(--muted);font-size:14px}
+.button{display:inline-block;padding:12px 18px;min-height:46px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button.gold{background:var(--gold);color:#202938}
+.button.secondary{background:#edf1f7;color:var(--navy)}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status.success{color:var(--green)}
+.status.error{color:var(--red)}
+.preview{margin-top:16px;border:1px dashed #c9d3e3;border-radius:10px;padding:14px;background:#fffdf7}
+.preview small{display:block;color:var(--muted);margin-bottom:8px}
+.pv{border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:10px;padding:12px;background:#fff}
+.pv strong{display:block;font-size:17px;color:var(--navy);overflow-wrap:anywhere}
+.pv p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.pv .open{display:inline-block;margin-top:10px;padding:9px 14px;border-radius:8px;background:var(--navy);color:#fff;font-weight:700;font-size:15px}
+.hist{display:grid;gap:10px;margin-top:12px}
+.hist-item{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fff}
+.hist-item strong{display:block;color:var(--navy);overflow-wrap:anywhere}
+.hist-meta{font-size:14px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:14px;font-weight:700;background:#edf1f7;color:var(--navy)}
+.empty{text-align:center;color:var(--muted);padding:20px;background:#f8faff;border-radius:8px}
+.pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:560px){.container{padding:16px 11px 36px}.card{padding:15px}}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <div class="toplinks">
+    <a href="paid-subscribers.html">Paid Subscribers</a>
+    <a href="admin.html">← Admin Dashboard</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <h1>Send Notifications</h1>
+  <p class="sub">Messages appear in the account's Notifications list and on its 🔔 bell.</p>
+
+  <div class="tabs">
+    <button class="tab active" id="tabStudent" data-kind="student" type="button">🎓 Public Students</button>
+    <button class="tab" id="tabSchool" data-kind="school" type="button">🏫 Teachers/Schools</button>
+  </div>
+
+  <section class="card">
+    <h2 id="formTitle">Notify students</h2>
+    <p class="d" id="formDesc">Choose who receives the message, then write it.</p>
+
+    <div class="form-group">
+      <label for="audience">Send to</label>
+      <select id="audience"></select>
+    </div>
+
+    <div class="form-group" id="emailWrap" hidden>
+      <label for="email" id="emailLabel">Email address</label>
+      <input id="email" type="email" maxlength="254" placeholder="Enter the registered email" autocomplete="off">
+    </div>
+
+    <div class="form-group">
+      <label for="title">Title <span class="count" id="titleCount">0/120</span></label>
+      <input id="title" type="text" maxlength="120" placeholder="Short title">
+    </div>
+
+    <div class="form-group">
+      <label for="body">Message <span class="count" id="bodyCount">0/1000</span></label>
+      <textarea id="body" maxlength="1000" placeholder="Write your message"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="link">Link (optional)</label>
+      <input id="link" type="text" maxlength="300" placeholder="For example: contact.html">
+      <div class="hint">A page on this site (such as contact.html) or a link starting with https://</div>
+    </div>
+
+    <div class="preview">
+      <small>How it will look</small>
+      <div class="pv" id="pv"></div>
+    </div>
+
+    <div style="margin-top:16px">
+      <button class="button gold" id="sendBtn" type="button">Send Notification</button>
+    </div>
+
+    <div class="status" id="sendStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card">
+    <h2>Recently sent</h2>
+    <p class="d">The latest notifications sent by administrators.</p>
+
+    <div class="hist" id="hist"><div class="empty">Loading…</div></div>
+
+    <div class="pager">
+      <button class="button secondary" id="moreBtn" type="button" style="display:none">Show 10 more</button>
+      <div class="status" id="histCount" style="margin:0"></div>
+    </div>
+  </section>
+
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const PAGE = 10;
+
+const AUDIENCES = {
+  student: [
+    ["all_students","All public students"],
+    ["premium_students","Premium students"],
+    ["free_students","Free students"],
+    ["one","One student (by email)"]
+  ],
+  school: [
+    ["all_schools","All Teacher/School accounts"],
+    ["school_free","Free package"],
+    ["school_silver","Silver package"],
+    ["school_gold","Gold package"],
+    ["school_custom","Custom package"],
+    ["one","One account (by email)"]
+  ]
+};
+
+const LABELS = {
+  all_students:"All public students",
+  premium_students:"Premium students",
+  free_students:"Free students",
+  all_schools:"All Teacher/School accounts",
+  school_free:"Free schools",
+  school_silver:"Silver schools",
+  school_gold:"Gold schools",
+  school_custom:"Custom schools"
+};
+
+const LINK_PATTERN =
+  /^(https:\/\/\S+|(?:\.\/)?[A-Za-z0-9_-]+\.html(?:[?#][A-Za-z0-9_.\/?=&%#-]*)?)$/;
+
+let kind = "student";
+let sending = false;
+let offset = 0;
+let total = 0;
+
+/* ---------- helpers ---------- */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function fmtDate(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleString(undefined,{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+
+function isEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function setStatus(id, text, type = "") {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "status" + (type ? " " + type : "");
+}
+
+async function rpc(name, args) {
+  const { data, error } = await supabase.rpc(name, args || {});
+  if (error) throw error;
+  return data;
+}
+
+/* ---------- admin check ---------- */
+
+async function verifyAdmin() {
+  const { data: sd, error: se } = await supabase.auth.getSession();
+  if (se) throw se;
+
+  const session = sd?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id, role, is_suspended")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!admin || admin.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  if (admin.role !== "super_admin") {
+    const allowed = await rpc("has_admin_permission", { p_permission: "send_notifications" });
+
+    if (allowed !== true) {
+      alert("You do not have permission to send notifications.");
+      location.replace("admin.html");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/* ---------- form ---------- */
+
+function fillAudiences() {
+  $("audience").innerHTML = AUDIENCES[kind]
+    .map(([value, label]) => `<option value="${value}">${esc(label)}</option>`)
+    .join("");
+
+  syncEmailField();
+}
+
+function syncEmailField() {
+  const one = $("audience").value === "one";
+
+  $("emailWrap").hidden = !one;
+
+  $("emailLabel").textContent =
+    (kind === "student" ? "Student" : "Teacher/School") + " email address";
+}
+
+function renderPreview() {
+  const title = $("title").value.trim();
+  const body = $("body").value.trim();
+  const link = $("link").value.trim();
+
+  $("titleCount").textContent = $("title").value.length + "/120";
+  $("bodyCount").textContent = $("body").value.length + "/1000";
+
+  const linkOk = link && LINK_PATTERN.test(link);
+
+  $("pv").innerHTML =
+    `<strong>${esc(title || "Your title appears here")}</strong>` +
+    (body ? `<p>${esc(body)}</p>` : "") +
+    (linkOk ? '<span class="open">Open</span>' : "");
+}
+
+["title","body","link"].forEach(id => $(id).addEventListener("input", renderPreview));
+
+$("audience").addEventListener("change", () => {
+  syncEmailField();
+  setStatus("sendStatus", "");
+});
+
+function setKind(next) {
+  kind = next;
+
+  $("tabStudent").classList.toggle("active", kind === "student");
+  $("tabSchool").classList.toggle("active", kind === "school");
+
+  $("formTitle").textContent =
+    kind === "student" ? "Notify students" : "Notify Teachers/Schools";
+
+  $("email").value = "";
+
+  setStatus("sendStatus", "");
+
+  fillAudiences();
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => setKind(button.dataset.kind));
+});
+
+/* ---------- send ---------- */
+
+$("sendBtn").addEventListener("click", async () => {
+  if (sending) return;
+
+  const audience = $("audience").value;
+  const email = $("email").value.trim().toLowerCase();
+  const title = $("title").value.trim();
+  const body = $("body").value.trim();
+  const link = $("link").value.trim();
+
+  if (!title) {
+    setStatus("sendStatus", "Enter a title.", "error");
+    $("title").focus();
+    return;
+  }
+
+  if (audience === "one" && !isEmail(email)) {
+    setStatus("sendStatus", "Enter a valid email address.", "error");
+    $("email").focus();
+    return;
+  }
+
+  if (link && !LINK_PATTERN.test(link)) {
+    setStatus("sendStatus", "The link must start with https:// or be a page on this site, such as contact.html.", "error");
+    $("link").focus();
+    return;
+  }
+
+  sending = true;
+  $("sendBtn").disabled = true;
+  setStatus("sendStatus", "Checking recipients…");
+
+  try {
+    const common = {
+      p_audience: audience,
+      p_email: audience === "one" ? email : null,
+      p_title: title,
+      p_body: body || null,
+      p_link: link || null
+    };
+
+    const preview = await rpc("admin_send_notification", { ...common, p_preview: true });
+
+    const count = Number(preview?.recipients) || 0;
+
+    if (count === 0) {
+      throw new Error(
+        audience === "one"
+          ? "No account was found for that email."
+          : "No recipients matched that choice."
+      );
+    }
+
+    const who = audience === "one"
+      ? email
+      : (AUDIENCES[kind].find(a => a[0] === audience)?.[1] || audience);
+
+    const question =
+      "Send this notification to " + count + " recipient" + (count === 1 ? "" : "s") +
+      " (" + who + ")?";
+
+    if (!confirm(question)) {
+      setStatus("sendStatus", "Cancelled. Nothing was sent.");
+      return;
+    }
+
+    setStatus("sendStatus", "Sending…");
+
+    const result = await rpc("admin_send_notification", { ...common, p_preview: false });
+
+    const sent = Number(result?.recipients) || count;
+
+    $("title").value = "";
+    $("body").value = "";
+    $("link").value = "";
+    renderPreview();
+
+    setStatus(
+      "sendStatus",
+      "Notification sent to " + sent + " recipient" + (sent === 1 ? "" : "s") + ".",
+      "success"
+    );
+
+    loadHistory(true);
+
+  } catch (error) {
+    console.error("Send notification error:", error);
+    setStatus("sendStatus", "Could not send: " + error.message, "error");
+
+  } finally {
+    sending = false;
+    $("sendBtn").disabled = false;
+  }
+});
+
+/* ---------- recently sent ---------- */
+
+function renderHistoryItem(r) {
+  const audience = r.audience === "one"
+    ? (r.target_email || "One account")
+    : (LABELS[r.audience] || r.audience || "—");
+
+  const count = Number(r.recipients) || 0;
+
+  return `
+    <div class="hist-item">
+      <strong>${esc(r.title || "(no title)")}</strong>
+      <div class="hist-meta">
+        <span class="pill">${esc(audience)}</span>
+        · ${count} recipient${count === 1 ? "" : "s"}
+        · ${esc(fmtDate(r.created_at))}
+        · by ${esc(r.admin_email || "an administrator")}
+      </div>
+    </div>`;
+}
+
+async function loadHistory(reset = true) {
+  if (reset) {
+    offset = 0;
+    total = 0;
+    $("hist").innerHTML = '<div class="empty">Loading…</div>';
+  }
+
+  $("moreBtn").disabled = true;
+
+  try {
+    const data = await rpc("admin_recent_notifications", {
+      p_limit: PAGE, p_offset: offset
+    }) || [];
+
+    if (reset) $("hist").innerHTML = "";
+
+    if (data.length) total = Number(data[0].total_count) || 0;
+
+    if (reset && !data.length) {
+      $("hist").innerHTML = '<div class="empty">No notifications have been sent yet.</div>';
+    }
+
+    $("hist").insertAdjacentHTML("beforeend", data.map(renderHistoryItem).join(""));
+
+    offset += data.length;
+
+    $("moreBtn").style.display = offset < total ? "inline-block" : "none";
+    $("histCount").textContent = total ? "Showing " + offset + " of " + total : "";
+
+  } catch (error) {
+    console.error("History error:", error);
+
+    if (reset) {
+      $("hist").innerHTML =
+        '<div class="empty">Could not load the list: ' + esc(error.message) +
+        " (If it mentions a missing function, run the Stage 4 SQL.)</div>";
+    }
+
+  } finally {
+    $("moreBtn").disabled = false;
+  }
+}
+
+$("moreBtn").addEventListener("click", () => loadHistory(false));
+
+/* ---------- start ---------- */
+
+async function init() {
+  try {
+    if (!(await verifyAdmin())) return;
+
+    renderPreview();
+    setKind("student");
+    loadHistory(true);
+
+  } catch (error) {
+    console.error("Page initialization error:", error);
+    alert("Unable to open Send Notifications: " + error.message);
+    location.replace("admin.html");
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
