@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Admin Account Settings | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;
+  --text:#263449;--muted:#6b7789;--border:#e1e7ef;
+  --green:#16794b;--red:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.container{max-width:760px;margin:auto;padding:22px 16px 40px}
+h1{margin:0 0 6px;color:var(--navy);font-size:27px}
+.sub{margin:0 0 18px;color:var(--muted)}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.card h2{margin:0 0 6px;color:var(--navy);font-size:20px}
+.card p.d{margin:0 0 14px;color:var(--muted);font-size:15px}
+dl.kv{display:grid;grid-template-columns:170px 1fr;gap:10px 14px;margin:0}
+dl.kv dt{color:var(--muted)}
+dl.kv dd{margin:0;overflow-wrap:anywhere;font-weight:700;color:var(--navy)}
+.form-group{margin:14px 0}
+.form-group label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
+input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:16px}
+input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
+.hint{font-size:14px;color:var(--muted);margin-top:6px}
+.check{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:15px}
+.check input{width:20px;height:20px;accent-color:var(--navy)}
+.button{display:inline-block;padding:12px 18px;min-height:46px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button.gold{background:var(--gold);color:#202938}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status.success{color:var(--green)}
+.status.error{color:var(--red)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.chip{display:inline-block;padding:5px 11px;border-radius:20px;font-size:14px;font-weight:700;background:#edf1f7;color:var(--navy)}
+.chip.super{background:#fff4d1;color:#725400}
+.chip.ok{background:#e7f6ed;color:var(--green)}
+.chip.bad{background:#fdebea;color:var(--red)}
+@media(max-width:560px){
+  dl.kv{grid-template-columns:1fr;gap:2px}
+  dl.kv dd{margin-bottom:10px}
+  .container{padding:16px 11px 36px}
+  .card{padding:15px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <a href="admin.html">← Admin Dashboard</a>
+</header>
+
+<div class="container">
+
+  <h1>Admin Account Settings</h1>
+  <p class="sub">Your administrator name, password and account details.</p>
+
+  <section class="card">
+    <h2>Account details</h2>
+    <p class="d">Your details as an administrator. Your role and permissions are set by a Super Administrator.</p>
+
+    <dl class="kv" id="details">
+      <dt>Loading…</dt><dd></dd>
+    </dl>
+
+    <div class="status" id="detailsStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card">
+    <h2>Change admin name</h2>
+    <p class="d">This is the name shown for you on the admin pages.</p>
+
+    <div class="form-group">
+      <label for="nameInput">Admin name</label>
+      <input id="nameInput" type="text" maxlength="60" placeholder="Enter your name" autocomplete="name">
+      <div class="hint">2 to 60 characters.</div>
+    </div>
+
+    <button class="button gold" id="saveNameBtn" type="button">Save Name</button>
+    <div class="status" id="nameStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="card">
+    <h2>Change password</h2>
+    <p class="d">Enter your current password to confirm it is you, then choose a new one.</p>
+
+    <div class="form-group">
+      <label for="curPass">Current password</label>
+      <input id="curPass" type="password" autocomplete="current-password">
+    </div>
+
+    <div class="form-group">
+      <label for="newPass">New password</label>
+      <input id="newPass" type="password" autocomplete="new-password" minlength="10">
+      <div class="hint">At least 10 characters. A longer password with letters, numbers and symbols is stronger.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="confPass">Confirm new password</label>
+      <input id="confPass" type="password" autocomplete="new-password" minlength="10">
+    </div>
+
+    <label class="check">
+      <input type="checkbox" id="showPass">
+      Show passwords
+    </label>
+
+    <div style="margin-top:16px">
+      <button class="button gold" id="savePassBtn" type="button">Update Password</button>
+    </div>
+
+    <div class="status" id="passStatus" role="status" aria-live="polite"></div>
+  </section>
+
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const PERMISSION_LABELS = {
+  manage_examinations: "Manage examinations",
+  manage_questions: "Manage questions",
+  manage_students: "Manage students",
+  manage_teachers: "Manage teachers",
+  view_activity_logs: "View activity logs",
+  manage_platform_settings: "Manage platform settings",
+  manage_subjects: "Manage subjects",
+  manage_education_systems: "Manage education systems",
+  manage_education_levels: "Manage education levels",
+  manage_education_classes: "Manage education classes",
+  manage_level_subjects: "Manage education level subjects",
+  manage_school_packages: "Manage school packages and prices",
+  manage_student_subscriptions: "Manage student subscriptions",
+  send_notifications: "Send notifications",
+  view_reports: "View reports and analytics"
+};
+
+let account = null;
+let busyName = false;
+let busyPass = false;
+
+/* ---------- helpers ---------- */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function fmtDate(value, withTime) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+
+  return withTime
+    ? d.toLocaleString(undefined,{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})
+    : d.toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
+}
+
+function setStatus(id, text, type = "") {
+  const el = $(id);
+  el.textContent = text;
+  el.className = "status" + (type ? " " + type : "");
+}
+
+async function rpc(name, args) {
+  const { data, error } = await supabase.rpc(name, args || {});
+  if (error) throw error;
+  return data;
+}
+
+/* ---------- admin check ---------- */
+
+async function verifyAdmin() {
+  const { data: sd, error: se } = await supabase.auth.getSession();
+  if (se) throw se;
+
+  const session = sd?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id, is_suspended")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!admin || admin.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  return true;
+}
+
+/* ---------- account details ---------- */
+
+function renderDetails() {
+  const isSuper = account.role === "super_admin";
+  const permissions = account.permissions || {};
+
+  const granted = Object.keys(PERMISSION_LABELS)
+    .filter(key => permissions[key] === true)
+    .map(key => `<span class="chip">${esc(PERMISSION_LABELS[key])}</span>`)
+    .join("");
+
+  const permissionHtml = isSuper
+    ? '<span class="chip super">Full access</span>'
+    : (granted || '<span class="hint">No permissions assigned yet</span>');
+
+  $("details").innerHTML = `
+    <dt>Name</dt><dd>${esc(account.display_name || "Not set yet")}</dd>
+    <dt>Email</dt><dd>${esc(account.email)}</dd>
+    <dt>Role</dt><dd>${isSuper ? "Super Administrator" : "Administrator"}</dd>
+    <dt>Status</dt><dd>${account.is_suspended
+      ? '<span class="chip bad">Suspended</span>'
+      : '<span class="chip ok">Active</span>'}</dd>
+    <dt>Administrator since</dt><dd>${esc(fmtDate(account.admin_since, false))}</dd>
+    <dt>Account created</dt><dd>${esc(fmtDate(account.account_created, false))}</dd>
+    <dt>Last sign-in</dt><dd>${esc(fmtDate(account.last_sign_in, true))}</dd>
+    <dt>Account ID</dt><dd>${esc(String(account.user_id || "").slice(0, 8))}…</dd>
+    <dt>Permissions</dt><dd><div class="chips">${permissionHtml}</div></dd>
+  `;
+
+  $("nameInput").value = account.display_name || "";
+}
+
+async function loadAccount() {
+  try {
+    account = await rpc("admin_get_my_account");
+
+    if (!account) throw new Error("Your administrator account could not be found.");
+
+    renderDetails();
+    setStatus("detailsStatus", "");
+
+  } catch (error) {
+    console.error("Account details error:", error);
+
+    $("details").innerHTML = "";
+
+    setStatus(
+      "detailsStatus",
+      "Could not load your details: " + error.message +
+      " (If it mentions a missing function, run the Stage 4 SQL.)",
+      "error"
+    );
+  }
+}
+
+/* ---------- change name ---------- */
+
+$("saveNameBtn").addEventListener("click", async () => {
+  if (busyName) return;
+
+  const name = $("nameInput").value.replace(/\s+/g, " ").trim();
+
+  if (name.length < 2 || name.length > 60) {
+    setStatus("nameStatus", "The name must be between 2 and 60 characters.", "error");
+    $("nameInput").focus();
+    return;
+  }
+
+  busyName = true;
+  $("saveNameBtn").disabled = true;
+  setStatus("nameStatus", "Saving…");
+
+  try {
+    await rpc("admin_set_my_display_name", { p_name: name });
+
+    await loadAccount();
+
+    setStatus("nameStatus", "Name saved.", "success");
+
+  } catch (error) {
+    console.error("Name save error:", error);
+    setStatus("nameStatus", "Could not save: " + error.message, "error");
+
+  } finally {
+    busyName = false;
+    $("saveNameBtn").disabled = false;
+  }
+});
+
+/* ---------- change password ---------- */
+
+$("showPass").addEventListener("change", () => {
+  const type = $("showPass").checked ? "text" : "password";
+  ["curPass","newPass","confPass"].forEach(id => { $(id).type = type; });
+});
+
+$("savePassBtn").addEventListener("click", async () => {
+  if (busyPass) return;
+
+  const current = $("curPass").value;
+  const next = $("newPass").value;
+  const confirmation = $("confPass").value;
+
+  if (!current) {
+    setStatus("passStatus", "Enter your current password.", "error");
+    $("curPass").focus();
+    return;
+  }
+
+  if (next.length < 10) {
+    setStatus("passStatus", "The new password must be at least 10 characters.", "error");
+    $("newPass").focus();
+    return;
+  }
+
+  if (next === current) {
+    setStatus("passStatus", "The new password must be different from the current one.", "error");
+    $("newPass").focus();
+    return;
+  }
+
+  if (next !== confirmation) {
+    setStatus("passStatus", "The two new passwords do not match.", "error");
+    $("confPass").focus();
+    return;
+  }
+
+  if (!account?.email) {
+    setStatus("passStatus", "Your account details have not loaded. Refresh the page and try again.", "error");
+    return;
+  }
+
+  busyPass = true;
+  $("savePassBtn").disabled = true;
+  setStatus("passStatus", "Checking your current password…");
+
+  try {
+    const { error: checkError } = await supabase.auth.signInWithPassword({
+      email: account.email,
+      password: current
+    });
+
+    if (checkError) {
+      throw new Error(
+        /invalid login|credentials/i.test(checkError.message)
+          ? "Your current password is not correct."
+          : checkError.message
+      );
+    }
+
+    setStatus("passStatus", "Updating your password…");
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: next });
+
+    if (updateError) throw updateError;
+
+    ["curPass","newPass","confPass"].forEach(id => { $(id).value = ""; });
+
+    setStatus("passStatus", "Password updated. Use the new password the next time you sign in.", "success");
+
+  } catch (error) {
+    console.error("Password update error:", error);
+    setStatus("passStatus", error.message || "Could not update the password.", "error");
+
+  } finally {
+    busyPass = false;
+    $("savePassBtn").disabled = false;
+  }
+});
+
+/* ---------- start ---------- */
+
+async function init() {
+  try {
+    if (!(await verifyAdmin())) return;
+
+    await loadAccount();
+
+  } catch (error) {
+    console.error("Page initialization error:", error);
+    alert("Unable to open Admin Account Settings: " + error.message);
+    location.replace("admin.html");
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
