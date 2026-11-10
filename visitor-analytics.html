@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Visitor Analytics | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;
+  --text:#263449;--muted:#6b7789;--border:#e1e7ef;
+  --green:#16794b;--red:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.container{max-width:1050px;margin:auto;padding:22px 16px 40px}
+h1{margin:0 0 6px;color:var(--navy);font-size:27px}
+.sub{margin:0 0 18px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.tab{flex:1;min-width:110px;min-height:46px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.card h2{margin:0 0 4px;color:var(--navy);font-size:19px}
+.label{font-size:14px;color:var(--muted)}
+.big{font-size:32px;font-weight:800;color:var(--navy);margin:4px 0}
+.chg{display:inline-block;font-weight:700;font-size:15px}
+.chg.up{color:var(--green)}
+.chg.down{color:var(--red)}
+.chg.flat{color:var(--muted)}
+.small{font-size:14px;color:var(--muted);margin-top:4px}
+.explain{background:#fff8e5;border:1px solid #f0dfa8;border-radius:10px;padding:12px 14px;font-size:15px;margin-bottom:16px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 10px;font-size:15px}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:6px;vertical-align:-2px}
+.chart{overflow-x:auto;border:1px solid var(--border);border-radius:10px;background:#fff}
+.chart svg{display:block}
+.empty{text-align:center;color:var(--muted);padding:26px;background:#f8faff;border-radius:8px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px}
+.row{margin:10px 0}
+.row-top{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.row-top span:first-child{overflow-wrap:anywhere}
+.row-top span:last-child{color:var(--muted);white-space:nowrap}
+.bar{height:8px;background:#edf0f4;border-radius:6px;overflow:hidden;margin-top:4px}
+.bar b{display:block;height:100%;background:var(--gold);border-radius:6px}
+details{margin-top:16px}
+summary{cursor:pointer;color:var(--blue);font-weight:700;font-size:16px;min-height:44px;display:flex;align-items:center}
+.table-wrap{overflow-x:auto;margin-top:8px}
+table{width:100%;border-collapse:collapse;min-width:420px;font-size:15px}
+th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}
+th{background:#f3f6fb;color:var(--navy)}
+.button{display:inline-block;padding:12px 18px;min-height:46px;border:0;border-radius:8px;background:#edf1f7;color:var(--navy);font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status.error{color:var(--red)}
+@media(max-width:760px){.cards{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media(max-width:560px){.container{padding:16px 11px 36px}}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <a href="admin.html">← Admin Dashboard</a>
+</header>
+
+<div class="container">
+
+  <h1>Visitor Analytics</h1>
+  <p class="sub">Visits to your public pages. Days, weeks, months and years follow Nigeria time.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-period="day" type="button">Daily</button>
+    <button class="tab" data-period="week" type="button">Weekly</button>
+    <button class="tab" data-period="month" type="button">Monthly</button>
+    <button class="tab" data-period="year" type="button">Yearly</button>
+  </div>
+
+  <div class="explain">
+    <strong>Unique visitors</strong> count each device once in the period.
+    <strong>Page views</strong> count every page that was opened, so one visitor can make many page views.
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <section class="card">
+    <h2 id="chartTitle">Last 14 days</h2>
+
+    <div class="legend">
+      <span><i style="background:#142b52"></i>Unique visitors</span>
+      <span><i style="background:#d4af37"></i>Page views</span>
+    </div>
+
+    <div class="chart" id="chart"><div class="empty">Loading…</div></div>
+
+    <details>
+      <summary>Show the numbers as a table</summary>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th id="thPeriod">Period</th><th>Visitors</th><th>Page views</th><th>Views per visitor</th></tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <div class="grid2">
+    <section class="card">
+      <h2>Top pages</h2>
+      <div class="label">In the chart range above</div>
+      <div id="pages"></div>
+    </section>
+
+    <section class="card">
+      <h2>Devices</h2>
+      <div class="label">Share of page views</div>
+      <div id="devices"></div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:16px">
+    <h2>Where visitors come from</h2>
+    <div class="label">The website that sent them to you</div>
+    <div id="refs"></div>
+  </section>
+
+  <div style="margin-top:16px">
+    <button class="button" id="refreshBtn" type="button">Refresh</button>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const PERIODS = {
+  day:   { chart: "Last 14 days",   cur: "Today",      prev: "yesterday",  prevFull: "Yesterday",  col: "Day" },
+  week:  { chart: "Last 12 weeks",  cur: "This week",  prev: "last week",  prevFull: "Last week",  col: "Week starting" },
+  month: { chart: "Last 12 months", cur: "This month", prev: "last month", prevFull: "Last month", col: "Month" },
+  year:  { chart: "Last 5 years",   cur: "This year",  prev: "last year",  prevFull: "Last year",  col: "Year" }
+};
+
+const SOURCE_NAMES = {
+  direct: "Direct (typed, bookmarked or shared in an app)",
+  internal: "From other pages of this website"
+};
+
+const DEVICE_NAMES = { mobile: "Mobile phone", tablet: "Tablet", desktop: "Computer", unknown: "Not known" };
+
+let period = "day";
+let token = 0;
+
+/* ---------- helpers ---------- */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function num(value) {
+  return (Number(value) || 0).toLocaleString();
+}
+
+function parseDay(text) {
+  const [y, m, d] = String(text).split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function bucketLabel(text, p) {
+  const d = parseDay(text);
+
+  if (p === "month") return d.toLocaleDateString(undefined, { month: "short", year: "2-digit" });
+  if (p === "year") return String(d.getFullYear());
+
+  return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
+function setStatus(text, type = "") {
+  $("status").textContent = text;
+  $("status").className = "status" + (type ? " " + type : "");
+}
+
+function changeHtml(now, before, prevWord) {
+  now = Number(now) || 0;
+  before = Number(before) || 0;
+
+  if (now === 0 && before === 0) {
+    return '<span class="chg flat">No change</span>';
+  }
+
+  if (before === 0) {
+    return '<span class="chg up">▲ New activity</span>';
+  }
+
+  const pct = Math.round(((now - before) / before) * 100);
+
+  if (pct === 0) return '<span class="chg flat">No change</span>';
+
+  return pct > 0
+    ? `<span class="chg up">▲ ${pct}%</span> <span class="small">vs the same point ${esc(prevWord)}</span>`
+    : `<span class="chg down">▼ ${Math.abs(pct)}%</span> <span class="small">vs the same point ${esc(prevWord)}</span>`;
+}
+
+function perVisitor(views, visitors) {
+  const v = Number(visitors) || 0;
+  return v ? Math.round(((Number(views) || 0) / v) * 10) / 10 : 0;
+}
+
+/* ---------- admin check ---------- */
+
+async function verifyAdmin() {
+  const { data: sd, error: se } = await supabase.auth.getSession();
+  if (se) throw se;
+
+  const session = sd?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id, role, is_suspended")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!admin || admin.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  if (admin.role !== "super_admin") {
+    const { data: allowed, error: pe } = await supabase.rpc(
+      "has_admin_permission", { p_permission: "view_reports" }
+    );
+
+    if (pe) throw pe;
+
+    if (allowed !== true) {
+      alert("You do not have permission to view visitor analytics.");
+      location.replace("admin.html");
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/* ---------- chart ---------- */
+
+function niceStep(raw) {
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const f = raw / pow;
+  const s = f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10;
+  return s * pow;
+}
+
+function drawChart(series) {
+  const n = series.length;
+  const group = 52;
+  const padL = 46, padR = 12, padT = 18, padB = 36;
+  const W = Math.max(n * group + padL + padR, 320);
+  const H = 250;
+  const plotH = H - padT - padB;
+
+  const maxVal = Math.max(1, ...series.map(s => Math.max(s.views, s.visitors)));
+  const step = Math.max(1, niceStep(maxVal / 4));
+  const top = step * Math.ceil(maxVal / step);
+  const ticks = Math.round(top / step);
+
+  let svg = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Visitors and page views chart">`;
+
+  for (let i = 0; i <= ticks; i++) {
+    const value = i * step;
+    const y = padT + plotH - (value / top) * plotH;
+
+    svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#e1e7ef" stroke-width="1"/>`;
+    svg += `<text x="${padL - 8}" y="${y + 4}" text-anchor="end" font-size="12" fill="#6b7789">${num(value)}</text>`;
+  }
+
+  series.forEach((s, idx) => {
+    const x0 = padL + idx * group + 7;
+    const barW = 18;
+
+    [[s.visitors, "#142b52", 0], [s.views, "#d4af37", barW + 4]].forEach(([value, color, dx]) => {
+      const h = (value / top) * plotH;
+      const y = padT + plotH - h;
+
+      if (value > 0) {
+        svg += `<rect x="${x0 + dx}" y="${y}" width="${barW}" height="${h}" rx="3" fill="${color}"><title>${esc(num(value))}</title></rect>`;
+        svg += `<text x="${x0 + dx + barW / 2}" y="${y - 4}" text-anchor="middle" font-size="11" fill="#263449">${esc(num(value))}</text>`;
+      }
+    });
+
+    svg += `<text x="${x0 + barW + 2}" y="${H - 14}" text-anchor="middle" font-size="12" fill="#263449">${esc(bucketLabel(s.start, period))}</text>`;
+  });
+
+  svg += "</svg>";
+
+  return svg;
+}
+
+/* ---------- list blocks ---------- */
+
+function renderRows(containerId, items, nameFn) {
+  const el = $(containerId);
+
+  if (!items.length) {
+    el.innerHTML = '<div class="empty" style="margin-top:10px">No data yet.</div>';
+    return;
+  }
+
+  const max = Math.max(1, ...items.map(i => Number(i.views) || 0));
+
+  el.innerHTML = items.map(item => `
+    <div class="row">
+      <div class="row-top">
+        <span>${esc(nameFn(item))}</span>
+        <span>${num(item.views)} views · ${num(item.visitors)} visitors</span>
+      </div>
+      <div class="bar"><b style="width:${Math.max(3, Math.round(((Number(item.views) || 0) / max) * 100))}%"></b></div>
+    </div>`).join("");
+}
+
+function renderDevices(items) {
+  const el = $("devices");
+
+  if (!items.length) {
+    el.innerHTML = '<div class="empty" style="margin-top:10px">No data yet.</div>';
+    return;
+  }
+
+  const total = items.reduce((sum, i) => sum + (Number(i.views) || 0), 0) || 1;
+
+  el.innerHTML = items.map(item => {
+    const pct = Math.round(((Number(item.views) || 0) / total) * 100);
+
+    return `
+      <div class="row">
+        <div class="row-top">
+          <span>${esc(DEVICE_NAMES[item.device] || item.device)}</span>
+          <span>${pct}% · ${num(item.views)} views</span>
+        </div>
+        <div class="bar"><b style="width:${Math.max(3, pct)}%"></b></div>
+      </div>`;
+  }).join("");
+}
+
+/* ---------- render ---------- */
+
+function render(data) {
+  const meta = PERIODS[period];
+
+  const cur = data.current || {};
+  const same = data.previous_same_point || {};
+  const full = data.previous_full || {};
+
+  const curPer = perVisitor(cur.views, cur.visitors);
+  const samePer = perVisitor(same.views, same.visitors);
+  const fullPer = perVisitor(full.views, full.visitors);
+
+  $("cards").innerHTML = `
+    <article class="card">
+      <div class="label">${esc(meta.cur)} · Unique visitors</div>
+      <div class="big">${num(cur.visitors)}</div>
+      <div>${changeHtml(cur.visitors, same.visitors, meta.prev)}</div>
+      <div class="small">${esc(meta.prevFull)} in full: ${num(full.visitors)}</div>
+    </article>
+
+    <article class="card">
+      <div class="label">${esc(meta.cur)} · Page views</div>
+      <div class="big">${num(cur.views)}</div>
+      <div>${changeHtml(cur.views, same.views, meta.prev)}</div>
+      <div class="small">${esc(meta.prevFull)} in full: ${num(full.views)}</div>
+    </article>
+
+    <article class="card">
+      <div class="label">${esc(meta.cur)} · Views per visitor</div>
+      <div class="big">${curPer}</div>
+      <div>${changeHtml(curPer, samePer, meta.prev)}</div>
+      <div class="small">${esc(meta.prevFull)} in full: ${fullPer}</div>
+    </article>`;
+
+  $("chartTitle").textContent = meta.chart;
+  $("thPeriod").textContent = meta.col;
+
+  const series = data.series || [];
+  const any = series.some(s => s.views > 0);
+
+  if (!any) {
+    $("chart").innerHTML =
+      '<div class="empty">No visits have been recorded yet. Make sure <strong>track.js</strong> is added to your public pages, then open one of them and refresh here.</div>';
+  } else {
+    $("chart").innerHTML = drawChart(series);
+    $("chart").scrollLeft = $("chart").scrollWidth;
+  }
+
+  $("tableBody").innerHTML = series.slice().reverse().map(s => `
+    <tr>
+      <td>${esc(bucketLabel(s.start, period))}</td>
+      <td>${num(s.visitors)}</td>
+      <td>${num(s.views)}</td>
+      <td>${perVisitor(s.views, s.visitors)}</td>
+    </tr>`).join("");
+
+  renderRows("pages", data.pages || [], i => i.path === "/" ? "/ (Home page)" : i.path);
+  renderDevices(data.devices || []);
+  renderRows("refs", data.referrers || [], i => SOURCE_NAMES[i.source] || i.source);
+}
+
+/* ---------- load ---------- */
+
+async function load() {
+  const mine = ++token;
+
+  $("refreshBtn").disabled = true;
+  setStatus("Loading…");
+  $("chart").innerHTML = '<div class="empty">Loading…</div>';
+
+  try {
+    const { data, error } = await supabase.rpc("admin_visitor_stats", { p_period: period });
+
+    if (error) throw error;
+    if (mine !== token) return;
+
+    render(data || {});
+
+    setStatus("Updated " + new Date().toLocaleTimeString());
+
+  } catch (error) {
+    if (mine !== token) return;
+
+    console.error("Visitor stats error:", error);
+
+    $("cards").innerHTML = "";
+    $("chart").innerHTML = '<div class="empty">Could not load visitor statistics.</div>';
+
+    setStatus(
+      "Error: " + error.message + " (If it mentions a missing function, run the Stage 5 SQL.)",
+      "error"
+    );
+
+  } finally {
+    if (mine === token) $("refreshBtn").disabled = false;
+  }
+}
+
+$("tabs").addEventListener("click", event => {
+  const button = event.target.closest("[data-period]");
+  if (!button) return;
+
+  period = button.dataset.period;
+
+  document.querySelectorAll(".tab").forEach(t => {
+    t.classList.toggle("active", t === button);
+  });
+
+  load();
+});
+
+$("refreshBtn").addEventListener("click", load);
+
+/* ---------- start ---------- */
+
+async function init() {
+  try {
+    if (!(await verifyAdmin())) return;
+
+    load();
+
+  } catch (error) {
+    console.error("Page initialization error:", error);
+    alert("Unable to open Visitor Analytics: " + error.message);
+    location.replace("admin.html");
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
