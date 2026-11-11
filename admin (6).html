@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAINTIG EXAMS | Admin Dashboard</title>
+
+<style>
+:root {
+  --navy:#142b52;
+  --blue:#2457a7;
+  --gold:#d4af37;
+  --bg:#f4f6fa;
+  --white:#fff;
+  --text:#263449;
+  --muted:#718096;
+  --border:#e5eaf1;
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+header {
+  height:65px;
+  background:var(--navy);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.brand {
+  font-size:19px;
+  font-weight:bold;
+  letter-spacing:.5px;
+}
+
+.brand span {
+  color:var(--gold);
+}
+
+.menu-btn {
+  border:1px solid #ffffff55;
+  background:transparent;
+  color:white;
+  font-size:25px;
+  width:44px;
+  height:44px;
+  border-radius:7px;
+  cursor:pointer;
+}
+
+.layout {
+  display:flex;
+  min-height:calc(100vh - 65px);
+}
+
+.sidebar {
+  width:270px;
+  background:var(--navy);
+  color:white;
+  padding:18px 12px;
+  flex-shrink:0;
+  transition:left .25s;
+}
+
+.sidebar a {
+  display:block;
+  color:#e8edf6;
+  text-decoration:none;
+  padding:13px 14px;
+  margin-bottom:5px;
+  border-radius:7px;
+  font-size:15px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background:#ffffff18;
+  border-left:4px solid var(--gold);
+  color:white;
+}
+
+.sidebar .public-link {
+  margin-top:20px;
+  border-top:1px solid #ffffff33;
+  padding-top:20px;
+}
+
+.main {
+  flex:1;
+  min-width:0;
+  padding:25px;
+}
+
+.page-heading {
+  margin-bottom:22px;
+}
+
+.page-heading h1 {
+  color:var(--navy);
+  font-size:26px;
+  margin-bottom:7px;
+}
+
+.page-heading p {
+  color:var(--muted);
+  font-size:15px;
+}
+
+.page-heading a {
+  color:var(--blue);
+  font-weight:bold;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+
+.card {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:20px;
+  box-shadow:0 3px 12px #142b5208;
+}
+
+.card.wide {
+  grid-column:1 / -1;
+}
+
+.stat-name {
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+.stat-value {
+  font-size:30px;
+  font-weight:bold;
+  color:var(--navy);
+}
+
+.stat-note {
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+.mini-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:4px;
+}
+
+.mini-value {
+  font-size:28px;
+  font-weight:bold;
+  color:var(--navy);
+}
+
+.mini-label {
+  font-size:14px;
+  color:var(--muted);
+}
+
+.section {
+  margin-top:25px;
+}
+
+.section h2 {
+  color:var(--navy);
+  font-size:19px;
+  margin-bottom:13px;
+}
+
+.quick-links {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:13px;
+}
+
+.quick-links a {
+  background:white;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:17px;
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:bold;
+  font-size:15px;
+  transition:.2s;
+}
+
+.quick-links a:hover {
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
+.status {
+  margin-top:20px;
+  padding:13px;
+  border-radius:8px;
+  background:white;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:14px;
+}
+
+.error {
+  color:#b42318;
+}
+
+.sidebar-overlay {
+  display:none;
+}
+
+@media(max-width:900px) {
+  .sidebar {
+    position:fixed;
+    top:65px;
+    bottom:0;
+    left:-290px;
+    z-index:90;
+    overflow-y:auto;
+  }
+
+  .sidebar.open {
+    left:0;
+  }
+
+  .sidebar-overlay.show {
+    display:block;
+    position:fixed;
+    inset:65px 0 0;
+    background:#0006;
+    z-index:80;
+  }
+
+  .main {
+    padding:18px;
+  }
+}
+
+@media(min-width:901px) {
+  .sidebar {
+    position:relative;
+    left:0;
+  }
+
+  .sidebar-overlay {
+    display:none !important;
+  }
+}
+
+@media(max-width:650px) {
+  .stats {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .card {
+    padding:15px;
+  }
+
+  .stat-value {
+    font-size:26px;
+  }
+
+  .mini-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .quick-links {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .page-heading h1 {
+    font-size:22px;
+  }
+}
+
+@media(max-width:380px) {
+  .stats,
+  .quick-links {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <button
+    class="menu-btn"
+    id="menuBtn"
+    aria-label="Open menu"
+    aria-expanded="false"
+  >☰</button>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar" id="sidebar">
+
+    <a href="admin.html" class="active">Dashboard Overview</a>
+    <a href="countries.html">Countries</a>
+    <a href="education-levels.html">Education Levels</a>
+    <a href="subjects.html">Subjects</a>
+    <a href="question-bank.html">Question Bank</a>
+    <a href="register-exam.html">Register Examination</a>
+    <a href="registered-users.html">Registered Users</a>
+    <a href="paid-subscribers.html">Paid Subscribers</a>
+    <a href="admin-notifications.html">Send Notifications</a>
+    <a href="results-reports.html">Results &amp; Reports</a>
+    <a href="visitor-analytics.html">Visitor Analytics</a>
+    <a href="ai-question-generator.html">AI Question Generator</a>
+    <a href="settings-security.html">Settings &amp; Security</a>
+    <a href="archived-records.html">Archived Records</a>
+    <a href="admin-account-settings.html">Admin Account Settings</a>
+
+    <div class="public-link">
+      <a href="index.html">View Public Website ↗</a>
+      <a href="#" id="logoutBtn">Sign Out</a>
+    </div>
+
+  </aside>
+
+  <div class="sidebar-overlay" id="overlay"></div>
+
+  <main class="main">
+
+    <div class="page-heading">
+      <h1>Dashboard Overview</h1>
+      <p id="welcomeText">Welcome to the SAINTIG EXAMS administration panel.</p>
+      <p id="nameHint" hidden><a href="admin-account-settings.html">Add your name →</a></p>
+    </div>
+
+    <div class="stats">
+
+      <article class="card">
+        <div class="stat-name">Registered Users</div>
+        <div class="stat-value" id="usersCount">—</div>
+        <div class="stat-note">All registered accounts</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Total Administrators</div>
+        <div class="stat-value" id="adminsCount">—</div>
+        <div class="stat-note">Administrator accounts</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Paid Subscribers</div>
+        <div class="stat-value" id="subscribersCount">—</div>
+        <div class="stat-note" id="subscribersNote">Active paid accounts</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Total Examinations</div>
+        <div class="stat-value" id="totalExamsCount">—</div>
+        <div class="stat-note">All examination records</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Published Examinations</div>
+        <div class="stat-value" id="examsCount">—</div>
+        <div class="stat-note">Published, non-archived examinations</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Published Questions</div>
+        <div class="stat-value" id="questionsCount">—</div>
+        <div class="stat-note">Published questions in available examinations</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Archived Examinations</div>
+        <div class="stat-value" id="archivedExamsCount">—</div>
+        <div class="stat-note">Examinations moved to archive</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Archived Questions</div>
+        <div class="stat-value" id="archivedQuestionsCount">—</div>
+        <div class="stat-note">Questions moved to archive</div>
+      </article>
+
+      <article class="card">
+        <div class="stat-name">Today's Views</div>
+        <div class="stat-value" id="viewsCount">—</div>
+        <div class="stat-note" id="viewsNote">Today's recorded page views</div>
+      </article>
+
+      <article class="card wide">
+        <div class="stat-name">Attempts Overview</div>
+
+        <div class="mini-grid">
+          <div>
+            <div class="mini-value" id="attToday">—</div>
+            <div class="mini-label">Started today</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attWeek">—</div>
+            <div class="mini-label">Last 7 days</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attTotal">—</div>
+            <div class="mini-label">All attempts</div>
+          </div>
+
+          <div>
+            <div class="mini-value" id="attCompleted">—</div>
+            <div class="mini-label" id="attCompletedLabel">Completed</div>
+          </div>
+        </div>
+
+        <div class="stat-note" id="attNote">Public students and Teacher/School attempts</div>
+      </article>
+
+    </div>
+
+    <section class="section">
+      <h2>Administration Pages</h2>
+
+      <div class="quick-links">
+        <a href="countries.html">Countries →</a>
+        <a href="education-levels.html">Education Levels →</a>
+        <a href="subjects.html">Subjects →</a>
+        <a href="question-bank.html">Question Bank →</a>
+        <a href="register-exam.html">Register Examination →</a>
+        <a href="registered-users.html">Registered Users →</a>
+        <a href="paid-subscribers.html">Paid Subscribers →</a>
+        <a href="admin-notifications.html">Send Notifications →</a>
+        <a href="results-reports.html">Results &amp; Reports →</a>
+        <a href="visitor-analytics.html">Visitor Analytics →</a>
+        <a href="ai-question-generator.html">AI Question Generator →</a>
+        <a href="settings-security.html">Settings &amp; Security →</a>
+        <a href="archived-records.html">Archived Records →</a>
+        <a href="admin-account-settings.html">Admin Account Settings →</a>
+      </div>
+    </section>
+
+    <div class="status" id="statusMessage">
+      Checking administrator access and loading dashboard statistics...
+    </div>
+
+  </main>
+</div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const sidebar = $("sidebar");
+const overlay = $("overlay");
+const menuBtn = $("menuBtn");
+
+// Mobile menu
+function closeMenu() {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+  menuBtn.setAttribute("aria-expanded", "false");
+}
+
+menuBtn.addEventListener("click", () => {
+  const isOpen = sidebar.classList.toggle("open");
+  overlay.classList.toggle("show", isOpen);
+  menuBtn.setAttribute("aria-expanded", String(isOpen));
+});
+
+overlay.addEventListener("click", closeMenu);
+
+sidebar.querySelectorAll("a[href]").forEach(link => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth <= 900) closeMenu();
+  });
+});
+
+// Verify administrator (suspended administrators are signed out)
+async function verifyAdministrator() {
+  const session = await getCurrentSession();
+
+  if (!session) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const user = session.user || session;
+
+  const { data, error } = await supabase
+    .from("admin_users")
+    .select("user_id, is_suspended")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!data || data.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  return true;
+}
+
+// Display statistics safely
+function displayCount(id, count, error) {
+  const element = $(id);
+
+  if (!element) return;
+
+  element.textContent =
+    !error && count !== null && count !== undefined
+      ? Number(count).toLocaleString()
+      : "—";
+}
+
+function show(id, value) {
+  const element = $(id);
+
+  if (element) element.textContent = Number(value || 0).toLocaleString();
+}
+
+// Load dashboard statistics
+async function loadStatistics() {
+
+  const [
+    totalExamsResult,
+    publishedExamsResult,
+    archivedExamsResult,
+    archivedQuestionsResult,
+    adminCountResult,
+    userCountResult
+  ] = await Promise.all([
+
+    // All examinations, including archived records
+    supabase
+      .from("examinations")
+      .select("*", { count:"exact", head:true }),
+
+    // Published examinations excluding archived records
+    supabase
+      .from("examinations")
+      .select("id", { count:"exact" })
+      .eq("is_published", true)
+      .eq("is_archived", false),
+
+    // Archived examinations
+    supabase
+      .from("examinations")
+      .select("*", { count:"exact", head:true })
+      .eq("is_archived", true),
+
+    // Archived questions
+    supabase
+      .from("exam_questions")
+      .select("*", { count:"exact", head:true })
+      .eq("is_archived", true),
+
+    // Total administrators
+    supabase
+      .from("admin_users")
+      .select("*", { count:"exact", head:true }),
+
+    // All Supabase Authentication accounts
+    supabase.functions.invoke("admin-user-count", {
+      body: {}
+    })
+
+  ]);
+
+  // Registered Users
+  const userData = userCountResult.data;
+  const userError = userCountResult.error;
+
+  $("usersCount").textContent =
+    !userError && userData?.totalUsers !== undefined
+      ? Number(userData.totalUsers).toLocaleString()
+      : "—";
+
+  // Total Administrators
+  displayCount(
+    "adminsCount",
+    adminCountResult.count,
+    adminCountResult.error
+  );
+
+  // Total Examinations
+  displayCount(
+    "totalExamsCount",
+    totalExamsResult.count,
+    totalExamsResult.error
+  );
+
+  // Published Examinations
+  displayCount(
+    "examsCount",
+    publishedExamsResult.count,
+    publishedExamsResult.error
+  );
+
+  // Archived Examinations
+  displayCount(
+    "archivedExamsCount",
+    archivedExamsResult.count,
+    archivedExamsResult.error
+  );
+
+  // Archived Questions
+  displayCount(
+    "archivedQuestionsCount",
+    archivedQuestionsResult.count,
+    archivedQuestionsResult.error
+  );
+
+  // Published Questions
+  if (!publishedExamsResult.error) {
+
+    const publishedIds = (publishedExamsResult.data || [])
+      .map(exam => exam.id);
+
+    if (publishedIds.length === 0) {
+
+      $("questionsCount").textContent = "0";
+
+    } else {
+
+      const { count, error } = await supabase
+        .from("exam_questions")
+        .select("*", { count:"exact", head:true })
+        .in("examination_id", publishedIds)
+        .eq("is_published", true)
+        .eq("is_archived", false);
+
+      displayCount("questionsCount", count, error);
+    }
+
+  } else {
+
+    $("questionsCount").textContent = "—";
+
+  }
+}
+
+// Paid subscribers, today's views and attempts overview
+async function loadSummary() {
+
+  const { data, error } = await supabase.rpc("admin_dashboard_summary");
+
+  if (error) throw error;
+
+  const s = data || {};
+
+  const paidStudents = Number(s.paid_students) || 0;
+  const paidSchools = Number(s.paid_schools) || 0;
+
+  show("subscribersCount", paidStudents + paidSchools);
+
+  $("subscribersNote").textContent =
+    "Students " + paidStudents.toLocaleString() +
+    " · Teachers/Schools " + paidSchools.toLocaleString();
+
+  show("viewsCount", s.views_today);
+
+  const visitors = Number(s.visitors_today) || 0;
+
+  $("viewsNote").textContent =
+    visitors.toLocaleString() + " unique visitor" +
+    (visitors === 1 ? "" : "s") + " today";
+
+  show("attToday", s.attempts_today);
+  show("attWeek", s.attempts_week);
+  show("attTotal", s.attempts_total);
+
+  const total = Number(s.attempts_total) || 0;
+  const completed = Number(s.attempts_completed) || 0;
+  const percent = total ? Math.round((completed / total) * 100) : 0;
+
+  $("attCompleted").textContent = completed.toLocaleString();
+  $("attCompletedLabel").textContent = "Completed (" + percent + "%)";
+
+  $("attNote").textContent =
+    "Public students: " + (Number(s.attempts_public) || 0).toLocaleString() +
+    " · Teacher/School: " + (Number(s.attempts_school) || 0).toLocaleString();
+}
+
+// Show the administrator's name
+async function loadAdminName() {
+
+  const { data, error } = await supabase.rpc("admin_get_my_account");
+
+  if (error) throw error;
+
+  const name = String(data?.display_name || "").trim();
+
+  $("welcomeText").textContent = name
+    ? "Welcome, " + name + ". This is the SAINTIG EXAMS administration panel."
+    : "Welcome to the SAINTIG EXAMS administration panel.";
+
+  $("nameHint").hidden = !!name;
+}
+
+// Initialize dashboard
+async function initializeDashboard() {
+
+  try {
+
+    const authorized = await verifyAdministrator();
+
+    if (!authorized) return;
+
+    const results = await Promise.allSettled([
+      loadStatistics(),
+      loadSummary(),
+      loadAdminName()
+    ]);
+
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        console.error(
+          ["Statistics", "Summary", "Admin name"][index] + " failed:",
+          result.reason
+        );
+      }
+    });
+
+    if (results[0].status === "rejected") {
+
+      $("statusMessage").textContent =
+        "Unable to load all statistics. Check your connection and database permissions.";
+
+      $("statusMessage").classList.add("error");
+
+      return;
+    }
+
+    if (results[1].status === "rejected") {
+
+      $("viewsNote").textContent = "Needs the Stage 5 SQL";
+      $("subscribersNote").textContent = "Needs the Stage 5 SQL";
+      $("attNote").textContent = "Needs the Stage 5 SQL";
+
+      $("statusMessage").textContent =
+        "Dashboard loaded, but Paid Subscribers, Today's Views and Attempts need the Stage 5 SQL.";
+
+      return;
+    }
+
+    $("statusMessage").textContent =
+      "Administrator access verified. Dashboard loaded.";
+
+  } catch (error) {
+
+    console.error("Dashboard error:", error);
+
+    $("statusMessage").textContent =
+      "Unable to load dashboard. Check your connection and database permissions.";
+
+    $("statusMessage").classList.add("error");
+  }
+}
+
+// Sign out
+$("logoutBtn").addEventListener("click", async event => {
+
+  event.preventDefault();
+
+  try {
+    await supabase.auth.signOut();
+  } finally {
+    location.replace("admin-login.html");
+  }
+
+});
+
+initializeDashboard();
+</script>
+
+</body>
+</html>
