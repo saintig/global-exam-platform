@@ -1318,6 +1318,44 @@
       text-decoration: underline;
     }
 
+    /* ID FORM STATUS + PRICING TEASER CARDS */
+
+    .access-card .form-status.visible {
+      background: #fdecea;
+      color: #a5281c;
+    }
+
+    .access-card .form-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .price-link {
+      display: block;
+      color: var(--navy);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .price-link:hover,
+    .price-link:focus-visible {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(16,38,74,.12);
+    }
+
+    .price-link .btn {
+      pointer-events: none;
+    }
+
+    .ea-tabs {
+      max-width: 700px;
+    }
+
+    @media (max-width: 480px) {
+      .ea-tab {
+        min-width: calc(50% - 4px);
+      }
+    }
+
     /* RESPONSIVE */
 
     @media (max-width: 900px) {
@@ -1533,7 +1571,7 @@
 
     <a class="menu-link" href="school-exam-access.html?tab=exam"><span class="menu-icon">✓</span>Take Teacher/School Exam</a>
     <a class="menu-link" href="school-exam-access.html?tab=examResult"><span class="menu-icon">▧</span>Check Results &amp; Print</a>
-    <a class="menu-link" href="#pricing-subscription"><span class="menu-icon">₦</span>Pricing &amp; Subscription</a>
+    <a class="menu-link" href="pricing-subscription.html"><span class="menu-icon">₦</span>Pricing &amp; Subscription</a>
 
     <hr class="menu-divider">
 
@@ -1619,83 +1657,116 @@
           <a class="btn btn-teacher btn-big" href="school-login.html">
             Teacher/School Sign In / Create Account
           </a>
+          <a class="school-account-link" href="pricing-subscription.html">
+            ₦ View Pricing &amp; Subscription
+          </a>
         </div>
 
       </div>
     </section>
 
-    <!-- ACCESS FORMS: TAKE EXAM, EXAM RESULTS, CLASS RESULTS -->
+    <!-- TEACHER/SCHOOL EXAM ID FORMS: CONNECTED TO school-exam-access.html -->
     <section class="section ea-section" id="exam-access">
       <div class="container">
 
         <div class="section-heading">
           <div class="kicker">Teacher / School Examinations</div>
-          <h2>Welcome to SAINTIG EXAMS</h2>
-          <p>Take an exam or check and print your results.</p>
+          <h2>Take Your School Exam</h2>
+          <p>Enter the IDs given by your school to start your exam or check and print your results. You go straight in, with no second login.</p>
         </div>
 
-        <div class="ea-tabs" role="tablist">
-          <button class="ea-tab active" type="button" role="tab" aria-selected="true" data-tab="exam">Take Exam</button>
-          <button class="ea-tab" type="button" role="tab" aria-selected="false" data-tab="examResult">Exam Results</button>
-          <button class="ea-tab" type="button" role="tab" aria-selected="false" data-tab="classResult">Class Results</button>
+        <div class="ea-tabs" role="tablist" aria-label="Exam access options">
+          <button class="ea-tab active" type="button" role="tab" aria-selected="true" aria-controls="ea-exam" id="tab-exam" data-tab="exam">Take Exam</button>
+          <button class="ea-tab" type="button" role="tab" aria-selected="false" aria-controls="ea-examResult" id="tab-examResult" data-tab="examResult">Exam Results</button>
+          <button class="ea-tab" type="button" role="tab" aria-selected="false" aria-controls="ea-classResult" id="tab-classResult" data-tab="classResult">Class Results</button>
+          <button class="ea-tab" type="button" role="tab" aria-selected="false" aria-controls="ea-annual" id="tab-annual" data-tab="annual">Annual Results</button>
         </div>
 
         <!-- TAKE EXAM -->
-        <div class="ea-panel" id="ea-exam">
+        <div class="ea-panel" id="ea-exam" role="tabpanel" aria-labelledby="tab-exam">
           <div class="access-card ea-card">
             <h3>Teacher / School Exam Login</h3>
-            <p class="description">Enter the examination details supplied by your school.</p>
-            <form action="school-exam-access.html" method="get" autocomplete="off">
+            <p class="description">Enter the Exam ID and your Student ID. You will confirm your exam details before it starts.</p>
+            <form class="ea-form" action="school-exam-access.html" method="get" autocomplete="off" data-tab="exam" data-fields="exam_id,student_id">
               <input type="hidden" name="tab" value="exam">
+              <input type="hidden" name="from" value="index.html">
               <div class="field">
                 <label for="eaExamId">Exam ID</label>
-                <input type="text" id="eaExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" required>
+                <input type="text" id="eaExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" spellcheck="false" required>
               </div>
               <div class="field">
                 <label for="eaStudentId">Student ID</label>
-                <input type="text" id="eaStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+                <input type="text" id="eaStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" spellcheck="false" required>
               </div>
-              <button class="btn btn-navy form-button" type="submit">Take Exam</button>
+              <div class="form-status" role="alert"></div>
+              <button class="btn btn-navy form-button" type="submit">Take Exam →</button>
+              <p class="form-note">Exam ID and Student ID are supplied by your teacher or school.</p>
             </form>
           </div>
         </div>
 
         <!-- EXAM RESULTS -->
-        <div class="ea-panel" id="ea-examResult" hidden>
+        <div class="ea-panel" id="ea-examResult" role="tabpanel" aria-labelledby="tab-examResult" hidden>
           <div class="access-card ea-card">
             <h3>Check / Print Exam Results</h3>
-            <p class="description">Enter your school examination ID and student ID to look up a result.</p>
-            <form action="school-exam-access.html" method="get" autocomplete="off">
+            <p class="description">Enter your school Exam ID and Student ID to look up a result. It is free to view and print.</p>
+            <form class="ea-form" action="school-exam-access.html" method="get" autocomplete="off" data-tab="examResult" data-fields="exam_id,student_id">
               <input type="hidden" name="tab" value="examResult">
+              <input type="hidden" name="from" value="index.html">
               <div class="field">
                 <label for="eaResExamId">Exam ID</label>
-                <input type="text" id="eaResExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" required>
+                <input type="text" id="eaResExamId" name="exam_id" placeholder="Enter Exam ID" autocapitalize="characters" spellcheck="false" required>
               </div>
               <div class="field">
                 <label for="eaResStudentId">Student ID</label>
-                <input type="text" id="eaResStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+                <input type="text" id="eaResStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" spellcheck="false" required>
               </div>
-              <button class="btn btn-navy form-button" type="submit">View Results</button>
+              <div class="form-status" role="alert"></div>
+              <button class="btn btn-navy form-button" type="submit">View Results →</button>
             </form>
           </div>
         </div>
 
         <!-- CLASS RESULTS -->
-        <div class="ea-panel" id="ea-classResult" hidden>
+        <div class="ea-panel" id="ea-classResult" role="tabpanel" aria-labelledby="tab-classResult" hidden>
           <div class="access-card ea-card">
             <h3>Check / Print Class Results</h3>
             <p class="description">Enter your Class ID and Student ID to view your published class result.</p>
-            <form action="school-exam-access.html" method="get" autocomplete="off">
+            <form class="ea-form" action="school-exam-access.html" method="get" autocomplete="off" data-tab="classResult" data-fields="class_id,student_id">
               <input type="hidden" name="tab" value="classResult">
+              <input type="hidden" name="from" value="index.html">
               <div class="field">
                 <label for="eaClassId">Class ID</label>
-                <input type="text" id="eaClassId" name="class_id" placeholder="Enter Class ID" autocapitalize="characters" required>
+                <input type="text" id="eaClassId" name="class_id" placeholder="Enter Class ID" autocapitalize="characters" spellcheck="false" required>
               </div>
               <div class="field">
                 <label for="eaClassStudentId">Student ID</label>
-                <input type="text" id="eaClassStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" required>
+                <input type="text" id="eaClassStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" spellcheck="false" required>
               </div>
-              <button class="btn btn-navy form-button" type="submit">View Class Result</button>
+              <div class="form-status" role="alert"></div>
+              <button class="btn btn-navy form-button" type="submit">View Class Result →</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- ANNUAL RESULTS -->
+        <div class="ea-panel" id="ea-annual" role="tabpanel" aria-labelledby="tab-annual" hidden>
+          <div class="access-card ea-card">
+            <h3>Check / Print Annual Results</h3>
+            <p class="description">Enter your Annual Result ID and Student ID to view your published annual result.</p>
+            <form class="ea-form" action="school-exam-access.html" method="get" autocomplete="off" data-tab="annual" data-fields="annual_id,student_id">
+              <input type="hidden" name="tab" value="annual">
+              <input type="hidden" name="from" value="index.html">
+              <div class="field">
+                <label for="eaAnnualId">Annual Result ID</label>
+                <input type="text" id="eaAnnualId" name="annual_id" placeholder="e.g. STIG-ANUR000001" autocapitalize="characters" spellcheck="false" required>
+              </div>
+              <div class="field">
+                <label for="eaAnnualStudentId">Student ID</label>
+                <input type="text" id="eaAnnualStudentId" name="student_id" placeholder="Enter Student ID" autocapitalize="characters" spellcheck="false" required>
+              </div>
+              <div class="form-status" role="alert"></div>
+              <button class="btn btn-navy form-button" type="submit">View Annual Result →</button>
             </form>
           </div>
         </div>
@@ -1972,7 +2043,7 @@
       </div>
     </section>
 
-    <!-- PRICING -->
+    <!-- PRICING & SUBSCRIPTION (SUMMARY, LINKS TO FULL PAGE) -->
     <section class="section pricing-section" id="pricing-subscription">
       <div class="container">
 
@@ -1980,34 +2051,30 @@
           <div class="kicker">Plans &amp; Access</div>
           <h2>Pricing &amp; Subscription</h2>
           <p>
-            Discover upcoming subscription options for students,
-            teachers and schools using SAINTIG EXAMS.
+            Start free, then upgrade when you need more.
+            Choose the packages that fit you.
           </p>
         </div>
 
-        <div class="pricing-card">
-          <span class="coming-soon">COMING SOON</span>
+        <div class="feature-grid">
+          <a class="feature-card price-link" href="pricing-subscription.html#students">
+            <div class="feature-icon" aria-hidden="true">🎓</div>
+            <h3>Students</h3>
+            <p>Free and Premium packages for practice and exam preparation.</p>
+            <span class="btn btn-navy btn-small">View Student Packages →</span>
+          </a>
 
-          <div class="feature-icon" aria-hidden="true"
-            style="margin:0 auto 15px;">₦</div>
+          <a class="feature-card price-link" href="pricing-subscription.html#schools">
+            <div class="feature-icon" aria-hidden="true">🏫</div>
+            <h3>Teachers &amp; Schools</h3>
+            <p>Free, Silver and Gold packages, plus a Custom package built around your school.</p>
+            <span class="btn btn-navy btn-small">View School Packages →</span>
+          </a>
+        </div>
 
-          <h3>Flexible Subscription Plans</h3>
-          <p>
-            We are preparing flexible subscription options
-            designed to support students, teachers and schools.
-          </p>
-          <p>
-            Details about available plans, subscription benefits
-            and payment methods will be announced when the
-            payment system is ready.
-          </p>
-
-          <div class="pricing-note">
-            <strong>Free access remains available.</strong>
-            <br>
-            You can continue using the currently available
-            free examination services.
-          </div>
+        <div class="pricing-note" style="max-width:720px;margin:22px auto 0;text-align:center">
+          <strong>Free access remains available.</strong><br>
+          <a href="pricing-subscription.html" style="text-decoration:underline;font-weight:bold">See all pricing &amp; subscription details →</a>
         </div>
       </div>
     </section>
@@ -2075,6 +2142,10 @@
 
             <a class="btn btn-outline" href="school-login.html">
               Teacher/School Portal
+            </a>
+
+            <a class="btn btn-outline" href="pricing-subscription.html">
+              Pricing &amp; Subscription
             </a>
           </div>
         </div>
@@ -2222,7 +2293,7 @@
         <a href="#why-digital-exams">Why Digital Exams?</a>
         <a href="school-exam-access.html?tab=exam">Teacher/School Exam Login</a>
         <a href="school-exam-access.html?tab=examResult">Check Results &amp; Print</a>
-        <a href="#pricing-subscription">Pricing &amp; Subscription</a>
+        <a href="pricing-subscription.html">Pricing &amp; Subscription</a>
         <a href="student-login.html?mode=login">Student Sign In</a>
         <a href="school-login.html">Teacher/School Portal</a>
       </nav>
@@ -2372,6 +2443,70 @@
         btn.textContent = isOpen ? "Read more ▾" : "Read less ▴";
       });
     });
+
+
+    // ACCESS FORMS: go straight into school-exam-access.html
+    // The IDs are cleaned (trimmed, upper-case) and passed in the link, and
+    // the exam access page fills its own form and continues automatically.
+
+    document.querySelectorAll(".ea-form").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const status = form.querySelector(".form-status");
+        const names = form.dataset.fields.split(",");
+        const params = new URLSearchParams();
+
+        params.set("tab", form.dataset.tab);
+        params.set("from", "index.html");
+
+        for (const name of names) {
+          const input = form.elements[name];
+          const value = input.value.trim().toUpperCase();
+
+          if (!value) {
+            status.textContent = "Please enter both IDs before continuing.";
+            status.classList.add("visible");
+            input.focus();
+            return;
+          }
+
+          if (!/^[A-Z0-9][A-Z0-9\-_\/.]{0,59}$/.test(value)) {
+            status.textContent = "IDs may only contain letters, numbers and dashes. Please check and try again.";
+            status.classList.add("visible");
+            input.focus();
+            return;
+          }
+
+          params.set(name, value);
+        }
+
+        status.classList.remove("visible");
+
+        const button = form.querySelector("button[type=submit]");
+        button.disabled = true;
+        button.textContent = "Opening...";
+
+        window.location.href = "school-exam-access.html?" + params.toString();
+      });
+    });
+
+    // Restore the buttons if the visitor returns with the browser Back button.
+    window.addEventListener("pageshow", function (event) {
+      if (!event.persisted) return;
+      document.querySelectorAll(".ea-form button[type=submit]").forEach(function (button) {
+        button.disabled = false;
+        button.textContent = button.textContent.replace("Opening...", "Continue →");
+      });
+    });
+
+    // Open a tab from a link such as index.html#exam-access
+    // (e.g. index.html?tab=examResult#exam-access)
+    (function () {
+      const tab = new URLSearchParams(location.search).get("tab");
+      const button = tab && document.querySelector('.ea-tab[data-tab="' + tab + '"]');
+      if (button) button.click();
+    })();
   </script>
 
   <!-- SHARED SETTINGS: CONTACT DETAILS (FOOTER WHATSAPP LINK) -->
