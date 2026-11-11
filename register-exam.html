@@ -141,12 +141,12 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 </section>
 
 <section class="card">
-<h2>4. Bulk Question Upload (CSV)</h2>
-<div class="notice">Upload multiple questions using the exact 10-column CSV template. For image questions, upload the images separately and enter their exact filenames in the <strong>image_filename</strong> column. Each image must be 5 MB or smaller.</div>
+<h2>4. Bulk Question Upload</h2>
+<div class="notice">Upload multiple questions as a PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls) file. CSV and Excel files must use the exact 10-column template. PDF, Word and Text files use this layout: <strong>1. Question</strong>, options <strong>A.</strong> to <strong>D.</strong> on separate lines, then <strong>Answer: B</strong> (optional lines: Explanation, Marks, Order). For image questions, upload the images separately and enter their exact filenames in the <strong>image_filename</strong> column. Each image must be 5 MB or smaller.</div>
 <div class="actions"><button class="gold" id="downloadTemplateBtn">Download CSV Template</button></div>
-<div class="field"><label for="csvFile">Select CSV File</label><input id="csvFile" type="file" accept=".csv,text/csv"></div>
+<div class="field"><label for="csvFile">Select File (PDF, Word, Text, CSV or Excel)</label><input id="csvFile" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls,text/csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small>Any filename is accepted, e.g. Government SS1 Questions.csv, First Term Exam 2026.xlsx, My Questions (Final).CSV</small></div>
 <div class="field"><label for="bulkImages">Select Images for CSV Questions (Optional)</label><input id="bulkImages" type="file" accept="image/*" multiple><small>Each image must be 5 MB or smaller.</small></div>
-<div class="actions"><button class="primary" id="previewCsvBtn">Validate and Preview CSV</button><button class="secondary" id="clearCsvBtn">Clear CSV Selection</button></div>
+<div class="actions"><button class="primary" id="previewCsvBtn">Validate and Preview File</button><button class="secondary" id="clearCsvBtn">Clear File Selection</button></div>
 <div id="csvStatus" class="status"></div>
 <div id="csvPreview"></div>
 </section>
@@ -173,6 +173,9 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 </main>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
 import { supabase, getCurrentSession } from "./auth.js";
 
@@ -482,16 +485,16 @@ function validateCSVRows(rows,imageFiles){
 }
 function renderCSVErrors(errors){
  $("csvPreview").innerHTML=`
- <h3 style="color:var(--red)">CSV validation errors (${errors.length})</h3>
- ${errors.map(e=>`<div class="error-row"><strong>Row ${escapeHTML(e.row)}:</strong> ${escapeHTML(e.message)}</div>`).join("")}
- <p class="help">Correct these errors in your CSV file, then select it again and run validation.</p>`;
+ <h3 style="color:var(--red)">Validation errors (${errors.length})</h3>
+ ${errors.map(e=>`<div class="error-row"><strong>${rowsFromText&&typeof e.row==="number"?"Question "+(e.row-1):"Row "+escapeHTML(e.row)}:</strong> ${escapeHTML(e.message)}</div>`).join("")}
+ <p class="help">Correct these errors in your file, then select it again and run validation.</p>`;
 }
 function renderCSVPreview(questions){
  $("csvPreview").innerHTML=`
  <div class="notice"><strong>${questions.length} questions passed validation.</strong> Review the questions below before adding them to your queue.</div>
  ${questions.map((q,i)=>`
  <div class="question-preview">
- <strong>CSV row ${q.csvRow} — Question ${i+1}</strong><br>
+ <strong>${rowsFromText?"Source question "+(q.csvRow-1):"Row "+q.csvRow} — Question ${i+1}</strong><br>
  ${escapeHTML(q.question_text)}
  <div class="preview-options">A. ${escapeHTML(q.option_a)}<br>B. ${escapeHTML(q.option_b)}<br>C. ${escapeHTML(q.option_c)}<br>D. ${escapeHTML(q.option_d)}</div>
  Correct: ${escapeHTML(q.correct_option)} | Marks: ${q.marks} | Order: ${q.question_order}<br>
@@ -524,22 +527,128 @@ $("downloadTemplateBtn").addEventListener("click",()=>{
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 
-/* CSV PREVIEW */
+/* FILE READERS (PDF, DOCX, TXT, CSV, XLSX, XLS) */
+const ALLOWED_EXTENSIONS=["pdf","docx","txt","csv","xlsx","xls"];
+let rowsFromText=false;
+
+/* Extension = text after the LAST dot, case-insensitive. Any filename is allowed. */
+function getFileExtension(name){
+ const clean=String(name||"").trim();
+ const i=clean.lastIndexOf(".");
+ return i<0?"":clean.slice(i+1).toLowerCase();
+}
+function padRow(row,length){
+ const r=row.slice(0,length);
+ while(r.length<length)r.push("");
+ return r;
+}
+async function readSpreadsheetRows(file){
+ if(!window.XLSX)throw new Error("The Excel reader could not load. Check your internet connection and refresh the page.");
+ const workbook=XLSX.read(await file.arrayBuffer(),{type:"array"});
+ const sheet=workbook.Sheets[workbook.SheetNames[0]];
+ if(!sheet)throw new Error("The Excel file has no sheets.");
+ return XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:""})
+  .map(row=>padRow(row.map(v=>String(v??"")),CSV_HEADERS.length))
+  .filter(row=>row.some(v=>v.trim()!==""));
+}
+async function readDocxText(file){
+ if(!window.mammoth)throw new Error("The Word reader could not load. Check your internet connection and refresh the page.");
+ const result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
+ return result.value;
+}
+async function readPdfText(file){
+ if(!window.pdfjsLib)throw new Error("The PDF reader could not load. Check your internet connection and refresh the page.");
+ pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+ const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+ let out="";
+ for(let p=1;p<=pdf.numPages;p++){
+  const content=await (await pdf.getPage(p)).getTextContent();
+  let lastY=null;
+  for(const item of content.items){
+   const y=item.transform[5];
+   if(lastY!==null&&Math.abs(y-lastY)>2)out+="\n";
+   out+=item.str+" ";
+   lastY=y;
+  }
+  out+="\n";
+ }
+ if(!out.trim())throw new Error("No readable text was found in this PDF. Scanned or image-only PDFs are not supported.");
+ return out;
+}
+
+/* Text layout for TXT / DOCX / PDF:
+   1. Question text
+   A. Option   (B, C, D on their own lines)
+   Answer: B
+   Explanation: optional
+   Marks: optional
+   Order: optional */
+function parseTextQuestions(text){
+ const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim()).filter(Boolean);
+ const list=[];let cur=null,last="question_text";
+ const rxAnswer=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
+ const rxExplanation=/^explanation\s*[:=-]\s*(.*)$/i;
+ const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
+ const rxOrder=/^order\s*[:=-]\s*(\d+)/i;
+ const rxOption=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
+ const rxQuestion=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
+ const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct_option:"",explanation:"",marks:"",order:""});
+ for(const line of lines){
+  let m;
+  if(cur&&(m=line.match(rxAnswer))){cur.correct_option=m[1].toUpperCase();last="";}
+  else if(cur&&(m=line.match(rxExplanation))){cur.explanation=m[1];last="explanation";}
+  else if(cur&&(m=line.match(rxMarks))){cur.marks=m[1];last="";}
+  else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last="";}
+  else if(cur&&(m=line.match(rxOption))){last="option_"+m[1].toLowerCase();cur[last]=m[2];}
+  else if((m=line.match(rxQuestion))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text";}
+  else if(cur&&last){cur[last]+=" "+line;}
+ }
+ if(cur)list.push(cur);
+ return list;
+}
+function textToRows(text){
+ const parsed=parseTextQuestions(text);
+ if(!parsed.length)throw new Error("No questions were found. Use the format: '1. Question', options 'A.' to 'D.', then 'Answer: B'.");
+ let nextOrder=Math.max(savedQuestionCount,0,...queue.map(x=>Number(x.question_order)||0))+1;
+ const rows=[CSV_HEADERS.slice()];
+ parsed.forEach(q=>{
+  const order=q.order||String(nextOrder);
+  nextOrder=Math.max(nextOrder,Number(order)||0)+1;
+  rows.push([q.question_text,q.option_a,q.option_b,q.option_c,q.option_d,q.correct_option,q.explanation,q.marks||"1",order,""]);
+ });
+ return rows;
+}
+async function readFileToRows(file){
+ const ext=getFileExtension(file.name);
+ if(!ALLOWED_EXTENSIONS.includes(ext))throw new Error("Unsupported file type. Please upload a PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls) file.");
+ rowsFromText=false;
+ if(ext==="csv")return parseCSV(await file.text());
+ if(ext==="xlsx"||ext==="xls")return await readSpreadsheetRows(file);
+ let text;
+ if(ext==="txt"){
+  text=await file.text();
+  if(/^\uFEFF?\s*"?question_text"?\s*,/i.test(text))return parseCSV(text);
+ }else if(ext==="docx")text=await readDocxText(file);
+ else text=await readPdfText(file);
+ rowsFromText=true;
+ return textToRows(text);
+}
+
+/* FILE PREVIEW */
 $("previewCsvBtn").addEventListener("click",async()=>{
  try{
   hideStatus("csvStatus");$("csvPreview").innerHTML="";
   if(!selectedExam)throw new Error("Save or select an examination first.");
   if(selectedExam.is_published)throw new Error("This examination is already published.");
   const file=$("csvFile").files[0];
-  if(!file)throw new Error("Select a CSV file first.");
-  if(!file.name.toLowerCase().endsWith(".csv"))throw new Error("Please select a .csv file.");
-  const rows=parseCSV(await file.text());
-  if(rows.length<2)throw new Error("The CSV file contains no question records.");
+  if(!file)throw new Error("Select a file first.");
+  const rows=await readFileToRows(file);
+  if(rows.length<2)throw new Error("The file contains no question records.");
   const result=validateCSVRows(rows,Array.from($("bulkImages").files||[]));
   csvRows=result.valid;
   if(result.errors.length){
    renderCSVErrors(result.errors);
-   showStatus("csvStatus",`${result.valid.length} valid row(s), ${result.errors.length} error(s). Nothing was added to the queue. Correct the errors and preview again.`,"error");
+   showStatus("csvStatus",`${result.valid.length} valid question(s), ${result.errors.length} error(s). Nothing was added to the queue. Correct the errors and preview again.`,"error");
    return;
   }
   renderCSVPreview(csvRows);
