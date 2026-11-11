@@ -23,6 +23,9 @@
 
 *{box-sizing:border-box}
 
+/* Makes the "hidden" attribute always work, even on styled elements. */
+[hidden]{display:none!important}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -178,6 +181,14 @@ main{
   color:var(--muted)
 }
 
+.identity-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  margin-top:10px
+}
+
 .student-name{
   display:inline-block;
   margin-top:10px;
@@ -188,6 +199,46 @@ main{
   font-size:18px;
   font-weight:800;
   overflow-wrap:anywhere
+}
+
+.identity-row .student-name{margin-top:0}
+
+/* ACCOUNT STATUS BADGE (FREE / PREMIUM) */
+
+.plan-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 13px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#edf1f7;
+  color:var(--muted);
+  font-size:17px;
+  font-weight:800
+}
+
+.plan-badge small{
+  font-size:14px;
+  font-weight:400
+}
+
+.plan-badge.free{
+  background:#edf1f7;
+  color:var(--primary);
+  border-color:#cfd8e5
+}
+
+.plan-badge.premium{
+  background:#fdf3d0;
+  color:#7a5b00;
+  border-color:var(--accent)
+}
+
+.plan-badge.error{
+  background:#fdecea;
+  color:var(--danger);
+  border-color:#f3c1bd
 }
 
 .section{display:none}
@@ -737,7 +788,22 @@ th{
 <div class="welcome">
   <h1 id="welcomeTitle">Welcome to SAINTIG EXAMS</h1>
   <p id="welcomeSubtitle">Your learning and examination dashboard.</p>
-  <div id="studentDisplayName" class="student-name" hidden></div>
+
+  <div class="identity-row">
+
+    <div id="studentDisplayName" class="student-name" hidden></div>
+
+    <!-- ACCOUNT STATUS: shows Free or Premium -->
+    <span id="planBadge" class="plan-badge" role="status" aria-live="polite">
+      Checking plan…
+    </span>
+
+    <button class="button gold small" id="planUpgradeButton"
+      type="button" data-go="pricing" hidden>
+      Upgrade to Premium
+    </button>
+
+  </div>
 </div>
 
 <section class="section active" id="home">
@@ -1731,7 +1797,61 @@ $("passwordForm").addEventListener("submit",async event => {
    SUBSCRIPTION (FREE / PREMIUM)
 ========================================= */
 
+/* Shows "Free Account" or "Premium Account" at the top of the page. */
+
+function updatePlanBadge() {
+
+  const badge = $("planBadge");
+
+  const upgradeButton = $("planUpgradeButton");
+
+  if (!badge) return;
+
+  const state = subscription.state;
+
+  badge.className = "plan-badge";
+
+  if (state === "premium") {
+
+    badge.classList.add("premium");
+
+    badge.innerHTML =
+      "⭐ Premium Account" +
+      (
+        subscription.expiresAt
+        ? ' <small>until ' +
+          escapeHtml(formatDay(subscription.expiresAt)) +
+          '</small>'
+        : ""
+      );
+
+  } else if (state === "free") {
+
+    badge.classList.add("free");
+
+    badge.textContent = "Free Account";
+
+  } else if (state === "error") {
+
+    badge.classList.add("error");
+
+    badge.textContent = "Plan unavailable";
+
+  } else {
+
+    badge.textContent = "Checking plan…";
+
+  }
+
+  if (upgradeButton) {
+    upgradeButton.hidden = state !== "free";
+  }
+
+}
+
 function renderPricing() {
+
+  updatePlanBadge();
 
   const state = subscription.state;
 
