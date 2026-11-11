@@ -1176,8 +1176,36 @@ function printAnnualResult(d) {
   if (readSession()) $("resumeCard").classList.remove("hidden");
 
   /* A shared link such as ?tab=annual opens the Annual Results tab. */
-  const tab = new URLSearchParams(location.search).get("tab");
+  const params = new URLSearchParams(location.search);
+  const tab = params.get("tab");
   if (["exam", "examResult", "classResult", "annual"].includes(tab)) setTab(tab);
+
+  /* Homepage ID form: ?tab=exam&exam_id=...&student_id=... fills the form
+     and continues straight away, so the student does not type the IDs twice. */
+  const PREFILL = {
+    exam:        { form: "examForm",         fields: [["examCode", "exam_id"], ["studentCode", "student_id"]] },
+    examResult:  { form: "examResultForm",   fields: [["erExamCode", "exam_id"], ["erStudentCode", "student_id"]] },
+    classResult: { form: "classResultForm",  fields: [["crClassCode", "class_id"], ["crStudentCode", "student_id"]] },
+    annual:      { form: "annualResultForm", fields: [["arAnnualCode", "annual_id"], ["arStudentCode", "student_id"]] }
+  };
+
+  const config = PREFILL[tab];
+
+  if (config) {
+    const values = config.fields.map(f => (params.get(f[1]) || "").trim());
+
+    if (values.every(Boolean)) {
+      config.fields.forEach((f, i) => { $(f[0]).value = values[i].toUpperCase(); });
+
+      /* Remove the IDs from the address bar and browser history. */
+      const clean = new URLSearchParams();
+      clean.set("tab", tab);
+      if (params.get("from")) clean.set("from", params.get("from"));
+      history.replaceState(null, "", location.pathname + "?" + clean.toString());
+
+      $(config.form).requestSubmit();
+    }
+  }
 })();
 </script>
     <script src="track.js"></script>
