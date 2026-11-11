@@ -57,6 +57,15 @@ th{background:#f3f6fb;color:var(--navy)}
 .question-preview strong{color:var(--navy)}
 .preview-options{margin:8px 0;line-height:1.7}
 .error-row{background:#fff0ee;border-left:4px solid var(--red);padding:10px;margin:7px 0;font-size:13px}
+details.guide{border:1px solid #d9e5f4;border-radius:8px;background:#f7faff;margin:0 0 16px}
+details.guide summary{cursor:pointer;padding:13px 15px;font-weight:bold;font-size:14px;color:var(--navy)}
+.guide-body{padding:0 15px 15px;font-size:13px;line-height:1.65}
+.guide-body h4{margin:16px 0 6px;color:var(--navy);font-size:14px}
+.guide-body ul{margin:6px 0 0;padding-left:20px}
+.guide-body li{margin-bottom:5px}
+.guide-body pre{background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
+.guide-body code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12px}
+.working-bar{position:sticky;top:65px;z-index:12;background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;display:flex;flex-wrap:wrap;gap:4px 16px;box-shadow:0 2px 7px rgba(0,0,0,.05)}
 hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 #overlay{display:none;position:fixed;inset:65px 0 0;background:rgba(0,0,0,.4);z-index:14}
 @media(max-width:800px){
@@ -96,6 +105,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 <main>
 <h1 class="page-title">Register Examination</h1>
 <div class="subtitle">Create examinations, add questions, upload images and manage publication.</div>
+<div class="working-bar" id="workingBar">No examination selected. Save a new draft (Step 1) or pick one (Step 2).</div>
 <div class="notice"><strong>Important:</strong> Free and Premium examinations are separate. Each examination has its own question collection. Saving questions does not publish the examination to students.</div>
 
 <section class="card">
@@ -142,8 +152,51 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 
 <section class="card">
 <h2>4. Bulk Question Upload</h2>
-<div class="notice">Upload multiple questions as a PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls) file. CSV and Excel files must use the exact 10-column template. PDF, Word and Text files use this layout: <strong>1. Question</strong>, options <strong>A.</strong> to <strong>D.</strong> on separate lines, then <strong>Answer: B</strong> (optional lines: Explanation, Marks, Order). For image questions, upload the images separately and enter their exact filenames in the <strong>image_filename</strong> column. Each image must be 5 MB or smaller.</div>
-<div class="actions"><button class="gold" id="downloadTemplateBtn">Download CSV Template</button></div>
+<details class="guide" open>
+<summary>📘 How to prepare your exam file: guideline for Word (DOCX), Text, PDF, CSV and Excel</summary>
+<div class="guide-body">
+
+<h4>1. Word (.docx), Text (.txt) and PDF</h4>
+<p>Type each question in this order, one item per line, with a blank line between questions:</p>
+<pre>1. What is the capital of Nigeria?
+A. Lagos
+B. Abuja
+C. Kano
+D. Enugu
+Answer: B
+Explanation: Abuja is the capital of Nigeria.
+Marks: 1
+Order: 1
+
+2. Which of these is a primary colour?
+A. Green
+B. Red
+C. Orange
+D. Purple
+Answer: B</pre>
+<ul>
+<li><strong>Question:</strong> start with a number, such as <code>1.</code>, <code>1)</code> or <code>Q1.</code></li>
+<li><strong>Options:</strong> exactly four lines starting <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> Type the letters yourself.</li>
+<li><strong>Answer:</strong> required, one letter from A to D, for example <code>Answer: B</code> or <code>Ans: B</code>.</li>
+<li><strong>Explanation, Marks and Order</strong> are optional. Marks must be a whole number and default to 1. Order continues after the questions already saved and queued.</li>
+<li><strong>In Word:</strong> type the numbers and letters yourself. Word's automatic numbered or lettered lists are not read. Tables, text boxes and pictures inside the document are ignored.</li>
+<li><strong>PDF:</strong> must contain real text. Scanned or photographed pages cannot be read.</li>
+<li><strong>Images:</strong> these formats cannot carry images. Use CSV or Excel with the <code>image_filename</code> column instead.</li>
+</ul>
+
+<h4>2. CSV (.csv) and Excel (.xlsx, .xls)</h4>
+<p>Use the 10-column template exactly, with headings in the first row:</p>
+<pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order, image_filename</pre>
+<p>Excel files are read from the first sheet. For image questions, select the images below and type their exact filenames in <code>image_filename</code>. Each image must be 5 MB or smaller.</p>
+
+<h4>3. Filenames</h4>
+<p>Any normal filename works, for example <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Spaces, brackets and capital letters are fine. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
+
+<h4>4. After choosing your file</h4>
+<p>Tap <strong>Validate and Preview File</strong>. Fix any errors it lists, then add the questions to the queue, save the queue, and finally publish the examination.</p>
+</div>
+</details>
+<div class="actions"><button class="gold" id="downloadTemplateBtn">Download CSV Template</button><button class="secondary" id="downloadSampleBtn">Download Sample for Word / Text</button></div>
 <div class="field"><label for="csvFile">Select File (PDF, Word, Text, CSV or Excel)</label><input id="csvFile" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls,text/csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small>Any filename is accepted, e.g. Government SS1 Questions.csv, First Term Exam 2026.xlsx, My Questions (Final).CSV</small></div>
 <div class="field"><label for="bulkImages">Select Images for CSV Questions (Optional)</label><input id="bulkImages" type="file" accept="image/*" multiple><small>Each image must be 5 MB or smaller.</small></div>
 <div class="actions"><button class="primary" id="previewCsvBtn">Validate and Preview File</button><button class="secondary" id="clearCsvBtn">Clear File Selection</button></div>
@@ -165,7 +218,7 @@ hr{border:0;border-top:1px solid var(--border);margin:20px 0}
 
 <section class="card">
 <h2>6. Publish Examination to Students</h2>
-<div class="notice warning"><strong>Publication requirements:</strong><br>Free examinations require at least 50 saved questions and use 45 minutes.<br>Premium examinations require at least 100 saved questions and use 90 minutes.<br>Publishing questions does not automatically publish the examination.</div>
+<div class="notice warning"><strong>Publication requirements:</strong><br>Free examinations require at least <span id="minFreeText">1</span> saved question(s) and use 45 minutes.<br>Premium examinations require at least <span id="minPremiumText">1</span> saved question(s) and use 90 minutes.<br>Publishing questions does not automatically publish the examination.</div>
 <div id="publicationInfo" class="notice">Select an examination to view its publication status.</div>
 <div class="actions"><button class="gold" id="publishExamBtn">Publish Examination to Students</button><button class="secondary" id="refreshExamBtn">Refresh Examination Details</button></div>
 <div id="publishStatus" class="status"></div>
@@ -181,7 +234,7 @@ import { supabase, getCurrentSession } from "./auth.js";
 
 const $ = id => document.getElementById(id);
 let currentUser=null,queue=[],csvRows=[],selectedExam=null;
-let savedQuestionCount=0,duplicateTexts=new Set(),isSavingQuestions=false;
+let savedQuestionCount=0,savedMaxOrder=0,duplicateTexts=new Set(),isSavingQuestions=false;
 const MAX_IMAGE_SIZE=5*1024*1024;
 const CSV_HEADERS=["question_text","option_a","option_b","option_c","option_d","correct_option","explanation","marks","question_order","image_filename"];
 
@@ -195,7 +248,12 @@ function escapeHTML(value){
 function normalizeQuestion(text){return String(text||"").trim().toLowerCase().replace(/\s+/g," ");}
 function isPaid(type){return type==="paid";}
 function displayExamType(type){return isPaid(type)?"PREMIUM":"FREE";}
-function requiredExamCount(type=selectedExam?.access_type){return isPaid(type)?100:50;}
+/* MINIMUM SAVED QUESTIONS NEEDED BEFORE AN EXAMINATION CAN BE PUBLISHED.
+   Change these two numbers to set the minimum. Use 1 to allow publishing with a single question.
+   (Uploading and saving questions has no minimum: you can save even 1 question.) */
+const MIN_QUESTIONS_FREE=1;
+const MIN_QUESTIONS_PREMIUM=1;
+function requiredExamCount(type=selectedExam?.access_type){return isPaid(type)?MIN_QUESTIONS_PREMIUM:MIN_QUESTIONS_FREE;}
 function durationForType(type=$("examType").value){return isPaid(type)?90:45;}
 function updateExamType(){$("duration").value=durationForType()+" minutes";}
 function validateImage(file){
@@ -297,7 +355,7 @@ function clearExamForm(){
  $("examTitle").value="";$("description").value="";$("examType").value="free";updateExamType();
  $("existingExam").value="";$("selectedExamInfo").classList.add("hidden");
  $("publicationInfo").textContent="Select an examination to view its publication status.";
- savedQuestionCount=0;duplicateTexts=new Set();$("savedCount").textContent="0";
+ savedQuestionCount=0;savedMaxOrder=0;duplicateTexts=new Set();$("savedCount").textContent="0";
  queue=[];renderQueue();$("questionOrder").value="1";
  hideStatus("examStatus");hideStatus("existingStatus");hideStatus("publishStatus");hideStatus("uploadStatus");
  clearCSV();
@@ -329,16 +387,25 @@ async function populateExamForm(exam){
  $("examTitle").value=exam.title||"";$("description").value=exam.description||"";updateExamType();
 }
 async function loadDuplicateQuestions(examId){
- const {data,error}=await supabase.from("exam_questions").select("question_text").eq("examination_id",examId);
+ const {data,error}=await supabase.from("exam_questions").select("question_text,question_order").eq("examination_id",examId);
  if(error)throw error;
  duplicateTexts=new Set((data||[]).map(x=>normalizeQuestion(x.question_text)));
+ savedMaxOrder=Math.max(0,...(data||[]).map(x=>Number(x.question_order)||0));
+}
+function nextQuestionOrder(){
+ return Math.max(savedMaxOrder,0,...queue.map(x=>Number(x.question_order)||0))+1;
+}
+function updateWorkingBar(){
+ const el=$("workingBar");
+ if(!selectedExam){el.textContent="No examination selected. Save a new draft (Step 1) or pick one (Step 2).";return;}
+ el.innerHTML=`<span><strong>Working on:</strong> ${escapeHTML(selectedExam.title)}</span><span>${displayExamType(selectedExam.access_type)}</span><span>${selectedExam.is_published?"PUBLISHED":"DRAFT"}</span><span>Saved: ${savedQuestionCount} / ${requiredExamCount()} needed</span><span>In queue: ${queue.length}</span>`;
 }
 async function refreshSelectedExam(){
  const id=$("existingExam").value;
  if(!id){
   selectedExam=null;$("selectedExamInfo").classList.add("hidden");
   $("publicationInfo").textContent="Select an examination to view its publication status.";
-  savedQuestionCount=0;duplicateTexts=new Set();$("savedCount").textContent="0";return;
+  savedQuestionCount=0;savedMaxOrder=0;duplicateTexts=new Set();$("savedCount").textContent="0";updateWorkingBar();return;
  }
  const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,duration_minutes,is_published").eq("id",id).single();
  if(error)throw error;
@@ -350,6 +417,8 @@ async function refreshSelectedExam(){
  $("selectedExamInfo").innerHTML=`<strong>Selected Examination:</strong> ${escapeHTML(data.title)}<br><strong>Category:</strong> ${displayExamType(data.access_type)}<br><strong>Duration:</strong> ${data.duration_minutes} minutes<br><strong>Status:</strong> ${data.is_published?"PUBLISHED":"DRAFT"}`;
  $("publicationInfo").textContent=`Examination: ${data.title}\nCategory: ${displayExamType(data.access_type)}\nSaved questions: ${savedQuestionCount}\nMinimum required: ${requiredExamCount(data.access_type)}\nStatus: ${data.is_published?"Published to students":"Not yet published"}`;
  await loadDuplicateQuestions(id);
+ $("questionOrder").value=String(nextQuestionOrder());
+ updateWorkingBar();
  showStatus("existingStatus",data.is_published?"This examination is already published. Its questions cannot be changed from this page.":`${displayExamType(data.access_type)} examination selected. New questions will belong only to this examination.`,data.is_published?"info":"ok");
 }
 $("existingExam").addEventListener("change",async()=>{
@@ -381,6 +450,8 @@ function addToQueue(q){
 }
 function renderQueue(){
  $("queueCount").textContent=queue.length;
+ updateWorkingBar();
+ if(selectedExam&&!$("questionText").value.trim())$("questionOrder").value=String(nextQuestionOrder());
  if(!queue.length){$("queuePreview").innerHTML='<p class="help">No questions in the queue yet.</p>';return;}
  $("queuePreview").innerHTML=queue.map((q,i)=>`
  <div class="question-preview">
@@ -395,7 +466,7 @@ function renderQueue(){
 }
 function clearQuestionForm(){
  ["questionText","optionA","optionB","optionC","optionD","correctOption","explanation","questionImage"].forEach(id=>$(id).value="");
- $("marks").value="1";$("questionOrder").value=String(queue.length+1);
+ $("marks").value="1";$("questionOrder").value=String(nextQuestionOrder());
 }
 $("addQuestionBtn").addEventListener("click",()=>{
  try{
@@ -527,6 +598,17 @@ $("downloadTemplateBtn").addEventListener("click",()=>{
  setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 
+$("downloadSampleBtn").addEventListener("click",()=>{
+ const sample=[
+  "1. What is the capital of Nigeria?","A. Lagos","B. Abuja","C. Kano","D. Enugu","Answer: B","Explanation: Abuja is the capital of Nigeria.","Marks: 1","",
+  "2. Which of these is a primary colour?","A. Green","B. Red","C. Orange","D. Purple","Answer: B","Marks: 1",""
+ ].join("\r\n");
+ const blob=new Blob([sample],{type:"text/plain;charset=utf-8;"});
+ const url=URL.createObjectURL(blob),link=document.createElement("a");
+ link.href=url;link.download="saintig-exams-word-text-sample.txt";link.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+
 /* FILE READERS (PDF, DOCX, TXT, CSV, XLSX, XLS) */
 const ALLOWED_EXTENSIONS=["pdf","docx","txt","csv","xlsx","xls"];
 let rowsFromText=false;
@@ -584,8 +666,9 @@ async function readPdfText(file){
    Marks: optional
    Order: optional */
 function parseTextQuestions(text){
- const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim()).filter(Boolean);
- const list=[];let cur=null,last="question_text";
+ /* Blank lines are kept: they separate questions. */
+ const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim());
+ const list=[];let cur=null,last="question_text",afterBlank=false;
  const rxAnswer=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
  const rxExplanation=/^explanation\s*[:=-]\s*(.*)$/i;
  const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
@@ -594,6 +677,7 @@ function parseTextQuestions(text){
  const rxQuestion=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
  const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct_option:"",explanation:"",marks:"",order:""});
  for(const line of lines){
+  if(!line){afterBlank=true;continue;}
   let m;
   if(cur&&(m=line.match(rxAnswer))){cur.correct_option=m[1].toUpperCase();last="";}
   else if(cur&&(m=line.match(rxExplanation))){cur.explanation=m[1];last="explanation";}
@@ -601,7 +685,12 @@ function parseTextQuestions(text){
   else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last="";}
   else if(cur&&(m=line.match(rxOption))){last="option_"+m[1].toLowerCase();cur[last]=m[2];}
   else if((m=line.match(rxQuestion))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text";}
-  else if(cur&&last){cur[last]+=" "+line;}
+  else if(!cur||(cur.correct_option&&(last===""||afterBlank))){
+   /* A line with no number: starts a new question when it follows a finished one. */
+   if(cur)list.push(cur);cur=blank();cur.question_text=line;last="question_text";
+  }
+  else if(last){cur[last]+=" "+line;}
+  afterBlank=false;
  }
  if(cur)list.push(cur);
  return list;
@@ -609,7 +698,7 @@ function parseTextQuestions(text){
 function textToRows(text){
  const parsed=parseTextQuestions(text);
  if(!parsed.length)throw new Error("No questions were found. Use the format: '1. Question', options 'A.' to 'D.', then 'Answer: B'.");
- let nextOrder=Math.max(savedQuestionCount,0,...queue.map(x=>Number(x.question_order)||0))+1;
+ let nextOrder=nextQuestionOrder();
  const rows=[CSV_HEADERS.slice()];
  parsed.forEach(q=>{
   const order=q.order||String(nextOrder);
@@ -736,6 +825,10 @@ async function publishExamination(){
  finally{$("publishExamBtn").disabled=false;$("publishExamBtn").textContent="Publish Examination to Students";}
 }
 $("publishExamBtn").addEventListener("click",publishExamination);
+
+/* Show the configured minimums in the publication notice */
+$("minFreeText").textContent=MIN_QUESTIONS_FREE;
+$("minPremiumText").textContent=MIN_QUESTIONS_PREMIUM;
 
 /* INITIALIZE */
 async function initializePage(){
