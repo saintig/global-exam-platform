@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +23,7 @@
     body {
       margin:0;
       font-family:Arial,Helvetica,sans-serif;
+      font-size:16px;
       color:var(--text);
       background:var(--cream);
       line-height:1.5;
@@ -51,7 +51,7 @@
 
     .tagline {
       margin:3px 0 0;
-      font-size:13px;
+      font-size:14px;
       color:#e3e9e3;
     }
 
@@ -84,6 +84,7 @@
     .subject-panel small {
       display:block;
       color:var(--muted);
+      font-size:14px;
     }
 
     .subject-panel strong {
@@ -115,7 +116,7 @@
       padding:5px 11px;
       background:#e9f2e9;
       color:var(--green);
-      font-size:12px;
+      font-size:13px;
       font-weight:800;
       margin-bottom:12px;
     }
@@ -129,7 +130,7 @@
 
     .description {
       color:var(--muted);
-      font-size:14px;
+      font-size:15px;
       margin:0 0 18px;
     }
 
@@ -148,7 +149,7 @@
 
     .stat span {
       display:block;
-      font-size:12px;
+      font-size:14px;
       color:var(--muted);
     }
 
@@ -160,7 +161,7 @@
 
     .note {
       color:var(--muted);
-      font-size:13px;
+      font-size:15px;
       margin:0 0 18px;
     }
 
@@ -168,11 +169,12 @@
       width:100%;
       margin-top:auto;
       padding:14px;
+      min-height:50px;
       border:none;
       border-radius:8px;
       background:var(--green);
       color:white;
-      font-size:15px;
+      font-size:16px;
       font-weight:bold;
       cursor:pointer;
     }
@@ -214,6 +216,44 @@
       border:1px solid var(--border);
     }
 
+    .upgrade-link {
+      display:inline-block;
+      margin-top:10px;
+      padding:11px 16px;
+      border-radius:8px;
+      background:#8a6b00;
+      color:white;
+      font-weight:bold;
+      text-decoration:none;
+    }
+
+    .plan-banner {
+      margin:0 0 18px;
+      padding:14px;
+      border-radius:8px;
+      border:1px solid var(--border);
+      background:white;
+      font-size:15px;
+      line-height:1.6;
+    }
+
+    .plan-banner.premium {
+      background:#e9f2e9;
+      color:var(--green);
+    }
+
+    .plan-banner.free {
+      background:#fff8df;
+      border-color:#eadba0;
+      color:#705700;
+    }
+
+    .plan-banner.blocked {
+      background:#fff0f0;
+      border-color:#efcccc;
+      color:var(--red);
+    }
+
     .status-note {
       margin:18px 0;
       padding:14px;
@@ -221,7 +261,7 @@
       background:#fff8df;
       border:1px solid #eadba0;
       color:#705700;
-      font-size:14px;
+      font-size:15px;
     }
 
     .hidden { display:none !important; }
@@ -230,7 +270,7 @@
       padding:20px 16px;
       text-align:center;
       color:var(--muted);
-      font-size:12px;
+      font-size:13px;
     }
 
     @media (min-width:620px) {
@@ -266,6 +306,8 @@
       <div id="levelName"></div>
     </section>
 
+    <div id="planBanner" class="plan-banner hidden" role="status" aria-live="polite"></div>
+
     <div id="message" class="message" role="alert"></div>
 
     <div id="availabilityMessage" class="status-note hidden">
@@ -294,7 +336,7 @@
           </div>
         </div>
 
-        <p class="note">One free attempt per day.</p>
+        <p class="note" id="freeNote">Free attempts are limited each day.</p>
 
         <button id="freeButton" type="button" disabled>
           Loading settings...
@@ -326,7 +368,7 @@
         </p>
 
         <button id="premiumButton" type="button" disabled>
-          Premium verification pending
+          Loading settings...
         </button>
       </article>
 
@@ -349,33 +391,32 @@
     const levelId = params.get("level_id");
     const subjectId = params.get("subject_id");
 
-    const subjectName = document.getElementById("subjectName");
-    const levelName = document.getElementById("levelName");
-    const message = document.getElementById("message");
+    const $ = id => document.getElementById(id);
 
-    const availabilityMessage =
-      document.getElementById("availabilityMessage");
+    const subjectName = $("subjectName");
+    const levelName = $("levelName");
+    const message = $("message");
+    const planBanner = $("planBanner");
+    const availabilityMessage = $("availabilityMessage");
 
-    const freeButton = document.getElementById("freeButton");
-    const premiumButton = document.getElementById("premiumButton");
+    const freeButton = $("freeButton");
+    const premiumButton = $("premiumButton");
 
-    const freeQuestionCount =
-      document.getElementById("freeQuestionCount");
-
-    const freeDuration =
-      document.getElementById("freeDuration");
-
-    const premiumQuestionCount =
-      document.getElementById("premiumQuestionCount");
-
-    const premiumDuration =
-      document.getElementById("premiumDuration");
-
-    const backLink = document.getElementById("backLink");
+    const backLink = $("backLink");
 
     let session = null;
-    let examination = null;
+
+    // The examinations offered for this subject and level.
+    let freeExam = null;
+    let premiumExam = null;
+
+    // "free" or "premium". The server decides again when you start.
+    let plan = "free";
+    let allowance = null;
+
     let settingsLoaded = false;
+    let loaded = false;
+    let failed = false;
     let busy = false;
 
     let examSettings = {
@@ -385,13 +426,29 @@
       premium_student_duration_minutes: null
     };
 
-    function showMessage(text, type = "error") {
-      message.textContent = text;
+    /* ---------- messages ---------- */
+
+    function addUpgradeLink(container) {
+      const link = document.createElement("a");
+
+      link.className = "upgrade-link";
+      link.href = "contact.html";
+      link.textContent = "Upgrade to Premium";
+
+      container.appendChild(document.createElement("br"));
+      container.appendChild(link);
+    }
+
+    function showMessage(text, type = "error", upgrade = false) {
+      message.replaceChildren(document.createTextNode(text));
+
+      if (upgrade) addUpgradeLink(message);
+
       message.className = `message ${type}`;
     }
 
     function clearMessage() {
-      message.textContent = "";
+      message.replaceChildren();
       message.className = "message";
     }
 
@@ -403,6 +460,8 @@
     function hideAvailability() {
       availabilityMessage.classList.add("hidden");
     }
+
+    /* ---------- checks ---------- */
 
     function validateIds() {
       const ids = [countryId, levelId, subjectId];
@@ -435,39 +494,192 @@
     }
 
     function updateSettingsDisplay() {
-      freeQuestionCount.textContent =
+      $("freeQuestionCount").textContent =
         examSettings.free_student_question_limit;
 
-      freeDuration.textContent =
+      $("freeDuration").textContent =
         formatMinutes(examSettings.free_student_duration_minutes);
 
-      premiumQuestionCount.textContent =
+      $("premiumQuestionCount").textContent =
         examSettings.premium_student_question_limit;
 
-      premiumDuration.textContent =
+      $("premiumDuration").textContent =
         formatMinutes(examSettings.premium_student_duration_minutes);
     }
 
-    function setBusy(value) {
-      busy = value;
+    /* ---------- plan and daily attempts ---------- */
 
-      freeButton.disabled =
-        value || !examination || !settingsLoaded;
+    function formatWait(resetIso) {
+      const ms = new Date(resetIso).getTime() - Date.now();
 
-      // Premium is intentionally disabled until payment verification
-      // and Premium exam-start authorization are implemented.
-      premiumButton.disabled = true;
+      if (!Number.isFinite(ms) || ms <= 0) return "a short while";
 
-      freeButton.textContent = value
-        ? "Please wait..."
-        : examination && settingsLoaded
-          ? "Start Free Exam"
-          : "Exam not available yet";
+      const totalMinutes = Math.ceil(ms / 60000);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
 
-      premiumButton.textContent = value
-        ? "Please wait..."
-        : "Premium verification pending";
+      if (hours <= 0) {
+        return minutes + " minute" + (minutes === 1 ? "" : "s");
+      }
+
+      return (
+        hours + " hour" + (hours === 1 ? "" : "s") +
+        (minutes ? " " + minutes + " min" : "")
+      );
     }
+
+    /* Finds out the student's plan and today's attempts.
+       Used only to show the right buttons. The server decides again
+       when the examination is started. */
+
+    async function detectPlan() {
+      allowance = null;
+
+      try {
+        const { data, error } = await supabase.rpc(
+          "get_my_attempt_allowance"
+        );
+
+        if (error) throw error;
+
+        if (data && (data.plan === "premium" || data.plan === "free")) {
+          allowance = data;
+          plan = data.plan;
+          return;
+        }
+      } catch (error) {
+        console.error("Attempt allowance:", error);
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("student_subscriptions")
+          .select("plan,status,expires_at")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        const active =
+          data &&
+          data.plan === "premium" &&
+          data.status === "active" &&
+          (!data.expires_at || new Date(data.expires_at) > new Date());
+
+        plan = active ? "premium" : "free";
+
+      } catch (error) {
+        console.error("Plan lookup:", error);
+        plan = "free";
+      }
+    }
+
+    function limitReached() {
+      return (
+        plan === "free" &&
+        allowance &&
+        !allowance.unlimited &&
+        Number(allowance.remaining) <= 0
+      );
+    }
+
+    function renderBanner() {
+      if (!loaded) return;
+
+      planBanner.replaceChildren();
+
+      if (plan === "premium") {
+        planBanner.className = "plan-banner premium";
+        planBanner.textContent =
+          "⭐ Premium plan: unlimited attempts while your subscription is active.";
+        return;
+      }
+
+      if (!allowance || allowance.unlimited) {
+        planBanner.className = "plan-banner hidden";
+        return;
+      }
+
+      const limit = Number(allowance.limit) || 1;
+      const remaining = Number(allowance.remaining) || 0;
+
+      if (remaining > 0) {
+        planBanner.className = "plan-banner free";
+        planBanner.textContent =
+          "Free plan: you have " + remaining + " of " + limit +
+          " attempt" + (limit === 1 ? "" : "s") + " left today.";
+        return;
+      }
+
+      planBanner.className = "plan-banner blocked";
+
+      planBanner.appendChild(document.createTextNode(
+        "You have used your " + limit + " free attempt" +
+        (limit === 1 ? "" : "s") + " for today. You can start again in about " +
+        formatWait(allowance.resets_at) +
+        " (midnight, Nigeria time), or upgrade to Premium for unlimited attempts."
+      ));
+
+      addUpgradeLink(planBanner);
+    }
+
+    function renderFreeNote() {
+      const limit = Number(allowance?.limit) || 1;
+
+      $("freeNote").textContent =
+        limit + " free attempt" + (limit === 1 ? "" : "s") + " per day.";
+    }
+
+    /* ---------- buttons ---------- */
+
+    function setButton(button, text, disabled) {
+      button.textContent = text;
+      button.disabled = disabled;
+    }
+
+    function applyUi() {
+      const premium = plan === "premium";
+
+      if (failed) {
+        setButton(freeButton, "Unable to verify exam", true);
+        setButton(premiumButton, "Unable to verify exam", true);
+        return;
+      }
+
+      if (!loaded || !settingsLoaded) {
+        setButton(freeButton, "Loading settings...", true);
+        setButton(premiumButton, "Loading settings...", true);
+        return;
+      }
+
+      if (busy) {
+        setButton(freeButton, "Please wait...", true);
+        setButton(premiumButton, "Please wait...", true);
+        return;
+      }
+
+      // Free card
+      if (premium) {
+        setButton(freeButton, "Included in your Premium plan", true);
+      } else if (!freeExam) {
+        setButton(freeButton, "No free examination yet", true);
+      } else if (limitReached()) {
+        setButton(freeButton, "Daily limit reached", true);
+      } else {
+        setButton(freeButton, "Start Free Exam", false);
+      }
+
+      // Premium card
+      if (!premiumExam) {
+        setButton(premiumButton, "Exam not available yet", true);
+      } else if (!premium) {
+        setButton(premiumButton, "Upgrade to Premium", false);
+      } else {
+        setButton(premiumButton, "Start Premium Exam", false);
+      }
+    }
+
+    /* ---------- settings ---------- */
 
     async function loadExamSettings() {
       const settingKeys = [
@@ -532,6 +744,8 @@
       updateSettingsDisplay();
     }
 
+    /* ---------- page ---------- */
+
     async function loadPage() {
       try {
         validateIds();
@@ -559,8 +773,8 @@
           return;
         }
 
-        // Load all four administrator-configured settings.
-        await loadExamSettings();
+        // Settings set by the administrator, and the student's plan.
+        await Promise.all([loadExamSettings(), detectPlan()]);
 
         // Verify the selected education level.
         const {
@@ -605,51 +819,61 @@
         subjectName.textContent = assignment.subjects.name;
         levelName.textContent = level.level_name;
 
-        // Find the latest published examination.
+        // Find the latest published public examinations.
         const {
           data: exams,
           error: examError
         } = await supabase
           .from("examinations")
           .select(
-            "id,title,subject_id,education_level_id,is_published"
+            "id,title,subject_id,education_level_id,is_published,access_type,created_at"
           )
           .eq("subject_id", Number(subjectId))
           .eq("education_level_id", Number(levelId))
           .eq("is_published", true)
+          .eq("is_archived", false)
+          .is("school_account_id", null)
           .order("created_at", { ascending: false })
-          .limit(1);
+          .limit(20);
 
         if (examError) throw examError;
 
-        if (!exams || exams.length === 0) {
-          examination = null;
+        const list = exams || [];
 
-          setBusy(false);
+        freeExam = list.find(exam => exam.access_type === "free") || null;
 
+        const paidExam = list.find(exam => exam.access_type !== "free") || null;
+
+        // Premium students use the Premium examination when there is
+        // one, and otherwise the free examination with Premium limits.
+        premiumExam = paidExam || freeExam;
+
+        loaded = true;
+
+        if (!freeExam && !premiumExam) {
           showAvailability(
             "No published examination is currently available for this subject. You cannot start until an examination is published."
           );
-
-          return;
+        } else if (!freeExam && plan !== "premium") {
+          showAvailability(
+            "This subject has a Premium examination only. Upgrade to Premium to take it."
+          );
+        } else {
+          hideAvailability();
         }
 
-        examination = exams[0];
-
-        hideAvailability();
-        setBusy(false);
+        renderFreeNote();
+        renderBanner();
+        applyUi();
 
       } catch (error) {
         console.error("Unable to load examination details:", error);
 
-        examination = null;
-        settingsLoaded = false;
+        failed = true;
+        freeExam = null;
+        premiumExam = null;
 
-        freeButton.disabled = true;
-        freeButton.textContent = "Unable to verify exam";
-
-        premiumButton.disabled = true;
-        premiumButton.textContent = "Premium verification pending";
+        applyUi();
 
         showMessage(
           error?.message ||
@@ -658,34 +882,25 @@
       }
     }
 
+    /* ---------- start ---------- */
+
     async function startExam(type) {
-      if (
-        busy ||
-        !session ||
-        !examination ||
-        !settingsLoaded
-      ) return;
+      if (busy || !session || !loaded || failed) return;
 
-      if (type === "premium") {
-        showMessage(
-          "Premium access is not enabled yet. Subscription verification and server-side Premium limits must be implemented first."
-        );
-        return;
-      }
+      const exam = type === "premium" ? premiumExam : freeExam;
 
-      if (type !== "free") return;
+      if (!exam) return;
 
-      setBusy(true);
+      busy = true;
+      applyUi();
       clearMessage();
 
       try {
         const { data, error } =
           await supabase.functions.invoke("start-exam", {
             body: {
-              examination_id: examination.id,
-              question_count:
-                examSettings.free_student_question_limit,
-              exam_type: "free"
+              examination_id: exam.id,
+              exam_type: type
             },
             headers: {
               Authorization: `Bearer ${session.access_token}`
@@ -697,14 +912,20 @@
             error.message ||
             "The examination could not be started.";
 
+          let code = "";
+
           if (error.context?.json) {
             try {
               const body = await error.context.json();
               detail = body.message || body.error || detail;
+              code = body.code || "";
             } catch (_) {}
           }
 
-          throw new Error(detail);
+          const failure = new Error(detail);
+          failure.code = code;
+
+          throw failure;
         }
 
         if (data?.error) {
@@ -735,12 +956,40 @@
       } catch (error) {
         console.error("Unable to start examination:", error);
 
-        showMessage(
-          error?.message ||
-          "Unable to start the examination."
-        );
+        const code = error?.code || "";
 
-        setBusy(false);
+        if (code === "DAILY_LIMIT") {
+          await detectPlan();
+
+          showMessage(
+            error.message ||
+            "You have used your free attempts for today.",
+            "error",
+            true
+          );
+
+        } else if (code === "PREMIUM_REQUIRED") {
+
+          showMessage(
+            error.message ||
+            "This is a Premium examination.",
+            "error",
+            true
+          );
+
+        } else {
+
+          showMessage(
+            error?.message ||
+            "Unable to start the examination."
+          );
+
+        }
+
+        busy = false;
+
+        renderBanner();
+        applyUi();
       }
     }
 
@@ -749,10 +998,13 @@
       () => startExam("free")
     );
 
-    premiumButton.addEventListener(
-      "click",
-      () => startExam("premium")
-    );
+    premiumButton.addEventListener("click", () => {
+      if (plan === "premium") {
+        startExam("premium");
+      } else if (premiumExam) {
+        location.href = "contact.html";
+      }
+    });
 
     loadPage();
   </script>
