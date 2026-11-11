@@ -153,12 +153,13 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
     <button class="tab active" data-tab="exam" type="button">Take Exam</button>
     <button class="tab" data-tab="examResult" type="button">Exam Results</button>
     <button class="tab" data-tab="classResult" type="button">Class Results</button>
+    <button class="tab" data-tab="annual" type="button">Annual Results</button>
   </div>
 
   <!-- TAKE EXAM -->
   <section id="panel-exam">
     <h2>Teacher / School Exam Login</h2>
-    <p class="lead">Enter the examination details supplied by your teacher / school.</p>
+    <p class="lead">Enter the examination details supplied by your school.</p>
 
     <div class="card" id="examFormCard">
       <div class="msg" id="examMsg"></div>
@@ -225,6 +226,24 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
       </form>
     </div>
     <div id="classResultOut"></div>
+  </section>
+
+  <!-- ANNUAL RESULTS -->
+  <section id="panel-annual" class="hidden">
+    <h2>Check / Print Annual Results</h2>
+    <p class="lead">Enter your Annual Result ID and Student ID to view your published annual result.</p>
+
+    <div class="card">
+      <div class="msg" id="annualResultMsg"></div>
+      <form id="annualResultForm" autocomplete="off">
+        <label for="arAnnualCode">Annual Result ID</label>
+        <input id="arAnnualCode" placeholder="e.g. STIG-ANUR000001" autocapitalize="characters">
+        <label for="arStudentCode">Student ID</label>
+        <input id="arStudentCode" placeholder="Enter Student ID" autocapitalize="characters">
+        <button class="btn" id="annualResultBtn" type="submit">View Annual Result</button>
+      </form>
+    </div>
+    <div id="annualResultOut"></div>
   </section>
 
   <div class="footer">
@@ -417,7 +436,7 @@ document.addEventListener("click", e => {
 
 function setTab(name) {
   document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-  ["exam", "examResult", "classResult"].forEach(p => $("panel-" + p).classList.toggle("hidden", p !== name));
+  ["exam", "examResult", "classResult", "annual"].forEach(p => $("panel-" + p).classList.toggle("hidden", p !== name));
 }
 
 document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
@@ -1040,12 +1059,126 @@ function printClassResult(d) {
 }
 
 /* START */
+/* =========================================================
+   ANNUAL RESULTS
+========================================================= */
+let lastAnnualResult = null;
+
+$("annualResultForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  hideMsg("annualResultMsg");
+  $("annualResultOut").innerHTML = "";
+
+  const annual_code = $("arAnnualCode").value.trim();
+  const student_code = $("arStudentCode").value.trim();
+
+  if (!annual_code || !student_code) {
+    showMsg("annualResultMsg", "Enter both the Annual Result ID and the Student ID.", "error");
+    return;
+  }
+
+  const button = $("annualResultBtn");
+  button.disabled = true;
+  button.textContent = "Searching...";
+
+  try {
+    lastAnnualResult = await api("annual_result", { annual_code, student_code });
+    renderAnnualResult(lastAnnualResult);
+  } catch (error) {
+    showMsg("annualResultMsg", error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "View Annual Result";
+  }
+});
+
+function annualCell(sc, index) {
+  const t = (sc.term_scores || [])[index];
+  return t ? num(t.score) + (t.status === "scored" ? "" : "*") : "—";
+}
+
+function renderAnnualResult(d) {
+  const s = d.student;
+  const c = d.school || {};
+
+  $("annualResultOut").innerHTML = `
+    <div class="card">
+      <div class="result-head">
+        <h3>${escapeHTML(c.school_name || "Annual Result")}</h3>
+        <div class="score-big">${num(s.average)}<small style="font-size:14px">%</small></div>
+      </div>
+      <p class="lead">${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")} ·
+        ${escapeHTML(c.academic_session || "")} · Annual Result ${escapeHTML(d.annual_result_id)}</p>
+      <div class="facts">
+        <div class="fact"><small>Student</small><strong>${escapeHTML(s.full_name)}</strong></div>
+        <div class="fact"><small>Student ID</small><strong>${escapeHTML(s.student_id)}</strong></div>
+        <div class="fact"><small>Total</small><strong>${num(s.total_score)} / ${num(s.total_possible)}</strong></div>
+        <div class="fact"><small>Position</small><strong>${s.position ? s.position + " of " + d.class_total_students : "—"} · Grade ${escapeHTML(s.average_grade || "—")}</strong></div>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Subject</th>${d.terms.map(t => `<th>${escapeHTML(t)}</th>`).join("")}<th>Annual</th><th>Out of</th><th>Grade</th></tr></thead>
+        <tbody>${d.scores.map(sc => `
+          <tr><td>${escapeHTML(sc.subject_name)}</td>
+          ${d.terms.map((t, i) => `<td>${annualCell(sc, i)}</td>`).join("")}
+          <td><strong>${num(sc.annual_score)}</strong></td><td>${num(sc.annual_maximum)}</td>
+          <td>${escapeHTML(sc.grade || "—")}</td></tr>`).join("")}</tbody>
+      </table></div>
+      <p class="lead">* absent, not in the class that term, or not examined; counted as 0.</p>
+      <div class="row"><button class="btn gold" id="printAnnualBtn" type="button">Print Annual Result</button></div>
+    </div>`;
+
+  $("printAnnualBtn").addEventListener("click", () => printAnnualResult(lastAnnualResult));
+}
+
+function printAnnualResult(d) {
+  const c = d.school || {};
+  const s = d.student;
+  const logo = /^https:\/\//i.test(c.school_logo_url || "")
+    ? `<img src="${escapeHTML(c.school_logo_url)}" alt=""><br>` : "";
+  const contact = [c.school_address, c.school_phone, c.school_email]
+    .filter(Boolean).map(escapeHTML).join(" · ");
+  const blank = '<span style="display:inline-block;min-width:200px;border-bottom:1px solid #64748b">&nbsp;</span>';
+
+  const rows = d.scores.map(sc => `
+    <tr><td>${escapeHTML(sc.subject_name)}</td>
+    ${d.terms.map((t, i) => `<td>${annualCell(sc, i)}</td>`).join("")}
+    <td>${num(sc.annual_score)}</td><td>${num(sc.annual_maximum)}</td>
+    <td>${escapeHTML(sc.grade || "—")}</td></tr>`).join("");
+
+  openPrint("Annual Result", `
+    <div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>${contact ? `<p>${contact}</p>` : ""}</div>
+    <h2>ANNUAL ACADEMIC REPORT</h2>
+    <table class="info">
+      <tr><td><strong>Student:</strong> ${escapeHTML(s.full_name)}</td><td><strong>Student ID:</strong> ${escapeHTML(s.student_id)}</td></tr>
+      <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td></tr>
+      <tr><td colspan="2"><strong>Annual Result ID:</strong> ${escapeHTML(d.annual_result_id)}</td></tr>
+    </table>
+    <table>
+      <thead><tr><th>Subject</th>${d.terms.map(t => `<th>${escapeHTML(t)}</th>`).join("")}<th>Annual Total</th><th>Out of</th><th>Grade</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p style="font-size:10px">* absent, not in the class that term, or not examined; counted as 0.</p>
+    <table class="info"><tr>
+      <td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
+      <td><strong>Average:</strong> ${num(s.average)}% (${escapeHTML(s.average_grade || "—")})</td>
+      <td><strong>Position:</strong> ${s.position ? s.position + " of " + d.class_total_students : "—"}</td></tr></table>
+    <div class="remark"><strong>Class Teacher's Remark:</strong><div class="line"></div></div>
+    <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
+    <div class="signs">
+      <div class="sign"><strong>CLASS TEACHER</strong><br>Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : blank}<br><br>Signature: ${blank}</div>
+      <div class="sign"><strong>PRINCIPAL</strong><br>Name: ${c.principal_name ? escapeHTML(c.principal_name) : blank}<br><br>Signature: ${blank}</div>
+    </div>
+    <p style="font-size:12px;margin-top:18px">Report date: ${escapeHTML(dateText(d.published_at))}</p>
+  `);
+}
+
 (function init() {
   if (readSession()) $("resumeCard").classList.remove("hidden");
+
+  /* A shared link such as ?tab=annual opens the Annual Results tab. */
+  const tab = new URLSearchParams(location.search).get("tab");
+  if (["exam", "examResult", "classResult", "annual"].includes(tab)) setTab(tab);
 })();
 </script>
-
-  <script src="track.js"></script>
-  
 </body>
 </html>
