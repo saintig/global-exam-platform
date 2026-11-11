@@ -2487,6 +2487,9 @@
         button.disabled = true;
         button.textContent = "Opening...";
 
+        // "v" forces the browser/GitHub Pages to fetch the newest exam page, not a cached copy
+        params.set("v", Date.now());
+
         window.location.href = "school-exam-access.html?" + params.toString();
       });
     });
