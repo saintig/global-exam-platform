@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,8 +142,22 @@
       margin: 5px;
     }
 
-    #downloadPrintBtn {
+    #downloadPrintBtn,
+    .print-btn {
       background: #16834a;
+    }
+
+    /* ACTION BUTTONS (BEFORE ANSWER REVIEW AND AT THE BOTTOM) */
+    .action-buttons {
+      text-align: center;
+    }
+
+    #actionButtonsTop {
+      margin-bottom: 18px;
+    }
+
+    #actionButtons {
+      margin-bottom: 30px;
     }
 
     .error {
@@ -202,6 +215,7 @@
 
       #loading,
       #answerReview,
+      #actionButtonsTop,
       #actionButtons {
         display: none !important;
       }
@@ -320,6 +334,12 @@
 
     </div>
 
+    <!-- ACTION BUTTONS IMMEDIATELY BEFORE THE ANSWER REVIEW -->
+    <div id="actionButtonsTop" class="action-buttons">
+      <button class="print-btn" type="button">Download / Print Result</button>
+      <button class="home-btn" type="button">Return to Dashboard</button>
+    </div>
+
     <!-- ANSWER REVIEW REMAINS ON THE WEBSITE -->
     <section class="card" id="answerReview">
       <h3>Answer Review</h3>
@@ -328,9 +348,10 @@
       <div id="reviewContainer"></div>
     </section>
 
-    <div id="actionButtons" style="text-align:center; margin-bottom:30px;">
-      <button id="downloadPrintBtn">Download / Print Result</button>
-      <button id="homeBtn">Return to Dashboard</button>
+    <!-- ACTION BUTTONS RETAINED AT THE BOTTOM -->
+    <div id="actionButtons" class="action-buttons">
+      <button id="downloadPrintBtn" class="print-btn" type="button">Download / Print Result</button>
+      <button id="homeBtn" class="home-btn" type="button">Return to Dashboard</button>
     </div>
 
   </div>
@@ -576,14 +597,18 @@ async function loadResult() {
   }
 }
 
-/* DOWNLOAD / PRINT RESULT SUMMARY */
-document.getElementById("downloadPrintBtn").addEventListener("click", () => {
-  window.print();
+/* DOWNLOAD / PRINT RESULT SUMMARY (BOTH BUTTON SETS) */
+document.querySelectorAll(".print-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    window.print();
+  });
 });
 
-/* RETURN TO STUDENT DASHBOARD */
-document.getElementById("homeBtn").addEventListener("click", () => {
-  location.assign("dashboard.html");
+/* RETURN TO STUDENT DASHBOARD (BOTH BUTTON SETS) */
+document.querySelectorAll(".home-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    location.assign("dashboard.html");
+  });
 });
 
 loadResult();
