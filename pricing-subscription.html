@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10264a">
+  <meta name="description" content="SAINTIG EXAMS pricing and subscription plans for students, teachers and schools.">
+  <title>Pricing &amp; Subscription | SAINTIG EXAMS</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --navy:#10264a;
+      --navy-light:#183963;
+      --gold:#e2b84b;
+      --cream:#faf8f2;
+      --muted:#667085;
+      --border:#e5e8ef;
+      --green:#16834f;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--cream);color:var(--navy);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    button{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    .container{width:min(1120px,92%);margin:auto}
+
+    /* HEADER */
+    header{background:var(--navy);border-bottom:4px solid var(--gold);padding:16px 0}
+    .header-content{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{color:#fff;font-size:23px;font-weight:800;letter-spacing:.5px;line-height:1.3}
+    .brand span{color:var(--gold)}
+    .brand small{display:block;color:#e1e8f2;font-size:10px;font-weight:normal;letter-spacing:1.5px;margin-top:4px}
+    .home-btn{display:inline-flex;align-items:center;min-height:44px;padding:10px 15px;border:1px solid rgba(255,255,255,.45);border-radius:9px;color:#fff;font-size:14px;font-weight:bold;white-space:nowrap}
+    .home-btn:hover{background:rgba(255,255,255,.1)}
+
+    /* HERO */
+    .hero{background:var(--navy);color:#fff;text-align:center;padding:48px 0 56px;position:relative;overflow:hidden}
+    .hero::before{content:"";position:absolute;width:300px;height:300px;border:1px solid rgba(226,184,75,.2);border-radius:50%;right:-100px;top:-100px;box-shadow:0 0 0 35px rgba(226,184,75,.035),0 0 0 70px rgba(226,184,75,.025);pointer-events:none}
+    .hero .container{position:relative;z-index:1;max-width:760px}
+    .naira{display:flex;align-items:center;justify-content:center;width:62px;height:62px;margin:0 auto 16px;border-radius:50%;border:2px solid var(--gold);color:var(--gold);font-size:30px;font-weight:bold}
+    .hero h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin-bottom:14px}
+    .hero h1 span{color:var(--gold)}
+    .hero p{color:#e1e8f2;font-size:15px;max-width:620px;margin:0 auto}
+
+    /* SECTION SELECTORS */
+    .section{padding:44px 0}
+    .hint{text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px}
+
+    .group{background:#fff;border:1px solid var(--border);border-radius:16px;margin-bottom:20px;box-shadow:0 7px 24px rgba(16,38,74,.05);overflow:hidden}
+    .group-toggle{display:flex;align-items:center;justify-content:space-between;gap:15px;width:100%;padding:22px;border:0;border-left:6px solid var(--gold);background:var(--navy);color:#fff;text-align:left;cursor:pointer}
+    .group-toggle:hover{background:var(--navy-light)}
+    .group-title{display:flex;align-items:center;gap:14px;min-width:0}
+    .group-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:50px;height:50px;border-radius:12px;background:rgba(255,255,255,.1);font-size:26px}
+    .group-title strong{display:block;font-size:19px}
+    .group-title small{display:block;color:#d5deec;font-size:13px;margin-top:2px}
+    .group-arrow{color:var(--gold);font-size:28px;transition:transform .2s}
+    .group-toggle[aria-expanded="true"] .group-arrow{transform:rotate(90deg)}
+    .group-panel{padding:22px;background:#fffdf8}
+    .group-panel[hidden]{display:none}
+
+    /* PLAN CARDS */
+    .plan-grid{display:grid;gap:18px}
+    .plan-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .plan-grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+    .plan-card{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border);border-top:5px solid var(--navy);border-radius:14px;padding:24px;transition:transform .2s,box-shadow .2s}
+    .plan-card:hover,.plan-card:focus-within{transform:translateY(-4px);box-shadow:0 12px 28px rgba(16,38,74,.14)}
+    .plan-card.featured{border-top-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
+    .plan-card.custom{border-top-style:dashed;background:#fffaf0}
+    .badge{align-self:flex-start;margin-bottom:10px;padding:4px 11px;border-radius:20px;background:#fff2ce;color:#795b0d;font-size:11px;font-weight:bold;letter-spacing:.8px}
+    .badge.green{background:#e8f7ee;color:var(--green)}
+    .plan-card h3{font-size:23px;margin-bottom:4px}
+    .price{font-size:20px;font-weight:800;margin-bottom:4px}
+    .price small{font-size:14px;font-weight:400;color:var(--muted)}
+    .plan-sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+    .features{list-style:none;margin:0 0 20px}
+    .features li{position:relative;padding:6px 0 6px 28px;font-size:14px}
+    .features li::before{content:"✓";position:absolute;left:2px;top:6px;color:var(--green);font-weight:800}
+    .plan-action{margin-top:auto}
+
+    /* whole card is clickable */
+    .plan-link{display:flex;align-items:center;justify-content:center;min-height:50px;padding:12px 16px;border-radius:9px;font-weight:bold;font-size:15px;background:var(--navy);color:#fff;text-align:center}
+    .plan-link::after{content:"";position:absolute;inset:0;border-radius:14px}
+    .plan-link.gold{background:var(--gold);color:var(--navy)}
+    .plan-card:hover .plan-link{background:var(--navy-light)}
+    .plan-card:hover .plan-link.gold{background:#f0ca68}
+    .plan-link:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+    .plan-extra{position:relative;z-index:2;display:block;margin-top:12px;text-align:center;font-size:13px;font-weight:bold;color:#795b0d;text-decoration:underline}
+
+    .note{margin-top:18px;padding:13px 15px;background:#f0f3f8;border-radius:9px;font-size:13px;color:var(--navy);text-align:center}
+    .live-note{margin-top:12px;text-align:center;font-size:12px;color:var(--muted)}
+
+    /* HELP */
+    .help-box{background:var(--navy);color:#fff;border-radius:18px;text-align:center;padding:34px 22px;margin-top:10px}
+    .help-box h2{font-size:clamp(22px,4vw,28px);margin-bottom:10px}
+    .help-box p{color:#e1e8f2;font-size:14px;max-width:560px;margin:0 auto 20px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;border-radius:9px;font-weight:bold;font-size:14px}
+    .btn-gold{background:var(--gold);color:var(--navy)}
+    .btn-gold:hover{background:#f0ca68}
+    .btn-outline{border:1px solid rgba(255,255,255,.55);color:#fff}
+    .btn-outline:hover{background:rgba(255,255,255,.1)}
+    .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+
+    footer{background:#0b1b35;color:#e1e8f2;padding:26px 0 22px;text-align:center}
+    .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin-bottom:16px}
+    .footer-links a{font-size:13px;color:#e1e8f2}
+    .footer-links a:hover{color:var(--gold);text-decoration:underline}
+    .copyright{border-top:1px solid rgba(255,255,255,.15);padding-top:15px;font-size:12px;color:#c8d1df}
+
+    @media(max-width:860px){
+      .plan-grid.four{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      .plan-grid.two{grid-template-columns:1fr}
+      .group-toggle{padding:18px 15px}
+      .group-panel{padding:15px}
+      .group-icon{width:44px;height:44px;font-size:23px}
+      .group-title strong{font-size:17px}
+    }
+    @media(max-width:480px){
+      .brand{font-size:19px}
+      .brand small{font-size:9px;letter-spacing:1px}
+      .home-btn{padding:9px 11px;font-size:13px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container header-content">
+    <a class="brand" href="index.html" aria-label="SAINTIG EXAMS homepage">
+      SAINTIG <span>EXAMS</span>
+      <small>LEARN. TEACH. ASSESS. SUCCEED.</small>
+    </a>
+    <a class="home-btn" href="index.html">← Back to Home</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="container">
+      <div class="naira" aria-hidden="true">₦</div>
+      <h1>Pricing &amp; <span>Subscription</span></h1>
+      <p>Simple packages for students, teachers and schools. Start free, then upgrade when you need more.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <p class="hint">Tap a section below to view its packages. Select any package to sign up.</p>
+
+      <!-- STUDENTS -->
+      <article class="group" id="students-group">
+        <button class="group-toggle" type="button" id="students-toggle"
+          aria-expanded="false" aria-controls="students">
+          <span class="group-title">
+            <span class="group-icon" aria-hidden="true">🎓</span>
+            <span>
+              <strong>Students</strong>
+              <small>Free and Premium packages</small>
+            </span>
+          </span>
+          <span class="group-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <div class="group-panel" id="students" hidden>
+          <div class="plan-grid two">
+
+            <div class="plan-card">
+              <span class="badge green">FREE</span>
+              <h3>Free</h3>
+              <p class="price" data-price="student-free">No payment needed</p>
+              <p class="plan-sub">Perfect for getting started.</p>
+              <ul class="features" id="student-free-features">
+                <li>50 questions per examination</li>
+                <li>45 minutes duration</li>
+                <li>1 attempt per day</li>
+                <li>Access to approved Free examinations</li>
+                <li>Questions randomized from the approved question bank</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link" href="student-login.html?mode=register&amp;plan=free">Create Free Student Account</a>
+              </div>
+            </div>
+
+            <div class="plan-card featured">
+              <span class="badge">⭐ PREMIUM</span>
+              <h3>Premium</h3>
+              <p class="price" data-price="student-premium">Price to be announced</p>
+              <p class="plan-sub">For serious practice and preparation.</p>
+              <ul class="features" id="student-premium-features">
+                <li>100 questions per examination</li>
+                <li>90 minutes duration</li>
+                <li>Unlimited attempts while your subscription is active</li>
+                <li>Access to Premium examinations</li>
+                <li>Questions randomized from the approved question bank</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link gold" href="student-login.html?mode=register&amp;plan=premium">Sign Up for Premium</a>
+              </div>
+            </div>
+
+          </div>
+          <p class="note">Already a student? <a href="student-login.html?mode=login" style="text-decoration:underline;font-weight:bold">Sign in</a> and upgrade to Premium from your dashboard.</p>
+        </div>
+      </article>
+
+      <!-- TEACHERS / SCHOOLS -->
+      <article class="group" id="schools-group">
+        <button class="group-toggle" type="button" id="schools-toggle"
+          aria-expanded="false" aria-controls="schools">
+          <span class="group-title">
+            <span class="group-icon" aria-hidden="true">🏫</span>
+            <span>
+              <strong>Teachers &amp; Schools</strong>
+              <small>Free, Silver, Gold and Custom packages</small>
+            </span>
+          </span>
+          <span class="group-arrow" aria-hidden="true">›</span>
+        </button>
+
+        <div class="group-panel" id="schools" hidden>
+          <div class="plan-grid four">
+
+            <div class="plan-card">
+              <span class="badge green">FREE</span>
+              <h3>Free</h3>
+              <p class="price" data-price="school-free">Free</p>
+              <p class="plan-sub">Try the Teacher/School portal at no cost.</p>
+              <ul class="features" data-limits="free">
+                <li>Create and publish examinations</li>
+                <li>Automatic marking of objective questions</li>
+                <li>Starter limits on students, subjects and questions</li>
+                <li>Students check and print results free</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link" href="school-login.html?mode=register&amp;plan=free">Start with Free</a>
+              </div>
+            </div>
+
+            <div class="plan-card">
+              <span class="badge">SILVER</span>
+              <h3>Silver</h3>
+              <p class="price" data-price="school-silver">Contact us for pricing</p>
+              <p class="plan-sub">For growing classes and schools.</p>
+              <ul class="features" data-limits="silver">
+                <li>Everything in Free</li>
+                <li>Higher limits on students, subjects and examinations</li>
+                <li>More stored questions and questions per examination</li>
+                <li>Longer examination duration</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link" href="school-login.html?mode=register&amp;plan=silver">Choose Silver</a>
+              </div>
+            </div>
+
+            <div class="plan-card featured">
+              <span class="badge">⭐ GOLD</span>
+              <h3>Gold</h3>
+              <p class="price" data-price="school-gold">Contact us for pricing</p>
+              <p class="plan-sub">For larger schools with bigger needs.</p>
+              <ul class="features" data-limits="gold">
+                <li>Everything in Silver</li>
+                <li>Our highest standard limits</li>
+                <li>Room for many students, subjects and examinations</li>
+                <li>Large question banks and longer examinations</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link gold" href="school-login.html?mode=register&amp;plan=gold">Choose Gold</a>
+              </div>
+            </div>
+
+            <div class="plan-card custom">
+              <span class="badge">CUSTOM</span>
+              <h3>Custom Package</h3>
+              <p class="price">Tailored to you</p>
+              <p class="plan-sub">For schools that Silver or Gold do not suit.</p>
+              <ul class="features">
+                <li>Limits set around your school's size</li>
+                <li>Custom students, subjects, examinations and questions</li>
+                <li>Custom examination duration</li>
+                <li>Agreed directly with our team</li>
+              </ul>
+              <div class="plan-action">
+                <a class="plan-link gold" href="school-login.html?mode=register&amp;plan=custom">Sign Up for Custom</a>
+                <a class="plan-extra" href="contact.html">Talk to us first</a>
+              </div>
+            </div>
+
+          </div>
+          <p class="note">Already have an account? <a href="school-login.html" style="text-decoration:underline;font-weight:bold">Teacher/School sign in</a>. Upgrades are confirmed after payment and activated by our team.</p>
+          <p class="live-note" id="liveNote" hidden></p>
+        </div>
+      </article>
+
+      <div class="help-box">
+        <h2>Not sure which package to pick?</h2>
+        <p>Free access remains available, and you can upgrade at any time. Online payment will be available soon. For now, contact us and we will help you choose.</p>
+        <div class="actions">
+          <a class="btn btn-gold" href="contact.html">Contact Us</a>
+          <a class="btn btn-outline" href="index.html">Back to Homepage</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="student-login.html?mode=login">Student Sign In</a>
+      <a href="school-login.html">Teacher/School Sign In</a>
+      <a href="school-exam-access.html?tab=examResult">Check Results &amp; Print</a>
+    </nav>
+    <div class="copyright">© <span id="year"></span> SAINTIG EXAMS. Learn. Teach. Assess. Succeed.</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Expand / collapse sections ---------- */
+  const groups = ["students", "schools"];
+
+  function setGroup(id, open) {
+    const toggle = document.getElementById(id + "-toggle");
+    const panel = document.getElementById(id);
+    toggle.setAttribute("aria-expanded", String(open));
+    panel.hidden = !open;
+  }
+
+  groups.forEach(function (id) {
+    document.getElementById(id + "-toggle").addEventListener("click", function () {
+      const open = this.getAttribute("aria-expanded") !== "true";
+      setGroup(id, open);
+      if (open) {
+        history.replaceState(null, "", "#" + id);
+        this.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (location.hash === "#" + id) {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    });
+  });
+
+  function openFromHash() {
+    const id = location.hash.replace("#", "");
+    if (groups.includes(id)) {
+      setGroup(id, true);
+      document.getElementById(id + "-toggle").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+  window.addEventListener("hashchange", openFromHash);
+  openFromHash();
+
+  /* ---------- Optional live prices and limits ----------
+     The page already shows sensible defaults. If the database allows
+     public reading, the live admin-set prices and limits replace them.
+     If it does not, the defaults simply stay in place. */
+  const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+
+  const BILLING = { week: "per week", month: "per month", term: "per term", year: "per year", one_time: "one-time" };
+
+  const SCHOOL_FIELDS = [
+    ["max_active_students", n => "Up to " + n + " active students"],
+    ["max_subjects", n => "Up to " + n + " subjects"],
+    ["max_examinations", n => "Up to " + n + " examinations"],
+    ["max_stored_questions", n => "Up to " + n + " stored questions"],
+    ["max_questions_per_exam", n => "Up to " + n + " questions per examination"],
+    ["max_exam_duration_minutes", n => "Up to " + n + " minutes per examination"]
+  ];
+
+  function money(row) {
+    if (!row || row.price_amount === null || row.price_amount === undefined || row.price_amount === "") return null;
+    const amount = Number(row.price_amount);
+    if (!Number.isFinite(amount)) return null;
+    if (amount === 0) return "Free";
+    let text;
+    try {
+      text = new Intl.NumberFormat("en-NG", {
+        style: "currency",
+        currency: row.currency || "NGN",
+        maximumFractionDigits: amount % 1 === 0 ? 0 : 2
+      }).format(amount);
+    } catch (e) {
+      text = (row.currency || "NGN") + " " + amount.toLocaleString();
+    }
+    const period = BILLING[row.billing_period];
+    return { text: text, period: period || "" };
+  }
+
+  function setPrice(key, row) {
+    const el = document.querySelector('[data-price="' + key + '"]');
+    const value = money(row);
+    if (!el || !value) return;
+    if (value === "Free") { el.textContent = "Free"; return; }
+    el.textContent = value.text;
+    if (value.period) {
+      const small = document.createElement("small");
+      small.textContent = " " + value.period;
+      el.appendChild(small);
+    }
+  }
+
+  function setList(el, items) {
+    el.innerHTML = "";
+    items.forEach(function (text) {
+      const li = document.createElement("li");
+      li.textContent = text;
+      el.appendChild(li);
+    });
+  }
+
+  function numberFrom(value) {
+    if (value && typeof value === "object" && "value" in value) value = value.value;
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  }
+
+  async function loadLiveData() {
+    if (!window.supabase || !window.supabase.createClient) return;
+
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+    });
+
+    /* Student prices */
+    try {
+      const res = await sb.from("plan_prices")
+        .select("plan_name,price_amount,currency,billing_period").eq("audience", "student");
+      if (!res.error) (res.data || []).forEach(function (row) {
+        const name = String(row.plan_name).toLowerCase();
+        if (name === "premium") setPrice("student-premium", row);
+      });
+    } catch (e) {}
+
+    /* Student limits */
+    try {
+      const res = await sb.from("platform_settings").select("setting_key,setting_value").in("setting_key", [
+        "free_student_question_limit", "free_student_duration_minutes",
+        "premium_student_question_limit", "premium_student_duration_minutes"
+      ]);
+      if (!res.error && res.data && res.data.length) {
+        const m = {};
+        res.data.forEach(function (r) { m[r.setting_key] = numberFrom(r.setting_value); });
+        const common = "Questions randomized from the approved question bank";
+        setList(document.getElementById("student-free-features"), [
+          (m.free_student_question_limit || 50) + " questions per examination",
+          (m.free_student_duration_minutes || 45) + " minutes duration",
+          "1 attempt per day",
+          "Access to approved Free examinations",
+          common
+        ]);
+        setList(document.getElementById("student-premium-features"), [
+          (m.premium_student_question_limit || 100) + " questions per examination",
+          (m.premium_student_duration_minutes || 90) + " minutes duration",
+          "Unlimited attempts while your subscription is active",
+          "Access to Premium examinations",
+          common
+        ]);
+      }
+    } catch (e) {}
+
+    /* School prices */
+    try {
+      const res = await sb.from("plan_prices")
+        .select("plan_name,price_amount,currency,billing_period").eq("audience", "school");
+      if (!res.error) (res.data || []).forEach(function (row) {
+        const name = String(row.plan_name).toLowerCase();
+        if (["free", "silver", "gold"].includes(name)) setPrice("school-" + name, row);
+      });
+    } catch (e) {}
+
+    /* School limits */
+    try {
+      const res = await sb.from("school_package_limits").select("*");
+      if (!res.error && res.data && res.data.length) {
+        res.data.forEach(function (plan) {
+          const name = String(plan.package_name).toLowerCase();
+          const el = document.querySelector('[data-limits="' + name + '"]');
+          if (!el) return;
+          const items = [];
+          SCHOOL_FIELDS.forEach(function (f) {
+            const n = Number(plan[f[0]]);
+            if (Number.isFinite(n) && n > 0) items.push(f[1](n.toLocaleString()));
+          });
+          if (items.length) setList(el, items);
+        });
+      }
+    } catch (e) {}
+  }
+
+  loadLiveData();
+</script>
+
+</body>
+</html>
