@@ -85,8 +85,48 @@ h1{font-size:30px;color:var(--navy);margin:0 0 6px}
 .btn.gold{background:var(--gold);color:var(--navy)}
 .btn.gold:hover{background:#e6c65d}
 
-.how{border-left:5px solid var(--gold)}
-.how .btn{max-width:340px;margin-top:14px}
+/* CUSTOM PACKAGE */
+.custom-pack{
+  position:relative;overflow:hidden;margin:26px 0;padding:30px 24px;
+  border-radius:16px;color:#fff;border:2px solid var(--gold);
+  background:linear-gradient(135deg,#14243a 0%,#1d3557 100%);
+  box-shadow:0 12px 30px #14243a26
+}
+.custom-pack::before{
+  content:"";position:absolute;width:260px;height:260px;right:-90px;top:-90px;
+  border-radius:50%;border:1px solid #d4af3744;
+  box-shadow:0 0 0 30px #d4af3710,0 0 0 60px #d4af370a;pointer-events:none
+}
+.custom-pack>*{position:relative}
+.custom-badge{
+  display:inline-block;padding:6px 14px;border-radius:25px;margin-bottom:14px;
+  background:#d4af3726;border:1px solid #d4af3788;color:var(--gold);
+  font-size:14px;font-weight:bold;letter-spacing:1.2px
+}
+.custom-pack h2{font-size:27px;line-height:1.25;margin:0 0 10px;color:#fff}
+.custom-lead{font-size:17px;margin:0 0 18px;color:#e3e9f1;max-width:640px}
+.custom-lead strong{color:var(--gold)}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0 0 18px}
+.chips li{
+  padding:9px 14px;border-radius:25px;font-size:15px;
+  background:#ffffff14;border:1px solid #ffffff2e;color:#fff
+}
+.custom-note{font-size:16px;margin:0 0 20px;color:#e3e9f1}
+.custom-pack .btn{max-width:340px}
+
+/* MANUAL PAYMENT */
+.manual{border-left:5px solid var(--gold)}
+.manual .btn{max-width:340px;margin-top:16px}
+.steps{list-style:none;counter-reset:step;padding:0;margin:16px 0 0;display:grid;gap:12px}
+.steps li{
+  counter-increment:step;position:relative;padding:12px 14px 12px 58px;
+  background:#f8f9fb;border:1px solid var(--line);border-radius:11px;font-size:16px
+}
+.steps li::before{
+  content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px
+}
 
 footer{text-align:center;color:#8995a3;font-size:15px;padding:30px 10px 26px}
 footer a{color:var(--navy);font-weight:bold;margin:0 8px}
@@ -94,6 +134,8 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
 @media(max-width:600px){
   h1{font-size:27px}
   .card,.plan-card{padding:18px}
+  .custom-pack{padding:24px 18px}
+  .custom-pack h2{font-size:24px}
 }
 </style>
 </head>
@@ -119,14 +161,45 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
 
   <div class="plan-grid" id="planCards"></div>
 
-  <section class="card how">
-    <h2>How to upgrade</h2>
-    <p class="muted">
-      Contact us to upgrade your package. Once your payment is confirmed,
-      your new package is activated and you will receive a notification.
-      Online payment will be available soon.
+  <section class="custom-pack" aria-labelledby="customTitle">
+    <div class="custom-badge">★ CUSTOM PACKAGE</div>
+    <h2 id="customTitle">Silver or Gold not the right fit?</h2>
+    <p class="custom-lead">
+      Every school is different. If Silver and Gold don't suit your school,
+      we will build a <strong>Custom Package</strong> around your needs.
     </p>
-    <a class="btn gold" href="contact.html">Contact Us to Upgrade</a>
+
+    <ul class="chips" aria-label="What can be customised">
+      <li>👩‍🎓 Active students</li>
+      <li>📚 Subjects</li>
+      <li>📝 Examinations</li>
+      <li>🗂️ Stored questions</li>
+      <li>❓ Questions per exam</li>
+      <li>⏱️ Exam duration</li>
+    </ul>
+
+    <p class="custom-note">
+      Tell us what your school needs and our team will agree the limits
+      and price with you.
+    </p>
+
+    <a class="btn gold" href="contact.html">Request a Custom Package</a>
+  </section>
+
+  <section class="card manual">
+    <h2>💳 Prefer to pay manually?</h2>
+    <p class="muted">
+      You can pay for any package, including a Custom Package, directly
+      through the administrator. It only takes three steps:
+    </p>
+
+    <ol class="steps">
+      <li><strong>Contact the admin</strong> and tell us the package you want.</li>
+      <li><strong>Make your payment</strong> using the details we give you.</li>
+      <li><strong>Get activated.</strong> Once your payment is confirmed, your new package goes live and you receive a notification.</li>
+    </ol>
+
+    <a class="btn gold" href="contact.html">Contact Admin</a>
   </section>
 
 </main>
