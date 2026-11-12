@@ -122,6 +122,14 @@ textarea{min-height:105px;resize:vertical;line-height:1.6}
 .queue-footer{background:#f8fafc;border-top:1px solid var(--border);padding:16px}
 .queue-footer p{font-size:13px;color:var(--muted);line-height:1.6}
 .queue-footer .button-row{margin-top:13px}
+details.guide{border:1px solid #d9e5f4;border-radius:8px;background:#f7faff;margin-top:14px}
+details.guide summary{cursor:pointer;padding:13px 15px;font-weight:bold;font-size:14px;color:var(--navy)}
+.guide-body{padding:0 15px 15px;font-size:13.5px;line-height:1.65;color:#3d526e}
+.guide-body h4{margin:16px 0 6px;color:var(--navy);font-size:14px}
+.guide-body ul{margin:6px 0 0;padding-left:20px}
+.guide-body li{margin-bottom:5px}
+.guide-body pre{background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
+.guide-body code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12px}
 .modal-backdrop{position:fixed;inset:0;background:rgba(8,18,35,.65);z-index:1000;display:none;align-items:center;justify-content:center;padding:15px;overflow-y:auto}
 .modal-backdrop.show{display:flex}
 .modal{width:100%;max-width:700px;max-height:95vh;overflow-y:auto;background:white;border-radius:12px;padding:22px;box-shadow:0 15px 45px rgba(0,0,0,.2)}
@@ -365,6 +373,7 @@ Set examination start and end dates
 
 <div class="button-row">
 <button class="btn btn-outline" type="button" id="downloadTemplateBtn">Download CSV Template</button>
+<button class="btn btn-outline" type="button" id="downloadSampleBtn">Download Sample for Word / Text</button>
 </div>
 
 <div class="field" style="margin-top:17px">
@@ -377,17 +386,48 @@ Set examination start and end dates
 <button class="btn btn-primary" type="button" id="uploadCsvBtn">Read Questions</button>
 </div>
 
-<div class="info-box">
-<strong>CSV columns:</strong><br>
-question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order
-<br><br>
-<strong>CSV / Excel:</strong> use the columns above (first row = headings).<br>
-<strong>TXT / Word / PDF:</strong> write each question like this:<br>
-1. Question text<br>
-A. Option &nbsp; B. Option &nbsp; C. Option &nbsp; D. Option (one per line)<br>
-Answer: B<br>
-Explanation: optional &nbsp; Marks: optional
+<details class="guide" open>
+<summary>📘 How to prepare your exam file: guideline for Word (DOCX), Text, PDF, CSV and Excel</summary>
+<div class="guide-body">
+
+<h4>1. Word (.docx), Text (.txt) and PDF</h4>
+<p>Type each question in this order, one item per line, with a blank line between questions:</p>
+<pre>1. What is government?
+A. The study of plants
+B. The process of governing a country
+C. The study of animals
+D. The study of rocks
+Answer: B
+Explanation: Government deals with the governing of a country.
+Marks: 1
+
+2. Who is the head of a state government?
+A. Governor
+B. Senator
+C. Chairman
+D. Principal
+Answer: A</pre>
+<ul>
+<li><strong>Question:</strong> start with a number, such as <code>1.</code>, <code>1)</code> or <code>Q1.</code></li>
+<li><strong>Options:</strong> exactly four lines starting <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> Type the letters yourself.</li>
+<li><strong>Answer:</strong> required, one letter from A to D, for example <code>Answer: B</code> or <code>Ans: B</code>.</li>
+<li><strong>Explanation and Marks</strong> are optional. If you leave Marks out, the examination's "Marks Per Question" is used.</li>
+<li><strong>In Word:</strong> type the numbers and letters yourself. Word's automatic numbered or lettered lists are not read. Tables, text boxes and pictures inside the document are ignored.</li>
+<li><strong>PDF:</strong> must contain real text. Scanned or photographed pages cannot be read.</li>
+</ul>
+
+<h4>2. CSV (.csv) and Excel (.xlsx, .xls)</h4>
+<p>Use the template exactly, with headings in the first row:</p>
+<pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order</pre>
+<p>Excel files are read from the first sheet. Question order is set automatically when the questions are saved.</p>
+
+<h4>3. Filenames</h4>
+<p>Any normal filename works, for example <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Spaces, brackets and capital letters are fine. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
+
+<h4>4. After choosing your file</h4>
+<p>Tap <strong>Read Questions</strong>. If there are errors, the message names the row or question number to fix. Good questions go to the review queue, where you can edit and approve them before saving.</p>
 </div>
+</details>
 </div>
 
 <div class="review-section">
@@ -2070,12 +2110,14 @@ async function readPdfText(file){
    Explanation: optional
    Marks: optional */
 function parseTextQuestions(text){
+  /* Blank lines are kept: they separate questions. */
   const lines=text.replace(/\r/g,"\n").split("\n")
-    .map(line=>line.trim()).filter(Boolean);
+    .map(line=>line.trim());
 
   const list=[];
   let current=null;
   let last="question_text";
+  let afterBlank=false;
 
   const rxAnswer=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
   const rxExplanation=/^explanation\s*[:=-]\s*(.*)$/i;
@@ -2089,6 +2131,8 @@ function parseTextQuestions(text){
   });
 
   for(const line of lines){
+    if(!line){afterBlank=true;continue;}
+
     let m;
     if(current&&(m=line.match(rxAnswer))){
       current.correct_option=m[1].toUpperCase();
@@ -2107,14 +2151,41 @@ function parseTextQuestions(text){
       current=blank();
       current.question_text=m[1];
       last="question_text";
-    }else if(current&&last){
+    }else if(!current||(current.correct_option&&(last===""||afterBlank))){
+      /* A line with no number starts a new question when it follows a finished one. */
+      if(current)list.push(current);
+      current=blank();
+      current.question_text=line;
+      last="question_text";
+    }else if(last){
       current[last]+=" "+line;
     }
+
+    afterBlank=false;
   }
 
   if(current)list.push(current);
   return list;
 }
+
+$("downloadSampleBtn").addEventListener("click",()=>{
+  const sample=[
+    "1. What is government?","A. The study of plants","B. The process of governing a country","C. The study of animals","D. The study of rocks","Answer: B","Explanation: Government deals with the governing of a country.","Marks: 1","",
+    "2. Who is the head of a state government?","A. Governor","B. Senator","C. Chairman","D. Principal","Answer: A",""
+  ].join("\r\n");
+
+  const blob=new Blob([sample],{type:"text/plain;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.download="saintig-exams-word-text-sample.txt";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
 
 /* -----------------------------
    BULK FILE UPLOAD
