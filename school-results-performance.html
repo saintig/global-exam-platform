@@ -112,6 +112,18 @@ tr:last-child td{border:0}
 .card,.stat{box-shadow:none;break-inside:avoid}
 .tablewrap{overflow:visible}
 }
+
+.filters.f4{grid-template-columns:2fr 1fr 1fr 1.4fr}
+.cmp tbody tr{cursor:pointer}
+.cmp tbody tr:hover,.cmp tbody tr.sel{background:#fffdf5}
+.detail td{background:#fafbfd;white-space:normal}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;background:#fff}
+.chip b{color:var(--navy)}
+.chip.abs{border-color:#f3c1bd;color:var(--bad)}
+.tg{background:none;border:1px solid var(--line);border-radius:6px;padding:3px 9px;font-size:12px;color:var(--navy)}
+.sm{display:block;color:var(--muted);font-size:12px}
+@media(max-width:1000px){.filters.f4{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 
@@ -171,9 +183,10 @@ tr:last-child td{border:0}
 <div class="heading">
 <div>
 <h1>Results &amp; Performance</h1>
-<p>Review student scores, pass rates and class performance.</p>
+<p>Published class results: positions, averages, pass rates and subject performance.</p>
 </div>
 <div class="btns">
+<a class="btn btn-secondary" href="school-class-results.html" style="text-decoration:none;display:inline-flex;align-items:center">Manage Class Results</a>
 <button class="btn btn-secondary" id="refreshBtn" type="button">Refresh</button>
 <button class="btn btn-secondary" id="printBtn" type="button">Print</button>
 <button class="btn btn-primary" id="csvBtn" type="button">Export CSV</button>
@@ -182,65 +195,63 @@ tr:last-child td{border:0}
 
 <div class="status" id="statusMessage"></div>
 
-<div class="stats">
-<div class="stat"><span>Results</span><b id="sTotal">—</b></div>
-<div class="stat"><span>Students</span><b id="sStudents">—</b></div>
-<div class="stat"><span>Average score</span><b id="sAvg">—</b></div>
-<div class="stat"><span>Pass rate</span><b id="sPass">—</b></div>
-<div class="stat"><span>Highest</span><b id="sHigh">—</b></div>
-<div class="stat"><span>Lowest</span><b id="sLow">—</b></div>
-</div>
-
 <div class="card filters-card">
-<div class="filters">
-<div><label for="fExam">Examination</label><select id="fExam"><option value="">All examinations</option></select></div>
-<div><label for="fSubject">Subject</label><select id="fSubject"><option value="">All subjects</option></select></div>
-<div><label for="fClass">Class</label><select id="fClass"><option value="">All classes</option></select></div>
+<div class="filters f4">
+<div><label for="fClass">Class</label><select id="fClass"><option value="">Loading classes…</option></select></div>
 <div><label for="fStatus">Outcome</label>
 <select id="fStatus"><option value="">All</option><option value="pass">Passed</option><option value="fail">Failed</option></select></div>
 <div><label for="fPass">Pass mark (%)</label><input id="fPass" type="number" min="1" max="100" value="50"></div>
 <div><label for="fSearch">Search student</label><input id="fSearch" type="search" placeholder="Name or ID"></div>
 </div>
+<p class="sub" id="resultInfo" style="margin:12px 0 0"></p>
+</div>
+
+<div class="stats">
+<div class="stat"><span>Students</span><b id="sTotal">—</b></div>
+<div class="stat"><span>Class average</span><b id="sAvg">—</b></div>
+<div class="stat"><span>Pass rate</span><b id="sPass">—</b></div>
+<div class="stat"><span>Highest average</span><b id="sHigh">—</b></div>
+<div class="stat"><span>Lowest average</span><b id="sLow">—</b></div>
+<div class="stat"><span>Absences</span><b id="sAbs">—</b></div>
 </div>
 
 <div class="grid3">
-<div class="card"><h3>Score distribution</h3><p class="sub">Number of results in each score band.</p><div class="bars" id="distBars"></div></div>
-<div class="card"><h3>Grades</h3><p class="sub">A 70+ · B 60+ · C 50+ · D 45+ · E 40+ · F below 40</p><div class="bars" id="gradeBars"></div></div>
+<div class="card"><h3>Average distribution</h3><p class="sub">Students in each average band.</p><div class="bars" id="distBars"></div></div>
+<div class="card"><h3>Grades</h3><p class="sub">Class grades from your grading scale.</p><div class="bars" id="gradeBars"></div></div>
 <div class="card"><h3>Average by subject</h3><p class="sub">Average percentage per subject.</p><div class="bars" id="subjectBars"></div></div>
 </div>
 
+<div class="card">
+<h3>Subject performance</h3>
+<p class="sub">Based on students who took each examination.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Subject</th><th>Average</th><th>Highest</th><th>Lowest</th><th>Pass rate</th><th>Took</th><th>Absent</th></tr></thead>
+<tbody id="subjectRows"></tbody></table></div>
+</div>
+
 <div class="grid2">
-<div class="card"><h3>Top performers</h3><p class="sub">Highest average across the filtered results.</p><ul class="rank" id="topList"></ul></div>
-<div class="card"><h3>Needs attention</h3><p class="sub">Lowest average across the filtered results.</p><ul class="rank" id="lowList"></ul></div>
+<div class="card"><h3>Top performers</h3><p class="sub">Highest averages in this class.</p><ul class="rank" id="topList"></ul></div>
+<div class="card"><h3>Needs attention</h3><p class="sub">Lowest averages in this class.</p><ul class="rank" id="lowList"></ul></div>
 </div>
 
 <div class="card">
-<h3>All results</h3>
+<h3>Student results</h3>
 <p class="sub" id="tableCount">Loading results…</p>
-<div class="tablewrap">
-<table>
+<div class="tablewrap"><table>
 <thead><tr>
-<th data-sort="name">Student</th>
-<th data-sort="sid">ID</th>
-<th data-sort="cls">Class</th>
-<th data-sort="exam">Examination</th>
-<th data-sort="subject">Subject</th>
-<th data-sort="score">Score</th>
-<th data-sort="pct">%</th>
-<th data-sort="pct">Grade</th>
-<th data-sort="pct">Outcome</th>
-<th data-sort="date">Date</th>
+<th data-sort="pos">Pos</th><th data-sort="name">Student</th><th>ID</th>
+<th data-sort="total">Total</th><th data-sort="avg">Average</th><th>Grade</th><th>Outcome</th><th></th>
 </tr></thead>
-<tbody id="rows"><tr><td colspan="10" class="empty">Loading results…</td></tr></tbody>
-</table>
+<tbody id="rows"><tr><td colspan="8" class="empty">Loading results…</td></tr></tbody>
+</table></div>
 </div>
-<div class="pager">
-<span id="pageInfo"></span>
-<div class="btns">
-<button class="btn btn-secondary" id="prevBtn" type="button">Previous</button>
-<button class="btn btn-secondary" id="nextBtn" type="button">Next</button>
-</div>
-</div>
+
+<div class="card">
+<h3>Compare classes</h3>
+<p class="sub">Classes with a published result. Select a row to open that class.</p>
+<div class="tablewrap"><table class="cmp">
+<thead><tr><th>Class</th><th>Session</th><th>Students</th><th>Average</th><th>Pass rate</th><th>Highest</th></tr></thead>
+<tbody id="cmpRows"></tbody></table></div>
 </div>
 
 <div class="footer">© <span id="year"></span> SAINTIG EXAMS · Building a better examination experience</div>
@@ -255,21 +266,8 @@ tr:last-child td{border:0}
 const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const LOGIN_PAGE="school-login.html";
-
-/*
- DATA SOURCES (from your database):
- exam_attempts holds every submitted attempt with score, total_marks,
- student_id and school_account_id. Student names, classes, exam titles
- and subjects are looked up from the tables below. If a table name
- differs in your project, change it here.
-*/
-const T={
- attempts:"exam_attempts",
- students:"school_students",
- classes:"school_classes",
- exams:"examinations",
- subjects:["school_subjects","subjects"]
-};
+const FUNCTION_NAME="school-class-results";   /* same function as the Class Results page */
+const MAX_CLASSES=30;
 
 const PAGE_LINKS={
 "Dashboard":"school-dashboard.html",
@@ -286,327 +284,265 @@ const PAGE_LINKS={
 "Help & Support":"school-help-support.html"
 };
 
-const PAGE_SIZE=15;
 const $=id=>document.getElementById(id);
-
 let supabaseClient=null,currentAccount=null;
-let allRows=[],viewRows=[];
-let sort={key:"date",dir:"desc"},page=1;
+let classes=[];            /* [{cls, result|null, info}] */
+let current=null;          /* selected entry */
+let viewStudents=[];
+let sort={key:"pos",dir:"asc"};
 
 $("year").textContent=new Date().getFullYear();
 
 /* HELPERS */
-function esc(v){
-return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
-function initials(v){
-return String(v||"SE").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"SE";
-}
-function showMessage(msg,type="info"){
-const el=$("statusMessage");
-el.textContent=msg;
-el.className="status show "+type;
-}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function initials(v){return String(v||"SE").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"SE"}
+function showMessage(m,t="info"){const e=$("statusMessage");e.textContent=m;e.className="status show "+t}
 function clearMessage(){$("statusMessage").className="status"}
 function fmt(n,d=1){return Number.isFinite(n)?(+n.toFixed(d)).toString():"—"}
 function pct(n){return Number.isFinite(n)?fmt(n)+"%":"—"}
-function gradeOf(p){return p>=70?"A":p>=60?"B":p>=50?"C":p>=45?"D":p>=40?"E":"F"}
-function passMark(){
-const v=Number($("fPass").value);
-return Number.isFinite(v)&&v>0&&v<=100?v:50;
-}
-function fmtDate(v){
-const d=new Date(v);
-return isNaN(d)?"—":d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
-}
-function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:NaN}
+function avg(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN}
+function passMark(){const v=Number($("fPass").value);return Number.isFinite(v)&&v>0&&v<=100?v:50}
 function tone(p){return p>=passMark()+15?"high":p>=passMark()?"mid":"low"}
+function dateText(v){const d=new Date(v);return isNaN(d)?"—":d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}
+function className(c){return (c.class_name||"")+(c.class_arm?" "+c.class_arm:"")}
+function subjectKey(sc){return sc.subject_name_snapshot||sc.examination_title_snapshot||"Subject"}
 
-/* LOAD RESULTS */
-function pick(row,keys){
-for(const k of keys){
-if(row&&row[k]!==undefined&&row[k]!==null&&row[k]!=="")return row[k];
+async function api(action,payload={}){
+const {data,error}=await supabaseClient.functions.invoke(FUNCTION_NAME,{body:{action,...payload}});
+if(error){
+let message="Unable to reach the server. Check your connection and try again.";
+try{if(error.context&&typeof error.context.json==="function"){const b=await error.context.json();if(b?.error)message=b.error}}catch(_){}
+throw new Error(message);
 }
-return "";
-}
-
-/* Look up rows by id (in chunks). A missing table or column is not fatal. */
-async function lookup(table,ids){
-const map={},list=[...new Set(ids.filter(x=>x!==null&&x!==undefined&&x!==""))];
-for(let i=0;i<list.length;i+=200){
-const {data,error}=await supabaseClient.from(table).select("*").in("id",list.slice(i,i+200));
-if(error){console.warn("Lookup skipped for "+table+":",error.message);return map}
-(data||[]).forEach(r=>map[String(r.id)]=r);
-}
-return map;
+if(!data?.success)throw new Error(data?.error||"The request could not be completed.");
+return data;
 }
 
-async function loadResults(){
-const attempts=[];
-let from=0;
-for(;;){
-const {data,error}=await supabaseClient
-.from(T.attempts)
-.select("id,examination_id,student_id,score,total_marks,status,submitted_at")
-.eq("school_account_id",currentAccount.id)
-.order("submitted_at",{ascending:false,nullsFirst:false})
-.range(from,from+999);
-if(error)throw error;
-(data||[]).forEach(r=>{
-const status=String(r.status||"").trim().toLowerCase().replace(/[\s-]+/g,"_");
-const score=Number(r.score),total=Number(r.total_marks);
-if(status==="submitted"&&r.student_id!==null&&Number.isFinite(score)&&total>0)attempts.push(r);
-});
-if(!data||data.length<1000)break;
-from+=1000;
+/* LOAD EVERY CLASS WITH ITS PUBLISHED GENERAL RESULT */
+async function loadAll(){
+const list=((await api("list_classes")).classes||[]).filter(c=>!c.is_archived).slice(0,MAX_CLASSES);
+const out=list.map(cls=>({cls,result:null,info:null}));
+for(let i=0;i<out.length;i+=4){
+await Promise.all(out.slice(i,i+4).map(async e=>{
+try{
+const ov=await api("get_overview",{class_id:e.cls.id});
+const pub=(ov.results||[]).find(r=>r.result_type==="general"&&r.status==="published_locked");
+if(pub){e.info=pub;e.result=await api("get_result",{result_id:pub.id})}
+}catch(err){console.warn("Class skipped:",e.cls.id,err.message)}
+}));
 }
-if(!attempts.length)return [];
-
-const students=await lookup(T.students,attempts.map(a=>a.student_id));
-const exams=await lookup(T.exams,attempts.map(a=>a.examination_id));
-
-const classIds=Object.values(students).map(s=>pick(s,["school_class_id","class_id"]));
-const classes=await lookup(T.classes,classIds);
-
-let subjects={};
-const subjectIds=Object.values(exams).map(e=>pick(e,["school_subject_id","subject_id"]));
-if(subjectIds.some(Boolean)){
-for(const table of T.subjects){
-subjects=await lookup(table,subjectIds);
-if(Object.keys(subjects).length)break;
-}
+return out;
 }
 
-/* Leave out results linked to archived students, examinations or subjects. */
-const live=attempts.filter(a=>{
-const st=students[String(a.student_id)],ex=exams[String(a.examination_id)];
-if(st&&st.is_archived===true)return false;
-if(ex&&ex.is_archived===true)return false;
-const sb=ex&&subjects[String(pick(ex,["school_subject_id","subject_id"]))];
-return !(sb&&sb.is_archived===true);
-});
-
-return live.map(a=>{
-const st=students[String(a.student_id)]||{};
-const ex=exams[String(a.examination_id)]||{};
-const cl=classes[String(pick(st,["school_class_id","class_id"]))]||{};
-const sb=subjects[String(pick(ex,["school_subject_id","subject_id"]))]||{};
-const score=Number(a.score),total=Number(a.total_marks);
-return{
-name:pick(st,["full_name","name","student_name"])||"Student #"+a.student_id,
-sid:pick(st,["student_id","student_code","admission_number","registration_number"]),
-cls:pick(ex,["name_class"])||pick(cl,["class_name","name","title"])||pick(st,["class_name","class"]),
-exam:pick(ex,["title","examination_title","name"])||"Examination #"+a.examination_id,
-subject:pick(sb,["name","subject_name","title"])||pick(ex,["subject_name","subject"]),
-score,total,pct:score/total*100,date:a.submitted_at||""
-};
-});
-}
-
-/* FILTER OPTIONS */
-function fillSelect(id,key){
-const sel=$(id),keep=sel.value;
-const vals=[...new Set(allRows.map(r=>r[key]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
-sel.length=1;
-vals.forEach(v=>sel.add(new Option(v,v)));
-sel.value=vals.includes(keep)?keep:"";
-}
-
-/* FILTER + SORT */
-function applyFilters(){
-const ex=$("fExam").value,sub=$("fSubject").value,cl=$("fClass").value,st=$("fStatus").value;
-const q=$("fSearch").value.trim().toLowerCase(),pm=passMark();
-viewRows=allRows.filter(r=>
-(!ex||r.exam===ex)&&(!sub||r.subject===sub)&&(!cl||r.cls===cl)&&
-(!st||(st==="pass")===(r.pct>=pm))&&
-(!q||r.name.toLowerCase().includes(q)||String(r.sid).toLowerCase().includes(q))
-);
-sortRows();
-page=1;
-render();
-}
-function sortRows(){
-const k=sort.key,m=sort.dir==="asc"?1:-1;
-viewRows.sort((a,b)=>{
-const x=a[k],y=b[k];
-if(typeof x==="number"&&typeof y==="number")return (x-y)*m;
-return String(x).localeCompare(String(y),undefined,{numeric:true})*m;
-});
+/* STATS FOR ONE RESULT */
+function studentsOf(entry){return entry&&entry.result?(entry.result.students||[]):[]}
+function avgOf(s){const a=Number(s.average);return Number.isFinite(a)?a:NaN}
+function summary(entry){
+const st=studentsOf(entry),a=st.map(avgOf).filter(Number.isFinite),pm=passMark();
+return{n:st.length,avg:avg(a),pass:a.length?a.filter(x=>x>=pm).length/a.length*100:NaN,high:a.length?Math.max(...a):NaN};
 }
 
 /* RENDER */
-function bars(el,items,max,fmtVal){
+function bars(el,items,max,f){
 if(!items.length){el.innerHTML='<div class="empty">No data</div>';return}
-el.innerHTML=items.map(i=>`
-<div class="bar"><span class="lbl" title="${esc(i.label)}">${esc(i.label)}</span>
+el.innerHTML=items.map(i=>`<div class="bar"><span class="lbl" title="${esc(i.label)}">${esc(i.label)}</span>
 <span class="track"><span class="fill ${i.tone||""}" style="width:${max?Math.max(1,i.value/max*100):0}%;display:block"></span></span>
-<span class="val">${esc(fmtVal?fmtVal(i.value):i.value)}</span></div>`).join("");
+<span class="val">${esc(f?f(i.value):i.value)}</span></div>`).join("");
 }
 function rankList(el,items){
-el.innerHTML=items.length?items.map(i=>`
-<li><span>${esc(i.name)}<small>${esc(i.sid||"")} ${i.cls?"· "+esc(i.cls):""} · ${i.n} result${i.n===1?"":"s"}</small></span><b>${pct(i.avg)}</b></li>`).join(""):'<div class="empty">No data</div>';
+el.innerHTML=items.length?items.map(i=>`<li><span>${esc(i.full_name_snapshot)}<small>${esc(i.student_id_snapshot||"")} · Position ${esc(i.class_position??"—")}</small></span><b>${pct(avgOf(i))}</b></li>`).join(""):'<div class="empty">No data</div>';
 }
+
 function render(){
-const pm=passMark(),n=viewRows.length,ps=viewRows.map(r=>r.pct);
+const entry=current,st=studentsOf(entry),pm=passMark();
 
-$("sTotal").textContent=n;
-$("sStudents").textContent=new Set(viewRows.map(r=>r.sid||r.name)).size;
-$("sAvg").textContent=pct(avg(ps));
-$("sPass").textContent=n?pct(ps.filter(p=>p>=pm).length/n*100):"—";
-$("sHigh").textContent=n?pct(Math.max(...ps)):"—";
-$("sLow").textContent=n?pct(Math.min(...ps)):"—";
+if(!entry){
+$("resultInfo").textContent="";
+}else if(!entry.result){
+$("resultInfo").innerHTML='No published result for this class yet. Generate and publish one on the <a href="school-class-results.html">Class Results</a> page.';
+}else{
+$("resultInfo").textContent=`General result · version ${entry.info.version_number} · published ${dateText(entry.info.published_at)}`;
+}
 
-/* score bands */
+const avgs=st.map(avgOf).filter(Number.isFinite);
+$("sTotal").textContent=st.length||(entry?"0":"—");
+$("sAvg").textContent=pct(avg(avgs));
+$("sPass").textContent=avgs.length?pct(avgs.filter(x=>x>=pm).length/avgs.length*100):"—";
+$("sHigh").textContent=avgs.length?pct(Math.max(...avgs)):"—";
+$("sLow").textContent=avgs.length?pct(Math.min(...avgs)):"—";
+
+const allScores=st.flatMap(s=>s.scores||[]);
+$("sAbs").textContent=st.length?allScores.filter(x=>x.participation_status==="absent").length:"—";
+
+/* average bands */
 const bands=Array.from({length:10},(_,i)=>({label:i===9?"90–100":`${i*10}–${i*10+9}`,value:0}));
-ps.forEach(p=>bands[Math.min(9,Math.floor(p/10))].value++);
+avgs.forEach(p=>bands[Math.min(9,Math.max(0,Math.floor(p/10)))].value++);
 bands.forEach((b,i)=>b.tone=i*10+10<=pm?"low":i*10>=pm?"high":"mid");
-bars($("distBars"),n?bands:[],Math.max(...bands.map(b=>b.value),1));
+bars($("distBars"),avgs.length?bands:[],Math.max(...bands.map(b=>b.value),1));
 
 /* grades */
-const g={A:0,B:0,C:0,D:0,E:0,F:0};
-ps.forEach(p=>g[gradeOf(p)]++);
-bars($("gradeBars"),n?Object.entries(g).map(([k,v])=>({label:"Grade "+k,value:v,tone:k==="F"?"low":k<="C"?"high":"mid"})):[],Math.max(...Object.values(g),1));
+const g={};
+st.forEach(s=>{const k=s.result_snapshot?.average_grade||"—";g[k]=(g[k]||0)+1});
+const gk=Object.keys(g).sort();
+bars($("gradeBars"),gk.map(k=>({label:"Grade "+k,value:g[k],tone:/^[EF]/i.test(k)?"low":/^[AB]/i.test(k)?"high":"mid"})),Math.max(...Object.values(g),1));
 
 /* subjects */
 const bySub={};
-viewRows.forEach(r=>{if(r.subject)(bySub[r.subject]=bySub[r.subject]||[]).push(r.pct)});
-const subs=Object.entries(bySub).map(([k,v])=>({label:k,value:avg(v),tone:tone(avg(v))})).sort((a,b)=>b.value-a.value).slice(0,8);
-bars($("subjectBars"),subs,100,v=>fmt(v,0)+"%");
-
-/* students */
-const st={};
-viewRows.forEach(r=>{
-const k=r.sid||r.name;
-(st[k]=st[k]||{name:r.name,sid:r.sid,cls:r.cls,p:[]}).p.push(r.pct);
+allScores.forEach(sc=>{
+const k=subjectKey(sc),o=(bySub[k]=bySub[k]||{p:[],abs:0});
+if(sc.participation_status==="absent"){o.abs++;return}
+const m=Number(sc.maximum_score),v=Number(sc.score);
+if(m>0&&Number.isFinite(v))o.p.push(v/m*100);
 });
-const list=Object.values(st).map(s=>({...s,avg:avg(s.p),n:s.p.length})).sort((a,b)=>b.avg-a.avg);
-rankList($("topList"),list.slice(0,5));
-rankList($("lowList"),list.slice(-5).reverse());
+const subs=Object.entries(bySub).map(([k,o])=>({
+name:k,abs:o.abs,took:o.p.length,avg:avg(o.p),
+high:o.p.length?Math.max(...o.p):NaN,low:o.p.length?Math.min(...o.p):NaN,
+pass:o.p.length?o.p.filter(x=>x>=pm).length/o.p.length*100:NaN
+})).sort((a,b)=>(b.avg||0)-(a.avg||0));
+bars($("subjectBars"),subs.filter(x=>Number.isFinite(x.avg)).slice(0,8).map(x=>({label:x.name,value:x.avg,tone:tone(x.avg)})),100,v=>fmt(v,0)+"%");
+$("subjectRows").innerHTML=subs.length?subs.map(x=>`<tr><td>${esc(x.name)}</td><td>${pct(x.avg)}</td><td>${pct(x.high)}</td><td>${pct(x.low)}</td><td>${pct(x.pass)}</td><td>${x.took}</td><td>${x.abs}</td></tr>`).join(""):'<tr><td colspan="7" class="empty">No data</td></tr>';
 
-/* table */
-const pages=Math.max(1,Math.ceil(n/PAGE_SIZE));
-page=Math.min(page,pages);
-const slice=viewRows.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
-$("tableCount").textContent=`${n} result${n===1?"":"s"} shown of ${allRows.length}`;
-$("rows").innerHTML=slice.length?slice.map(r=>{
-const ok=r.pct>=pm;
-return `<tr><td>${esc(r.name)}</td><td>${esc(r.sid)}</td><td>${esc(r.cls)}</td><td>${esc(r.exam)}</td><td>${esc(r.subject)}</td>
-<td>${esc(fmt(r.score,2))} / ${esc(fmt(r.total,2))}</td><td>${pct(r.pct)}</td>
-<td><span class="grade">${gradeOf(r.pct)}</span></td>
-<td><span class="pill ${ok?"pass":"fail"}">${ok?"Pass":"Fail"}</span></td><td>${esc(fmtDate(r.date))}</td></tr>`;
-}).join(""):'<tr><td colspan="10" class="empty">No results match your filters.</td></tr>';
-$("pageInfo").textContent=`Page ${page} of ${pages}`;
-$("prevBtn").disabled=page<=1;
-$("nextBtn").disabled=page>=pages;
+/* rankings */
+const ranked=[...st].filter(s=>Number.isFinite(avgOf(s))).sort((a,b)=>avgOf(b)-avgOf(a));
+rankList($("topList"),ranked.slice(0,5));
+rankList($("lowList"),ranked.slice(-5).reverse());
+
+renderTable();
+renderCompare();
 }
 
-/* EXPORT CSV */
-function csvCell(v){
-let s=String(v??"");
-if(/^[=+\-@\t\r]/.test(s))s="'"+s;
-return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
+function filteredStudents(){
+const q=$("fSearch").value.trim().toLowerCase(),o=$("fStatus").value,pm=passMark();
+let list=studentsOf(current).filter(s=>
+(!q||String(s.full_name_snapshot||"").toLowerCase().includes(q)||String(s.student_id_snapshot||"").toLowerCase().includes(q))&&
+(!o||(o==="pass")===(avgOf(s)>=pm)));
+const m=sort.dir==="asc"?1:-1;
+const val={pos:s=>Number(s.class_position)||9999,name:s=>String(s.full_name_snapshot||""),total:s=>Number(s.total_score)||0,avg:s=>avgOf(s)||0}[sort.key];
+return list.sort((a,b)=>{const x=val(a),y=val(b);return (typeof x==="number"?x-y:x.localeCompare(y))*m});
 }
+
+function renderTable(){
+viewStudents=filteredStudents();
+const pm=passMark(),total=studentsOf(current).length;
+$("tableCount").textContent=current?`${viewStudents.length} of ${total} student${total===1?"":"s"} shown`:"Select a class";
+if(!viewStudents.length){
+$("rows").innerHTML=`<tr><td colspan="8" class="empty">${current&&!current.result?"No published result for this class.":"No students match your filters."}</td></tr>`;
+return;
+}
+$("rows").innerHTML=viewStudents.map((s,i)=>{
+const a=avgOf(s),ok=a>=pm;
+const chips=(s.scores||[]).map(sc=>sc.participation_status==="absent"
+?`<span class="chip abs">${esc(subjectKey(sc))}: <b>Absent</b></span>`
+:`<span class="chip">${esc(subjectKey(sc))}: <b>${fmt(Number(sc.score),2)}</b> / ${fmt(Number(sc.maximum_score),2)}${sc.grade?" · "+esc(sc.grade):""}</span>`).join("");
+return `<tr><td><b>${esc(s.class_position??"—")}</b></td>
+<td>${esc(s.full_name_snapshot)}</td><td>${esc(s.student_id_snapshot||"")}</td>
+<td>${fmt(Number(s.total_score),2)}<span class="sm">of ${fmt(Number(s.total_possible),2)}</span></td>
+<td>${pct(a)}</td><td><span class="grade">${esc(s.result_snapshot?.average_grade||"—")}</span></td>
+<td><span class="pill ${ok?"pass":"fail"}">${ok?"Pass":"Fail"}</span></td>
+<td><button class="tg" type="button" data-i="${i}">Subjects</button></td></tr>
+<tr class="detail" id="d${i}" hidden><td colspan="8"><div class="chips">${chips||"No subject scores"}</div></td></tr>`;
+}).join("");
+}
+
+function renderCompare(){
+const rows=classes.filter(e=>e.result).map(e=>{const m=summary(e);return{e,...m}});
+$("cmpRows").innerHTML=rows.length?rows.map(r=>`<tr data-id="${esc(r.e.cls.id)}" class="${current&&current.cls.id===r.e.cls.id?"sel":""}">
+<td>${esc(className(r.e.cls))}</td><td>${esc(r.e.cls.academic_session||"")} ${esc(r.e.cls.academic_period||"")}</td>
+<td>${r.n}</td><td>${pct(r.avg)}</td><td>${pct(r.pass)}</td><td>${pct(r.high)}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No class has a published result yet.</td></tr>';
+}
+
+function fillClasses(){
+const sel=$("fClass");
+sel.innerHTML=classes.length?classes.map(e=>`<option value="${esc(e.cls.id)}">${esc(className(e.cls))} (${esc(e.cls.academic_session||"")} / ${esc(e.cls.academic_period||"")})${e.result?"":" — no published result"}</option>`).join(""):'<option value="">No classes yet</option>';
+}
+function selectClass(id){
+current=classes.find(e=>String(e.cls.id)===String(id))||null;
+if(current)$("fClass").value=current.cls.id;
+render();
+}
+
+/* CSV */
+function csvCell(v){let s=String(v??"");if(/^[=+\-@\t\r]/.test(s))s="'"+s;return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
 $("csvBtn").addEventListener("click",()=>{
-if(!viewRows.length){showMessage("There are no results to export.","info");return}
+if(!current||!viewStudents.length){showMessage("There are no results to export.","info");return}
 const pm=passMark();
-const head=["Student","Student ID","Class","Examination","Subject","Score","Total","Percentage","Grade","Outcome","Date"];
+const subs=[...new Set(studentsOf(current).flatMap(s=>(s.scores||[]).map(subjectKey)))];
+const head=["Position","Student","Student ID",...subs,"Total","Possible","Average %","Grade","Outcome"];
 const lines=[head.map(csvCell).join(",")];
-viewRows.forEach(r=>lines.push([r.name,r.sid,r.cls,r.exam,r.subject,fmt(r.score,2),fmt(r.total,2),fmt(r.pct,1),gradeOf(r.pct),r.pct>=pm?"Pass":"Fail",fmtDate(r.date)].map(csvCell).join(",")));
+viewStudents.forEach(s=>{
+const cells=subs.map(k=>{const sc=(s.scores||[]).find(x=>subjectKey(x)===k);return !sc?"":sc.participation_status==="absent"?"Absent":fmt(Number(sc.score),2)});
+lines.push([s.class_position,s.full_name_snapshot,s.student_id_snapshot,...cells,fmt(Number(s.total_score),2),fmt(Number(s.total_possible),2),fmt(avgOf(s),1),s.result_snapshot?.average_grade||"",avgOf(s)>=pm?"Pass":"Fail"].map(csvCell).join(","));
+});
 const url=URL.createObjectURL(new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"}));
-const a=document.createElement("a");
-a.href=url;a.download="results-performance.csv";
-document.body.appendChild(a);a.click();a.remove();
-setTimeout(()=>URL.revokeObjectURL(url),1000);
+const a=document.createElement("a");a.href=url;a.download=("class-results-"+className(current.cls)).replace(/[^\w-]+/g,"-")+".csv";
+document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
 $("printBtn").addEventListener("click",()=>window.print());
 
 /* EVENTS */
-["fExam","fSubject","fClass","fStatus","fPass"].forEach(id=>$(id).addEventListener("input",applyFilters));
-let searchTimer;
-$("fSearch").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(applyFilters,200)});
+$("fClass").addEventListener("change",()=>selectClass($("fClass").value));
+["fStatus","fPass"].forEach(id=>$(id).addEventListener("input",render));
+let timer;$("fSearch").addEventListener("input",()=>{clearTimeout(timer);timer=setTimeout(renderTable,200)});
 document.querySelectorAll("th[data-sort]").forEach(th=>th.addEventListener("click",()=>{
-const k=th.dataset.sort;
-sort=sort.key===k?{key:k,dir:sort.dir==="asc"?"desc":"asc"}:{key:k,dir:k==="date"||k==="pct"||k==="score"?"desc":"asc"};
-sortRows();page=1;render();
+const k=th.dataset.sort;sort=sort.key===k?{key:k,dir:sort.dir==="asc"?"desc":"asc"}:{key:k,dir:k==="avg"||k==="total"?"desc":"asc"};renderTable();
 }));
-$("prevBtn").addEventListener("click",()=>{page--;render()});
-$("nextBtn").addEventListener("click",()=>{page++;render()});
-$("refreshBtn").addEventListener("click",()=>reload(true));
+$("rows").addEventListener("click",e=>{
+const b=e.target.closest(".tg");if(!b)return;
+const r=$("d"+b.dataset.i);r.hidden=!r.hidden;b.textContent=r.hidden?"Subjects":"Hide";
+});
+$("cmpRows").addEventListener("click",e=>{const tr=e.target.closest("tr[data-id]");if(tr)selectClass(tr.dataset.id)});
+$("refreshBtn").addEventListener("click",()=>load(true));
 
-async function reload(manual){
-const btn=$("refreshBtn");
-btn.disabled=true;
+async function load(manual){
+const btn=$("refreshBtn");btn.disabled=true;
+const keep=current?current.cls.id:null;
 try{
-allRows=await loadResults();
-["fExam:exam","fSubject:subject","fClass:cls"].forEach(s=>{const[a,b]=s.split(":");fillSelect(a,b)});
-applyFilters();
-if(manual)showMessage("Results refreshed.","info");else clearMessage();
+classes=await loadAll();
+fillClasses();
+const pick=classes.find(e=>String(e.cls.id)===String(keep))||classes.find(e=>e.result)||classes[0]||null;
+if(pick)selectClass(pick.cls.id);else{current=null;render()}
+if(!classes.length)showMessage("You have not created a class yet. Create one on the Class Examination page.","info");
+else if(manual)showMessage("Results refreshed.","info");else clearMessage();
 }catch(e){
-console.error("Results load:",e);
-$("rows").innerHTML='<tr><td colspan="10" class="empty">Results could not be loaded.</td></tr>';
-$("tableCount").textContent="Results unavailable";
-showMessage("Unable to load results: "+(e.message||"please try again.")+" Check that the signed-in school account can read its exam attempts.","error");
+console.error("Class results load:",e);
+$("rows").innerHTML='<tr><td colspan="8" class="empty">Results could not be loaded.</td></tr>';
+showMessage("Unable to load class results: "+(e.message||"please try again."),"error");
 }finally{btn.disabled=false}
 }
 
 /* INITIALISE */
 async function init(){
-if(!window.supabase?.createClient){
-showMessage("Supabase could not load. Check your internet connection and refresh.","error");
-return;
-}
+if(!window.supabase?.createClient){showMessage("Supabase could not load. Check your internet connection and refresh.","error");return}
 supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-
 const {data:s,error:se}=await supabaseClient.auth.getSession();
 if(se||!s.session){location.replace(LOGIN_PAGE);return}
-
-const {data:account,error}=await supabaseClient
-.from("school_accounts").select("id,user_id,account_name,status")
-.eq("user_id",s.session.user.id).maybeSingle();
-
+const {data:account,error}=await supabaseClient.from("school_accounts").select("id,user_id,account_name,status").eq("user_id",s.session.user.id).maybeSingle();
 if(error){showMessage("Unable to load your account: "+error.message,"error");return}
 if(!account){showMessage("No Teacher/School account is linked to this login.","error");return}
 if(account.status!=="active"){await supabaseClient.auth.signOut();location.replace(LOGIN_PAGE);return}
-
 currentAccount=account;
 const name=account.account_name||"Teacher/School";
-$("sideName").textContent=name;
-$("topAccount").textContent=name;
-$("sideAvatar").textContent=initials(name);
-
-await reload(false);
+$("sideName").textContent=name;$("topAccount").textContent=name;$("sideAvatar").textContent=initials(name);
+await load(false);
 }
 
 /* SIDEBAR + SIGN OUT */
 function closeSidebar(){$("sidebar").classList.remove("open");$("sidebarOverlay").classList.remove("show")}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{
-closeSidebar();
-const d=PAGE_LINKS[b.dataset.page];
+closeSidebar();const d=PAGE_LINKS[b.dataset.page];
 if(!d){showMessage("This dashboard link has not been configured.","error");return}
 if(!b.classList.contains("active"))location.href=d;
 }));
 $("menuToggle").addEventListener("click",()=>{$("sidebar").classList.add("open");$("sidebarOverlay").classList.add("show")});
 $("sidebarOverlay").addEventListener("click",closeSidebar);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSidebar()});
-
 $("signOutBtn").addEventListener("click",async()=>{
-const b=$("signOutBtn");
-b.disabled=true;b.textContent="Signing out…";
-try{
-if(supabaseClient){const {error}=await supabaseClient.auth.signOut();if(error)throw error}
-location.replace(LOGIN_PAGE);
-}catch(e){
-console.error("Sign out:",e);
-b.disabled=false;b.textContent="↪  Sign Out";
-showMessage("Sign-out failed. Please try again.","error");
-}
+const b=$("signOutBtn");b.disabled=true;b.textContent="Signing out…";
+try{if(supabaseClient){const {error}=await supabaseClient.auth.signOut();if(error)throw error}location.replace(LOGIN_PAGE)}
+catch(e){console.error("Sign out:",e);b.disabled=false;b.textContent="↪  Sign Out";showMessage("Sign-out failed. Please try again.","error")}
 });
-
 document.addEventListener("visibilitychange",async()=>{
-if(document.visibilityState==="visible"&&supabaseClient){
-const {data,error}=await supabaseClient.auth.getSession();
-if(error||!data.session)location.replace(LOGIN_PAGE);
-}
+if(document.visibilityState==="visible"&&supabaseClient){const {data,error}=await supabaseClient.auth.getSession();if(error||!data.session)location.replace(LOGIN_PAGE)}
 });
 
 init();
