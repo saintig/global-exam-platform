@@ -322,6 +322,7 @@
 
         <p class="description">
           Practise your knowledge with the free examination.
+          Premium students can take it too.
         </p>
 
         <div class="stats">
@@ -494,11 +495,21 @@
     }
 
     function updateSettingsDisplay() {
-      $("freeQuestionCount").textContent =
-        examSettings.free_student_question_limit;
+      if (examSettings.free_student_question_limit === null) return;
 
-      $("freeDuration").textContent =
-        formatMinutes(examSettings.free_student_duration_minutes);
+      const premium = plan === "premium";
+
+      // A Premium student who takes the Free examination gets the
+      // Premium question count and time, so show those numbers.
+      $("freeQuestionCount").textContent = premium
+        ? examSettings.premium_student_question_limit
+        : examSettings.free_student_question_limit;
+
+      $("freeDuration").textContent = formatMinutes(
+        premium
+          ? examSettings.premium_student_duration_minutes
+          : examSettings.free_student_duration_minutes
+      );
 
       $("premiumQuestionCount").textContent =
         examSettings.premium_student_question_limit;
@@ -591,7 +602,7 @@
       if (plan === "premium") {
         planBanner.className = "plan-banner premium";
         planBanner.textContent =
-          "⭐ Premium plan: unlimited attempts while your subscription is active.";
+          "⭐ Premium plan: unlimited attempts on Free and Premium examinations while your subscription is active.";
         return;
       }
 
@@ -624,6 +635,12 @@
     }
 
     function renderFreeNote() {
+      if (plan === "premium") {
+        $("freeNote").textContent =
+          "Unlimited attempts while your paid subscription is active, with your Premium question count and time.";
+        return;
+      }
+
       const limit = Number(allowance?.limit) || 1;
 
       $("freeNote").textContent =
@@ -658,18 +675,18 @@
         return;
       }
 
-      // Free card
-      if (premium) {
-        setButton(freeButton, "Included in your Premium plan", true);
-      } else if (!freeExam) {
+      // Free card: paid Premium students can take the Free examination too.
+      if (!freeExam) {
         setButton(freeButton, "No free examination yet", true);
+      } else if (premium) {
+        setButton(freeButton, "Start Free Exam", false);
       } else if (limitReached()) {
         setButton(freeButton, "Daily limit reached", true);
       } else {
         setButton(freeButton, "Start Free Exam", false);
       }
 
-      // Premium card
+      // Premium card: only students with an active paid subscription can start it.
       if (!premiumExam) {
         setButton(premiumButton, "Exam not available yet", true);
       } else if (!premium) {
@@ -775,6 +792,9 @@
 
         // Settings set by the administrator, and the student's plan.
         await Promise.all([loadExamSettings(), detectPlan()]);
+
+        // Show the right numbers now that the student's plan is known.
+        updateSettingsDisplay();
 
         // Verify the selected education level.
         const {
