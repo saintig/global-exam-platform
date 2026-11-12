@@ -386,7 +386,7 @@ const score=Number(a.score),total=Number(a.total_marks);
 return{
 name:pick(st,["full_name","name","student_name"])||"Student #"+a.student_id,
 sid:pick(st,["student_id","student_code","admission_number","registration_number"]),
-cls:pick(cl,["name","class_name","title"])||pick(st,["class_name","class"]),
+cls:pick(ex,["name_class"])||pick(cl,["class_name","name","title"])||pick(st,["class_name","class"]),
 exam:pick(ex,["title","examination_title","name"])||"Examination #"+a.examination_id,
 subject:pick(sb,["name","subject_name","title"])||pick(ex,["subject_name","subject"]),
 score,total,pct:score/total*100,date:a.submitted_at||""
