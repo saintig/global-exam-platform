@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Results &amp; Performance | SAINTIG EXAMS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{--navy:#14243a;--navy2:#1d3554;--gold:#d4af37;--paper:#f5f7fa;--ink:#1e293b;--muted:#64748b;--line:#e5e9ef;--ok:#16834a;--bad:#b42318}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:255px 1fr}
+.sidebar{background:var(--navy);color:#fff;padding:20px 15px;display:flex;flex-direction:column;min-height:100vh}
+.brand{display:flex;gap:11px;align-items:center;padding:5px 8px 22px;border-bottom:1px solid #ffffff20}
+.mark{width:42px;height:42px;border-radius:11px;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800}
+.brand b{font-size:16px;letter-spacing:.4px}
+.brand small{display:block;color:#bdc8d5;font-size:11px;letter-spacing:1.2px}
+.navlabel{font-size:11px;color:#9eacbd;letter-spacing:1.4px;font-weight:bold;padding:22px 10px 8px}
+nav{display:grid;gap:4px}
+nav button{border:0;background:none;color:#dce4ed;text-align:left;padding:11px;border-radius:8px;font-size:14px}
+nav button:hover,nav button.active{background:var(--navy2);color:#fff}
+nav button.active{box-shadow:inset 3px 0 var(--gold)}
+.account{margin-top:auto;border-top:1px solid #ffffff20;padding:15px 5px 10px;display:flex;align-items:center;gap:10px}
+.avatar{width:37px;height:37px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:bold;flex-shrink:0}
+.accountname{font-size:13px;font-weight:bold;overflow-wrap:anywhere}
+.accounttype{font-size:12px;color:#bdc8d5}
+.signout{width:100%;padding:10px;border:1px solid #ffffff30;background:none;color:#ffd4d1;border-radius:8px;font-size:14px}
+.main{min-width:0}
+.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:4}
+.top-title{font-weight:bold;color:var(--navy);font-size:16px}
+.topright{color:var(--muted);font-size:13px}
+.menu{display:none;border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 11px;margin-right:11px;color:var(--navy)}
+.content{padding:32px;max-width:1250px;margin:auto}
+.heading{margin-bottom:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.heading h1{font-size:29px;color:var(--navy);margin:0 0 5px}
+.heading p{color:var(--muted);margin:0;font-size:14px}
+.status{display:none;padding:12px 14px;border-radius:8px;margin-bottom:18px;font-size:14px}
+.status.show{display:block}
+.status.error{background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
+.status.info{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:0 7px 22px #14243a0b}
+.card h3{margin:0 0 4px;color:var(--navy);font-size:17px}
+.card .sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--line);border-top:4px solid var(--gold);border-radius:12px;padding:14px}
+.stat span{display:block;color:var(--muted);font-size:12px}
+.stat b{display:block;color:var(--navy);font-size:25px;margin-top:2px}
+.filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end}
+.filters label{display:block;font-size:12px;font-weight:bold;color:#475569;margin-bottom:5px}
+.filters input,.filters select{width:100%;height:42px;border:1px solid #dce2e9;border-radius:8px;padding:8px 10px;background:#fff;outline:none}
+.filters input:focus,.filters select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d4af3720}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:96px 1fr 44px;gap:9px;align-items:center;font-size:12px}
+.bar .lbl{color:#475569;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar .track{height:16px;background:#eef1f5;border-radius:8px;overflow:hidden}
+.bar .fill{height:100%;background:var(--navy);border-radius:8px;min-width:2px}
+.bar .fill.low{background:var(--bad)}
+.bar .fill.mid{background:var(--gold)}
+.bar .fill.high{background:var(--ok)}
+.bar .val{text-align:right;font-weight:bold;color:var(--navy)}
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.rank li:last-child{border:0}
+.rank small{display:block;color:var(--muted);font-size:12px}
+.rank b{white-space:nowrap}
+.empty{text-align:center;color:var(--muted);padding:26px 10px;font-size:14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;white-space:nowrap}
+th{background:#f8fafc;color:#475569;font-size:12px;letter-spacing:.4px;text-transform:uppercase;cursor:pointer;user-select:none}
+th:hover{color:var(--navy)}
+tr:last-child td{border:0}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold}
+.pill.pass{background:#e8f7ee;color:var(--ok)}
+.pill.fail{background:#fdecea;color:var(--bad)}
+.grade{display:inline-block;min-width:26px;text-align:center;padding:2px 7px;border-radius:6px;background:#eef1f5;color:var(--navy);font-weight:bold}
+.pager{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:var(--muted)}
+.btn{min-height:42px;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:bold}
+.btn-primary{border:0;background:var(--navy);color:#fff}
+.btn-secondary{border:1px solid var(--line);background:#fff;color:var(--navy)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.footer{text-align:center;color:#8995a3;font-size:12px;padding:30px 8px 15px}
+.sidebar-overlay{display:none}
+
+@media(max-width:1000px){.stats,.filters{grid-template-columns:repeat(3,1fr)}.grid3{grid-template-columns:1fr}}
+@media(max-width:720px){
+.app{display:block}
+.sidebar{position:fixed;z-index:12;inset:0 auto 0 0;width:270px;min-height:0;height:100dvh;overflow-y:auto;transform:translateX(-105%);transition:transform .22s ease;box-shadow:10px 0 25px #0002}
+.sidebar.open{transform:translateX(0)}
+.sidebar-overlay{display:block;position:fixed;inset:0;z-index:11;background:#0007;opacity:0;visibility:hidden;transition:.2s}
+.sidebar-overlay.show{opacity:1;visibility:visible}
+.menu{display:inline-block}
+.topbar{height:62px;padding:0 14px}
+.topright{display:none}
+.content{padding:20px 12px}
+.heading h1{font-size:25px}
+.stats,.filters,.grid2{grid-template-columns:1fr 1fr}
+.grid2{grid-template-columns:1fr}
+.btns .btn{flex:1}
+}
+@media print{
+.sidebar,.topbar,.filters-card,.btns,.pager,.footer,.status{display:none!important}
+.app{display:block}.content{padding:0}
+.card,.stat{box-shadow:none;break-inside:avoid}
+.tablewrap{overflow:visible}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div class="mark">SE</div>
+<div><b>SAINTIG EXAMS</b><small>EXAMINATION PLATFORM</small></div>
+</div>
+
+<div class="navlabel">MAIN MENU</div>
+<nav>
+<button data-page="Dashboard">▦ &nbsp; Dashboard</button>
+<button data-page="School Students">♙ &nbsp; My Students</button>
+<button data-page="School Subjects">▤ &nbsp; My Subjects</button>
+<button data-page="Register Examination">＋ &nbsp; Register Examination</button>
+<button data-page="Question Bank">▣ &nbsp; Question Bank</button>
+<button data-page="School Class Examination">▦ &nbsp; Teacher/School Class Examination</button>
+<button data-page="Archive Management">▧ &nbsp; Archive Management</button>
+<button class="active" data-page="Results & Performance">▥ &nbsp; Results &amp; Performance</button>
+</nav>
+
+<div class="navlabel">ACCOUNT</div>
+<nav>
+<button data-page="Subscription Plans">◇ &nbsp; Subscription Plans</button>
+<button data-page="Notifications">♧ &nbsp; Notifications</button>
+<button data-page="School Profile">⚙ &nbsp; Teacher/School Profile</button>
+<button data-page="Help & Support">? &nbsp; Help &amp; Support</button>
+</nav>
+
+<div class="account">
+<div class="avatar" id="sideAvatar">SE</div>
+<div>
+<div class="accountname" id="sideName">Loading account…</div>
+<div class="accounttype">Teacher/School Account</div>
+</div>
+</div>
+
+<button class="signout" id="signOutBtn">↪ &nbsp; Sign Out</button>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<main class="main">
+<header class="topbar">
+<div>
+<button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
+<span class="top-title">Results &amp; Performance</span>
+</div>
+<div class="topright" id="topAccount">Loading account…</div>
+</header>
+
+<section class="content">
+
+<div class="heading">
+<div>
+<h1>Results &amp; Performance</h1>
+<p>Review student scores, pass rates and class performance.</p>
+</div>
+<div class="btns">
+<button class="btn btn-secondary" id="refreshBtn" type="button">Refresh</button>
+<button class="btn btn-secondary" id="printBtn" type="button">Print</button>
+<button class="btn btn-primary" id="csvBtn" type="button">Export CSV</button>
+</div>
+</div>
+
+<div class="status" id="statusMessage"></div>
+
+<div class="stats">
+<div class="stat"><span>Results</span><b id="sTotal">—</b></div>
+<div class="stat"><span>Students</span><b id="sStudents">—</b></div>
+<div class="stat"><span>Average score</span><b id="sAvg">—</b></div>
+<div class="stat"><span>Pass rate</span><b id="sPass">—</b></div>
+<div class="stat"><span>Highest</span><b id="sHigh">—</b></div>
+<div class="stat"><span>Lowest</span><b id="sLow">—</b></div>
+</div>
+
+<div class="card filters-card">
+<div class="filters">
+<div><label for="fExam">Examination</label><select id="fExam"><option value="">All examinations</option></select></div>
+<div><label for="fSubject">Subject</label><select id="fSubject"><option value="">All subjects</option></select></div>
+<div><label for="fClass">Class</label><select id="fClass"><option value="">All classes</option></select></div>
+<div><label for="fStatus">Outcome</label>
+<select id="fStatus"><option value="">All</option><option value="pass">Passed</option><option value="fail">Failed</option></select></div>
+<div><label for="fPass">Pass mark (%)</label><input id="fPass" type="number" min="1" max="100" value="50"></div>
+<div><label for="fSearch">Search student</label><input id="fSearch" type="search" placeholder="Name or ID"></div>
+</div>
+</div>
+
+<div class="grid3">
+<div class="card"><h3>Score distribution</h3><p class="sub">Number of results in each score band.</p><div class="bars" id="distBars"></div></div>
+<div class="card"><h3>Grades</h3><p class="sub">A 70+ · B 60+ · C 50+ · D 45+ · E 40+ · F below 40</p><div class="bars" id="gradeBars"></div></div>
+<div class="card"><h3>Average by subject</h3><p class="sub">Average percentage per subject.</p><div class="bars" id="subjectBars"></div></div>
+</div>
+
+<div class="grid2">
+<div class="card"><h3>Top performers</h3><p class="sub">Highest average across the filtered results.</p><ul class="rank" id="topList"></ul></div>
+<div class="card"><h3>Needs attention</h3><p class="sub">Lowest average across the filtered results.</p><ul class="rank" id="lowList"></ul></div>
+</div>
+
+<div class="card">
+<h3>All results</h3>
+<p class="sub" id="tableCount">Loading results…</p>
+<div class="tablewrap">
+<table>
+<thead><tr>
+<th data-sort="name">Student</th>
+<th data-sort="sid">ID</th>
+<th data-sort="cls">Class</th>
+<th data-sort="exam">Examination</th>
+<th data-sort="subject">Subject</th>
+<th data-sort="score">Score</th>
+<th data-sort="pct">%</th>
+<th data-sort="pct">Grade</th>
+<th data-sort="pct">Outcome</th>
+<th data-sort="date">Date</th>
+</tr></thead>
+<tbody id="rows"><tr><td colspan="10" class="empty">Loading results…</td></tr></tbody>
+</table>
+</div>
+<div class="pager">
+<span id="pageInfo"></span>
+<div class="btns">
+<button class="btn btn-secondary" id="prevBtn" type="button">Previous</button>
+<button class="btn btn-secondary" id="nextBtn" type="button">Next</button>
+</div>
+</div>
+</div>
+
+<div class="footer">© <span id="year"></span> SAINTIG EXAMS · Building a better examination experience</div>
+
+</section>
+</main>
+</div>
+
+<script>
+"use strict";
+
+const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+const LOGIN_PAGE="school-login.html";
+
+/*
+ DATA SOURCES (from your database):
+ exam_attempts holds every submitted attempt with score, total_marks,
+ student_id and school_account_id. Student names, classes, exam titles
+ and subjects are looked up from the tables below. If a table name
+ differs in your project, change it here.
+*/
+const T={
+ attempts:"exam_attempts",
+ students:"school_students",
+ classes:"school_classes",
+ exams:"examinations",
+ subjects:["school_subjects","subjects"]
+};
+
+const PAGE_LINKS={
+"Dashboard":"school-dashboard.html",
+"School Students":"school-students.html",
+"School Subjects":"school-subjects.html",
+"Register Examination":"register-examination.html",
+"Question Bank":"school-question-bank.html",
+"School Class Examination":"school-class-examinations.html",
+"Archive Management":"school-archive-management.html",
+"Results & Performance":"school-results-performance.html",
+"Subscription Plans":"school-subscription-plans.html",
+"Notifications":"school-notifications.html",
+"School Profile":"school-my-profile.html",
+"Help & Support":"school-help-support.html"
+};
+
+const PAGE_SIZE=15;
+const $=id=>document.getElementById(id);
+
+let supabaseClient=null,currentAccount=null;
+let allRows=[],viewRows=[];
+let sort={key:"date",dir:"desc"},page=1;
+
+$("year").textContent=new Date().getFullYear();
+
+/* HELPERS */
+function esc(v){
+return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+function initials(v){
+return String(v||"SE").trim().split(/\s+/).slice(0,2).map(x=>x[0]||"").join("").toUpperCase()||"SE";
+}
+function showMessage(msg,type="info"){
+const el=$("statusMessage");
+el.textContent=msg;
+el.className="status show "+type;
+}
+function clearMessage(){$("statusMessage").className="status"}
+function fmt(n,d=1){return Number.isFinite(n)?(+n.toFixed(d)).toString():"—"}
+function pct(n){return Number.isFinite(n)?fmt(n)+"%":"—"}
+function gradeOf(p){return p>=70?"A":p>=60?"B":p>=50?"C":p>=45?"D":p>=40?"E":"F"}
+function passMark(){
+const v=Number($("fPass").value);
+return Number.isFinite(v)&&v>0&&v<=100?v:50;
+}
+function fmtDate(v){
+const d=new Date(v);
+return isNaN(d)?"—":d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+}
+function avg(arr){return arr.length?arr.reduce((a,b)=>a+b,0)/arr.length:NaN}
+function tone(p){return p>=passMark()+15?"high":p>=passMark()?"mid":"low"}
+
+/* LOAD RESULTS */
+function pick(row,keys){
+for(const k of keys){
+if(row&&row[k]!==undefined&&row[k]!==null&&row[k]!=="")return row[k];
+}
+return "";
+}
+
+/* Look up rows by id (in chunks). A missing table or column is not fatal. */
+async function lookup(table,ids){
+const map={},list=[...new Set(ids.filter(x=>x!==null&&x!==undefined&&x!==""))];
+for(let i=0;i<list.length;i+=200){
+const {data,error}=await supabaseClient.from(table).select("*").in("id",list.slice(i,i+200));
+if(error){console.warn("Lookup skipped for "+table+":",error.message);return map}
+(data||[]).forEach(r=>map[String(r.id)]=r);
+}
+return map;
+}
+
+async function loadResults(){
+const attempts=[];
+let from=0;
+for(;;){
+const {data,error}=await supabaseClient
+.from(T.attempts)
+.select("id,examination_id,student_id,score,total_marks,status,submitted_at")
+.eq("school_account_id",currentAccount.id)
+.order("submitted_at",{ascending:false,nullsFirst:false})
+.range(from,from+999);
+if(error)throw error;
+(data||[]).forEach(r=>{
+const status=String(r.status||"").trim().toLowerCase().replace(/[\s-]+/g,"_");
+const score=Number(r.score),total=Number(r.total_marks);
+if(status==="submitted"&&r.student_id!==null&&Number.isFinite(score)&&total>0)attempts.push(r);
+});
+if(!data||data.length<1000)break;
+from+=1000;
+}
+if(!attempts.length)return [];
+
+const students=await lookup(T.students,attempts.map(a=>a.student_id));
+const exams=await lookup(T.exams,attempts.map(a=>a.examination_id));
+
+const classIds=Object.values(students).map(s=>pick(s,["school_class_id","class_id"]));
+const classes=await lookup(T.classes,classIds);
+
+let subjects={};
+const subjectIds=Object.values(exams).map(e=>pick(e,["school_subject_id","subject_id"]));
+if(subjectIds.some(Boolean)){
+for(const table of T.subjects){
+subjects=await lookup(table,subjectIds);
+if(Object.keys(subjects).length)break;
+}
+}
+
+return attempts.map(a=>{
+const st=students[String(a.student_id)]||{};
+const ex=exams[String(a.examination_id)]||{};
+const cl=classes[String(pick(st,["school_class_id","class_id"]))]||{};
+const sb=subjects[String(pick(ex,["school_subject_id","subject_id"]))]||{};
+const score=Number(a.score),total=Number(a.total_marks);
+return{
+name:pick(st,["full_name","name","student_name"])||"Student #"+a.student_id,
+sid:pick(st,["student_id","student_code","admission_number","registration_number"]),
+cls:pick(cl,["name","class_name","title"])||pick(st,["class_name","class"]),
+exam:pick(ex,["title","examination_title","name"])||"Examination #"+a.examination_id,
+subject:pick(sb,["name","subject_name","title"])||pick(ex,["subject_name","subject"]),
+score,total,pct:score/total*100,date:a.submitted_at||""
+};
+});
+}
+
+/* FILTER OPTIONS */
+function fillSelect(id,key){
+const sel=$(id),keep=sel.value;
+const vals=[...new Set(allRows.map(r=>r[key]).filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
+sel.length=1;
+vals.forEach(v=>sel.add(new Option(v,v)));
+sel.value=vals.includes(keep)?keep:"";
+}
+
+/* FILTER + SORT */
+function applyFilters(){
+const ex=$("fExam").value,sub=$("fSubject").value,cl=$("fClass").value,st=$("fStatus").value;
+const q=$("fSearch").value.trim().toLowerCase(),pm=passMark();
+viewRows=allRows.filter(r=>
+(!ex||r.exam===ex)&&(!sub||r.subject===sub)&&(!cl||r.cls===cl)&&
+(!st||(st==="pass")===(r.pct>=pm))&&
+(!q||r.name.toLowerCase().includes(q)||String(r.sid).toLowerCase().includes(q))
+);
+sortRows();
+page=1;
+render();
+}
+function sortRows(){
+const k=sort.key,m=sort.dir==="asc"?1:-1;
+viewRows.sort((a,b)=>{
+const x=a[k],y=b[k];
+if(typeof x==="number"&&typeof y==="number")return (x-y)*m;
+return String(x).localeCompare(String(y),undefined,{numeric:true})*m;
+});
+}
+
+/* RENDER */
+function bars(el,items,max,fmtVal){
+if(!items.length){el.innerHTML='<div class="empty">No data</div>';return}
+el.innerHTML=items.map(i=>`
+<div class="bar"><span class="lbl" title="${esc(i.label)}">${esc(i.label)}</span>
+<span class="track"><span class="fill ${i.tone||""}" style="width:${max?Math.max(1,i.value/max*100):0}%;display:block"></span></span>
+<span class="val">${esc(fmtVal?fmtVal(i.value):i.value)}</span></div>`).join("");
+}
+function rankList(el,items){
+el.innerHTML=items.length?items.map(i=>`
+<li><span>${esc(i.name)}<small>${esc(i.sid||"")} ${i.cls?"· "+esc(i.cls):""} · ${i.n} result${i.n===1?"":"s"}</small></span><b>${pct(i.avg)}</b></li>`).join(""):'<div class="empty">No data</div>';
+}
+function render(){
+const pm=passMark(),n=viewRows.length,ps=viewRows.map(r=>r.pct);
+
+$("sTotal").textContent=n;
+$("sStudents").textContent=new Set(viewRows.map(r=>r.sid||r.name)).size;
+$("sAvg").textContent=pct(avg(ps));
+$("sPass").textContent=n?pct(ps.filter(p=>p>=pm).length/n*100):"—";
+$("sHigh").textContent=n?pct(Math.max(...ps)):"—";
+$("sLow").textContent=n?pct(Math.min(...ps)):"—";
+
+/* score bands */
+const bands=Array.from({length:10},(_,i)=>({label:i===9?"90–100":`${i*10}–${i*10+9}`,value:0}));
+ps.forEach(p=>bands[Math.min(9,Math.floor(p/10))].value++);
+bands.forEach((b,i)=>b.tone=i*10+10<=pm?"low":i*10>=pm?"high":"mid");
+bars($("distBars"),n?bands:[],Math.max(...bands.map(b=>b.value),1));
+
+/* grades */
+const g={A:0,B:0,C:0,D:0,E:0,F:0};
+ps.forEach(p=>g[gradeOf(p)]++);
+bars($("gradeBars"),n?Object.entries(g).map(([k,v])=>({label:"Grade "+k,value:v,tone:k==="F"?"low":k<="C"?"high":"mid"})):[],Math.max(...Object.values(g),1));
+
+/* subjects */
+const bySub={};
+viewRows.forEach(r=>{if(r.subject)(bySub[r.subject]=bySub[r.subject]||[]).push(r.pct)});
+const subs=Object.entries(bySub).map(([k,v])=>({label:k,value:avg(v),tone:tone(avg(v))})).sort((a,b)=>b.value-a.value).slice(0,8);
+bars($("subjectBars"),subs,100,v=>fmt(v,0)+"%");
+
+/* students */
+const st={};
+viewRows.forEach(r=>{
+const k=r.sid||r.name;
+(st[k]=st[k]||{name:r.name,sid:r.sid,cls:r.cls,p:[]}).p.push(r.pct);
+});
+const list=Object.values(st).map(s=>({...s,avg:avg(s.p),n:s.p.length})).sort((a,b)=>b.avg-a.avg);
+rankList($("topList"),list.slice(0,5));
+rankList($("lowList"),list.slice(-5).reverse());
+
+/* table */
+const pages=Math.max(1,Math.ceil(n/PAGE_SIZE));
+page=Math.min(page,pages);
+const slice=viewRows.slice((page-1)*PAGE_SIZE,page*PAGE_SIZE);
+$("tableCount").textContent=`${n} result${n===1?"":"s"} shown of ${allRows.length}`;
+$("rows").innerHTML=slice.length?slice.map(r=>{
+const ok=r.pct>=pm;
+return `<tr><td>${esc(r.name)}</td><td>${esc(r.sid)}</td><td>${esc(r.cls)}</td><td>${esc(r.exam)}</td><td>${esc(r.subject)}</td>
+<td>${esc(fmt(r.score,2))} / ${esc(fmt(r.total,2))}</td><td>${pct(r.pct)}</td>
+<td><span class="grade">${gradeOf(r.pct)}</span></td>
+<td><span class="pill ${ok?"pass":"fail"}">${ok?"Pass":"Fail"}</span></td><td>${esc(fmtDate(r.date))}</td></tr>`;
+}).join(""):'<tr><td colspan="10" class="empty">No results match your filters.</td></tr>';
+$("pageInfo").textContent=`Page ${page} of ${pages}`;
+$("prevBtn").disabled=page<=1;
+$("nextBtn").disabled=page>=pages;
+}
+
+/* EXPORT CSV */
+function csvCell(v){
+let s=String(v??"");
+if(/^[=+\-@\t\r]/.test(s))s="'"+s;
+return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
+}
+$("csvBtn").addEventListener("click",()=>{
+if(!viewRows.length){showMessage("There are no results to export.","info");return}
+const pm=passMark();
+const head=["Student","Student ID","Class","Examination","Subject","Score","Total","Percentage","Grade","Outcome","Date"];
+const lines=[head.map(csvCell).join(",")];
+viewRows.forEach(r=>lines.push([r.name,r.sid,r.cls,r.exam,r.subject,fmt(r.score,2),fmt(r.total,2),fmt(r.pct,1),gradeOf(r.pct),r.pct>=pm?"Pass":"Fail",fmtDate(r.date)].map(csvCell).join(",")));
+const url=URL.createObjectURL(new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv;charset=utf-8"}));
+const a=document.createElement("a");
+a.href=url;a.download="results-performance.csv";
+document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+$("printBtn").addEventListener("click",()=>window.print());
+
+/* EVENTS */
+["fExam","fSubject","fClass","fStatus","fPass"].forEach(id=>$(id).addEventListener("input",applyFilters));
+let searchTimer;
+$("fSearch").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(applyFilters,200)});
+document.querySelectorAll("th[data-sort]").forEach(th=>th.addEventListener("click",()=>{
+const k=th.dataset.sort;
+sort=sort.key===k?{key:k,dir:sort.dir==="asc"?"desc":"asc"}:{key:k,dir:k==="date"||k==="pct"||k==="score"?"desc":"asc"};
+sortRows();page=1;render();
+}));
+$("prevBtn").addEventListener("click",()=>{page--;render()});
+$("nextBtn").addEventListener("click",()=>{page++;render()});
+$("refreshBtn").addEventListener("click",()=>reload(true));
+
+async function reload(manual){
+const btn=$("refreshBtn");
+btn.disabled=true;
+try{
+allRows=await loadResults();
+["fExam:exam","fSubject:subject","fClass:cls"].forEach(s=>{const[a,b]=s.split(":");fillSelect(a,b)});
+applyFilters();
+if(manual)showMessage("Results refreshed.","info");else clearMessage();
+}catch(e){
+console.error("Results load:",e);
+$("rows").innerHTML='<tr><td colspan="10" class="empty">Results could not be loaded.</td></tr>';
+$("tableCount").textContent="Results unavailable";
+showMessage("Unable to load results: "+(e.message||"please try again.")+" Check that the signed-in school account can read its exam attempts.","error");
+}finally{btn.disabled=false}
+}
+
+/* INITIALISE */
+async function init(){
+if(!window.supabase?.createClient){
+showMessage("Supabase could not load. Check your internet connection and refresh.","error");
+return;
+}
+supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+
+const {data:s,error:se}=await supabaseClient.auth.getSession();
+if(se||!s.session){location.replace(LOGIN_PAGE);return}
+
+const {data:account,error}=await supabaseClient
+.from("school_accounts").select("id,user_id,account_name,status")
+.eq("user_id",s.session.user.id).maybeSingle();
+
+if(error){showMessage("Unable to load your account: "+error.message,"error");return}
+if(!account){showMessage("No Teacher/School account is linked to this login.","error");return}
+if(account.status!=="active"){await supabaseClient.auth.signOut();location.replace(LOGIN_PAGE);return}
+
+currentAccount=account;
+const name=account.account_name||"Teacher/School";
+$("sideName").textContent=name;
+$("topAccount").textContent=name;
+$("sideAvatar").textContent=initials(name);
+
+await reload(false);
+}
+
+/* SIDEBAR + SIGN OUT */
+function closeSidebar(){$("sidebar").classList.remove("open");$("sidebarOverlay").classList.remove("show")}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>{
+closeSidebar();
+const d=PAGE_LINKS[b.dataset.page];
+if(!d){showMessage("This dashboard link has not been configured.","error");return}
+if(!b.classList.contains("active"))location.href=d;
+}));
+$("menuToggle").addEventListener("click",()=>{$("sidebar").classList.add("open");$("sidebarOverlay").classList.add("show")});
+$("sidebarOverlay").addEventListener("click",closeSidebar);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSidebar()});
+
+$("signOutBtn").addEventListener("click",async()=>{
+const b=$("signOutBtn");
+b.disabled=true;b.textContent="Signing out…";
+try{
+if(supabaseClient){const {error}=await supabaseClient.auth.signOut();if(error)throw error}
+location.replace(LOGIN_PAGE);
+}catch(e){
+console.error("Sign out:",e);
+b.disabled=false;b.textContent="↪  Sign Out";
+showMessage("Sign-out failed. Please try again.","error");
+}
+});
+
+document.addEventListener("visibilitychange",async()=>{
+if(document.visibilityState==="visible"&&supabaseClient){
+const {data,error}=await supabaseClient.auth.getSession();
+if(error||!data.session)location.replace(LOGIN_PAGE);
+}
+});
+
+init();
+</script>
+</body>
+</html>
