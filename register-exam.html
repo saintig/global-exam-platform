@@ -1,844 +1,791 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
 <title>Register Examination | SAINTIG EXAMS</title>
 <style>
-:root {
-  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;
-  --bg:#f4f6fa;--white:#fff;--text:#25334a;
-  --muted:#718096;--border:#dfe5ee;
-  --green:#16834a;--red:#c0392b;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{height:65px;background:var(--navy);color:white;display:flex;align-items:center;padding:0 18px;gap:15px;position:sticky;top:0;z-index:20}
-.menu-btn{border:0;background:transparent;color:white;font-size:27px;cursor:pointer}
-.brand{font-size:18px;font-weight:bold}.brand span{color:var(--gold)}
-.admin-label{margin-left:auto;font-size:13px;color:#e8edf7}
-.layout{display:flex;min-height:calc(100vh - 65px)}
-.sidebar{width:255px;background:var(--navy);color:white;padding:18px 12px;flex-shrink:0}
-.sidebar h3{color:var(--gold);font-size:12px;padding:0 12px;text-transform:uppercase;letter-spacing:1px}
-.sidebar a{display:block;padding:12px;margin:4px 0;border-radius:6px;color:#e9eef8;text-decoration:none;font-size:14px}
-.sidebar a:hover,.sidebar a.active{background:#2457a7;border-left:4px solid var(--gold)}
-main{flex:1;padding:24px;min-width:0}
-.page-title{margin:0 0 7px;color:var(--navy)}
-.subtitle{color:var(--muted);margin-bottom:22px;font-size:14px}
-.card{background:white;border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px;box-shadow:0 2px 7px rgba(0,0,0,.035)}
-.card h2{margin:0 0 17px;font-size:18px;color:var(--navy)}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.field{margin-bottom:14px;min-width:0}
-.field label{display:block;font-weight:bold;font-size:13px;margin-bottom:7px}
-input,select,textarea{width:100%;padding:11px;border:1px solid #cbd4e1;border-radius:6px;background:white;font:inherit;font-size:14px;color:var(--text)}
-textarea{min-height:85px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:2px solid #c9d9f5;border-color:var(--blue)}
-small,.help{color:var(--muted);font-size:12px}
-button{border:0;border-radius:6px;padding:11px 16px;cursor:pointer;font-weight:bold;font-size:13px}
-button:disabled{opacity:.55;cursor:not-allowed}
-.primary{background:var(--blue);color:white}.gold{background:var(--gold);color:var(--navy)}
-.success{background:var(--green);color:white}.danger{background:var(--red);color:white}
-.secondary{background:#e9edf4;color:var(--navy)}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.notice{padding:12px;border-radius:7px;background:#eef4ff;border-left:4px solid var(--blue);font-size:13px;line-height:1.6;margin-bottom:15px}
-.warning{background:#fff7e3;border-left-color:var(--gold)}
-.status{margin-top:12px;padding:11px;border-radius:6px;font-size:13px;display:none;white-space:pre-wrap;line-height:1.5}
-.status.ok{display:block;background:#e8f7ee;color:#17683b}
-.status.error{display:block;background:#fdecea;color:#a5281c}
-.status.info{display:block;background:#edf3ff;color:#214e91}
-.hidden{display:none!important}
-.pill{display:inline-block;padding:5px 9px;background:#edf1f7;border-radius:20px;font-size:12px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
-th{background:#f3f6fb;color:var(--navy)}
-.table-wrap{overflow-x:auto}
-.question-preview{border:1px solid var(--border);border-radius:7px;padding:13px;margin:10px 0;background:#fff;font-size:13px;overflow-wrap:anywhere}
-.question-preview strong{color:var(--navy)}
-.preview-options{margin:8px 0;line-height:1.7}
-.error-row{background:#fff0ee;border-left:4px solid var(--red);padding:10px;margin:7px 0;font-size:13px}
-details.guide{border:1px solid #d9e5f4;border-radius:8px;background:#f7faff;margin:0 0 16px}
-details.guide summary{cursor:pointer;padding:13px 15px;font-weight:bold;font-size:14px;color:var(--navy)}
-.guide-body{padding:0 15px 15px;font-size:13px;line-height:1.65}
-.guide-body h4{margin:16px 0 6px;color:var(--navy);font-size:14px}
-.guide-body ul{margin:6px 0 0;padding-left:20px}
-.guide-body li{margin-bottom:5px}
-.guide-body pre{background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
-.guide-body code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12px}
-.working-bar{position:sticky;top:65px;z-index:12;background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:13px;display:flex;flex-wrap:wrap;gap:4px 16px;box-shadow:0 2px 7px rgba(0,0,0,.05)}
-hr{border:0;border-top:1px solid var(--border);margin:20px 0}
-#overlay{display:none;position:fixed;inset:65px 0 0;background:rgba(0,0,0,.4);z-index:14}
-@media(max-width:800px){
-.sidebar{position:fixed;z-index:15;top:65px;bottom:0;left:-270px;overflow-y:auto;transition:left .2s}
-.sidebar.open{left:0}#overlay.show{display:block}main{padding:15px}
-}
-@media(max-width:600px){
-.grid{grid-template-columns:1fr}.card{padding:15px}.brand{font-size:15px}
-.admin-label{font-size:11px}.actions button{flex:1 1 100%}
-}
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#253047;--muted:#65748b;--line:#e0e5ed;--ok:#16834b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:16px/1.5 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:980px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:18px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.role{font-size:12px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff55;border-radius:8px;padding:9px 14px;min-height:44px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22}
+.menu.open{display:block}
+.menu-in{max-width:980px;margin:auto;padding:8px 14px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px}
+.menu a{color:#e7ebf2;text-decoration:none;padding:12px;border-radius:7px;font-size:15px}
+.menu a:hover,.menu a.on{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:980px;margin:auto;padding:16px 14px 70px}
+h1{font-size:22px;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 4px;text-align:center;color:var(--muted);font-size:13px;font-weight:bold;min-height:60px}
+.step b{display:block;width:26px;height:26px;line-height:26px;margin:0 auto 3px;border-radius:50%;background:#e9edf4;color:var(--navy)}
+.step.on{border-color:var(--gold);color:var(--navy);box-shadow:0 0 0 2px #d4af3744}
+.step.on b{background:var(--gold)}
+.step.done b{background:var(--ok);color:#fff}
+.step:disabled{opacity:.5;cursor:not-allowed}
+.bar{position:sticky;top:67px;z-index:20;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:14px;display:flex;flex-wrap:wrap;gap:3px 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h2{font-size:18px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:14px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:14px;margin-bottom:6px;color:#34415a}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;color:var(--text);min-height:46px}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+.btn{border:0;border-radius:9px;padding:13px 18px;font-weight:bold;font-size:15px;min-height:48px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #cbd3df;color:var(--navy)}
+.danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:4px}
+.msg{display:none;padding:12px 14px;border-radius:9px;margin:12px 0;font-size:14.5px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:12px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold;color:var(--navy);min-height:48px}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+[hidden]{display:none!important}
+.q{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:13px;margin-bottom:11px;background:#fff}
+.q-top{font-weight:bold;color:var(--navy);margin-bottom:6px;font-size:14px}
+.q-text{font-weight:bold;overflow-wrap:anywhere;margin-bottom:8px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;font-size:14px}
+.opt{padding:7px 9px;background:#f8fafc;border:1px solid #edf0f4;border-radius:6px;overflow-wrap:anywhere}
+.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
+.q-meta{color:var(--muted);font-size:13px;margin-top:8px;overflow-wrap:anywhere}
+.q-act{display:flex;gap:8px;margin-top:10px}
+.q-act .btn{min-height:42px;padding:8px 16px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center}
+.stat span{font-size:12px;color:var(--muted);display:block}
+.stat strong{font-size:22px;color:var(--navy)}
+.pager{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:12px 0}
+.pager button{min-width:42px;min-height:42px;border:1px solid #dce1e9;background:#fff;border-radius:7px;color:var(--navy)}
+.pager button.on{background:var(--navy);color:#fff}
+.errs{max-height:260px;overflow:auto}
+.err-row{background:#fff0ee;border-left:4px solid var(--bad);padding:8px 10px;margin:6px 0;font-size:14px;border-radius:4px}
+details.guide{border:1px solid #d9e5f4;border-radius:9px;background:#f7faff;margin:12px 0}
+details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:var(--navy);font-size:15px}
+.gb{padding:0 14px 14px;font-size:14px;line-height:1.65;color:#3d526e}
+.gb h4{margin:12px 0 4px;color:var(--navy)}
+.gb ul{padding-left:20px}
+.gb pre{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;font-size:12.5px;overflow-x:auto;white-space:pre-wrap;margin:6px 0}
+.gb code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12.5px}
+.modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:12px;padding:18px;width:100%;max-width:640px;margin:auto}
+.codebox{background:var(--navy);color:var(--gold);padding:16px;border-radius:10px;text-align:center;margin-top:14px;font-size:22px;font-weight:bold;overflow-wrap:anywhere}
+.codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
+
 </style>
 </head>
 <body>
-<header>
-<button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
-<div class="brand">SAINTIG <span>EXAMS</span></div>
-<div class="admin-label">Administrator</div>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="admin.html">SAINTIG <span>EXAMS</span></a>
+    <span class="role">Admin</span>
+    <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
+  </div>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html" class="on">Register exam</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">Home</a></div></nav>
 </header>
-<div id="overlay"></div>
-<div class="layout">
-<aside class="sidebar" id="sidebar">
-<h3>Administration</h3>
-<a href="admin.html">Dashboard Overview</a>
-<a href="countries.html">Countries</a>
-<a href="education-levels.html">Education Levels</a>
-<a href="subjects.html">Subjects</a>
-<a href="question-bank.html">Question Bank</a>
-<a href="register-exam.html" class="active">Register Examination</a>
-<a href="register-users.html">Register Users</a>
-<a href="paid-subscribers.html">Paid Subscribers</a>
-<a href="results-reports.html">Results & Reports</a>
-<a href="visitor-analytics.html">Visitor Analytics</a>
-<a href="ai-question-generator.html">AI Question Generator</a>
-<a href="settings-security.html">Settings & Security</a>
-<hr><a href="#" id="logoutBtn">Logout</a>
-</aside>
-<main>
-<h1 class="page-title">Register Examination</h1>
-<div class="subtitle">Create examinations, add questions, upload images and manage publication.</div>
-<div class="working-bar" id="workingBar">No examination selected. Save a new draft (Step 1) or pick one (Step 2).</div>
-<div class="notice"><strong>Important:</strong> Free and Premium examinations are separate. Each examination has its own question collection. Saving questions does not publish the examination to students.</div>
 
-<section class="card">
-<h2>1. Examination Details</h2>
-<div class="grid">
-<div class="field"><label for="country">Country</label><select id="country"><option value="">Loading countries...</option></select></div>
-<div class="field"><label for="level">Education Level</label><select id="level" disabled><option value="">Select country first</option></select></div>
-<div class="field"><label for="subject">Subject</label><select id="subject" disabled><option value="">Select education level first</option></select></div>
-<div class="field"><label for="examType">Examination Category</label><select id="examType"><option value="free">Free Examination</option><option value="paid">Premium Examination</option></select><small>Premium is stored as "paid" in the database.</small></div>
-<div class="field"><label for="examTitle">Examination Title</label><input id="examTitle" placeholder="e.g. Government - Free Practice"></div>
-<div class="field"><label for="duration">Duration</label><input id="duration" value="45 minutes" readonly><small>Free: 45 minutes. Premium: 90 minutes.</small></div>
-</div>
-<div class="field"><label for="description">Examination Description</label><textarea id="description" placeholder="Enter examination instructions or description"></textarea></div>
-<div class="actions"><button class="primary" id="saveExamBtn">Save Examination Draft</button><button class="secondary" id="resetExamBtn">Clear Form</button></div>
-<div id="examStatus" class="status"></div>
-</section>
+<main class="wrap">
+  <h1>Register examination</h1>
+  <p class="sub">Four steps: exam details, add questions, review and save, publish.</p>
 
-<section class="card">
-<h2>2. Select an Existing Examination</h2>
-<div class="notice">Select an examination to continue working on its draft or view its publication status. Free and Premium examinations are clearly identified.</div>
-<div class="field"><label for="existingExam">Examination</label><select id="existingExam"><option value="">Loading examinations...</option></select></div>
-<div id="selectedExamInfo" class="notice hidden"></div>
-<div id="existingStatus" class="status"></div>
-</section>
+  <nav class="steps" id="steps" aria-label="Steps">
+    <button class="step on" data-step="1" type="button"><b>1</b>Exam</button>
+    <button class="step" data-step="2" type="button" disabled><b>2</b>Add questions</button>
+    <button class="step" data-step="3" type="button" disabled><b>3</b>Review &amp; save</button>
+    <button class="step" data-step="4" type="button" disabled><b>4</b>Publish</button>
+  </nav>
 
-<section class="card">
-<h2>3. Add Individual Questions</h2>
-<div class="notice">Questions are saved only to the selected examination. All four options are required. Images are optional. Maximum image size: 5 MB.</div>
-<div class="field"><label for="questionText">Question</label><textarea id="questionText" placeholder="Enter your question"></textarea></div>
-<div class="grid">
-<div class="field"><label for="optionA">Option A</label><input id="optionA"></div>
-<div class="field"><label for="optionB">Option B</label><input id="optionB"></div>
-<div class="field"><label for="optionC">Option C</label><input id="optionC"></div>
-<div class="field"><label for="optionD">Option D</label><input id="optionD"></div>
-<div class="field"><label for="correctOption">Correct Option</label><select id="correctOption"><option value="">Select answer</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
-<div class="field"><label for="marks">Marks</label><input id="marks" type="number" min="1" step="1" value="1"></div>
-<div class="field"><label for="questionOrder">Question Order</label><input id="questionOrder" type="number" min="1" step="1" value="1"></div>
-</div>
-<div class="field"><label for="explanation">Explanation (Optional)</label><textarea id="explanation" placeholder="Explain the correct answer"></textarea></div>
-<div class="field"><label for="questionImage">Question Image (Optional)</label><input id="questionImage" type="file" accept="image/*"><small>Maximum 5 MB. Images use the exam-images storage bucket.</small></div>
-<div class="actions"><button class="primary" id="addQuestionBtn">Add to Question Queue</button><button class="secondary" id="clearQuestionBtn">Clear Question</button></div>
-<div id="individualStatus" class="status"></div>
-</section>
+  <div class="bar" id="bar">No examination selected yet. Choose one or create a new one in step 1.</div>
 
-<section class="card">
-<h2>4. Bulk Question Upload</h2>
-<details class="guide" open>
-<summary>📘 How to prepare your exam file: guideline for Word (DOCX), Text, PDF, CSV and Excel</summary>
-<div class="guide-body">
+  <!-- STEP 1 -->
+  <section id="p1">
+    <div class="card">
+      <h2>Which examination?</h2>
+      <p class="hint">Pick an examination to continue working on, or create a new one.</p>
+      <select id="existing" aria-label="Examination"><option value="">Loading…</option></select>
+    </div>
 
-<h4>1. Word (.docx), Text (.txt) and PDF</h4>
-<p>Type each question in this order, one item per line, with a blank line between questions:</p>
+    <div class="card">
+      <h2>Exam details</h2>
+      <div class="grid" style="margin-top:12px">
+        <div><label for="country">Country</label><select id="country"><option value="">Loading…</option></select></div>
+        <div><label for="level">Education level</label><select id="level" disabled><option value="">Select country first</option></select></div>
+        <div class="full"><label for="subject">Subject</label><select id="subject" disabled><option value="">Select education level first</option></select></div>
+        <div><label for="examType">Category</label><select id="examType"><option value="free">Free examination</option><option value="paid">Premium examination</option></select><small>Premium is saved as "paid".</small></div>
+        <div><label for="duration">Duration</label><input id="duration" value="45 minutes" readonly><small>Free: 45 minutes. Premium: 90 minutes.</small></div>
+        <div class="full"><label for="examTitle">Title</label><input id="examTitle" placeholder="e.g. Government - Free Practice"></div>
+        <div class="full"><label for="description">Instructions for students (optional)</label><textarea id="description"></textarea></div>
+      </div>
+      <div class="msg" id="m1"></div>
+      <div class="row"><button class="btn gold" id="saveExam" type="button">Save and continue</button><button class="btn ghost" id="clearForm" type="button">Clear form</button></div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section id="p2" hidden>
+    <div class="tabs"><button class="tab on" id="tabFile" type="button">Upload a file</button><button class="tab" id="tabOne" type="button">Type one question</button></div>
+
+    <div class="card" id="boxFile">
+      <h2>Upload a file</h2>
+      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works.</p>
+      <details class="guide"><summary>How to prepare your file</summary><div class="gb">
+<h4>Word (.docx), Text (.txt) and PDF</h4>
+<p>One item per line, with a blank line between questions:</p>
 <pre>1. What is the capital of Nigeria?
 A. Lagos
 B. Abuja
 C. Kano
 D. Enugu
 Answer: B
-Explanation: Abuja is the capital of Nigeria.
-Marks: 1
-Order: 1
+Explanation: Abuja is the capital. (optional)
+Marks: 1 (optional)
 
-2. Which of these is a primary colour?
-A. Green
-B. Red
-C. Orange
-D. Purple
-Answer: B</pre>
-<ul>
-<li><strong>Question:</strong> start with a number, such as <code>1.</code>, <code>1)</code> or <code>Q1.</code></li>
-<li><strong>Options:</strong> exactly four lines starting <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> Type the letters yourself.</li>
-<li><strong>Answer:</strong> required, one letter from A to D, for example <code>Answer: B</code> or <code>Ans: B</code>.</li>
-<li><strong>Explanation, Marks and Order</strong> are optional. Marks must be a whole number and default to 1. Order continues after the questions already saved and queued.</li>
-<li><strong>In Word:</strong> type the numbers and letters yourself. Word's automatic numbered or lettered lists are not read. Tables, text boxes and pictures inside the document are ignored.</li>
-<li><strong>PDF:</strong> must contain real text. Scanned or photographed pages cannot be read.</li>
-<li><strong>Images:</strong> these formats cannot carry images. Use CSV or Excel with the <code>image_filename</code> column instead.</li>
-</ul>
-
-<h4>2. CSV (.csv) and Excel (.xlsx, .xls)</h4>
-<p>Use the 10-column template exactly, with headings in the first row:</p>
+2. Next question…</pre>
+<ul><li>Start each question with a number such as <code>1.</code> or <code>1)</code>.</li>
+<li>Type the option letters <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> yourself. Word's automatic lists are not read.</li>
+<li>Every question needs an <code>Answer:</code> line with one letter, A to D.</li>
+<li>PDF files need real text. Scanned or photographed pages cannot be read.</li></ul>
+<h4>CSV and Excel</h4>
+<p>Put the column names in the first row. Columns are found by name, so their order does not matter. Extra columns are ignored.</p>
 <pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order, image_filename</pre>
-<p>Excel files are read from the first sheet. For image questions, select the images below and type their exact filenames in <code>image_filename</code>. Each image must be 5 MB or smaller.</p>
+<ul><li>Needed: question_text, the four options and correct_option. The rest are optional.</li>
+<li>Leave marks empty to use the default marks.</li>
+<li>Excel files are read from the first sheet. CSV files can use commas or semicolons.</li></ul>
+<h4>File names</h4>
+<p>Any normal name works, such as <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Only the ending must be .pdf, .docx, .txt, .csv, .xlsx or .xls.</p>
+<h4>If something is wrong</h4>
+<p>Good questions are still accepted. Problem items are listed with their row or question number so you can fix them and read the file again.</p>
+</div></details>
+      <div class="row" style="margin-top:0"><button class="btn ghost" id="tplCsv" type="button">Download CSV template</button><button class="btn ghost" id="tplTxt" type="button">Download Word / Text sample</button></div>
+      <div style="margin-top:14px"><label for="file">Choose your file</label><input id="file" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls"></div>
+      <div style="margin-top:14px"><label for="images">Images for CSV or Excel questions (optional)</label><input id="images" type="file" accept="image/*" multiple><small>Type each image's exact file name in the image_filename column. Maximum 5 MB each.</small></div>
+      <div class="msg" id="upMsg"></div>
+      <div class="row"><button class="btn primary" id="readBtn" type="button">Read file</button></div>
+      <div id="upResult"></div>
+    </div>
 
-<h4>3. Filenames</h4>
-<p>Any normal filename works, for example <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Spaces, brackets and capital letters are fine. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
+    <div class="card" id="boxOne" hidden>
+      <h2>Type one question</h2>
+      <div style="margin-top:12px"><label for="qText">Question</label><textarea id="qText"></textarea></div>
+      <div class="grid" style="margin-top:12px">
+        <div><label for="oA">Option A</label><input id="oA"></div>
+        <div><label for="oB">Option B</label><input id="oB"></div>
+        <div><label for="oC">Option C</label><input id="oC"></div>
+        <div><label for="oD">Option D</label><input id="oD"></div>
+        <div><label for="qCorrect">Correct option</label><select id="qCorrect"><option value="">Select</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+        <div><label for="qMarks">Marks</label><input id="qMarks" type="number" min="1" step="1" value="1"></div>
+        <div class="full"><label for="qExp">Explanation (optional)</label><textarea id="qExp"></textarea></div>
+        <div class="full"><label for="qImage">Image (optional)</label><input id="qImage" type="file" accept="image/*"><small>Maximum 5 MB.</small></div>
+      </div>
+      <div class="msg" id="oneMsg"></div>
+      <div class="row"><button class="btn gold" id="addOne" type="button">Add to review</button></div>
+    </div>
 
-<h4>4. After choosing your file</h4>
-<p>Tap <strong>Validate and Preview File</strong>. Fix any errors it lists, then add the questions to the queue, save the queue, and finally publish the examination.</p>
-</div>
-</details>
-<div class="actions"><button class="gold" id="downloadTemplateBtn">Download CSV Template</button><button class="secondary" id="downloadSampleBtn">Download Sample for Word / Text</button></div>
-<div class="field"><label for="csvFile">Select File (PDF, Word, Text, CSV or Excel)</label><input id="csvFile" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls,text/csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"><small>Any filename is accepted, e.g. Government SS1 Questions.csv, First Term Exam 2026.xlsx, My Questions (Final).CSV</small></div>
-<div class="field"><label for="bulkImages">Select Images for CSV Questions (Optional)</label><input id="bulkImages" type="file" accept="image/*" multiple><small>Each image must be 5 MB or smaller.</small></div>
-<div class="actions"><button class="primary" id="previewCsvBtn">Validate and Preview File</button><button class="secondary" id="clearCsvBtn">Clear File Selection</button></div>
-<div id="csvStatus" class="status"></div>
-<div id="csvPreview"></div>
-</section>
+    <div class="nav"><button class="btn ghost" data-go="1" type="button">← Back</button><button class="btn primary" data-go="3" type="button">Next: review</button></div>
+  </section>
 
-<section class="card">
-<h2>5. Question Upload Queue</h2>
-<div class="notice">Review questions before saving them. The queue is temporary and will be cleared if you refresh or leave this page.</div>
-<div class="grid">
-<div><span class="pill">Questions in queue: <strong id="queueCount">0</strong></span></div>
-<div><span class="pill">Saved questions: <strong id="savedCount">0</strong></span></div>
-</div>
-<div id="queuePreview"></div>
-<div class="actions"><button class="success" id="publishQuestionsBtn">Save Queued Questions</button><button class="danger" id="clearQueueBtn">Clear Queue</button></div>
-<div id="uploadStatus" class="status"></div>
-</section>
+  <!-- STEP 3 -->
+  <section id="p3" hidden>
+    <div class="card">
+      <h2>Review and save</h2>
+      <p class="hint">Check the questions, edit or delete any, then save them all.</p>
+      <div class="stats">
+        <div class="stat"><span>To save</span><strong id="qCount">0</strong></div>
+        <div class="stat"><span>Already saved</span><strong id="stSaved">0</strong></div>
+        <div class="stat"><span>Needed to publish</span><strong id="stNeed">1</strong></div>
+      </div>
+      <div class="msg" id="rvMsg"></div>
+      <div id="qList"></div>
+      <div class="pager" id="pager"></div>
+      <div class="row"><button class="btn gold" id="saveAll" type="button" disabled>Save all questions</button><button class="btn danger" id="clearAll" type="button">Remove all</button></div>
+    </div>
+    <div class="nav"><button class="btn ghost" data-go="2" type="button">← Back</button><button class="btn primary" data-go="4" type="button">Next: publish</button></div>
+  </section>
 
-<section class="card">
-<h2>6. Publish Examination to Students</h2>
-<div class="notice warning"><strong>Publication requirements:</strong><br>Free examinations require at least <span id="minFreeText">1</span> saved question(s) and use 45 minutes.<br>Premium examinations require at least <span id="minPremiumText">1</span> saved question(s) and use 90 minutes.<br>Publishing questions does not automatically publish the examination.</div>
-<div id="publicationInfo" class="notice">Select an examination to view its publication status.</div>
-<div class="actions"><button class="gold" id="publishExamBtn">Publish Examination to Students</button><button class="secondary" id="refreshExamBtn">Refresh Examination Details</button></div>
-<div id="publishStatus" class="status"></div>
-</section>
+  <!-- STEP 4 -->
+  <section id="p4" hidden>
+    <div class="card">
+      <h2>Publish to students</h2>
+      <p class="hint">Saving questions does not publish the exam. Publish when it is ready.</p>
+      <div class="sum" id="pubInfo"></div>
+      <div class="msg" id="pubMsg"></div>
+      <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
+    </div>
+    <div class="nav"><button class="btn ghost" data-go="3" type="button">← Back</button></div>
+  </section>
 </main>
-</div>
+
+<div class="modal" id="editModal"><div class="modal-box">
+  <h2 style="color:var(--navy);margin-bottom:12px;font-size:18px">Edit question</h2>
+  <label for="eText">Question</label><textarea id="eText"></textarea>
+  <div class="grid" style="margin-top:12px">
+    <div><label for="eA">Option A</label><input id="eA"></div><div><label for="eB">Option B</label><input id="eB"></div>
+    <div><label for="eC">Option C</label><input id="eC"></div><div><label for="eD">Option D</label><input id="eD"></div>
+    <div><label for="eCorrect">Correct option</label><select id="eCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+    <div><label for="eMarks">Marks</label><input id="eMarks" type="number" min="1" step="1"></div>
+    <div class="full"><label for="eExp">Explanation (optional)</label><textarea id="eExp"></textarea></div>
+  </div>
+  <div class="msg" id="eMsg"></div>
+  <div class="row"><button class="btn ghost" id="eCancel" type="button">Cancel</button><button class="btn gold" id="eSave" type="button">Save changes</button></div>
+</div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
-import { supabase, getCurrentSession } from "./auth.js";
+import {supabase,getCurrentSession} from "./auth.js";
 
-const $ = id => document.getElementById(id);
-let currentUser=null,queue=[],csvRows=[],selectedExam=null;
-let savedQuestionCount=0,savedMaxOrder=0,duplicateTexts=new Set(),isSavingQuestions=false;
-const MAX_IMAGE_SIZE=5*1024*1024;
-const CSV_HEADERS=["question_text","option_a","option_b","option_c","option_d","correct_option","explanation","marks","question_order","image_filename"];
+/* Questions needed before an exam can be published. Change these two numbers if you want a different minimum. */
+const MIN_FREE=1, MIN_PREMIUM=1;
+const MAX_IMG=5*1024*1024;
 
-function showStatus(id,message,type="info"){
- const el=$(id);el.textContent=message;el.className="status "+type;
+/* ================= shared helpers ================= */
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const keyOf=t=>String(t||"").trim().toLowerCase().replace(/\s+/g," ");
+const baseName=n=>String(n||"").split(/[\\/]/).pop().trim();
+function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
+function hush(id){const e=$(id);e.textContent="";e.className="msg"}
+async function withRetry(fn){try{return await fn()}catch(e){await new Promise(r=>setTimeout(r,1200));return await fn()}}
+function download(name,text,type){
+  const url=URL.createObjectURL(new Blob([text],{type}));
+  const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-function hideStatus(id){$(id).className="status";$(id).textContent="";}
-function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-}
-function normalizeQuestion(text){return String(text||"").trim().toLowerCase().replace(/\s+/g," ");}
-function isPaid(type){return type==="paid";}
-function displayExamType(type){return isPaid(type)?"PREMIUM":"FREE";}
-/* MINIMUM SAVED QUESTIONS NEEDED BEFORE AN EXAMINATION CAN BE PUBLISHED.
-   Change these two numbers to set the minimum. Use 1 to allow publishing with a single question.
-   (Uploading and saving questions has no minimum: you can save even 1 question.) */
-const MIN_QUESTIONS_FREE=1;
-const MIN_QUESTIONS_PREMIUM=1;
-function requiredExamCount(type=selectedExam?.access_type){return isPaid(type)?MIN_QUESTIONS_PREMIUM:MIN_QUESTIONS_FREE;}
-function durationForType(type=$("examType").value){return isPaid(type)?90:45;}
-function updateExamType(){$("duration").value=durationForType()+" minutes";}
-function validateImage(file){
- if(!file)return null;
- if(!file.type.startsWith("image/"))throw new Error("Please select a valid image file.");
- if(file.size>MAX_IMAGE_SIZE)throw new Error(`Image "${file.name}" exceeds the 5 MB limit.`);
- return file;
-}
-function safeFileName(name){return String(name).split(/[\\/]/).pop().trim();}
-function makeImagePath(file){
- const ext=file.name.includes(".")?file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g,""):"jpg";
- return `question-images/${crypto.randomUUID()}.${ext||"jpg"}`;
+async function copyText(text){
+  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return}
+  const t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";
+  document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();
+  if(!ok)throw new Error("Copying is not supported by this browser.");
 }
 
-/* AUTH */
-async function verifyAdministrator(){
- try{
-  const session=await getCurrentSession();
-  if(!session){location.replace("admin-login.html");return false;}
-  const user=session.user||session;
-  if(!user.id){location.replace("admin-login.html");return false;}
-  const {data:admin,error}=await supabase.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
-  if(error||!admin){alert("Administrator access required.");await supabase.auth.signOut();location.replace("admin-login.html");return false;}
-  currentUser=user;return true;
- }catch(error){console.error(error);location.replace("admin-login.html");return false;}
+/* ================= file reading ================= */
+const ALLOWED_EXT=["pdf","docx","txt","csv","xlsx","xls"];
+/* The extension is the text after the LAST dot, in any letter case. Any filename is allowed. */
+const fileExt=name=>{const s=String(name||"").trim(),i=s.lastIndexOf(".");return i<0?"":s.slice(i+1).toLowerCase()};
+
+async function readText(file){
+  const buf=await file.arrayBuffer();
+  try{return new TextDecoder("utf-8",{fatal:true}).decode(buf).replace(/^\uFEFF/,"")}
+  catch{return new TextDecoder("windows-1252").decode(buf)}   /* Excel "CSV" saved in the old Windows encoding */
+}
+function detectDelimiter(text){
+  const first=text.split(/\r?\n/).find(l=>l.trim())||"";
+  let best=",",top=0;
+  for(const d of [",",";","\t"]){const n=first.split(d).length;if(n>top){top=n;best=d}}
+  return best;
+}
+function parseDelimited(text,d){
+  const rows=[];let row=[],cell="",q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i],n=text[i+1];
+    if(c==='"'){if(q&&n==='"'){cell+='"';i++}else q=!q}
+    else if(c===d&&!q){row.push(cell);cell=""}
+    else if((c==="\n"||c==="\r")&&!q){
+      if(c==="\r"&&n==="\n")i++;
+      row.push(cell);cell="";
+      if(row.some(v=>v.trim()!==""))rows.push(row);
+      row=[];
+    }else cell+=c;
+  }
+  if(q)throw new Error("A quotation mark in your file is opened but never closed. Check the quotes (\") in your questions and try again.");
+  row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row);
+  return rows;
+}
+async function sheetRows(file){
+  if(!window.XLSX)throw new Error("The Excel reader did not load. Check your internet connection and refresh the page.");
+  const wb=XLSX.read(await file.arrayBuffer(),{type:"array"});
+  for(const name of wb.SheetNames){
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""})
+      .map(r=>r.map(v=>String(v??""))).filter(r=>r.some(v=>v.trim()!==""));
+    if(rows.length)return rows;
+  }
+  throw new Error("The Excel file is empty.");
+}
+async function docxText(file){
+  if(!window.mammoth)throw new Error("The Word reader did not load. Check your internet connection and refresh the page.");
+  return (await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()})).value;
+}
+async function pdfText(file){
+  if(!window.pdfjsLib)throw new Error("The PDF reader did not load. Check your internet connection and refresh the page.");
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+  let out="";
+  for(let p=1;p<=pdf.numPages;p++){
+    const content=await (await pdf.getPage(p)).getTextContent();
+    let lastY=null;
+    for(const it of content.items){
+      const y=it.transform[5];
+      if(lastY!==null&&Math.abs(y-lastY)>2)out+="\n";
+      out+=it.str+" ";lastY=y;
+    }
+    out+="\n";
+  }
+  if(!out.trim())throw new Error("No readable text was found in this PDF. Scanned or photographed pages cannot be read.");
+  return out;
 }
 
-/* MENU */
-function closeMenu(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show");}
-$("menuBtn").addEventListener("click",()=>{$("sidebar").classList.toggle("open");$("overlay").classList.toggle("show");});
-$("overlay").addEventListener("click",closeMenu);
-$("sidebar").querySelectorAll("a").forEach(a=>{if(a.id!=="logoutBtn")a.addEventListener("click",closeMenu);});
-$("logoutBtn").addEventListener("click",async e=>{
- e.preventDefault();if(!confirm("Are you sure you want to log out?"))return;
- await supabase.auth.signOut();location.replace("admin-login.html");
+/* ---- tables (CSV, Excel): columns are found by their HEADING, not their position ---- */
+const ALIASES={
+  question_text:["question_text","question","questions","question_name"],
+  option_a:["option_a","a","optiona","option_1","choice_a"],
+  option_b:["option_b","b","optionb","option_2","choice_b"],
+  option_c:["option_c","c","optionc","option_3","choice_c"],
+  option_d:["option_d","d","optiond","option_4","choice_d"],
+  correct_option:["correct_option","correct","answer","correct_answer","ans","key"],
+  explanation:["explanation","reason","solution"],
+  marks:["marks","mark","score","points","point"],
+  question_order:["question_order","order","number","no","sn","s_n"],
+  image_filename:["image_filename","image","image_file","picture"]
+};
+const REQUIRED=["question_text","option_a","option_b","option_c","option_d","correct_option"];
+function mapHeaders(row){
+  const idx={};
+  row.forEach((h,i)=>{
+    const k=String(h).replace(/^\uFEFF/,"").trim().toLowerCase().replace(/[\s\-.]+/g,"_").replace(/^_+|_+$/g,"");
+    for(const [name,list] of Object.entries(ALIASES))if(list.includes(k)&&idx[name]===undefined)idx[name]=i;
+  });
+  return idx;
+}
+function tableToItems(rows){
+  let h=-1,idx=null;
+  for(let i=0;i<Math.min(rows.length,6);i++){
+    const m=mapHeaders(rows[i]);
+    if(REQUIRED.every(k=>m[k]!==undefined)){h=i;idx=m;break}
+  }
+  if(h<0)throw new Error("The column headings were not found. The first row must contain: question_text, option_a, option_b, option_c, option_d, correct_option. Download the template to see the layout.");
+  const g=(r,k)=>idx[k]===undefined?"":String(r[idx[k]]??"").trim();
+  return rows.slice(h+1).map((r,i)=>({
+    ref:"Row "+(h+i+2),
+    raw:{question_text:g(r,"question_text"),option_a:g(r,"option_a"),option_b:g(r,"option_b"),option_c:g(r,"option_c"),option_d:g(r,"option_d"),
+         correct:g(r,"correct_option"),explanation:g(r,"explanation"),marks:g(r,"marks"),order:g(r,"question_order"),image:g(r,"image_filename")}
+  }));
+}
+
+/* ---- plain text layout (TXT, DOCX, PDF): "1. Question / A. ... / Answer: B" ---- */
+function parseTextQuestions(text){
+  const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim());
+  const list=[];let cur=null,last="question_text",afterBlank=false;
+  const rxAns=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
+  const rxExp=/^explanation\s*[:=-]\s*(.*)$/i;
+  const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
+  const rxOrder=/^order\s*[:=-]\s*(\d+)/i;
+  const rxOpt=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
+  const rxQ=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
+  const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct:"",explanation:"",marks:"",order:"",image:""});
+  for(const line of lines){
+    if(!line){afterBlank=true;continue}
+    let m;
+    if(cur&&(m=line.match(rxAns))){cur.correct=m[1].toUpperCase();last=""}
+    else if(cur&&(m=line.match(rxExp))){cur.explanation=m[1];last="explanation"}
+    else if(cur&&(m=line.match(rxMarks))){cur.marks=m[1];last=""}
+    else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last=""}
+    else if(cur&&(m=line.match(rxOpt))){last="option_"+m[1].toLowerCase();cur[last]=m[2]}
+    else if((m=line.match(rxQ))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text"}
+    else if(!cur||(cur.correct&&(last===""||afterBlank))){if(cur)list.push(cur);cur=blank();cur.question_text=line;last="question_text"}
+    else if(last){cur[last]+=" "+line}
+    afterBlank=false;
+  }
+  if(cur)list.push(cur);
+  return list;
+}
+
+async function readQuestionFile(file){
+  const e=fileExt(file.name);
+  if(!ALLOWED_EXT.includes(e))throw new Error("This file type is not supported. Use PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls).");
+  if(e==="xlsx"||e==="xls")return tableToItems(await sheetRows(file));
+  if(e==="csv"){const t=await readText(file);return tableToItems(parseDelimited(t,detectDelimiter(t)))}
+  let text;
+  if(e==="txt"){
+    text=await readText(file);
+    if(/^\s*"?(question_text|question)"?\s*[,;\t]/i.test(text))return tableToItems(parseDelimited(text,detectDelimiter(text)));
+  }else if(e==="docx")text=await docxText(file);
+  else text=await pdfText(file);
+  const list=parseTextQuestions(text);
+  if(!list.length)throw new Error("No questions were found. Write each one like this: 1. Question, then A. B. C. D. options, then Answer: B.");
+  return list.map((raw,i)=>({ref:"Question "+(i+1),raw}));
+}
+
+/* ---- checking one question ---- */
+function normalizeCorrect(v){
+  const s=String(v||"").trim();
+  let m=s.match(/^[\s(\[]*(?:option\s*)?([A-D])(?![A-Za-z])/i);
+  if(m)return m[1].toUpperCase();
+  m=s.match(/^\s*([1-4])\b/);
+  return m?"ABCD"[Number(m[1])-1]:"";
+}
+function buildQuestion(raw,rules){
+  if(!raw.question_text)throw new Error("The question text is empty.");
+  for(const k of ["option_a","option_b","option_c","option_d"])
+    if(!raw[k])throw new Error("Option "+k.slice(-1).toUpperCase()+" is empty. Every question needs four options.");
+  const correct=normalizeCorrect(raw.correct);
+  if(!correct)throw new Error("The correct answer must be A, B, C or D.");
+  const marks=String(raw.marks??"").trim()===""?rules.defaultMarks:parseFloat(raw.marks);
+  if(!Number.isFinite(marks)||marks<=0)throw new Error("Marks must be a number above zero.");
+  if(rules.integerMarks&&!Number.isInteger(marks))throw new Error("Marks must be a whole number, such as 1 or 2.");
+  const order=parseInt(raw.order,10);
+  return{question_text:raw.question_text.trim(),option_a:raw.option_a.trim(),option_b:raw.option_b.trim(),option_c:raw.option_c.trim(),option_d:raw.option_d.trim(),
+    correct_option:correct,explanation:(raw.explanation||"").trim()||null,marks,sortOrder:Number.isFinite(order)&&order>0?order:null,imageName:raw.image||"",imageFile:null};
+}
+function evaluate(items,rules,taken,extra){
+  const valid=[],errors=[],seen=new Set(taken);
+  for(const it of items){
+    try{
+      const q=buildQuestion(it.raw,rules),k=keyOf(q.question_text);
+      if(seen.has(k))throw new Error(taken.has(k)?"This question is already saved or waiting in the review list.":"This question appears twice in the file.");
+      if(extra)extra(it.raw,q);
+      seen.add(k);valid.push(q);
+    }catch(e){errors.push({ref:it.ref,message:e.message})}
+  }
+  return{valid,errors,total:items.length};
+}
+
+/* ---- result of reading a file ---- */
+function renderReadResult(res,prepare){
+  const box=$("upResult");let h="";
+  if(res.valid.length)h+=`<div class="msg show ok">✅ ${res.valid.length} of ${res.total} question(s) are ready to add.</div>`;
+  if(res.errors.length)h+=`<div class="msg show warn">⚠ ${res.errors.length} item(s) need fixing and will be skipped:</div><div class="errs">`+
+    res.errors.slice(0,40).map(e=>`<div class="err-row"><b>${esc(e.ref)}:</b> ${esc(e.message)}</div>`).join("")+
+    (res.errors.length>40?`<p class="hint">…and ${res.errors.length-40} more.</p>`:"")+`</div>`;
+  if(!res.valid.length)h+=`<div class="msg show err">No usable questions were found. Fix the items above in your file, then read it again.</div>`;
+  else h+=`<div class="row"><button class="btn gold" id="addValid" type="button">Add ${res.valid.length} question(s) to review</button></div>`;
+  box.innerHTML=h;
+  const b=$("addValid");
+  if(b)b.addEventListener("click",()=>{
+    const out=prepare?prepare(res.valid):{list:res.valid,note:""};
+    if(!out.list.length){say("upMsg",out.note||"Nothing could be added.","err");return}
+    addToQueue(out.list);box.innerHTML="";$("file").value="";
+    say("rvMsg",out.list.length+" question(s) added for review."+(out.note?" "+out.note:""),out.note?"warn":"ok");
+    go(3);
+  });
+}
+
+/* ================= review list ================= */
+let queue=[],qpage=1,nextId=1,editId=null;
+const PAGE_SIZE=10;
+function addToQueue(list){for(const q of list)queue.push({...q,id:nextId++});qpage=Math.ceil(queue.length/PAGE_SIZE)||1;renderQueue()}
+function renderQueue(){
+  const pages=Math.max(1,Math.ceil(queue.length/PAGE_SIZE));
+  if(qpage>pages)qpage=pages;
+  $("qCount").textContent=queue.length;
+  const box=$("qList");
+  if(!queue.length)box.innerHTML='<p class="hint">Nothing to review right now. Add questions in step 2.</p>';
+  else box.innerHTML=queue.slice((qpage-1)*PAGE_SIZE,qpage*PAGE_SIZE).map((q,i)=>`
+    <article class="q">
+      <div class="q-top">Question ${(qpage-1)*PAGE_SIZE+i+1}</div>
+      <div class="q-text">${esc(q.question_text)}</div>
+      <div class="opts">${["a","b","c","d"].map(l=>`<div class="opt ${q.correct_option===l.toUpperCase()?"ok":""}"><b>${l.toUpperCase()}.</b> ${esc(q["option_"+l])}</div>`).join("")}</div>
+      <div class="q-meta">Marks: ${esc(q.marks)}${q.imageFile?" · Image: "+esc(q.imageFile.name):""}${q.explanation?"<br>Explanation: "+esc(q.explanation):""}</div>
+      <div class="q-act"><button class="btn ghost" type="button" data-act="edit" data-id="${q.id}">Edit</button><button class="btn danger" type="button" data-act="del" data-id="${q.id}">Delete</button></div>
+    </article>`).join("");
+  const pg=$("pager");pg.innerHTML="";
+  if(pages>1)for(let p=1;p<=pages;p++){const b=document.createElement("button");b.type="button";b.textContent=p;if(p===qpage)b.className="on";b.onclick=()=>{qpage=p;renderQueue()};pg.appendChild(b)}
+  onQueueChange();
+}
+$("qList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-act]");if(!b)return;
+  const id=Number(b.dataset.id),q=queue.find(x=>x.id===id);if(!q)return;
+  if(b.dataset.act==="del"){if(confirm("Delete this question from the review list?")){queue=queue.filter(x=>x.id!==id);renderQueue()}return}
+  editId=id;
+  $("eText").value=q.question_text;$("eA").value=q.option_a;$("eB").value=q.option_b;$("eC").value=q.option_c;$("eD").value=q.option_d;
+  $("eCorrect").value=q.correct_option;$("eMarks").value=q.marks;$("eExp").value=q.explanation||"";
+  hush("eMsg");$("editModal").classList.add("show");
 });
+$("eCancel").addEventListener("click",()=>{$("editModal").classList.remove("show");editId=null});
+$("eSave").addEventListener("click",()=>{
+  try{
+    const q=queue.find(x=>x.id===editId);if(!q)return;
+    const u=buildQuestion({question_text:$("eText").value.trim(),option_a:$("eA").value.trim(),option_b:$("eB").value.trim(),option_c:$("eC").value.trim(),option_d:$("eD").value.trim(),
+      correct:$("eCorrect").value,explanation:$("eExp").value.trim(),marks:$("eMarks").value.trim(),order:"",image:""},RULES());
+    Object.assign(q,{question_text:u.question_text,option_a:u.option_a,option_b:u.option_b,option_c:u.option_c,option_d:u.option_d,correct_option:u.correct_option,explanation:u.explanation,marks:u.marks});
+    $("editModal").classList.remove("show");editId=null;renderQueue();
+  }catch(e){say("eMsg",e.message,"err")}
+});
+$("clearAll").addEventListener("click",()=>{if(queue.length&&confirm("Remove all "+queue.length+" question(s) from the review list? Saved questions are not affected.")){queue=[];renderQueue()}});
+$("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 
-/* COUNTRY, LEVEL, SUBJECT */
+
+/* ================= state ================= */
+let exam=null,savedCount=0,maxOrder=0,existing=new Set(),busy=false,step=1;
+const isPaid=t=>t==="paid";
+const typeName=t=>isPaid(t)?"PREMIUM":"FREE";
+const needNow=()=>isPaid(exam?exam.access_type:$("examType").value)?MIN_PREMIUM:MIN_FREE;
+const RULES=()=>({defaultMarks:1,integerMarks:true});
+
+/* ================= navigation ================= */
+function go(n){
+  if(n>1&&!exam){say("m1","Save or choose an examination first.","warn");n=1}
+  step=n;
+  for(let i=1;i<=4;i++){
+    $("p"+i).hidden=i!==n;
+    const b=document.querySelector('.step[data-step="'+i+'"]');
+    b.classList.toggle("on",i===n);b.classList.toggle("done",i<n&&(i>1||!!exam));
+  }
+  if(n===3)renderQueue();
+  if(n===4)refreshPublish();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".step").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.step))));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.go))));
+$("tabFile").onclick=()=>{$("tabFile").classList.add("on");$("tabOne").classList.remove("on");$("boxFile").hidden=false;$("boxOne").hidden=true};
+$("tabOne").onclick=()=>{$("tabOne").classList.add("on");$("tabFile").classList.remove("on");$("boxFile").hidden=true;$("boxOne").hidden=false};
+
+function refreshBar(){
+  const b=$("bar");
+  if(!exam)b.textContent="No examination selected yet. Choose one or create a new one in step 1.";
+  else b.innerHTML="<span><b>"+esc(exam.title)+"</b></span><span>"+typeName(exam.access_type)+"</span><span>"+(exam.is_published?"PUBLISHED":"DRAFT")+"</span><span>Saved: "+savedCount+"</span><span>To review: "+queue.length+"</span>";
+  document.querySelectorAll(".step").forEach(s=>{if(Number(s.dataset.step)>1)s.disabled=!exam});
+  $("stSaved").textContent=savedCount;$("stNeed").textContent=needNow();
+}
+function onQueueChange(){
+  refreshBar();
+  $("saveAll").disabled=!queue.length||busy||!!(exam&&exam.is_published);
+}
+window.addEventListener("beforeunload",e=>{if(queue.length){e.preventDefault();e.returnValue=""}});
+
+/* ================= country, level, subject ================= */
 async function loadCountries(){
- const {data,error}=await supabase.from("education_systems").select("id,country_name").eq("is_active",true).order("country_name");
- if(error)throw error;
- $("country").innerHTML='<option value="">Select country</option>'+(data||[]).map(x=>`<option value="${escapeHTML(x.id)}">${escapeHTML(x.country_name)}</option>`).join("");
+  const {data,error}=await supabase.from("education_systems").select("id,country_name").eq("is_active",true).order("country_name");
+  if(error)throw error;
+  $("country").innerHTML='<option value="">Select country</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.country_name)}</option>`).join("");
 }
 async function loadLevels(){
- const id=$("country").value;
- $("level").innerHTML='<option value="">Select education level</option>';
- $("subject").innerHTML='<option value="">Select education level first</option>';
- $("level").disabled=true;$("subject").disabled=true;
- if(!id)return;
- const {data,error}=await supabase.from("education_levels").select("id,level_name").eq("education_system_id",id).eq("is_active",true).order("level_name");
- if(error)throw error;
- $("level").innerHTML+=(data||[]).map(x=>`<option value="${escapeHTML(x.id)}">${escapeHTML(x.level_name)}</option>`).join("");
- $("level").disabled=false;
+  const id=$("country").value;
+  $("level").innerHTML='<option value="">Select education level</option>';
+  $("subject").innerHTML='<option value="">Select education level first</option>';
+  $("level").disabled=true;$("subject").disabled=true;
+  if(!id)return;
+  const {data,error}=await supabase.from("education_levels").select("id,level_name").eq("education_system_id",id).eq("is_active",true).order("level_name");
+  if(error)throw error;
+  $("level").innerHTML+=(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.level_name)}</option>`).join("");
+  $("level").disabled=false;
 }
 async function loadSubjects(){
- const id=$("level").value;
- $("subject").innerHTML='<option value="">Select subject</option>';$("subject").disabled=true;
- if(!id)return;
- const {data:relations,error:relError}=await supabase.from("education_level_subjects").select("subject_id").eq("education_level_id",id).eq("is_active",true);
- if(relError)throw relError;
- const ids=[...new Set((relations||[]).map(x=>x.subject_id))];
- if(!ids.length){$("subject").innerHTML='<option value="">No subjects assigned to this level</option>';return;}
- const {data,error}=await supabase.from("subjects").select("id,name").eq("is_active",true).in("id",ids).order("name");
- if(error)throw error;
- $("subject").innerHTML+=(data||[]).map(x=>`<option value="${escapeHTML(x.id)}">${escapeHTML(x.name)}</option>`).join("");
- $("subject").disabled=false;
+  const id=$("level").value;
+  $("subject").innerHTML='<option value="">Select subject</option>';$("subject").disabled=true;
+  if(!id)return;
+  const {data:rel,error:e1}=await supabase.from("education_level_subjects").select("subject_id").eq("education_level_id",id).eq("is_active",true);
+  if(e1)throw e1;
+  const ids=[...new Set((rel||[]).map(x=>x.subject_id))];
+  if(!ids.length){$("subject").innerHTML='<option value="">No subjects assigned to this level</option>';return}
+  const {data,error}=await supabase.from("subjects").select("id,name").eq("is_active",true).in("id",ids).order("name");
+  if(error)throw error;
+  $("subject").innerHTML+=(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join("");
+  $("subject").disabled=false;
 }
-$("country").addEventListener("change",async()=>{try{await loadLevels();}catch(e){showStatus("examStatus",e.message,"error");}});
-$("level").addEventListener("change",async()=>{try{await loadSubjects();}catch(e){showStatus("examStatus",e.message,"error");}});
-$("examType").addEventListener("change",updateExamType);
+$("country").addEventListener("change",()=>loadLevels().catch(e=>say("m1",e.message,"err")));
+$("level").addEventListener("change",()=>loadSubjects().catch(e=>say("m1",e.message,"err")));
+$("examType").addEventListener("change",()=>{$("duration").value=(isPaid($("examType").value)?90:45)+" minutes"});
 
-/* EXAMINATION */
-function getExamFormData(){
- const title=$("examTitle").value.trim(),subjectId=$("subject").value,levelId=$("level").value,type=$("examType").value;
- if(!title||!subjectId||!levelId)throw new Error("Select country, education level and subject, then enter the examination title.");
- return {subject_id:subjectId,education_level_id:levelId,title,description:$("description").value.trim(),duration_minutes:durationForType(type),access_type:type,is_published:false};
+/* ================= examinations ================= */
+async function loadExams(selectId){
+  const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published").is("school_account_id",null).order("created_at",{ascending:false});
+  if(error)throw error;
+  $("existing").innerHTML='<option value="">➕ Create a new examination</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">[${typeName(x.access_type)}] ${esc(x.title)} — ${x.is_published?"Published":"Draft"}</option>`).join("");
+  if(selectId)$("existing").value=String(selectId);
 }
-async function saveExamDraft(){
- try{
-  hideStatus("examStatus");const payload=getExamFormData();
-  $("saveExamBtn").disabled=true;$("saveExamBtn").textContent="Saving...";
-  if(selectedExam?.is_published)throw new Error("This examination is already published. Create a new draft instead.");
-  const result=selectedExam
-   ?await supabase.from("examinations").update(payload).eq("id",selectedExam.id).eq("is_published",false).select().single()
-   :await supabase.from("examinations").insert(payload).select().single();
-  if(result.error)throw result.error;
-  selectedExam=result.data;
-  showStatus("examStatus",`${displayExamType(selectedExam.access_type)} examination draft saved successfully.`,"ok");
-  await loadExistingExams();$("existingExam").value=selectedExam.id;await refreshSelectedExam();
- }catch(e){showStatus("examStatus",e.message,"error");}
- finally{$("saveExamBtn").disabled=false;$("saveExamBtn").textContent="Save Examination Draft";}
+function clearForm(){
+  $("country").value="";$("level").innerHTML='<option value="">Select country first</option>';$("level").disabled=true;
+  $("subject").innerHTML='<option value="">Select education level first</option>';$("subject").disabled=true;
+  $("examTitle").value="";$("description").value="";$("examType").value="free";$("duration").value="45 minutes";
 }
-$("saveExamBtn").addEventListener("click",saveExamDraft);
+async function fillForm(e){
+  const {data,error}=await supabase.from("education_levels").select("id,education_system_id").eq("id",e.education_level_id).single();
+  if(error)throw error;
+  $("country").value=data.education_system_id;await loadLevels();
+  $("level").value=e.education_level_id;await loadSubjects();
+  $("subject").value=e.subject_id;$("examType").value=e.access_type;
+  $("examTitle").value=e.title||"";$("description").value=e.description||"";
+  $("duration").value=(isPaid(e.access_type)?90:45)+" minutes";
+}
+async function refreshSaved(){
+  const {data,error}=await supabase.from("exam_questions").select("question_text,question_order,is_archived").eq("examination_id",exam.id).range(0,4999);
+  if(error)throw error;
+  const rows=data||[];
+  savedCount=rows.filter(r=>r.is_archived!==true).length;
+  existing=new Set(rows.map(r=>keyOf(r.question_text)));
+  maxOrder=Math.max(0,...rows.map(r=>Number(r.question_order)||0));
+}
+async function chooseExam(id){
+  if(queue.length&&!confirm("You have questions waiting in the review list. They will be lost if you switch. Continue?")){$("existing").value=exam?String(exam.id):"";return}
+  queue=[];renderQueue();$("upResult").innerHTML="";hush("upMsg");hush("rvMsg");
+  if(!id){exam=null;savedCount=0;maxOrder=0;existing=new Set();clearForm();refreshBar();hush("m1");return}
+  const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,duration_minutes,is_published").eq("id",id).single();
+  if(error)throw error;
+  exam=data;await fillForm(data);await refreshSaved();refreshBar();
+  say("m1",exam.is_published?"This examination is published. Its questions can no longer be changed here.":"Loaded. Change the details if needed, then continue.","info");
+}
+$("existing").addEventListener("change",()=>chooseExam($("existing").value).catch(e=>say("m1",e.message,"err")));
+$("clearForm").addEventListener("click",()=>{$("existing").value="";chooseExam("").catch(()=>{})});
 
-function clearExamForm(){
- selectedExam=null;$("country").value="";
- $("level").innerHTML='<option value="">Select country first</option>';$("level").disabled=true;
- $("subject").innerHTML='<option value="">Select education level first</option>';$("subject").disabled=true;
- $("examTitle").value="";$("description").value="";$("examType").value="free";updateExamType();
- $("existingExam").value="";$("selectedExamInfo").classList.add("hidden");
- $("publicationInfo").textContent="Select an examination to view its publication status.";
- savedQuestionCount=0;savedMaxOrder=0;duplicateTexts=new Set();$("savedCount").textContent="0";
- queue=[];renderQueue();$("questionOrder").value="1";
- hideStatus("examStatus");hideStatus("existingStatus");hideStatus("publishStatus");hideStatus("uploadStatus");
- clearCSV();
-}
-$("resetExamBtn").addEventListener("click",()=>{if(confirm("Clear the examination form and selected examination?"))clearExamForm();});
-
-async function loadExistingExams(){
- const {data,error}=await supabase
-  .from("examinations")
-  .select("id,title,access_type,is_published,duration_minutes")
-  .is("school_account_id",null)
-  .order("created_at",{ascending:false});
-
- if(error)throw error;
-
- $("existingExam").innerHTML=
-  '<option value="">Select an examination</option>'+
-  (data||[]).map(x=>
-   `<option value="${escapeHTML(x.id)}">[${displayExamType(x.access_type)}] ${escapeHTML(x.title)} — ${x.is_published?"Published":"Draft"}</option>`
-  ).join("");
-}
-
-async function populateExamForm(exam){
- const {data,error}=await supabase.from("education_levels").select("id,education_system_id").eq("id",exam.education_level_id).single();
- if(error)throw error;
- $("country").value=data.education_system_id;await loadLevels();
- $("level").value=exam.education_level_id;await loadSubjects();
- $("subject").value=exam.subject_id;$("examType").value=exam.access_type;
- $("examTitle").value=exam.title||"";$("description").value=exam.description||"";updateExamType();
-}
-async function loadDuplicateQuestions(examId){
- const {data,error}=await supabase.from("exam_questions").select("question_text,question_order").eq("examination_id",examId);
- if(error)throw error;
- duplicateTexts=new Set((data||[]).map(x=>normalizeQuestion(x.question_text)));
- savedMaxOrder=Math.max(0,...(data||[]).map(x=>Number(x.question_order)||0));
-}
-function nextQuestionOrder(){
- return Math.max(savedMaxOrder,0,...queue.map(x=>Number(x.question_order)||0))+1;
-}
-function updateWorkingBar(){
- const el=$("workingBar");
- if(!selectedExam){el.textContent="No examination selected. Save a new draft (Step 1) or pick one (Step 2).";return;}
- el.innerHTML=`<span><strong>Working on:</strong> ${escapeHTML(selectedExam.title)}</span><span>${displayExamType(selectedExam.access_type)}</span><span>${selectedExam.is_published?"PUBLISHED":"DRAFT"}</span><span>Saved: ${savedQuestionCount} / ${requiredExamCount()} needed</span><span>In queue: ${queue.length}</span>`;
-}
-async function refreshSelectedExam(){
- const id=$("existingExam").value;
- if(!id){
-  selectedExam=null;$("selectedExamInfo").classList.add("hidden");
-  $("publicationInfo").textContent="Select an examination to view its publication status.";
-  savedQuestionCount=0;savedMaxOrder=0;duplicateTexts=new Set();$("savedCount").textContent="0";updateWorkingBar();return;
- }
- const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,duration_minutes,is_published").eq("id",id).single();
- if(error)throw error;
- selectedExam=data;await populateExamForm(data);
- const {count,error:countError}=await supabase.from("exam_questions").select("id",{count:"exact",head:true}).eq("examination_id",id);
- if(countError)throw countError;
- savedQuestionCount=count||0;$("savedCount").textContent=savedQuestionCount;
- $("selectedExamInfo").classList.remove("hidden");
- $("selectedExamInfo").innerHTML=`<strong>Selected Examination:</strong> ${escapeHTML(data.title)}<br><strong>Category:</strong> ${displayExamType(data.access_type)}<br><strong>Duration:</strong> ${data.duration_minutes} minutes<br><strong>Status:</strong> ${data.is_published?"PUBLISHED":"DRAFT"}`;
- $("publicationInfo").textContent=`Examination: ${data.title}\nCategory: ${displayExamType(data.access_type)}\nSaved questions: ${savedQuestionCount}\nMinimum required: ${requiredExamCount(data.access_type)}\nStatus: ${data.is_published?"Published to students":"Not yet published"}`;
- await loadDuplicateQuestions(id);
- $("questionOrder").value=String(nextQuestionOrder());
- updateWorkingBar();
- showStatus("existingStatus",data.is_published?"This examination is already published. Its questions cannot be changed from this page.":`${displayExamType(data.access_type)} examination selected. New questions will belong only to this examination.`,data.is_published?"info":"ok");
-}
-$("existingExam").addEventListener("change",async()=>{
- try{queue=[];renderQueue();hideStatus("uploadStatus");clearCSV();await refreshSelectedExam();}
- catch(e){showStatus("existingStatus",e.message,"error");}
-});
-$("refreshExamBtn").addEventListener("click",async()=>{
- try{await refreshSelectedExam();showStatus("publishStatus","Examination information refreshed.","ok");}
- catch(e){showStatus("publishStatus",e.message,"error");}
-});
-
-/* QUESTION VALIDATION */
-function validateQuestion(q){
- if(!q.question_text?.trim())throw new Error("Question text is required.");
- for(const f of ["option_a","option_b","option_c","option_d"])if(!q[f]?.trim())throw new Error("All four options (A–D) are required.");
- if(!["A","B","C","D"].includes(q.correct_option))throw new Error("Select a valid correct option.");
- if(!Number.isInteger(Number(q.marks))||Number(q.marks)<1)throw new Error("Marks must be a whole number of at least 1.");
- if(!Number.isInteger(Number(q.question_order))||Number(q.question_order)<1)throw new Error("Question order must be a whole number of at least 1.");
- if(!selectedExam)throw new Error("Save or select an examination first.");
- if(selectedExam.is_published)throw new Error("Questions cannot be added to an already published examination.");
-}
-function addToQueue(q){
- validateQuestion(q);
- const key=normalizeQuestion(q.question_text);
- if(duplicateTexts.has(key))throw new Error("This question already exists in the selected examination.");
- if(queue.some(x=>normalizeQuestion(x.question_text)===key))throw new Error("This question is already in the upload queue.");
- if(queue.some(x=>Number(x.question_order)===Number(q.question_order)))throw new Error(`Question order ${q.question_order} is already used in the queue.`);
- queue.push(q);renderQueue();
-}
-function renderQueue(){
- $("queueCount").textContent=queue.length;
- updateWorkingBar();
- if(selectedExam&&!$("questionText").value.trim())$("questionOrder").value=String(nextQuestionOrder());
- if(!queue.length){$("queuePreview").innerHTML='<p class="help">No questions in the queue yet.</p>';return;}
- $("queuePreview").innerHTML=queue.map((q,i)=>`
- <div class="question-preview">
- <strong>Question ${i+1}:</strong> ${escapeHTML(q.question_text)}
- <div class="preview-options">A. ${escapeHTML(q.option_a)}<br>B. ${escapeHTML(q.option_b)}<br>C. ${escapeHTML(q.option_c)}<br>D. ${escapeHTML(q.option_d)}</div>
- Correct answer: <strong>${escapeHTML(q.correct_option)}</strong><br>
- Marks: ${escapeHTML(q.marks)} | Order: ${escapeHTML(q.question_order)}<br>
- Image: ${q.imageFile?escapeHTML(q.imageFile.name):"None"}<br>
- <button class="danger remove-queue" data-index="${i}">Remove</button>
- </div>`).join("");
- document.querySelectorAll(".remove-queue").forEach(b=>b.addEventListener("click",()=>{queue.splice(Number(b.dataset.index),1);renderQueue();}));
-}
-function clearQuestionForm(){
- ["questionText","optionA","optionB","optionC","optionD","correctOption","explanation","questionImage"].forEach(id=>$(id).value="");
- $("marks").value="1";$("questionOrder").value=String(nextQuestionOrder());
-}
-$("addQuestionBtn").addEventListener("click",()=>{
- try{
-  const q={question_text:$("questionText").value.trim(),option_a:$("optionA").value.trim(),option_b:$("optionB").value.trim(),option_c:$("optionC").value.trim(),option_d:$("optionD").value.trim(),correct_option:$("correctOption").value,marks:Number($("marks").value),question_order:Number($("questionOrder").value),explanation:$("explanation").value.trim()||null,imageFile:validateImage($("questionImage").files[0])};
-  addToQueue(q);clearQuestionForm();showStatus("individualStatus","Question added to the upload queue.","ok");
- }catch(e){showStatus("individualStatus",e.message,"error");}
-});
-$("clearQuestionBtn").addEventListener("click",clearQuestionForm);
-$("clearQueueBtn").addEventListener("click",()=>{
- if(!queue.length)return;
- if(!confirm("Remove all unsaved questions from the queue?"))return;
- queue=[];renderQueue();hideStatus("uploadStatus");
-});
-
-/* CSV PARSER */
-function parseCSV(text){
- const rows=[];let row=[],value="",quoted=false;
- for(let i=0;i<text.length;i++){
-  const c=text[i],next=text[i+1];
-  if(c==='"'){
-   if(quoted&&next==='"'){value+='"';i++;}
-   else quoted=!quoted;
-  }else if(c===","&&!quoted){row.push(value);value="";}
-  else if((c==="\n"||c==="\r")&&!quoted){
-   if(c==="\r"&&next==="\n")i++;
-   row.push(value);
-   if(row.some(x=>x.trim()!==""))rows.push(row);
-   row=[];value="";
-  }else value+=c;
- }
- if(quoted)throw new Error("The CSV file contains an unclosed quotation mark.");
- row.push(value);if(row.some(x=>x.trim()!==""))rows.push(row);
- return rows;
-}
-
-/* STRICT CSV VALIDATION */
-function validateCSVRows(rows,imageFiles){
- const errors=[],valid=[],headers=(rows[0]||[]).map((h,i)=>h.trim().toLowerCase().replace(/^\uFEFF/,""));
- if(headers.length!==CSV_HEADERS.length||headers.some((h,i)=>h!==CSV_HEADERS[i])){
-  throw new Error("Incorrect CSV headers or column order. Download and use the supplied 10-column template.");
- }
- const headerSet=new Set(headers);
- if(headerSet.size!==headers.length)throw new Error("The CSV contains duplicate column headings.");
- const imageMap=new Map();
- for(const file of imageFiles){
-  validateImage(file);
-  const key=safeFileName(file.name).toLowerCase();
-  if(imageMap.has(key))throw new Error(`Duplicate selected image filename: ${file.name}`);
-  imageMap.set(key,file);
- }
- const seenQuestions=new Set(),seenOrders=new Set();
- for(let i=1;i<rows.length;i++){
-  const cells=rows[i],rowNumber=i+1;
-  if(cells.length!==CSV_HEADERS.length){
-   errors.push({row:rowNumber,message:`Expected 10 columns but found ${cells.length}.`});continue;
-  }
-  const r={};headers.forEach((h,j)=>r[h]=String(cells[j]??"").trim());
-  const q={
-   question_text:r.question_text,option_a:r.option_a,option_b:r.option_b,
-   option_c:r.option_c,option_d:r.option_d,
-   correct_option:r.correct_option.toUpperCase(),
-   explanation:r.explanation||null,marks:Number(r.marks),
-   question_order:Number(r.question_order),imageFilename:r.image_filename,
-   imageFile:null,csvRow:rowNumber
-  };
+$("saveExam").addEventListener("click",async()=>{
+  if(busy)return;
   try{
-   validateQuestion(q);
-   const key=normalizeQuestion(q.question_text);
-   if(duplicateTexts.has(key))throw new Error("This question already exists in the selected examination.");
-   if(seenQuestions.has(key))throw new Error("This question is duplicated elsewhere in this CSV file.");
-   if(queue.some(x=>normalizeQuestion(x.question_text)===key))throw new Error("This question is already in the upload queue.");
-   seenQuestions.add(key);
-   const order=Number(q.question_order);
-   if(seenOrders.has(order))throw new Error(`Question order ${order} is duplicated in this CSV file.`);
-   if(queue.some(x=>Number(x.question_order)===order))throw new Error(`Question order ${order} is already used in the queue.`);
-   seenOrders.add(order);
-   if(q.imageFilename){
-    const name=safeFileName(q.imageFilename).toLowerCase();
-    q.imageFile=imageMap.get(name)||null;
-    if(!q.imageFile)throw new Error(`Image "${q.imageFilename}" was not selected.`);
-   }
-   valid.push(q);
-  }catch(e){errors.push({row:rowNumber,message:e.message});}
- }
- if(!valid.length&&!errors.length)errors.push({row:"—",message:"No question records were found."});
- return {valid,errors};
-}
-function renderCSVErrors(errors){
- $("csvPreview").innerHTML=`
- <h3 style="color:var(--red)">Validation errors (${errors.length})</h3>
- ${errors.map(e=>`<div class="error-row"><strong>${rowsFromText&&typeof e.row==="number"?"Question "+(e.row-1):"Row "+escapeHTML(e.row)}:</strong> ${escapeHTML(e.message)}</div>`).join("")}
- <p class="help">Correct these errors in your file, then select it again and run validation.</p>`;
-}
-function renderCSVPreview(questions){
- $("csvPreview").innerHTML=`
- <div class="notice"><strong>${questions.length} questions passed validation.</strong> Review the questions below before adding them to your queue.</div>
- ${questions.map((q,i)=>`
- <div class="question-preview">
- <strong>${rowsFromText?"Source question "+(q.csvRow-1):"Row "+q.csvRow} — Question ${i+1}</strong><br>
- ${escapeHTML(q.question_text)}
- <div class="preview-options">A. ${escapeHTML(q.option_a)}<br>B. ${escapeHTML(q.option_b)}<br>C. ${escapeHTML(q.option_c)}<br>D. ${escapeHTML(q.option_d)}</div>
- Correct: ${escapeHTML(q.correct_option)} | Marks: ${q.marks} | Order: ${q.question_order}<br>
- Image: ${q.imageFile?escapeHTML(q.imageFile.name):"None"}
- </div>`).join("")}
- <div class="actions"><button class="success" id="addCsvQueueBtn">Add All Validated Questions to Queue</button></div>`;
- $("addCsvQueueBtn").addEventListener("click",()=>{
-  if(!confirm(`Add all ${questions.length} validated CSV questions to the queue?`))return;
-  // Recheck the complete batch before changing the queue.
-  const batchKeys=new Set(),batchOrders=new Set();
-  for(const q of questions){
-   const key=normalizeQuestion(q.question_text),order=Number(q.question_order);
-   if(duplicateTexts.has(key)||queue.some(x=>normalizeQuestion(x.question_text)===key)||batchKeys.has(key))throw new Error("A duplicate question was detected. No CSV questions were added.");
-   if(queue.some(x=>Number(x.question_order)===order)||batchOrders.has(order))throw new Error(`Question order ${order} is already used. No CSV questions were added.`);
-   batchKeys.add(key);batchOrders.add(order);
-  }
-  queue.push(...questions);renderQueue();csvRows=[];
-  $("csvFile").value="";$("bulkImages").value="";$("csvPreview").innerHTML="";
-  showStatus("csvStatus",`${questions.length} CSV questions added to the queue. They have not yet been saved to the database.`,"ok");
- });
-}
-
-/* TEMPLATE DOWNLOAD */
-$("downloadTemplateBtn").addEventListener("click",()=>{
- const example=["What is the capital of Nigeria?","Lagos","Abuja","Kano","Enugu","B","Abuja is the capital of Nigeria.","1","1",""];
- const csv=[CSV_HEADERS,example].map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\r\n");
- const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});
- const url=URL.createObjectURL(blob),link=document.createElement("a");
- link.href=url;link.download="saintig-exams-question-template.csv";link.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+    hush("m1");
+    const type=$("examType").value,title=$("examTitle").value.trim(),subject=$("subject").value,level=$("level").value;
+    if(!title||!subject||!level)throw new Error("Choose the country, education level and subject, then enter the title.");
+    if(exam&&exam.is_published)throw new Error("This examination is already published. Create a new one instead.");
+    busy=true;$("saveExam").disabled=true;$("saveExam").textContent="Saving…";
+    const payload={subject_id:subject,education_level_id:level,title,description:$("description").value.trim(),duration_minutes:isPaid(type)?90:45,access_type:type,is_published:false};
+    const r=exam?await supabase.from("examinations").update(payload).eq("id",exam.id).eq("is_published",false).select().single()
+                :await supabase.from("examinations").insert(payload).select().single();
+    if(r.error)throw r.error;
+    exam=r.data;await loadExams(exam.id);await refreshSaved();refreshBar();
+    say("m1","Examination saved.","ok");go(2);
+  }catch(e){say("m1",e.message,"err")}
+  finally{busy=false;$("saveExam").disabled=false;$("saveExam").textContent="Save and continue"}
 });
 
-$("downloadSampleBtn").addEventListener("click",()=>{
- const sample=[
-  "1. What is the capital of Nigeria?","A. Lagos","B. Abuja","C. Kano","D. Enugu","Answer: B","Explanation: Abuja is the capital of Nigeria.","Marks: 1","",
-  "2. Which of these is a primary colour?","A. Green","B. Red","C. Orange","D. Purple","Answer: B","Marks: 1",""
- ].join("\r\n");
- const blob=new Blob([sample],{type:"text/plain;charset=utf-8;"});
- const url=URL.createObjectURL(blob),link=document.createElement("a");
- link.href=url;link.download="saintig-exams-word-text-sample.txt";link.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+/* ================= adding questions ================= */
+function taken(){return new Set([...existing,...queue.map(q=>keyOf(q.question_text))])}
+function checkImage(f){
+  if(!f.type.startsWith("image/"))throw new Error('"'+f.name+'" is not an image.');
+  if(f.size>MAX_IMG)throw new Error('Image "'+f.name+'" is over 5 MB.');
+  return f;
+}
+function guardExam(){
+  if(!exam)throw new Error("Save or choose an examination first (step 1).");
+  if(exam.is_published)throw new Error("This examination is already published.");
+}
+$("readBtn").addEventListener("click",async()=>{
+  hush("upMsg");$("upResult").innerHTML="";
+  try{
+    guardExam();
+    const f=$("file").files[0];if(!f)throw new Error("Choose a file first.");
+    $("readBtn").disabled=true;$("readBtn").textContent="Reading…";
+    const imgs=new Map();
+    for(const im of $("images").files)imgs.set(baseName(checkImage(im).name).toLowerCase(),im);
+    const items=await readQuestionFile(f);
+    const res=evaluate(items,RULES(),taken(),(raw,q)=>{
+      if(!raw.image)return;
+      const im=imgs.get(baseName(raw.image).toLowerCase());
+      if(!im)throw new Error('The image "'+raw.image+'" was not selected above.');
+      q.imageFile=im;
+    });
+    renderReadResult(res,null);
+  }catch(e){say("upMsg",e.message,"err")}
+  finally{$("readBtn").disabled=false;$("readBtn").textContent="Read file"}
+});
+$("addOne").addEventListener("click",()=>{
+  try{
+    guardExam();
+    const q=buildQuestion({question_text:$("qText").value.trim(),option_a:$("oA").value.trim(),option_b:$("oB").value.trim(),option_c:$("oC").value.trim(),option_d:$("oD").value.trim(),
+      correct:$("qCorrect").value,explanation:$("qExp").value.trim(),marks:$("qMarks").value.trim(),order:"",image:""},RULES());
+    if(taken().has(keyOf(q.question_text)))throw new Error("This question is already saved or waiting in the review list.");
+    const f=$("qImage").files[0];if(f)q.imageFile=checkImage(f);
+    addToQueue([q]);
+    ["qText","oA","oB","oC","oD","qExp","qImage"].forEach(i=>$(i).value="");$("qCorrect").value="";$("qMarks").value="1";
+    say("oneMsg","Added. You have "+queue.length+" question(s) waiting in the review list.","ok");
+  }catch(e){say("oneMsg",e.message,"err")}
+});
+$("tplCsv").addEventListener("click",()=>{
+  const head=["question_text","option_a","option_b","option_c","option_d","correct_option","explanation","marks","question_order","image_filename"];
+  const ex=["What is the capital of Nigeria?","Lagos","Abuja","Kano","Enugu","B","Abuja is the capital of Nigeria.","1","1",""];
+  download("saintig-exams-question-template.csv","\uFEFF"+[head,ex].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),"text/csv;charset=utf-8");
+});
+$("tplTxt").addEventListener("click",()=>download("saintig-exams-word-text-sample.txt",
+  ["1. What is the capital of Nigeria?","A. Lagos","B. Abuja","C. Kano","D. Enugu","Answer: B","Explanation: Abuja is the capital of Nigeria.","Marks: 1","","2. Which of these is a primary colour?","A. Green","B. Red","C. Orange","D. Purple","Answer: B",""].join("\r\n"),"text/plain;charset=utf-8"));
+
+/* ================= saving ================= */
+async function uploadImage(file){
+  const ext=(file.name.includes(".")?file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g,""):"")||"jpg";
+  const path="question-images/"+crypto.randomUUID()+"."+ext;
+  const {error}=await supabase.storage.from("exam-images").upload(path,file,{contentType:file.type,upsert:false});
+  if(error)throw new Error('Image upload failed for "'+file.name+'": '+error.message);
+  return path;
+}
+$("saveAll").addEventListener("click",async()=>{
+  if(busy||!queue.length)return;
+  busy=true;$("saveAll").disabled=true;hush("rvMsg");
+  let saved=0;
+  try{
+    guardExam();
+    await refreshSaved();
+    const list=[...queue].sort((a,b)=>(a.sortOrder??1e9)-(b.sortOrder??1e9));
+    for(let i=0;i<list.length;i+=40){
+      const chunk=list.slice(i,i+40),rows=[];
+      for(const q of chunk){
+        const image_path=q.imageFile?await uploadImage(q.imageFile):null;
+        rows.push({examination_id:exam.id,question_text:q.question_text,option_a:q.option_a,option_b:q.option_b,option_c:q.option_c,option_d:q.option_d,
+          correct_option:q.correct_option,explanation:q.explanation,marks:q.marks,question_order:maxOrder+rows.length+1,image_path,is_published:false});
+      }
+      await withRetry(async()=>{const {error}=await supabase.from("exam_questions").insert(rows);if(error)throw error});
+      maxOrder+=rows.length;saved+=rows.length;savedCount+=rows.length;
+      const ids=new Set(chunk.map(q=>q.id));queue=queue.filter(q=>!ids.has(q.id));
+      rows.forEach(r=>existing.add(keyOf(r.question_text)));
+      renderQueue();
+    }
+    say("rvMsg",saved+" question(s) saved. Next, publish the examination in step 4.","ok");
+  }catch(e){
+    say("rvMsg",(saved?saved+" saved. ":"")+"Saving stopped: "+(e.message||e)+" The remaining "+queue.length+" question(s) are still here. Fix the problem and tap Save again.","err");
+  }finally{busy=false;refreshBar();onQueueChange()}
 });
 
-/* FILE READERS (PDF, DOCX, TXT, CSV, XLSX, XLS) */
-const ALLOWED_EXTENSIONS=["pdf","docx","txt","csv","xlsx","xls"];
-let rowsFromText=false;
-
-/* Extension = text after the LAST dot, case-insensitive. Any filename is allowed. */
-function getFileExtension(name){
- const clean=String(name||"").trim();
- const i=clean.lastIndexOf(".");
- return i<0?"":clean.slice(i+1).toLowerCase();
+/* ================= publishing ================= */
+async function refreshPublish(){
+  hush("pubMsg");
+  if(!exam)return;
+  try{await refreshSaved()}catch(e){say("pubMsg","Could not count saved questions: "+e.message,"err")}
+  refreshBar();
+  const need=needNow();
+  $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Category: "+typeName(exam.access_type)+"<br>Duration: "+exam.duration_minutes+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(exam.is_published?"Published to students":"Not published yet");
+  let ready=!exam.is_published&&!busy;
+  if(exam.is_published)say("pubMsg","This examination is published.","ok");
+  else if(queue.length){ready=false;say("pubMsg","You still have "+queue.length+" question(s) in the review list. Save them in step 3 first.","warn")}
+  else if(savedCount<need){ready=false;say("pubMsg","Save at least "+(need-savedCount)+" more question(s) before publishing.","warn")}
+  $("publishBtn").disabled=!ready;
 }
-function padRow(row,length){
- const r=row.slice(0,length);
- while(r.length<length)r.push("");
- return r;
-}
-async function readSpreadsheetRows(file){
- if(!window.XLSX)throw new Error("The Excel reader could not load. Check your internet connection and refresh the page.");
- const workbook=XLSX.read(await file.arrayBuffer(),{type:"array"});
- const sheet=workbook.Sheets[workbook.SheetNames[0]];
- if(!sheet)throw new Error("The Excel file has no sheets.");
- return XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:""})
-  .map(row=>padRow(row.map(v=>String(v??"")),CSV_HEADERS.length))
-  .filter(row=>row.some(v=>v.trim()!==""));
-}
-async function readDocxText(file){
- if(!window.mammoth)throw new Error("The Word reader could not load. Check your internet connection and refresh the page.");
- const result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
- return result.value;
-}
-async function readPdfText(file){
- if(!window.pdfjsLib)throw new Error("The PDF reader could not load. Check your internet connection and refresh the page.");
- pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
- const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
- let out="";
- for(let p=1;p<=pdf.numPages;p++){
-  const content=await (await pdf.getPage(p)).getTextContent();
-  let lastY=null;
-  for(const item of content.items){
-   const y=item.transform[5];
-   if(lastY!==null&&Math.abs(y-lastY)>2)out+="\n";
-   out+=item.str+" ";
-   lastY=y;
-  }
-  out+="\n";
- }
- if(!out.trim())throw new Error("No readable text was found in this PDF. Scanned or image-only PDFs are not supported.");
- return out;
-}
-
-/* Text layout for TXT / DOCX / PDF:
-   1. Question text
-   A. Option   (B, C, D on their own lines)
-   Answer: B
-   Explanation: optional
-   Marks: optional
-   Order: optional */
-function parseTextQuestions(text){
- /* Blank lines are kept: they separate questions. */
- const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim());
- const list=[];let cur=null,last="question_text",afterBlank=false;
- const rxAnswer=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
- const rxExplanation=/^explanation\s*[:=-]\s*(.*)$/i;
- const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
- const rxOrder=/^order\s*[:=-]\s*(\d+)/i;
- const rxOption=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
- const rxQuestion=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
- const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct_option:"",explanation:"",marks:"",order:""});
- for(const line of lines){
-  if(!line){afterBlank=true;continue;}
-  let m;
-  if(cur&&(m=line.match(rxAnswer))){cur.correct_option=m[1].toUpperCase();last="";}
-  else if(cur&&(m=line.match(rxExplanation))){cur.explanation=m[1];last="explanation";}
-  else if(cur&&(m=line.match(rxMarks))){cur.marks=m[1];last="";}
-  else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last="";}
-  else if(cur&&(m=line.match(rxOption))){last="option_"+m[1].toLowerCase();cur[last]=m[2];}
-  else if((m=line.match(rxQuestion))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text";}
-  else if(!cur||(cur.correct_option&&(last===""||afterBlank))){
-   /* A line with no number: starts a new question when it follows a finished one. */
-   if(cur)list.push(cur);cur=blank();cur.question_text=line;last="question_text";
-  }
-  else if(last){cur[last]+=" "+line;}
-  afterBlank=false;
- }
- if(cur)list.push(cur);
- return list;
-}
-function textToRows(text){
- const parsed=parseTextQuestions(text);
- if(!parsed.length)throw new Error("No questions were found. Use the format: '1. Question', options 'A.' to 'D.', then 'Answer: B'.");
- let nextOrder=nextQuestionOrder();
- const rows=[CSV_HEADERS.slice()];
- parsed.forEach(q=>{
-  const order=q.order||String(nextOrder);
-  nextOrder=Math.max(nextOrder,Number(order)||0)+1;
-  rows.push([q.question_text,q.option_a,q.option_b,q.option_c,q.option_d,q.correct_option,q.explanation,q.marks||"1",order,""]);
- });
- return rows;
-}
-async function readFileToRows(file){
- const ext=getFileExtension(file.name);
- if(!ALLOWED_EXTENSIONS.includes(ext))throw new Error("Unsupported file type. Please upload a PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls) file.");
- rowsFromText=false;
- if(ext==="csv")return parseCSV(await file.text());
- if(ext==="xlsx"||ext==="xls")return await readSpreadsheetRows(file);
- let text;
- if(ext==="txt"){
-  text=await file.text();
-  if(/^\uFEFF?\s*"?question_text"?\s*,/i.test(text))return parseCSV(text);
- }else if(ext==="docx")text=await readDocxText(file);
- else text=await readPdfText(file);
- rowsFromText=true;
- return textToRows(text);
-}
-
-/* FILE PREVIEW */
-$("previewCsvBtn").addEventListener("click",async()=>{
- try{
-  hideStatus("csvStatus");$("csvPreview").innerHTML="";
-  if(!selectedExam)throw new Error("Save or select an examination first.");
-  if(selectedExam.is_published)throw new Error("This examination is already published.");
-  const file=$("csvFile").files[0];
-  if(!file)throw new Error("Select a file first.");
-  const rows=await readFileToRows(file);
-  if(rows.length<2)throw new Error("The file contains no question records.");
-  const result=validateCSVRows(rows,Array.from($("bulkImages").files||[]));
-  csvRows=result.valid;
-  if(result.errors.length){
-   renderCSVErrors(result.errors);
-   showStatus("csvStatus",`${result.valid.length} valid question(s), ${result.errors.length} error(s). Nothing was added to the queue. Correct the errors and preview again.`,"error");
-   return;
-  }
-  renderCSVPreview(csvRows);
-  showStatus("csvStatus",`${csvRows.length} questions passed validation. No questions have been added or saved yet.`,"ok");
- }catch(e){csvRows=[];showStatus("csvStatus",e.message,"error");}
-});
-function clearCSV(){
- $("csvFile").value="";$("bulkImages").value="";csvRows=[];
- $("csvPreview").innerHTML="";hideStatus("csvStatus");
-}
-$("clearCsvBtn").addEventListener("click",clearCSV);
-
-/* STORAGE IMAGE UPLOAD */
-async function uploadQuestionImage(file){
- if(!file)return null;validateImage(file);
- const path=makeImagePath(file);
- const {error}=await supabase.storage.from("exam-images").upload(path,file,{contentType:file.type,upsert:false});
- if(error)throw new Error(`Image upload failed for ${file.name}: ${error.message}`);
- return path;
-}
-
-/* SAVE QUEUE */
-async function publishQueuedQuestions(){
- if(isSavingQuestions)return;
- isSavingQuestions=true;const uploadedPaths=[];
- try{
-  hideStatus("uploadStatus");
-  if(!selectedExam)throw new Error("Save or select an examination first.");
-  if(selectedExam.is_published)throw new Error("This examination is already published.");
-  if(!queue.length)throw new Error("There are no questions in the upload queue.");
-  $("publishQuestionsBtn").disabled=true;$("publishQuestionsBtn").textContent="Saving...";
-  const prepared=[],keys=new Set(),orders=new Set();
-  for(const q of queue){
-   validateQuestion(q);
-   const key=normalizeQuestion(q.question_text),order=Number(q.question_order);
-   if(duplicateTexts.has(key)||keys.has(key))throw new Error("A duplicate question was detected. No questions were saved.");
-   if(orders.has(order))throw new Error(`Question order ${order} is duplicated in the queue.`);
-   keys.add(key);orders.add(order);
-   let imagePath=null;
-   if(q.imageFile){imagePath=await uploadQuestionImage(q.imageFile);if(imagePath)uploadedPaths.push(imagePath);}
-   prepared.push({
-    examination_id:selectedExam.id,question_text:q.question_text,
-    option_a:q.option_a,option_b:q.option_b,option_c:q.option_c,option_d:q.option_d,
-    correct_option:q.correct_option,explanation:q.explanation,
-    marks:Number(q.marks),question_order:Number(q.question_order),
-    image_path:imagePath,is_published:false
-   });
-  }
-  const {error}=await supabase.from("exam_questions").insert(prepared);
-  if(error)throw error;
-  const total=prepared.length;queue=[];renderQueue();
-  await refreshSelectedExam();
-  showStatus("uploadStatus",`${total} questions saved successfully as unpublished questions in ${selectedExam.title}. You must publish the examination separately.`,"ok");
- }catch(e){
-  showStatus("uploadStatus",e.message,"error");
-  if(uploadedPaths.length)console.warn("Uploaded images may remain in Storage because the database insert failed.",uploadedPaths);
- }finally{
-  isSavingQuestions=false;$("publishQuestionsBtn").disabled=false;
-  $("publishQuestionsBtn").textContent="Save Queued Questions";
- }
-}
-$("publishQuestionsBtn").addEventListener("click",async()=>{
- if(!confirm("Save all questions in the queue to the selected examination as unpublished questions?"))return;
- await publishQueuedQuestions();
+$("refreshBtn").addEventListener("click",refreshPublish);
+$("publishBtn").addEventListener("click",async()=>{
+  if(busy)return;
+  try{
+    guardExam();
+    if(queue.length)throw new Error("Save the questions in the review list first.");
+    await refreshSaved();
+    if(savedCount<needNow())throw new Error("This examination has "+savedCount+" saved question(s). At least "+needNow()+" are needed.");
+    if(!confirm('Publish "'+exam.title+'"?\n\nCategory: '+typeName(exam.access_type)+"\nQuestions: "+savedCount+"\nDuration: "+exam.duration_minutes+" minutes"))return;
+    busy=true;$("publishBtn").disabled=true;$("publishBtn").textContent="Publishing…";
+    const {data,error}=await supabase.from("examinations").update({is_published:true}).eq("id",exam.id).eq("is_published",false).select().single();
+    if(error)throw error;
+    exam=data;await loadExams(exam.id);
+    say("pubMsg","Published. Students can now take this examination.","ok");
+  }catch(e){say("pubMsg",e.message,"err")}
+  finally{busy=false;$("publishBtn").textContent="Publish examination";refreshPublish()}
 });
 
-/* PUBLISH EXAMINATION */
-async function publishExamination(){
- try{
-  hideStatus("publishStatus");
-  if(!selectedExam)throw new Error("Select an examination first.");
-  if(selectedExam.is_published)throw new Error("This examination is already published.");
-  if(queue.length)throw new Error("You still have unsaved questions in the queue. Save them before publishing.");
-  const required=requiredExamCount(selectedExam.access_type);
-  const {count,error:countError}=await supabase.from("exam_questions").select("id",{count:"exact",head:true}).eq("examination_id",selectedExam.id).eq("is_archived",false);
-  if(countError)throw countError;
-  if((count||0)<required)throw new Error(`This ${displayExamType(selectedExam.access_type)} examination has ${count||0} active saved questions. At least ${required} are required before publication.`);
-  if(!confirm(`Publish "${selectedExam.title}"?\n\nCategory: ${displayExamType(selectedExam.access_type)}\nQuestions: ${count}\nDuration: ${selectedExam.duration_minutes} minutes\n\nContinue?`))return;
-  $("publishExamBtn").disabled=true;$("publishExamBtn").textContent="Publishing...";
-  const {data,error}=await supabase.from("examinations").update({is_published:true}).eq("id",selectedExam.id).eq("is_published",false).select().single();
-  if(error)throw error;
-  selectedExam=data;await loadExistingExams();$("existingExam").value=selectedExam.id;await refreshSelectedExam();
-  showStatus("publishStatus","Examination successfully published to students.","ok");
- }catch(e){showStatus("publishStatus",e.message,"error");}
- finally{$("publishExamBtn").disabled=false;$("publishExamBtn").textContent="Publish Examination to Students";}
-}
-$("publishExamBtn").addEventListener("click",publishExamination);
-
-/* Show the configured minimums in the publication notice */
-$("minFreeText").textContent=MIN_QUESTIONS_FREE;
-$("minPremiumText").textContent=MIN_QUESTIONS_PREMIUM;
-
-/* INITIALIZE */
-async function initializePage(){
- try{
-  if(!await verifyAdministrator())return;
-  await loadCountries();await loadExistingExams();
-  updateExamType();renderQueue();
- }catch(e){console.error(e);alert("Unable to load the examination registration page: "+e.message);}
-}
-initializePage();
+/* ================= start ================= */
+(async()=>{
+  try{
+    const s=await getCurrentSession();const user=s?.user||s;
+    if(!user?.id){location.replace("admin-login.html");return}
+    const {data,error}=await supabase.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
+    if(error||!data){alert("Administrator access required.");await supabase.auth.signOut();location.replace("admin-login.html");return}
+    await Promise.all([loadCountries(),loadExams()]);
+    renderQueue();refreshBar();
+  }catch(e){console.error(e);say("m1","Could not load this page: "+(e.message||e),"err")}
+})();
 </script>
 </body>
 </html>
