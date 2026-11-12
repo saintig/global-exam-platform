@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#142b52">
+<title>Archived Records | SAINTIG EXAMS</title>
+
+<style>
+:root{
+  --navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;
+  --text:#263449;--muted:#6b7789;--border:#e1e7ef;
+  --green:#16794b;--red:#b42318;--amber:#9a6200;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+a{color:inherit;text-decoration:none}
+.topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:19px;font-weight:800}
+.brand span{color:var(--gold)}
+.topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.container{max-width:950px;margin:auto;padding:22px 16px 40px}
+h1{margin:0 0 6px;color:var(--navy);font-size:27px}
+.sub{margin:0 0 18px;color:var(--muted)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
+.tab{flex:1;min-width:150px;min-height:46px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;padding:6px 10px}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
+.form-group label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
+input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:16px}
+input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
+.button{display:inline-block;padding:12px 17px;min-height:46px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button.secondary{background:#edf1f7;color:var(--navy)}
+.button.small{min-height:42px;padding:9px 14px;font-size:15px}
+.button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status.success{color:var(--green)}
+.status.error{color:var(--red)}
+.list{display:grid;gap:12px;margin-top:14px}
+.item{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fff}
+.item strong{display:block;font-size:17px;color:var(--navy);overflow-wrap:anywhere}
+.sub2{color:var(--muted);font-size:15px;overflow-wrap:anywhere;margin-top:2px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--muted);margin:8px 0}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:14px;font-weight:700;background:#edf1f7;color:var(--navy)}
+.pill.school{background:#fdf3d0;color:#7a5b00}
+.warn{color:var(--amber);font-weight:700;font-size:15px;margin:6px 0}
+.empty{text-align:center;color:var(--muted);padding:22px;background:#f8faff;border-radius:8px}
+.pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.notice{background:#fff8e5;border:1px solid #f0dfa8;padding:13px;border-radius:8px;font-size:15px;line-height:1.6}
+@media(max-width:560px){.container{padding:16px 11px 36px}.card{padding:15px}}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <a href="admin.html">← Admin Dashboard</a>
+</header>
+
+<div class="container">
+
+  <h1>Archived Records</h1>
+  <p class="sub">Everything that has been archived, by category. Restoring a record puts it back where it was.</p>
+
+  <div class="tabs" id="tabs"></div>
+
+  <section class="card">
+    <div class="form-group">
+      <label for="searchBox">Search</label>
+      <input id="searchBox" type="search" maxlength="100" placeholder="Search by name, title or account" autocomplete="off">
+    </div>
+
+    <div class="list" id="list"><div class="empty">Loading…</div></div>
+
+    <div class="pager">
+      <button class="button secondary" id="moreBtn" type="button" style="display:none">Show 20 more</button>
+      <div class="status" id="countText" style="margin:0"></div>
+    </div>
+
+    <div class="status" id="pageStatus" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="notice">
+    Permanent deletion is not available here, to protect results and history. Restore a record to use it again.
+    Restoring a Teacher/School record can take that school over its package limits. The school's dashboard shows its usage.
+  </div>
+
+</div>
+
+<script type="module">
+import { supabase } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+
+const PAGE = 20;
+const PUBLIC_OWNER = "Public (platform)";
+
+const CATEGORIES = [
+  ["examinations", "Examinations"],
+  ["questions", "Questions"],
+  ["classes", "School Classes"],
+  ["students", "School Students"],
+  ["subjects", "School Subjects"]
+];
+
+const SINGULAR = {
+  examinations: "examination", questions: "question",
+  classes: "class", students: "student", subjects: "subject"
+};
+
+let counts = {};
+let category = "";
+let search = "";
+let offset = 0;
+let total = 0;
+let rows = [];
+let token = 0;
+let busy = false;
+
+/* ---------- helpers ---------- */
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[c]);
+}
+
+function fmtDate(value) {
+  if (!value) return "—";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "—";
+  return d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+function setStatus(text, type = "") {
+  $("pageStatus").textContent = text;
+  $("pageStatus").className = "status" + (type ? " " + type : "");
+}
+
+async function rpc(name, args) {
+  const { data, error } = await supabase.rpc(name, args || {});
+  if (error) throw error;
+  return data;
+}
+
+/* ---------- admin check ---------- */
+
+async function verifyAdmin() {
+  const { data: sd, error: se } = await supabase.auth.getSession();
+  if (se) throw se;
+
+  const session = sd?.session;
+
+  if (!session?.user?.id) {
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  const { data: admin, error } = await supabase
+    .from("admin_users")
+    .select("user_id, is_suspended")
+    .eq("user_id", session.user.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (!admin || admin.is_suspended) {
+    await supabase.auth.signOut();
+    location.replace("admin-login.html");
+    return false;
+  }
+
+  return true;
+}
+
+/* ---------- tabs ---------- */
+
+function renderTabs() {
+  $("tabs").innerHTML = CATEGORIES
+    .filter(([key]) => counts[key] !== undefined)
+    .map(([key, label]) =>
+      `<button class="tab${key === category ? " active" : ""}" data-cat="${key}" type="button">${esc(label)} (${Number(counts[key]) || 0})</button>`
+    ).join("");
+}
+
+async function loadCounts() {
+  counts = (await rpc("admin_archive_counts")) || {};
+  renderTabs();
+}
+
+$("tabs").addEventListener("click", event => {
+  const button = event.target.closest("[data-cat]");
+  if (!button) return;
+  setCategory(button.dataset.cat);
+});
+
+/* ---------- list ---------- */
+
+function detailLine(row) {
+  const x = row.extra || {};
+
+  if (category === "examinations") {
+    return [
+      "Questions: " + (Number(x.questions) || 0),
+      "Attempts: " + (Number(x.attempts) || 0),
+      x.published ? "Was published" : "Was a draft"
+    ].join(" · ");
+  }
+
+  if (category === "questions") {
+    return x.answer ? "Correct option: " + x.answer : "";
+  }
+
+  if (category === "students") {
+    return x.active === false ? "Account inactive" : "Account active";
+  }
+
+  return "";
+}
+
+function renderList() {
+  const list = $("list");
+
+  if (!rows.length) {
+    list.innerHTML = '<div class="empty">Nothing is archived in this category.</div>';
+    $("countText").textContent = "";
+    $("moreBtn").style.display = "none";
+    return;
+  }
+
+  list.innerHTML = rows.map((r, i) => {
+    const school = r.owner && r.owner !== PUBLIC_OWNER;
+    const blocked = category === "questions" && r.extra && r.extra.exam_archived === true;
+    const detail = detailLine(r);
+
+    return `
+      <div class="item">
+        <strong>${esc(r.title || "(no title)")}</strong>
+        ${r.subtitle ? `<div class="sub2">${esc(r.subtitle)}</div>` : ""}
+        <div class="meta">
+          <span class="pill${school ? " school" : ""}">${esc(r.owner || "—")}</span>
+          <span>Archived ${esc(fmtDate(r.archived_at))}</span>
+          <span>Created ${esc(fmtDate(r.created_at))}</span>
+        </div>
+        ${detail ? `<div class="sub2">${esc(detail)}</div>` : ""}
+        ${blocked ? '<div class="warn">Its examination is archived. Restore the examination first.</div>' : ""}
+        <div style="margin-top:10px">
+          <button class="button small" data-restore="${i}" type="button"${blocked ? " disabled" : ""}>Restore</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  $("countText").textContent = "Showing " + rows.length + " of " + total;
+  $("moreBtn").style.display = offset < total ? "inline-block" : "none";
+}
+
+async function loadList(reset = true) {
+  const mine = ++token;
+
+  if (reset) {
+    offset = 0;
+    rows = [];
+    total = 0;
+    $("list").innerHTML = '<div class="empty">Loading…</div>';
+  }
+
+  $("moreBtn").disabled = true;
+
+  try {
+    const data = await rpc("admin_list_archived", {
+      p_category: category,
+      p_search: search || null,
+      p_limit: PAGE,
+      p_offset: offset
+    }) || [];
+
+    if (mine !== token) return;
+
+    if (data.length) total = Number(data[0].total_count) || 0;
+
+    rows = rows.concat(data);
+    offset += data.length;
+
+    renderList();
+
+  } catch (error) {
+    if (mine !== token) return;
+
+    console.error("Archive list error:", error);
+
+    $("list").innerHTML =
+      '<div class="empty">Could not load records: ' + esc(error.message) +
+      " (If it mentions a missing function, run the Stage 6b SQL.)</div>";
+
+  } finally {
+    $("moreBtn").disabled = false;
+  }
+}
+
+$("moreBtn").addEventListener("click", () => loadList(false));
+
+$("searchBox").addEventListener("input", debounce(() => {
+  search = $("searchBox").value.trim();
+  loadList(true);
+}, 400));
+
+function setCategory(next) {
+  category = next;
+  search = "";
+  $("searchBox").value = "";
+
+  setStatus("");
+  renderTabs();
+  loadList(true);
+}
+
+/* ---------- restore ---------- */
+
+$("list").addEventListener("click", async event => {
+  const button = event.target.closest("[data-restore]");
+  if (!button || busy) return;
+
+  const row = rows[Number(button.dataset.restore)];
+  if (!row) return;
+
+  const school = row.owner && row.owner !== PUBLIC_OWNER;
+
+  const question =
+    "Restore this " + SINGULAR[category] + "?\n\n" + (row.title || "") +
+    (school ? "\n\nIt belongs to " + row.owner + ". Restoring it may take that school over its package limits." : "");
+
+  if (!confirm(question)) return;
+
+  busy = true;
+  button.disabled = true;
+  setStatus("Restoring…");
+
+  try {
+    await rpc("admin_restore_archived", { p_category: category, p_id: row.item_id });
+
+    rows = rows.filter(r => r !== row);
+    total = Math.max(0, total - 1);
+    offset = Math.max(0, offset - 1);
+    counts[category] = Math.max(0, (Number(counts[category]) || 0) - 1);
+
+    renderTabs();
+    renderList();
+
+    setStatus("Restored: " + (row.title || SINGULAR[category]) + ".", "success");
+
+  } catch (error) {
+    console.error("Restore error:", error);
+    setStatus("Could not restore: " + error.message, "error");
+    button.disabled = false;
+
+  } finally {
+    busy = false;
+  }
+});
+
+/* ---------- start ---------- */
+
+async function init() {
+  try {
+    if (!(await verifyAdmin())) return;
+
+    await loadCounts();
+
+    const first = CATEGORIES.find(([key]) => counts[key] !== undefined);
+
+    if (!first) {
+      alert("You do not have permission to view archived records.");
+      location.replace("admin.html");
+      return;
+    }
+
+    setCategory(first[0]);
+
+  } catch (error) {
+    console.error("Page initialization error:", error);
+    alert("Unable to open Archived Records: " + error.message);
+    location.replace("admin.html");
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
