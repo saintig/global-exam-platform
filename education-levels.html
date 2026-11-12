@@ -1,846 +1,229 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Education Levels | SAINTIG EXAMS</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
+<title>Education levels | SAINTIG EXAMS</title>
 <style>
-:root {
-  --navy:#142b52;
-  --blue:#2457a7;
-  --gold:#d4af37;
-  --bg:#f4f6fa;
-  --white:#fff;
-  --text:#263248;
-  --muted:#68758a;
-  --border:#e1e6ef;
-  --danger:#c0392b;
-  --green:#16834a;
-}
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#1f2b40;--muted:#58677d;--line:#dfe4ec;--ok:#16834b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font:18px/1.55 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:1000px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.role{font-size:14px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff66;border-radius:9px;padding:9px 16px;min-height:48px;font-size:17px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22;max-height:calc(100vh - 70px);overflow-y:auto}
+.menu.open{display:block}
+.menu-in{max-width:1000px;margin:auto;padding:8px 14px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px}
+.menu a,.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:#e9edf5;text-decoration:none;padding:14px 12px;border-radius:8px;font-size:18px}
+.menu a:hover,.menu a.on,.menu button:hover{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:1000px;margin:auto;padding:16px 14px 70px}
+h1{font-size:28px;line-height:1.2;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:17px;margin-bottom:14px}
+.sections{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.sections a{flex:0 0 auto;padding:12px 18px;border:1px solid var(--line);background:#fff;border-radius:999px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:17px;min-height:48px;display:flex;align-items:center;gap:8px}
+.sections a b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#e9edf4;font-size:15px}
+.sections a.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sections a.on b{background:var(--gold);color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.card h2{font-size:23px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:17px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:17px;margin-bottom:7px;color:#2d3a52}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #c5cdd9;border-radius:9px;background:#fff;color:var(--text);min-height:54px;font-size:18px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.btn{border:0;border-radius:10px;padding:13px 20px;font-weight:bold;font-size:17px;min-height:54px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #bfc8d6;color:var(--navy)}
+.danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
+.good{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.msg{display:none;padding:14px 16px;border-radius:10px;margin:14px 0;font-size:17px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.count{color:var(--muted);font-size:16px;margin:6px 0 12px}
+.item{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
+.item.muted{border-left-color:#aab3c2;background:#fafbfc}
+.item-title{font-size:21px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere;line-height:1.35}
+.item-meta{color:var(--muted);font-size:17px;margin-top:4px;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:15px;font-weight:bold;vertical-align:middle}
+.badge.on{background:#eaf7ef;color:#176b3d}
+.badge.off{background:#fff6df;color:#85620d}
+.badge.arch{background:#e8ebf0;color:#4b5563}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.acts .btn{min-height:50px;padding:10px 18px;font-size:17px}
+.empty{padding:26px 10px;text-align:center;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.opt{padding:9px 11px;background:#f8fafc;border:1px solid #edf0f4;border-radius:8px;overflow-wrap:anywhere;font-size:17px}
+.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.9;overflow-wrap:anywhere}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.pager span{color:var(--muted);font-size:16px}
+.modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:680px;margin:auto}
+.modal-box h2{font-size:23px;color:var(--navy);margin-bottom:14px}
+[hidden]{display:none!important}
+@media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
+@media(max-width:640px){.grid,.bar,.opts{grid-template-columns:1fr}.row .btn,.pager .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
 
-* { box-sizing:border-box; }
-
-body {
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-header {
-  background:var(--navy);
-  color:white;
-  padding:17px 20px;
-  border-bottom:4px solid var(--gold);
-}
-
-header h2 {
-  margin:0;
-  font-size:20px;
-}
-
-header p {
-  margin:5px 0 0;
-  font-size:13px;
-  opacity:.85;
-}
-
-.container {
-  max-width:1100px;
-  margin:22px auto;
-  padding:0 15px;
-}
-
-.nav {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.nav a {
-  text-decoration:none;
-  background:white;
-  color:var(--navy);
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:10px 13px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-.nav a.active {
-  background:var(--navy);
-  color:white;
-}
-
-.card {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:20px;
-  margin-bottom:20px;
-  box-shadow:0 2px 8px rgba(0,0,0,.035);
-}
-
-.card h3 {
-  margin:0 0 16px;
-  color:var(--navy);
-  font-size:17px;
-}
-
-label {
-  display:block;
-  margin:13px 0 6px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-input,select {
-  width:100%;
-  padding:12px;
-  border:1px solid #ccd4e0;
-  border-radius:7px;
-  background:white;
-  font-size:14px;
-  color:var(--text);
-}
-
-input:focus,select:focus {
-  outline:2px solid rgba(36,87,167,.15);
-  border-color:var(--blue);
-}
-
-button {
-  border:0;
-  border-radius:7px;
-  padding:10px 14px;
-  cursor:pointer;
-  font-size:13px;
-  font-weight:bold;
-}
-
-button:disabled {
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.primary {
-  background:var(--navy);
-  color:white;
-}
-
-.secondary {
-  background:#e9eef7;
-  color:var(--navy);
-}
-
-.success {
-  background:#e2f5e9;
-  color:var(--green);
-}
-
-.danger {
-  background:#fde9e7;
-  color:var(--danger);
-}
-
-.form-button {
-  margin-top:17px;
-  width:100%;
-  padding:13px;
-}
-
-.filters {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-bottom:15px;
-}
-
-.table-wrap {
-  overflow-x:auto;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  min-width:650px;
-}
-
-th,td {
-  text-align:left;
-  padding:12px 10px;
-  border-bottom:1px solid var(--border);
-  font-size:13px;
-  vertical-align:middle;
-}
-
-th {
-  background:#f5f7fb;
-  color:var(--navy);
-}
-
-.actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
-
-.status {
-  display:inline-block;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.status.active {
-  background:#e2f5e9;
-  color:var(--green);
-}
-
-.status.inactive {
-  background:#f0f1f4;
-  color:#667085;
-}
-
-.message {
-  display:none;
-  padding:11px;
-  border-radius:7px;
-  margin-top:12px;
-  font-size:13px;
-}
-
-.message.error {
-  display:block;
-  background:#fde9e7;
-  color:var(--danger);
-}
-
-.message.ok {
-  display:block;
-  background:#e2f5e9;
-  color:var(--green);
-}
-
-.empty {
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
-}
-
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  z-index:10;
-  padding:20px;
-  align-items:center;
-  justify-content:center;
-}
-
-.modal-box {
-  background:white;
-  border-radius:10px;
-  padding:22px;
-  width:100%;
-  max-width:450px;
-}
-
-.modal-box h3 {
-  color:var(--navy);
-  margin-top:0;
-}
-
-.modal-actions {
-  display:flex;
-  gap:8px;
-  margin-top:18px;
-  flex-wrap:wrap;
-}
-
-.small-note {
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.5;
-}
-
-.logout {
-  float:right;
-  background:#fff;
-  color:var(--navy);
-}
-
-@media(max-width:600px) {
-  .filters { grid-template-columns:1fr; }
-  .card { padding:15px; }
-}
 </style>
 </head>
-
 <body>
-
-<header>
-  <button class="logout" id="logoutBtn">Sign Out</button>
-  <h2>SAINTIG EXAMS</h2>
-  <p>Education Level Management</p>
-</header>
-
-<div class="container">
-
-  <nav class="nav">
-    <a href="admin.html">Dashboard</a>
-    <a href="countries.html">Countries</a>
-    <a href="education-levels.html" class="active">Education Levels</a>
-    <a href="subjects.html">Subjects</a>
-    <a href="question-bank.html">Question Bank</a>
-  </nav>
-
-  <section class="card">
-    <h3 id="formTitle">Add Education Level</h3>
-
-    <form id="levelForm">
-      <label for="countrySelect">Select Country</label>
-      <select id="countrySelect" required>
-        <option value="">Loading countries...</option>
-      </select>
-
-      <label for="levelName">Education Level</label>
-      <input
-        type="text"
-        id="levelName"
-        maxlength="100"
-        placeholder="e.g. Senior Secondary School"
-        required
-      >
-
-      <button class="primary form-button" id="saveBtn" type="submit">
-        Add Education Level
-      </button>
-
-      <button
-        class="secondary form-button"
-        id="cancelEditBtn"
-        type="button"
-        style="display:none"
-      >
-        Cancel Editing
-      </button>
-
-      <div id="formMessage" class="message"></div>
-    </form>
-  </section>
-
-  <section class="card">
-    <h3>Manage Existing Education Levels</h3>
-
-    <div class="filters">
-      <div>
-        <label for="countryFilter">Filter by Country</label>
-        <select id="countryFilter">
-          <option value="">All Countries</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="searchInput">Search Education Levels</label>
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search by education level..."
-        >
-      </div>
-    </div>
-
-    <p class="small-note" id="recordCount"></p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Country</th>
-            <th>Education Level</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="levelsTable">
-          <tr><td colspan="4" class="empty">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div id="listMessage" class="message"></div>
-  </section>
-
-</div>
-
-<div class="modal" id="detailsModal">
-  <div class="modal-box">
-    <h3>Education Level Details</h3>
-    <div id="detailsContent"></div>
-    <div class="modal-actions">
-      <button class="primary" id="closeModalBtn">Close</button>
-    </div>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="admin.html">SAINTIG <span>EXAMS</span></a>
+    <span class="role">Admin</span>
+    <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html">Countries</a><a href="education-levels.html" class="on">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html">Register exam</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">View public website</a><button id="signOut" type="button">Sign out</button></div></nav>
+</header>
+<main class="wrap" id="main">
+<h1>Education levels</h1>
+<p class="sub">Add and manage the education levels of each country.</p>
+<nav class="sections" aria-label="Setup sections"><a href="countries.html"><b>1</b>Countries</a><a href="education-levels.html" class="on" aria-current="page"><b>2</b>Education levels</a><a href="subjects.html"><b>3</b>Subjects</a><a href="question-bank.html"><b>4</b>Question bank</a></nav>
+<div class="card">
+  <h2 id="formTitle">Add an education level</h2>
+  <p class="hint">Choose the country, type the level, then tap Add.</p>
+  <div class="grid">
+    <div><label for="countrySelect">Country</label><select id="countrySelect"><option value="">Loading…</option></select></div>
+    <div><label for="levelName">Education level</label><input id="levelName" maxlength="100" placeholder="e.g. Senior Secondary School" autocomplete="off"></div>
+  </div>
+  <div class="msg" id="formMsg"></div>
+  <div class="row"><button class="btn gold" id="saveBtn" type="button">Add education level</button><button class="btn ghost" id="cancelBtn" type="button" hidden>Cancel editing</button></div>
+</div>
+<div class="card">
+  <h2>Your education levels</h2>
+  <div class="bar" style="margin-top:10px">
+    <div><label for="countryFilter">Country</label><select id="countryFilter"><option value="">All countries</option></select></div>
+    <div><label for="search">Search</label><input id="search" type="search" placeholder="Type a level or country"></div>
+  </div>
+  <p class="count" id="count"></p>
+  <div id="list"><p class="empty">Loading…</p></div>
+  <div class="msg" id="listMsg"></div>
 </div>
 
+</main>
 <script type="module">
-import { supabase } from "./auth.js";
-
-const $ = id => document.getElementById(id);
-
-let countries = [];
-let levels = [];
-let editingId = null;
-let busy = false;
-
-function showMessage(element, message, type) {
-  element.textContent = message;
-  element.className = "message " + type;
-}
-
-function clearMessage(element) {
-  element.textContent = "";
-  element.className = "message";
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[character]);
-}
-
-async function verifyAccess() {
-  const { data: userData, error: authError } =
-    await supabase.auth.getUser();
-
-  if (authError || !userData?.user) {
-    location.replace("admin-login.html");
-    return false;
+import {supabase} from "./auth.js";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
+function hush(id){const e=$(id);e.textContent="";e.className="msg"}
+const goHome=()=>location.replace("admin-login.html");
+$("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
+$("signOut").addEventListener("click",async()=>{await supabase.auth.signOut();goHome()});
+/* Checks the signed-in administrator. With a permission name it also checks that permission. */
+async function requirePermission(permission){
+  const {data:u,error}=await supabase.auth.getUser();
+  if(error||!u?.user){await supabase.auth.signOut();goHome();return false}
+  if(permission){
+    const {data:ok,error:e2}=await supabase.rpc("has_admin_permission",{p_permission:permission});
+    if(e2||!ok){
+      $("main").innerHTML='<div class="card"><h2>Access restricted</h2><p class="hint">You do not have permission to use this page. Contact your Super Administrator.</p><a class="btn primary" href="admin.html">Back to dashboard</a></div>';
+      return false;
+    }
   }
-
-  const { data: allowed, error } = await supabase.rpc(
-    "has_admin_permission",
-    { p_permission:"manage_education_levels" }
-  );
-
-  if (error || allowed !== true) {
-    document.body.innerHTML = `
-      <div style="padding:35px;font-family:Arial">
-        <h2>Access denied</h2>
-        <p>You do not have permission to manage education levels.</p>
-        <a href="admin.html">Return to dashboard</a>
-      </div>
-    `;
-    return false;
-  }
-
   return true;
 }
 
-async function loadCountries() {
-  const { data, error } = await supabase
-    .from("education_systems")
-    .select("id,country_name,is_active")
-    .order("country_name");
+let countries=[],levels=[],editId=null,busy=false;
+const countryName=id=>{const c=countries.find(x=>String(x.id)===String(id));return c?c.country_name:"Unknown country"};
 
-  if (error) throw error;
-
-  countries = data || [];
-
-  const options = countries.map(country => `
-    <option value="${escapeHTML(country.id)}">
-      ${escapeHTML(country.country_name)}
-      ${country.is_active ? "" : "(Unpublished)"}
-    </option>
-  `).join("");
-
-  $("countrySelect").innerHTML =
-    '<option value="">Select Country</option>' + options;
-
-  $("countryFilter").innerHTML =
-    '<option value="">All Countries</option>' + options;
+async function loadCountries(){
+  const {data,error}=await supabase.from("education_systems").select("id,country_name,is_active").order("country_name");
+  if(error)throw error;
+  countries=data||[];
+  const opts=countries.map(c=>`<option value="${esc(c.id)}">${esc(c.country_name)}${c.is_active?"":" (Unpublished)"}</option>`).join("");
+  $("countrySelect").innerHTML='<option value="">Choose country</option>'+opts;
+  $("countryFilter").innerHTML='<option value="">All countries</option>'+opts;
 }
-
-async function loadLevels() {
-  clearMessage($("listMessage"));
-
-  const { data, error } = await supabase
-    .from("education_levels")
-    .select(`
-      id,
-      education_system_id,
-      level_name,
-      description,
-      is_active,
-      created_at
-    `)
-    .order("level_name");
-
-  if (error) {
-    showMessage(
-      $("listMessage"),
-      "Unable to load education levels: " + error.message,
-      "error"
-    );
-    return;
-  }
-
-  levels = data || [];
-  renderLevels();
+async function loadLevels(){
+  const {data,error}=await supabase.from("education_levels").select("id,education_system_id,level_name,description,is_active,created_at").order("level_name");
+  if(error){say("listMsg","Unable to load education levels: "+error.message,"err");return}
+  levels=data||[];hush("listMsg");render();
 }
-
-function getCountryName(id) {
-  const country = countries.find(
-    item => String(item.id) === String(id)
-  );
-
-  return country ? country.country_name : "Unknown country";
+function render(){
+  const cf=$("countryFilter").value,q=$("search").value.trim().toLowerCase();
+  const rows=levels.filter(l=>(!cf||String(l.education_system_id)===cf)&&(String(l.level_name).toLowerCase().includes(q)||countryName(l.education_system_id).toLowerCase().includes(q)));
+  $("count").textContent=rows.length+" education level(s) shown";
+  $("list").innerHTML=rows.length?rows.map(l=>`
+    <article class="item ${l.is_active?"":"muted"}">
+      <div><div class="item-title">${esc(l.level_name)}</div>
+        <div class="item-meta">${esc(countryName(l.education_system_id))} &nbsp;<span class="badge ${l.is_active?"on":"off"}">${l.is_active?"Published":"Unpublished"}</span></div></div>
+      <div class="acts">
+        <button class="btn ghost" type="button" data-a="edit" data-id="${esc(l.id)}">Edit</button>
+        <button class="btn ghost" type="button" data-a="toggle" data-id="${esc(l.id)}">${l.is_active?"Unpublish":"Publish"}</button>
+        <button class="btn danger" type="button" data-a="del" data-id="${esc(l.id)}">Delete</button>
+      </div></article>`).join(""):'<p class="empty">No education levels found.</p>';
 }
-
-function renderLevels() {
-  const selectedCountry = $("countryFilter").value;
-  const search = $("searchInput").value.trim().toLowerCase();
-
-  const filtered = levels.filter(level => {
-    const countryMatch =
-      !selectedCountry ||
-      String(level.education_system_id) === selectedCountry;
-
-    const searchMatch =
-      level.level_name.toLowerCase().includes(search) ||
-      getCountryName(level.education_system_id)
-        .toLowerCase().includes(search);
-
-    return countryMatch && searchMatch;
-  });
-
-  $("recordCount").textContent =
-    `${filtered.length} education level(s) displayed`;
-
-  if (!filtered.length) {
-    $("levelsTable").innerHTML = `
-      <tr>
-        <td colspan="4" class="empty">
-          No education levels found.
-        </td>
-      </tr>
-    `;
-    return;
-  }
-
-  $("levelsTable").innerHTML = filtered.map(level => `
-    <tr>
-      <td>${escapeHTML(getCountryName(level.education_system_id))}</td>
-      <td>${escapeHTML(level.level_name)}</td>
-      <td>
-        <span class="status ${level.is_active ? "active" : "inactive"}">
-          ${level.is_active ? "Published" : "Unpublished"}
-        </span>
-      </td>
-      <td>
-        <div class="actions">
-          <button class="secondary" data-action="view"
-            data-id="${escapeHTML(level.id)}">View</button>
-
-          <button class="primary" data-action="edit"
-            data-id="${escapeHTML(level.id)}">Edit</button>
-
-          <button class="success" data-action="toggle"
-            data-id="${escapeHTML(level.id)}">
-            ${level.is_active ? "Unpublish" : "Publish"}
-          </button>
-
-          <button class="danger" data-action="delete"
-            data-id="${escapeHTML(level.id)}">Delete</button>
-        </div>
-      </td>
-    </tr>
-  `).join("");
+function resetForm(){
+  editId=null;$("countrySelect").value="";$("levelName").value="";$("formTitle").textContent="Add an education level";
+  $("saveBtn").textContent="Add education level";$("cancelBtn").hidden=true;
 }
-
-async function saveLevel(event) {
-  event.preventDefault();
-
-  if (busy) return;
-
-  const countryId = $("countrySelect").value;
-  const levelName = $("levelName").value.trim();
-
-  if (!countryId || !levelName) {
-    showMessage(
-      $("formMessage"),
-      "Select a country and enter an education level.",
-      "error"
-    );
-    return;
-  }
-
-  const countryExists = countries.some(
-    country => String(country.id) === countryId
-  );
-
-  if (!countryExists) {
-    showMessage(
-      $("formMessage"),
-      "The selected country is invalid. Refresh the page.",
-      "error"
-    );
-    return;
-  }
-
-  busy = true;
-  $("saveBtn").disabled = true;
-
-  try {
-    if (editingId !== null) {
-      const { error } = await supabase
-        .from("education_levels")
-        .update({
-          education_system_id:countryId,
-          level_name:levelName
-        })
-        .eq("id", editingId);
-
-      if (error) throw error;
-
-      showMessage(
-        $("formMessage"),
-        "Education level updated successfully.",
-        "ok"
-      );
-    } else {
-      const { error } = await supabase
-        .from("education_levels")
-        .insert({
-          education_system_id:countryId,
-          level_name:levelName,
-          is_active:true
-        });
-
-      if (error) throw error;
-
-      showMessage(
-        $("formMessage"),
-        "Education level added successfully.",
-        "ok"
-      );
-    }
-
-    resetForm();
+$("cancelBtn").addEventListener("click",()=>{resetForm();hush("formMsg")});
+$("saveBtn").addEventListener("click",async()=>{
+  if(busy)return;
+  const cid=$("countrySelect").value,name=$("levelName").value.trim();
+  if(!cid||!name){say("formMsg","Choose a country and type the education level.","err");return}
+  if(!countries.some(c=>String(c.id)===cid)){say("formMsg","That country is not valid. Refresh the page.","err");return}
+  if(levels.some(l=>String(l.education_system_id)===cid&&String(l.level_name).toLowerCase()===name.toLowerCase()&&String(l.id)!==String(editId))){say("formMsg","This education level already exists for that country.","err");return}
+  busy=true;$("saveBtn").disabled=true;
+  try{
+    const r=editId!==null?await supabase.from("education_levels").update({education_system_id:cid,level_name:name}).eq("id",editId)
+                         :await supabase.from("education_levels").insert({education_system_id:cid,level_name:name,is_active:true});
+    if(r.error)throw r.error;
+    const edited=editId!==null;resetForm();
+    say("formMsg",edited?"Education level updated.":"Education level added.","ok");
     await loadLevels();
-
-  } catch (error) {
-    showMessage(
-      $("formMessage"),
-      "Operation failed: " + error.message,
-      "error"
-    );
-  } finally {
-    busy = false;
-    $("saveBtn").disabled = false;
-  }
-}
-
-function editLevel(id) {
-  const level = levels.find(
-    item => String(item.id) === String(id)
-  );
-
-  if (!level) return;
-
-  editingId = level.id;
-
-  $("countrySelect").value = level.education_system_id;
-  $("levelName").value = level.level_name;
-  $("formTitle").textContent = "Edit Education Level";
-  $("saveBtn").textContent = "Save Changes";
-  $("cancelEditBtn").style.display = "block";
-
-  clearMessage($("formMessage"));
-
-  window.scrollTo({ top:0, behavior:"smooth" });
-}
-
-function resetForm() {
-  editingId = null;
-  $("levelForm").reset();
-  $("formTitle").textContent = "Add Education Level";
-  $("saveBtn").textContent = "Add Education Level";
-  $("cancelEditBtn").style.display = "none";
-}
-
-function viewLevel(id) {
-  const level = levels.find(
-    item => String(item.id) === String(id)
-  );
-
-  if (!level) return;
-
-  $("detailsContent").innerHTML = `
-    <p><strong>Country:</strong>
-      ${escapeHTML(getCountryName(level.education_system_id))}</p>
-    <p><strong>Education Level:</strong>
-      ${escapeHTML(level.level_name)}</p>
-    <p><strong>Status:</strong>
-      ${level.is_active ? "Published" : "Unpublished"}</p>
-    <p><strong>Date Created:</strong>
-      ${escapeHTML(level.created_at || "Not available")}</p>
-  `;
-
-  $("detailsModal").style.display = "flex";
-}
-
-async function toggleLevel(id) {
-  const level = levels.find(
-    item => String(item.id) === String(id)
-  );
-
-  if (!level || busy) return;
-
-  const newStatus = !level.is_active;
-  const action = newStatus ? "publish" : "unpublish";
-
-  if (!confirm(
-    `Are you sure you want to ${action} "${level.level_name}"?`
-  )) return;
-
-  busy = true;
-
-  try {
-    const { error } = await supabase
-      .from("education_levels")
-      .update({ is_active:newStatus })
-      .eq("id", id);
-
-    if (error) throw error;
-
-    await loadLevels();
-
-  } catch (error) {
-    showMessage(
-      $("listMessage"),
-      "Unable to change status: " + error.message,
-      "error"
-    );
-  } finally {
-    busy = false;
-  }
-}
-
-async function deleteLevel(id) {
-  const level = levels.find(
-    item => String(item.id) === String(id)
-  );
-
-  if (!level || busy) return;
-
-  const confirmed = confirm(
-    `Delete "${level.level_name}" from ${getCountryName(level.education_system_id)}?\n\n` +
-    "This may affect associated classes and subject assignments. " +
-    "Continue only if you are certain."
-  );
-
-  if (!confirmed) return;
-
-  busy = true;
-
-  try {
-    const { error } = await supabase
-      .from("education_levels")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    if (String(editingId) === String(id)) {
-      resetForm();
-    }
-
-    showMessage(
-      $("listMessage"),
-      "Education level deleted successfully.",
-      "ok"
-    );
-
-    await loadLevels();
-
-  } catch (error) {
-    showMessage(
-      $("listMessage"),
-      "Deletion was blocked: " + error.message +
-      ". Check the database relationships and permissions before deleting dependent records.",
-      "error"
-    );
-  } finally {
-    busy = false;
-  }
-}
-
-$("levelForm").addEventListener("submit", saveLevel);
-
-$("cancelEditBtn").addEventListener("click", resetForm);
-
-$("countryFilter").addEventListener("change", renderLevels);
-$("searchInput").addEventListener("input", renderLevels);
-
-$("levelsTable").addEventListener("click", event => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const id = button.dataset.id;
-  const action = button.dataset.action;
-
-  if (action === "view") viewLevel(id);
-  if (action === "edit") editLevel(id);
-  if (action === "toggle") toggleLevel(id);
-  if (action === "delete") deleteLevel(id);
+  }catch(e){say("formMsg","Could not save: "+e.message,"err")}
+  finally{busy=false;$("saveBtn").disabled=false}
 });
-
-$("closeModalBtn").addEventListener("click", () => {
-  $("detailsModal").style.display = "none";
-});
-
-$("detailsModal").addEventListener("click", event => {
-  if (event.target === $("detailsModal")) {
-    $("detailsModal").style.display = "none";
+$("list").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-a]");if(!b||busy)return;
+  const l=levels.find(x=>String(x.id)===b.dataset.id);if(!l)return;
+  if(b.dataset.a==="edit"){
+    editId=l.id;$("countrySelect").value=l.education_system_id;$("levelName").value=l.level_name;
+    $("formTitle").textContent="Edit education level";$("saveBtn").textContent="Save changes";$("cancelBtn").hidden=false;hush("formMsg");
+    window.scrollTo({top:0,behavior:"smooth"});return;
+  }
+  if(b.dataset.a==="toggle"){
+    const act=l.is_active?"unpublish":"publish";
+    if(!confirm("Are you sure you want to "+act+' "'+l.level_name+'"?'))return;
+    busy=true;const {error}=await supabase.from("education_levels").update({is_active:!l.is_active}).eq("id",l.id);busy=false;
+    if(error){say("listMsg","Could not change the status: "+error.message,"err");return}
+    await loadLevels();return;
+  }
+  if(b.dataset.a==="del"){
+    if(!confirm('Delete "'+l.level_name+'" from '+countryName(l.education_system_id)+"?\n\nThis may affect its subjects and classes. Continue only if you are sure."))return;
+    busy=true;const {error}=await supabase.from("education_levels").delete().eq("id",l.id);busy=false;
+    if(error){say("listMsg","Deleting was blocked: "+error.message+". Remove the records that depend on this level first.","err");return}
+    if(String(editId)===String(l.id))resetForm();
+    say("listMsg","Education level deleted.","ok");await loadLevels();
   }
 });
+$("countryFilter").addEventListener("change",render);
+$("search").addEventListener("input",render);
+(async()=>{
+  try{if(!await requirePermission("manage_education_levels"))return;await loadCountries();await loadLevels()}
+  catch(e){console.error(e);say("formMsg","Unable to start the page: "+e.message,"err")}
+})();
 
-$("logoutBtn").addEventListener("click", async () => {
-  await supabase.auth.signOut();
-  location.replace("admin-login.html");
-});
-
-async function initializePage() {
-  try {
-    const permitted = await verifyAccess();
-    if (!permitted) return;
-
-    await loadCountries();
-    await loadLevels();
-
-  } catch (error) {
-    showMessage(
-      $("formMessage"),
-      "Unable to initialize page: " + error.message,
-      "error"
-    );
-  }
-}
-
-initializePage();
 </script>
-
 </body>
 </html>
