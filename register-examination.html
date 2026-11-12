@@ -425,6 +425,7 @@ Answer: A</pre>
 <p>Any normal filename works, for example <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Spaces, brackets and capital letters are fine. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
 
 <h4>4. After choosing your file</h4>
+<p><strong>Package limit:</strong> your package allows a set number of stored questions in total. If a file has more questions than you have room for, only the questions that fit are added and approved automatically, and the rest are skipped. The queue section shows how many places you have left.</p>
 <p>Tap <strong>Read Questions</strong>. If there are errors, the message names the row or question number to fix. Good questions go to the review queue, where you can edit and approve them before saving.</p>
 </div>
 </details>
@@ -465,6 +466,8 @@ Answer: A</pre>
     </div>
   </div>
 </div>
+
+<div class="info-box" id="storageLimitStatus">Checking your stored-question limit...</div>
 
 <div class="info-box" id="minimumQuestionStatus">
 Select an examination to check its minimum question requirement.
@@ -1015,6 +1018,118 @@ function displayExamCode(code){
 }
 
 /* -----------------------------
+   STORED QUESTION LIMIT (package)
+------------------------------ */
+
+let storedLimit=null;
+let storedTotal=null;
+let storageState="loading";   /* loading | ready | unavailable */
+let storageNote="";
+
+function hasValue(v){return v!==null&&v!==undefined&&v!=="";}
+
+/* Questions still allowed: stored questions plus everything waiting in the queue count. */
+function remainingCapacity(){
+  if(storageState!=="ready")return Infinity;
+  return Math.max(0,storedLimit-storedTotal-pendingQuestions.length);
+}
+
+function updateStorageStatus(){
+  const box=$("storageLimitStatus");
+  if(!box)return;
+
+  if(storageState==="loading"){
+    box.textContent="Checking your stored-question limit...";
+    return;
+  }
+
+  if(storageState==="unavailable"){
+    box.textContent=
+      "Your stored-question limit could not be checked on this page. "+
+      "The system may still stop saving once your package limit is reached.";
+    return;
+  }
+
+  const left=Math.max(0,storedLimit-storedTotal-pendingQuestions.length);
+
+  box.innerHTML=
+    "<strong>Stored questions:</strong> "+storedTotal+" of "+storedLimit+
+    " used"+(packageInfo?" ("+escapeHTML(packageInfo.package_name)+" package)":"")+
+    ". In your queue: "+pendingQuestions.length+
+    ". Places left: <strong>"+left+"</strong>.";
+}
+
+async function initStorageLimit(){
+  storageState="loading";
+  updateStorageStatus();
+
+  try{
+    const {data:userData,error:userError}=await supabase.auth.getUser();
+    if(userError||!userData?.user)throw userError||new Error("No signed-in user.");
+
+    const {data:account,error:accountError}=await supabase
+      .from("school_accounts")
+      .select("id")
+      .eq("user_id",userData.user.id)
+      .maybeSingle();
+
+    if(accountError||!account)throw accountError||new Error("No school account found.");
+
+    const [assignment,limits]=await Promise.all([
+      supabase.from("school_account_packages")
+        .select("package_name,custom_max_stored_questions")
+        .eq("school_account_id",account.id)
+        .maybeSingle(),
+      supabase.from("school_package_limits")
+        .select("package_name,max_stored_questions")
+    ]);
+
+    if(assignment.error)throw assignment.error;
+    if(limits.error)throw limits.error;
+
+    const name=String(
+      assignment.data?.package_name||packageInfo?.package_name||""
+    ).toLowerCase();
+
+    const row=(limits.data||[]).find(
+      p=>String(p.package_name).toLowerCase()===name
+    );
+
+    const custom=assignment.data?.custom_max_stored_questions;
+    const limit=Number(hasValue(custom)?custom:row?.max_stored_questions);
+
+    if(!Number.isSafeInteger(limit)||limit<1){
+      throw new Error("The stored-question limit is missing for this package.");
+    }
+
+    /* Count every question already stored across all of this school's examinations. */
+    let total=0;
+    const list=[...examinations];
+
+    for(let i=0;i<list.length;i+=5){
+      const chunk=list.slice(i,i+5);
+      const results=await Promise.all(chunk.map(exam=>
+        callFunction("list_questions",{examination_id:exam.id})
+      ));
+
+      for(const result of results){
+        total+=countEligibleQuestions(getQuestionArray(result));
+      }
+    }
+
+    storedLimit=limit;
+    storedTotal=total;
+    storageState="ready";
+
+  }catch(error){
+    console.error("Stored-question limit check failed:",error);
+    storageState="unavailable";
+  }
+
+  updateQueueStats();
+}
+
+/* -----------------------------
    QUEUE MANAGEMENT
 ------------------------------ */
 
@@ -1031,6 +1146,7 @@ function getPendingCount(){
 }
 
 function updateQueueStats(){
+  updateStorageStatus();
   $("totalQueueCount").textContent=pendingQuestions.length;
   $("approvedQueueCount").textContent=getApprovedCount();
   $("pendingQueueCount").textContent=getPendingCount();
@@ -1875,6 +1991,13 @@ function addPendingQuestion(question){
 
   const validated=validateQuestion(question);
 
+  if(remainingCapacity()<1){
+    throw new Error(
+      "You have reached your package's stored-question limit ("+storedLimit+
+      "). Upgrade your package or contact the admin to add more questions."
+    );
+  }
+
   pendingQuestions.push({
     ...validated,
     queueId:nextQueueId++,
@@ -2302,14 +2425,40 @@ $("uploadCsvBtn").addEventListener("click",async()=>{
       });
     }
 
+    const room=remainingCapacity();
+
+    if(room<1){
+      throw new Error(
+        "You have reached your package's stored-question limit ("+storedLimit+
+        "). Nothing was added. Upgrade your package or contact the admin to add more questions."
+      );
+    }
+
+    let resultMessage=
+      imported.length+" question(s) successfully added to the review queue. They have not been saved to the database.";
+
+    if(imported.length>room){
+      /* More questions than the package allows: keep what fits, approve it automatically, skip the rest. */
+      const allowed=imported.slice(0,room);
+      const skipped=imported.length-room;
+
+      allowed.forEach(q=>{q.reviewed=true;});
+      imported.length=0;
+      imported.push(...allowed);
+
+      resultMessage=
+        "Your file has "+(room+skipped)+" questions, but your package allows "+storedLimit+
+        " stored questions in total. The first "+room+" were added and approved automatically. "+
+        skipped+" were skipped. Tap Save Approved Questions to store them.";
+    }
+
     pendingQuestions.push(...imported);
     currentPage=Math.ceil(pendingQuestions.length/PAGE_SIZE);
     updatePendingInfo();
     $("csvFile").value="";
 
-    showStatus($("questionStatus"),
-      imported.length+" question(s) successfully added to the review queue. They have not been saved to the database.",
-      "success");
+    showStatus($("questionStatus"),resultMessage,
+      imported.some(q=>q.reviewed)?"warning":"success");
 
     $("reviewList").scrollIntoView({behavior:"smooth",block:"start"});
 
@@ -2338,17 +2487,46 @@ async function saveApprovedQuestions(){
 
   const existingQuestions=await getSavedQuestions();
 
-  savedEligibleQuestionCount=
-    countEligibleQuestions(existingQuestions);
+  const freshCount=countEligibleQuestions(existingQuestions);
+
+  /* Keep the school-wide stored total accurate if this exam changed elsewhere. */
+  if(storageState==="ready"&&savedEligibleQuestionCount!==null){
+    storedTotal+=freshCount-savedEligibleQuestionCount;
+  }
+
+  savedEligibleQuestionCount=freshCount;
 
   updateQueueStats();
+
+  /* Package limit: only save what fits. */
+  storageNote="";
+  let toSaveSource=approvedQuestions;
+  let droppedIds=new Set();
+
+  if(storageState==="ready"){
+    const room=Math.max(0,storedLimit-storedTotal);
+
+    if(room<1){
+      throw new Error(
+        "You have reached your package's stored-question limit ("+storedLimit+
+        "). Nothing was saved. Upgrade your package or contact the admin."
+      );
+    }
+
+    if(approvedQuestions.length>room){
+      toSaveSource=approvedQuestions.slice(0,room);
+      droppedIds=new Set(approvedQuestions.slice(room).map(q=>q.queueId));
+      storageNote=" Your package allows "+storedLimit+
+        " stored questions, so "+droppedIds.size+" extra question(s) were not saved and have been removed from the queue.";
+    }
+  }
 
   const highestOrder=Math.max(
     0,
     ...existingQuestions.map(getSavedQuestionOrder)
   );
 
-  const questionsToSave=approvedQuestions.map(
+  const questionsToSave=toSaveSource.map(
     (question,index)=>({
       question_text:question.question_text,
       option_a:question.option_a,
@@ -2373,15 +2551,17 @@ async function saveApprovedQuestions(){
     Remove from the temporary queue only after
     the server confirms that saving succeeded.
   */
-  const savedIds=new Set(
-    approvedQuestions.map(question=>question.queueId)
-  );
+  const savedIds=new Set([
+    ...toSaveSource.map(question=>question.queueId),
+    ...droppedIds
+  ]);
 
   pendingQuestions=pendingQuestions.filter(
     question=>!savedIds.has(question.queueId)
   );
 
   savedEligibleQuestionCount+=count;
+  if(storageState==="ready")storedTotal+=count;
 
   const totalPages=Math.max(
     1,Math.ceil(pendingQuestions.length/PAGE_SIZE)
@@ -2451,7 +2631,7 @@ async function saveToQuestionBank(){
       savedCount+
       " approved question(s) successfully saved to "+
       (currentExam.title||"the selected examination")+
-      "'s question bank. Questions still awaiting review remain in the queue.",
+      "'s question bank. Questions still awaiting review remain in the queue."+storageNote,
       "success"
     );
 
@@ -2789,6 +2969,9 @@ async function initializePage(){
     }
 
     await loadExaminations();
+
+    /* Do not block the page while the stored-question limit is being checked. */
+    initStorageLimit();
 
     showStatus(
       $("pageStatus"),
