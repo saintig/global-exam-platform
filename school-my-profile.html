@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,12 +47,9 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 .status.error{background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
 .status.info{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
 .status.success{background:#eaf8ef;border:1px solid #c8ebd2;color:#176b3a}
-.profile-card{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 7px 22px #14243a0b}
-.profile-banner{height:125px;background:var(--navy);position:relative}
-.profile-banner:after{content:"";position:absolute;right:8%;top:-90px;width:240px;height:240px;border:1px solid #ffffff18;border-radius:50%}
-.profile-header{padding:0 27px 22px;display:flex;align-items:flex-end;gap:17px;margin-top:-42px;position:relative;z-index:1}
-.profile-avatar{width:88px;height:88px;border-radius:17px;background:var(--gold);color:var(--navy);border:5px solid white;display:grid;place-items:center;font-size:27px;font-weight:800;flex-shrink:0}
-.profile-heading{padding-bottom:5px;min-width:0}
+.profile-card{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 7px 22px #14243a0b;margin-bottom:22px}
+.profile-header{padding:25px 27px 0}
+.profile-heading{min-width:0}
 .profile-heading h2{color:var(--navy);font-size:21px;margin:0;overflow-wrap:anywhere}
 .profile-heading p{color:var(--muted);font-size:13px;margin:3px 0 0}
 .profile-body{padding:0 27px 27px}
@@ -68,6 +64,10 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 .field.full{grid-column:1/-1}
 .readonly-value{min-height:45px;padding:11px 12px;border:1px solid var(--line);border-radius:8px;background:#f6f8fa;color:#475569;overflow-wrap:anywhere}
 .account-status{display:inline-block;padding:5px 12px;border-radius:20px;background:#e8f7ee;color:#16834a;font-size:12px;font-weight:bold}
+.pw-wrap{position:relative}
+.pw-wrap input{padding-right:70px}
+.pw-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--navy);font-size:12px;font-weight:bold;padding:8px}
+.check{display:flex;align-items:center;gap:8px;font-size:13px;color:#475569}
 .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
 .btn{min-height:44px;padding:11px 20px;border-radius:8px;font-size:13px;font-weight:bold}
 .btn-primary{border:0;background:var(--navy);color:white}
@@ -87,8 +87,7 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 .topright{display:none}
 .content{padding:23px 14px}
 .heading h1{font-size:25px}
-.profile-header{padding:0 17px 18px;gap:12px}
-.profile-avatar{width:73px;height:73px;font-size:23px}
+.profile-header{padding:20px 17px 0}
 .profile-heading h2{font-size:18px}
 .profile-body{padding:0 17px 20px}
 .fields{grid-template-columns:1fr;gap:15px}
@@ -160,10 +159,8 @@ nav button.active{box-shadow:inset 3px 0 var(--gold)}
 <div class="status" id="statusMessage"></div>
 
 <section class="profile-card">
-<div class="profile-banner"></div>
 
 <div class="profile-header">
-<div class="profile-avatar" id="profileAvatar">SE</div>
 <div class="profile-heading">
 <h2 id="profileHeading">Loading profile…</h2>
 <p>Teacher/School Account</p>
@@ -248,17 +245,59 @@ placeholder="Enter state, province or region" disabled>
 <div class="readonly-value" id="subscriptionPlan">Loading…</div>
 </div>
 
-<div class="field">
-<label>Profile Photo / School Logo</label>
-<div class="readonly-value">Not connected yet — planned for a future update.</div>
-</div>
-
 </div>
 
 <div class="actions">
 <button type="button" class="btn btn-secondary" id="cancelBtn" hidden>Cancel</button>
 <button type="button" class="btn btn-secondary" id="editBtn" disabled>Edit Profile</button>
 <button type="submit" class="btn btn-primary" id="saveBtn" hidden>Save Changes</button>
+</div>
+
+</form>
+</div>
+</section>
+
+<!-- PASSWORD UPDATE -->
+<section class="profile-card">
+<div class="profile-body">
+<form id="passwordForm" autocomplete="off">
+
+<h3 class="section-heading">Change Password</h3>
+
+<div class="fields">
+
+<div class="field full">
+<label for="oldPassword">Old Password</label>
+<div class="pw-wrap">
+<input type="password" id="oldPassword" autocomplete="current-password"
+placeholder="Enter your current password" required>
+<button type="button" class="pw-toggle" data-target="oldPassword">Show</button>
+</div>
+</div>
+
+<div class="field">
+<label for="newPassword">New Password</label>
+<div class="pw-wrap">
+<input type="password" id="newPassword" autocomplete="new-password"
+placeholder="Enter new password" minlength="8" required>
+<button type="button" class="pw-toggle" data-target="newPassword">Show</button>
+</div>
+<div class="field-note">At least 8 characters.</div>
+</div>
+
+<div class="field">
+<label for="confirmPassword">Confirm New Password</label>
+<div class="pw-wrap">
+<input type="password" id="confirmPassword" autocomplete="new-password"
+placeholder="Re-enter new password" minlength="8" required>
+<button type="button" class="pw-toggle" data-target="confirmPassword">Show</button>
+</div>
+</div>
+
+</div>
+
+<div class="actions">
+<button type="submit" class="btn btn-primary" id="passwordBtn" disabled>Update Password</button>
 </div>
 
 </form>
@@ -299,11 +338,7 @@ const PAGE_LINKS={
 
 const $=id=>document.getElementById(id);
 
-/*
- ISO 3166-1 ALPHA-2 COUNTRY AND TERRITORY CODES.
- Country names are generated using the browser's
- international language data and sorted alphabetically.
-*/
+/* ISO 3166-1 ALPHA-2 COUNTRY AND TERRITORY CODES. */
 const COUNTRY_CODES=`
 AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ
 BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ
@@ -326,7 +361,6 @@ let currentUser=null;
 let originalValues={};
 let isEditing=false;
 
-/* INITIAL PAGE SETUP */
 $("year").textContent=new Date().getFullYear();
 
 /* HELPER FUNCTIONS */
@@ -363,15 +397,10 @@ const safeName=name||"Teacher/School";
 put("profileHeading",safeName);
 put("sideName",safeName);
 put("topAccount",safeName);
-$("profileAvatar").textContent=initials(safeName);
 $("sideAvatar").textContent=initials(safeName);
 }
 
-/*
- LOAD ALL AVAILABLE COUNTRY NAMES.
- The stored database value remains the country name,
- preserving compatibility with the existing country column.
-*/
+/* LOAD ALL AVAILABLE COUNTRY NAMES. */
 function loadCountries(){
 const countrySelect=$("country");
 
@@ -380,16 +409,11 @@ if(!("DisplayNames" in Intl)){
 throw new Error("Your browser does not support the country list.");
 }
 
-const displayNames=new Intl.DisplayNames(["en"],{
-type:"region"
-});
+const displayNames=new Intl.DisplayNames(["en"],{type:"region"});
 
 const countries=COUNTRY_CODES.trim()
 .split(/\s+/)
-.map(code=>({
-code,
-name:displayNames.of(code)
-}))
+.map(code=>({code,name:displayNames.of(code)}))
 .filter(item=>
 item.name &&
 item.name!==item.code &&
@@ -426,11 +450,6 @@ state:$("state").value.trim()
 };
 }
 
-/*
- RESTORE VALUES FROM SUPABASE.
- If an older saved country is not in the current
- dropdown list, preserve it rather than losing it.
-*/
 function setFormValues(values){
 $("accountName").value=values.account_name||"";
 $("phoneNumber").value=values.phone_number||"";
@@ -456,13 +475,7 @@ $("state").value=values.state||"";
 function setEditMode(enabled){
 isEditing=enabled;
 
-[
-"accountName",
-"phoneNumber",
-"address",
-"country",
-"state"
-].forEach(id=>{
+["accountName","phoneNumber","address","country","state"].forEach(id=>{
 $(id).disabled=!enabled;
 });
 
@@ -481,22 +494,17 @@ setEditMode(false);
 clearMessage();
 }
 
-/* COUNTRY DROPDOWN INITIALIZATION */
 loadCountries();
 
-/* EDIT PROFILE */
 $("editBtn").addEventListener("click",()=>{
 if(!currentAccount)return;
 clearMessage();
 setEditMode(true);
 });
 
-/* CANCEL EDITING */
 $("cancelBtn").addEventListener("click",cancelEditing);
 
-/*
- INITIALIZE SUPABASE AND LOAD ACCOUNT.
-*/
+/* INITIALIZE SUPABASE AND LOAD ACCOUNT. */
 async function initializeProfile(){
 
 if(!window.supabase?.createClient){
@@ -519,10 +527,7 @@ detectSessionInUrl:true
 }
 );
 
-const{
-data:sessionData,
-error:sessionError
-}=await supabaseClient.auth.getSession();
+const{data:sessionData,error:sessionError}=await supabaseClient.auth.getSession();
 
 if(sessionError||!sessionData.session){
 location.replace(LOGIN_PAGE);
@@ -531,11 +536,7 @@ return;
 
 currentUser=sessionData.session.user;
 
-/* LOAD TEACHER/SCHOOL ACCOUNT */
-const{
-data:account,
-error
-}=await supabaseClient
+const{data:account,error}=await supabaseClient
 .from("school_accounts")
 .select(`
 id,
@@ -553,22 +554,15 @@ state
 
 if(error){
 console.error("Profile account lookup:",error);
-showMessage(
-"Unable to load your account profile: "+error.message,
-"error"
-);
+showMessage("Unable to load your account profile: "+error.message,"error");
 return;
 }
 
 if(!account){
-showMessage(
-"No Teacher/School account is linked to this login.",
-"error"
-);
+showMessage("No Teacher/School account is linked to this login.","error");
 return;
 }
 
-/* ONLY ACTIVE ACCOUNTS CAN USE THIS PAGE */
 if(account.status!=="active"){
 await supabaseClient.auth.signOut();
 location.replace(LOGIN_PAGE);
@@ -577,7 +571,6 @@ return;
 
 currentAccount=account;
 
-/* SAVE ORIGINAL VALUES FOR CANCEL */
 originalValues={
 account_name:account.account_name||"",
 phone_number:account.phone_number||"",
@@ -586,7 +579,6 @@ country:account.country||"",
 state:account.state||""
 };
 
-/* DISPLAY PROFILE INFORMATION */
 setFormValues(originalValues);
 displayName(originalValues.account_name);
 
@@ -594,15 +586,12 @@ put("accountEmail",currentUser.email||"—");
 put("accountId",account.id);
 put("accountStatus",account.status);
 
-/* ENABLE EDIT BUTTON */
 $("editBtn").disabled=false;
+$("passwordBtn").disabled=false;
 
 /* LOAD SUBSCRIPTION PACKAGE */
 try{
-const{
-data:assignment,
-error:packageError
-}=await supabaseClient
+const{data:assignment,error:packageError}=await supabaseClient
 .from("school_account_packages")
 .select("package_name")
 .eq("school_account_id",account.id)
@@ -610,10 +599,7 @@ error:packageError
 
 if(packageError)throw packageError;
 
-put(
-"subscriptionPlan",
-(assignment?.package_name||"Free")+" Package"
-);
+put("subscriptionPlan",(assignment?.package_name||"Free")+" Package");
 
 }catch(error){
 console.error("Profile subscription:",error);
@@ -624,83 +610,56 @@ setEditMode(false);
 clearMessage();
 }
 
-/*
- SAVE PROFILE INFORMATION TO SUPABASE.
-*/
+/* SAVE PROFILE INFORMATION TO SUPABASE. */
 $("profileForm").addEventListener("submit",async event=>{
 
 event.preventDefault();
 
 if(!currentAccount||!currentUser){
-showMessage(
-"Your account information is not available.",
-"error"
-);
+showMessage("Your account information is not available.","error");
 return;
 }
 
 const values=getFormValues();
 
-/* VALIDATE ACCOUNT NAME */
 if(!values.account_name){
-showMessage(
-"Teacher/School Name cannot be empty.",
-"error"
-);
+showMessage("Teacher/School Name cannot be empty.","error");
 $("accountName").focus();
 return;
 }
 
 if(values.account_name.length>150){
-showMessage(
-"Teacher/School Name cannot exceed 150 characters.",
-"error"
-);
+showMessage("Teacher/School Name cannot exceed 150 characters.","error");
 return;
 }
 
-/* VALIDATE PHONE NUMBER AND ADDRESS */
 if(values.phone_number.length>30){
-showMessage(
-"Phone Number cannot exceed 30 characters.",
-"error"
-);
+showMessage("Phone Number cannot exceed 30 characters.","error");
 return;
 }
 
 if(values.address.length>250){
-showMessage(
-"Address cannot exceed 250 characters.",
-"error"
-);
+showMessage("Address cannot exceed 250 characters.","error");
 return;
 }
 
 if(values.state.length>100){
-showMessage(
-"State / Province / Region cannot exceed 100 characters.",
-"error"
-);
+showMessage("State / Province / Region cannot exceed 100 characters.","error");
 return;
 }
 
-/* CHECK WHETHER ANYTHING CHANGED */
 if(JSON.stringify(values)===JSON.stringify(originalValues)){
 setEditMode(false);
 showMessage("There are no changes to save.","info");
 return;
 }
 
-/* PREVENT DOUBLE SUBMISSION */
 $("saveBtn").disabled=true;
 $("saveBtn").textContent="Saving…";
 
 try{
 
-const{
-data,
-error
-}=await supabaseClient
+const{data,error}=await supabaseClient
 .from("school_accounts")
 .update({
 account_name:values.account_name,
@@ -724,18 +683,11 @@ state
 if(error)throw error;
 
 if(!data){
-throw new Error(
-"No account was updated. Please check your account permissions."
-);
+throw new Error("No account was updated. Please check your account permissions.");
 }
 
-/* UPDATE CURRENT ACCOUNT */
-currentAccount={
-...currentAccount,
-...data
-};
+currentAccount={...currentAccount,...data};
 
-/* UPDATE ORIGINAL VALUES */
 originalValues={
 account_name:data.account_name||"",
 phone_number:data.phone_number||"",
@@ -744,30 +696,113 @@ country:data.country||"",
 state:data.state||""
 };
 
-/* REFRESH PROFILE DISPLAY */
 setFormValues(originalValues);
 displayName(originalValues.account_name);
 setEditMode(false);
 
-showMessage(
-"Your profile information has been updated successfully.",
-"success"
-);
+showMessage("Your profile information has been updated successfully.","success");
 
 }catch(error){
 
 console.error("Profile update:",error);
-
-showMessage(
-"Unable to save your profile: "+
-(error.message||"Please try again."),
-"error"
-);
+showMessage("Unable to save your profile: "+(error.message||"Please try again."),"error");
 
 }finally{
 
 $("saveBtn").disabled=false;
 $("saveBtn").textContent="Save Changes";
+
+}
+
+});
+
+/* SHOW / HIDE PASSWORD */
+document.querySelectorAll(".pw-toggle").forEach(btn=>{
+btn.addEventListener("click",()=>{
+const input=$(btn.dataset.target);
+const show=input.type==="password";
+input.type=show?"text":"password";
+btn.textContent=show?"Hide":"Show";
+});
+});
+
+/* UPDATE PASSWORD: verify old password, then set the new one. */
+$("passwordForm").addEventListener("submit",async event=>{
+
+event.preventDefault();
+
+if(!currentUser||!currentUser.email){
+showMessage("Your account information is not available.","error");
+return;
+}
+
+const oldPassword=$("oldPassword").value;
+const newPassword=$("newPassword").value;
+const confirmPassword=$("confirmPassword").value;
+
+if(!oldPassword){
+showMessage("Please enter your old password.","error");
+$("oldPassword").focus();
+return;
+}
+
+if(newPassword.length<8){
+showMessage("New password must be at least 8 characters.","error");
+$("newPassword").focus();
+return;
+}
+
+if(newPassword!==confirmPassword){
+showMessage("New password and confirmation do not match.","error");
+$("confirmPassword").focus();
+return;
+}
+
+if(newPassword===oldPassword){
+showMessage("New password must be different from your old password.","error");
+$("newPassword").focus();
+return;
+}
+
+$("passwordBtn").disabled=true;
+$("passwordBtn").textContent="Updating…";
+
+try{
+
+/* CONFIRM THE OLD PASSWORD IS CORRECT */
+const{error:verifyError}=await supabaseClient.auth.signInWithPassword({
+email:currentUser.email,
+password:oldPassword
+});
+
+if(verifyError){
+throw new Error("Your old password is incorrect.");
+}
+
+/* SET THE NEW PASSWORD */
+const{error:updateError}=await supabaseClient.auth.updateUser({
+password:newPassword
+});
+
+if(updateError)throw updateError;
+
+$("passwordForm").reset();
+document.querySelectorAll(".pw-toggle").forEach(btn=>{
+$(btn.dataset.target).type="password";
+btn.textContent="Show";
+});
+
+showMessage("Your password has been updated successfully.","success");
+
+}catch(error){
+
+console.error("Password update:",error);
+showMessage(error.message||"Unable to update your password. Please try again.","error");
+
+}finally{
+
+$("passwordBtn").disabled=false;
+$("passwordBtn").textContent="Update Password";
 
 }
 
@@ -785,10 +820,7 @@ closeSidebar();
 const destination=PAGE_LINKS[page];
 
 if(!destination){
-showMessage(
-"This dashboard link has not been configured.",
-"error"
-);
+showMessage("This dashboard link has not been configured.","error");
 return;
 }
 
@@ -834,10 +866,7 @@ console.error("Sign out:",error);
 $("signOutBtn").disabled=false;
 $("signOutBtn").textContent="↪  Sign Out";
 
-showMessage(
-"Sign-out failed. Please try again.",
-"error"
-);
+showMessage("Sign-out failed. Please try again.","error");
 
 }
 }
@@ -847,10 +876,7 @@ $("signOutBtn").addEventListener("click",signOut);
 /* CHECK LOGIN SESSION WHEN USER RETURNS TO PAGE */
 document.addEventListener("visibilitychange",async()=>{
 
-if(
-document.visibilityState==="visible" &&
-supabaseClient
-){
+if(document.visibilityState==="visible" && supabaseClient){
 
 const{data,error}=await supabaseClient.auth.getSession();
 
@@ -862,7 +888,6 @@ location.replace(LOGIN_PAGE);
 
 });
 
-/* START PAGE */
 initializeProfile();
 
 </script>
