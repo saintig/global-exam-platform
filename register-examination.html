@@ -1,3002 +1,879 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
 <title>Register Examination | SAINTIG EXAMS</title>
-
 <style>
-:root{
-  --navy:#101d35;
-  --navy-light:#1b2d4d;
-  --gold:#d4af37;
-  --gold-dark:#a98220;
-  --cream:#f8f0df;
-  --white:#fff;
-  --text:#253047;
-  --muted:#65748b;
-  --border:#e0e5ed;
-  --success:#16834b;
-  --danger:#c0392b;
-  --background:#f4f6fa;
-}
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#253047;--muted:#65748b;--line:#e0e5ed;--ok:#16834b;--bad:#c0392b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:var(--background);color:var(--text);min-height:100vh;font-size:15px}
+body{font:16px/1.5 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.layout{display:flex;min-height:100vh}
-.sidebar{width:245px;background:var(--navy);color:white;padding:24px 15px;flex-shrink:0}
-.brand{padding:5px 12px 25px;border-bottom:1px solid rgba(255,255,255,.13);margin-bottom:22px}
-.brand h2{color:var(--gold);font-size:21px;letter-spacing:.5px}
-.brand p{font-size:13px;color:#cbd3e0;margin-top:7px}
-.nav-label{font-size:12px;color:#aeb9cb;letter-spacing:1px;padding:0 12px;margin:18px 0 9px;text-transform:uppercase}
-.nav-link{display:block;padding:13px 12px;color:#e7ebf2;text-decoration:none;font-size:14px;border-radius:7px;margin-bottom:4px}
-.nav-link:hover,.nav-link.active{background:var(--navy-light);color:var(--gold)}
-.main{flex:1;min-width:0}
-.topbar{background:white;padding:19px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border)}
-.topbar h1{font-size:23px;color:var(--navy)}
-.topbar p{font-size:14px;color:var(--muted);margin-top:6px}
-.page{max-width:1200px;margin:auto;padding:26px}
-.card{background:white;border:1px solid var(--border);border-radius:12px;padding:23px;margin-bottom:22px;box-shadow:0 2px 9px rgba(16,29,53,.04)}
-.card-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
-.card-heading h2{color:var(--navy);font-size:19px}
-.card-heading p{color:var(--muted);font-size:14px;margin-top:6px;line-height:1.5}
-.section-number{background:var(--cream);color:var(--gold-dark);border:1px solid #ead8a6;padding:7px 11px;border-radius:7px;font-size:13px;font-weight:bold;white-space:nowrap}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px}
-.field{min-width:0}
-.field.full{grid-column:1/-1}
-label{display:block;font-size:14px;font-weight:bold;color:#34415a;margin-bottom:8px}
-.required{color:var(--danger)}
-input,select,textarea{width:100%;padding:13px;border:1px solid #dce1e9;border-radius:7px;background:white;color:var(--text);outline:none;font-size:15px;min-height:46px}
-input:focus,select:focus,textarea:focus{border-color:var(--gold-dark);box-shadow:0 0 0 3px rgba(212,175,55,.13)}
-textarea{min-height:105px;resize:vertical;line-height:1.6}
-.help{font-size:13px;color:var(--muted);margin-top:7px;line-height:1.6}
-.calculation{background:#fbf8ef;border:1px solid #eadfbf;padding:17px;border-radius:8px;margin-top:19px}
-.calculation span{font-size:14px;color:#6f6040}
-.calculation strong{display:block;font-size:29px;color:var(--navy);margin-top:6px}
-.schedule-box{background:#f8fafc;border:1px solid var(--border);padding:17px;border-radius:8px;margin-top:19px}
-.schedule-title{font-weight:bold;color:var(--navy);font-size:15px;margin-bottom:13px}
-.check-line{display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:13px}
-.check-line input{width:19px;height:19px;min-height:0}
-.schedule-fields{display:none}
-.schedule-fields.show{display:grid}
-.button-row{display:flex;flex-wrap:wrap;gap:11px;margin-top:19px}
-.btn{border:none;padding:13px 18px;border-radius:7px;font-size:14px;font-weight:bold;transition:.2s}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:980px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:18px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.role{font-size:12px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff55;border-radius:8px;padding:9px 14px;min-height:44px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22}
+.menu.open{display:block}
+.menu-in{max-width:980px;margin:auto;padding:8px 14px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px}
+.menu a{color:#e7ebf2;text-decoration:none;padding:12px;border-radius:7px;font-size:15px}
+.menu a:hover,.menu a.on{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:980px;margin:auto;padding:16px 14px 70px}
+h1{font-size:22px;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 4px;text-align:center;color:var(--muted);font-size:13px;font-weight:bold;min-height:60px}
+.step b{display:block;width:26px;height:26px;line-height:26px;margin:0 auto 3px;border-radius:50%;background:#e9edf4;color:var(--navy)}
+.step.on{border-color:var(--gold);color:var(--navy);box-shadow:0 0 0 2px #d4af3744}
+.step.on b{background:var(--gold)}
+.step.done b{background:var(--ok);color:#fff}
+.step:disabled{opacity:.5;cursor:not-allowed}
+.bar{position:sticky;top:67px;z-index:20;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:14px;display:flex;flex-wrap:wrap;gap:3px 16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+.card h2{font-size:18px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:14px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:14px;margin-bottom:6px;color:#34415a}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;color:var(--text);min-height:46px}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+.btn{border:0;border-radius:9px;padding:13px 18px;font-weight:bold;font-size:15px;min-height:48px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.btn-primary{background:var(--navy);color:white}
-.btn-primary:hover:not(:disabled){background:var(--navy-light)}
-.btn-gold{background:var(--gold);color:var(--navy)}
-.btn-gold:hover:not(:disabled){background:#e2c04e}
-.btn-outline{background:white;border:1px solid #cbd3df;color:var(--navy)}
-.btn-danger{background:#fff0ee;color:var(--danger);border:1px solid #f0c7c2}
-.btn-success{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
-.btn-small{padding:9px 12px;font-size:13px}
-.question-box{border:1px solid var(--border);border-radius:9px;padding:19px;margin-top:17px;background:#fff}
-.question-box h3{font-size:16px;color:var(--navy);margin-bottom:15px}
-.option-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px}
-.info-box{background:#f0f5fc;border:1px solid #d9e5f4;border-radius:8px;padding:14px;font-size:14px;line-height:1.7;color:#3d526e;margin-top:14px}
-.status{padding:14px;border-radius:8px;font-size:14px;line-height:1.6;margin-bottom:16px;display:none}
-.status.show{display:block}
-.status.success{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
-.status.error{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
-.status.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
-.status.warning{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
-.exam-code{background:var(--navy);color:var(--gold);padding:20px;border-radius:9px;margin-top:18px;text-align:center}
-.exam-code small{display:block;font-size:13px;color:#d8dfeb;margin-bottom:9px}
-.exam-code strong{font-size:25px;letter-spacing:1px;overflow-wrap:anywhere}
-.hidden{display:none!important}
-.footer-note{text-align:center;color:var(--muted);font-size:13px;padding:18px}
-.mobile-menu{display:none;background:var(--navy);color:white;border:none;padding:10px 13px;border-radius:6px}
-.review-section{border:1px solid #e4e8ef;border-radius:10px;margin-top:20px;overflow:hidden;background:white}
-.review-header{background:#f8fafc;padding:17px;border-bottom:1px solid var(--border)}
-.review-header h3{font-size:17px;color:var(--navy)}
-.review-header p{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
-.review-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;padding:15px;background:white;border-bottom:1px solid var(--border)}
-.stat-card{padding:13px;background:#f8fafc;border:1px solid var(--border);border-radius:8px}
-.stat-card span{display:block;color:var(--muted);font-size:12px}
-.stat-card strong{display:block;color:var(--navy);font-size:23px;margin-top:6px}
-.review-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:15px;border-bottom:1px solid var(--border)}
-.review-controls p{font-size:13px;color:var(--muted)}
-.review-list{padding:15px}
-.review-item{border:1px solid var(--border);border-radius:9px;padding:16px;margin-bottom:13px;background:white}
-.review-item:last-child{margin-bottom:0}
-.review-item.approved{border-left:5px solid var(--success)}
-.review-item.pending{border-left:5px solid var(--gold)}
-.review-item-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
-.question-number{font-size:14px;font-weight:bold;color:var(--navy)}
-.review-badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:12px;font-weight:bold}
-.review-badge.pending{background:#fff6df;color:#85620d}
-.review-badge.approved{background:#eaf7ef;color:#176b3d}
-.review-question{font-size:15px;line-height:1.65;font-weight:bold;color:#253047;margin-bottom:12px;overflow-wrap:anywhere}
-.review-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
-.review-option{padding:9px 10px;background:#f8fafc;border:1px solid #edf0f4;border-radius:6px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-.review-option.correct{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
-.review-meta{color:var(--muted);font-size:12px;margin:9px 0;line-height:1.5}
-.review-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}
-.review-empty{padding:28px 15px;text-align:center;color:var(--muted);font-size:14px;line-height:1.6}
-.pagination{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap;padding:15px;border-top:1px solid var(--border)}
-.page-btn{min-width:38px;height:38px;padding:0 10px;border:1px solid #dce1e9;background:white;border-radius:6px;color:var(--navy);font-size:13px}
-.page-btn.active{background:var(--navy);color:white;border-color:var(--navy)}
-.page-btn:disabled{opacity:.4;cursor:not-allowed}
-.queue-footer{background:#f8fafc;border-top:1px solid var(--border);padding:16px}
-.queue-footer p{font-size:13px;color:var(--muted);line-height:1.6}
-.queue-footer .button-row{margin-top:13px}
-details.guide{border:1px solid #d9e5f4;border-radius:8px;background:#f7faff;margin-top:14px}
-details.guide summary{cursor:pointer;padding:13px 15px;font-weight:bold;font-size:14px;color:var(--navy)}
-.guide-body{padding:0 15px 15px;font-size:13.5px;line-height:1.65;color:#3d526e}
-.guide-body h4{margin:16px 0 6px;color:var(--navy);font-size:14px}
-.guide-body ul{margin:6px 0 0;padding-left:20px}
-.guide-body li{margin-bottom:5px}
-.guide-body pre{background:#fff;border:1px solid var(--border);border-radius:7px;padding:12px;font-size:12.5px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
-.guide-body code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12px}
-.modal-backdrop{position:fixed;inset:0;background:rgba(8,18,35,.65);z-index:1000;display:none;align-items:center;justify-content:center;padding:15px;overflow-y:auto}
-.modal-backdrop.show{display:flex}
-.modal{width:100%;max-width:700px;max-height:95vh;overflow-y:auto;background:white;border-radius:12px;padding:22px;box-shadow:0 15px 45px rgba(0,0,0,.2)}
-.modal h2{font-size:19px;color:var(--navy);margin-bottom:17px}
-.modal-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:20px}
-@media(max-width:850px){
-  .sidebar{width:220px}
-  .page{padding:18px}
-  .review-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media(max-width:650px){
-  .layout{display:block}
-  .sidebar{display:none;width:100%}
-  .sidebar.open{display:block}
-  .mobile-menu{display:inline-block;margin-bottom:9px}
-  .topbar{padding:15px 16px}
-  .topbar h1{font-size:19px}
-  .page{padding:13px}
-  .card{padding:16px}
-  .form-grid,.option-grid,.review-options{grid-template-columns:1fr}
-  .button-row .btn{flex:1 1 100%}
-  .card-heading{align-items:flex-start}
-  .review-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .review-controls{align-items:flex-start}
-  .review-actions .btn{flex:1 1 auto}
-  .modal{padding:16px}
-}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #cbd3df;color:var(--navy)}
+.danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:4px}
+.msg{display:none;padding:12px 14px;border-radius:9px;margin:12px 0;font-size:14.5px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;padding:12px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold;color:var(--navy);min-height:48px}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+[hidden]{display:none!important}
+.q{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:13px;margin-bottom:11px;background:#fff}
+.q-top{font-weight:bold;color:var(--navy);margin-bottom:6px;font-size:14px}
+.q-text{font-weight:bold;overflow-wrap:anywhere;margin-bottom:8px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;font-size:14px}
+.opt{padding:7px 9px;background:#f8fafc;border:1px solid #edf0f4;border-radius:6px;overflow-wrap:anywhere}
+.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
+.q-meta{color:var(--muted);font-size:13px;margin-top:8px;overflow-wrap:anywhere}
+.q-act{display:flex;gap:8px;margin-top:10px}
+.q-act .btn{min-height:42px;padding:8px 16px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.stat{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center}
+.stat span{font-size:12px;color:var(--muted);display:block}
+.stat strong{font-size:22px;color:var(--navy)}
+.pager{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:12px 0}
+.pager button{min-width:42px;min-height:42px;border:1px solid #dce1e9;background:#fff;border-radius:7px;color:var(--navy)}
+.pager button.on{background:var(--navy);color:#fff}
+.errs{max-height:260px;overflow:auto}
+.err-row{background:#fff0ee;border-left:4px solid var(--bad);padding:8px 10px;margin:6px 0;font-size:14px;border-radius:4px}
+details.guide{border:1px solid #d9e5f4;border-radius:9px;background:#f7faff;margin:12px 0}
+details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:var(--navy);font-size:15px}
+.gb{padding:0 14px 14px;font-size:14px;line-height:1.65;color:#3d526e}
+.gb h4{margin:12px 0 4px;color:var(--navy)}
+.gb ul{padding-left:20px}
+.gb pre{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;font-size:12.5px;overflow-x:auto;white-space:pre-wrap;margin:6px 0}
+.gb code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12.5px}
+.modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:12px;padding:18px;width:100%;max-width:640px;margin:auto}
+.codebox{background:var(--navy);color:var(--gold);padding:16px;border-radius:10px;text-align:center;margin-top:14px;font-size:22px;font-weight:bold;overflow-wrap:anywhere}
+.codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
+
 </style>
 </head>
-
 <body>
-<div class="layout">
-
-<aside class="sidebar" id="sidebar">
-  <div class="brand">
-    <h2>SAINTIG EXAMS</h2>
-    <p>Teacher / School Dashboard</p>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
+    <span class="role">Teacher / School</span>
+    <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
-  <div class="nav-label">Main Menu</div>
-  <a class="nav-link" href="school-dashboard.html">Dashboard</a>
-  <a class="nav-link" href="school-students.html">School Students</a>
-  <a class="nav-link" href="school-subjects.html">School Subjects</a>
-  <a class="nav-link active" href="register-examination.html">Register Examination</a>
-  <a class="nav-link" href="school-question-bank.html">Question Bank</a>
-  <a class="nav-link" href="school-archive-management.html">Archive Management</a>
-  <a class="nav-link" href="school-results-performance.html">Results &amp; Performance</a>
-  <a class="nav-link" href="school-subscription-plans.html">Subscription Plans</a>
-  <a class="nav-link" href="school-notifications.html">Notifications</a>
-  <a class="nav-link" href="school-my-profile.html">My Profile</a>
-  <a class="nav-link" href="school-help-support.html">Help &amp; Support</a>
-</aside>
-
-<main class="main">
-<header class="topbar">
-  <div>
-    <button class="mobile-menu" id="menuBtn" type="button">☰ Menu</button>
-    <h1>Register Examination</h1>
-    <p>Create an examination and add its questions.</p>
-  </div>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html" class="on">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="index.html">Home</a></div></nav>
 </header>
 
-<div class="page">
-<div id="pageStatus" class="status"></div>
+<main class="wrap">
+  <h1>Register examination</h1>
+  <p class="sub">Four steps: exam details, add questions, review and save, publish.</p>
 
-<section class="card">
-<div class="card-heading">
-  <div>
-    <h2>Examination Registration</h2>
-    <p>Register an examination under one of your subjects.</p>
-  </div>
-  <span class="section-number">STEP 1</span>
-</div>
+  <nav class="steps" id="steps" aria-label="Steps">
+    <button class="step on" data-step="1" type="button"><b>1</b>Exam</button>
+    <button class="step" data-step="2" type="button" disabled><b>2</b>Add questions</button>
+    <button class="step" data-step="3" type="button" disabled><b>3</b>Review &amp; save</button>
+    <button class="step" data-step="4" type="button" disabled><b>4</b>Publish</button>
+  </nav>
 
-<form id="examForm">
-<div class="form-grid">
+  <div class="bar" id="bar">No examination selected yet. Choose one or create a new one in step 1.</div>
+  <div class="msg" id="pageMsg"></div>
 
-<div class="field full">
-<label for="subject">Subject <span class="required">*</span></label>
-<select id="subject" required>
-<option value="">Loading subjects...</option>
-</select>
-<p class="help">Only your published, active subjects are available here.</p>
-</div>
+  <!-- STEP 1 -->
+  <section id="p1">
+    <div class="card">
+      <h2>Which examination?</h2>
+      <p class="hint">Pick an examination to continue working on, or create a new one.</p>
+      <select id="existing" aria-label="Examination"><option value="">Loading…</option></select>
+    </div>
 
-<div class="field">
-<label for="title">Examination Title <span class="required">*</span></label>
-<input id="title" type="text" maxlength="200" placeholder="e.g. Government Examination" required>
-</div>
+    <div class="card">
+      <h2>Exam details</h2>
+      <div class="grid" style="margin-top:12px">
+        <div class="full"><label for="subject">Subject</label><select id="subject"><option value="">Loading subjects…</option></select><small>Only your published, active subjects appear here.</small></div>
+        <div><label for="title">Title</label><input id="title" maxlength="200" placeholder="e.g. Government Examination"></div>
+        <div><label for="nameClass">Exam name and class (optional)</label><input id="nameClass" maxlength="200" placeholder="e.g. Government SS1"></div>
+        <div class="full"><label for="description">Instructions for students (optional)</label><textarea id="description" maxlength="5000"></textarea></div>
+        <div><label for="duration">Duration (minutes)</label><input id="duration" type="number" min="1" step="1"><small id="durationHelp">Loading your package limit…</small></div>
+        <div><label for="qCountField">Questions each student answers</label><input id="qCountField" type="number" min="1" step="1"><small id="countHelp">Loading your package limit…</small></div>
+        <div><label for="marksPer">Marks per question</label><input id="marksPer" type="number" min="0.01" step="0.01" value="1"></div>
+        <div><label for="attempts">Maximum attempts</label><select id="attempts"><option value="1">1 attempt</option><option value="2" selected>2 attempts</option><option value="3">3 attempts</option><option value="4">4 attempts</option><option value="5">5 attempts</option></select></div>
+      </div>
+      <div class="sum" style="margin-top:14px">Total marks: <b id="totalMarks">0</b> <small style="display:inline">(questions each student answers × marks per question)</small></div>
+      <label style="display:flex;gap:10px;align-items:center;margin-top:14px;font-weight:normal"><input type="checkbox" id="useSchedule" style="width:20px;height:20px;min-height:0"> Set a start and end date</label>
+      <div class="grid" id="schedule" hidden style="margin-top:10px">
+        <div><label for="startsAt">Starts</label><input type="datetime-local" id="startsAt"></div>
+        <div><label for="endsAt">Ends</label><input type="datetime-local" id="endsAt"></div>
+      </div>
+      <div class="msg" id="m1"></div>
+      <div class="row"><button class="btn gold" id="saveExam" type="button">Save and continue</button><button class="btn ghost" id="clearForm" type="button">Clear form</button></div>
+    </div>
+  </section>
 
-<div class="field">
-<label for="nameClass">Examination Name and Class</label>
-<input id="nameClass" type="text" maxlength="200" placeholder="e.g. Government SS1">
-</div>
+  <!-- STEP 2 -->
+  <section id="p2" hidden>
+    <div class="tabs"><button class="tab on" id="tabFile" type="button">Upload a file</button><button class="tab" id="tabOne" type="button">Type one question</button></div>
 
-<div class="field full">
-<label for="description">Description / Instructions</label>
-<textarea id="description" maxlength="5000" placeholder="Enter examination instructions for students..."></textarea>
-</div>
-
-<div class="field">
-<label for="duration">Duration (Minutes) <span class="required">*</span></label>
-<input id="duration" type="number" min="1" step="1" required>
-<p class="help" id="durationHelp">Loading your package duration limit...</p>
-</div>
-
-<div class="field">
-<label for="questionCount">Questions Each Student Will Answer <span class="required">*</span></label>
-<input id="questionCount" type="number" min="1" step="1" required>
-<p class="help" id="questionCountHelp">Loading your package question limit...</p>
-</div>
-
-<div class="field">
-<label for="marksPerQuestion">Marks Per Question <span class="required">*</span></label>
-<input id="marksPerQuestion" type="number" min="0.01" step="0.01" value="1" required>
-</div>
-
-<div class="field">
-<label for="maxAttempts">Maximum Attempts <span class="required">*</span></label>
-<select id="maxAttempts" required>
-<option value="1">1 Attempt</option>
-<option value="2" selected>2 Attempts</option>
-<option value="3">3 Attempts</option>
-<option value="4">4 Attempts</option>
-<option value="5">5 Attempts</option>
-</select>
-<p class="help">Choose between 1 and 5 attempts.</p>
-</div>
-
-</div>
-
-<div class="calculation">
-<span>Calculated Total Marks</span>
-<strong id="totalMarks">100</strong>
-<p class="help">Questions each student answers × marks per question.</p>
-</div>
-
-<div class="schedule-box">
-<div class="schedule-title">Optional Examination Schedule</div>
-<label class="check-line">
-<input type="checkbox" id="enableSchedule">
-Set examination start and end dates
-</label>
-<div class="form-grid schedule-fields" id="scheduleFields">
-<div class="field">
-<label for="startsAt">Start Date and Time</label>
-<input type="datetime-local" id="startsAt">
-</div>
-<div class="field">
-<label for="endsAt">End Date and Time</label>
-<input type="datetime-local" id="endsAt">
-</div>
-</div>
-<p class="help">Leave scheduling disabled if students should be able to access the published examination immediately.</p>
-</div>
-
-<div class="button-row">
-<button class="btn btn-primary" type="submit" id="saveDraftBtn">Save Examination Draft</button>
-<button class="btn btn-outline" type="button" id="cancelBtn">Cancel</button>
-</div>
-</form>
-</section>
-
-<section class="card">
-<div class="card-heading">
-<div>
-<h2>Question Registration</h2>
-<p>Select a registered examination, then add questions individually or by CSV upload.</p>
-</div>
-<span class="section-number">STEP 2</span>
-</div>
-
-<div id="questionStatus" class="status"></div>
-
-<div class="question-box">
-<h3>Select Registered Examination</h3>
-<div class="field">
-<label for="examinationSelector">Examination <span class="required">*</span></label>
-<select id="examinationSelector" disabled>
-<option value="">Loading registered examinations...</option>
-</select>
-<p class="help">All questions you add or upload will belong to the selected examination.</p>
-</div>
-</div>
-
-<div class="question-box">
-<h3>Add One Question</h3>
-<form id="singleQuestionForm">
-<div class="field">
-<label for="questionText">Question <span class="required">*</span></label>
-<textarea id="questionText" maxlength="10000" placeholder="Enter your question..." required></textarea>
-</div>
-
-<div class="option-grid">
-<div class="field">
-<label for="optionA">Option A <span class="required">*</span></label>
-<input id="optionA" type="text" maxlength="2000" required>
-</div>
-<div class="field">
-<label for="optionB">Option B <span class="required">*</span></label>
-<input id="optionB" type="text" maxlength="2000" required>
-</div>
-<div class="field">
-<label for="optionC">Option C <span class="required">*</span></label>
-<input id="optionC" type="text" maxlength="2000" required>
-</div>
-<div class="field">
-<label for="optionD">Option D <span class="required">*</span></label>
-<input id="optionD" type="text" maxlength="2000" required>
-</div>
-<div class="field">
-<label for="correctOption">Correct Option <span class="required">*</span></label>
-<select id="correctOption" required>
-<option value="">Select correct answer</option>
-<option value="A">Option A</option>
-<option value="B">Option B</option>
-<option value="C">Option C</option>
-<option value="D">Option D</option>
-</select>
-</div>
-<div class="field">
-<label for="questionMarks">Question Marks</label>
-<input id="questionMarks" type="number" min="0.01" step="0.01" value="1">
-<p class="help">Defaults to the examination's marks per question.</p>
-</div>
-</div>
-
-<div class="field" style="margin-top:14px">
-<label for="explanation">Explanation (Optional)</label>
-<textarea id="explanation" maxlength="5000" placeholder="Enter an explanation if needed..."></textarea>
-</div>
-
-<div class="button-row">
-<button class="btn btn-gold" type="submit" id="addQuestionBtn">Add Question to Review</button>
-</div>
-</form>
-</div>
-
-<div class="question-box">
-<h3>Bulk Upload Questions</h3>
-<p class="help">Download the template, enter your questions and upload the completed file (PDF, Word, Text, CSV or Excel). Uploaded questions will first enter your review queue. They will not be saved until approved.</p>
-
-<div class="button-row">
-<button class="btn btn-outline" type="button" id="downloadTemplateBtn">Download CSV Template</button>
-<button class="btn btn-outline" type="button" id="downloadSampleBtn">Download Sample for Word / Text</button>
-</div>
-
-<div class="field" style="margin-top:17px">
-<label for="csvFile">Select File (PDF, Word, Text, CSV or Excel)</label>
-<input id="csvFile" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls,text/csv,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-<p class="help">Any filename is accepted, e.g. Government SS1 Questions.csv, First Term Exam 2026.xlsx, My Questions (Final).CSV</p>
-</div>
-
-<div class="button-row">
-<button class="btn btn-primary" type="button" id="uploadCsvBtn">Read Questions</button>
-</div>
-
-<details class="guide" open>
-<summary>📘 How to prepare your exam file: guideline for Word (DOCX), Text, PDF, CSV and Excel</summary>
-<div class="guide-body">
-
-<h4>1. Word (.docx), Text (.txt) and PDF</h4>
-<p>Type each question in this order, one item per line, with a blank line between questions:</p>
-<pre>1. What is government?
-A. The study of plants
-B. The process of governing a country
-C. The study of animals
-D. The study of rocks
+    <div class="card" id="boxFile">
+      <h2>Upload a file</h2>
+      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works.</p>
+      <details class="guide"><summary>How to prepare your file</summary><div class="gb">
+<h4>Word (.docx), Text (.txt) and PDF</h4>
+<p>One item per line, with a blank line between questions:</p>
+<pre>1. What is the capital of Nigeria?
+A. Lagos
+B. Abuja
+C. Kano
+D. Enugu
 Answer: B
-Explanation: Government deals with the governing of a country.
-Marks: 1
+Explanation: Abuja is the capital. (optional)
+Marks: 1 (optional)
 
-2. Who is the head of a state government?
-A. Governor
-B. Senator
-C. Chairman
-D. Principal
-Answer: A</pre>
-<ul>
-<li><strong>Question:</strong> start with a number, such as <code>1.</code>, <code>1)</code> or <code>Q1.</code></li>
-<li><strong>Options:</strong> exactly four lines starting <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> Type the letters yourself.</li>
-<li><strong>Answer:</strong> required, one letter from A to D, for example <code>Answer: B</code> or <code>Ans: B</code>.</li>
-<li><strong>Explanation and Marks</strong> are optional. If you leave Marks out, the examination's "Marks Per Question" is used.</li>
-<li><strong>In Word:</strong> type the numbers and letters yourself. Word's automatic numbered or lettered lists are not read. Tables, text boxes and pictures inside the document are ignored.</li>
-<li><strong>PDF:</strong> must contain real text. Scanned or photographed pages cannot be read.</li>
-</ul>
-
-<h4>2. CSV (.csv) and Excel (.xlsx, .xls)</h4>
-<p>Use the template exactly, with headings in the first row:</p>
+2. Next question…</pre>
+<ul><li>Start each question with a number such as <code>1.</code> or <code>1)</code>.</li>
+<li>Type the option letters <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> yourself. Word's automatic lists are not read.</li>
+<li>Every question needs an <code>Answer:</code> line with one letter, A to D.</li>
+<li>PDF files need real text. Scanned or photographed pages cannot be read.</li></ul>
+<h4>CSV and Excel</h4>
+<p>Put the column names in the first row. Columns are found by name, so their order does not matter. Extra columns are ignored.</p>
 <pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order</pre>
-<p>Excel files are read from the first sheet. Question order is set automatically when the questions are saved.</p>
-
-<h4>3. Filenames</h4>
-<p>Any normal filename works, for example <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Spaces, brackets and capital letters are fine. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
-
-<h4>4. After choosing your file</h4>
-<p><strong>Package limit:</strong> your package allows a set number of stored questions in total. If a file has more questions than you have room for, only the questions that fit are added and approved automatically, and the rest are skipped. The queue section shows how many places you have left.</p>
-<p>Tap <strong>Read Questions</strong>. If there are errors, the message names the row or question number to fix. Good questions go to the review queue, where you can edit and approve them before saving.</p>
-</div>
-</details>
-</div>
-
-<div class="review-section">
-  <div class="review-header">
-    <h3>Question Review Queue</h3>
-    <p>Review every question before saving it. You can edit, approve or delete questions. Only approved questions will be saved.</p>
-  </div>
-
-  <div class="review-stats">
-    <div class="stat-card"><span>Total in Queue</span><strong id="totalQueueCount">0</strong></div>
-    <div class="stat-card"><span>Approved</span><strong id="approvedQueueCount">0</strong></div>
-    <div class="stat-card"><span>Pending Review</span><strong id="pendingQueueCount">0</strong></div>
-    <div class="stat-card"><span>Saved Questions</span><strong id="savedQueueCount">0</strong></div>
-  </div>
-
-  <div class="review-controls">
-    <p id="reviewSummary">No questions have been added to the review queue.</p>
-    <div class="button-row" style="margin-top:0">
-      <button class="btn btn-success btn-small" type="button" id="approveAllBtn" disabled>Approve All</button>
-      <button class="btn btn-danger btn-small" type="button" id="clearQueueBtn" disabled>Clear All</button>
+<ul><li>Needed: question_text, the four options and correct_option. The rest are optional.</li>
+<li>Leave marks empty to use the default marks.</li>
+<li>Excel files are read from the first sheet. CSV files can use commas or semicolons.</li></ul>
+<h4>File names</h4>
+<p>Any normal name works, such as <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Only the ending must be .pdf, .docx, .txt, .csv, .xlsx or .xls.</p>
+<h4>If something is wrong</h4>
+<p>Good questions are still accepted. Problem items are listed with their row or question number so you can fix them and read the file again.</p>
+</div></details>
+      <div class="row" style="margin-top:0"><button class="btn ghost" id="tplCsv" type="button">Download CSV template</button><button class="btn ghost" id="tplTxt" type="button">Download Word / Text sample</button></div>
+      <div style="margin-top:14px"><label for="file">Choose your file</label><input id="file" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls"></div>
+      <div class="msg" id="upMsg"></div>
+      <div class="row"><button class="btn primary" id="readBtn" type="button">Read file</button></div>
+      <div id="upResult"></div>
     </div>
-  </div>
 
-  <div class="review-list" id="reviewList">
-    <div class="review-empty">Your uploaded and individually added questions will appear here for review.</div>
-  </div>
-
-  <div class="pagination" id="pagination"></div>
-
-  <div class="queue-footer">
-    <p id="queueSaveInfo">Approve questions before saving them to the examination question bank.</p>
-    <div class="button-row">
-      <button class="btn btn-primary" type="button" id="saveQuestionsBtn" disabled>Save Approved Questions to Question Bank</button>
-      <button class="btn btn-gold" type="button" id="savePublishBtn" disabled>Save Approved Questions and Publish</button>
+    <div class="card" id="boxOne" hidden>
+      <h2>Type one question</h2>
+      <div style="margin-top:12px"><label for="qText">Question</label><textarea id="qText"></textarea></div>
+      <div class="grid" style="margin-top:12px">
+        <div><label for="oA">Option A</label><input id="oA"></div>
+        <div><label for="oB">Option B</label><input id="oB"></div>
+        <div><label for="oC">Option C</label><input id="oC"></div>
+        <div><label for="oD">Option D</label><input id="oD"></div>
+        <div><label for="qCorrect">Correct option</label><select id="qCorrect"><option value="">Select</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+        <div><label for="qMarks">Marks</label><input id="qMarks" type="number" min="0.01" step="0.01"><small>Leave empty to use the exam's marks per question.</small></div>
+        <div class="full"><label for="qExp">Explanation (optional)</label><textarea id="qExp"></textarea></div>
+      </div>
+      <div class="msg" id="oneMsg"></div>
+      <div class="row"><button class="btn gold" id="addOne" type="button">Add to review</button></div>
     </div>
-  </div>
-</div>
 
-<div class="info-box" id="storageLimitStatus">Checking your stored-question limit...</div>
+    <div class="nav"><button class="btn ghost" data-go="1" type="button">← Back</button><button class="btn primary" data-go="3" type="button">Next: review</button></div>
+  </section>
 
-<div class="info-box" id="minimumQuestionStatus">
-Select an examination to check its minimum question requirement.
-</div>
+  <!-- STEP 3 -->
+  <section id="p3" hidden>
+    <div class="card">
+      <h2>Review and save</h2>
+      <p class="hint">Check the questions, edit or delete any, then save them all.</p>
+      <div class="stats">
+        <div class="stat"><span>To save</span><strong id="qCount">0</strong></div>
+        <div class="stat"><span>Already saved</span><strong id="stSaved">0</strong></div>
+        <div class="stat"><span>Students answer</span><strong id="stNeed">0</strong></div>
+      </div>
+      <div class="msg show info" id="limitMsg">Checking your stored-question limit…</div>
+      <div class="msg" id="rvMsg"></div>
+      <div id="qList"></div>
+      <div class="pager" id="pager"></div>
+      <div class="row"><button class="btn gold" id="saveAll" type="button" disabled>Save all questions</button><button class="btn danger" id="clearAll" type="button">Remove all</button></div>
+    </div>
+    <div class="nav"><button class="btn ghost" data-go="2" type="button">← Back</button><button class="btn primary" data-go="4" type="button">Next: publish</button></div>
+  </section>
 
-<div id="examCodeBox" class="exam-code hidden">
-<small>PERMANENT EXAMINATION ID</small>
-<strong id="examCode"></strong>
-<div class="button-row" style="justify-content:center">
-<button class="btn btn-gold" type="button" id="copyCodeBtn">Copy Examination ID</button>
-<button class="btn btn-outline" type="button" id="shareCodeBtn">Share Examination ID</button>
-</div>
-</div>
-
-</section>
-
-<div class="footer-note">SAINTIG EXAMS — Building Your Business for the Digital World.</div>
-</div>
+  <!-- STEP 4 -->
+  <section id="p4" hidden>
+    <div class="card">
+      <h2>Publish to students</h2>
+      <p class="hint">Publish when the exam has enough saved questions.</p>
+      <div class="sum" id="pubInfo"></div>
+      <div class="msg" id="pubMsg"></div>
+      <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
+      <div class="codebox" id="codeBox" hidden><small>EXAMINATION ID</small><span id="codeText"></span>
+        <div class="row" style="justify-content:center"><button class="btn gold" id="copyCode" type="button">Copy ID</button><button class="btn ghost" id="shareCode" type="button" style="color:var(--navy)">Share ID</button></div>
+      </div>
+    </div>
+    <div class="nav"><button class="btn ghost" data-go="3" type="button">← Back</button></div>
+  </section>
 </main>
-</div>
 
-<div class="modal-backdrop" id="editModal">
-  <div class="modal">
-    <h2>Edit Question</h2>
-    <form id="editQuestionForm">
-      <div class="field">
-        <label for="editQuestionText">Question</label>
-        <textarea id="editQuestionText" required maxlength="10000"></textarea>
-      </div>
-      <div class="form-grid" style="margin-top:14px">
-        <div class="field"><label for="editOptionA">Option A</label><input id="editOptionA" required maxlength="2000"></div>
-        <div class="field"><label for="editOptionB">Option B</label><input id="editOptionB" required maxlength="2000"></div>
-        <div class="field"><label for="editOptionC">Option C</label><input id="editOptionC" required maxlength="2000"></div>
-        <div class="field"><label for="editOptionD">Option D</label><input id="editOptionD" required maxlength="2000"></div>
-        <div class="field">
-          <label for="editCorrectOption">Correct Option</label>
-          <select id="editCorrectOption" required>
-            <option value="A">Option A</option>
-            <option value="B">Option B</option>
-            <option value="C">Option C</option>
-            <option value="D">Option D</option>
-          </select>
-        </div>
-        <div class="field"><label for="editQuestionMarks">Question Marks</label><input id="editQuestionMarks" type="number" min="0.01" step="0.01" required></div>
-        <div class="field full"><label for="editExplanation">Explanation (Optional)</label><textarea id="editExplanation" maxlength="5000"></textarea></div>
-      </div>
-      <div class="modal-actions">
-        <button class="btn btn-outline" type="button" id="closeEditBtn">Cancel</button>
-        <button class="btn btn-primary" type="submit">Save Changes</button>
-      </div>
-    </form>
+<div class="modal" id="editModal"><div class="modal-box">
+  <h2 style="color:var(--navy);margin-bottom:12px;font-size:18px">Edit question</h2>
+  <label for="eText">Question</label><textarea id="eText"></textarea>
+  <div class="grid" style="margin-top:12px">
+    <div><label for="eA">Option A</label><input id="eA"></div><div><label for="eB">Option B</label><input id="eB"></div>
+    <div><label for="eC">Option C</label><input id="eC"></div><div><label for="eD">Option D</label><input id="eD"></div>
+    <div><label for="eCorrect">Correct option</label><select id="eCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+    <div><label for="eMarks">Marks</label><input id="eMarks" type="number" min="0.01" step="0.01"></div>
+    <div class="full"><label for="eExp">Explanation (optional)</label><textarea id="eExp"></textarea></div>
   </div>
-</div>
+  <div class="msg" id="eMsg"></div>
+  <div class="row"><button class="btn ghost" id="eCancel" type="button">Cancel</button><button class="btn gold" id="eSave" type="button">Save changes</button></div>
+</div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script type="module">
-import { supabase } from "./auth.js";
-
-const FUNCTION_NAME = "school-exam-management";
-const $ = id => document.getElementById(id);
-
-let currentExam = null;
-let examinations = [];
-let subjects = [];
-let packageInfo = null;
-
-let pendingQuestions = [];
-let savedEligibleQuestionCount = null;
-
-let isPublished = false;
-let isProcessing = false;
-let currentPage = 1;
-const PAGE_SIZE = 10;
-let editingQuestionId = null;
-let nextQueueId = 1;
-
-/* -----------------------------
-   GENERAL HELPERS
------------------------------- */
-
-function showStatus(element,message,type="info"){
-  element.textContent=message;
-  element.className="status show "+type;
-}
-
-function hideStatus(element){
-  element.textContent="";
-  element.className="status";
-}
-
-function positiveNumber(value,label){
-  const n=Number(value);
-  if(!Number.isFinite(n)||n<=0){
-    throw new Error(label+" must be greater than zero.");
-  }
-  return n;
-}
-
-function integerNumber(value,label){
-  const n=Number(value);
-  if(!Number.isSafeInteger(n)||n<=0){
-    throw new Error(label+" must be a positive whole number.");
-  }
-  return n;
-}
-
-function escapeHTML(value){
-  return String(value??"").replace(/[&<>"']/g,char=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
-}
-
-function parseFunctionData(data){
-  if(!data||typeof data!=="object"){
-    throw new Error("The server returned an invalid response.");
-  }
-
-  if(data.success===false){
-    throw new Error(
-      data.error||data.message||
-      "The server could not complete the request."
-    );
-  }
-
-  return data;
-}
-
-async function callFunction(action,payload={}){
-  const {data,error}=await supabase.functions.invoke(FUNCTION_NAME,{
-    body:{action,...payload}
-  });
-
-  if(error){
-    throw new Error(
-      error.message||"Unable to contact the examination service."
-    );
-  }
-
-  return parseFunctionData(data);
-}
-
-function getArray(data,...keys){
-  for(const key of keys){
-    if(Array.isArray(data?.[key]))return data[key];
-    if(Array.isArray(data?.data?.[key]))return data.data[key];
-  }
-
-  if(Array.isArray(data?.data))return data.data;
-
-  return [];
-}
-
-function getExamObject(data){
-  if(!data||typeof data!=="object")return null;
-
-  return data.examination||
-    data.exam||
-    data.data?.examination||
-    data.data?.exam||
-    (data.id?data:null);
-}
-
-function getSubjectArray(data){
-  return getArray(data,"subjects","school_subjects","items");
-}
-
-function getQuestionArray(data){
-  return getArray(data,"questions","exam_questions","items");
-}
-
-/* -----------------------------
-   PACKAGE LIMITS
------------------------------- */
-
-function extractPackage(data){
-  return data?.package||
-    data?.data?.package||
-    data?.package_info||
-    data?.data?.package_info||
-    null;
-}
-
-function readPackageLimit(value,label){
-  const number=Number(value);
-
-  if(!Number.isSafeInteger(number)||number<1){
-    throw new Error(
-      "Your account's "+label+
-      " is missing or invalid. Please contact the administrator."
-    );
-  }
-
-  return number;
-}
-
-function applyPackageLimits(info){
-  if(!info||typeof info!=="object"){
-    throw new Error(
-      "Your package information was not returned by the server. "+
-      "Please refresh the page or contact the administrator."
-    );
-  }
-
-  const packageName=String(info.package_name||"").trim();
-
-  if(!packageName){
-    throw new Error(
-      "The server did not identify your current package."
-    );
-  }
-
-  const maxDuration=readPackageLimit(
-    info.max_exam_duration_minutes,
-    "maximum examination duration"
-  );
-
-  const maxQuestions=readPackageLimit(
-    info.max_questions_per_exam,
-    "maximum questions per examination"
-  );
-
-  packageInfo={
-    package_name:packageName,
-    max_exam_duration_minutes:maxDuration,
-    max_questions_per_exam:maxQuestions
-  };
-
-  $("duration").max=String(maxDuration);
-  $("questionCount").max=String(maxQuestions);
-
-  $("durationHelp").textContent=
-    "Package: "+packageName+
-    ". Maximum examination duration: "+
-    maxDuration+" minutes. New examinations default to this limit.";
-
-  $("questionCountHelp").textContent=
-    "Package: "+packageName+
-    ". Maximum questions each student can answer: "+
-    maxQuestions+". You may store additional questions in the question bank, subject to your package's stored-question limit.";
-
-  /*
-    Apply package defaults only when there is no existing examination.
-    Existing examination values are populated separately and preserved.
-  */
-  if(!currentExam){
-    $("duration").value=maxDuration;
-    $("questionCount").value=maxQuestions;
-  }
-
-  updateTotalMarks();
-  updateMinimumQuestionCounter();
-}
-
-function validatePackageLimits(duration,questionCount){
-  if(!packageInfo){
-    throw new Error(
-      "Package limits have not loaded. Please refresh the page."
-    );
-  }
-
-  if(duration>packageInfo.max_exam_duration_minutes){
-    throw new Error(
-      "Your "+packageInfo.package_name+
-      " package allows a maximum examination duration of "+
-      packageInfo.max_exam_duration_minutes+" minutes."
-    );
-  }
-
-  if(questionCount>packageInfo.max_questions_per_exam){
-    throw new Error(
-      "Your "+packageInfo.package_name+
-      " package allows a maximum of "+
-      packageInfo.max_questions_per_exam+
-      " questions per student per examination."
-    );
-  }
-}
-
-/* -----------------------------
-   AUTHENTICATION
------------------------------- */
-
-async function protectPage(){
-  const {data,error}=await supabase.auth.getUser();
-
-  if(error||!data.user){
-    await supabase.auth.signOut();
-    window.location.replace("school-login.html");
-    return false;
-  }
-
-  return true;
-}
-
-/* -----------------------------
-   SUBJECTS AND EXAMINATIONS
------------------------------- */
-
-async function loadSubjects(){
-  const select=$("subject");
-  select.innerHTML='<option value="">Loading subjects...</option>';
-
-  const result=await callFunction("list_subjects");
-
-  /*
-    Package information is supplied by the existing
-    list_subjects Edge Function response.
-  */
-  const returnedPackage=extractPackage(result);
-
-  if(returnedPackage){
-    applyPackageLimits(returnedPackage);
-  }
-
-  subjects=getSubjectArray(result);
-
-  if(!subjects.length){
-    select.innerHTML=
-      '<option value="">No published subjects available</option>';
-    return;
-  }
-
-  select.innerHTML='<option value="">Select a subject</option>';
-
-  subjects.forEach(subject=>{
-    const option=document.createElement("option");
-    option.value=subject.id;
-    option.textContent=
-      subject.subject_name||subject.name||"Unnamed Subject";
-    select.appendChild(option);
-  });
-}
-
-function updateExamSelectorOptions(preferredId){
-  const select=$("examinationSelector");
-
-  select.innerHTML=
-    '<option value="">Select a registered examination</option>';
-
-  examinations.forEach(exam=>{
-    const option=document.createElement("option");
-    option.value=String(exam.id);
-
-    const code=exam.examination_code||"No ID returned";
-    const status=exam.is_published?"Published":"Draft";
-
-    option.textContent=
-      (exam.title||"Untitled Examination")+
-      " — "+code+" ("+status+")";
-
-    select.appendChild(option);
-  });
-
-  select.disabled=examinations.length===0||isProcessing;
-
-  if(preferredId){
-    const found=examinations.find(
-      exam=>String(exam.id)===String(preferredId)
-    );
-
-    if(found)select.value=String(found.id);
-  }
-}
-
-async function loadExaminations(preferredId=null,options={}){
-  const preserveQueue=options.preserveQueue===true;
-  const select=$("examinationSelector");
-
-  select.disabled=true;
-  select.innerHTML=
-    '<option value="">Loading registered examinations...</option>';
-
-  const result=await callFunction("list_exams");
-
-  const returnedPackage=extractPackage(result);
-
-  if(returnedPackage){
-    applyPackageLimits(returnedPackage);
-  }
-
-  examinations=getArray(
-    result,"examinations","exams","items"
-  );
-
-  updateExamSelectorOptions(preferredId);
-
-  if(!examinations.length){
-    if(!preserveQueue){
-      currentExam=null;
-      isPublished=false;
-      pendingQuestions=[];
-      savedEligibleQuestionCount=null;
-      currentPage=1;
-      updatePendingInfo();
-    }
-
-    select.innerHTML=
-      '<option value="">No registered examinations found</option>';
-    select.disabled=true;
-    return;
-  }
-
-  let selected=null;
-
-  if(preferredId){
-    selected=examinations.find(
-      exam=>String(exam.id)===String(preferredId)
-    );
-  }
-
-  if(!selected&&currentExam){
-    selected=examinations.find(
-      exam=>String(exam.id)===String(currentExam.id)
-    );
-  }
-
-  if(selected){
-    select.value=String(selected.id);
-
-    if(preserveQueue&&currentExam&&
-       String(currentExam.id)===String(selected.id)){
-      /*
-        Refresh the examination record without resetting
-        the temporary review queue.
-      */
-      currentExam={...currentExam,...selected};
-      isPublished=Boolean(currentExam.is_published);
-
-      if(currentExam.examination_code){
-        displayExamCode(currentExam.examination_code);
-      }
-
-      updateActionButtons();
-      updateMinimumQuestionCounter();
-    }else{
-      await activateExamination(selected);
-    }
-  }else if(!preserveQueue){
-    currentExam=null;
-    isPublished=false;
-    pendingQuestions=[];
-    savedEligibleQuestionCount=null;
-    currentPage=1;
-    updatePendingInfo();
-
-    $("examCodeBox").classList.add("hidden");
-
-    showStatus(
-      $("questionStatus"),
-      "Select a registered examination before adding or uploading questions.",
-      "info"
-    );
-  }
-
-  select.disabled=examinations.length===0||isProcessing;
-}
-
-/* -----------------------------
-   DATE AND FORM DISPLAY
------------------------------- */
-
-function localDateTime(value){
-  if(!value)return "";
-
-  const date=new Date(value);
-
-  if(!Number.isFinite(date.getTime()))return "";
-
-  const pad=n=>String(n).padStart(2,"0");
-
-  return date.getFullYear()+"-"+
-    pad(date.getMonth()+1)+"-"+
-    pad(date.getDate())+"T"+
-    pad(date.getHours())+":"+
-    pad(date.getMinutes());
-}
-
-function getExamTotal(){
-  const count=Number($("questionCount").value);
-  const marks=Number($("marksPerQuestion").value);
-
-  if(!Number.isFinite(count)||!Number.isFinite(marks))return 0;
-
-  return count*marks;
-}
-
-function updateTotalMarks(){
-  const total=getExamTotal();
-
-  $("totalMarks").textContent=
-    Number.isInteger(total)?String(total):total.toFixed(2);
-}
-
-function updateQuestionMarksDefault(){
-  $("questionMarks").value=
-    $("marksPerQuestion").value||"1";
-}
-
-function populateExamForm(exam){
-  $("subject").value=exam.school_subject_id??"";
-  $("title").value=exam.title||"";
-  $("nameClass").value=exam.name_class||"";
-  $("description").value=exam.description||"";
-
-  /*
-    Preserve saved values for existing examinations.
-    Package defaults are used only for new examinations.
-  */
-  $("duration").value=
-    exam.duration_minutes??packageInfo?.max_exam_duration_minutes??"";
-
-  $("questionCount").value=
-    exam.student_question_count??packageInfo?.max_questions_per_exam??"";
-
-  $("marksPerQuestion").value=
-    exam.marks_per_question??1;
-
-  const attempts=Number(exam.max_attempts);
-
-  $("maxAttempts").value=
-    Number.isInteger(attempts)&&attempts>=1&&attempts<=5?
-    String(attempts):"2";
-
-  const hasSchedule=Boolean(exam.starts_at||exam.ends_at);
-
-  $("enableSchedule").checked=hasSchedule;
-  $("scheduleFields").classList.toggle("show",hasSchedule);
-
-  $("startsAt").value=localDateTime(exam.starts_at);
-  $("endsAt").value=localDateTime(exam.ends_at);
-
-  updateTotalMarks();
-  updateQuestionMarksDefault();
-  updateMinimumQuestionCounter();
-}
-
-function displayExamCode(code){
-  if(!code)return;
-
-  $("examCode").textContent=code;
-  $("examCodeBox").classList.remove("hidden");
-}
-
-/* -----------------------------
-   STORED QUESTION LIMIT (package)
------------------------------- */
-
-let storedLimit=null;
-let storedTotal=null;
-let storageState="loading";   /* loading | ready | unavailable */
-let storageNote="";
-
-function hasValue(v){return v!==null&&v!==undefined&&v!=="";}
-
-/* Questions still allowed: stored questions plus everything waiting in the queue count. */
-function remainingCapacity(){
-  if(storageState!=="ready")return Infinity;
-  return Math.max(0,storedLimit-storedTotal-pendingQuestions.length);
-}
-
-function updateStorageStatus(){
-  const box=$("storageLimitStatus");
-  if(!box)return;
-
-  if(storageState==="loading"){
-    box.textContent="Checking your stored-question limit...";
-    return;
-  }
-
-  if(storageState==="unavailable"){
-    box.textContent=
-      "Your stored-question limit could not be checked on this page. "+
-      "The system may still stop saving once your package limit is reached.";
-    return;
-  }
-
-  const left=Math.max(0,storedLimit-storedTotal-pendingQuestions.length);
-
-  box.innerHTML=
-    "<strong>Stored questions:</strong> "+storedTotal+" of "+storedLimit+
-    " used"+(packageInfo?" ("+escapeHTML(packageInfo.package_name)+" package)":"")+
-    ". In your queue: "+pendingQuestions.length+
-    ". Places left: <strong>"+left+"</strong>.";
-}
-
-async function initStorageLimit(){
-  storageState="loading";
-  updateStorageStatus();
-
-  try{
-    const {data:userData,error:userError}=await supabase.auth.getUser();
-    if(userError||!userData?.user)throw userError||new Error("No signed-in user.");
-
-    const {data:account,error:accountError}=await supabase
-      .from("school_accounts")
-      .select("id")
-      .eq("user_id",userData.user.id)
-      .maybeSingle();
-
-    if(accountError||!account)throw accountError||new Error("No school account found.");
-
-    const [assignment,limits]=await Promise.all([
-      supabase.from("school_account_packages")
-        .select("package_name,custom_max_stored_questions")
-        .eq("school_account_id",account.id)
-        .maybeSingle(),
-      supabase.from("school_package_limits")
-        .select("package_name,max_stored_questions")
-    ]);
-
-    if(assignment.error)throw assignment.error;
-    if(limits.error)throw limits.error;
-
-    const name=String(
-      assignment.data?.package_name||packageInfo?.package_name||""
-    ).toLowerCase();
-
-    const row=(limits.data||[]).find(
-      p=>String(p.package_name).toLowerCase()===name
-    );
-
-    const custom=assignment.data?.custom_max_stored_questions;
-    const limit=Number(hasValue(custom)?custom:row?.max_stored_questions);
-
-    if(!Number.isSafeInteger(limit)||limit<1){
-      throw new Error("The stored-question limit is missing for this package.");
-    }
-
-    /* Count every question already stored across all of this school's examinations. */
-    let total=0;
-    const list=[...examinations];
-
-    for(let i=0;i<list.length;i+=5){
-      const chunk=list.slice(i,i+5);
-      const results=await Promise.all(chunk.map(exam=>
-        callFunction("list_questions",{examination_id:exam.id})
-      ));
-
-      for(const result of results){
-        total+=countEligibleQuestions(getQuestionArray(result));
-      }
-    }
-
-    storedLimit=limit;
-    storedTotal=total;
-    storageState="ready";
-
-  }catch(error){
-    console.error("Stored-question limit check failed:",error);
-    storageState="unavailable";
-  }
-
-  updateQueueStats();
-}
-
-/* -----------------------------
-   QUEUE MANAGEMENT
------------------------------- */
-
-function getApprovedCount(){
-  return pendingQuestions.filter(
-    question=>question.reviewed===true
-  ).length;
-}
-
-function getPendingCount(){
-  return pendingQuestions.filter(
-    question=>question.reviewed!==true
-  ).length;
-}
-
-function updateQueueStats(){
-  updateStorageStatus();
-  $("totalQueueCount").textContent=pendingQuestions.length;
-  $("approvedQueueCount").textContent=getApprovedCount();
-  $("pendingQueueCount").textContent=getPendingCount();
-
-  $("savedQueueCount").textContent=
-    savedEligibleQuestionCount===null?
-    "—":savedEligibleQuestionCount;
-
-  if(!pendingQuestions.length){
-    $("reviewSummary").textContent=
-      "No questions have been added to the review queue.";
-  }else{
-    $("reviewSummary").textContent=
-      "Showing "+pendingQuestions.length+
-      " question(s): "+getApprovedCount()+
-      " approved and "+getPendingCount()+
-      " awaiting review.";
-  }
-
-  $("approveAllBtn").disabled=
-    !pendingQuestions.length||
-    getPendingCount()===0||
-    isPublished||
-    isProcessing;
-
-  $("clearQueueBtn").disabled=
-    !pendingQuestions.length||isProcessing;
-
-  $("queueSaveInfo").textContent=
-    getApprovedCount()+" approved question(s) are ready to save. "+
-    getPendingCount()+" question(s) still require review. "+
-    "Only approved questions will be saved.";
-
-  updateActionButtons();
-  updateMinimumQuestionCounter();
-}
-
-function updatePendingInfo(){
-  updateQueueStats();
-  renderReviewQueue();
-}
-
-function renderPagination(){
-  const container=$("pagination");
-  container.innerHTML="";
-
-  const totalPages=Math.ceil(
-    pendingQuestions.length/PAGE_SIZE
-  );
-
-  if(totalPages<=1)return;
-
-  const previous=document.createElement("button");
-  previous.className="page-btn";
-  previous.textContent="Previous";
-  previous.disabled=currentPage===1;
-
-  previous.addEventListener("click",()=>{
-    currentPage--;
-    renderReviewQueue();
-  });
-
-  container.appendChild(previous);
-
-  for(let page=1;page<=totalPages;page++){
-    const button=document.createElement("button");
-
-    button.className=
-      "page-btn"+(page===currentPage?" active":"");
-
-    button.textContent=page;
-
-    button.addEventListener("click",()=>{
-      currentPage=page;
-      renderReviewQueue();
-    });
-
-    container.appendChild(button);
-  }
-
-  const next=document.createElement("button");
-  next.className="page-btn";
-  next.textContent="Next";
-  next.disabled=currentPage===totalPages;
-
-  next.addEventListener("click",()=>{
-    currentPage++;
-    renderReviewQueue();
-  });
-
-  container.appendChild(next);
-}
-
-function renderReviewQueue(){
-  const container=$("reviewList");
-  container.innerHTML="";
-
-  const total=pendingQuestions.length;
-  const totalPages=Math.max(
-    1,Math.ceil(total/PAGE_SIZE)
-  );
-
-  if(currentPage>totalPages)currentPage=totalPages;
-  if(currentPage<1)currentPage=1;
-
-  if(!total){
-    container.innerHTML=
-      '<div class="review-empty">Your uploaded and individually added questions will appear here for review.</div>';
-
-    $("reviewSummary").textContent=
-      "No questions have been added to the review queue.";
-
-    $("pagination").innerHTML="";
-    updateQueueStats();
-    return;
-  }
-
-  const start=(currentPage-1)*PAGE_SIZE;
-  const end=Math.min(start+PAGE_SIZE,total);
-  const visibleQuestions=
-    pendingQuestions.slice(start,end);
-
-  $("reviewSummary").textContent=
-    "Showing questions "+(start+1)+"–"+end+
-    " of "+total+". Page "+currentPage+
-    " of "+totalPages+". Approved: "+
-    getApprovedCount()+". Pending: "+getPendingCount()+".";
-
-  visibleQuestions.forEach((question,index)=>{
-    const actualIndex=start+index;
-    const item=document.createElement("article");
-
-    item.className="review-item "+
-      (question.reviewed?"approved":"pending");
-
-    const badge=question.reviewed?
-      '<span class="review-badge approved">Approved</span>':
-      '<span class="review-badge pending">Pending Review</span>';
-
-    const explanation=question.explanation?
-      '<div class="review-meta"><strong>Explanation:</strong> '+
-      escapeHTML(question.explanation)+'</div>':
-      "";
-
-    item.innerHTML=`
-      <div class="review-item-top">
-        <span class="question-number">Question ${actualIndex+1}</span>
-        ${badge}
-      </div>
-      <div class="review-question">${escapeHTML(question.question_text)}</div>
-      <div class="review-options">
-        <div class="review-option ${question.correct_option==="A"?"correct":""}">
-          <strong>A.</strong> ${escapeHTML(question.option_a)}
-        </div>
-        <div class="review-option ${question.correct_option==="B"?"correct":""}">
-          <strong>B.</strong> ${escapeHTML(question.option_b)}
-        </div>
-        <div class="review-option ${question.correct_option==="C"?"correct":""}">
-          <strong>C.</strong> ${escapeHTML(question.option_c)}
-        </div>
-        <div class="review-option ${question.correct_option==="D"?"correct":""}">
-          <strong>D.</strong> ${escapeHTML(question.option_d)}
-        </div>
-      </div>
-      <div class="review-meta">
-        <strong>Correct answer:</strong> ${escapeHTML(question.correct_option)}
-        &nbsp; | &nbsp;
-        <strong>Marks:</strong> ${escapeHTML(question.marks)}
-      </div>
-      ${explanation}
-      <div class="review-actions">
-        <button class="btn btn-outline btn-small" data-action="edit" data-id="${question.queueId}">Edit</button>
-        ${
-          question.reviewed?
-          '<button class="btn btn-outline btn-small" data-action="unapprove" data-id="'+question.queueId+'">Undo Approval</button>':
-          '<button class="btn btn-success btn-small" data-action="approve" data-id="'+question.queueId+'">Approve</button>'
-        }
-        <button class="btn btn-danger btn-small" data-action="delete" data-id="${question.queueId}">Delete</button>
-      </div>
-    `;
-
-    container.appendChild(item);
-  });
-
-  renderPagination();
-  updateQueueStats();
-}
-
-$("reviewList").addEventListener("click",event=>{
-  const button=event.target.closest("button[data-action]");
-  if(!button)return;
-
-  const id=Number(button.dataset.id);
-  const action=button.dataset.action;
-
-  const question=pendingQuestions.find(
-    item=>item.queueId===id
-  );
-
-  if(!question)return;
-
-  if(action==="edit"){
-    openEditModal(question);
-    return;
-  }
-
-  if(action==="approve"){
-    question.reviewed=true;
-    renderReviewQueue();
-    return;
-  }
-
-  if(action==="unapprove"){
-    question.reviewed=false;
-    renderReviewQueue();
-    return;
-  }
-
-  if(action==="delete"){
-    if(!confirm("Delete this question from the review queue?"))return;
-
-    pendingQuestions=pendingQuestions.filter(
-      item=>item.queueId!==id
-    );
-
-    renderReviewQueue();
-
-    showStatus(
-      $("questionStatus"),
-      "Question deleted from the temporary review queue. No database record was affected.",
-      "success"
-    );
-  }
-});
-
-$("approveAllBtn").addEventListener("click",()=>{
-  if(!pendingQuestions.length)return;
-
-  if(!confirm(
-    "Approve all "+pendingQuestions.length+
-    " questions in the review queue?"
-  ))return;
-
-  pendingQuestions.forEach(question=>{
-    question.reviewed=true;
-  });
-
-  renderReviewQueue();
-
-  showStatus(
-    $("questionStatus"),
-    "All questions have been approved. They are not yet saved to the database.",
-    "success"
-  );
-});
-
-$("clearQueueBtn").addEventListener("click",()=>{
-  if(!pendingQuestions.length)return;
-
-  if(!confirm(
-    "Clear all "+pendingQuestions.length+
-    " questions from the temporary review queue? "+
-    "Questions already saved in the database will remain unchanged."
-  ))return;
-
-  pendingQuestions=[];
-  currentPage=1;
-  renderReviewQueue();
-
-  showStatus(
-    $("questionStatus"),
-    "The temporary review queue has been cleared. Previously saved questions remain unchanged.",
-    "success"
-  );
-});
-
-/* -----------------------------
-   QUESTION EDIT MODAL
------------------------------- */
-
-function openEditModal(question){
-  editingQuestionId=question.queueId;
-
-  $("editQuestionText").value=question.question_text;
-  $("editOptionA").value=question.option_a;
-  $("editOptionB").value=question.option_b;
-  $("editOptionC").value=question.option_c;
-  $("editOptionD").value=question.option_d;
-  $("editCorrectOption").value=question.correct_option;
-  $("editQuestionMarks").value=question.marks;
-  $("editExplanation").value=question.explanation||"";
-
-  $("editModal").classList.add("show");
-}
-
-function closeEditModal(){
-  $("editModal").classList.remove("show");
-  editingQuestionId=null;
-}
-
-$("closeEditBtn").addEventListener("click",closeEditModal);
-
-$("editModal").addEventListener("click",event=>{
-  if(event.target===$("editModal")){
-    closeEditModal();
-  }
-});
-
-/* -----------------------------
-   QUESTION VALIDATION
------------------------------- */
-
-function validateQuestion(question){
-  const text=String(question.question_text||"").trim();
-
-  if(!text){
-    throw new Error("A question cannot be empty.");
-  }
-
-  for(const key of [
-    "option_a","option_b","option_c","option_d"
-  ]){
-    if(!String(question[key]||"").trim()){
-      throw new Error(
-        "Every question must have four answer options."
-      );
-    }
-  }
-
-  const correct=String(
-    question.correct_option||""
-  ).trim().toUpperCase();
-
-  if(!["A","B","C","D"].includes(correct)){
-    throw new Error(
-      "The correct option must be A, B, C or D."
-    );
-  }
-
-  const marks=positiveNumber(
-    question.marks??$("marksPerQuestion").value,
-    "Question marks"
-  );
-
-  return {
-    question_text:text,
-    option_a:String(question.option_a).trim(),
-    option_b:String(question.option_b).trim(),
-    option_c:String(question.option_c).trim(),
-    option_d:String(question.option_d).trim(),
-    correct_option:correct,
-    explanation:
-      String(question.explanation||"").trim()||null,
-    marks
-  };
-}
-
-$("editQuestionForm").addEventListener("submit",event=>{
-  event.preventDefault();
-
-  const question=pendingQuestions.find(
-    item=>item.queueId===editingQuestionId
-  );
-
-  if(!question)return;
-
-  try{
-    const updated=validateQuestion({
-      question_text:$("editQuestionText").value,
-      option_a:$("editOptionA").value,
-      option_b:$("editOptionB").value,
-      option_c:$("editOptionC").value,
-      option_d:$("editOptionD").value,
-      correct_option:$("editCorrectOption").value,
-      marks:$("editQuestionMarks").value,
-      explanation:$("editExplanation").value
-    });
-
-    Object.assign(question,updated);
-
-    /*
-      Any edited question must be approved again.
-    */
-    question.reviewed=false;
-
-    closeEditModal();
-    renderReviewQueue();
-
-    showStatus(
-      $("questionStatus"),
-      "Question updated. Please review and approve it again before saving.",
-      "success"
-    );
-
-  }catch(error){
-    showStatus(
-      $("questionStatus"),
-      error.message,
-      "error"
-    );
-  }
-});
-
-/* -----------------------------
-   SAVED QUESTIONS
------------------------------- */
-
-async function getSavedQuestions(){
-  if(!currentExam?.id){
-    throw new Error(
-      "Select a registered examination first."
-    );
-  }
-
-  const result=await callFunction("list_questions",{
-    examination_id:currentExam.id
-  });
-
-  return getQuestionArray(result);
-}
-
-function getSavedQuestionOrder(question){
-  const order=Number(question.question_order);
-
-  return Number.isSafeInteger(order)&&order>0?
-    order:0;
-}
-
-function countEligibleQuestions(questions){
-  /*
-    Draft questions are eligible for publishing even when
-    is_published is false. Only archived questions are excluded.
-  */
-  return questions.filter(question=>
-    question.is_archived!==true
-  ).length;
-}
-
-/* -----------------------------
-   MINIMUM QUESTION COUNTER
------------------------------- */
-
-function updateMinimumQuestionCounter(){
-  const counter=$("minimumQuestionStatus");
-  const required=Number($("questionCount").value);
-
-  if(!currentExam?.id){
-    counter.textContent=
-      "Select an examination to check its minimum question requirement.";
-    counter.className="info-box";
-    return;
-  }
-
-  if(!Number.isSafeInteger(required)||required<1){
-    counter.textContent=
-      "Enter a valid number of questions students will answer.";
-    counter.className="info-box";
-    return;
-  }
-
-  if(savedEligibleQuestionCount===null){
-    counter.textContent=
-      "Checking the saved questions for this examination...";
-    counter.className="info-box";
-    return;
-  }
-
-  const approvedCount=getApprovedCount();
-  const totalAvailable=
-    savedEligibleQuestionCount+approvedCount;
-
-  const remaining=Math.max(
-    0,required-totalAvailable
-  );
-
-  if(remaining>0){
-    counter.textContent=
-      "Minimum questions still needed: "+remaining+
-      ". Available: "+totalAvailable+
-      " (Saved: "+savedEligibleQuestionCount+
-      ", Approved but not yet saved: "+approvedCount+
-      "). Required: "+required+".";
-    counter.className="info-box";
-  }else{
-    counter.textContent=
-      "Minimum question requirement can be met. "+
-      totalAvailable+" eligible question(s) are available or approved "+
-      "(Saved: "+savedEligibleQuestionCount+
-      ", Approved but not yet saved: "+approvedCount+
-      "). Students will answer "+required+" questions.";
-    counter.className="status show success";
-  }
-}
-
-/* -----------------------------
-   BUTTON STATES
------------------------------- */
-
-function updateActionButtons(){
-  const canUse=
-    Boolean(currentExam?.id)&&
-    !isPublished&&
-    !isProcessing;
-
-  const approved=getApprovedCount();
-  const pending=getPendingCount();
-
-  $("addQuestionBtn").disabled=!canUse;
-  $("uploadCsvBtn").disabled=!canUse;
-
-  $("saveQuestionsBtn").disabled=
-    !canUse||approved===0;
-
-  $("savePublishBtn").disabled=
-    !canUse||pending>0;
-
-  $("examinationSelector").disabled=
-    examinations.length===0||isProcessing;
-
-  $("saveDraftBtn").disabled=
-    isPublished||isProcessing;
-}
-
-/* -----------------------------
-   ACTIVATE EXAMINATION
------------------------------- */
-
-async function activateExamination(exam){
-  currentExam=exam;
-  isPublished=Boolean(exam.is_published);
-
-  pendingQuestions=[];
-  currentPage=1;
-  savedEligibleQuestionCount=null;
-
-  updatePendingInfo();
-  populateExamForm(exam);
-
-  $("saveDraftBtn").textContent=
-    isPublished?
-    "Examination Published":
-    "Update Examination Draft";
-
-  $("examCodeBox").classList.add("hidden");
-
-  if(exam.examination_code){
-    displayExamCode(exam.examination_code);
-  }
-
-  updateActionButtons();
-
-  showStatus(
-    $("questionStatus"),
-    "Selected examination: "+
-    (exam.title||"Untitled Examination")+
-    (exam.examination_code?
-      " | Examination ID: "+exam.examination_code:""),
-    "info"
-  );
-
-  try{
-    const savedQuestions=await getSavedQuestions();
-
-    if(String(currentExam?.id)===String(exam.id)){
-      savedEligibleQuestionCount=
-        countEligibleQuestions(savedQuestions);
-
-      updateQueueStats();
-    }
-
-  }catch(error){
-    if(String(currentExam?.id)===String(exam.id)){
-      savedEligibleQuestionCount=null;
-
-      $("minimumQuestionStatus").textContent=
-        "Unable to check saved questions: "+error.message;
-
-      $("minimumQuestionStatus").className="info-box";
-    }
-
-    console.error(
-      "Unable to load saved examination questions:",
-      error
-    );
-  }
-}
-
-/* -----------------------------
-   EXAMINATION SELECTION
------------------------------- */
-
-$("examinationSelector").addEventListener(
-  "change",async()=>{
-    const selectedId=$("examinationSelector").value;
-
-    if(!selectedId)return;
-
-    if(pendingQuestions.length){
-      showStatus(
-        $("questionStatus"),
-        "Please save or clear your review queue before changing examinations. Your unsaved questions are being kept on this page.",
-        "warning"
-      );
-
-      $("examinationSelector").value=
-        currentExam?String(currentExam.id):"";
-
-      return;
-    }
-
-    const exam=examinations.find(
-      item=>String(item.id)===String(selectedId)
-    );
-
-    if(!exam)return;
-
-    try{
-      hideStatus($("questionStatus"));
-      await activateExamination(exam);
-    }catch(error){
-      showStatus(
-        $("questionStatus"),
-        error.message,
-        "error"
-      );
-    }
-  }
-);
-
-/* -----------------------------
-   COLLECT EXAMINATION FIELDS
------------------------------- */
-
-function collectExamFields(){
-  if(!packageInfo){
-    throw new Error(
-      "Package limits have not loaded. Please refresh the page."
-    );
-  }
-
-  const subjectId=$("subject").value;
-
-  if(!subjectId){
-    throw new Error("Please select a subject.");
-  }
-
-  const selectedSubject=subjects.find(
-    subject=>String(subject.id)===String(subjectId)
-  );
-
-  if(!selectedSubject){
-    throw new Error(
-      "The selected subject is not available. Refresh the page and try again."
-    );
-  }
-
-  const title=$("title").value.trim();
-
-  if(!title){
-    throw new Error("Please enter the examination title.");
-  }
-
-  const duration=integerNumber(
-    $("duration").value,
-    "Duration"
-  );
-
-  const questionCount=integerNumber(
-    $("questionCount").value,
-    "Questions each student will answer"
-  );
-
-  validatePackageLimits(duration,questionCount);
-
-  const marks=positiveNumber(
-    $("marksPerQuestion").value,
-    "Marks per question"
-  );
-
-  const maxAttempts=integerNumber(
-    $("maxAttempts").value,
-    "Maximum attempts"
-  );
-
-  if(maxAttempts<1||maxAttempts>5){
-    throw new Error(
-      "Maximum attempts must be between 1 and 5."
-    );
-  }
-
-  let startsAt=null;
-  let endsAt=null;
-
-  if($("enableSchedule").checked){
-    const startValue=$("startsAt").value;
-    const endValue=$("endsAt").value;
-
-    if(!startValue||!endValue){
-      throw new Error(
-        "Please enter both the start and end date and time."
-      );
-    }
-
-    const startDate=new Date(startValue);
-    const endDate=new Date(endValue);
-
-    if(!Number.isFinite(startDate.getTime())||
-       !Number.isFinite(endDate.getTime())){
-      throw new Error(
-        "Please enter valid examination dates."
-      );
-    }
-
-    if(endDate<=startDate){
-      throw new Error(
-        "The examination end time must be after the start time."
-      );
-    }
-
-    startsAt=startDate.toISOString();
-    endsAt=endDate.toISOString();
-  }
-
-  return {
-    title,
-    name_class:$("nameClass").value.trim()||null,
-    description:$("description").value.trim()||null,
-    school_subject_id:subjectId,
-    duration_minutes:duration,
-    student_question_count:questionCount,
-    marks_per_question:marks,
-    starts_at:startsAt,
-    ends_at:endsAt,
-    max_attempts:maxAttempts
-  };
-}
-
-/* -----------------------------
-   SAVE EXAMINATION DRAFT
------------------------------- */
-
-async function saveDraft(event){
-  event.preventDefault();
-
-  hideStatus($("pageStatus"));
-
-  if(isProcessing)return;
-
-  const button=$("saveDraftBtn");
-  const originalText=button.textContent;
-
-  isProcessing=true;
-  updateActionButtons();
-  button.textContent="Saving...";
-
-  try{
-    const fields=collectExamFields();
-
-    let result;
-
-    if(!currentExam){
-      result=await callFunction("create_exam",fields);
-    }else{
-      result=await callFunction("update_exam",{
-        examination_id:currentExam.id,
-        ...fields
-      });
-    }
-
-    const exam=getExamObject(result);
-
-    if(!exam?.id){
-      throw new Error(
-        "The server did not return the examination ID. "+
-        "Please refresh and check your registered examinations."
-      );
-    }
-
-    currentExam={
-      ...currentExam,
-      ...exam,
-      ...fields
-    };
-
-    isPublished=Boolean(currentExam.is_published);
-
-    /*
-      Refresh the exam list without clearing the review queue.
-    */
-    await loadExaminations(
-      currentExam.id,
-      {preserveQueue:true}
-    );
-
-    showStatus(
-      $("pageStatus"),
-      "Examination draft saved successfully."+
-      (currentExam.examination_code?
-        " Examination ID: "+currentExam.examination_code:""),
-      "success"
-    );
-
-  }catch(error){
-    showStatus(
-      $("pageStatus"),
-      error.message,
-      "error"
-    );
-  }finally{
-    isProcessing=false;
-
-    button.textContent=isPublished?
-      "Examination Published":
-      (currentExam?
-        "Update Examination Draft":
-        "Save Examination Draft");
-
-    updateActionButtons();
-
-    if(!currentExam){
-      button.textContent=originalText;
-    }
-  }
-}
-
-/* -----------------------------
-   ADD QUESTION TO QUEUE
------------------------------- */
-
-function addPendingQuestion(question){
-  if(!currentExam?.id){
-    throw new Error(
-      "Please select a registered examination first."
-    );
-  }
-
-  if(isPublished){
-    throw new Error(
-      "This examination is already published."
-    );
-  }
-
-  const validated=validateQuestion(question);
-
-  if(remainingCapacity()<1){
-    throw new Error(
-      "You have reached your package's stored-question limit ("+storedLimit+
-      "). Upgrade your package or contact the admin to add more questions."
-    );
-  }
-
-  pendingQuestions.push({
-    ...validated,
-    queueId:nextQueueId++,
-    reviewed:false
-  });
-
-  updatePendingInfo();
-}
-
-$("singleQuestionForm").addEventListener(
-  "submit",event=>{
-    event.preventDefault();
-
-    try{
-      addPendingQuestion({
-        question_text:$("questionText").value,
-        option_a:$("optionA").value,
-        option_b:$("optionB").value,
-        option_c:$("optionC").value,
-        option_d:$("optionD").value,
-        correct_option:$("correctOption").value,
-        explanation:$("explanation").value,
-        marks:$("questionMarks").value
-      });
-
-      event.target.reset();
-      updateQuestionMarksDefault();
-
-      showStatus(
-        $("questionStatus"),
-        "Question added to the review queue. Please review and approve it before saving.",
-        "success"
-      );
-
-      $("reviewList").scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
-
-    }catch(error){
-      showStatus(
-        $("questionStatus"),
-        error.message,
-        "error"
-      );
-    }
-  }
-);
-
-/* -----------------------------
-   CSV PARSER
------------------------------- */
-
-function parseCSV(text){
-  const rows=[];
-  let row=[];
-  let cell="";
-  let quoted=false;
-
-  for(let i=0;i<text.length;i++){
-    const character=text[i];
-    const next=text[i+1];
-
-    if(character==='"'){
-      if(quoted&&next==='"'){
-        cell+='"';
-        i++;
-      }else{
-        quoted=!quoted;
-      }
-    }else if(character===","&&!quoted){
-      row.push(cell);
-      cell="";
-    }else if(
-      (character==="\n"||character==="\r")&&!quoted
-    ){
-      if(character==="\r"&&next==="\n")i++;
-
-      row.push(cell);
-      cell="";
-
-      if(row.some(value=>value.trim()!=="")){
-        rows.push(row);
-      }
-
-      row=[];
-    }else{
-      cell+=character;
-    }
-  }
-
-  if(quoted){
-    throw new Error(
-      "Your CSV file contains an unclosed quotation mark."
-    );
-  }
-
-  row.push(cell);
-
-  if(row.some(value=>value.trim()!=="")){
-    rows.push(row);
-  }
-
-  return rows;
-}
-
-/* -----------------------------
-   DOWNLOAD CSV TEMPLATE
------------------------------- */
-
-function downloadCSVTemplate(){
-  const header=[
-    "question_text",
-    "option_a",
-    "option_b",
-    "option_c",
-    "option_d",
-    "correct_option",
-    "explanation",
-    "marks",
-    "question_order"
-  ];
-
-  const example=[
-    "What is government?",
-    "The study of plants",
-    "The process of governing a country",
-    "The study of animals",
-    "The study of rocks",
-    "B",
-    "Government deals with the governing of a country.",
-    "1",
-    "1"
-  ];
-
-  const csv=[header,example].map(row=>
-    row.map(value=>
-      '"'+String(value).replace(/"/g,'""')+'"'
-    ).join(",")
-  ).join("\r\n");
-
-  const blob=new Blob(
-    [csv],
-    {type:"text/csv;charset=utf-8;"}
-  );
-
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-
-  link.href=url;
-  link.download="saintig-exams-question-template.csv";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
+import {supabase} from "./auth.js";
+
+const FUNCTION_NAME="school-exam-management";
+
+/* ================= shared helpers ================= */
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const keyOf=t=>String(t||"").trim().toLowerCase().replace(/\s+/g," ");
+const baseName=n=>String(n||"").split(/[\\/]/).pop().trim();
+function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
+function hush(id){const e=$(id);e.textContent="";e.className="msg"}
+async function withRetry(fn){try{return await fn()}catch(e){await new Promise(r=>setTimeout(r,1200));return await fn()}}
+function download(name,text,type){
+  const url=URL.createObjectURL(new Blob([text],{type}));
+  const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-
-$("downloadTemplateBtn").addEventListener(
-  "click",downloadCSVTemplate
-);
-
-/* -----------------------------
-   BULK CSV UPLOAD
------------------------------- */
-
-const ALLOWED_EXTENSIONS=["pdf","docx","txt","csv","xlsx","xls"];
-const EXPECTED_HEADERS=[
-  "question_text","option_a","option_b","option_c","option_d",
-  "correct_option","explanation","marks","question_order"
-];
-
-/* Extension is read from the text after the LAST dot, case-insensitive.
-   Any filename is allowed (spaces, brackets, digits, extra dots). */
-function getFileExtension(name){
-  const clean=String(name||"").trim();
-  const i=clean.lastIndexOf(".");
-  return i<0?"":clean.slice(i+1).toLowerCase();
+async function copyText(text){
+  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return}
+  const t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";
+  document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();
+  if(!ok)throw new Error("Copying is not supported by this browser.");
 }
 
-async function readSpreadsheetRows(file){
-  if(!window.XLSX){
-    throw new Error("The Excel reader could not load. Check your internet connection and refresh the page.");
-  }
-  const workbook=XLSX.read(await file.arrayBuffer(),{type:"array"});
-  const sheet=workbook.Sheets[workbook.SheetNames[0]];
-  if(!sheet)throw new Error("The Excel file has no sheets.");
-  return XLSX.utils.sheet_to_json(sheet,{header:1,raw:false,defval:""})
-    .map(row=>row.map(value=>String(value??"")))
-    .filter(row=>row.some(value=>value.trim()!==""));
-}
+/* ================= file reading ================= */
+const ALLOWED_EXT=["pdf","docx","txt","csv","xlsx","xls"];
+/* The extension is the text after the LAST dot, in any letter case. Any filename is allowed. */
+const fileExt=name=>{const s=String(name||"").trim(),i=s.lastIndexOf(".");return i<0?"":s.slice(i+1).toLowerCase()};
 
-async function readDocxText(file){
-  if(!window.mammoth){
-    throw new Error("The Word reader could not load. Check your internet connection and refresh the page.");
-  }
-  const result=await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()});
-  return result.value;
+async function readText(file){
+  const buf=await file.arrayBuffer();
+  try{return new TextDecoder("utf-8",{fatal:true}).decode(buf).replace(/^\uFEFF/,"")}
+  catch{return new TextDecoder("windows-1252").decode(buf)}   /* Excel "CSV" saved in the old Windows encoding */
 }
-
-async function readPdfText(file){
-  if(!window.pdfjsLib){
-    throw new Error("The PDF reader could not load. Check your internet connection and refresh the page.");
+function detectDelimiter(text){
+  const first=text.split(/\r?\n/).find(l=>l.trim())||"";
+  let best=",",top=0;
+  for(const d of [",",";","\t"]){const n=first.split(d).length;if(n>top){top=n;best=d}}
+  return best;
+}
+function parseDelimited(text,d){
+  const rows=[];let row=[],cell="",q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i],n=text[i+1];
+    if(c==='"'){if(q&&n==='"'){cell+='"';i++}else q=!q}
+    else if(c===d&&!q){row.push(cell);cell=""}
+    else if((c==="\n"||c==="\r")&&!q){
+      if(c==="\r"&&n==="\n")i++;
+      row.push(cell);cell="";
+      if(row.some(v=>v.trim()!==""))rows.push(row);
+      row=[];
+    }else cell+=c;
   }
-  pdfjsLib.GlobalWorkerOptions.workerSrc=
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  if(q)throw new Error("A quotation mark in your file is opened but never closed. Check the quotes (\") in your questions and try again.");
+  row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row);
+  return rows;
+}
+async function sheetRows(file){
+  if(!window.XLSX)throw new Error("The Excel reader did not load. Check your internet connection and refresh the page.");
+  const wb=XLSX.read(await file.arrayBuffer(),{type:"array"});
+  for(const name of wb.SheetNames){
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""})
+      .map(r=>r.map(v=>String(v??""))).filter(r=>r.some(v=>v.trim()!==""));
+    if(rows.length)return rows;
+  }
+  throw new Error("The Excel file is empty.");
+}
+async function docxText(file){
+  if(!window.mammoth)throw new Error("The Word reader did not load. Check your internet connection and refresh the page.");
+  return (await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()})).value;
+}
+async function pdfText(file){
+  if(!window.pdfjsLib)throw new Error("The PDF reader did not load. Check your internet connection and refresh the page.");
+  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
   const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-  let output="";
+  let out="";
   for(let p=1;p<=pdf.numPages;p++){
     const content=await (await pdf.getPage(p)).getTextContent();
     let lastY=null;
-    for(const item of content.items){
-      const y=item.transform[5];
-      if(lastY!==null&&Math.abs(y-lastY)>2)output+="\n";
-      output+=item.str+" ";
-      lastY=y;
+    for(const it of content.items){
+      const y=it.transform[5];
+      if(lastY!==null&&Math.abs(y-lastY)>2)out+="\n";
+      out+=it.str+" ";lastY=y;
     }
-    output+="\n";
+    out+="\n";
   }
-  if(!output.trim()){
-    throw new Error("No readable text was found in this PDF. Scanned or image-only PDFs are not supported.");
-  }
-  return output;
+  if(!out.trim())throw new Error("No readable text was found in this PDF. Scanned or photographed pages cannot be read.");
+  return out;
 }
 
-/* Text layout used for TXT / DOCX / PDF:
-   1. Question text
-   A. Option
-   B. Option
-   C. Option
-   D. Option
-   Answer: B
-   Explanation: optional
-   Marks: optional */
-function parseTextQuestions(text){
-  /* Blank lines are kept: they separate questions. */
-  const lines=text.replace(/\r/g,"\n").split("\n")
-    .map(line=>line.trim());
-
-  const list=[];
-  let current=null;
-  let last="question_text";
-  let afterBlank=false;
-
-  const rxAnswer=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
-  const rxExplanation=/^explanation\s*[:=-]\s*(.*)$/i;
-  const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
-  const rxOption=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
-  const rxQuestion=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
-
-  const blank=()=>({
-    question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",
-    correct_option:"",explanation:"",marks:""
+/* ---- tables (CSV, Excel): columns are found by their HEADING, not their position ---- */
+const ALIASES={
+  question_text:["question_text","question","questions","question_name"],
+  option_a:["option_a","a","optiona","option_1","choice_a"],
+  option_b:["option_b","b","optionb","option_2","choice_b"],
+  option_c:["option_c","c","optionc","option_3","choice_c"],
+  option_d:["option_d","d","optiond","option_4","choice_d"],
+  correct_option:["correct_option","correct","answer","correct_answer","ans","key"],
+  explanation:["explanation","reason","solution"],
+  marks:["marks","mark","score","points","point"],
+  question_order:["question_order","order","number","no","sn","s_n"],
+  image_filename:["image_filename","image","image_file","picture"]
+};
+const REQUIRED=["question_text","option_a","option_b","option_c","option_d","correct_option"];
+function mapHeaders(row){
+  const idx={};
+  row.forEach((h,i)=>{
+    const k=String(h).replace(/^\uFEFF/,"").trim().toLowerCase().replace(/[\s\-.]+/g,"_").replace(/^_+|_+$/g,"");
+    for(const [name,list] of Object.entries(ALIASES))if(list.includes(k)&&idx[name]===undefined)idx[name]=i;
   });
+  return idx;
+}
+function tableToItems(rows){
+  let h=-1,idx=null;
+  for(let i=0;i<Math.min(rows.length,6);i++){
+    const m=mapHeaders(rows[i]);
+    if(REQUIRED.every(k=>m[k]!==undefined)){h=i;idx=m;break}
+  }
+  if(h<0)throw new Error("The column headings were not found. The first row must contain: question_text, option_a, option_b, option_c, option_d, correct_option. Download the template to see the layout.");
+  const g=(r,k)=>idx[k]===undefined?"":String(r[idx[k]]??"").trim();
+  return rows.slice(h+1).map((r,i)=>({
+    ref:"Row "+(h+i+2),
+    raw:{question_text:g(r,"question_text"),option_a:g(r,"option_a"),option_b:g(r,"option_b"),option_c:g(r,"option_c"),option_d:g(r,"option_d"),
+         correct:g(r,"correct_option"),explanation:g(r,"explanation"),marks:g(r,"marks"),order:g(r,"question_order"),image:g(r,"image_filename")}
+  }));
+}
 
+/* ---- plain text layout (TXT, DOCX, PDF): "1. Question / A. ... / Answer: B" ---- */
+function parseTextQuestions(text){
+  const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim());
+  const list=[];let cur=null,last="question_text",afterBlank=false;
+  const rxAns=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
+  const rxExp=/^explanation\s*[:=-]\s*(.*)$/i;
+  const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
+  const rxOrder=/^order\s*[:=-]\s*(\d+)/i;
+  const rxOpt=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
+  const rxQ=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
+  const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct:"",explanation:"",marks:"",order:"",image:""});
   for(const line of lines){
-    if(!line){afterBlank=true;continue;}
-
+    if(!line){afterBlank=true;continue}
     let m;
-    if(current&&(m=line.match(rxAnswer))){
-      current.correct_option=m[1].toUpperCase();
-      last="";
-    }else if(current&&(m=line.match(rxExplanation))){
-      current.explanation=m[1];
-      last="explanation";
-    }else if(current&&(m=line.match(rxMarks))){
-      current.marks=m[1];
-      last="";
-    }else if(current&&(m=line.match(rxOption))){
-      last="option_"+m[1].toLowerCase();
-      current[last]=m[2];
-    }else if((m=line.match(rxQuestion))){
-      if(current)list.push(current);
-      current=blank();
-      current.question_text=m[1];
-      last="question_text";
-    }else if(!current||(current.correct_option&&(last===""||afterBlank))){
-      /* A line with no number starts a new question when it follows a finished one. */
-      if(current)list.push(current);
-      current=blank();
-      current.question_text=line;
-      last="question_text";
-    }else if(last){
-      current[last]+=" "+line;
-    }
-
+    if(cur&&(m=line.match(rxAns))){cur.correct=m[1].toUpperCase();last=""}
+    else if(cur&&(m=line.match(rxExp))){cur.explanation=m[1];last="explanation"}
+    else if(cur&&(m=line.match(rxMarks))){cur.marks=m[1];last=""}
+    else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last=""}
+    else if(cur&&(m=line.match(rxOpt))){last="option_"+m[1].toLowerCase();cur[last]=m[2]}
+    else if((m=line.match(rxQ))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text"}
+    else if(!cur||(cur.correct&&(last===""||afterBlank))){if(cur)list.push(cur);cur=blank();cur.question_text=line;last="question_text"}
+    else if(last){cur[last]+=" "+line}
     afterBlank=false;
   }
-
-  if(current)list.push(current);
+  if(cur)list.push(cur);
   return list;
 }
 
-$("downloadSampleBtn").addEventListener("click",()=>{
-  const sample=[
-    "1. What is government?","A. The study of plants","B. The process of governing a country","C. The study of animals","D. The study of rocks","Answer: B","Explanation: Government deals with the governing of a country.","Marks: 1","",
-    "2. Who is the head of a state government?","A. Governor","B. Senator","C. Chairman","D. Principal","Answer: A",""
-  ].join("\r\n");
-
-  const blob=new Blob([sample],{type:"text/plain;charset=utf-8;"});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement("a");
-
-  link.href=url;
-  link.download="saintig-exams-word-text-sample.txt";
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-});
-
-/* -----------------------------
-   BULK FILE UPLOAD
-   PDF, DOCX, TXT, CSV, XLSX, XLS
------------------------------- */
-
-$("uploadCsvBtn").addEventListener("click",async()=>{
-  hideStatus($("questionStatus"));
-
-  if(!currentExam?.id){
-    showStatus($("questionStatus"),"Please select a registered examination before uploading questions.","error");
-    return;
-  }
-
-  if(isPublished){
-    showStatus($("questionStatus"),"This examination is already published.","warning");
-    return;
-  }
-
-  const file=$("csvFile").files[0];
-
-  if(!file){
-    showStatus($("questionStatus"),"Please select a file first.","error");
-    return;
-  }
-
-  const ext=getFileExtension(file.name);
-
-  if(!ALLOWED_EXTENSIONS.includes(ext)){
-    showStatus($("questionStatus"),
-      "Unsupported file type. Please upload a PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls) file.",
-      "error");
-    return;
-  }
-
-  const button=$("uploadCsvBtn");
-  button.disabled=true;
-  button.textContent="Reading file...";
-
-  try{
-    const imported=[];
-    const fallbackMarks=$("marksPerQuestion").value;
-    const push=q=>imported.push({
-      ...validateQuestion(q),
-      queueId:nextQueueId++,
-      reviewed:false
-    });
-
-    let rows=null;
-    let text=null;
-
-    if(ext==="csv"){
-      rows=parseCSV(await file.text());
-    }else if(ext==="xlsx"||ext==="xls"){
-      rows=await readSpreadsheetRows(file);
-    }else if(ext==="txt"){
-      text=await file.text();
-      if(/^\uFEFF?\s*"?question_text"?\s*,/i.test(text))rows=parseCSV(text);
-    }else if(ext==="docx"){
-      text=await readDocxText(file);
-    }else if(ext==="pdf"){
-      text=await readPdfText(file);
-    }
-
-    if(rows){
-      if(rows.length<2){
-        throw new Error("The file does not contain any question rows.");
-      }
-
-      const headers=rows[0].map(value=>
-        value.trim().replace(/^\uFEFF/,"").toLowerCase()
-      );
-
-      if(headers.length<8||
-         !EXPECTED_HEADERS.slice(0,8).every((h,i)=>headers[i]===h)){
-        throw new Error("The column headings do not match the downloaded SAINTIG EXAMS template.");
-      }
-
-      const spreadsheet=ext==="xlsx"||ext==="xls";
-
-      for(let i=1;i<rows.length;i++){
-        let v=rows[i];
-
-        if(spreadsheet){
-          v=v.slice(0,EXPECTED_HEADERS.length);
-          while(v.length<EXPECTED_HEADERS.length)v.push("");
-        }else if(v.length!==EXPECTED_HEADERS.length){
-          throw new Error("Row "+(i+1)+" has an incorrect number of columns. Please correct it and upload again.");
-        }
-
-        try{
-          push({
-            question_text:v[0],option_a:v[1],option_b:v[2],option_c:v[3],
-            option_d:v[4],correct_option:v[5],explanation:v[6],
-            marks:v[7]||fallbackMarks
-          });
-        }catch(e){
-          throw new Error("Row "+(i+1)+": "+e.message);
-        }
-      }
-    }else{
-      const parsed=parseTextQuestions(text||"");
-
-      if(!parsed.length){
-        throw new Error("No questions were found. Use the format: '1. Question', options 'A.' to 'D.', then 'Answer: B'.");
-      }
-
-      parsed.forEach((q,i)=>{
-        try{
-          push({...q,marks:q.marks||fallbackMarks});
-        }catch(e){
-          throw new Error("Question "+(i+1)+": "+e.message);
-        }
-      });
-    }
-
-    const room=remainingCapacity();
-
-    if(room<1){
-      throw new Error(
-        "You have reached your package's stored-question limit ("+storedLimit+
-        "). Nothing was added. Upgrade your package or contact the admin to add more questions."
-      );
-    }
-
-    let resultMessage=
-      imported.length+" question(s) successfully added to the review queue. They have not been saved to the database.";
-
-    if(imported.length>room){
-      /* More questions than the package allows: keep what fits, approve it automatically, skip the rest. */
-      const allowed=imported.slice(0,room);
-      const skipped=imported.length-room;
-
-      allowed.forEach(q=>{q.reviewed=true;});
-      imported.length=0;
-      imported.push(...allowed);
-
-      resultMessage=
-        "Your file has "+(room+skipped)+" questions, but your package allows "+storedLimit+
-        " stored questions in total. The first "+room+" were added and approved automatically. "+
-        skipped+" were skipped. Tap Save Approved Questions to store them.";
-    }
-
-    pendingQuestions.push(...imported);
-    currentPage=Math.ceil(pendingQuestions.length/PAGE_SIZE);
-    updatePendingInfo();
-    $("csvFile").value="";
-
-    showStatus($("questionStatus"),resultMessage,
-      imported.some(q=>q.reviewed)?"warning":"success");
-
-    $("reviewList").scrollIntoView({behavior:"smooth",block:"start"});
-
-  }catch(error){
-    showStatus($("questionStatus"),error.message,"error");
-  }finally{
-    button.textContent="Read Questions";
-    button.disabled=!currentExam||isPublished||isProcessing;
-  }
-});
-
-/* -----------------------------
-   SAVE APPROVED QUESTIONS
------------------------------- */
-
-async function saveApprovedQuestions(){
-  const approvedQuestions=pendingQuestions.filter(
-    question=>question.reviewed===true
-  );
-
-  if(!approvedQuestions.length){
-    throw new Error(
-      "There are no approved questions to save."
-    );
-  }
-
-  const existingQuestions=await getSavedQuestions();
-
-  const freshCount=countEligibleQuestions(existingQuestions);
-
-  /* Keep the school-wide stored total accurate if this exam changed elsewhere. */
-  if(storageState==="ready"&&savedEligibleQuestionCount!==null){
-    storedTotal+=freshCount-savedEligibleQuestionCount;
-  }
-
-  savedEligibleQuestionCount=freshCount;
-
-  updateQueueStats();
-
-  /* Package limit: only save what fits. */
-  storageNote="";
-  let toSaveSource=approvedQuestions;
-  let droppedIds=new Set();
-
-  if(storageState==="ready"){
-    const room=Math.max(0,storedLimit-storedTotal);
-
-    if(room<1){
-      throw new Error(
-        "You have reached your package's stored-question limit ("+storedLimit+
-        "). Nothing was saved. Upgrade your package or contact the admin."
-      );
-    }
-
-    if(approvedQuestions.length>room){
-      toSaveSource=approvedQuestions.slice(0,room);
-      droppedIds=new Set(approvedQuestions.slice(room).map(q=>q.queueId));
-      storageNote=" Your package allows "+storedLimit+
-        " stored questions, so "+droppedIds.size+" extra question(s) were not saved and have been removed from the queue.";
-    }
-  }
-
-  const highestOrder=Math.max(
-    0,
-    ...existingQuestions.map(getSavedQuestionOrder)
-  );
-
-  const questionsToSave=toSaveSource.map(
-    (question,index)=>({
-      question_text:question.question_text,
-      option_a:question.option_a,
-      option_b:question.option_b,
-      option_c:question.option_c,
-      option_d:question.option_d,
-      correct_option:question.correct_option,
-      explanation:question.explanation,
-      marks:question.marks,
-      question_order:highestOrder+index+1
-    })
-  );
-
-  const count=questionsToSave.length;
-
-  await callFunction("save_questions",{
-    examination_id:currentExam.id,
-    questions:questionsToSave
-  });
-
-  /*
-    Remove from the temporary queue only after
-    the server confirms that saving succeeded.
-  */
-  const savedIds=new Set([
-    ...toSaveSource.map(question=>question.queueId),
-    ...droppedIds
-  ]);
-
-  pendingQuestions=pendingQuestions.filter(
-    question=>!savedIds.has(question.queueId)
-  );
-
-  savedEligibleQuestionCount+=count;
-  if(storageState==="ready")storedTotal+=count;
-
-  const totalPages=Math.max(
-    1,Math.ceil(pendingQuestions.length/PAGE_SIZE)
-  );
-
-  if(currentPage>totalPages){
-    currentPage=totalPages;
-  }
-
-  updatePendingInfo();
-
-  return count;
+async function readQuestionFile(file){
+  const e=fileExt(file.name);
+  if(!ALLOWED_EXT.includes(e))throw new Error("This file type is not supported. Use PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls).");
+  if(e==="xlsx"||e==="xls")return tableToItems(await sheetRows(file));
+  if(e==="csv"){const t=await readText(file);return tableToItems(parseDelimited(t,detectDelimiter(t)))}
+  let text;
+  if(e==="txt"){
+    text=await readText(file);
+    if(/^\s*"?(question_text|question)"?\s*[,;\t]/i.test(text))return tableToItems(parseDelimited(text,detectDelimiter(text)));
+  }else if(e==="docx")text=await docxText(file);
+  else text=await pdfText(file);
+  const list=parseTextQuestions(text);
+  if(!list.length)throw new Error("No questions were found. Write each one like this: 1. Question, then A. B. C. D. options, then Answer: B.");
+  return list.map((raw,i)=>({ref:"Question "+(i+1),raw}));
 }
 
-/* -----------------------------
-   SAVE QUESTIONS BUTTON
------------------------------- */
-
-async function saveToQuestionBank(){
-  if(!currentExam?.id){
-    showStatus(
-      $("questionStatus"),
-      "Select a registered examination first.",
-      "error"
-    );
-    return;
-  }
-
-  if(isPublished){
-    showStatus(
-      $("questionStatus"),
-      "This examination has already been published.",
-      "warning"
-    );
-    return;
-  }
-
-  if(!getApprovedCount()){
-    showStatus(
-      $("questionStatus"),
-      "Approve at least one question before saving to the question bank.",
-      "warning"
-    );
-    return;
-  }
-
-  if(isProcessing)return;
-
-  if(!confirm(
-    "Save "+getApprovedCount()+
-    " approved question(s) to the selected examination's question bank?"
-  )){
-    return;
-  }
-
-  isProcessing=true;
-  updateActionButtons();
-
-  const button=$("saveQuestionsBtn");
-  button.textContent="Saving approved questions...";
-
-  try{
-    const savedCount=await saveApprovedQuestions();
-
-    showStatus(
-      $("questionStatus"),
-      savedCount+
-      " approved question(s) successfully saved to "+
-      (currentExam.title||"the selected examination")+
-      "'s question bank. Questions still awaiting review remain in the queue."+storageNote,
-      "success"
-    );
-
-  }catch(error){
-    showStatus(
-      $("questionStatus"),
-      error.message,
-      "error"
-    );
-  }finally{
-    isProcessing=false;
-    button.textContent=
-      "Save Approved Questions to Question Bank";
-
-    updateActionButtons();
-  }
+/* ---- checking one question ---- */
+function normalizeCorrect(v){
+  const s=String(v||"").trim();
+  let m=s.match(/^[\s(\[]*(?:option\s*)?([A-D])(?![A-Za-z])/i);
+  if(m)return m[1].toUpperCase();
+  m=s.match(/^\s*([1-4])\b/);
+  return m?"ABCD"[Number(m[1])-1]:"";
 }
-
-$("saveQuestionsBtn").addEventListener(
-  "click",saveToQuestionBank
-);
-
-/* -----------------------------
-   SAVE AND PUBLISH
------------------------------- */
-
-async function saveAndPublishImmediately(){
-  if(!currentExam?.id){
-    showStatus(
-      $("questionStatus"),
-      "Select a registered examination first.",
-      "error"
-    );
-    return;
-  }
-
-  if(isPublished){
-    showStatus(
-      $("questionStatus"),
-      "This examination has already been published.",
-      "warning"
-    );
-    return;
-  }
-
-  if(isProcessing)return;
-
-  if(getPendingCount()>0){
-    showStatus(
-      $("questionStatus"),
-      "You still have questions awaiting review. Approve or delete them before publishing. Unreviewed questions will not be saved.",
-      "warning"
-    );
-    return;
-  }
-
-  if(!confirm(
-    "Save all approved questions and publish this examination if the question bank meets the required question count?"
-  )){
-    return;
-  }
-
-  isProcessing=true;
-  updateActionButtons();
-
-  const button=$("savePublishBtn");
-  button.textContent="Saving and publishing...";
-
-  let questionsSavedNow=0;
-
-  try{
-    const fields=collectExamFields();
-
-    const updateResult=await callFunction("update_exam",{
-      examination_id:currentExam.id,
-      ...fields
-    });
-
-    const updatedExam=getExamObject(updateResult);
-
-    currentExam={
-      ...currentExam,
-      ...(updatedExam||{}),
-      ...fields
-    };
-
-    if(getApprovedCount()>0){
-      questionsSavedNow=await saveApprovedQuestions();
-    }
-
-    const savedQuestions=await getSavedQuestions();
-
-    const eligible=countEligibleQuestions(savedQuestions);
-    const required=Number(currentExam.student_question_count);
-
-    savedEligibleQuestionCount=eligible;
-    updateQueueStats();
-
-    if(eligible<required){
-      showStatus(
-        $("questionStatus"),
-        (questionsSavedNow?
-          questionsSavedNow+
-          " approved question(s) have been saved. ":"")+
-        "This examination has "+eligible+
-        " eligible saved question(s), but students are required to answer "+
-        required+". Add and approve at least "+
-        (required-eligible)+
-        " more question(s) before publishing.",
-        "warning"
-      );
-
-      return;
-    }
-
-    const result=await callFunction("publish_exam",{
-      examination_id:currentExam.id
-    });
-
-    const publishedExam=getExamObject(result);
-
-    currentExam={
-      ...currentExam,
-      ...(publishedExam||{}),
-      is_published:true
-    };
-
-    isPublished=true;
-
-    if(currentExam.examination_code){
-      displayExamCode(currentExam.examination_code);
-    }
-
-    $("saveDraftBtn").textContent="Examination Published";
-    $("saveDraftBtn").disabled=true;
-
-    showStatus(
-      $("questionStatus"),
-      "Success! "+
-      (questionsSavedNow?
-        questionsSavedNow+
-        " approved question(s) were saved. ":"")+
-      "Your examination has been published successfully with "+
-      eligible+" eligible questions. Students will answer "+
-      required+" questions.",
-      "success"
-    );
-
-    /*
-      Refresh the list without resetting the review queue.
-    */
+function buildQuestion(raw,rules){
+  if(!raw.question_text)throw new Error("The question text is empty.");
+  for(const k of ["option_a","option_b","option_c","option_d"])
+    if(!raw[k])throw new Error("Option "+k.slice(-1).toUpperCase()+" is empty. Every question needs four options.");
+  const correct=normalizeCorrect(raw.correct);
+  if(!correct)throw new Error("The correct answer must be A, B, C or D.");
+  const marks=String(raw.marks??"").trim()===""?rules.defaultMarks:parseFloat(raw.marks);
+  if(!Number.isFinite(marks)||marks<=0)throw new Error("Marks must be a number above zero.");
+  if(rules.integerMarks&&!Number.isInteger(marks))throw new Error("Marks must be a whole number, such as 1 or 2.");
+  const order=parseInt(raw.order,10);
+  return{question_text:raw.question_text.trim(),option_a:raw.option_a.trim(),option_b:raw.option_b.trim(),option_c:raw.option_c.trim(),option_d:raw.option_d.trim(),
+    correct_option:correct,explanation:(raw.explanation||"").trim()||null,marks,sortOrder:Number.isFinite(order)&&order>0?order:null,imageName:raw.image||"",imageFile:null};
+}
+function evaluate(items,rules,taken,extra){
+  const valid=[],errors=[],seen=new Set(taken);
+  for(const it of items){
     try{
-      await loadExaminations(
-        currentExam.id,
-        {preserveQueue:true}
-      );
-
-      isPublished=true;
-      $("saveDraftBtn").textContent="Examination Published";
-      $("saveDraftBtn").disabled=true;
-
-    }catch(refreshError){
-      console.error(
-        "Examination list refresh failed:",
-        refreshError
-      );
-    }
-
-  }catch(error){
-    showStatus(
-      $("questionStatus"),
-      (questionsSavedNow?
-        questionsSavedNow+
-        " question(s) were saved, but publishing did not complete. ":"")+
-      error.message,
-      "error"
-    );
-
-  }finally{
-    isProcessing=false;
-
-    button.textContent=isPublished?
-      "Examination Published":
-      "Save Approved Questions and Publish";
-
-    updateActionButtons();
+      const q=buildQuestion(it.raw,rules),k=keyOf(q.question_text);
+      if(seen.has(k))throw new Error(taken.has(k)?"This question is already saved or waiting in the review list.":"This question appears twice in the file.");
+      if(extra)extra(it.raw,q);
+      seen.add(k);valid.push(q);
+    }catch(e){errors.push({ref:it.ref,message:e.message})}
   }
+  return{valid,errors,total:items.length};
 }
 
-$("savePublishBtn").addEventListener(
-  "click",saveAndPublishImmediately
-);
-
-/* -----------------------------
-   EXAMINATION ID
------------------------------- */
-
-async function copyText(text){
-  if(navigator.clipboard&&window.isSecureContext){
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  const temporary=document.createElement("textarea");
-  temporary.value=text;
-  temporary.style.position="fixed";
-  temporary.style.opacity="0";
-
-  document.body.appendChild(temporary);
-  temporary.select();
-
-  const successful=document.execCommand("copy");
-  temporary.remove();
-
-  if(!successful){
-    throw new Error("Copying is not supported by this browser.");
-  }
+/* ---- result of reading a file ---- */
+function renderReadResult(res,prepare){
+  const box=$("upResult");let h="";
+  if(res.valid.length)h+=`<div class="msg show ok">✅ ${res.valid.length} of ${res.total} question(s) are ready to add.</div>`;
+  if(res.errors.length)h+=`<div class="msg show warn">⚠ ${res.errors.length} item(s) need fixing and will be skipped:</div><div class="errs">`+
+    res.errors.slice(0,40).map(e=>`<div class="err-row"><b>${esc(e.ref)}:</b> ${esc(e.message)}</div>`).join("")+
+    (res.errors.length>40?`<p class="hint">…and ${res.errors.length-40} more.</p>`:"")+`</div>`;
+  if(!res.valid.length)h+=`<div class="msg show err">No usable questions were found. Fix the items above in your file, then read it again.</div>`;
+  else h+=`<div class="row"><button class="btn gold" id="addValid" type="button">Add ${res.valid.length} question(s) to review</button></div>`;
+  box.innerHTML=h;
+  const b=$("addValid");
+  if(b)b.addEventListener("click",()=>{
+    const out=prepare?prepare(res.valid):{list:res.valid,note:""};
+    if(!out.list.length){say("upMsg",out.note||"Nothing could be added.","err");return}
+    addToQueue(out.list);box.innerHTML="";$("file").value="";
+    say("rvMsg",out.list.length+" question(s) added for review."+(out.note?" "+out.note:""),out.note?"warn":"ok");
+    go(3);
+  });
 }
 
-$("copyCodeBtn").addEventListener("click",async()=>{
-  const code=$("examCode").textContent.trim();
-
-  if(!code)return;
-
-  try{
-    await copyText(code);
-
-    showStatus(
-      $("questionStatus"),
-      "Examination ID copied successfully.",
-      "success"
-    );
-
-  }catch(error){
-    showStatus(
-      $("questionStatus"),
-      "Unable to copy automatically. Please select and copy the Examination ID.",
-      "warning"
-    );
-  }
+/* ================= review list ================= */
+let queue=[],qpage=1,nextId=1,editId=null;
+const PAGE_SIZE=10;
+function addToQueue(list){for(const q of list)queue.push({...q,id:nextId++});qpage=Math.ceil(queue.length/PAGE_SIZE)||1;renderQueue()}
+function renderQueue(){
+  const pages=Math.max(1,Math.ceil(queue.length/PAGE_SIZE));
+  if(qpage>pages)qpage=pages;
+  $("qCount").textContent=queue.length;
+  const box=$("qList");
+  if(!queue.length)box.innerHTML='<p class="hint">Nothing to review right now. Add questions in step 2.</p>';
+  else box.innerHTML=queue.slice((qpage-1)*PAGE_SIZE,qpage*PAGE_SIZE).map((q,i)=>`
+    <article class="q">
+      <div class="q-top">Question ${(qpage-1)*PAGE_SIZE+i+1}</div>
+      <div class="q-text">${esc(q.question_text)}</div>
+      <div class="opts">${["a","b","c","d"].map(l=>`<div class="opt ${q.correct_option===l.toUpperCase()?"ok":""}"><b>${l.toUpperCase()}.</b> ${esc(q["option_"+l])}</div>`).join("")}</div>
+      <div class="q-meta">Marks: ${esc(q.marks)}${q.imageFile?" · Image: "+esc(q.imageFile.name):""}${q.explanation?"<br>Explanation: "+esc(q.explanation):""}</div>
+      <div class="q-act"><button class="btn ghost" type="button" data-act="edit" data-id="${q.id}">Edit</button><button class="btn danger" type="button" data-act="del" data-id="${q.id}">Delete</button></div>
+    </article>`).join("");
+  const pg=$("pager");pg.innerHTML="";
+  if(pages>1)for(let p=1;p<=pages;p++){const b=document.createElement("button");b.type="button";b.textContent=p;if(p===qpage)b.className="on";b.onclick=()=>{qpage=p;renderQueue()};pg.appendChild(b)}
+  onQueueChange();
+}
+$("qList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-act]");if(!b)return;
+  const id=Number(b.dataset.id),q=queue.find(x=>x.id===id);if(!q)return;
+  if(b.dataset.act==="del"){if(confirm("Delete this question from the review list?")){queue=queue.filter(x=>x.id!==id);renderQueue()}return}
+  editId=id;
+  $("eText").value=q.question_text;$("eA").value=q.option_a;$("eB").value=q.option_b;$("eC").value=q.option_c;$("eD").value=q.option_d;
+  $("eCorrect").value=q.correct_option;$("eMarks").value=q.marks;$("eExp").value=q.explanation||"";
+  hush("eMsg");$("editModal").classList.add("show");
 });
-
-$("shareCodeBtn").addEventListener("click",async()=>{
-  const code=$("examCode").textContent.trim();
-
-  if(!code)return;
-
+$("eCancel").addEventListener("click",()=>{$("editModal").classList.remove("show");editId=null});
+$("eSave").addEventListener("click",()=>{
   try{
-    if(navigator.share){
-      await navigator.share({
-        title:"SAINTIG EXAMS Examination ID",
-        text:"Examination ID: "+code
-      });
-    }else{
-      await copyText(code);
+    const q=queue.find(x=>x.id===editId);if(!q)return;
+    const u=buildQuestion({question_text:$("eText").value.trim(),option_a:$("eA").value.trim(),option_b:$("eB").value.trim(),option_c:$("eC").value.trim(),option_d:$("eD").value.trim(),
+      correct:$("eCorrect").value,explanation:$("eExp").value.trim(),marks:$("eMarks").value.trim(),order:"",image:""},RULES());
+    Object.assign(q,{question_text:u.question_text,option_a:u.option_a,option_b:u.option_b,option_c:u.option_c,option_d:u.option_d,correct_option:u.correct_option,explanation:u.explanation,marks:u.marks});
+    $("editModal").classList.remove("show");editId=null;renderQueue();
+  }catch(e){say("eMsg",e.message,"err")}
+});
+$("clearAll").addEventListener("click",()=>{if(queue.length&&confirm("Remove all "+queue.length+" question(s) from the review list? Saved questions are not affected.")){queue=[];renderQueue()}});
+$("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 
-      showStatus(
-        $("questionStatus"),
-        "Sharing is unavailable on this browser. Examination ID copied instead.",
-        "info"
-      );
+
+/* ================= state ================= */
+let exam=null,exams=[],subjects=[],pkg=null,savedCount=0,maxOrder=0,existing=new Set(),busy=false;
+let storedLimit=null,storedTotal=0,storage="loading";   /* storage: loading | ready | unavailable */
+const RULES=()=>({defaultMarks:Number($("marksPer").value)||1,integerMarks:false});
+
+/* ================= server calls ================= */
+async function api(action,payload={}){
+  const {data,error}=await supabase.functions.invoke(FUNCTION_NAME,{body:{action,...payload}});
+  if(error){
+    let msg=error.message||"Unable to contact the examination service.";
+    try{if(error.context&&typeof error.context.json==="function"){const b=await error.context.json();if(b&&(b.error||b.message))msg=b.error||b.message}}catch(_){}
+    throw new Error(msg);
+  }
+  if(!data||typeof data!=="object")throw new Error("The server returned an invalid response.");
+  if(data.success===false)throw new Error(data.error||data.message||"The server could not complete the request.");
+  return data;
+}
+function arr(d,...keys){
+  for(const k of keys){if(Array.isArray(d?.[k]))return d[k];if(Array.isArray(d?.data?.[k]))return d.data[k]}
+  return Array.isArray(d?.data)?d.data:[];
+}
+const examOf=d=>d?.examination||d?.exam||d?.data?.examination||d?.data?.exam||(d?.id?d:null);
+const pkgOf=d=>d?.package||d?.data?.package||d?.package_info||d?.data?.package_info||null;
+
+/* ================= navigation ================= */
+function go(n){
+  if(n>1&&!exam){say("m1","Save or choose an examination first.","warn");n=1}
+  for(let i=1;i<=4;i++){
+    $("p"+i).hidden=i!==n;
+    const b=document.querySelector('.step[data-step="'+i+'"]');
+    b.classList.toggle("on",i===n);b.classList.toggle("done",i<n&&(i>1||!!exam));
+  }
+  if(n===3)renderQueue();
+  if(n===4)refreshPublish();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".step").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.step))));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.go))));
+$("tabFile").onclick=()=>{$("tabFile").classList.add("on");$("tabOne").classList.remove("on");$("boxFile").hidden=false;$("boxOne").hidden=true};
+$("tabOne").onclick=()=>{$("tabOne").classList.add("on");$("tabFile").classList.remove("on");$("boxFile").hidden=true;$("boxOne").hidden=false};
+
+const published=()=>!!(exam&&exam.is_published);
+function refreshBar(){
+  const b=$("bar");
+  if(!exam)b.textContent="No examination selected yet. Choose one or create a new one in step 1.";
+  else b.innerHTML="<span><b>"+esc(exam.title)+"</b></span><span>"+(published()?"PUBLISHED":"DRAFT")+"</span><span>Saved: "+savedCount+"</span><span>To review: "+queue.length+"</span>";
+  document.querySelectorAll(".step").forEach(s=>{if(Number(s.dataset.step)>1)s.disabled=!exam});
+  $("stSaved").textContent=savedCount;$("stNeed").textContent=exam?exam.student_question_count||"—":"0";
+}
+function onQueueChange(){
+  refreshBar();updateLimitMsg();
+  $("saveAll").disabled=!queue.length||busy||published();
+}
+window.addEventListener("beforeunload",e=>{if(queue.length){e.preventDefault();e.returnValue=""}});
+
+/* ================= package limits ================= */
+function applyPackage(info){
+  if(!info||typeof info!=="object")throw new Error("Your package information was not returned by the server. Refresh the page or contact the administrator.");
+  const name=String(info.package_name||"").trim();
+  const dur=Number(info.max_exam_duration_minutes),cnt=Number(info.max_questions_per_exam);
+  if(!name||!Number.isSafeInteger(dur)||dur<1||!Number.isSafeInteger(cnt)||cnt<1)throw new Error("Your package limits are missing or invalid. Please contact the administrator.");
+  pkg={package_name:name,max_exam_duration_minutes:dur,max_questions_per_exam:cnt};
+  $("duration").max=dur;$("qCountField").max=cnt;
+  $("durationHelp").textContent=name+" package: up to "+dur+" minutes.";
+  $("countHelp").textContent=name+" package: up to "+cnt+" questions per student. You can store more questions in your bank.";
+  if(!exam){$("duration").value=dur;$("qCountField").value=cnt}
+  updateTotal();
+}
+function updateTotal(){
+  const t=Number($("qCountField").value)*Number($("marksPer").value);
+  $("totalMarks").textContent=Number.isFinite(t)?(Number.isInteger(t)?t:t.toFixed(2)):"0";
+}
+$("qCountField").addEventListener("input",updateTotal);$("marksPer").addEventListener("input",updateTotal);
+$("useSchedule").addEventListener("change",e=>{$("schedule").hidden=!e.target.checked});
+
+/* ================= stored-question limit ================= */
+const has=v=>v!==null&&v!==undefined&&v!=="";
+function room(){return storage==="ready"?Math.max(0,storedLimit-storedTotal-queue.length):Infinity}
+function updateLimitMsg(){
+  const b=$("limitMsg");
+  if(storage==="loading"){b.className="msg show info";b.textContent="Checking your stored-question limit…";return}
+  if(storage==="unavailable"){b.className="msg show warn";b.textContent="Your stored-question limit could not be checked here. The system may still stop saving when your package limit is reached.";return}
+  b.className="msg show info";
+  b.innerHTML="<b>Stored questions:</b> "+storedTotal+" of "+storedLimit+" used"+(pkg?" ("+esc(pkg.package_name)+" package)":"")+". Waiting for review: "+queue.length+". Places left: <b>"+room()+"</b>.";
+}
+async function initStorage(){
+  storage="loading";updateLimitMsg();
+  try{
+    const {data:u,error:ue}=await supabase.auth.getUser();
+    if(ue||!u?.user)throw ue||new Error("No signed-in user.");
+    const {data:acc,error:ae}=await supabase.from("school_accounts").select("id").eq("user_id",u.user.id).maybeSingle();
+    if(ae||!acc)throw ae||new Error("No school account found.");
+    const [as,lim]=await Promise.all([
+      supabase.from("school_account_packages").select("package_name,custom_max_stored_questions").eq("school_account_id",acc.id).maybeSingle(),
+      supabase.from("school_package_limits").select("package_name,max_stored_questions")
+    ]);
+    if(as.error)throw as.error;if(lim.error)throw lim.error;
+    const name=String(as.data?.package_name||pkg?.package_name||"").toLowerCase();
+    const row=(lim.data||[]).find(p=>String(p.package_name).toLowerCase()===name);
+    const custom=as.data?.custom_max_stored_questions;
+    const limit=Number(has(custom)?custom:row?.max_stored_questions);
+    if(!Number.isSafeInteger(limit)||limit<1)throw new Error("The stored-question limit is missing for this package.");
+    let total=0;
+    for(let i=0;i<exams.length;i+=5){
+      const res=await Promise.all(exams.slice(i,i+5).map(x=>api("list_questions",{examination_id:x.id})));
+      for(const r of res)total+=arr(r,"questions","exam_questions","items").filter(q=>q.is_archived!==true).length;
     }
-  }catch(error){
-    if(error.name!=="AbortError"){
-      showStatus(
-        $("questionStatus"),
-        "Unable to share the Examination ID.",
-        "error"
-      );
-    }
+    storedLimit=limit;storedTotal=total;storage="ready";
+  }catch(e){console.error("Stored-question limit check failed:",e);storage="unavailable"}
+  updateLimitMsg();
+}
+/* More questions than the package allows: keep the ones that fit and skip the rest. */
+function prepare(valid){
+  const r=room();
+  if(valid.length<=r)return{list:valid,note:""};
+  if(r<1)return{list:[],note:"You have reached your package's stored-question limit ("+storedLimit+"). Upgrade your package or contact the admin to add more."};
+  return{list:valid.slice(0,r),note:"Your package allows "+storedLimit+" stored questions in total, so only the first "+r+" were added and "+(valid.length-r)+" were skipped."};
+}
+
+/* ================= subjects and examinations ================= */
+async function loadSubjects(){
+  const d=await api("list_subjects");
+  const p=pkgOf(d);if(p)applyPackage(p);
+  subjects=arr(d,"subjects","school_subjects","items");
+  $("subject").innerHTML=subjects.length?'<option value="">Select a subject</option>'+subjects.map(s=>`<option value="${esc(s.id)}">${esc(s.subject_name||s.name||"Unnamed subject")}</option>`).join(""):'<option value="">No published subjects available</option>';
+}
+async function loadExams(selectId){
+  const d=await api("list_exams");
+  const p=pkgOf(d);if(p)applyPackage(p);
+  exams=arr(d,"examinations","exams","items");
+  $("existing").innerHTML='<option value="">➕ Create a new examination</option>'+exams.map(x=>`<option value="${esc(x.id)}">${esc(x.title||"Untitled")} — ${esc(x.examination_code||"no ID")} (${x.is_published?"Published":"Draft"})</option>`).join("");
+  if(selectId)$("existing").value=String(selectId);
+}
+const localDT=v=>{if(!v)return"";const d=new Date(v);if(!Number.isFinite(d.getTime()))return"";const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())};
+function fillForm(e){
+  $("subject").value=e.school_subject_id??"";$("title").value=e.title||"";$("nameClass").value=e.name_class||"";$("description").value=e.description||"";
+  $("duration").value=e.duration_minutes??pkg?.max_exam_duration_minutes??"";
+  $("qCountField").value=e.student_question_count??pkg?.max_questions_per_exam??"";
+  $("marksPer").value=e.marks_per_question??1;
+  const a=Number(e.max_attempts);$("attempts").value=Number.isInteger(a)&&a>=1&&a<=5?String(a):"2";
+  const sch=!!(e.starts_at||e.ends_at);$("useSchedule").checked=sch;$("schedule").hidden=!sch;
+  $("startsAt").value=localDT(e.starts_at);$("endsAt").value=localDT(e.ends_at);
+  updateTotal();
+}
+function clearForm(){
+  ["title","nameClass","description"].forEach(i=>$(i).value="");$("subject").value="";
+  $("duration").value=pkg?.max_exam_duration_minutes??"";$("qCountField").value=pkg?.max_questions_per_exam??"";
+  $("marksPer").value=1;$("attempts").value="2";$("useSchedule").checked=false;$("schedule").hidden=true;$("startsAt").value="";$("endsAt").value="";
+  updateTotal();
+}
+async function refreshSaved(){
+  const d=await api("list_questions",{examination_id:exam.id});
+  const rows=arr(d,"questions","exam_questions","items");
+  const before=savedCount;
+  savedCount=rows.filter(q=>q.is_archived!==true).length;
+  if(storage==="ready")storedTotal+=savedCount-before;
+  existing=new Set(rows.map(q=>keyOf(q.question_text)).filter(Boolean));
+  maxOrder=Math.max(0,...rows.map(q=>Number(q.question_order)||0));
+}
+function showCode(){
+  const c=exam&&exam.examination_code;
+  $("codeBox").hidden=!c;if(c)$("codeText").textContent=c;
+}
+async function chooseExam(id){
+  if(queue.length&&!confirm("You have questions waiting in the review list. They will be lost if you switch. Continue?")){$("existing").value=exam?String(exam.id):"";return}
+  queue=[];renderQueue();$("upResult").innerHTML="";hush("upMsg");hush("rvMsg");
+  if(!id){exam=null;savedCount=0;maxOrder=0;existing=new Set();clearForm();refreshBar();hush("m1");showCode();return}
+  exam=exams.find(x=>String(x.id)===String(id))||null;
+  if(!exam)return;
+  fillForm(exam);savedCount=0;
+  try{await refreshSaved()}catch(e){console.error(e)}
+  refreshBar();showCode();
+  say("m1",published()?"This examination is published. Its questions can no longer be changed here.":"Loaded. Change the details if needed, then continue.","info");
+}
+$("existing").addEventListener("change",()=>chooseExam($("existing").value).catch(e=>say("m1",e.message,"err")));
+$("clearForm").addEventListener("click",()=>{$("existing").value="";chooseExam("").catch(()=>{})});
+
+function collect(){
+  if(!pkg)throw new Error("Package limits have not loaded. Refresh the page.");
+  const subject=$("subject").value;if(!subject)throw new Error("Choose a subject.");
+  if(!subjects.find(s=>String(s.id)===String(subject)))throw new Error("That subject is not available. Refresh the page and try again.");
+  const title=$("title").value.trim();if(!title)throw new Error("Enter the examination title.");
+  const whole=(v,l)=>{const n=Number(v);if(!Number.isSafeInteger(n)||n<1)throw new Error(l+" must be a whole number of at least 1.");return n};
+  const duration=whole($("duration").value,"Duration"),count=whole($("qCountField").value,"Questions each student answers");
+  if(duration>pkg.max_exam_duration_minutes)throw new Error("Your "+pkg.package_name+" package allows up to "+pkg.max_exam_duration_minutes+" minutes.");
+  if(count>pkg.max_questions_per_exam)throw new Error("Your "+pkg.package_name+" package allows up to "+pkg.max_questions_per_exam+" questions per student.");
+  const marks=Number($("marksPer").value);if(!Number.isFinite(marks)||marks<=0)throw new Error("Marks per question must be above zero.");
+  const attempts=whole($("attempts").value,"Maximum attempts");if(attempts>5)throw new Error("Maximum attempts is 5.");
+  let startsAt=null,endsAt=null;
+  if($("useSchedule").checked){
+    const a=$("startsAt").value,b=$("endsAt").value;
+    if(!a||!b)throw new Error("Enter both the start and end date.");
+    const da=new Date(a),db=new Date(b);
+    if(!Number.isFinite(da.getTime())||!Number.isFinite(db.getTime()))throw new Error("Enter valid dates.");
+    if(db<=da)throw new Error("The end must be after the start.");
+    startsAt=da.toISOString();endsAt=db.toISOString();
   }
-});
-
-/* -----------------------------
-   FORM CONTROLS
------------------------------- */
-
-$("examForm").addEventListener("submit",saveDraft);
-
-$("questionCount").addEventListener("input",()=>{
-  updateTotalMarks();
-  updateMinimumQuestionCounter();
-});
-
-$("marksPerQuestion").addEventListener("input",()=>{
-  updateTotalMarks();
-  updateQuestionMarksDefault();
-});
-
-$("enableSchedule").addEventListener("change",event=>{
-  $("scheduleFields").classList.toggle(
-    "show",
-    event.target.checked
-  );
-});
-
-$("cancelBtn").addEventListener("click",()=>{
-  if(pendingQuestions.length){
-    const confirmed=confirm(
-      "Leave this page? Questions not yet saved to the question bank will be lost."
-    );
-
-    if(!confirmed)return;
-  }
-
-  window.location.href="school-dashboard.html";
-});
-
-$("menuBtn").addEventListener("click",()=>{
-  $("sidebar").classList.toggle("open");
-});
-
-/* -----------------------------
-   INITIALIZE PAGE
------------------------------- */
-
-async function initializePage(){
+  return{title,name_class:$("nameClass").value.trim()||null,description:$("description").value.trim()||null,school_subject_id:subject,duration_minutes:duration,student_question_count:count,marks_per_question:marks,starts_at:startsAt,ends_at:endsAt,max_attempts:attempts};
+}
+$("saveExam").addEventListener("click",async()=>{
+  if(busy)return;
   try{
-    const authenticated=await protectPage();
+    hush("m1");
+    if(published())throw new Error("This examination is already published. Create a new one instead.");
+    const f=collect();
+    busy=true;$("saveExam").disabled=true;$("saveExam").textContent="Saving…";
+    const d=exam?await api("update_exam",{examination_id:exam.id,...f}):await api("create_exam",f);
+    const e=examOf(d);if(!e?.id)throw new Error("The server did not return the examination ID. Refresh the page and check your examinations.");
+    const wasNew=!exam;
+    exam={...exam,...e,...f};
+    await loadExams(exam.id);
+    exam={...exams.find(x=>String(x.id)===String(exam.id)),...exam};
+    if(wasNew){savedCount=0;maxOrder=0;existing=new Set()}else await refreshSaved();
+    refreshBar();showCode();
+    say("m1","Examination saved."+(exam.examination_code?" ID: "+exam.examination_code:""),"ok");go(2);
+  }catch(e){say("m1",e.message,"err")}
+  finally{busy=false;$("saveExam").disabled=false;$("saveExam").textContent="Save and continue"}
+});
 
-    if(!authenticated)return;
+/* ================= adding questions ================= */
+const taken=()=>new Set([...existing,...queue.map(q=>keyOf(q.question_text))]);
+function guardExam(){
+  if(!exam)throw new Error("Save or choose an examination first (step 1).");
+  if(published())throw new Error("This examination is already published.");
+}
+$("readBtn").addEventListener("click",async()=>{
+  hush("upMsg");$("upResult").innerHTML="";
+  try{
+    guardExam();
+    const f=$("file").files[0];if(!f)throw new Error("Choose a file first.");
+    $("readBtn").disabled=true;$("readBtn").textContent="Reading…";
+    const items=await readQuestionFile(f);
+    renderReadResult(evaluate(items,RULES(),taken()),prepare);
+  }catch(e){say("upMsg",e.message,"err")}
+  finally{$("readBtn").disabled=false;$("readBtn").textContent="Read file"}
+});
+$("addOne").addEventListener("click",()=>{
+  try{
+    guardExam();
+    const q=buildQuestion({question_text:$("qText").value.trim(),option_a:$("oA").value.trim(),option_b:$("oB").value.trim(),option_c:$("oC").value.trim(),option_d:$("oD").value.trim(),
+      correct:$("qCorrect").value,explanation:$("qExp").value.trim(),marks:$("qMarks").value.trim(),order:"",image:""},RULES());
+    if(taken().has(keyOf(q.question_text)))throw new Error("This question is already saved or waiting in the review list.");
+    const out=prepare([q]);if(!out.list.length)throw new Error(out.note);
+    addToQueue(out.list);
+    ["qText","oA","oB","oC","oD","qExp","qMarks"].forEach(i=>$(i).value="");$("qCorrect").value="";
+    say("oneMsg","Added. You have "+queue.length+" question(s) waiting in the review list.","ok");
+  }catch(e){say("oneMsg",e.message,"err")}
+});
+$("tplCsv").addEventListener("click",()=>{
+  const head=["question_text","option_a","option_b","option_c","option_d","correct_option","explanation","marks","question_order"];
+  const ex=["What is government?","The study of plants","The process of governing a country","The study of animals","The study of rocks","B","Government deals with the governing of a country.","1","1"];
+  download("saintig-exams-question-template.csv","\uFEFF"+[head,ex].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),"text/csv;charset=utf-8");
+});
+$("tplTxt").addEventListener("click",()=>download("saintig-exams-word-text-sample.txt",
+  ["1. What is government?","A. The study of plants","B. The process of governing a country","C. The study of animals","D. The study of rocks","Answer: B","Explanation: Government deals with the governing of a country.","Marks: 1","","2. Who is the head of a state government?","A. Governor","B. Senator","C. Chairman","D. Principal","Answer: A",""].join("\r\n"),"text/plain;charset=utf-8"));
 
-    updateTotalMarks();
-    updateQuestionMarksDefault();
-    updatePendingInfo();
-    updateMinimumQuestionCounter();
+/* ================= saving ================= */
+$("saveAll").addEventListener("click",async()=>{
+  if(busy||!queue.length)return;
+  busy=true;$("saveAll").disabled=true;hush("rvMsg");
+  let saved=0,note="";
+  try{
+    guardExam();
+    await refreshSaved();
+    let list=[...queue].sort((a,b)=>(a.sortOrder??1e9)-(b.sortOrder??1e9));
+    if(storage==="ready"){
+      const r=Math.max(0,storedLimit-storedTotal);
+      if(r<1)throw new Error("You have reached your package's stored-question limit ("+storedLimit+"). Nothing was saved. Upgrade your package or contact the admin.");
+      if(list.length>r){note=" Your package allows "+storedLimit+" stored questions, so "+(list.length-r)+" extra question(s) were not saved and were removed from the list.";
+        const drop=new Set(list.slice(r).map(q=>q.id));list=list.slice(0,r);queue=queue.filter(q=>!drop.has(q.id))}
+    }
+    for(let i=0;i<list.length;i+=25){
+      const chunk=list.slice(i,i+25);
+      const questions=chunk.map((q,k)=>({question_text:q.question_text,option_a:q.option_a,option_b:q.option_b,option_c:q.option_c,option_d:q.option_d,
+        correct_option:q.correct_option,explanation:q.explanation,marks:q.marks,question_order:maxOrder+k+1}));
+      await withRetry(()=>api("save_questions",{examination_id:exam.id,questions}));
+      maxOrder+=chunk.length;saved+=chunk.length;savedCount+=chunk.length;if(storage==="ready")storedTotal+=chunk.length;
+      const ids=new Set(chunk.map(q=>q.id));queue=queue.filter(q=>!ids.has(q.id));
+      chunk.forEach(q=>existing.add(keyOf(q.question_text)));
+      renderQueue();
+    }
+    say("rvMsg",saved+" question(s) saved. Next, publish the examination in step 4."+note,note?"warn":"ok");
+  }catch(e){
+    say("rvMsg",(saved?saved+" saved. ":"")+"Saving stopped: "+(e.message||e)+" The remaining "+queue.length+" question(s) are still here. Fix the problem and tap Save again.","err");
+  }finally{busy=false;refreshBar();onQueueChange()}
+});
 
+/* ================= publishing ================= */
+async function refreshPublish(){
+  hush("pubMsg");
+  if(!exam)return;
+  try{await refreshSaved()}catch(e){say("pubMsg","Could not count saved questions: "+e.message,"err")}
+  refreshBar();showCode();
+  const need=Number(exam.student_question_count)||0;
+  $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Students answer: "+need+" question(s)<br>Duration: "+esc(exam.duration_minutes)+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(published()?"Published":"Not published yet");
+  let ready=!published()&&!busy;
+  if(published())say("pubMsg","This examination is published.","ok");
+  else if(queue.length){ready=false;say("pubMsg","You still have "+queue.length+" question(s) in the review list. Save them in step 3 first.","warn")}
+  else if(savedCount<need){ready=false;say("pubMsg","Students answer "+need+" questions, but only "+savedCount+" are saved. Save at least "+(need-savedCount)+" more, or lower \"Questions each student answers\" in step 1.","warn")}
+  $("publishBtn").disabled=!ready;
+}
+$("refreshBtn").addEventListener("click",refreshPublish);
+$("publishBtn").addEventListener("click",async()=>{
+  if(busy)return;
+  try{
+    guardExam();
+    if(queue.length)throw new Error("Save the questions in the review list first.");
+    await refreshSaved();
+    const need=Number(exam.student_question_count)||0;
+    if(savedCount<need)throw new Error("Only "+savedCount+" of the "+need+" questions students must answer are saved.");
+    if(!confirm('Publish "'+exam.title+'" now?'))return;
+    busy=true;$("publishBtn").disabled=true;$("publishBtn").textContent="Publishing…";
+    const d=await api("publish_exam",{examination_id:exam.id});
+    exam={...exam,...(examOf(d)||{}),is_published:true};
+    await loadExams(exam.id);
+    exam={...exams.find(x=>String(x.id)===String(exam.id)),...exam,is_published:true};
+    say("pubMsg","Published. Students can now take this examination.","ok");
+  }catch(e){say("pubMsg",e.message,"err")}
+  finally{busy=false;$("publishBtn").textContent="Publish examination";refreshPublish()}
+});
+$("copyCode").addEventListener("click",async()=>{try{await copyText($("codeText").textContent.trim());say("pubMsg","Examination ID copied.","ok")}catch(e){say("pubMsg","Could not copy automatically. Select the ID and copy it.","warn")}});
+$("shareCode").addEventListener("click",async()=>{
+  const c=$("codeText").textContent.trim();
+  try{if(navigator.share)await navigator.share({title:"SAINTIG EXAMS Examination ID",text:"Examination ID: "+c});else{await copyText(c);say("pubMsg","Sharing is not available here. The ID was copied instead.","info")}}
+  catch(e){if(e.name!=="AbortError")say("pubMsg","Could not share the ID.","err")}
+});
+
+/* ================= start ================= */
+(async()=>{
+  try{
+    const {data,error}=await supabase.auth.getUser();
+    if(error||!data.user){await supabase.auth.signOut();location.replace("school-login.html");return}
     await loadSubjects();
-
-    if(!packageInfo){
-      throw new Error(
-        "Your package limits could not be loaded. "+
-        "The examination form cannot safely continue without them."
-      );
-    }
-
-    await loadExaminations();
-
-    /* Do not block the page while the stored-question limit is being checked. */
-    initStorageLimit();
-
-    showStatus(
-      $("pageStatus"),
-      "Your Teacher/School account is connected. "+
-      "Current package: "+packageInfo.package_name+
-      ". Maximum duration: "+
-      packageInfo.max_exam_duration_minutes+
-      " minutes. Maximum student questions: "+
-      packageInfo.max_questions_per_exam+".",
-      "success"
-    );
-
-  }catch(error){
-    console.error("Register Examination initialization error:",error);
-
-    showStatus(
-      $("pageStatus"),
-      error.message||
-      "Unable to load the examination registration page.",
-      "error"
-    );
-  }
-}
-
-initializePage();
+    if(!pkg)throw new Error("Your package limits could not be loaded, so the form cannot continue safely.");
+    await loadExams();
+    updateTotal();renderQueue();refreshBar();
+    initStorage();
+  }catch(e){console.error(e);say("pageMsg",e.message||"Could not load this page.","err")}
+})();
 </script>
 </body>
 </html>
