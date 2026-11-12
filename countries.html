@@ -1,937 +1,218 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
 <title>Countries | SAINTIG EXAMS</title>
-
 <style>
-:root {
-  --navy:#142b52;
-  --blue:#2457a7;
-  --gold:#d4af37;
-  --bg:#f4f6fa;
-  --white:#fff;
-  --text:#263449;
-  --muted:#718096;
-  --border:#e5eaf1;
-  --red:#b42318;
-  --green:#16803c;
-}
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#1f2b40;--muted:#58677d;--line:#dfe4ec;--ok:#16834b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font:18px/1.55 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:1000px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.role{font-size:14px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff66;border-radius:9px;padding:9px 16px;min-height:48px;font-size:17px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22;max-height:calc(100vh - 70px);overflow-y:auto}
+.menu.open{display:block}
+.menu-in{max-width:1000px;margin:auto;padding:8px 14px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px}
+.menu a,.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:#e9edf5;text-decoration:none;padding:14px 12px;border-radius:8px;font-size:18px}
+.menu a:hover,.menu a.on,.menu button:hover{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:1000px;margin:auto;padding:16px 14px 70px}
+h1{font-size:28px;line-height:1.2;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:17px;margin-bottom:14px}
+.sections{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.sections a{flex:0 0 auto;padding:12px 18px;border:1px solid var(--line);background:#fff;border-radius:999px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:17px;min-height:48px;display:flex;align-items:center;gap:8px}
+.sections a b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#e9edf4;font-size:15px}
+.sections a.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sections a.on b{background:var(--gold);color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.card h2{font-size:23px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:17px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:17px;margin-bottom:7px;color:#2d3a52}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #c5cdd9;border-radius:9px;background:#fff;color:var(--text);min-height:54px;font-size:18px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.btn{border:0;border-radius:10px;padding:13px 20px;font-weight:bold;font-size:17px;min-height:54px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #bfc8d6;color:var(--navy)}
+.danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
+.good{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.msg{display:none;padding:14px 16px;border-radius:10px;margin:14px 0;font-size:17px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.count{color:var(--muted);font-size:16px;margin:6px 0 12px}
+.item{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
+.item.muted{border-left-color:#aab3c2;background:#fafbfc}
+.item-title{font-size:21px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere;line-height:1.35}
+.item-meta{color:var(--muted);font-size:17px;margin-top:4px;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:15px;font-weight:bold;vertical-align:middle}
+.badge.on{background:#eaf7ef;color:#176b3d}
+.badge.off{background:#fff6df;color:#85620d}
+.badge.arch{background:#e8ebf0;color:#4b5563}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.acts .btn{min-height:50px;padding:10px 18px;font-size:17px}
+.empty{padding:26px 10px;text-align:center;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.opt{padding:9px 11px;background:#f8fafc;border:1px solid #edf0f4;border-radius:8px;overflow-wrap:anywhere;font-size:17px}
+.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.9;overflow-wrap:anywhere}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.pager span{color:var(--muted);font-size:16px}
+.modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:680px;margin:auto}
+.modal-box h2{font-size:23px;color:var(--navy);margin-bottom:14px}
+[hidden]{display:none!important}
+@media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
+@media(max-width:640px){.grid,.bar,.opts{grid-template-columns:1fr}.row .btn,.pager .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
 
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-body {
-  font-family:Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-header {
-  height:65px;
-  background:var(--navy);
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 20px;
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-
-.brand {
-  font-size:19px;
-  font-weight:bold;
-}
-
-.brand span {
-  color:var(--gold);
-}
-
-.menu-btn {
-  border:1px solid #ffffff55;
-  background:transparent;
-  color:white;
-  font-size:25px;
-  width:42px;
-  height:40px;
-  border-radius:7px;
-  cursor:pointer;
-}
-
-.layout {
-  display:flex;
-  min-height:calc(100vh - 65px);
-}
-
-.sidebar {
-  width:260px;
-  background:var(--navy);
-  color:white;
-  padding:18px 12px;
-  flex-shrink:0;
-}
-
-.sidebar a {
-  display:block;
-  color:#e8edf6;
-  text-decoration:none;
-  padding:13px 14px;
-  margin-bottom:5px;
-  border-radius:7px;
-  font-size:14px;
-}
-
-.sidebar a:hover,
-.sidebar a.active {
-  background:#ffffff18;
-  border-left:4px solid var(--gold);
-  color:white;
-}
-
-.sidebar .public-link {
-  margin-top:20px;
-  border-top:1px solid #ffffff33;
-  padding-top:20px;
-}
-
-.overlay {
-  display:none;
-}
-
-.main {
-  flex:1;
-  min-width:0;
-  padding:25px;
-}
-
-.heading {
-  margin-bottom:22px;
-}
-
-.heading h1 {
-  color:var(--navy);
-  font-size:24px;
-  margin-bottom:7px;
-}
-
-.heading p,
-.description {
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.6;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1.5fr;
-  gap:18px;
-  align-items:start;
-}
-
-.card {
-  background:white;
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:20px;
-  box-shadow:0 3px 12px #142b5208;
-  margin-bottom:20px;
-}
-
-.card h2 {
-  color:var(--navy);
-  font-size:18px;
-  margin-bottom:8px;
-}
-
-label {
-  display:block;
-  font-size:13px;
-  font-weight:bold;
-  margin:18px 0 7px;
-}
-
-input {
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:7px;
-  font-size:14px;
-  outline:none;
-}
-
-input:focus {
-  border-color:var(--blue);
-}
-
-button {
-  cursor:pointer;
-  border:0;
-  border-radius:7px;
-  padding:11px 15px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-.primary {
-  background:var(--navy);
-  color:white;
-}
-
-.primary:hover {
-  background:var(--blue);
-}
-
-.gold {
-  background:var(--gold);
-  color:var(--navy);
-}
-
-.danger {
-  background:#fee4e2;
-  color:var(--red);
-}
-
-.secondary {
-  background:#edf1f7;
-  color:var(--navy);
-}
-
-button:disabled {
-  opacity:.55;
-  cursor:not-allowed;
-}
-
-.full {
-  width:100%;
-  margin-top:18px;
-}
-
-.toolbar {
-  display:flex;
-  gap:10px;
-  margin:18px 0;
-}
-
-.toolbar input {
-  flex:1;
-}
-
-.country-list {
-  display:grid;
-  gap:12px;
-}
-
-.country-item {
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:15px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.country-name {
-  font-weight:bold;
-  color:var(--navy);
-  margin-bottom:7px;
-}
-
-.country-meta {
-  font-size:12px;
-  color:var(--muted);
-}
-
-.actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  justify-content:flex-end;
-}
-
-.actions button {
-  padding:8px 10px;
-}
-
-.status {
-  padding:12px;
-  border-radius:7px;
-  font-size:13px;
-  margin-top:15px;
-  display:none;
-  line-height:1.5;
-}
-
-.status.show {
-  display:block;
-}
-
-.status.error {
-  background:#fee4e2;
-  color:var(--red);
-}
-
-.status.success {
-  background:#dcfce7;
-  color:var(--green);
-}
-
-.status.info {
-  background:#eaf1ff;
-  color:var(--navy);
-}
-
-.empty {
-  padding:25px;
-  text-align:center;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  background:#0008;
-  z-index:200;
-  align-items:center;
-  justify-content:center;
-  padding:15px;
-}
-
-.modal.show {
-  display:flex;
-}
-
-.modal-content {
-  background:white;
-  width:100%;
-  max-width:430px;
-  border-radius:12px;
-  padding:22px;
-}
-
-.modal-content h2 {
-  color:var(--navy);
-  margin-bottom:15px;
-}
-
-.modal-buttons {
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-
-.modal-buttons button {
-  flex:1;
-}
-
-@media(max-width:900px) {
-  .sidebar {
-    position:fixed;
-    top:65px;
-    bottom:0;
-    left:-270px;
-    z-index:90;
-    overflow-y:auto;
-    transition:left .25s;
-  }
-
-  .sidebar.open {
-    left:0;
-  }
-
-  .overlay.show {
-    display:block;
-    position:fixed;
-    inset:65px 0 0;
-    background:#0006;
-    z-index:80;
-  }
-
-  .grid {
-    grid-template-columns:1fr;
-  }
-
-  .main {
-    padding:18px;
-  }
-}
-
-@media(max-width:550px) {
-  .country-item {
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .actions {
-    justify-content:flex-start;
-  }
-
-  .toolbar {
-    flex-direction:column;
-  }
-
-  .heading h1 {
-    font-size:21px;
-  }
-}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="brand">SAINTIG <span>EXAMS</span></div>
-  <button class="menu-btn" id="menuBtn">☰</button>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="admin.html">SAINTIG <span>EXAMS</span></a>
+    <span class="role">Admin</span>
+    <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
+  </div>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html" class="on">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html">Register exam</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">View public website</a><button id="signOut" type="button">Sign out</button></div></nav>
 </header>
+<main class="wrap" id="main">
+<h1>Countries</h1>
+<p class="sub">Add and manage the countries on SAINTIG EXAMS.</p>
+<nav class="sections" aria-label="Setup sections"><a href="countries.html" class="on" aria-current="page"><b>1</b>Countries</a><a href="education-levels.html"><b>2</b>Education levels</a><a href="subjects.html"><b>3</b>Subjects</a><a href="question-bank.html"><b>4</b>Question bank</a></nav>
+<div class="card">
+  <h2 id="formTitle">Add a country</h2>
+  <p class="hint">Type the country name, then tap Add.</p>
+  <label for="countryName">Country name</label>
+  <input id="countryName" maxlength="100" placeholder="e.g. Nigeria" autocomplete="off">
+  <div class="msg" id="formMsg"></div>
+  <div class="row"><button class="btn gold" id="saveBtn" type="button">Add country</button><button class="btn ghost" id="cancelBtn" type="button" hidden>Cancel editing</button></div>
+</div>
+<div class="card">
+  <h2>Your countries</h2>
+  <div style="margin-top:10px"><label for="search">Search</label><input id="search" type="search" placeholder="Type a country name"></div>
+  <p class="count" id="count"></p>
+  <div id="list"><p class="empty">Loading…</p></div>
+  <div class="msg" id="listMsg"></div>
+  <div class="row"><button class="btn ghost" id="refreshBtn" type="button">Refresh list</button></div>
+</div>
 
-<div class="layout">
-
-<aside class="sidebar" id="sidebar">
-  <a href="admin.html">Dashboard Overview</a>
-  <a href="countries.html" class="active">Countries</a>
-  <a href="education-levels.html">Education Levels</a>
-  <a href="subjects.html">Subjects</a>
-  <a href="question-bank.html">Question Bank</a>
-  <a href="register-exam.html">Register Examination</a>
-  <a href="register-users.html">Register Users</a>
-  <a href="paid-subscribers.html">Paid Subscribers</a>
-  <a href="results-reports.html">Results & Reports</a>
-  <a href="visitor-analytics.html">Visitor Analytics</a>
-  <a href="ai-question-generator.html">AI Question Generator</a>
-  <a href="settings-security.html">Settings & Security</a>
-  <a href="archived-records.html">Archived Records</a>
-
-  <div class="public-link">
-    <a href="index.html">View Public Website ↗</a>
-    <a href="#" id="logoutBtn">Sign Out</a>
-  </div>
-</aside>
-
-<div class="overlay" id="overlay"></div>
-
-<main class="main">
-
-  <div class="heading">
-    <h1>Country Management</h1>
-    <p>Add and manage the countries available on SAINTIG EXAMS.</p>
-  </div>
-
-  <div class="grid">
-
-    <section class="card">
-      <h2 id="formTitle">A. Add Country</h2>
-      <p class="description">
-        Enter the country name to register it on the platform.
-      </p>
-
-      <form id="countryForm">
-        <input type="hidden" id="countryId">
-
-        <label for="countryName">Country Name</label>
-        <input
-          type="text"
-          id="countryName"
-          placeholder="Enter country name"
-          maxlength="100"
-          required
-        >
-
-        <button type="submit" class="primary full" id="saveBtn">
-          Add Country
-        </button>
-
-        <button
-          type="button"
-          class="secondary full"
-          id="cancelEditBtn"
-          hidden
-        >
-          Cancel Editing
-        </button>
-      </form>
-
-      <div class="status" id="formMessage"></div>
-    </section>
-
-    <section class="card">
-      <h2>B. Manage Existing Countries</h2>
-      <p class="description">
-        Search, view, edit, publish or delete registered countries.
-      </p>
-
-      <div class="toolbar">
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search countries..."
-        >
-        <button class="secondary" id="refreshBtn">Refresh</button>
-      </div>
-
-      <div class="country-list" id="countryList">
-        <div class="empty">Loading countries...</div>
-      </div>
-
-      <div class="status" id="listMessage"></div>
-    </section>
-
-  </div>
 </main>
-</div>
-
-<!-- Country details modal -->
-<div class="modal" id="detailsModal">
-  <div class="modal-content">
-    <h2>Country Details</h2>
-    <div id="detailsContent"></div>
-    <div class="modal-buttons">
-      <button class="secondary" id="closeDetailsBtn">Close</button>
-    </div>
-  </div>
-</div>
-
-<!-- Delete confirmation modal -->
-<div class="modal" id="deleteModal">
-  <div class="modal-content">
-    <h2>Delete Country</h2>
-    <p id="deleteText" class="description"></p>
-    <div class="modal-buttons">
-      <button class="secondary" id="cancelDeleteBtn">Cancel</button>
-      <button class="danger" id="confirmDeleteBtn">Delete</button>
-    </div>
-  </div>
-</div>
-
 <script type="module">
-import { supabase, getCurrentSession } from "./auth.js";
-
-const $ = id => document.getElementById(id);
-
-let countries = [];
-let deletingCountryId = null;
-
-function showStatus(id, message, type = "info") {
-  const element = $(id);
-  element.textContent = message;
-  element.className = "status show " + type;
-}
-
-function clearStatus(id) {
-  $(id).className = "status";
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
-}
-
-// Mobile navigation
-const sidebar = $("sidebar");
-const overlay = $("overlay");
-
-$("menuBtn").addEventListener("click", () => {
-  sidebar.classList.toggle("open");
-  overlay.classList.toggle("show");
-});
-
-overlay.addEventListener("click", () => {
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
-});
-
-// Verify administrator and permission
-async function verifyAccess() {
-  const { data: userData, error: userError } =
-    await supabase.auth.getUser();
-
-  if (userError || !userData.user) {
-    await supabase.auth.signOut();
-    location.replace("admin-login.html");
-    return false;
+import {supabase} from "./auth.js";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
+function hush(id){const e=$(id);e.textContent="";e.className="msg"}
+const goHome=()=>location.replace("admin-login.html");
+$("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
+$("signOut").addEventListener("click",async()=>{await supabase.auth.signOut();goHome()});
+/* Checks the signed-in administrator. With a permission name it also checks that permission. */
+async function requirePermission(permission){
+  const {data:u,error}=await supabase.auth.getUser();
+  if(error||!u?.user){await supabase.auth.signOut();goHome();return false}
+  if(permission){
+    const {data:ok,error:e2}=await supabase.rpc("has_admin_permission",{p_permission:permission});
+    if(e2||!ok){
+      $("main").innerHTML='<div class="card"><h2>Access restricted</h2><p class="hint">You do not have permission to use this page. Contact your Super Administrator.</p><a class="btn primary" href="admin.html">Back to dashboard</a></div>';
+      return false;
+    }
   }
-
-  const { data: allowed, error } = await supabase.rpc(
-    "has_admin_permission",
-    { p_permission: "manage_education_systems" }
-  );
-
-  if (error || !allowed) {
-    document.querySelector(".main").innerHTML = `
-      <section class="card">
-        <h2>Access Restricted</h2>
-        <p class="description">
-          You do not have permission to manage countries.
-          Contact your Super Administrator.
-        </p>
-      </section>
-    `;
-    return false;
-  }
-
   return true;
 }
 
-// Load countries
-async function loadCountries() {
-  $("countryList").innerHTML =
-    '<div class="empty">Loading countries...</div>';
+let countries=[],editId=null,busy=false;
 
-  clearStatus("listMessage");
-
-  const { data, error } = await supabase
-    .from("education_systems")
-    .select("id,country_name,is_active")
-    .order("country_name", { ascending:true });
-
-  if (error) {
-    $("countryList").innerHTML =
-      '<div class="empty">Unable to load countries.</div>';
-
-    showStatus("listMessage", error.message, "error");
-    return;
-  }
-
-  countries = data || [];
-  renderCountries();
+async function load(){
+  const {data,error}=await supabase.from("education_systems").select("id,country_name,is_active").order("country_name",{ascending:true});
+  if(error){$("list").innerHTML='<p class="empty">Unable to load countries.</p>';say("listMsg",error.message,"err");return}
+  countries=data||[];hush("listMsg");render();
 }
-
-// Display countries
-function renderCountries() {
-  const search = $("searchInput").value
-    .trim()
-    .toLowerCase();
-
-  const filtered = countries.filter(country =>
-    country.country_name.toLowerCase().includes(search)
-  );
-
-  if (!filtered.length) {
-    $("countryList").innerHTML =
-      '<div class="empty">No matching countries found.</div>';
-    return;
-  }
-
-  $("countryList").innerHTML = filtered.map(country => `
-    <article class="country-item">
-
-      <div>
-        <div class="country-name">
-          ${escapeHTML(country.country_name)}
-        </div>
-
-        <div class="country-meta">
-          ID: ${country.id}
-          ·
-          ${country.is_active ? "Published" : "Unpublished"}
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="secondary"
-          data-action="view"
-          data-id="${country.id}">
-          View
-        </button>
-
-        <button class="gold"
-          data-action="edit"
-          data-id="${country.id}">
-          Edit
-        </button>
-
-        <button class="secondary"
-          data-action="publish"
-          data-id="${country.id}">
-          ${country.is_active ? "Unpublish" : "Publish"}
-        </button>
-
-        <button class="danger"
-          data-action="delete"
-          data-id="${country.id}">
-          Delete
-        </button>
-      </div>
-
-    </article>
-  `).join("");
+function render(){
+  const q=$("search").value.trim().toLowerCase();
+  const rows=countries.filter(c=>String(c.country_name).toLowerCase().includes(q));
+  $("count").textContent=rows.length+" of "+countries.length+" countries shown";
+  $("list").innerHTML=rows.length?rows.map(c=>`
+    <article class="item ${c.is_active?"":"muted"}">
+      <div><div class="item-title">${esc(c.country_name)}</div>
+        <div class="item-meta"><span class="badge ${c.is_active?"on":"off"}">${c.is_active?"Published":"Unpublished"}</span> &nbsp;ID ${esc(c.id)}</div></div>
+      <div class="acts">
+        <button class="btn ghost" type="button" data-a="edit" data-id="${esc(c.id)}">Edit</button>
+        <button class="btn ghost" type="button" data-a="toggle" data-id="${esc(c.id)}">${c.is_active?"Unpublish":"Publish"}</button>
+        <button class="btn danger" type="button" data-a="del" data-id="${esc(c.id)}">Delete</button>
+      </div></article>`).join(""):'<p class="empty">No matching countries found.</p>';
 }
-
-// Add or update country
-$("countryForm").addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const name = $("countryName").value.trim();
-  const id = $("countryId").value;
-
-  if (!name) {
-    showStatus("formMessage", "Enter a country name.", "error");
-    return;
+function resetForm(){
+  editId=null;$("countryName").value="";$("formTitle").textContent="Add a country";
+  $("saveBtn").textContent="Add country";$("cancelBtn").hidden=true;
+}
+$("cancelBtn").addEventListener("click",()=>{resetForm();hush("formMsg")});
+$("saveBtn").addEventListener("click",async()=>{
+  if(busy)return;
+  const name=$("countryName").value.trim();
+  if(!name){say("formMsg","Enter a country name.","err");return}
+  if(countries.some(c=>c.country_name.toLowerCase()===name.toLowerCase()&&String(c.id)!==String(editId))){say("formMsg","This country is already registered.","err");return}
+  busy=true;$("saveBtn").disabled=true;
+  try{
+    const r=editId!==null?await supabase.from("education_systems").update({country_name:name}).eq("id",Number(editId))
+                         :await supabase.from("education_systems").insert({country_name:name,is_active:true});
+    if(r.error)throw r.error;
+    const edited=editId!==null;resetForm();
+    say("formMsg",edited?"Country updated.":"Country added.","ok");
+    await load();
+  }catch(e){say("formMsg",e.message,"err")}
+  finally{busy=false;$("saveBtn").disabled=false}
+});
+$("list").addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-a]");if(!b||busy)return;
+  const c=countries.find(x=>String(x.id)===b.dataset.id);if(!c)return;
+  if(b.dataset.a==="edit"){
+    editId=c.id;$("countryName").value=c.country_name;$("formTitle").textContent="Edit country";
+    $("saveBtn").textContent="Save changes";$("cancelBtn").hidden=false;hush("formMsg");
+    window.scrollTo({top:0,behavior:"smooth"});$("countryName").focus();return;
   }
-
-  const duplicate = countries.some(country =>
-    country.country_name.toLowerCase() === name.toLowerCase()
-    && String(country.id) !== id
-  );
-
-  if (duplicate) {
-    showStatus(
-      "formMessage",
-      "This country is already registered.",
-      "error"
-    );
-    return;
+  if(b.dataset.a==="toggle"){
+    const act=c.is_active?"unpublish":"publish";
+    if(!confirm("Are you sure you want to "+act+" "+c.country_name+"?"))return;
+    busy=true;
+    const {error}=await supabase.from("education_systems").update({is_active:!c.is_active}).eq("id",c.id);
+    busy=false;
+    if(error){say("listMsg",error.message,"err");return}
+    say("listMsg",c.country_name+" "+act+"ed.","ok");await load();return;
   }
-
-  $("saveBtn").disabled = true;
-
-  try {
-    let result;
-
-    if (id) {
-      result = await supabase
-        .from("education_systems")
-        .update({ country_name:name })
-        .eq("id", Number(id));
-    } else {
-      result = await supabase
-        .from("education_systems")
-        .insert({
-          country_name:name,
-          is_active:true
-        });
-    }
-
-    if (result.error) throw result.error;
-
-    resetForm();
-
-    showStatus(
-      "formMessage",
-      id ? "Country updated successfully." :
-           "Country added successfully.",
-      "success"
-    );
-
-    await loadCountries();
-
-  } catch (error) {
-    showStatus("formMessage", error.message, "error");
-  } finally {
-    $("saveBtn").disabled = false;
+  if(b.dataset.a==="del"){
+    if(!confirm("Delete "+c.country_name+"?\n\nThis may affect its education levels and their data."))return;
+    busy=true;
+    const {error}=await supabase.from("education_systems").delete().eq("id",c.id);
+    busy=false;
+    if(error){say("listMsg","The country was not deleted. Its education levels may be blocking it. Details: "+error.message,"err");return}
+    say("listMsg","Country deleted.","ok");await load();
   }
 });
+$("search").addEventListener("input",render);
+$("refreshBtn").addEventListener("click",load);
+(async()=>{
+  try{if(!await requirePermission("manage_education_systems"))return;await load()}
+  catch(e){console.error(e);say("listMsg","Unable to start the page: "+e.message,"err")}
+})();
 
-// Edit country
-function editCountry(country) {
-  $("countryId").value = country.id;
-  $("countryName").value = country.country_name;
-
-  $("formTitle").textContent = "Edit Country";
-  $("saveBtn").textContent = "Save Changes";
-  $("cancelEditBtn").hidden = false;
-
-  window.scrollTo({ top:0, behavior:"smooth" });
-}
-
-// Reset form
-function resetForm() {
-  $("countryForm").reset();
-  $("countryId").value = "";
-  $("formTitle").textContent = "A. Add Country";
-  $("saveBtn").textContent = "Add Country";
-  $("cancelEditBtn").hidden = true;
-}
-
-$("cancelEditBtn").addEventListener("click", resetForm);
-
-// View country
-function viewCountry(country) {
-  $("detailsContent").innerHTML = `
-    <p><strong>Country:</strong>
-      ${escapeHTML(country.country_name)}</p>
-
-    <p style="margin-top:12px">
-      <strong>Country ID:</strong> ${country.id}
-    </p>
-
-    <p style="margin-top:12px">
-      <strong>Status:</strong>
-      ${country.is_active ? "Published" : "Unpublished"}
-    </p>
-  `;
-
-  $("detailsModal").classList.add("show");
-}
-
-$("closeDetailsBtn").addEventListener("click", () => {
-  $("detailsModal").classList.remove("show");
-});
-
-// Publish / Unpublish
-async function togglePublish(country) {
-  const action = country.is_active ? "unpublish" : "publish";
-
-  if (!confirm(
-    `Are you sure you want to ${action} ${country.country_name}?`
-  )) return;
-
-  const { error } = await supabase
-    .from("education_systems")
-    .update({ is_active:!country.is_active })
-    .eq("id", country.id);
-
-  if (error) {
-    showStatus("listMessage", error.message, "error");
-    return;
-  }
-
-  showStatus(
-    "listMessage",
-    `${country.country_name} ${action}ed successfully.`,
-    "success"
-  );
-
-  await loadCountries();
-}
-
-// Delete confirmation
-function requestDelete(country) {
-  deletingCountryId = country.id;
-
-  $("deleteText").textContent =
-    `Are you sure you want to delete ${country.country_name}? ` +
-    "This operation may affect education levels and their associated data.";
-
-  $("deleteModal").classList.add("show");
-}
-
-$("cancelDeleteBtn").addEventListener("click", () => {
-  deletingCountryId = null;
-  $("deleteModal").classList.remove("show");
-});
-
-// Delete country
-$("confirmDeleteBtn").addEventListener("click", async () => {
-  if (deletingCountryId === null) return;
-
-  const id = deletingCountryId;
-
-  $("confirmDeleteBtn").disabled = true;
-
-  try {
-    const { error } = await supabase
-      .from("education_systems")
-      .delete()
-      .eq("id", id);
-
-    if (error) throw error;
-
-    $("deleteModal").classList.remove("show");
-    deletingCountryId = null;
-
-    showStatus(
-      "listMessage",
-      "Country deleted successfully.",
-      "success"
-    );
-
-    await loadCountries();
-
-  } catch (error) {
-    $("deleteModal").classList.remove("show");
-
-    showStatus(
-      "listMessage",
-      "Country was not deleted. Its existing education levels " +
-      "may prevent deletion. The database deletion relationships " +
-      "must be updated before cascading deletion is available. " +
-      "Details: " + error.message,
-      "error"
-    );
-
-  } finally {
-    $("confirmDeleteBtn").disabled = false;
-  }
-});
-
-// Country action buttons
-$("countryList").addEventListener("click", event => {
-  const button = event.target.closest("button[data-action]");
-  if (!button) return;
-
-  const country = countries.find(
-    item => item.id === Number(button.dataset.id)
-  );
-
-  if (!country) return;
-
-  switch (button.dataset.action) {
-    case "view":
-      viewCountry(country);
-      break;
-
-    case "edit":
-      editCountry(country);
-      break;
-
-    case "publish":
-      togglePublish(country);
-      break;
-
-    case "delete":
-      requestDelete(country);
-      break;
-  }
-});
-
-// Search
-$("searchInput").addEventListener("input", renderCountries);
-
-// Refresh
-$("refreshBtn").addEventListener("click", loadCountries);
-
-// Sign out
-$("logoutBtn").addEventListener("click", async event => {
-  event.preventDefault();
-  await supabase.auth.signOut();
-  location.replace("admin-login.html");
-});
-
-// Initialize
-async function initializePage() {
-  try {
-    const allowed = await verifyAccess();
-    if (!allowed) return;
-
-    await loadCountries();
-
-  } catch (error) {
-    console.error("Countries page error:", error);
-
-    showStatus(
-      "listMessage",
-      "Unable to initialize the page: " + error.message,
-      "error"
-    );
-  }
-}
-
-initializePage();
 </script>
-
 </body>
 </html>
