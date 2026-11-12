@@ -323,7 +323,7 @@ async function loadSubjects() {
 /* LOAD EXAMINATIONS AND SERVER COUNTS */
 async function loadExaminations() {
   const result = await callExamFunction({ action: "list_exams" });
-  examinations = result.examinations || [];
+  examinations = (result.examinations || []).filter(e => e.is_archived !== true);
   if (result.package) packageData = result.package;
 
   if (result.stored_questions_count !== undefined &&
@@ -364,7 +364,10 @@ async function loadQuestions(examinationId, forceRefresh = false) {
     action: "list_questions",
     examination_id: Number(examinationId)
   });
-  const questions = result.questions || [];
+  const parentExam = findExam(examinationId);
+  const questions = (result.questions || []).filter(q =>
+    q.is_archived !== true && !(parentExam && parentExam.is_archived === true)
+  );
   examinationQuestions.set(key, questions);
   return questions;
 }
@@ -373,7 +376,7 @@ async function loadQuestions(examinationId, forceRefresh = false) {
 async function refreshQuestionBank() {
   examinationQuestions.clear();
   const result = await callExamFunction({ action: "list_exams" });
-  examinations = result.examinations || [];
+  examinations = (result.examinations || []).filter(e => e.is_archived !== true);
   if (result.package) packageData = result.package;
 
   if (result.stored_questions_count !== undefined &&
@@ -401,10 +404,7 @@ async function updateQuestionBank() {
     }
   }
 
-  const total = storedQuestionsCount !== null &&
-    Number.isFinite(storedQuestionsCount)
-      ? storedQuestionsCount
-      : loadedTotal;
+  const total = loadedTotal;
 
   $("totalQuestions").textContent = total.toLocaleString();
 
