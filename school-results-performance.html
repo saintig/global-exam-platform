@@ -377,7 +377,16 @@ if(Object.keys(subjects).length)break;
 }
 }
 
-return attempts.map(a=>{
+/* Leave out results linked to archived students, examinations or subjects. */
+const live=attempts.filter(a=>{
+const st=students[String(a.student_id)],ex=exams[String(a.examination_id)];
+if(st&&st.is_archived===true)return false;
+if(ex&&ex.is_archived===true)return false;
+const sb=ex&&subjects[String(pick(ex,["school_subject_id","subject_id"]))];
+return !(sb&&sb.is_archived===true);
+});
+
+return live.map(a=>{
 const st=students[String(a.student_id)]||{};
 const ex=exams[String(a.examination_id)]||{};
 const cl=classes[String(pick(st,["school_class_id","class_id"]))]||{};
