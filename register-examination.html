@@ -153,6 +153,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 
   <!-- STEP 2 -->
   <section id="p2" hidden>
+    <div class="msg show info" id="limitMsg2" style="margin-top:0">Checking your stored-question limit…</div>
     <div class="tabs"><button class="tab on" id="tabFile" type="button">Upload a file</button><button class="tab" id="tabOne" type="button">Type one question</button></div>
 
     <div class="card" id="boxFile">
@@ -613,12 +614,19 @@ $("useSchedule").addEventListener("change",e=>{$("schedule").hidden=!e.target.ch
 /* ================= stored-question limit ================= */
 const has=v=>v!==null&&v!==undefined&&v!=="";
 function room(){return storage==="ready"?Math.max(0,storedLimit-storedTotal-queue.length):Infinity}
+function limitText(){
+  return "You have reached your package's limit of "+storedLimit+" active questions. Delete or archive some questions you no longer need, then try again, or contact the admin to upgrade your package.";
+}
 function updateLimitMsg(){
-  const b=$("limitMsg");
-  if(storage==="loading"){b.className="msg show info";b.textContent="Checking your stored-question limit…";return}
-  if(storage==="unavailable"){b.className="msg show warn";b.textContent="Your stored-question limit could not be checked here. The system may still stop saving when your package limit is reached.";return}
-  b.className="msg show info";
-  b.innerHTML="<b>Stored questions:</b> "+storedTotal+" of "+storedLimit+" used"+(pkg?" ("+esc(pkg.package_name)+" package)":"")+". Waiting for review: "+queue.length+". Places left: <b>"+room()+"</b>.";
+  let cls="msg show info",html="";
+  if(storage==="loading")html="Checking your stored-question limit…";
+  else if(storage==="unavailable"){cls="msg show warn";html="Your stored-question limit could not be checked here. The system may still stop saving when your package limit is reached."}
+  else{
+    const r=room();
+    if(r<1)cls="msg show warn";
+    html="<b>Active questions:</b> "+storedTotal+" of "+storedLimit+" used"+(pkg?" ("+esc(pkg.package_name)+" package)":"")+". Waiting for review: "+queue.length+". Places left: <b>"+r+"</b>."+(r<1?" To add more, delete or archive some questions or contact the admin.":"");
+  }
+  for(const id of ["limitMsg","limitMsg2"]){const b=$(id);if(b){b.className=cls;b.innerHTML=html}}
 }
 async function initStorage(){
   storage="loading";updateLimitMsg();
@@ -650,8 +658,8 @@ async function initStorage(){
 function prepare(valid){
   const r=room();
   if(valid.length<=r)return{list:valid,note:""};
-  if(r<1)return{list:[],note:"You have reached your package's stored-question limit ("+storedLimit+"). Upgrade your package or contact the admin to add more."};
-  return{list:valid.slice(0,r),note:"Your package allows "+storedLimit+" stored questions in total, so only the first "+r+" were added and "+(valid.length-r)+" were skipped."};
+  if(r<1)return{list:[],note:limitText()};
+  return{list:valid.slice(0,r),note:"Your package allows "+storedLimit+" active questions in total, so only the first "+r+" were kept and the other "+(valid.length-r)+" were discarded. To add more, delete or archive some questions or contact the admin."};
 }
 
 /* ================= subjects and examinations ================= */
@@ -764,6 +772,7 @@ $("readBtn").addEventListener("click",async()=>{
   hush("upMsg");$("upResult").innerHTML="";
   try{
     guardExam();
+    if(room()<1)throw new Error(limitText());
     const f=$("file").files[0];if(!f)throw new Error("Choose a file first.");
     $("readBtn").disabled=true;$("readBtn").textContent="Reading…";
     const items=await readQuestionFile(f);
@@ -802,8 +811,8 @@ $("saveAll").addEventListener("click",async()=>{
     let list=[...queue].sort((a,b)=>(a.sortOrder??1e9)-(b.sortOrder??1e9));
     if(storage==="ready"){
       const r=Math.max(0,storedLimit-storedTotal);
-      if(r<1)throw new Error("You have reached your package's stored-question limit ("+storedLimit+"). Nothing was saved. Upgrade your package or contact the admin.");
-      if(list.length>r){note=" Your package allows "+storedLimit+" stored questions, so "+(list.length-r)+" extra question(s) were not saved and were removed from the list.";
+      if(r<1)throw new Error(limitText()+" Nothing was saved.");
+      if(list.length>r){note=" Your package allows "+storedLimit+" active questions, so "+(list.length-r)+" extra question(s) were not saved and were discarded.";
         const drop=new Set(list.slice(r).map(q=>q.id));list=list.slice(0,r);queue=queue.filter(q=>!drop.has(q.id))}
     }
     for(let i=0;i<list.length;i+=25){
