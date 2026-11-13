@@ -257,6 +257,64 @@ tbody tr:hover{background:#fbfcfe}
 <div class="footer">Powered by SAINTIG EXAMS</div>
 <div class="toast" id="toast"></div>
 
+<!-- STUDENTS OF AN EXAMINATION -->
+<div class="modal" id="examStudentsModal">
+  <div class="modal-box" style="max-width:780px">
+    <div class="modal-header">
+      <h2 id="esTitle">EXAMINATION STUDENTS</h2>
+      <button class="close" onclick="closeModal('examStudentsModal')">×</button>
+    </div>
+    <div class="notice" id="esInfo">Loading...</div>
+
+    <div class="actions" style="margin-bottom:12px">
+      <button class="btn btn-navy btn-small" id="esTabReg" onclick="esTab('reg')">Registered (0)</button>
+      <button class="btn btn-light btn-small" id="esTabAdd" onclick="esTab('add')">Add Students (0)</button>
+    </div>
+
+    <!-- REGISTERED STUDENTS -->
+    <div id="esReg">
+      <div class="toolbar" style="margin:0 0 10px">
+        <input id="esRegSearch" type="search" placeholder="Search registered students..." oninput="renderEsReg()">
+      </div>
+      <div class="actions" style="margin-bottom:10px">
+        <button class="btn btn-light btn-small" onclick="esPrint()">Print</button>
+        <button class="btn btn-light btn-small" onclick="esDownload()">Download</button>
+        <button class="btn btn-light btn-small" onclick="esToggleAll('reg', true)">Select All</button>
+        <button class="btn btn-light btn-small" onclick="esToggleAll('reg', false)">Clear</button>
+        <button class="btn btn-red btn-small" id="esRemoveBtn" onclick="esRemove()">Remove Selected</button>
+      </div>
+      <div class="table-wrap" style="max-height:340px;overflow:auto">
+        <table style="min-width:420px">
+          <thead><tr><th style="width:40px"></th><th>S/N</th><th>STUDENT NAME</th><th>STUDENT ID</th></tr></thead>
+          <tbody id="esRegRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ADD STUDENTS -->
+    <div id="esAdd" style="display:none">
+      <div class="toolbar" style="margin:0 0 10px">
+        <input id="esAddSearch" type="search" placeholder="Search students to add..." oninput="renderEsAdd()">
+      </div>
+      <div class="actions" style="margin-bottom:10px">
+        <button class="btn btn-light btn-small" onclick="esToggleAll('add', true)">Select All</button>
+        <button class="btn btn-light btn-small" onclick="esToggleAll('add', false)">Clear</button>
+        <button class="btn btn-gold btn-small" id="esAddBtn" onclick="esAddSelected()">Add Selected (0)</button>
+      </div>
+      <div class="table-wrap" style="max-height:340px;overflow:auto">
+        <table style="min-width:420px">
+          <thead><tr><th style="width:40px"></th><th>STUDENT NAME</th><th>STUDENT ID</th></tr></thead>
+          <tbody id="esAddRows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="closeModal('examStudentsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- CLASS FORM -->
 <div class="modal" id="classModal">
   <div class="modal-box">
@@ -751,6 +809,7 @@ function renderTable() {
         <td>${escapeHTML(item.class_name)}${item.class_arm ? " - " + escapeHTML(item.class_arm) : ""}</td>
         <td>${statusBadge(item.membership_status)}</td>
         <td><div class="actions">
+          <button class="btn btn-gold btn-small" onclick="openExamStudents('${item.class_database_id}','${item.examination_id}')">Students</button>
           <button class="btn btn-light btn-small" onclick="viewMembership('exam','${item.class_database_id}','${item.examination_id}')">View</button>
           <button class="btn btn-light btn-small" onclick="changeMembershipStatus('exam','${item.class_database_id}','${item.examination_id}',${!item.is_attached})">${item.is_attached ? "Deactivate" : "Activate"}</button>
           <button class="btn btn-red btn-small" onclick="removeMembership('exam','${item.class_database_id}','${item.examination_id}')">Detach</button>
@@ -1174,6 +1233,243 @@ function renderArchive() {
       </tr>`;
       }).join("") + '</tbody></table></div>';
   }
+}
+
+/* =========================================================
+   STUDENTS OF AN EXAMINATION
+   View, add several at once, remove, print and download.
+   Students already registered for the examination are not offered again.
+========================================================= */
+const RESULTS_FUNCTION = "school-class-results";
+
+let es = { classId: null, examId: null, data: null, selReg: new Set(), selAdd: new Set() };
+
+async function openExamStudents(classId, examId) {
+  es = { classId, examId, data: null, selReg: new Set(), selAdd: new Set() };
+
+  document.getElementById("esInfo").textContent = "Loading...";
+  document.getElementById("esRegRows").innerHTML = "";
+  document.getElementById("esAddRows").innerHTML = "";
+  document.getElementById("esRegSearch").value = "";
+  document.getElementById("esAddSearch").value = "";
+  esTab("reg");
+  openModal("examStudentsModal");
+
+  await loadExamStudents();
+}
+
+async function loadExamStudents() {
+  try {
+    es.data = await callFunction(RESULTS_FUNCTION, {
+      action: "exam_students",
+      class_id: es.classId,
+      examination_id: Number(es.examId)
+    });
+
+    es.selReg.clear();
+    es.selAdd.clear();
+    renderEs();
+  } catch (error) {
+    closeModal("examStudentsModal");
+    toast(error.message);
+  }
+}
+
+function renderEs() {
+  const d = es.data;
+  const c = d.class;
+
+  document.getElementById("esTitle").textContent =
+    "STUDENTS: " + d.exam.title;
+
+  document.getElementById("esInfo").textContent =
+    (d.legacy_all
+      ? "Every student in this class is currently registered for this examination (the default). Remove the students who do not take it, and the list becomes specific to this examination. "
+      : "Only the students listed under Registered take this examination. ") +
+    `${c.class_name}${c.class_arm ? " " + c.class_arm : ""} · ${c.academic_session} · ${c.academic_period} · Exam ID ${d.exam.examination_code}`;
+
+  document.getElementById("esTabReg").textContent = `Registered (${d.registered.length})`;
+  document.getElementById("esTabAdd").textContent = `Add Students (${d.available.length})`;
+
+  renderEsReg();
+  renderEsAdd();
+}
+
+function esTab(name) {
+  document.getElementById("esReg").style.display = name === "reg" ? "" : "none";
+  document.getElementById("esAdd").style.display = name === "add" ? "" : "none";
+  document.getElementById("esTabReg").className = "btn btn-small " + (name === "reg" ? "btn-navy" : "btn-light");
+  document.getElementById("esTabAdd").className = "btn btn-small " + (name === "add" ? "btn-navy" : "btn-light");
+}
+
+function esFilter(list, searchId) {
+  const q = document.getElementById(searchId).value.toLowerCase().trim();
+  return !q ? list : list.filter(s =>
+    (s.full_name + " " + s.student_id).toLowerCase().includes(q));
+}
+
+function renderEsReg() {
+  if (!es.data) return;
+
+  const list = esFilter(es.data.registered, "esRegSearch");
+
+  document.getElementById("esRegRows").innerHTML = list.length
+    ? list.map((s, i) => `<tr>
+        <td><input type="checkbox" ${es.selReg.has(s.school_student_id) ? "checked" : ""}
+          onchange="esCheck('reg', ${s.school_student_id}, this.checked)"></td>
+        <td>${i + 1}</td>
+        <td><strong>${escapeHTML(s.full_name)}</strong></td>
+        <td class="id-text">${escapeHTML(s.student_id)}</td></tr>`).join("")
+    : '<tr><td colspan="4" class="muted" style="text-align:center;padding:20px">No registered students.</td></tr>';
+
+  document.getElementById("esRemoveBtn").textContent = `Remove Selected (${es.selReg.size})`;
+}
+
+function renderEsAdd() {
+  if (!es.data) return;
+
+  const list = esFilter(es.data.available, "esAddSearch");
+
+  document.getElementById("esAddRows").innerHTML = list.length
+    ? list.map(s => `<tr>
+        <td><input type="checkbox" ${es.selAdd.has(s.school_student_id) ? "checked" : ""}
+          onchange="esCheck('add', ${s.school_student_id}, this.checked)"></td>
+        <td><strong>${escapeHTML(s.full_name)}</strong></td>
+        <td class="id-text">${escapeHTML(s.student_id)}</td></tr>`).join("")
+    : '<tr><td colspan="3" class="muted" style="text-align:center;padding:20px">Every student in this class is already registered for this examination.</td></tr>';
+
+  document.getElementById("esAddBtn").textContent = `Add Selected (${es.selAdd.size})`;
+}
+
+function esCheck(kind, id, on) {
+  const set = kind === "reg" ? es.selReg : es.selAdd;
+  if (on) set.add(id); else set.delete(id);
+
+  if (kind === "reg") renderEsReg(); else renderEsAdd();
+}
+
+function esToggleAll(kind, on) {
+  const set = kind === "reg" ? es.selReg : es.selAdd;
+
+  if (!on) {
+    set.clear();
+  } else {
+    const source = kind === "reg"
+      ? esFilter(es.data.registered, "esRegSearch")
+      : esFilter(es.data.available, "esAddSearch");
+
+    source.forEach(s => set.add(s.school_student_id));
+  }
+
+  if (kind === "reg") renderEsReg(); else renderEsAdd();
+}
+
+async function esAddSelected() {
+  if (!es.selAdd.size) return toast("Select at least one student to add.");
+
+  const button = document.getElementById("esAddBtn");
+  button.disabled = true;
+
+  try {
+    const result = await callFunction(RESULTS_FUNCTION, {
+      action: "add_exam_students",
+      class_id: es.classId,
+      examination_id: Number(es.examId),
+      student_ids: [...es.selAdd]
+    });
+
+    toast(result.message);
+    await loadExamStudents();
+    esTab("reg");
+  } catch (error) {
+    toast(error.message);
+  } finally {
+    button.disabled = false;
+  }
+}
+
+async function esRemove() {
+  if (!es.selReg.size) return toast("Select at least one student to remove.");
+
+  if (!confirm(`Remove ${es.selReg.size} student(s) from this examination? Their account and other records are not affected. They will no longer appear in this examination's CA list or class results.`)) return;
+
+  try {
+    const result = await callFunction(RESULTS_FUNCTION, {
+      action: "remove_exam_students",
+      class_id: es.classId,
+      examination_id: Number(es.examId),
+      student_ids: [...es.selReg]
+    });
+
+    toast(result.message);
+    await loadExamStudents();
+  } catch (error) {
+    toast(error.message);
+  }
+}
+
+function esPrint() {
+  const d = es.data;
+
+  if (!d || !d.registered.length) return toast("There are no registered students to print.");
+
+  const w = window.open("", "_blank");
+
+  if (!w) return toast("Please allow pop-ups to print.");
+
+  const c = d.class;
+  const rows = d.registered.map((s, i) => `<tr><td>${i + 1}</td>
+    <td>${escapeHTML(s.full_name)}</td><td>${escapeHTML(s.student_id)}</td></tr>`).join("");
+
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Examination Students</title>
+    <style>
+      body{font-family:Arial,sans-serif;color:#1e293b;padding:24px}
+      h1{text-align:center;margin:0;font-size:22px;color:#14243a}
+      h2{text-align:center;font-size:16px;margin:10px 0}
+      p{text-align:center;margin:3px 0;font-size:12px;color:#475569}
+      table{width:100%;border-collapse:collapse;margin-top:14px}
+      th,td{border:1px solid #94a3b8;padding:8px;font-size:12px;text-align:left}
+      th{background:#e8edf5}
+      .foot{text-align:center;margin-top:26px;font-size:11px;color:#64748b}
+    </style></head><body>
+    <h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>
+    <h2>STUDENTS REGISTERED FOR ${escapeHTML(d.exam.title)}</h2>
+    <p>${escapeHTML(c.class_name)} ${escapeHTML(c.class_arm || "")} · ${escapeHTML(c.academic_session)} · ${escapeHTML(c.academic_period)}</p>
+    <p>Examination ID: ${escapeHTML(d.exam.examination_code)}${d.exam.subject_name ? " · Subject: " + escapeHTML(d.exam.subject_name) : ""}</p>
+    <table><thead><tr><th>S/N</th><th>Student Name</th><th>Student ID</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="margin-top:12px">Total registered students: ${d.registered.length}</p>
+    <div class="foot">Powered by SAINTIG EXAMS</div>
+    </body></html>`);
+
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 400);
+}
+
+function esDownload() {
+  const d = es.data;
+
+  if (!d || !d.registered.length) return toast("There are no registered students to download.");
+
+  const cell = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+
+  const rows = [
+    ["S/N", "Student Name", "Student ID"],
+    ...d.registered.map((s, i) => [i + 1, s.full_name, s.student_id])
+  ];
+
+  const csv = "\uFEFF" + rows.map(r => r.map(cell).join(",")).join("\r\n");
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8;" }));
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = `Students-${d.exam.examination_code || "examination"}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast("Student list downloaded.");
 }
 
 document.addEventListener("DOMContentLoaded", loadDashboard);
