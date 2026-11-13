@@ -215,6 +215,21 @@ function escapeHTML(v) {
   })[c]);
 }
 
+/* Archived classes, examinations, subjects and students are never offered
+   in a selection box. The server may name the flag in different ways, so
+   several likely names are checked. */
+function isArchivedItem(x) {
+  if (!x || typeof x !== "object") return false;
+
+  return x.is_archived === true || x.archived === true ||
+    x.examination_is_archived === true || x.exam_is_archived === true ||
+    x.exam_archived === true || x.examination_archived === true ||
+    x.subject_is_archived === true || x.subject_archived === true ||
+    x.student_is_archived === true || x.student_archived === true ||
+    x.is_active === false || Boolean(x.archived_at) ||
+    String(x.status || "").toLowerCase() === "archived";
+}
+
 function num(v) {
   return Number(v ?? 0).toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
@@ -297,16 +312,19 @@ async function init() {
 
   try {
     const result = await api("list_classes");
-    const classes = result.classes || [];
+    const all = result.classes || [];
+    const classes = all.filter(c => !isArchivedItem(c));
 
     $("classSelect").innerHTML = '<option value="">Select a class</option>' +
       classes.map(c => `<option value="${escapeHTML(c.id)}">
         ${escapeHTML(c.class_name)}${c.class_arm ? " - " + escapeHTML(c.class_arm) : ""}
-        (${escapeHTML(c.academic_session)} / ${escapeHTML(c.academic_period)})${c.is_archived ? " - archived" : ""}
+        (${escapeHTML(c.academic_session)} / ${escapeHTML(c.academic_period)})
       </option>`).join("");
 
     if (!classes.length) {
-      msg("pageMsg", "You have not created a class yet. Create one on the Class Examination page.", "info");
+      msg("pageMsg", all.length
+        ? "All your classes are archived. Create a new class on the Class Examination page."
+        : "You have not created a class yet. Create one on the Class Examination page.", "info");
     }
   } catch (error) {
     msg("pageMsg", error.message, "error");
@@ -342,13 +360,16 @@ async function loadClass() {
     overview = await api("get_overview", { class_id: id });
     $("workArea").classList.remove("hidden");
 
+    /* Only active examinations can be chosen. */
+    const activeExams = (overview.exams || []).filter(e => !isArchivedItem(e));
+
     const c = overview.class;
     $("classInfo").textContent =
       `${c.class_name}${c.class_arm ? " " + c.class_arm : ""} · ${c.academic_session} · ${c.academic_period} · ` +
-      `${overview.student_count} active student(s) · ${overview.exams.length} attached examination(s) · Class ID ${c.class_id}`;
+      `${overview.student_count} active student(s) · ${activeExams.length} attached examination(s) · Class ID ${c.class_id}`;
 
-    const options = overview.exams.length
-      ? overview.exams.map(e => `<option value="${e.examination_id}">${escapeHTML(e.title)}${e.subject_name ? " — " + escapeHTML(e.subject_name) : ""}</option>`).join("")
+    const options = activeExams.length
+      ? activeExams.map(e => `<option value="${e.examination_id}">${escapeHTML(e.title)}${e.subject_name ? " — " + escapeHTML(e.subject_name) : ""}</option>`).join("")
       : '<option value="">No examinations attached</option>';
 
     $("caExam").innerHTML = options;
@@ -408,12 +429,15 @@ async function loadCa() {
     const data = await api("get_ca", { class_id: $("classSelect").value, examination_id: Number(examId) });
     $("caMax").value = data.ca_maximum || "";
 
-    if (!data.students.length) {
+    /* Archived students are not listed. */
+    const students = (data.students || []).filter(s => !isArchivedItem(s));
+
+    if (!students.length) {
       $("caRows").innerHTML = '<tr><td colspan="4" class="muted">No students are registered for this examination yet. Add them on the Class Examination page (Examinations tab, Students button).</td></tr>';
       return;
     }
 
-    $("caRows").innerHTML = data.students.map(s => `
+    $("caRows").innerHTML = students.map(s => `
       <tr>
         <td><strong>${escapeHTML(s.full_name)}</strong></td>
         <td class="id-text">${escapeHTML(s.student_id)}</td>
