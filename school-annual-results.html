@@ -505,7 +505,7 @@ function subjectsOf(res) {
 
 function breakdown(sc) {
   return (sc.term_scores || [])
-    .map(t => num(t.score) + (t.status === "scored" ? "" : "*"))
+    .map(t => t.status === "not_offered" ? "–" : num(t.score) + (t.status === "scored" ? "" : "*"))
     .join(" + ");
 }
 
@@ -630,7 +630,7 @@ function cardHtml(res, s) {
   const rows = s.scores.map(sc => {
     const cells = terms.map((term, i) => {
       const t = (sc.term_scores || [])[i];
-      return `<td>${t ? num(t.score) + (t.status === "scored" ? "" : "*") : "—"}</td>`;
+      return `<td>${t ? (t.status === "not_offered" ? "–" : num(t.score) + (t.status === "scored" ? "" : "*")) : "—"}</td>`;
     }).join("");
 
     return `<tr><td>${escapeHTML(sc.subject_name)}</td>${cells}
