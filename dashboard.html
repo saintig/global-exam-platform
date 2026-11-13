@@ -18,21 +18,18 @@
   --border:#e1e7ef;
   --success:#16794b;
   --danger:#b42318;
-  --topbar-h:60px;
+  --topbar-h:62px;
 }
 
 *{box-sizing:border-box}
 
-/* Makes the "hidden" attribute always work, even on styled elements. */
-[hidden]{display:none!important}
-
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  font-size:16px;
+  font-size:17px;
   background:var(--background);
   color:var(--text);
-  line-height:1.5
+  line-height:1.55
 }
 
 button,input{font:inherit}
@@ -55,7 +52,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 }
 
 .brand{
-  font-size:20px;
+  font-size:21px;
   font-weight:800;
   letter-spacing:.3px
 }
@@ -74,29 +71,29 @@ button,a{-webkit-tap-highlight-color:transparent}
   background:transparent;
   border-radius:8px;
   padding:8px 12px;
-  min-height:44px;
+  min-height:46px;
   cursor:pointer;
-  font-size:16px
+  font-size:17px
 }
 
 .bell-button{
   position:relative;
-  min-width:46px
+  min-width:48px
 }
 
 .bell-count{
   position:absolute;
   top:-7px;
   right:-7px;
-  min-width:22px;
-  height:22px;
+  min-width:23px;
+  height:23px;
   padding:0 5px;
-  border-radius:11px;
+  border-radius:12px;
   background:var(--danger);
   color:white;
-  font-size:13px;
+  font-size:14px;
   font-weight:700;
-  line-height:22px;
+  line-height:23px;
   text-align:center
 }
 
@@ -108,7 +105,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 }
 
 .sidebar{
-  width:270px;
+  width:285px;
   flex-shrink:0;
   background:white;
   border-right:1px solid var(--border);
@@ -118,7 +115,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .sidebar-title{
   padding:8px 12px;
   color:var(--muted);
-  font-size:14px;
+  font-size:15px;
   text-transform:uppercase;
   font-weight:700;
   letter-spacing:.8px
@@ -126,7 +123,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 
 .nav-link{
   display:block;
-  padding:12px;
+  padding:13px 12px;
   margin:3px 0;
   border-radius:8px;
   cursor:pointer;
@@ -135,7 +132,7 @@ button,a{-webkit-tap-highlight-color:transparent}
   border:0;
   text-align:left;
   width:100%;
-  font-size:16px
+  font-size:17px
 }
 
 .nav-link:hover,.nav-link.active{
@@ -149,14 +146,14 @@ button,a{-webkit-tap-highlight-color:transparent}
 .nav-badge{
   display:inline-block;
   margin-left:6px;
-  min-width:22px;
+  min-width:23px;
   padding:0 7px;
-  border-radius:11px;
+  border-radius:12px;
   background:var(--danger);
   color:white;
-  font-size:13px;
+  font-size:14px;
   font-weight:700;
-  line-height:22px;
+  line-height:23px;
   text-align:center;
   vertical-align:middle
 }
@@ -171,22 +168,14 @@ main{
 
 .welcome h1{
   margin:0 0 5px;
-  font-size:27px;
+  font-size:29px;
   font-weight:800
 }
 
 .welcome p{
   margin:0;
-  font-size:17px;
+  font-size:18px;
   color:var(--muted)
-}
-
-.identity-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:10px;
-  margin-top:10px
 }
 
 .student-name{
@@ -196,49 +185,9 @@ main{
   border-radius:8px;
   background:#eaf0f9;
   color:var(--primary);
-  font-size:18px;
+  font-size:19px;
   font-weight:800;
   overflow-wrap:anywhere
-}
-
-.identity-row .student-name{margin-top:0}
-
-/* ACCOUNT STATUS BADGE (FREE / PREMIUM) */
-
-.plan-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:7px 13px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:#edf1f7;
-  color:var(--muted);
-  font-size:17px;
-  font-weight:800
-}
-
-.plan-badge small{
-  font-size:14px;
-  font-weight:400
-}
-
-.plan-badge.free{
-  background:#edf1f7;
-  color:var(--primary);
-  border-color:#cfd8e5
-}
-
-.plan-badge.premium{
-  background:#fdf3d0;
-  color:#7a5b00;
-  border-color:var(--accent)
-}
-
-.plan-badge.error{
-  background:#fdecea;
-  color:var(--danger);
-  border-color:#f3c1bd
 }
 
 .section{display:none}
@@ -246,12 +195,12 @@ main{
 
 .section-heading{
   margin:0 0 6px;
-  font-size:25px
+  font-size:27px
 }
 
 .section-description{
   color:var(--muted);
-  font-size:16px;
+  font-size:17px;
   margin:0 0 20px
 }
 
@@ -272,18 +221,18 @@ main{
 
 .stat-label{
   color:var(--muted);
-  font-size:15px
+  font-size:16px
 }
 
 .stat-value{
-  font-size:29px;
+  font-size:30px;
   font-weight:800;
   margin-top:4px;
   color:var(--primary)
 }
 
 .card{margin-bottom:18px}
-.card h3{margin:0 0 10px;font-size:19px}
+.card h3{margin:0 0 10px;font-size:20px}
 
 .country-list{
   display:grid;
@@ -305,7 +254,7 @@ main{
   gap:10px;
   cursor:pointer;
   font-weight:700;
-  font-size:17px;
+  font-size:18px;
   background:white;
   border:0;
   width:100%;
@@ -345,7 +294,7 @@ main{
 .level-link{
   display:block;
   color:var(--primary);
-  font-size:17px;
+  font-size:18px;
   font-weight:700
 }
 
@@ -354,7 +303,7 @@ main{
 .level-link small{
   display:block;
   color:var(--muted);
-  font-size:15px;
+  font-size:16px;
   font-weight:400;
   margin-top:4px
 }
@@ -370,11 +319,11 @@ main{
   border:0;
   border-radius:8px;
   padding:12px 16px;
-  min-height:46px;
+  min-height:48px;
   cursor:pointer;
   background:var(--primary);
   color:white;
-  font-size:16px;
+  font-size:17px;
   font-weight:700;
   display:inline-block;
   text-align:center
@@ -385,7 +334,7 @@ main{
 .button.secondary{background:#edf1f7;color:var(--primary)}
 .button.gold{background:var(--accent);color:#1f2937}
 .button.full{width:100%}
-.button.small{padding:9px 13px;min-height:40px;font-size:15px}
+.button.small{padding:9px 13px;min-height:42px;font-size:16px}
 
 .form-group{margin-bottom:15px}
 
@@ -393,7 +342,7 @@ main{
   display:block;
   margin-bottom:6px;
   font-weight:700;
-  font-size:16px
+  font-size:17px
 }
 
 .form-group input{
@@ -402,8 +351,8 @@ main{
   border:1px solid #cfd8e5;
   border-radius:8px;
   background:white;
-  font-size:16px;
-  min-height:48px
+  font-size:17px;
+  min-height:50px
 }
 
 .form-group input:focus{
@@ -411,13 +360,9 @@ main{
   border-color:var(--primary)
 }
 
-.pw-wrap{position:relative}
-.pw-wrap input{padding-right:72px}
-.pw-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--primary);font-size:14px;font-weight:700;padding:10px;cursor:pointer}
-
 .status-message{
   margin:12px 0;
-  font-size:16px;
+  font-size:17px;
   overflow-wrap:anywhere
 }
 
@@ -443,7 +388,7 @@ th,td{
   padding:12px 10px;
   border-bottom:1px solid var(--border);
   text-align:left;
-  font-size:16px;
+  font-size:17px;
   white-space:nowrap
 }
 
@@ -455,8 +400,8 @@ th{
 .pill{
   display:inline-block;
   border-radius:20px;
-  padding:4px 10px;
-  font-size:14px;
+  padding:4px 11px;
+  font-size:15px;
   background:#edf1f7;
   color:var(--text)
 }
@@ -474,7 +419,7 @@ th{
 .empty-state{
   text-align:center;
   color:var(--muted);
-  font-size:16px;
+  font-size:17px;
   padding:25px 12px
 }
 
@@ -494,7 +439,7 @@ th{
 }
 
 .recent-attempts-preview.expanded{max-height:420px}
-.recent-attempts-preview table{min-width:760px}
+.recent-attempts-preview table{min-width:830px}
 
 .recent-attempts-actions{
   display:flex;
@@ -511,7 +456,7 @@ th{
 }
 
 .results-preview.expanded{max-height:420px}
-.results-preview table{min-width:760px}
+.results-preview table{min-width:830px}
 
 .results-preview th,.results-preview td{
   padding:10px 9px
@@ -528,7 +473,7 @@ th{
 
 .results-count{
   color:var(--muted);
-  font-size:15px
+  font-size:16px
 }
 
 .pricing-note{
@@ -539,13 +484,28 @@ th{
   margin-top:12px
 }
 
-.pricing-note p{margin:6px 0 12px;font-size:16px}
+.pricing-note p{margin:6px 0 12px;font-size:17px}
 
 /* PLANS */
 
 .plan-summary{
-  font-size:17px;
+  font-size:18px;
   line-height:1.7
+}
+
+.plan-warning{
+  margin-top:10px;
+  padding:12px 14px;
+  border-radius:8px;
+  background:#fdebea;
+  border:1px solid #f1b8b1;
+  color:var(--danger);
+  font-size:17px
+}
+
+.plan-warning a{
+  font-weight:700;
+  text-decoration:underline
 }
 
 .plan-grid{
@@ -572,12 +532,12 @@ th{
 
 .plan-card h3{
   margin:0 0 4px;
-  font-size:22px
+  font-size:24px
 }
 
 .plan-price{
   color:var(--muted);
-  font-size:17px;
+  font-size:18px;
   font-weight:700;
   margin:0 0 14px
 }
@@ -590,15 +550,15 @@ th{
 
 .plan-features li{
   position:relative;
-  padding:6px 0 6px 28px;
-  font-size:16px
+  padding:7px 0 7px 29px;
+  font-size:17px
 }
 
 .plan-features li::before{
   content:"✓";
   position:absolute;
   left:2px;
-  top:6px;
+  top:7px;
   color:var(--success);
   font-weight:800
 }
@@ -627,11 +587,11 @@ th{
   flex-wrap:wrap
 }
 
-.notice-top strong{font-size:17px}
+.notice-top strong{font-size:18px}
 
 .notice-date{
   color:var(--muted);
-  font-size:14px
+  font-size:15px
 }
 
 .notice-body{
@@ -652,7 +612,7 @@ th{
   padding:18px;
   text-align:center;
   color:var(--muted);
-  font-size:15px
+  font-size:16px
 }
 
 .mobile-backdrop{display:none}
@@ -688,7 +648,7 @@ th{
     grid-template-columns:1fr
   }
 
-  .welcome h1{font-size:24px}
+  .welcome h1{font-size:26px}
   .top-link{display:none}
 }
 
@@ -792,22 +752,7 @@ th{
 <div class="welcome">
   <h1 id="welcomeTitle">Welcome to SAINTIG EXAMS</h1>
   <p id="welcomeSubtitle">Your learning and examination dashboard.</p>
-
-  <div class="identity-row">
-
-    <div id="studentDisplayName" class="student-name" hidden></div>
-
-    <!-- ACCOUNT STATUS: shows Free or Premium -->
-    <span id="planBadge" class="plan-badge" role="status" aria-live="polite">
-      Checking plan…
-    </span>
-
-    <button class="button gold small" id="planUpgradeButton"
-      type="button" data-go="pricing" hidden>
-      Upgrade to Premium
-    </button>
-
-  </div>
+  <div id="studentDisplayName" class="student-name" hidden></div>
 </div>
 
 <section class="section active" id="home">
@@ -1135,36 +1080,22 @@ th{
       Choose a new password for your account.
     </p>
 
-    <form id="passwordForm" autocomplete="off">
-
-      <div class="form-group">
-        <label for="oldPassword">Old password</label>
-        <div class="pw-wrap">
-          <input id="oldPassword" type="password"
-            autocomplete="current-password"
-            placeholder="Enter your current password" required>
-          <button type="button" class="pw-toggle" data-target="oldPassword">Show</button>
-        </div>
-      </div>
+    <form id="passwordForm">
 
       <div class="form-group">
         <label for="newPassword">New password</label>
-        <div class="pw-wrap">
-          <input id="newPassword" type="password" minlength="8"
-            autocomplete="new-password"
-            placeholder="At least 8 characters" required>
-          <button type="button" class="pw-toggle" data-target="newPassword">Show</button>
-        </div>
+
+        <input id="newPassword" type="password" minlength="8"
+          autocomplete="new-password"
+          placeholder="At least 8 characters" required>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">Confirm new password</label>
-        <div class="pw-wrap">
-          <input id="confirmPassword" type="password" minlength="8"
-            autocomplete="new-password"
-            placeholder="Enter the new password again" required>
-          <button type="button" class="pw-toggle" data-target="confirmPassword">Show</button>
-        </div>
+
+        <input id="confirmPassword" type="password" minlength="8"
+          autocomplete="new-password"
+          placeholder="Enter the new password again" required>
       </div>
 
       <button class="button" type="submit">Update Password</button>
@@ -1179,7 +1110,7 @@ th{
 
 <footer class="footer">
 
-  © <span id="currentYear"></span> SAINT IG EXAMS
+  © <span id="currentYear"></span> SAINTIG EXAMS · SAINT IG DIGITAL
 
   <p>
     <a href="dashboard.html">Return Home</a> ·
@@ -1221,16 +1152,16 @@ $("currentYear").textContent = new Date().getFullYear();
 
 /* =========================================
    PLAN DETAILS
-   The numbers of questions and minutes are
-   read live from platform_settings, so when
-   the admin changes them the cards change too.
-   The prices are read from plan_prices.
-   The values below are used only if the
-   database cannot be read.
+   Questions, minutes and attempts per day are
+   read live from platform_settings. Prices and
+   the extra benefit lines are read from
+   plan_prices. Whatever the admin changes
+   appears here. The values below are used only
+   if the database cannot be read.
 ========================================= */
 
 const PLAN_DEFAULTS = {
-  free:{questions:50,minutes:45},
+  free:{questions:50,minutes:45,attempts:1},
   premium:{questions:100,minutes:90}
 };
 
@@ -1240,6 +1171,8 @@ let planSettings = {
 };
 
 let planPrices = {};
+
+let planBenefits = {free:[],premium:[]};
 
 const BILLING_TEXT = {
   week:"per week",
@@ -1304,9 +1237,19 @@ function priceLabel(key) {
 
 }
 
+function benefitLines(key) {
+
+  return (planBenefits[key] || [])
+    .map(item => String(item || "").trim())
+    .filter(Boolean);
+
+}
+
 function getPlan(key) {
 
   const settings = planSettings[key];
+
+  const extra = benefitLines(key);
 
   if (key === "premium") {
 
@@ -1318,11 +1261,14 @@ function getPlan(key) {
         settings.minutes + " minutes duration",
         "Unlimited attempts while your subscription is active",
         "Access to Premium examinations",
-        "Questions are randomized from the approved question bank"
+        "Questions are randomized from the approved question bank",
+        ...extra
       ]
     };
 
   }
+
+  const attempts = Number(settings.attempts) || 1;
 
   return {
     name:"Free",
@@ -1330,11 +1276,22 @@ function getPlan(key) {
     features:[
       settings.questions + " questions per examination",
       settings.minutes + " minutes duration",
-      "1 attempt per day",
+      attempts + (attempts === 1 ? " attempt" : " attempts") + " per day",
       "Access to approved Free examinations",
-      "Questions are randomized from the approved question bank"
+      "Questions are randomized from the approved question bank",
+      ...extra
     ]
   };
+
+}
+
+function daysLeftFrom(value) {
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return null;
+
+  return Math.max(0,Math.ceil((date.getTime() - Date.now()) / 86400000));
 
 }
 
@@ -1740,59 +1697,51 @@ $("profileForm").addEventListener("submit",async event => {
    PASSWORD
 ========================================= */
 
-document.querySelectorAll(".pw-toggle").forEach(btn => {
-  btn.addEventListener("click",() => {
-    const input = $(btn.dataset.target);
-    const show = input.type === "password";
-    input.type = show ? "text" : "password";
-    btn.textContent = show ? "Hide" : "Show";
-  });
-});
-
 $("passwordForm").addEventListener("submit",async event => {
 
   event.preventDefault();
 
-  const oldPassword = $("oldPassword").value;
   const password = $("newPassword").value;
+
   const confirmation = $("confirmPassword").value;
 
   const button = $("passwordForm")
     .querySelector('button[type="submit"]');
 
-  const fail = text =>
-    showMessage($("passwordMessage"),text,"error");
+  if (password.length < 8) {
 
-  if (!oldPassword) return fail("Please enter your old password.");
-  if (password.length < 8) return fail("Use at least 8 characters.");
-  if (password !== confirmation) return fail("The passwords do not match.");
-  if (password === oldPassword)
-    return fail("New password must be different from your old password.");
-  if (!currentUser?.email)
-    return fail("Your account information is not available.");
+    showMessage(
+      $("passwordMessage"),
+      "Use at least 8 characters.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (password !== confirmation) {
+
+    showMessage(
+      $("passwordMessage"),
+      "The passwords do not match.",
+      "error"
+    );
+
+    return;
+  }
 
   button.disabled = true;
   button.textContent = "Updating…";
 
   try {
 
-    const {error:verifyError} = await supabase.auth.signInWithPassword({
-      email:currentUser.email,
-      password:oldPassword
+    const {error} = await supabase.auth.updateUser({
+      password
     });
-
-    if (verifyError) throw new Error("Your old password is incorrect.");
-
-    const {error} = await supabase.auth.updateUser({password});
 
     if (error) throw error;
 
     $("passwordForm").reset();
-
-    document.querySelectorAll(".pw-toggle").forEach(btn => {
-      $(btn.dataset.target).type = "password";
-      btn.textContent = "Show";
-    });
 
     showMessage(
       $("passwordMessage"),
@@ -1823,63 +1772,15 @@ $("passwordForm").addEventListener("submit",async event => {
    SUBSCRIPTION (FREE / PREMIUM)
 ========================================= */
 
-/* Shows "Free Account" or "Premium Account" at the top of the page. */
-
-function updatePlanBadge() {
-
-  const badge = $("planBadge");
-
-  const upgradeButton = $("planUpgradeButton");
-
-  if (!badge) return;
-
-  const state = subscription.state;
-
-  badge.className = "plan-badge";
-
-  if (state === "premium") {
-
-    badge.classList.add("premium");
-
-    badge.innerHTML =
-      "⭐ Premium Account" +
-      (
-        subscription.expiresAt
-        ? ' <small>until ' +
-          escapeHtml(formatDay(subscription.expiresAt)) +
-          '</small>'
-        : ""
-      );
-
-  } else if (state === "free") {
-
-    badge.classList.add("free");
-
-    badge.textContent = "Free Account";
-
-  } else if (state === "error") {
-
-    badge.classList.add("error");
-
-    badge.textContent = "Plan unavailable";
-
-  } else {
-
-    badge.textContent = "Checking plan…";
-
-  }
-
-  if (upgradeButton) {
-    upgradeButton.hidden = state !== "free";
-  }
-
-}
-
 function renderPricing() {
 
-  updatePlanBadge();
-
   const state = subscription.state;
+
+  const left = subscription.expiresAt
+    ? daysLeftFrom(subscription.expiresAt)
+    : null;
+
+  const endingSoon = state === "premium" && left !== null && left <= 7;
 
   let summary;
 
@@ -1891,8 +1792,13 @@ function renderPricing() {
         subscription.expiresAt
         ? "Active until <strong>" +
           escapeHtml(formatDay(subscription.expiresAt)) +
-          "</strong>."
+          "</strong> (" + left + " day" + (left === 1 ? "" : "s") + " left)."
         : "Your Premium plan is active."
+      }
+      ${
+        endingSoon
+        ? '<div class="plan-warning">Your Premium plan ends soon. <a href="./contact.html">Contact us to renew.</a></div>'
+        : ""
       }
     `;
 
@@ -1929,6 +1835,11 @@ function renderPricing() {
 
       action = `
         <span class="pill success">Your current plan</span>
+        ${
+          key === "premium" && endingSoon
+          ? '<a class="button gold full" style="margin-top:12px" href="./contact.html">Contact Us to Renew</a>'
+          : ""
+        }
       `;
 
     } else if (key === "premium" && state !== "premium") {
@@ -2006,7 +1917,7 @@ async function loadSubscription() {
 
 }
 
-/* Live question and time limits set by the admin. */
+/* Live limits set by the admin. */
 
 async function loadPlanSettings() {
 
@@ -2018,6 +1929,7 @@ async function loadPlanSettings() {
       .in("setting_key",[
         "free_student_question_limit",
         "free_student_duration_minutes",
+        "free_student_attempts_per_day",
         "premium_student_question_limit",
         "premium_student_duration_minutes"
       ]);
@@ -2038,7 +1950,10 @@ async function loadPlanSettings() {
           PLAN_DEFAULTS.free.questions,
         minutes:
           map.free_student_duration_minutes ||
-          PLAN_DEFAULTS.free.minutes
+          PLAN_DEFAULTS.free.minutes,
+        attempts:
+          map.free_student_attempts_per_day ||
+          PLAN_DEFAULTS.free.attempts
       },
 
       premium:{
@@ -2060,7 +1975,7 @@ async function loadPlanSettings() {
 
 }
 
-/* Prices set by the admin. */
+/* Prices and benefit lines set by the admin. */
 
 async function loadPlanPrices() {
 
@@ -2068,15 +1983,28 @@ async function loadPlanPrices() {
 
     const {data,error} = await supabase
       .from("plan_prices")
-      .select("plan_name,price_amount,currency,billing_period")
+      .select("plan_name,price_amount,currency,billing_period,benefits")
       .eq("audience","student");
 
     if (error) throw error;
 
     planPrices = {};
+    planBenefits = {free:[],premium:[]};
 
     (data || []).forEach(row => {
-      planPrices[String(row.plan_name).toLowerCase()] = row;
+
+      const key = String(row.plan_name).toLowerCase();
+
+      planPrices[key] = row;
+
+      if (key === "free" || key === "premium") {
+
+        planBenefits[key] = Array.isArray(row.benefits)
+          ? row.benefits
+          : [];
+
+      }
+
     });
 
   } catch(error) {
@@ -3352,7 +3280,7 @@ async function initializeDashboard() {
 
     });
 
-    /* Show the plan cards with the live numbers and prices. */
+    /* Show the plan cards with the live numbers, prices and benefits. */
 
     renderPricing();
 
