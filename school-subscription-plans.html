@@ -17,9 +17,10 @@
   --muted:#64748b;
   --line:#e5e9ef;
   --ok:#16834a;
+  --bad:#b42318;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Arial,sans-serif}
 a{text-decoration:none;color:inherit}
 button,a{-webkit-tap-highlight-color:transparent}
 
@@ -28,18 +29,18 @@ header{
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   border-bottom:4px solid var(--gold)
 }
-.brand{font-size:20px;font-weight:800;letter-spacing:.4px}
+.brand{font-size:22px;font-weight:800;letter-spacing:.4px}
 .brand span{color:var(--gold)}
 .back{
   border:1px solid #ffffff55;background:none;color:#fff;border-radius:8px;
-  padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:16px
+  padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:18px
 }
 
 main{max-width:1100px;margin:auto;padding:26px 16px 10px}
-h1{font-size:30px;color:var(--navy);margin:0 0 6px}
+h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 .muted{color:var(--muted)}
 
-.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:16px}
+.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:17px}
 .status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
 .status.info{display:block;background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
 
@@ -47,14 +48,15 @@ h1{font-size:30px;color:var(--navy);margin:0 0 6px}
   background:#fff;border:1px solid var(--line);border-radius:13px;
   padding:22px;box-shadow:0 7px 22px #14243a0b;margin:20px 0
 }
-.card h2{font-size:21px;color:var(--navy);margin:0 0 10px}
-.card p{margin:8px 0 0;font-size:16px}
+.card h2{font-size:24px;color:var(--navy);margin:0 0 10px}
+.card p{margin:8px 0 0;font-size:17px}
 
 .pill{
-  display:inline-block;border-radius:25px;padding:6px 14px;font-size:15px;
+  display:inline-block;border-radius:25px;padding:7px 15px;font-size:17px;
   font-weight:bold;background:#fff8df;color:#795d0c;border:1px solid #f0df9f
 }
 .pill.ok{background:#e8f7ee;color:var(--ok);border-color:#c8ebd2}
+.pill.warn{background:#fdebea;color:var(--bad);border-color:#f1b8b1}
 
 .plan-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -67,75 +69,37 @@ h1{font-size:30px;color:var(--navy);margin:0 0 6px}
 }
 .plan-card.top{border-top-color:var(--gold)}
 .plan-card.current{box-shadow:0 0 0 2px var(--gold)}
-.plan-card h3{font-size:23px;margin:0 0 4px;color:var(--navy)}
-.price{font-size:20px;font-weight:800;color:var(--navy);margin:0 0 14px}
-.price small{font-size:15px;font-weight:400;color:var(--muted)}
+.plan-card h3{font-size:26px;margin:0 0 4px;color:var(--navy)}
+.price{font-size:23px;font-weight:800;color:var(--navy);margin:0 0 14px}
+.price small{font-size:17px;font-weight:400;color:var(--muted)}
 .features{list-style:none;padding:0;margin:0 0 18px}
-.features li{position:relative;padding:6px 0 6px 28px;font-size:16px}
+.features li{position:relative;padding:7px 0 7px 30px;font-size:18px;overflow-wrap:anywhere}
 .features li::before{
   content:"✓";position:absolute;left:2px;top:6px;color:var(--ok);font-weight:800
 }
+.features li.extra::before{content:"★";color:var(--gold)}
 .plan-action{margin-top:auto}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;width:100%;
-  min-height:50px;padding:12px 16px;border-radius:9px;font-weight:bold;
-  font-size:16px;border:0;cursor:pointer
+  min-height:54px;padding:13px 16px;border-radius:9px;font-weight:bold;
+  font-size:18px;border:0;cursor:pointer
 }
 .btn.gold{background:var(--gold);color:var(--navy)}
 .btn.gold:hover{background:#e6c65d}
 
-/* CUSTOM PACKAGE */
-.custom-pack{
-  position:relative;overflow:hidden;margin:26px 0;padding:30px 24px;
-  border-radius:16px;color:#fff;border:2px solid var(--gold);
-  background:linear-gradient(135deg,#14243a 0%,#1d3557 100%);
-  box-shadow:0 12px 30px #14243a26
-}
-.custom-pack::before{
-  content:"";position:absolute;width:260px;height:260px;right:-90px;top:-90px;
-  border-radius:50%;border:1px solid #d4af3744;
-  box-shadow:0 0 0 30px #d4af3710,0 0 0 60px #d4af370a;pointer-events:none
-}
-.custom-pack>*{position:relative}
-.custom-badge{
-  display:inline-block;padding:6px 14px;border-radius:25px;margin-bottom:14px;
-  background:#d4af3726;border:1px solid #d4af3788;color:var(--gold);
-  font-size:14px;font-weight:bold;letter-spacing:1.2px
-}
-.custom-pack h2{font-size:27px;line-height:1.25;margin:0 0 10px;color:#fff}
-.custom-lead{font-size:17px;margin:0 0 18px;color:#e3e9f1;max-width:640px}
-.custom-lead strong{color:var(--gold)}
-.chips{list-style:none;display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0 0 18px}
-.chips li{
-  padding:9px 14px;border-radius:25px;font-size:15px;
-  background:#ffffff14;border:1px solid #ffffff2e;color:#fff
-}
-.custom-note{font-size:16px;margin:0 0 20px;color:#e3e9f1}
-.custom-pack .btn{max-width:340px}
+.how{border-left:5px solid var(--gold)}
+.how .btn{max-width:340px;margin-top:14px}
 
-/* MANUAL PAYMENT */
-.manual{border-left:5px solid var(--gold)}
-.manual .btn{max-width:340px;margin-top:16px}
-.steps{list-style:none;counter-reset:step;padding:0;margin:16px 0 0;display:grid;gap:12px}
-.steps li{
-  counter-increment:step;position:relative;padding:12px 14px 12px 58px;
-  background:#f8f9fb;border:1px solid var(--line);border-radius:11px;font-size:16px
-}
-.steps li::before{
-  content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);
-  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px
-}
+.summary-actions{margin-top:14px}
+.summary-actions .btn{max-width:340px}
 
-footer{text-align:center;color:#8995a3;font-size:15px;padding:30px 10px 26px}
+footer{text-align:center;color:#8995a3;font-size:17px;padding:30px 10px 26px}
 footer a{color:var(--navy);font-weight:bold;margin:0 8px}
 
 @media(max-width:600px){
-  h1{font-size:27px}
+  h1{font-size:29px}
   .card,.plan-card{padding:18px}
-  .custom-pack{padding:24px 18px}
-  .custom-pack h2{font-size:24px}
 }
 </style>
 </head>
@@ -161,50 +125,20 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
 
   <div class="plan-grid" id="planCards"></div>
 
-  <section class="custom-pack" aria-labelledby="customTitle">
-    <div class="custom-badge">★ CUSTOM PACKAGE</div>
-    <h2 id="customTitle">Silver or Gold not the right fit?</h2>
-    <p class="custom-lead">
-      Every school is different. If Silver and Gold don't suit your school,
-      we will build a <strong>Custom Package</strong> around your needs.
-    </p>
-
-    <ul class="chips" aria-label="What can be customised">
-      <li>👩‍🎓 Active students</li>
-      <li>📚 Subjects</li>
-      <li>📝 Examinations</li>
-      <li>🗂️ Stored questions</li>
-      <li>❓ Questions per exam</li>
-      <li>⏱️ Exam duration</li>
-    </ul>
-
-    <p class="custom-note">
-      Tell us what your school needs and our team will agree the limits
-      and price with you.
-    </p>
-
-    <a class="btn gold" href="contact.html">Request a Custom Package</a>
-  </section>
-
-  <section class="card manual">
-    <h2>💳 Prefer to pay manually?</h2>
+  <section class="card how">
+    <h2>How to upgrade or renew</h2>
     <p class="muted">
-      You can pay for any package, including a Custom Package, directly
-      through the administrator. It only takes three steps:
+      Contact us to upgrade or renew your package. Once your payment is confirmed,
+      your package is activated and you will receive a notification.
+      Online payment will be available soon.
     </p>
-
-    <ol class="steps">
-      <li><strong>Contact the admin</strong> and tell us the package you want.</li>
-      <li><strong>Make your payment</strong> using the details we give you.</li>
-      <li><strong>Get activated.</strong> Once your payment is confirmed, your new package goes live and you receive a notification.</li>
-    </ol>
-
-    <a class="btn gold" href="contact.html">Contact Admin</a>
+    <a class="btn gold" href="contact.html">Contact Us</a>
   </section>
 
 </main>
 
 <footer>
+  <a href="school-help-support.html">Help &amp; Support</a> ·
   <a href="about.html">About</a> ·
   <a href="contact.html">Contact</a> ·
   <a href="school-dashboard.html">Dashboard</a>
@@ -218,6 +152,8 @@ const DASHBOARD="school-dashboard.html";
 
 const $=id=>document.getElementById(id);
 
+const DAY_MS=86400000;
+
 const FIELDS=[
   {limit:"max_active_students",custom:"custom_max_active_students",
    text:n=>"Up to "+fmt(n)+" active students"},
@@ -230,7 +166,9 @@ const FIELDS=[
   {limit:"max_questions_per_exam",custom:"custom_max_questions_per_exam",
    text:n=>"Up to "+fmt(n)+" questions per examination"},
   {limit:"max_exam_duration_minutes",custom:"custom_max_exam_duration_minutes",
-   text:n=>"Up to "+fmt(n)+" minutes per examination"}
+   text:n=>"Up to "+fmt(n)+" minutes per examination"},
+  {limit:"max_attempts_per_exam",custom:"custom_max_attempts_per_exam",
+   text:n=>"Up to "+fmt(n)+" attempt"+(Number(n)===1?"":"s")+" per student per examination"}
 ];
 
 const BILLING={
@@ -257,6 +195,22 @@ function message(text,type="info"){
 
 function hasValue(v){
   return v!==null&&v!==undefined&&v!=="";
+}
+
+function dateText(value){
+  const d=new Date(value);
+
+  return Number.isNaN(d.getTime())
+    ?"—"
+    :d.toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
+}
+
+function daysLeft(value){
+  const d=new Date(value);
+
+  if(Number.isNaN(d.getTime()))return null;
+
+  return Math.max(0,Math.ceil((d.getTime()-Date.now())/DAY_MS));
 }
 
 function priceHtml(planName,row){
@@ -287,10 +241,38 @@ function priceHtml(planName,row){
   return esc(money)+(period?" <small>"+esc(period)+"</small>":"");
 }
 
+/* The package that applies today. A paid package past its end date
+   counts as Free (the system also returns it to Free automatically). */
+
+function effectivePackage(assignment){
+  const name=assignment?.package_name||"Free";
+  const expiry=assignment?.expires_at?new Date(assignment.expires_at):null;
+
+  const ended=
+    name.toLowerCase()!=="free"&&
+    expiry&&
+    !Number.isNaN(expiry.getTime())&&
+    expiry.getTime()<=Date.now();
+
+  return ended
+    ?{name:"Free",assignment:null,endedPackage:name}
+    :{name,assignment,endedPackage:null};
+}
+
+function benefitItems(row){
+  const list=Array.isArray(row?.benefits)?row.benefits:[];
+
+  return list
+    .map(item=>String(item||"").trim())
+    .filter(Boolean)
+    .map(item=>'<li class="extra">'+esc(item)+"</li>")
+    .join("");
+}
+
 function render(assignment,limits,prices){
 
-  const currentName=assignment?.package_name||"Free";
-  const currentKey=String(currentName).toLowerCase();
+  const current=effectivePackage(assignment);
+  const currentKey=current.name.toLowerCase();
 
   const ordered=[...limits].sort((a,b)=>
     Number(a.max_active_students)-Number(b.max_active_students)
@@ -300,36 +282,104 @@ function render(assignment,limits,prices){
     p=>String(p.package_name).toLowerCase()===currentKey
   );
 
-  const hasCustom=!!assignment&&FIELDS.some(f=>hasValue(assignment[f.custom]));
+  const isStandard=currentIndex>=0;
+  const isFree=currentKey==="free";
+
+  const overrides=current.assignment?current.assignment:{};
+
+  const hasCustomLimits=
+    isStandard&&FIELDS.some(f=>hasValue(overrides[f.custom]));
+
+  /* ---------- summary ---------- */
+
+  const expiresAt=current.assignment?.expires_at||null;
+  const left=expiresAt?daysLeft(expiresAt):null;
+  const soon=!isFree&&left!==null&&left<=7;
+
+  let lines="";
+
+  if(current.endedPackage){
+    lines+=
+      '<p class="muted">Your '+esc(current.endedPackage)+
+      " package has ended and your account is on the Free package. Contact us to renew.</p>";
+  }else if(isFree){
+    lines+='<p class="muted">Your account is on the Free package.</p>';
+  }else if(expiresAt){
+    lines+=
+      '<p class="muted">Active until <strong>'+esc(dateText(expiresAt))+"</strong> ("+
+      left+" day"+(left===1?"":"s")+" left)."+
+      (soon?" Your package ends soon.":"")+"</p>";
+  }else{
+    lines+='<p class="muted">Your '+esc(current.name)+" package has no end date.</p>";
+  }
+
+  if(hasCustomLimits){
+    lines+=
+      '<p class="muted">Your administrator has set custom limits for your account. They are shown on your current plan card below.</p>';
+  }
+
+  const needsRenewal=
+    !!current.endedPackage||(!isFree&&left!==null&&left<=14);
 
   $("planSummary").innerHTML=
-    '<span class="pill">'+esc(currentName)+' Package</span>'+
-    '<p class="muted">Your account is on the '+esc(currentName)+' package.'+
-    (hasCustom
-      ?" Your administrator has set custom limits for your account. They are shown on your current plan card below."
-      :"")+
-    '</p>';
+    '<span class="pill'+(soon||current.endedPackage?" warn":"")+'">'+
+    esc(current.name)+" Package</span>"+
+    lines+
+    (needsRenewal
+      ?'<div class="summary-actions"><a class="btn gold" href="contact.html">Contact Us to Renew</a></div>'
+      :"");
 
-  $("planCards").innerHTML=ordered.map((plan,index)=>{
+  /* ---------- cards ---------- */
 
-    const isCurrent=index===currentIndex;
+  const cards=[];
+
+  /* A package that is not one of the standard ones (for example Custom). */
+
+  if(!isStandard){
+
+    const items=FIELDS.map(f=>{
+      const value=overrides[f.custom];
+
+      return hasValue(value)
+        ?"<li>"+esc(f.text(value))+"</li>"
+        :"";
+    }).join("");
+
+    cards.push(
+      '<div class="plan-card top current">'+
+        "<h3>"+esc(current.name)+"</h3>"+
+        '<p class="price">Arranged with the administrator</p>'+
+        '<ul class="features">'+items+"</ul>"+
+        '<div class="plan-action"><span class="pill ok">Your current plan</span></div>'+
+      "</div>"
+    );
+  }
+
+  ordered.forEach((plan,index)=>{
+
     const name=String(plan.package_name);
+    const isCurrent=index===currentIndex;
+    const planIsFree=name.toLowerCase()==="free";
 
     const items=FIELDS.map(f=>{
       let value=plan[f.limit];
 
-      if(isCurrent&&assignment&&hasValue(assignment[f.custom])){
-        value=assignment[f.custom];
+      if(isCurrent&&hasValue(overrides[f.custom])){
+        value=overrides[f.custom];
       }
 
-      return "<li>"+esc(f.text(value))+"</li>";
+      return hasValue(value)
+        ?"<li>"+esc(f.text(value))+"</li>"
+        :"";
     }).join("");
+
+    const extras=benefitItems(prices[name.toLowerCase()]);
 
     let action="";
 
     if(isCurrent){
       action='<span class="pill ok">Your current plan</span>';
-    }else if(index>currentIndex&&name.toLowerCase()!=="free"){
+    }else if(!planIsFree&&(!isStandard||index>currentIndex)){
       action='<a class="btn gold" href="contact.html">Contact Us to Upgrade</a>';
     }
 
@@ -337,16 +387,17 @@ function render(assignment,limits,prices){
       (index===ordered.length-1?" top":"")+
       (isCurrent?" current":"");
 
-    return (
+    cards.push(
       '<div class="'+classes+'">'+
         "<h3>"+esc(name)+"</h3>"+
         '<p class="price">'+priceHtml(name,prices[name.toLowerCase()])+"</p>"+
-        '<ul class="features">'+items+"</ul>"+
+        '<ul class="features">'+items+extras+"</ul>"+
         '<div class="plan-action">'+action+"</div>"+
       "</div>"
     );
+  });
 
-  }).join("");
+  $("planCards").innerHTML=cards.join("");
 }
 
 async function init(){
@@ -394,12 +445,15 @@ async function init(){
     sb.from("school_account_packages")
       .select(`
         package_name,
+        starts_at,
+        expires_at,
         custom_max_active_students,
         custom_max_subjects,
         custom_max_stored_questions,
         custom_max_examinations,
         custom_max_exam_duration_minutes,
-        custom_max_questions_per_exam
+        custom_max_questions_per_exam,
+        custom_max_attempts_per_exam
       `)
       .eq("school_account_id",account.id)
       .maybeSingle(),
@@ -407,7 +461,7 @@ async function init(){
     sb.from("school_package_limits").select("*"),
 
     sb.from("plan_prices")
-      .select("plan_name,price_amount,currency,billing_period")
+      .select("plan_name,price_amount,currency,billing_period,benefits")
       .eq("audience","school")
 
   ]);
