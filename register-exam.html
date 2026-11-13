@@ -4,95 +4,83 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#101d35">
-<title>Register Examination | SAINTIG EXAMS</title>
+<title>Question bank | SAINTIG EXAMS</title>
 <style>
-:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#253047;--muted:#65748b;--line:#e0e5ed;--ok:#16834b;--bad:#c0392b}
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#1f2b40;--muted:#58677d;--line:#dfe4ec;--ok:#16834b;--bad:#c0392b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font:16px/1.5 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+html{-webkit-text-size-adjust:100%}
+body{font:18px/1.55 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 .top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
-.top-in{max-width:980px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
-.brand{font-weight:800;font-size:18px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.top-in{max-width:1000px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.4px;color:#fff;text-decoration:none}
 .brand span{color:var(--gold)}
-.role{font-size:12px;color:#cbd3e0}
-.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff55;border-radius:8px;padding:9px 14px;min-height:44px}
-.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22}
+.role{font-size:14px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff66;border-radius:9px;padding:9px 16px;min-height:48px;font-size:17px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22;max-height:calc(100vh - 70px);overflow-y:auto}
 .menu.open{display:block}
-.menu-in{max-width:980px;margin:auto;padding:8px 14px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px}
-.menu a{color:#e7ebf2;text-decoration:none;padding:12px;border-radius:7px;font-size:15px}
-.menu a:hover,.menu a.on{background:#ffffff14;color:var(--gold)}
-.wrap{max-width:980px;margin:auto;padding:16px 14px 70px}
-h1{font-size:22px;color:var(--navy);margin-bottom:4px}
-.sub{color:var(--muted);font-size:14px}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
-.step{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 4px;text-align:center;color:var(--muted);font-size:13px;font-weight:bold;min-height:60px}
-.step b{display:block;width:26px;height:26px;line-height:26px;margin:0 auto 3px;border-radius:50%;background:#e9edf4;color:var(--navy)}
-.step.on{border-color:var(--gold);color:var(--navy);box-shadow:0 0 0 2px #d4af3744}
-.step.on b{background:var(--gold)}
-.step.done b{background:var(--ok);color:#fff}
-.step:disabled{opacity:.5;cursor:not-allowed}
-.bar{position:sticky;top:67px;z-index:20;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:9px;padding:9px 12px;margin-bottom:14px;font-size:14px;display:flex;flex-wrap:wrap;gap:3px 16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
-.card h2{font-size:18px;color:var(--navy);margin-bottom:4px}
-.hint{color:var(--muted);font-size:14px;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.menu-in{max-width:1000px;margin:auto;padding:8px 14px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px}
+.menu a,.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:#e9edf5;text-decoration:none;padding:14px 12px;border-radius:8px;font-size:18px}
+.menu a:hover,.menu a.on,.menu button:hover{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:1000px;margin:auto;padding:16px 14px 70px}
+h1{font-size:28px;line-height:1.2;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:17px;margin-bottom:14px}
+.sections{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.sections a{flex:0 0 auto;padding:12px 18px;border:1px solid var(--line);background:#fff;border-radius:999px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:17px;min-height:48px;display:flex;align-items:center;gap:8px}
+.sections a b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#e9edf4;font-size:15px}
+.sections a.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sections a.on b{background:var(--gold);color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.card h2{font-size:23px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:17px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .full{grid-column:1/-1}
-label{display:block;font-weight:bold;font-size:14px;margin-bottom:6px;color:#34415a}
-input,select,textarea{width:100%;padding:12px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;color:var(--text);min-height:46px}
-textarea{min-height:90px;resize:vertical}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid #d4af3799;outline-offset:1px}
-small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
-.btn{border:0;border-radius:9px;padding:13px 18px;font-weight:bold;font-size:15px;min-height:48px}
+label{display:block;font-weight:bold;font-size:17px;margin-bottom:7px;color:#2d3a52}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #c5cdd9;border-radius:9px;background:#fff;color:var(--text);min-height:54px;font-size:18px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.btn{border:0;border-radius:10px;padding:13px 20px;font-weight:bold;font-size:17px;min-height:54px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .primary{background:var(--navy);color:#fff}
 .gold{background:var(--gold);color:var(--navy)}
-.ghost{background:#fff;border:1px solid #cbd3df;color:var(--navy)}
+.ghost{background:#fff;border:1px solid #bfc8d6;color:var(--navy)}
 .danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
-.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-.nav{display:flex;justify-content:space-between;gap:10px;margin-top:4px}
-.msg{display:none;padding:12px 14px;border-radius:9px;margin:12px 0;font-size:14.5px;line-height:1.55;overflow-wrap:anywhere}
+.good{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.msg{display:none;padding:14px 16px;border-radius:10px;margin:14px 0;font-size:17px;line-height:1.55;overflow-wrap:anywhere}
 .msg.show{display:block}
 .msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
 .msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
 .msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
 .msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
-.tabs{display:flex;gap:8px;margin-bottom:14px}
-.tab{flex:1;padding:12px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold;color:var(--navy);min-height:48px}
-.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-[hidden]{display:none!important}
-.q{border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:10px;padding:13px;margin-bottom:11px;background:#fff}
-.q-top{font-weight:bold;color:var(--navy);margin-bottom:6px;font-size:14px}
-.q-text{font-weight:bold;overflow-wrap:anywhere;margin-bottom:8px}
-.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;font-size:14px}
-.opt{padding:7px 9px;background:#f8fafc;border:1px solid #edf0f4;border-radius:6px;overflow-wrap:anywhere}
+.bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.count{color:var(--muted);font-size:16px;margin:6px 0 12px}
+.item{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
+.item.muted{border-left-color:#aab3c2;background:#fafbfc}
+.item-title{font-size:21px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere;line-height:1.35}
+.item-meta{color:var(--muted);font-size:17px;margin-top:4px;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:15px;font-weight:bold;vertical-align:middle}
+.badge.on{background:#eaf7ef;color:#176b3d}
+.badge.off{background:#fff6df;color:#85620d}
+.badge.arch{background:#e8ebf0;color:#4b5563}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.acts .btn{min-height:50px;padding:10px 18px;font-size:17px}
+.empty{padding:26px 10px;text-align:center;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.opt{padding:9px 11px;background:#f8fafc;border:1px solid #edf0f4;border-radius:8px;overflow-wrap:anywhere;font-size:17px}
 .opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
-.q-meta{color:var(--muted);font-size:13px;margin-top:8px;overflow-wrap:anywhere}
-.q-act{display:flex;gap:8px;margin-top:10px}
-.q-act .btn{min-height:42px;padding:8px 16px;font-size:14px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-.stat{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:10px;text-align:center}
-.stat span{font-size:12px;color:var(--muted);display:block}
-.stat strong{font-size:22px;color:var(--navy)}
-.pager{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:12px 0}
-.pager button{min-width:42px;min-height:42px;border:1px solid #dce1e9;background:#fff;border-radius:7px;color:var(--navy)}
-.pager button.on{background:var(--navy);color:#fff}
-.errs{max-height:260px;overflow:auto}
-.err-row{background:#fff0ee;border-left:4px solid var(--bad);padding:8px 10px;margin:6px 0;font-size:14px;border-radius:4px}
-details.guide{border:1px solid #d9e5f4;border-radius:9px;background:#f7faff;margin:12px 0}
-details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:var(--navy);font-size:15px}
-.gb{padding:0 14px 14px;font-size:14px;line-height:1.65;color:#3d526e}
-.gb h4{margin:12px 0 4px;color:var(--navy)}
-.gb ul{padding-left:20px}
-.gb pre{background:#fff;border:1px solid var(--line);border-radius:7px;padding:10px;font-size:12.5px;overflow-x:auto;white-space:pre-wrap;margin:6px 0}
-.gb code{background:#eef1f6;padding:1px 5px;border-radius:4px;font-size:12.5px}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.9;overflow-wrap:anywhere}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.pager span{color:var(--muted);font-size:16px}
 .modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
 .modal.show{display:flex}
-.modal-box{background:#fff;border-radius:12px;padding:18px;width:100%;max-width:640px;margin:auto}
-.codebox{background:var(--navy);color:var(--gold);padding:16px;border-radius:10px;text-align:center;margin-top:14px;font-size:22px;font-weight:bold;overflow-wrap:anywhere}
-.codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
-.sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
-@media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
+.modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:680px;margin:auto}
+.modal-box h2{font-size:23px;color:var(--navy);margin-bottom:14px}
+[hidden]{display:none!important}
+@media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
+@media(max-width:640px){.grid,.bar,.opts{grid-template-columns:1fr}.row .btn,.pager .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
 
 </style>
 </head>
@@ -103,689 +91,351 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
     <span class="role">Admin</span>
     <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
-  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html" class="on">Register exam</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">Home</a></div></nav>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html" class="on">Question bank</a><a href="register-exam.html">Register Examination</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">View public website</a><button id="signOut" type="button">Sign out</button></div></nav>
 </header>
-
-<main class="wrap">
-  <h1>Register examination</h1>
-  <p class="sub">Four steps: exam details, add questions, review and save, publish.</p>
-
-  <nav class="steps" id="steps" aria-label="Steps">
-    <button class="step on" data-step="1" type="button"><b>1</b>Exam</button>
-    <button class="step" data-step="2" type="button" disabled><b>2</b>Add questions</button>
-    <button class="step" data-step="3" type="button" disabled><b>3</b>Review &amp; save</button>
-    <button class="step" data-step="4" type="button" disabled><b>4</b>Publish</button>
-  </nav>
-
-  <div class="bar" id="bar">No examination selected yet. Choose one or create a new one in step 1.</div>
-
-  <!-- STEP 1 -->
-  <section id="p1">
-    <div class="card">
-      <h2>Which examination?</h2>
-      <p class="hint">Pick an examination to continue working on, or create a new one.</p>
-      <select id="existing" aria-label="Examination"><option value="">Loading…</option></select>
-    </div>
-
-    <div class="card">
-      <h2>Exam details</h2>
-      <div class="grid" style="margin-top:12px">
-        <div><label for="country">Country</label><select id="country"><option value="">Loading…</option></select></div>
-        <div><label for="level">Education level</label><select id="level" disabled><option value="">Select country first</option></select></div>
-        <div class="full"><label for="subject">Subject</label><select id="subject" disabled><option value="">Select education level first</option></select></div>
-        <div><label for="examType">Category</label><select id="examType"><option value="free">Free examination</option><option value="paid">Premium examination</option></select><small>Premium is saved as "paid".</small></div>
-        <div><label for="duration">Duration</label><input id="duration" value="45 minutes" readonly><small>Free: 45 minutes. Premium: 90 minutes.</small></div>
-        <div class="full"><label for="examTitle">Title</label><input id="examTitle" placeholder="e.g. Government - Free Practice"></div>
-        <div class="full"><label for="description">Instructions for students (optional)</label><textarea id="description"></textarea></div>
-      </div>
-      <div class="msg" id="m1"></div>
-      <div class="row"><button class="btn gold" id="saveExam" type="button">Save and continue</button><button class="btn ghost" id="clearForm" type="button">Clear form</button></div>
-    </div>
-  </section>
-
-  <!-- STEP 2 -->
-  <section id="p2" hidden>
-    <div class="tabs"><button class="tab on" id="tabFile" type="button">Upload a file</button><button class="tab" id="tabOne" type="button">Type one question</button></div>
-
-    <div class="card" id="boxFile">
-      <h2>Upload a file</h2>
-      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works.</p>
-      <details class="guide"><summary>How to prepare your file</summary><div class="gb">
-<h4>Word (.docx), Text (.txt) and PDF</h4>
-<p>One item per line, with a blank line between questions:</p>
-<pre>1. What is the capital of Nigeria?
-A. Lagos
-B. Abuja
-C. Kano
-D. Enugu
-Answer: B
-Explanation: Abuja is the capital. (optional)
-Marks: 1 (optional)
-
-2. Next question…</pre>
-<ul><li>Start each question with a number such as <code>1.</code> or <code>1)</code>.</li>
-<li>Type the option letters <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> yourself. Word's automatic lists are not read.</li>
-<li>Every question needs an <code>Answer:</code> line with one letter, A to D.</li>
-<li>PDF files need real text. Scanned or photographed pages cannot be read.</li></ul>
-<h4>CSV and Excel</h4>
-<p>Put the column names in the first row. Columns are found by name, so their order does not matter. Extra columns are ignored.</p>
-<pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks, question_order, image_filename</pre>
-<ul><li>Needed: question_text, the four options and correct_option. The rest are optional.</li>
-<li>Leave marks empty to use the default marks.</li>
-<li>Excel files are read from the first sheet. CSV files can use commas or semicolons.</li></ul>
-<h4>File names</h4>
-<p>Any normal name works, such as <em>Government SS1 Questions.csv</em>, <em>First Term Exam 2026.xlsx</em> or <em>My Questions (Final).CSV</em>. Only the ending must be .pdf, .docx, .txt, .csv, .xlsx or .xls.</p>
-<h4>If something is wrong</h4>
-<p>Good questions are still accepted. Problem items are listed with their row or question number so you can fix them and read the file again.</p>
-</div></details>
-      <div class="row" style="margin-top:0"><button class="btn ghost" id="tplCsv" type="button">Download CSV template</button><button class="btn ghost" id="tplTxt" type="button">Download Word / Text sample</button></div>
-      <div style="margin-top:14px"><label for="file">Choose your file</label><input id="file" type="file" accept=".pdf,.docx,.txt,.csv,.xlsx,.xls"></div>
-      <div style="margin-top:14px"><label for="images">Images for CSV or Excel questions (optional)</label><input id="images" type="file" accept="image/*" multiple><small>Type each image's exact file name in the image_filename column. Maximum 5 MB each.</small></div>
-      <div class="msg" id="upMsg"></div>
-      <div class="row"><button class="btn primary" id="readBtn" type="button">Read file</button></div>
-      <div id="upResult"></div>
-    </div>
-
-    <div class="card" id="boxOne" hidden>
-      <h2>Type one question</h2>
-      <div style="margin-top:12px"><label for="qText">Question</label><textarea id="qText"></textarea></div>
-      <div class="grid" style="margin-top:12px">
-        <div><label for="oA">Option A</label><input id="oA"></div>
-        <div><label for="oB">Option B</label><input id="oB"></div>
-        <div><label for="oC">Option C</label><input id="oC"></div>
-        <div><label for="oD">Option D</label><input id="oD"></div>
-        <div><label for="qCorrect">Correct option</label><select id="qCorrect"><option value="">Select</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
-        <div><label for="qMarks">Marks</label><input id="qMarks" type="number" min="1" step="1" value="1"></div>
-        <div class="full"><label for="qExp">Explanation (optional)</label><textarea id="qExp"></textarea></div>
-        <div class="full"><label for="qImage">Image (optional)</label><input id="qImage" type="file" accept="image/*"><small>Maximum 5 MB.</small></div>
-      </div>
-      <div class="msg" id="oneMsg"></div>
-      <div class="row"><button class="btn gold" id="addOne" type="button">Add to review</button></div>
-    </div>
-
-    <div class="nav"><button class="btn ghost" data-go="1" type="button">← Back</button><button class="btn primary" data-go="3" type="button">Next: review</button></div>
-  </section>
-
-  <!-- STEP 3 -->
-  <section id="p3" hidden>
-    <div class="card">
-      <h2>Review and save</h2>
-      <p class="hint">Check the questions, edit or delete any, then save them all.</p>
-      <div class="stats">
-        <div class="stat"><span>To save</span><strong id="qCount">0</strong></div>
-        <div class="stat"><span>Already saved</span><strong id="stSaved">0</strong></div>
-        <div class="stat"><span>Needed to publish</span><strong id="stNeed">1</strong></div>
-      </div>
-      <div class="msg" id="rvMsg"></div>
-      <div id="qList"></div>
-      <div class="pager" id="pager"></div>
-      <div class="row"><button class="btn gold" id="saveAll" type="button" disabled>Save all questions</button><button class="btn danger" id="clearAll" type="button">Remove all</button></div>
-    </div>
-    <div class="nav"><button class="btn ghost" data-go="2" type="button">← Back</button><button class="btn primary" data-go="4" type="button">Next: publish</button></div>
-  </section>
-
-  <!-- STEP 4 -->
-  <section id="p4" hidden>
-    <div class="card">
-      <h2>Publish to students</h2>
-      <p class="hint">Saving questions does not publish the exam. Publish when it is ready.</p>
-      <div class="sum" id="pubInfo"></div>
-      <div class="msg" id="pubMsg"></div>
-      <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
-    </div>
-    <div class="nav"><button class="btn ghost" data-go="3" type="button">← Back</button></div>
-  </section>
-</main>
-
-<div class="modal" id="editModal"><div class="modal-box">
-  <h2 style="color:var(--navy);margin-bottom:12px;font-size:18px">Edit question</h2>
-  <label for="eText">Question</label><textarea id="eText"></textarea>
-  <div class="grid" style="margin-top:12px">
-    <div><label for="eA">Option A</label><input id="eA"></div><div><label for="eB">Option B</label><input id="eB"></div>
-    <div><label for="eC">Option C</label><input id="eC"></div><div><label for="eD">Option D</label><input id="eD"></div>
-    <div><label for="eCorrect">Correct option</label><select id="eCorrect"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
-    <div><label for="eMarks">Marks</label><input id="eMarks" type="number" min="1" step="1"></div>
-    <div class="full"><label for="eExp">Explanation (optional)</label><textarea id="eExp"></textarea></div>
+<main class="wrap" id="main">
+<h1>Question bank</h1>
+<p class="sub">Find an examination, then manage its questions.</p>
+<nav class="sections" aria-label="Setup sections"><a href="countries.html"><b>1</b>Countries</a><a href="education-levels.html"><b>2</b>Education levels</a><a href="subjects.html"><b>3</b>Subjects</a><a href="question-bank.html" class="on" aria-current="page"><b>4</b>Question bank</a><a href="register-exam.html"><b>5</b>Register Examination</a></nav>
+<div class="card" id="pick">
+  <h2>Choose an examination</h2>
+  <p class="hint">Work down the four boxes, then tap View.</p>
+  <div class="grid">
+    <div><label for="countrySelect">1. Country</label><select id="countrySelect"><option value="">Loading…</option></select></div>
+    <div><label for="levelSelect">2. Education level</label><select id="levelSelect" disabled><option value="">Choose country first</option></select></div>
+    <div><label for="subjectSelect">3. Subject</label><select id="subjectSelect" disabled><option value="">Choose education level first</option></select></div>
+    <div><label for="examSelect">4. Examination</label><select id="examSelect" disabled><option value="">Choose subject first</option></select></div>
   </div>
-  <div class="msg" id="eMsg"></div>
-  <div class="row"><button class="btn ghost" id="eCancel" type="button">Cancel</button><button class="btn gold" id="eSave" type="button">Save changes</button></div>
+  <div class="msg" id="pickMsg"></div>
+  <div class="row"><button class="btn gold" id="viewBtn" type="button">View examination</button><button class="btn ghost" id="clearBtn" type="button">Clear</button></div>
+</div>
+
+<div id="view" hidden>
+  <div class="card">
+    <button class="btn ghost" id="backBtn" type="button" style="margin-bottom:14px">← Choose another examination</button>
+    <h2 id="examTitle">Examination</h2>
+    <div class="sum" id="examInfo" style="margin-top:10px"></div>
+    <div class="acts" style="margin-top:14px">
+      <button class="btn good" id="pubBtn" type="button">Publish examination</button>
+      <button class="btn gold" id="editExamBtn" type="button">Edit examination</button>
+      <button class="btn ghost" id="archBtn" type="button">Archive examination</button>
+      <button class="btn danger" id="delExamBtn" type="button">Delete examination</button>
+    </div>
+    <div class="msg show info">Archiving keeps all records and student history. Publishing or unpublishing the examination also does the same to all its questions.</div>
+    <div class="msg" id="pageMsg"></div>
+  </div>
+
+  <div class="card">
+    <h2>Questions</h2>
+    <div class="grid" style="margin-top:10px">
+      <div><label for="qSearch">Search</label><input id="qSearch" type="search" placeholder="Question, number or answer"></div>
+      <div><label for="perPage">Questions per page</label><select id="perPage"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></div>
+    </div>
+    <p class="count" id="qCount"></p>
+    <div id="qList"><p class="empty">Choose an examination to see its questions.</p></div>
+    <div class="pager"><button class="btn ghost" id="prevBtn" type="button">← Previous</button><span id="pageInfo"></span><button class="btn ghost" id="nextBtn" type="button">Next →</button></div>
+  </div>
+</div>
+
+<div class="modal" id="examModal"><div class="modal-box">
+  <h2>Edit examination</h2>
+  <div class="grid">
+    <div class="full"><label for="eTitle">Title</label><input id="eTitle"></div>
+    <div class="full"><label for="eDesc">Description</label><textarea id="eDesc"></textarea></div>
+    <div><label for="eDur">Duration (minutes)</label><input id="eDur" type="number" min="1"></div>
+    <div><label for="eType">Category</label><input id="eType" readonly><small>To use the other category, register a separate examination.</small></div>
+  </div>
+  <div class="msg" id="examMsg"></div>
+  <div class="row"><button class="btn gold" id="saveExamBtn" type="button">Save changes</button><button class="btn ghost" id="closeExamBtn" type="button">Cancel</button></div>
 </div></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<div class="modal" id="qModal"><div class="modal-box">
+  <h2>Edit question</h2>
+  <div class="grid">
+    <div class="full"><label for="qText">Question</label><textarea id="qText"></textarea></div>
+    <div><label for="qA">Option A</label><input id="qA"></div><div><label for="qB">Option B</label><input id="qB"></div>
+    <div><label for="qC">Option C</label><input id="qC"></div><div><label for="qD">Option D</label><input id="qD"></div>
+    <div><label for="qCorrect">Correct option</label><select id="qCorrect"><option value="">Select</option><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+    <div><label for="qMarks">Marks</label><input id="qMarks" type="number" min="0.5" step="0.5"></div>
+    <div><label for="qOrder">Question order</label><input id="qOrder" type="number" min="1"></div>
+    <div class="full"><label for="qExp">Explanation</label><textarea id="qExp"></textarea></div>
+  </div>
+  <div class="msg" id="qMsg"></div>
+  <div class="row"><button class="btn gold" id="saveQBtn" type="button">Save changes</button><button class="btn ghost" id="closeQBtn" type="button">Cancel</button></div>
+</div></div>
+
+</main>
 <script type="module">
 import {supabase,getCurrentSession} from "./auth.js";
-
-/* Questions needed before an exam can be published. Change these two numbers if you want a different minimum. */
-const MIN_FREE=1, MIN_PREMIUM=1;
-const MAX_IMG=5*1024*1024;
-
-/* ================= shared helpers ================= */
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-const keyOf=t=>String(t||"").trim().toLowerCase().replace(/\s+/g," ");
-const baseName=n=>String(n||"").split(/[\\/]/).pop().trim();
 function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
 function hush(id){const e=$(id);e.textContent="";e.className="msg"}
-async function withRetry(fn){try{return await fn()}catch(e){await new Promise(r=>setTimeout(r,1200));return await fn()}}
-function download(name,text,type){
-  const url=URL.createObjectURL(new Blob([text],{type}));
-  const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-async function copyText(text){
-  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return}
-  const t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";
-  document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();
-  if(!ok)throw new Error("Copying is not supported by this browser.");
-}
-
-/* ================= file reading ================= */
-const ALLOWED_EXT=["pdf","docx","txt","csv","xlsx","xls"];
-/* The extension is the text after the LAST dot, in any letter case. Any filename is allowed. */
-const fileExt=name=>{const s=String(name||"").trim(),i=s.lastIndexOf(".");return i<0?"":s.slice(i+1).toLowerCase()};
-
-async function readText(file){
-  const buf=await file.arrayBuffer();
-  try{return new TextDecoder("utf-8",{fatal:true}).decode(buf).replace(/^\uFEFF/,"")}
-  catch{return new TextDecoder("windows-1252").decode(buf)}   /* Excel "CSV" saved in the old Windows encoding */
-}
-function detectDelimiter(text){
-  const first=text.split(/\r?\n/).find(l=>l.trim())||"";
-  let best=",",top=0;
-  for(const d of [",",";","\t"]){const n=first.split(d).length;if(n>top){top=n;best=d}}
-  return best;
-}
-function parseDelimited(text,d){
-  const rows=[];let row=[],cell="",q=false;
-  for(let i=0;i<text.length;i++){
-    const c=text[i],n=text[i+1];
-    if(c==='"'){if(q&&n==='"'){cell+='"';i++}else q=!q}
-    else if(c===d&&!q){row.push(cell);cell=""}
-    else if((c==="\n"||c==="\r")&&!q){
-      if(c==="\r"&&n==="\n")i++;
-      row.push(cell);cell="";
-      if(row.some(v=>v.trim()!==""))rows.push(row);
-      row=[];
-    }else cell+=c;
-  }
-  if(q)throw new Error("A quotation mark in your file is opened but never closed. Check the quotes (\") in your questions and try again.");
-  row.push(cell);if(row.some(v=>v.trim()!==""))rows.push(row);
-  return rows;
-}
-async function sheetRows(file){
-  if(!window.XLSX)throw new Error("The Excel reader did not load. Check your internet connection and refresh the page.");
-  const wb=XLSX.read(await file.arrayBuffer(),{type:"array"});
-  for(const name of wb.SheetNames){
-    const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:false,defval:""})
-      .map(r=>r.map(v=>String(v??""))).filter(r=>r.some(v=>v.trim()!==""));
-    if(rows.length)return rows;
-  }
-  throw new Error("The Excel file is empty.");
-}
-async function docxText(file){
-  if(!window.mammoth)throw new Error("The Word reader did not load. Check your internet connection and refresh the page.");
-  return (await mammoth.extractRawText({arrayBuffer:await file.arrayBuffer()})).value;
-}
-async function pdfText(file){
-  if(!window.pdfjsLib)throw new Error("The PDF reader did not load. Check your internet connection and refresh the page.");
-  pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-  let out="";
-  for(let p=1;p<=pdf.numPages;p++){
-    const content=await (await pdf.getPage(p)).getTextContent();
-    let lastY=null;
-    for(const it of content.items){
-      const y=it.transform[5];
-      if(lastY!==null&&Math.abs(y-lastY)>2)out+="\n";
-      out+=it.str+" ";lastY=y;
-    }
-    out+="\n";
-  }
-  if(!out.trim())throw new Error("No readable text was found in this PDF. Scanned or photographed pages cannot be read.");
-  return out;
-}
-
-/* ---- tables (CSV, Excel): columns are found by their HEADING, not their position ---- */
-const ALIASES={
-  question_text:["question_text","question","questions","question_name"],
-  option_a:["option_a","a","optiona","option_1","choice_a"],
-  option_b:["option_b","b","optionb","option_2","choice_b"],
-  option_c:["option_c","c","optionc","option_3","choice_c"],
-  option_d:["option_d","d","optiond","option_4","choice_d"],
-  correct_option:["correct_option","correct","answer","correct_answer","ans","key"],
-  explanation:["explanation","reason","solution"],
-  marks:["marks","mark","score","points","point"],
-  question_order:["question_order","order","number","no","sn","s_n"],
-  image_filename:["image_filename","image","image_file","picture"]
-};
-const REQUIRED=["question_text","option_a","option_b","option_c","option_d","correct_option"];
-function mapHeaders(row){
-  const idx={};
-  row.forEach((h,i)=>{
-    const k=String(h).replace(/^\uFEFF/,"").trim().toLowerCase().replace(/[\s\-.]+/g,"_").replace(/^_+|_+$/g,"");
-    for(const [name,list] of Object.entries(ALIASES))if(list.includes(k)&&idx[name]===undefined)idx[name]=i;
-  });
-  return idx;
-}
-function tableToItems(rows){
-  let h=-1,idx=null;
-  for(let i=0;i<Math.min(rows.length,6);i++){
-    const m=mapHeaders(rows[i]);
-    if(REQUIRED.every(k=>m[k]!==undefined)){h=i;idx=m;break}
-  }
-  if(h<0)throw new Error("The column headings were not found. The first row must contain: question_text, option_a, option_b, option_c, option_d, correct_option. Download the template to see the layout.");
-  const g=(r,k)=>idx[k]===undefined?"":String(r[idx[k]]??"").trim();
-  return rows.slice(h+1).map((r,i)=>({
-    ref:"Row "+(h+i+2),
-    raw:{question_text:g(r,"question_text"),option_a:g(r,"option_a"),option_b:g(r,"option_b"),option_c:g(r,"option_c"),option_d:g(r,"option_d"),
-         correct:g(r,"correct_option"),explanation:g(r,"explanation"),marks:g(r,"marks"),order:g(r,"question_order"),image:g(r,"image_filename")}
-  }));
-}
-
-/* ---- plain text layout (TXT, DOCX, PDF): "1. Question / A. ... / Answer: B" ---- */
-function parseTextQuestions(text){
-  const lines=text.replace(/\r/g,"\n").split("\n").map(l=>l.trim());
-  const list=[];let cur=null,last="question_text",afterBlank=false;
-  const rxAns=/^(?:correct\s*)?(?:answer|ans|option)\s*[:=-]\s*\(?([A-D])\)?/i;
-  const rxExp=/^explanation\s*[:=-]\s*(.*)$/i;
-  const rxMarks=/^marks?\s*[:=-]\s*([\d.]+)/i;
-  const rxOrder=/^order\s*[:=-]\s*(\d+)/i;
-  const rxOpt=/^\(?([A-D])[.)\]:]\s*(.*)$/i;
-  const rxQ=/^(?:q(?:uestion)?\.?\s*)?\d+\s*[.)\]:-]\s*(.+)$/i;
-  const blank=()=>({question_text:"",option_a:"",option_b:"",option_c:"",option_d:"",correct:"",explanation:"",marks:"",order:"",image:""});
-  for(const line of lines){
-    if(!line){afterBlank=true;continue}
-    let m;
-    if(cur&&(m=line.match(rxAns))){cur.correct=m[1].toUpperCase();last=""}
-    else if(cur&&(m=line.match(rxExp))){cur.explanation=m[1];last="explanation"}
-    else if(cur&&(m=line.match(rxMarks))){cur.marks=m[1];last=""}
-    else if(cur&&(m=line.match(rxOrder))){cur.order=m[1];last=""}
-    else if(cur&&(m=line.match(rxOpt))){last="option_"+m[1].toLowerCase();cur[last]=m[2]}
-    else if((m=line.match(rxQ))){if(cur)list.push(cur);cur=blank();cur.question_text=m[1];last="question_text"}
-    else if(!cur||(cur.correct&&(last===""||afterBlank))){if(cur)list.push(cur);cur=blank();cur.question_text=line;last="question_text"}
-    else if(last){cur[last]+=" "+line}
-    afterBlank=false;
-  }
-  if(cur)list.push(cur);
-  return list;
-}
-
-async function readQuestionFile(file){
-  const e=fileExt(file.name);
-  if(!ALLOWED_EXT.includes(e))throw new Error("This file type is not supported. Use PDF, Word (.docx), Text (.txt), CSV (.csv) or Excel (.xlsx, .xls).");
-  if(e==="xlsx"||e==="xls")return tableToItems(await sheetRows(file));
-  if(e==="csv"){const t=await readText(file);return tableToItems(parseDelimited(t,detectDelimiter(t)))}
-  let text;
-  if(e==="txt"){
-    text=await readText(file);
-    if(/^\s*"?(question_text|question)"?\s*[,;\t]/i.test(text))return tableToItems(parseDelimited(text,detectDelimiter(text)));
-  }else if(e==="docx")text=await docxText(file);
-  else text=await pdfText(file);
-  const list=parseTextQuestions(text);
-  if(!list.length)throw new Error("No questions were found. Write each one like this: 1. Question, then A. B. C. D. options, then Answer: B.");
-  return list.map((raw,i)=>({ref:"Question "+(i+1),raw}));
-}
-
-/* ---- checking one question ---- */
-function normalizeCorrect(v){
-  const s=String(v||"").trim();
-  let m=s.match(/^[\s(\[]*(?:option\s*)?([A-D])(?![A-Za-z])/i);
-  if(m)return m[1].toUpperCase();
-  m=s.match(/^\s*([1-4])\b/);
-  return m?"ABCD"[Number(m[1])-1]:"";
-}
-function buildQuestion(raw,rules){
-  if(!raw.question_text)throw new Error("The question text is empty.");
-  for(const k of ["option_a","option_b","option_c","option_d"])
-    if(!raw[k])throw new Error("Option "+k.slice(-1).toUpperCase()+" is empty. Every question needs four options.");
-  const correct=normalizeCorrect(raw.correct);
-  if(!correct)throw new Error("The correct answer must be A, B, C or D.");
-  const marks=String(raw.marks??"").trim()===""?rules.defaultMarks:parseFloat(raw.marks);
-  if(!Number.isFinite(marks)||marks<=0)throw new Error("Marks must be a number above zero.");
-  if(rules.integerMarks&&!Number.isInteger(marks))throw new Error("Marks must be a whole number, such as 1 or 2.");
-  const order=parseInt(raw.order,10);
-  return{question_text:raw.question_text.trim(),option_a:raw.option_a.trim(),option_b:raw.option_b.trim(),option_c:raw.option_c.trim(),option_d:raw.option_d.trim(),
-    correct_option:correct,explanation:(raw.explanation||"").trim()||null,marks,sortOrder:Number.isFinite(order)&&order>0?order:null,imageName:raw.image||"",imageFile:null};
-}
-function evaluate(items,rules,taken,extra){
-  const valid=[],errors=[],seen=new Set(taken);
-  for(const it of items){
-    try{
-      const q=buildQuestion(it.raw,rules),k=keyOf(q.question_text);
-      if(seen.has(k))throw new Error(taken.has(k)?"This question is already saved or waiting in the review list.":"This question appears twice in the file.");
-      if(extra)extra(it.raw,q);
-      seen.add(k);valid.push(q);
-    }catch(e){errors.push({ref:it.ref,message:e.message})}
-  }
-  return{valid,errors,total:items.length};
-}
-
-/* ---- result of reading a file ---- */
-function renderReadResult(res,prepare){
-  const box=$("upResult");let h="";
-  if(res.valid.length)h+=`<div class="msg show ok">✅ ${res.valid.length} of ${res.total} question(s) are ready to add.</div>`;
-  if(res.errors.length)h+=`<div class="msg show warn">⚠ ${res.errors.length} item(s) need fixing and will be skipped:</div><div class="errs">`+
-    res.errors.slice(0,40).map(e=>`<div class="err-row"><b>${esc(e.ref)}:</b> ${esc(e.message)}</div>`).join("")+
-    (res.errors.length>40?`<p class="hint">…and ${res.errors.length-40} more.</p>`:"")+`</div>`;
-  if(!res.valid.length)h+=`<div class="msg show err">No usable questions were found. Fix the items above in your file, then read it again.</div>`;
-  else h+=`<div class="row"><button class="btn gold" id="addValid" type="button">Add ${res.valid.length} question(s) to review</button></div>`;
-  box.innerHTML=h;
-  const b=$("addValid");
-  if(b)b.addEventListener("click",()=>{
-    const out=prepare?prepare(res.valid):{list:res.valid,note:""};
-    if(!out.list.length){say("upMsg",out.note||"Nothing could be added.","err");return}
-    addToQueue(out.list);box.innerHTML="";$("file").value="";
-    say("rvMsg",out.list.length+" question(s) added for review."+(out.note?" "+out.note:""),out.note?"warn":"ok");
-    go(3);
-  });
-}
-
-/* ================= review list ================= */
-let queue=[],qpage=1,nextId=1,editId=null;
-const PAGE_SIZE=10;
-function addToQueue(list){for(const q of list)queue.push({...q,id:nextId++});qpage=Math.ceil(queue.length/PAGE_SIZE)||1;renderQueue()}
-function renderQueue(){
-  const pages=Math.max(1,Math.ceil(queue.length/PAGE_SIZE));
-  if(qpage>pages)qpage=pages;
-  $("qCount").textContent=queue.length;
-  const box=$("qList");
-  if(!queue.length)box.innerHTML='<p class="hint">Nothing to review right now. Add questions in step 2.</p>';
-  else box.innerHTML=queue.slice((qpage-1)*PAGE_SIZE,qpage*PAGE_SIZE).map((q,i)=>`
-    <article class="q">
-      <div class="q-top">Question ${(qpage-1)*PAGE_SIZE+i+1}</div>
-      <div class="q-text">${esc(q.question_text)}</div>
-      <div class="opts">${["a","b","c","d"].map(l=>`<div class="opt ${q.correct_option===l.toUpperCase()?"ok":""}"><b>${l.toUpperCase()}.</b> ${esc(q["option_"+l])}</div>`).join("")}</div>
-      <div class="q-meta">Marks: ${esc(q.marks)}${q.imageFile?" · Image: "+esc(q.imageFile.name):""}${q.explanation?"<br>Explanation: "+esc(q.explanation):""}</div>
-      <div class="q-act"><button class="btn ghost" type="button" data-act="edit" data-id="${q.id}">Edit</button><button class="btn danger" type="button" data-act="del" data-id="${q.id}">Delete</button></div>
-    </article>`).join("");
-  const pg=$("pager");pg.innerHTML="";
-  if(pages>1)for(let p=1;p<=pages;p++){const b=document.createElement("button");b.type="button";b.textContent=p;if(p===qpage)b.className="on";b.onclick=()=>{qpage=p;renderQueue()};pg.appendChild(b)}
-  onQueueChange();
-}
-$("qList").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-act]");if(!b)return;
-  const id=Number(b.dataset.id),q=queue.find(x=>x.id===id);if(!q)return;
-  if(b.dataset.act==="del"){if(confirm("Delete this question from the review list?")){queue=queue.filter(x=>x.id!==id);renderQueue()}return}
-  editId=id;
-  $("eText").value=q.question_text;$("eA").value=q.option_a;$("eB").value=q.option_b;$("eC").value=q.option_c;$("eD").value=q.option_d;
-  $("eCorrect").value=q.correct_option;$("eMarks").value=q.marks;$("eExp").value=q.explanation||"";
-  hush("eMsg");$("editModal").classList.add("show");
-});
-$("eCancel").addEventListener("click",()=>{$("editModal").classList.remove("show");editId=null});
-$("eSave").addEventListener("click",()=>{
-  try{
-    const q=queue.find(x=>x.id===editId);if(!q)return;
-    const u=buildQuestion({question_text:$("eText").value.trim(),option_a:$("eA").value.trim(),option_b:$("eB").value.trim(),option_c:$("eC").value.trim(),option_d:$("eD").value.trim(),
-      correct:$("eCorrect").value,explanation:$("eExp").value.trim(),marks:$("eMarks").value.trim(),order:"",image:""},RULES());
-    Object.assign(q,{question_text:u.question_text,option_a:u.option_a,option_b:u.option_b,option_c:u.option_c,option_d:u.option_d,correct_option:u.correct_option,explanation:u.explanation,marks:u.marks});
-    $("editModal").classList.remove("show");editId=null;renderQueue();
-  }catch(e){say("eMsg",e.message,"err")}
-});
-$("clearAll").addEventListener("click",()=>{if(queue.length&&confirm("Remove all "+queue.length+" question(s) from the review list? Saved questions are not affected.")){queue=[];renderQueue()}});
+const goHome=()=>location.replace("admin-login.html");
 $("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
-
-
-/* ================= state ================= */
-let exam=null,savedCount=0,maxOrder=0,existing=new Set(),busy=false,step=1;
-const isPaid=t=>t==="paid";
-const typeName=t=>isPaid(t)?"PREMIUM":"FREE";
-const needNow=()=>isPaid(exam?exam.access_type:$("examType").value)?MIN_PREMIUM:MIN_FREE;
-const RULES=()=>({defaultMarks:1,integerMarks:true});
-
-/* ================= navigation ================= */
-function go(n){
-  if(n>1&&!exam){say("m1","Save or choose an examination first.","warn");n=1}
-  step=n;
-  for(let i=1;i<=4;i++){
-    $("p"+i).hidden=i!==n;
-    const b=document.querySelector('.step[data-step="'+i+'"]');
-    b.classList.toggle("on",i===n);b.classList.toggle("done",i<n&&(i>1||!!exam));
+$("signOut").addEventListener("click",async()=>{await supabase.auth.signOut();goHome()});
+/* Checks the signed-in administrator. With a permission name it also checks that permission. */
+async function requirePermission(permission){
+  const {data:u,error}=await supabase.auth.getUser();
+  if(error||!u?.user){await supabase.auth.signOut();goHome();return false}
+  if(permission){
+    const {data:ok,error:e2}=await supabase.rpc("has_admin_permission",{p_permission:permission});
+    if(e2||!ok){
+      $("main").innerHTML='<div class="card"><h2>Access restricted</h2><p class="hint">You do not have permission to use this page. Contact your Super Administrator.</p><a class="btn primary" href="admin.html">Back to dashboard</a></div>';
+      return false;
+    }
   }
-  if(n===3)renderQueue();
-  if(n===4)refreshPublish();
-  window.scrollTo({top:0,behavior:"smooth"});
+  return true;
 }
-document.querySelectorAll(".step").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.step))));
-document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>go(Number(b.dataset.go))));
-$("tabFile").onclick=()=>{$("tabFile").classList.add("on");$("tabOne").classList.remove("on");$("boxFile").hidden=false;$("boxOne").hidden=true};
-$("tabOne").onclick=()=>{$("tabOne").classList.add("on");$("tabFile").classList.remove("on");$("boxFile").hidden=true;$("boxOne").hidden=false};
 
-function refreshBar(){
-  const b=$("bar");
-  if(!exam)b.textContent="No examination selected yet. Choose one or create a new one in step 1.";
-  else b.innerHTML="<span><b>"+esc(exam.title)+"</b></span><span>"+typeName(exam.access_type)+"</span><span>"+(exam.is_published?"PUBLISHED":"DRAFT")+"</span><span>Saved: "+savedCount+"</span><span>To review: "+queue.length+"</span>";
-  document.querySelectorAll(".step").forEach(s=>{if(Number(s.dataset.step)>1)s.disabled=!exam});
-  $("stSaved").textContent=savedCount;$("stNeed").textContent=needNow();
-}
-function onQueueChange(){
-  refreshBar();
-  $("saveAll").disabled=!queue.length||busy||!!(exam&&exam.is_published);
-}
-window.addEventListener("beforeunload",e=>{if(queue.length){e.preventDefault();e.returnValue=""}});
+let exam=null,questions=[],page=1,editQ=null,busy=false;
+const isPub=q=>q.is_published!==false;
 
-/* ================= country, level, subject ================= */
+function setOptions(sel,rows,vf,lf,ph){
+  sel.innerHTML='<option value="">'+esc(ph)+"</option>"+rows.map(r=>`<option value="${esc(r[vf])}">${esc(r[lf])}</option>`).join("");
+  sel.disabled=!rows.length;
+}
+function resetSelect(sel,ph){sel.innerHTML='<option value="">'+esc(ph)+"</option>";sel.disabled=true}
+function showPick(){exam=null;questions=[];$("view").hidden=true;$("pick").hidden=false;hush("pageMsg")}
+
+async function checkAdmin(){
+  const s=await getCurrentSession();
+  const user=s?.user||s;
+  if(!user?.id){goHome();return false}
+  const {data,error}=await supabase.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
+  if(error||!data){await supabase.auth.signOut();goHome();return false}
+  return true;
+}
+
+/* ---------- choosing the examination ---------- */
 async function loadCountries(){
   const {data,error}=await supabase.from("education_systems").select("id,country_name").eq("is_active",true).order("country_name");
   if(error)throw error;
-  $("country").innerHTML='<option value="">Select country</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.country_name)}</option>`).join("");
+  setOptions($("countrySelect"),data||[],"id","country_name","Choose country");
 }
 async function loadLevels(){
-  const id=$("country").value;
-  $("level").innerHTML='<option value="">Select education level</option>';
-  $("subject").innerHTML='<option value="">Select education level first</option>';
-  $("level").disabled=true;$("subject").disabled=true;
+  const id=$("countrySelect").value;
+  resetSelect($("levelSelect"),"Choose education level");resetSelect($("subjectSelect"),"Choose subject");resetSelect($("examSelect"),"Choose examination");
   if(!id)return;
   const {data,error}=await supabase.from("education_levels").select("id,level_name").eq("education_system_id",id).eq("is_active",true).order("level_name");
   if(error)throw error;
-  $("level").innerHTML+=(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.level_name)}</option>`).join("");
-  $("level").disabled=false;
+  setOptions($("levelSelect"),data||[],"id","level_name","Choose education level");
 }
 async function loadSubjects(){
-  const id=$("level").value;
-  $("subject").innerHTML='<option value="">Select subject</option>';$("subject").disabled=true;
+  const id=$("levelSelect").value;
+  resetSelect($("subjectSelect"),"Choose subject");resetSelect($("examSelect"),"Choose examination");
   if(!id)return;
-  const {data:rel,error:e1}=await supabase.from("education_level_subjects").select("subject_id").eq("education_level_id",id).eq("is_active",true);
+  const {data:links,error:e1}=await supabase.from("education_level_subjects").select("subject_id").eq("education_level_id",id).eq("is_active",true);
   if(e1)throw e1;
-  const ids=[...new Set((rel||[]).map(x=>x.subject_id))];
-  if(!ids.length){$("subject").innerHTML='<option value="">No subjects assigned to this level</option>';return}
-  const {data,error}=await supabase.from("subjects").select("id,name").eq("is_active",true).in("id",ids).order("name");
+  const ids=(links||[]).map(r=>r.subject_id);
+  if(!ids.length){resetSelect($("subjectSelect"),"No subjects available");return}
+  const {data,error}=await supabase.from("subjects").select("id,name").in("id",ids).eq("is_active",true).order("name");
   if(error)throw error;
-  $("subject").innerHTML+=(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join("");
-  $("subject").disabled=false;
+  setOptions($("subjectSelect"),data||[],"id","name","Choose subject");
 }
-$("country").addEventListener("change",()=>loadLevels().catch(e=>say("m1",e.message,"err")));
-$("level").addEventListener("change",()=>loadSubjects().catch(e=>say("m1",e.message,"err")));
-$("examType").addEventListener("change",()=>{$("duration").value=(isPaid($("examType").value)?90:45)+" minutes"});
+async function loadExams(){
+  const lid=$("levelSelect").value,sid=$("subjectSelect").value;
+  resetSelect($("examSelect"),"Choose examination");
+  if(!lid||!sid)return;
+  const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published,is_archived").eq("education_level_id",lid).eq("subject_id",sid).order("title");
+  if(error)throw error;
+  const sel=$("examSelect");
+  sel.innerHTML='<option value="">Choose examination</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.title)} — ${x.access_type==="paid"?"PREMIUM":"FREE"} — ${x.is_published?"Published":"Unpublished"} — ${x.is_archived?"ARCHIVED":"Active"}</option>`).join("");
+  sel.disabled=!(data||[]).length;
+}
+const guard=(id,fn)=>async()=>{try{await fn();hush(id)}catch(e){say(id,e.message,"err")}};
+$("countrySelect").addEventListener("change",guard("pickMsg",loadLevels));
+$("levelSelect").addEventListener("change",guard("pickMsg",loadSubjects));
+$("subjectSelect").addEventListener("change",guard("pickMsg",loadExams));
+$("clearBtn").addEventListener("click",()=>{$("countrySelect").value="";resetSelect($("levelSelect"),"Choose country first");resetSelect($("subjectSelect"),"Choose education level first");resetSelect($("examSelect"),"Choose subject first");hush("pickMsg")});
+$("backBtn").addEventListener("click",showPick);
 
-/* ================= examinations ================= */
-async function loadExams(selectId){
-  const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published").is("school_account_id",null).order("created_at",{ascending:false});
-  if(error)throw error;
-  $("existing").innerHTML='<option value="">➕ Create a new examination</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">[${typeName(x.access_type)}] ${esc(x.title)} — ${x.is_published?"Published":"Draft"}</option>`).join("");
-  if(selectId)$("existing").value=String(selectId);
-}
-function clearForm(){
-  $("country").value="";$("level").innerHTML='<option value="">Select country first</option>';$("level").disabled=true;
-  $("subject").innerHTML='<option value="">Select education level first</option>';$("subject").disabled=true;
-  $("examTitle").value="";$("description").value="";$("examType").value="free";$("duration").value="45 minutes";
-}
-async function fillForm(e){
-  const {data,error}=await supabase.from("education_levels").select("id,education_system_id").eq("id",e.education_level_id).single();
-  if(error)throw error;
-  $("country").value=data.education_system_id;await loadLevels();
-  $("level").value=e.education_level_id;await loadSubjects();
-  $("subject").value=e.subject_id;$("examType").value=e.access_type;
-  $("examTitle").value=e.title||"";$("description").value=e.description||"";
-  $("duration").value=(isPaid(e.access_type)?90:45)+" minutes";
-}
-async function refreshSaved(){
-  const {data,error}=await supabase.from("exam_questions").select("question_text,question_order,is_archived").eq("examination_id",exam.id).range(0,4999);
-  if(error)throw error;
-  const rows=data||[];
-  savedCount=rows.filter(r=>r.is_archived!==true).length;
-  existing=new Set(rows.map(r=>keyOf(r.question_text)));
-  maxOrder=Math.max(0,...rows.map(r=>Number(r.question_order)||0));
-}
-async function chooseExam(id){
-  if(queue.length&&!confirm("You have questions waiting in the review list. They will be lost if you switch. Continue?")){$("existing").value=exam?String(exam.id):"";return}
-  queue=[];renderQueue();$("upResult").innerHTML="";hush("upMsg");hush("rvMsg");
-  if(!id){exam=null;savedCount=0;maxOrder=0;existing=new Set();clearForm();refreshBar();hush("m1");return}
-  const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,duration_minutes,is_published").eq("id",id).single();
-  if(error)throw error;
-  exam=data;await fillForm(data);await refreshSaved();refreshBar();
-  say("m1",exam.is_published?"This examination is published. Its questions can no longer be changed here.":"Loaded. Change the details if needed, then continue.","info");
-}
-$("existing").addEventListener("change",()=>chooseExam($("existing").value).catch(e=>say("m1",e.message,"err")));
-$("clearForm").addEventListener("click",()=>{$("existing").value="";chooseExam("").catch(()=>{})});
-
-$("saveExam").addEventListener("click",async()=>{
-  if(busy)return;
-  try{
-    hush("m1");
-    const type=$("examType").value,title=$("examTitle").value.trim(),subject=$("subject").value,level=$("level").value;
-    if(!title||!subject||!level)throw new Error("Choose the country, education level and subject, then enter the title.");
-    if(exam&&exam.is_published)throw new Error("This examination is already published. Create a new one instead.");
-    busy=true;$("saveExam").disabled=true;$("saveExam").textContent="Saving…";
-    const payload={subject_id:subject,education_level_id:level,title,description:$("description").value.trim(),duration_minutes:isPaid(type)?90:45,access_type:type,is_published:false};
-    const r=exam?await supabase.from("examinations").update(payload).eq("id",exam.id).eq("is_published",false).select().single()
-                :await supabase.from("examinations").insert(payload).select().single();
-    if(r.error)throw r.error;
-    exam=r.data;await loadExams(exam.id);await refreshSaved();refreshBar();
-    say("m1","Examination saved.","ok");go(2);
-  }catch(e){say("m1",e.message,"err")}
-  finally{busy=false;$("saveExam").disabled=false;$("saveExam").textContent="Save and continue"}
+$("viewBtn").addEventListener("click",async()=>{
+  const id=$("examSelect").value;
+  if(!$("countrySelect").value||!$("levelSelect").value||!$("subjectSelect").value||!id){say("pickMsg","Choose the country, education level, subject and examination.","err");return}
+  hush("pickMsg");hush("pageMsg");
+  const {data,error}=await supabase.from("examinations").select("*").eq("id",id).eq("education_level_id",$("levelSelect").value).eq("subject_id",$("subjectSelect").value).single();
+  if(error){say("pickMsg",error.message,"err");return}
+  exam=data;page=1;$("qSearch").value="";
+  $("pick").hidden=true;$("view").hidden=false;window.scrollTo({top:0});
+  renderExam();await loadQuestions();
 });
 
-/* ================= adding questions ================= */
-function taken(){return new Set([...existing,...queue.map(q=>keyOf(q.question_text))])}
-function checkImage(f){
-  if(!f.type.startsWith("image/"))throw new Error('"'+f.name+'" is not an image.');
-  if(f.size>MAX_IMG)throw new Error('Image "'+f.name+'" is over 5 MB.');
-  return f;
+/* ---------- the examination ---------- */
+function renderExam(){
+  const pub=!!exam.is_published,arch=!!exam.is_archived;
+  $("examTitle").textContent=exam.title;
+  $("examInfo").innerHTML=`<b>Category:</b> ${exam.access_type==="paid"?"Premium":"Free"}<br><b>Duration:</b> ${Number(exam.duration_minutes)||0} minutes<br>
+    <b>Publication:</b> <span class="badge ${pub?"on":"off"}">${pub?"Published":"Unpublished"}</span><br>
+    <b>Archive:</b> <span class="badge ${arch?"arch":"on"}">${arch?"Archived":"Active"}</span><br><b>Description:</b> ${esc(exam.description||"No description")}`;
+  $("pubBtn").textContent=pub?"Unpublish examination":"Publish examination";
+  $("pubBtn").className="btn "+(pub?"danger":"good");
+  $("pubBtn").disabled=arch;$("editExamBtn").disabled=arch;$("delExamBtn").disabled=arch;
+  $("archBtn").textContent=arch?"Restore examination":"Archive examination";
+  $("archBtn").className="btn "+(arch?"good":"ghost");
 }
-function guardExam(){
-  if(!exam)throw new Error("Save or choose an examination first (step 1).");
-  if(exam.is_published)throw new Error("This examination is already published.");
-}
-$("readBtn").addEventListener("click",async()=>{
-  hush("upMsg");$("upResult").innerHTML="";
-  try{
-    guardExam();
-    const f=$("file").files[0];if(!f)throw new Error("Choose a file first.");
-    $("readBtn").disabled=true;$("readBtn").textContent="Reading…";
-    const imgs=new Map();
-    for(const im of $("images").files)imgs.set(baseName(checkImage(im).name).toLowerCase(),im);
-    const items=await readQuestionFile(f);
-    const res=evaluate(items,RULES(),taken(),(raw,q)=>{
-      if(!raw.image)return;
-      const im=imgs.get(baseName(raw.image).toLowerCase());
-      if(!im)throw new Error('The image "'+raw.image+'" was not selected above.');
-      q.imageFile=im;
-    });
-    renderReadResult(res,null);
-  }catch(e){say("upMsg",e.message,"err")}
-  finally{$("readBtn").disabled=false;$("readBtn").textContent="Read file"}
-});
-$("addOne").addEventListener("click",()=>{
-  try{
-    guardExam();
-    const q=buildQuestion({question_text:$("qText").value.trim(),option_a:$("oA").value.trim(),option_b:$("oB").value.trim(),option_c:$("oC").value.trim(),option_d:$("oD").value.trim(),
-      correct:$("qCorrect").value,explanation:$("qExp").value.trim(),marks:$("qMarks").value.trim(),order:"",image:""},RULES());
-    if(taken().has(keyOf(q.question_text)))throw new Error("This question is already saved or waiting in the review list.");
-    const f=$("qImage").files[0];if(f)q.imageFile=checkImage(f);
-    addToQueue([q]);
-    ["qText","oA","oB","oC","oD","qExp","qImage"].forEach(i=>$(i).value="");$("qCorrect").value="";$("qMarks").value="1";
-    say("oneMsg","Added. You have "+queue.length+" question(s) waiting in the review list.","ok");
-  }catch(e){say("oneMsg",e.message,"err")}
-});
-$("tplCsv").addEventListener("click",()=>{
-  const head=["question_text","option_a","option_b","option_c","option_d","correct_option","explanation","marks","question_order","image_filename"];
-  const ex=["What is the capital of Nigeria?","Lagos","Abuja","Kano","Enugu","B","Abuja is the capital of Nigeria.","1","1",""];
-  download("saintig-exams-question-template.csv","\uFEFF"+[head,ex].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n"),"text/csv;charset=utf-8");
-});
-$("tplTxt").addEventListener("click",()=>download("saintig-exams-word-text-sample.txt",
-  ["1. What is the capital of Nigeria?","A. Lagos","B. Abuja","C. Kano","D. Enugu","Answer: B","Explanation: Abuja is the capital of Nigeria.","Marks: 1","","2. Which of these is a primary colour?","A. Green","B. Red","C. Orange","D. Purple","Answer: B",""].join("\r\n"),"text/plain;charset=utf-8"));
+async function refreshExamList(){const keep=exam.id;await loadExams();$("examSelect").value=String(keep)}
+async function examAction(fn){if(busy)return;busy=true;try{await fn()}catch(e){say("pageMsg",e.message,"err")}finally{busy=false}}
 
-/* ================= saving ================= */
-async function uploadImage(file){
-  const ext=(file.name.includes(".")?file.name.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g,""):"")||"jpg";
-  const path="question-images/"+crypto.randomUUID()+"."+ext;
-  const {error}=await supabase.storage.from("exam-images").upload(path,file,{contentType:file.type,upsert:false});
-  if(error)throw new Error('Image upload failed for "'+file.name+'": '+error.message);
-  return path;
-}
-$("saveAll").addEventListener("click",async()=>{
-  if(busy||!queue.length)return;
-  busy=true;$("saveAll").disabled=true;hush("rvMsg");
-  let saved=0;
-  try{
-    guardExam();
-    await refreshSaved();
-    const list=[...queue].sort((a,b)=>(a.sortOrder??1e9)-(b.sortOrder??1e9));
-    for(let i=0;i<list.length;i+=40){
-      const chunk=list.slice(i,i+40),rows=[];
-      for(const q of chunk){
-        const image_path=q.imageFile?await uploadImage(q.imageFile):null;
-        rows.push({examination_id:exam.id,question_text:q.question_text,option_a:q.option_a,option_b:q.option_b,option_c:q.option_c,option_d:q.option_d,
-          correct_option:q.correct_option,explanation:q.explanation,marks:q.marks,question_order:maxOrder+rows.length+1,image_path,is_published:false});
-      }
-      await withRetry(async()=>{const {error}=await supabase.from("exam_questions").insert(rows);if(error)throw error});
-      maxOrder+=rows.length;saved+=rows.length;savedCount+=rows.length;
-      const ids=new Set(chunk.map(q=>q.id));queue=queue.filter(q=>!ids.has(q.id));
-      rows.forEach(r=>existing.add(keyOf(r.question_text)));
-      renderQueue();
-    }
-    say("rvMsg",saved+" question(s) saved. Next, publish the examination in step 4.","ok");
-  }catch(e){
-    say("rvMsg",(saved?saved+" saved. ":"")+"Saving stopped: "+(e.message||e)+" The remaining "+queue.length+" question(s) are still here. Fix the problem and tap Save again.","err");
-  }finally{busy=false;refreshBar();onQueueChange()}
+$("pubBtn").addEventListener("click",()=>examAction(async()=>{
+  if(!exam||exam.is_archived)return;
+  const to=!exam.is_published,act=to?"publish":"unpublish";
+  if(!confirm("Are you sure you want to "+act+" this examination and ALL its questions?"))return;
+  const {error}=await supabase.from("examinations").update({is_published:to}).eq("id",exam.id);
+  if(error)throw error;
+  const {error:qe}=await supabase.from("exam_questions").update({is_published:to}).eq("examination_id",exam.id);
+  if(qe)throw new Error("The examination status changed, but its questions could not be updated. "+qe.message);
+  exam.is_published=to;questions.forEach(q=>{q.is_published=to});
+  renderExam();renderQuestions();await refreshExamList();
+  say("pageMsg","The examination and all its questions are now "+(to?"published":"unpublished")+".","ok");
+}));
+$("editExamBtn").addEventListener("click",()=>{
+  if(!exam||exam.is_archived)return;
+  $("eTitle").value=exam.title||"";$("eDesc").value=exam.description||"";$("eDur").value=exam.duration_minutes||"";
+  $("eType").value=exam.access_type==="paid"?"Premium":"Free";hush("examMsg");$("examModal").classList.add("show");
 });
-
-/* ================= publishing ================= */
-async function refreshPublish(){
-  hush("pubMsg");
+$("closeExamBtn").addEventListener("click",()=>$("examModal").classList.remove("show"));
+$("saveExamBtn").addEventListener("click",()=>examAction(async()=>{
+  if(!exam||exam.is_archived)return;
+  const title=$("eTitle").value.trim(),dur=Number($("eDur").value);
+  if(!title||!Number.isFinite(dur)||dur<=0){say("examMsg","Enter a title and a duration above zero.","err");return}
+  const updates={title,description:$("eDesc").value.trim(),duration_minutes:dur};
+  const {error}=await supabase.from("examinations").update(updates).eq("id",exam.id).eq("is_archived",false);
+  if(error){say("examMsg",error.message,"err");return}
+  exam={...exam,...updates};$("examModal").classList.remove("show");
+  renderExam();await refreshExamList();say("pageMsg","Examination updated.","ok");
+}));
+$("archBtn").addEventListener("click",()=>examAction(async()=>{
   if(!exam)return;
-  try{await refreshSaved()}catch(e){say("pubMsg","Could not count saved questions: "+e.message,"err")}
-  refreshBar();
-  const need=needNow();
-  $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Category: "+typeName(exam.access_type)+"<br>Duration: "+exam.duration_minutes+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(exam.is_published?"Published to students":"Not published yet");
-  let ready=!exam.is_published&&!busy;
-  if(exam.is_published)say("pubMsg","This examination is published.","ok");
-  else if(queue.length){ready=false;say("pubMsg","You still have "+queue.length+" question(s) in the review list. Save them in step 3 first.","warn")}
-  else if(savedCount<need){ready=false;say("pubMsg","Save at least "+(need-savedCount)+" more question(s) before publishing.","warn")}
-  $("publishBtn").disabled=!ready;
-}
-$("refreshBtn").addEventListener("click",refreshPublish);
-$("publishBtn").addEventListener("click",async()=>{
-  if(busy)return;
-  try{
-    guardExam();
-    if(queue.length)throw new Error("Save the questions in the review list first.");
-    await refreshSaved();
-    if(savedCount<needNow())throw new Error("This examination has "+savedCount+" saved question(s). At least "+needNow()+" are needed.");
-    if(!confirm('Publish "'+exam.title+'"?\n\nCategory: '+typeName(exam.access_type)+"\nQuestions: "+savedCount+"\nDuration: "+exam.duration_minutes+" minutes"))return;
-    busy=true;$("publishBtn").disabled=true;$("publishBtn").textContent="Publishing…";
-    const {data,error}=await supabase.from("examinations").update({is_published:true}).eq("id",exam.id).eq("is_published",false).select().single();
-    if(error)throw error;
-    exam=data;await loadExams(exam.id);
-    say("pubMsg","Published. Students can now take this examination.","ok");
-  }catch(e){say("pubMsg",e.message,"err")}
-  finally{busy=false;$("publishBtn").textContent="Publish examination";refreshPublish()}
-});
+  const to=!exam.is_archived;
+  if(!confirm(to?"Archive this examination and all its questions? Student history is kept.":"Restore this examination and all its questions?"))return;
+  const {error}=await supabase.from("examinations").update({is_archived:to}).eq("id",exam.id);
+  if(error)throw error;
+  const {error:qe}=await supabase.from("exam_questions").update({is_archived:to}).eq("examination_id",exam.id);
+  if(qe)throw new Error("The examination was updated, but its questions could not be. Please check the database. "+qe.message);
+  exam.is_archived=to;questions.forEach(q=>{q.is_archived=to});
+  renderExam();renderQuestions();await refreshExamList();
+  say("pageMsg",to?"Archived. Student history is kept.":"Restored.","ok");
+}));
+$("delExamBtn").addEventListener("click",()=>examAction(async()=>{
+  if(!exam||exam.is_archived)return;
+  if(!confirm('Check student history for "'+exam.title+'" and delete or archive it safely?'))return;
+  const {data,error}=await supabase.from("exam_attempts").select("id").eq("examination_id",exam.id).limit(1);
+  if(error)throw error;
+  if((data||[]).length){
+    const {error:e1}=await supabase.from("examinations").update({is_archived:true}).eq("id",exam.id);if(e1)throw e1;
+    const {error:e2}=await supabase.from("exam_questions").update({is_archived:true}).eq("examination_id",exam.id);
+    if(e2)throw new Error("The examination was archived, but some questions could not be. "+e2.message);
+    showPick();await loadExams();
+    say("pickMsg","This examination has student history, so it was archived instead of deleted.","warn");
+  }else{
+    const {error:e3}=await supabase.from("examinations").delete().eq("id",exam.id);if(e3)throw e3;
+    showPick();await loadExams();say("pickMsg","Examination permanently deleted.","ok");
+  }
+}));
 
-/* ================= start ================= */
+/* ---------- questions ---------- */
+async function loadQuestions(){
+  if(!exam)return;
+  const {data,error}=await supabase.from("exam_questions").select("*").eq("examination_id",exam.id)
+    .order("question_order",{ascending:true}).order("created_at",{ascending:true}).order("id",{ascending:true}).range(0,4999);
+  if(error){say("pageMsg",error.message,"err");return}
+  questions=data||[];renderQuestions();
+}
+function filtered(){
+  const q=$("qSearch").value.trim().toLowerCase();
+  return questions.map((x,i)=>({x,n:i+1})).filter(({x,n})=>[n,x.question_text,x.option_a,x.option_b,x.option_c,x.option_d,x.correct_option,x.explanation].join(" ").toLowerCase().includes(q));
+}
+function renderQuestions(){
+  if(!exam)return;
+  const rows=filtered(),per=Number($("perPage").value)||10,pages=Math.max(1,Math.ceil(rows.length/per));
+  if(page>pages)page=pages;
+  $("qCount").textContent=rows.length+" question(s) found. Total: "+questions.length+".";
+  $("pageInfo").textContent="Page "+page+" of "+pages;
+  $("prevBtn").disabled=page<=1;$("nextBtn").disabled=page>=pages;
+  const vis=rows.slice((page-1)*per,page*per);
+  $("qList").innerHTML=vis.length?vis.map(({x,n})=>{
+    const arch=!!x.is_archived,pub=isPub(x),lock=exam.is_archived?"disabled":"";
+    const badge=arch?'<span class="badge arch">Archived</span>':`<span class="badge ${pub?"on":"off"}">${pub?"Published":"Unpublished"}</span>`;
+    return `<article class="item ${arch?"muted":""}">
+      <div><div class="item-meta" style="margin:0 0 4px"><b>Question ${n}</b> &nbsp;${badge}</div>
+        <div class="item-title" style="font-size:19px">${esc(x.question_text)}</div>
+        <div class="opts">${["a","b","c","d"].map(l=>`<div class="opt ${String(x.correct_option).toUpperCase()===l.toUpperCase()?"ok":""}"><b>${l.toUpperCase()}.</b> ${esc(x["option_"+l])}</div>`).join("")}</div>
+        <div class="item-meta">Correct: <b>${esc(x.correct_option||"")}</b> · Marks: ${esc(x.marks??"")}${x.explanation?"<br>Explanation: "+esc(x.explanation):""}</div></div>
+      <div class="acts" style="flex-direction:column;align-items:stretch">${arch
+        ?`<button class="btn good" type="button" data-a="restore" data-id="${esc(x.id)}">Restore</button>`
+        :`<button class="btn ${pub?"danger":"good"}" type="button" data-a="toggle" data-id="${esc(x.id)}" ${lock}>${pub?"Unpublish":"Publish"}</button>
+          <button class="btn gold" type="button" data-a="edit" data-id="${esc(x.id)}" ${lock}>Edit</button>
+          <button class="btn ghost" type="button" data-a="del" data-id="${esc(x.id)}">Delete</button>`}</div></article>`}).join("")
+    :'<p class="empty">No questions found.</p>';
+}
+$("qSearch").addEventListener("input",()=>{page=1;renderQuestions()});
+$("perPage").addEventListener("change",()=>{page=1;renderQuestions()});
+$("prevBtn").addEventListener("click",()=>{if(page>1){page--;renderQuestions()}});
+$("nextBtn").addEventListener("click",()=>{page++;renderQuestions()});
+
+async function hasHistory(id){
+  const [a,b]=await Promise.all([
+    supabase.from("attempt_questions").select("id").eq("question_id",id).limit(1),
+    supabase.from("attempt_answers").select("id").eq("question_id",id).limit(1)
+  ]);
+  if(a.error)throw a.error;if(b.error)throw b.error;
+  return (a.data||[]).length>0||(b.data||[]).length>0;
+}
+$("qList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b)return;
+  const id=b.dataset.id,q=questions.find(x=>String(x.id)===String(id));if(!q)return;
+  examAction(async()=>{
+    if(b.dataset.a==="toggle"){
+      if(exam.is_archived||q.is_archived)return;
+      const to=!isPub(q);
+      const {error}=await supabase.from("exam_questions").update({is_published:to}).eq("id",id).eq("examination_id",exam.id).eq("is_archived",false);
+      if(error)throw error;
+      q.is_published=to;renderQuestions();say("pageMsg","Question status updated.","ok");return;
+    }
+    if(b.dataset.a==="edit"){
+      if(exam.is_archived||q.is_archived)return;
+      editQ=q.id;$("qText").value=q.question_text||"";$("qA").value=q.option_a||"";$("qB").value=q.option_b||"";$("qC").value=q.option_c||"";$("qD").value=q.option_d||"";
+      $("qCorrect").value=q.correct_option||"";$("qMarks").value=q.marks??1;$("qOrder").value=q.question_order??1;$("qExp").value=q.explanation||"";
+      hush("qMsg");$("qModal").classList.add("show");return;
+    }
+    if(b.dataset.a==="del"){
+      if(q.is_archived)return;
+      if(!confirm("Check this question's student history and delete or archive it safely?"))return;
+      if(await hasHistory(id)){
+        const {error}=await supabase.from("exam_questions").update({is_archived:true}).eq("id",id).eq("examination_id",exam.id);if(error)throw error;
+        await loadQuestions();say("pageMsg","This question has student history, so it was archived instead of deleted.","warn");
+      }else{
+        const {error}=await supabase.from("exam_questions").delete().eq("id",id).eq("examination_id",exam.id);if(error)throw error;
+        await loadQuestions();say("pageMsg","Question permanently deleted.","ok");
+      }
+      return;
+    }
+    if(b.dataset.a==="restore"){
+      if(exam.is_archived){say("pageMsg","Restore the examination first, then restore its questions.","warn");return}
+      if(!confirm("Restore this question?"))return;
+      const {error}=await supabase.from("exam_questions").update({is_archived:false}).eq("id",id).eq("examination_id",exam.id);if(error)throw error;
+      await loadQuestions();say("pageMsg","Question restored.","ok");
+    }
+  });
+});
+$("closeQBtn").addEventListener("click",()=>{$("qModal").classList.remove("show");editQ=null});
+$("saveQBtn").addEventListener("click",()=>examAction(async()=>{
+  if(!exam||!editQ||exam.is_archived)return;
+  const t=$("qText").value.trim(),a=$("qA").value.trim(),b=$("qB").value.trim(),c=$("qC").value.trim(),d=$("qD").value.trim(),
+        correct=$("qCorrect").value,marks=Number($("qMarks").value),order=Number($("qOrder").value);
+  if(!t||!a||!b||!c||!d||!correct||!Number.isFinite(marks)||marks<=0||!Number.isInteger(order)||order<=0){say("qMsg","Fill in the question, all four options, the correct answer, marks and a whole-number question order.","err");return}
+  const {error}=await supabase.from("exam_questions").update({question_text:t,option_a:a,option_b:b,option_c:c,option_d:d,correct_option:correct,marks,question_order:order,explanation:$("qExp").value.trim()})
+    .eq("id",editQ).eq("examination_id",exam.id).eq("is_archived",false);
+  if(error){say("qMsg",error.message,"err");return}
+  $("qModal").classList.remove("show");editQ=null;await loadQuestions();say("pageMsg","Question updated.","ok");
+}));
+
 (async()=>{
-  try{
-    const s=await getCurrentSession();const user=s?.user||s;
-    if(!user?.id){location.replace("admin-login.html");return}
-    const {data,error}=await supabase.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
-    if(error||!data){alert("Administrator access required.");await supabase.auth.signOut();location.replace("admin-login.html");return}
-    await Promise.all([loadCountries(),loadExams()]);
-    renderQueue();refreshBar();
-  }catch(e){console.error(e);say("m1","Could not load this page: "+(e.message||e),"err")}
+  try{if(!await checkAdmin())return;await loadCountries()}
+  catch(e){console.error(e);say("pickMsg",e.message||"Unable to load the Question Bank.","err")}
 })();
+
 </script>
 </body>
 </html>
