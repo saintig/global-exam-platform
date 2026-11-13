@@ -91,12 +91,12 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
     <span class="role">Admin</span>
     <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
-  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html" class="on">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html">Register exam</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">View public website</a><button id="signOut" type="button">Sign out</button></div></nav>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="admin.html">Dashboard</a><a href="countries.html" class="on">Countries</a><a href="education-levels.html">Education levels</a><a href="subjects.html">Subjects</a><a href="question-bank.html">Question bank</a><a href="register-exam.html">Register Examination</a><a href="registered-users.html">Registered users</a><a href="paid-subscribers.html">Paid subscribers</a><a href="results-reports.html">Results &amp; reports</a><a href="settings-security.html">Settings &amp; security</a><a href="index.html">View public website</a><button id="signOut" type="button">Sign out</button></div></nav>
 </header>
 <main class="wrap" id="main">
 <h1>Countries</h1>
 <p class="sub">Add and manage the countries on SAINTIG EXAMS.</p>
-<nav class="sections" aria-label="Setup sections"><a href="countries.html" class="on" aria-current="page"><b>1</b>Countries</a><a href="education-levels.html"><b>2</b>Education levels</a><a href="subjects.html"><b>3</b>Subjects</a><a href="question-bank.html"><b>4</b>Question bank</a></nav>
+<nav class="sections" aria-label="Setup sections"><a href="countries.html" class="on" aria-current="page"><b>1</b>Countries</a><a href="education-levels.html"><b>2</b>Education levels</a><a href="subjects.html"><b>3</b>Subjects</a><a href="question-bank.html"><b>4</b>Question bank</a><a href="register-exam.html"><b>5</b>Register Examination</a></nav>
 <div class="card">
   <h2 id="formTitle">Add a country</h2>
   <p class="hint">Type the country name, then tap Add.</p>
@@ -195,7 +195,7 @@ $("list").addEventListener("click",async e=>{
     const {error}=await supabase.from("education_systems").update({is_active:!c.is_active}).eq("id",c.id);
     busy=false;
     if(error){say("listMsg",error.message,"err");return}
-    say("listMsg",c.country_name+" "+act+"ed.","ok");await load();return;
+    await load();say("listMsg",c.country_name+" "+act+"ed.","ok");return;
   }
   if(b.dataset.a==="del"){
     if(!confirm("Delete "+c.country_name+"?\n\nThis may affect its education levels and their data."))return;
@@ -203,7 +203,7 @@ $("list").addEventListener("click",async e=>{
     const {error}=await supabase.from("education_systems").delete().eq("id",c.id);
     busy=false;
     if(error){say("listMsg","The country was not deleted. Its education levels may be blocking it. Details: "+error.message,"err");return}
-    say("listMsg","Country deleted.","ok");await load();
+    await load();say("listMsg","Country deleted.","ok");
   }
 });
 $("search").addEventListener("input",render);
