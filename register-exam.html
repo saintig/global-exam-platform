@@ -125,6 +125,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
       <h2>Which examination?</h2>
       <p class="hint">Pick an examination to continue working on, or create a new one.</p>
       <select id="existing" aria-label="Examination"><option value="">Loading…</option></select>
+      <small>Only unpublished examinations are listed. Published examinations are managed in the Question Bank.</small>
     </div>
 
     <div class="card">
@@ -232,6 +233,7 @@ Marks: 1 (optional)
       <div class="sum" id="pubInfo"></div>
       <div class="msg" id="pubMsg"></div>
       <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
+      <div class="row" id="anotherRow" hidden><button class="btn primary" id="anotherBtn" type="button">Register another examination</button></div>
     </div>
     <div class="nav"><button class="btn ghost" data-go="3" type="button">← Back</button></div>
   </section>
@@ -601,7 +603,7 @@ $("examType").addEventListener("change",()=>{$("duration").value=(isPaid($("exam
 
 /* ================= examinations ================= */
 async function loadExams(selectId){
-  const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published").is("school_account_id",null).order("created_at",{ascending:false});
+  const {data,error}=await supabase.from("examinations").select("id,title,access_type,is_published").is("school_account_id",null).eq("is_published",false).or("is_archived.is.false,is_archived.is.null").order("created_at",{ascending:false});
   if(error)throw error;
   $("existing").innerHTML='<option value="">➕ Create a new examination</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">[${typeName(x.access_type)}] ${esc(x.title)} — ${x.is_published?"Published":"Draft"}</option>`).join("");
   if(selectId)$("existing").value=String(selectId);
@@ -752,12 +754,17 @@ async function refreshPublish(){
   const need=needNow();
   $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Category: "+typeName(exam.access_type)+"<br>Duration: "+exam.duration_minutes+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(exam.is_published?"Published to students":"Not published yet");
   let ready=!exam.is_published&&!busy;
+  $("anotherRow").hidden=!exam.is_published;
   if(exam.is_published)say("pubMsg","This examination is published.","ok");
   else if(queue.length){ready=false;say("pubMsg","You still have "+queue.length+" question(s) in the review list. Save them in step 3 first.","warn")}
   else if(savedCount<need){ready=false;say("pubMsg","Save at least "+(need-savedCount)+" more question(s) before publishing.","warn")}
   $("publishBtn").disabled=!ready;
 }
 $("refreshBtn").addEventListener("click",refreshPublish);
+$("anotherBtn").addEventListener("click",()=>{
+  exam=null;savedCount=0;maxOrder=0;existing=new Set();queue=[];renderQueue();clearForm();
+  $("existing").value="";$("upResult").innerHTML="";hush("m1");hush("pubMsg");refreshBar();go(1);
+});
 $("publishBtn").addEventListener("click",async()=>{
   if(busy)return;
   try{
@@ -769,8 +776,8 @@ $("publishBtn").addEventListener("click",async()=>{
     busy=true;$("publishBtn").disabled=true;$("publishBtn").textContent="Publishing…";
     const {data,error}=await supabase.from("examinations").update({is_published:true}).eq("id",exam.id).eq("is_published",false).select().single();
     if(error)throw error;
-    exam=data;await loadExams(exam.id);
-    say("pubMsg","Published. Students can now take this examination.","ok");
+    exam=data;await loadExams();$("existing").value="";
+    say("pubMsg","Published. Students can now take this examination. It has been removed from the list above.","ok");
   }catch(e){say("pubMsg",e.message,"err")}
   finally{busy=false;$("publishBtn").textContent="Publish examination";refreshPublish()}
 });
