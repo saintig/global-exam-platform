@@ -4,45 +4,41 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#14243a">
-<title>Generate Class Results | SAINTIG EXAMS</title>
+<title>Annual Results | SAINTIG EXAMS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --navy:#14243a;--navy2:#203a59;--gold:#d5a83b;--gold-light:#f4e4b8;
-  --bg:#f3f5f8;--text:#263447;--muted:#718096;--border:#e1e6ed;
-  --green:#168653;--red:#c43d45;--shadow:0 5px 20px rgba(20,36,58,.08);
+  --navy:#14243a;--gold:#d5a83b;--bg:#f3f5f8;--text:#263447;
+  --muted:#718096;--border:#e1e6ed;--red:#c43d45;
+  --shadow:0 5px 20px rgba(20,36,58,.08);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Arial,sans-serif}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .hidden{display:none!important}
-.topbar{background:var(--navy);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.topbar{background:var(--navy);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{font-weight:bold;font-size:18px}
 .brand span{color:var(--gold)}
-.topbar a{color:#fff;text-decoration:none;border:1px solid #62748b;padding:9px 12px;border-radius:7px;font-size:13px}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a{color:#fff;text-decoration:none;border:1px solid #62748b;padding:8px 11px;border-radius:7px;font-size:13px}
 .container{max-width:1200px;margin:22px auto;padding:0 14px}
 h1{font-size:23px;color:var(--navy);margin:0 0 6px}
 h2{font-size:17px;color:var(--navy);margin:0 0 6px}
 h3{font-size:15px;color:var(--navy);margin:22px 0 8px}
-.subtitle,.muted{color:var(--muted)}
+.muted{color:var(--muted)}
 .card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;box-shadow:var(--shadow);margin:16px 0}
 label{display:block;font-weight:bold;color:var(--navy);font-size:12px;margin-bottom:6px}
-select,input{width:100%;padding:11px;border:1px solid #d8dee7;border-radius:7px;background:#fff;color:var(--text)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:14px 0}
+select{width:100%;padding:11px;border:1px solid #d8dee7;border-radius:7px;background:#fff;color:var(--text)}
 .btn{border:0;border-radius:7px;padding:11px 15px;font-weight:bold}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-gold{background:var(--gold);color:var(--navy)}
 .btn-navy{background:var(--navy);color:#fff}
 .btn-light{background:#edf1f6;color:var(--navy)}
 .btn-red{background:#fdebec;color:var(--red)}
-.btn-green{background:#e5f5ed;color:#14794a}
 .btn-small{padding:6px 10px;font-size:12px}
 .row{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.tab{flex:1;min-width:120px;border:1px solid var(--border);background:#fff;color:var(--navy);padding:12px 8px;border-radius:9px;font-weight:bold;font-size:13px}
-.tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .notice{padding:12px;border-radius:8px;background:#fff7e5;color:#79540b;line-height:1.5;margin:12px 0}
 .notice.ok{background:#e8f7ee;color:#17683b}
 .notice.info{background:#edf3ff;color:#214e91}
@@ -51,14 +47,18 @@ select,input{width:100%;padding:11px;border:1px solid #d8dee7;border-radius:7px;
 .msg.error{background:#fdecea;color:#a5281c}
 .msg.ok{background:#e8f7ee;color:#17683b}
 .msg.info{background:#edf3ff;color:#214e91}
+.terms label{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:normal;color:var(--text);padding:9px 10px;border:1px solid var(--border);border-radius:8px;margin-bottom:7px}
+.terms input{width:auto}
+.terms .tag{margin-left:auto;font-size:11px;font-weight:bold}
+.idbox{background:var(--navy);color:#fff;border-radius:11px;padding:16px;margin:14px 0;text-align:center}
+.idbox small{display:block;color:#d7dfeb;margin-bottom:6px}
+.idbox strong{font-size:24px;letter-spacing:1px;color:var(--gold);overflow-wrap:anywhere}
+.idbox .row{justify-content:center}
 .table-wrap{overflow-x:auto;margin-top:12px}
 table{width:100%;border-collapse:collapse;min-width:560px}
 th{background:#f1f4f8;color:var(--navy);text-align:left;font-size:12px;padding:10px;white-space:nowrap}
 td{border-bottom:1px solid var(--border);padding:9px 10px;vertical-align:middle}
 td small{display:block;color:var(--muted);font-size:11px}
-td small.abs{color:var(--red);font-weight:bold}
-.id-text{font-weight:bold;color:var(--navy);font-size:12px}
-td input{min-width:90px;padding:8px}
 .badge{display:inline-block;padding:4px 9px;border-radius:20px;font-size:11px;font-weight:bold}
 .b-draft{background:#fff2db;color:#98640a}
 .b-pub{background:#e4f5eb;color:#137748}
@@ -67,7 +67,6 @@ td input{min-width:90px;padding:8px}
 .modal{position:fixed;inset:0;background:rgba(8,18,32,.65);z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px}
 .modal-box{background:#fff;border-radius:12px;max-width:480px;width:100%;padding:22px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:8px;z-index:2000;display:none;max-width:90%}
-@media(max-width:700px){.form-grid{grid-template-columns:1fr}h1{font-size:20px}}
 </style>
 </head>
 
@@ -75,107 +74,59 @@ td input{min-width:90px;padding:8px}
 
 <header class="topbar">
   <div class="brand">SAINTIG <span>EXAMS</span></div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <a href="school-annual-results.html">Annual Results →</a>
-    <a href="school-class-examinations.html">← Class Examination</a>
+  <div class="links">
+    <a href="school-class-results.html">← Class Results</a>
+    <a href="school-class-examinations.html">Class Examination</a>
   </div>
 </header>
 
 <main class="container">
-  <h1>Generate Class Results</h1>
-  <div class="subtitle">Enter CA scores, generate and review results, then publish and lock them.</div>
+  <h1>Annual Results</h1>
+  <div class="muted">Combine the published term results of a class into one annual result, review it, then publish and lock it.</div>
 
   <div class="msg" id="pageMsg"></div>
 
   <section class="card">
-    <label for="classSelect">Select Class</label>
-    <select id="classSelect"><option value="">Loading classes...</option></select>
-    <div id="classInfo" class="muted" style="margin-top:10px"></div>
+    <label for="groupSelect">Select Class and Session</label>
+    <select id="groupSelect"><option value="">Loading...</option></select>
+
+    <div id="termsArea" class="hidden">
+      <h3>Terms to combine</h3>
+      <p class="muted">Tick the terms to include. A term can only be used when its general class result is published and locked.</p>
+      <div class="terms" id="termList"></div>
+    </div>
   </section>
 
-  <div id="workArea" class="hidden">
-    <div class="tabs">
-      <button class="tab active" data-tab="ca" type="button">CA Scores</button>
-      <button class="tab" data-tab="general" type="button">General Result</button>
-      <button class="tab" data-tab="exam" type="button">Examination Result</button>
-      <button class="tab" data-tab="scale" type="button">Grading Scale</button>
+  <section class="card hidden" id="annualCard">
+    <h2>Annual Result</h2>
+
+    <div class="idbox hidden" id="idBox">
+      <small>ANNUAL RESULT ID</small>
+      <strong id="annualId"></strong>
+      <div class="row">
+        <button class="btn btn-gold" id="copyBtn" type="button">Copy ID</button>
+        <button class="btn btn-light" id="shareBtn" type="button">Share ID</button>
+      </div>
     </div>
 
-    <!-- CA SCORES -->
-    <section id="panel-ca" class="card">
-      <h2>Enter CA Scores</h2>
-      <p class="muted">Choose an examination. The students in this class appear below. A blank CA box counts as 0.</p>
+    <div class="notice info" id="statusBox"></div>
 
-      <div class="form-grid">
-        <div><label for="caExam">Examination</label><select id="caExam"></select></div>
-        <div><label for="caMax">CA Maximum for this examination</label>
-          <input id="caMax" type="number" min="0" max="1000" step="0.01" placeholder="e.g. 30"></div>
-      </div>
+    <div class="row">
+      <button class="btn btn-navy" id="genBtn" type="button">Generate Annual Draft</button>
+      <button class="btn btn-gold" id="pubBtn" type="button">Publish and Lock Annual Results</button>
+      <button class="btn btn-red" id="unpubBtn" type="button">Unpublish and Unlock Annual Results</button>
+    </div>
+    <div class="row">
+      <button class="btn btn-light" id="printSheetBtn" type="button">Print Annual Result Sheet</button>
+      <button class="btn btn-light" id="printCardsBtn" type="button">Print All Report Cards</button>
+    </div>
 
-      <div class="notice hidden" id="caLocked"></div>
+    <div class="msg" id="annualMsg"></div>
+    <div id="resultOut"></div>
 
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Student</th><th>Student ID</th><th>Exam score</th><th>CA score</th></tr></thead>
-          <tbody id="caRows"><tr><td colspan="4" class="muted">Select an examination.</td></tr></tbody>
-        </table>
-      </div>
-
-      <div class="row"><button class="btn btn-gold" id="caSave" type="button">Save CA Scores</button></div>
-      <div class="msg" id="caMsg"></div>
-    </section>
-
-    <!-- GENERAL RESULT -->
-    <section id="panel-general" class="card hidden">
-      <h2>General Class Result</h2>
-      <p class="muted">Combines every examination attached to the class. A student who missed an examination counts as 0 for it.</p>
-      <div class="notice info" id="genStatus"></div>
-      <div class="row">
-        <button class="btn btn-navy" id="genBtn" type="button">Generate Draft</button>
-        <button class="btn btn-gold" id="pubBtn" type="button">Publish and Lock Class Results</button>
-        <button class="btn btn-red" id="unpubBtn" type="button">Unpublish and Unlock Class Results</button>
-      </div>
-      <div class="row">
-        <button class="btn btn-light" id="printSheetBtn" type="button">Print Class Result Sheet</button>
-        <button class="btn btn-light" id="printCardsBtn" type="button">Print All Report Cards</button>
-      </div>
-      <div class="msg" id="genMsg"></div>
-      <div id="genOut"></div>
-      <h3>Result history</h3>
-      <div id="genHistory" class="muted"></div>
-    </section>
-
-    <!-- EXAMINATION RESULT -->
-    <section id="panel-exam" class="card hidden">
-      <h2>Examination Result</h2>
-      <p class="muted">The result of one examination for all class students (exam score plus CA).</p>
-      <div class="form-grid">
-        <div><label for="exExam">Examination</label><select id="exExam"></select></div>
-        <div style="display:flex;align-items:flex-end"><button class="btn btn-navy" id="exGenBtn" type="button" style="width:100%">Generate Result Sheet</button></div>
-      </div>
-      <div class="msg" id="exMsg"></div>
-      <div class="row"><button class="btn btn-light" id="exPrintBtn" type="button">Print Result Sheet</button></div>
-      <div id="exOut"></div>
-    </section>
-
-    <!-- GRADING SCALE -->
-    <section id="panel-scale" class="card hidden">
-      <h2>Grading Scale</h2>
-      <p class="muted">A score receives the highest grade whose minimum percentage it reaches. Changes apply to results you generate from now on. Published results keep their grades.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Grade</th><th>Minimum %</th><th>Description</th><th></th></tr></thead>
-          <tbody id="scaleRows"></tbody>
-        </table>
-      </div>
-      <div class="row">
-        <button class="btn btn-light" id="scaleAdd" type="button">+ Add Grade</button>
-        <button class="btn btn-gold" id="scaleSave" type="button">Save Grading Scale</button>
-        <button class="btn btn-light" id="scaleReset" type="button">Use Default Scale</button>
-      </div>
-      <div class="msg" id="scaleMsg"></div>
-    </section>
-  </div>
+    <h3>Result history</h3>
+    <div id="history" class="muted"></div>
+  </section>
 </main>
 
 <div class="footer">Powered by SAINTIG EXAMS</div>
@@ -197,35 +148,31 @@ const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const FUNCTION_NAME = "school-class-results";
 const LOGIN_PAGE = "school-login.html";
+const STUDENT_PAGE = "school-exam-access.html";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
 
-let overview = null;      /* current class overview */
-let currentResult = null; /* result shown in the General tab */
-let examResult = null;    /* result shown in the Examination tab */
-let scaleRows = [];
+const ORDER = { "1st Term": 1, "2nd Term": 2, "3rd Term": 3, "1st Semester": 1, "2nd Semester": 2 };
 
-/* =========================================================
-   HELPERS
-========================================================= */
+let groups = [];
+let group = null;
+let current = null; /* loaded annual result (published, else draft) */
+
+/* HELPERS */
 function escapeHTML(v) {
   return String(v ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
   })[c]);
 }
 
-/* Archived classes, examinations, subjects and students are never offered
-   in a selection box. The server may name the flag in different ways, so
-   several likely names are checked. */
+/* Archived classes (terms) are never offered in a selection box. The server
+   may name the flag in different ways, so several likely names are checked. */
 function isArchivedItem(x) {
   if (!x || typeof x !== "object") return false;
 
   return x.is_archived === true || x.archived === true ||
-    x.examination_is_archived === true || x.exam_is_archived === true ||
-    x.exam_archived === true || x.examination_archived === true ||
-    x.subject_is_archived === true || x.subject_archived === true ||
-    x.student_is_archived === true || x.student_archived === true ||
+    x.class_is_archived === true || x.class_archived === true ||
     x.is_active === false || Boolean(x.archived_at) ||
     String(x.status || "").toLowerCase() === "archived";
 }
@@ -278,7 +225,6 @@ async function api(action, payload = {}) {
   return data;
 }
 
-/* In-page confirmation (no browser pop-ups). */
 function ask(title, text, yesLabel, danger = false) {
   return new Promise(resolve => {
     $("dialogTitle").textContent = title;
@@ -299,9 +245,58 @@ function ask(title, text, yesLabel, danger = false) {
   });
 }
 
-/* =========================================================
-   START
-========================================================= */
+/* COPY AND SHARE */
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand("copy");
+      area.remove();
+      if (!ok) throw new Error("copy failed");
+    }
+    toast("Copied.");
+    return true;
+  } catch (_) {
+    toast("Unable to copy. Please copy it by hand.");
+    return false;
+  }
+}
+
+async function shareText(text, title) {
+  if (navigator.share) {
+    try {
+      await navigator.share({ title, text });
+    } catch (error) {
+      if (error.name !== "AbortError") toast("Unable to share.");
+    }
+  } else {
+    await copyText(text);
+    toast("Sharing is not available on this browser. The details were copied.");
+  }
+}
+
+$("copyBtn").addEventListener("click", () => copyText($("annualId").textContent));
+
+$("shareBtn").addEventListener("click", () => {
+  const id = $("annualId").textContent;
+  const link = new URL(STUDENT_PAGE, location.href).href + "?tab=annual";
+
+  shareText(
+    `SAINTIG EXAMS Annual Result ID: ${id}\n` +
+    `${group.class_name}${group.class_arm ? " " + group.class_arm : ""} · ${group.academic_session}\n\n` +
+    `To see your result, open ${link}, choose Annual Results, and enter this ID with your Student ID.`,
+    "SAINTIG EXAMS Annual Result ID"
+  );
+});
+
+/* START */
 async function init() {
   const { data } = await sb.auth.getSession();
 
@@ -310,495 +305,258 @@ async function init() {
     return;
   }
 
-  try {
-    const result = await api("list_classes");
-    const all = result.classes || [];
-    const classes = all.filter(c => !isArchivedItem(c));
+  await loadGroups();
+}
 
-    $("classSelect").innerHTML = '<option value="">Select a class</option>' +
-      classes.map(c => `<option value="${escapeHTML(c.id)}">
-        ${escapeHTML(c.class_name)}${c.class_arm ? " - " + escapeHTML(c.class_arm) : ""}
-        (${escapeHTML(c.academic_session)} / ${escapeHTML(c.academic_period)})
+async function loadGroups(keepKey) {
+  try {
+    const result = await api("annual_groups");
+    const all = result.groups || [];
+
+    /* Archived classes (terms) and groups with no active term are hidden. */
+    groups = all
+      .map(g => ({ ...g, classes: (g.classes || []).filter(c => !isArchivedItem(c)) }))
+      .filter(g => !isArchivedItem(g) && g.classes.length);
+
+    $("groupSelect").innerHTML = '<option value="">Select a class and session</option>' +
+      groups.map(g => `<option value="${escapeHTML(g.key)}">
+        ${escapeHTML(g.class_name)}${g.class_arm ? " - " + escapeHTML(g.class_arm) : ""} · ${escapeHTML(g.academic_session)}
+        (${g.classes.length} term${g.classes.length === 1 ? "" : "s"})
       </option>`).join("");
 
-    if (!classes.length) {
+    if (!groups.length) {
       msg("pageMsg", all.length
-        ? "All your classes are archived. Create a new class on the Class Examination page."
-        : "You have not created a class yet. Create one on the Class Examination page.", "info");
+        ? "All your classes are archived. Create classes for the new session on the Class Examination page."
+        : "Create classes for each term first, on the Class Examination page.", "info");
+    }
+
+    if (keepKey) {
+      $("groupSelect").value = keepKey;
+      await selectGroup();
     }
   } catch (error) {
     msg("pageMsg", error.message, "error");
   }
 }
 
-$("classSelect").addEventListener("change", loadClass);
+$("groupSelect").addEventListener("change", selectGroup);
 
-document.querySelectorAll(".tab").forEach(tab =>
-  tab.addEventListener("click", () => setTab(tab.dataset.tab)));
-
-function setTab(name) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-  ["ca", "general", "exam", "scale"].forEach(p => $("panel-" + p).classList.toggle("hidden", p !== name));
-  if (name === "scale" && !scaleRows.length) loadScale();
+function publishedVersion() {
+  return group?.record?.versions.find(v => v.status === "published_locked") || null;
 }
 
-async function loadClass() {
-  const id = $("classSelect").value;
+function draftVersion() {
+  return group?.record?.versions.find(v => v.status === "draft") || null;
+}
+
+async function selectGroup() {
   clearMsg("pageMsg");
-  currentResult = null;
-  examResult = null;
-  $("genOut").innerHTML = "";
-  $("exOut").innerHTML = "";
+  clearMsg("annualMsg");
+  current = null;
+  $("resultOut").innerHTML = "";
 
-  if (!id) {
-    $("workArea").classList.add("hidden");
-    $("classInfo").textContent = "";
+  group = groups.find(g => g.key === $("groupSelect").value) || null;
+
+  if (!group) {
+    $("termsArea").classList.add("hidden");
+    $("annualCard").classList.add("hidden");
     return;
   }
 
-  try {
-    overview = await api("get_overview", { class_id: id });
-    $("workArea").classList.remove("hidden");
+  const classes = [...group.classes].sort((a, b) =>
+    (ORDER[a.academic_period] || 9) - (ORDER[b.academic_period] || 9));
 
-    /* Only active examinations can be chosen. */
-    const activeExams = (overview.exams || []).filter(e => !isArchivedItem(e));
+  $("termList").innerHTML = classes.map(c => `
+    <label>
+      <input type="checkbox" value="${escapeHTML(c.id)}" ${c.published ? "checked" : "disabled"}>
+      ${escapeHTML(c.academic_period)} — Class ID ${escapeHTML(c.class_id)}
+      <span class="tag">${c.published ? "Published" : "Not published"}</span>
+    </label>`).join("");
 
-    const c = overview.class;
-    $("classInfo").textContent =
-      `${c.class_name}${c.class_arm ? " " + c.class_arm : ""} · ${c.academic_session} · ${c.academic_period} · ` +
-      `${overview.student_count} active student(s) · ${activeExams.length} attached examination(s) · Class ID ${c.class_id}`;
+  $("termsArea").classList.remove("hidden");
+  $("annualCard").classList.remove("hidden");
+  renderStatus();
 
-    const options = activeExams.length
-      ? activeExams.map(e => `<option value="${e.examination_id}">${escapeHTML(e.title)}${e.subject_name ? " — " + escapeHTML(e.subject_name) : ""}</option>`).join("")
-      : '<option value="">No examinations attached</option>';
-
-    $("caExam").innerHTML = options;
-    $("exExam").innerHTML = options;
-
-    renderGeneralPanel();
-    await loadCa();
-  } catch (error) {
-    msg("pageMsg", error.message, "error");
-  }
+  const shown = publishedVersion() || draftVersion();
+  if (shown) await showResult(shown.id);
 }
 
-function publishedResult() {
-  return (overview?.results || []).find(r => r.result_type === "general" && r.status === "published_locked") || null;
+function selectedTerms() {
+  return [...document.querySelectorAll("#termList input:checked")].map(i => i.value);
 }
 
-function draftResult() {
-  return (overview?.results || []).find(r => r.result_type === "general" && r.status === "draft") || null;
-}
-
-async function refreshOverview() {
-  overview = await api("get_overview", { class_id: $("classSelect").value });
-}
-
-/* =========================================================
-   CA SCORES
-========================================================= */
-$("caExam").addEventListener("change", loadCa);
-
-$("caMax").addEventListener("input", () => {
-  const max = Number($("caMax").value);
-  document.querySelectorAll("#caRows input").forEach(i => i.max = Number.isFinite(max) ? max : "");
-});
-
-async function loadCa() {
-  clearMsg("caMsg");
-  const examId = $("caExam").value;
-  const locked = publishedResult();
-
-  $("caLocked").classList.toggle("hidden", !locked);
-  if (locked) {
-    $("caLocked").textContent =
-      "A published and locked class result exists, so CA scores cannot be changed. Unpublish and unlock it in the General Result tab first.";
-  }
-
-  $("caSave").disabled = Boolean(locked) || !examId;
-  $("caMax").disabled = Boolean(locked);
-
-  if (!examId) {
-    $("caRows").innerHTML = '<tr><td colspan="4" class="muted">Attach an examination to this class first.</td></tr>';
-    return;
-  }
-
-  $("caRows").innerHTML = '<tr><td colspan="4" class="muted">Loading...</td></tr>';
-
-  try {
-    const data = await api("get_ca", { class_id: $("classSelect").value, examination_id: Number(examId) });
-    $("caMax").value = data.ca_maximum || "";
-
-    /* Archived students are not listed. */
-    const students = (data.students || []).filter(s => !isArchivedItem(s));
-
-    if (!students.length) {
-      $("caRows").innerHTML = '<tr><td colspan="4" class="muted">No students are registered for this examination yet. Add them on the Class Examination page (Examinations tab, Students button).</td></tr>';
-      return;
-    }
-
-    $("caRows").innerHTML = students.map(s => `
-      <tr>
-        <td><strong>${escapeHTML(s.full_name)}</strong></td>
-        <td class="id-text">${escapeHTML(s.student_id)}</td>
-        <td>${s.exam_score === null ? '<small class="abs">Did not take</small>' : num(s.exam_score) + " / " + num(s.exam_maximum)}</td>
-        <td><input type="number" min="0" max="${data.ca_maximum || ""}" step="0.01"
-          data-student="${s.school_student_id}" value="${s.ca_score === null ? "" : s.ca_score}"
-          ${locked ? "disabled" : ""} placeholder="0"></td>
-      </tr>`).join("");
-  } catch (error) {
-    $("caRows").innerHTML = "";
-    msg("caMsg", error.message, "error");
-  }
-}
-
-$("caSave").addEventListener("click", async () => {
-  clearMsg("caMsg");
-
-  const max = Number($("caMax").value);
-
-  if (!Number.isFinite(max) || max < 0) {
-    msg("caMsg", "Enter the CA maximum for this examination first. Use 0 if there is no CA.", "error");
-    return;
-  }
-
-  const scores = [...document.querySelectorAll("#caRows input")].map(i => ({
-    school_student_id: Number(i.dataset.student),
-    ca_score: i.value
-  }));
-
-  const over = scores.find(s => s.ca_score !== "" && Number(s.ca_score) > max);
-
-  if (over) {
-    msg("caMsg", `A CA score is above the CA maximum of ${num(max)}. Correct it and save again.`, "error");
-    return;
-  }
-
-  const button = $("caSave");
-  button.disabled = true;
-  button.textContent = "Saving...";
-
-  try {
-    const result = await api("save_ca", {
-      class_id: $("classSelect").value,
-      examination_id: Number($("caExam").value),
-      ca_maximum: max,
-      scores
-    });
-
-    let text = "CA scores saved.";
-    if (result.had_draft) {
-      text += result.draft_refreshed
-        ? " Your draft general result was recalculated with the new scores."
-        : " The draft could not be refreshed. Open the General Result tab and regenerate it.";
-    }
-
-    await refreshOverview();
-    renderGeneralPanel();
-    msg("caMsg", text, "ok");
-  } catch (error) {
-    msg("caMsg", error.message, "error");
-  } finally {
-    button.disabled = Boolean(publishedResult());
-    button.textContent = "Save CA Scores";
-  }
-});
-
-/* =========================================================
-   GENERAL RESULT
-========================================================= */
 function badge(status) {
   if (status === "published_locked") return '<span class="badge b-pub">Published and locked</span>';
   if (status === "draft") return '<span class="badge b-draft">Draft</span>';
-  if (status === "archived_unpublished") return '<span class="badge b-arch">Unpublished and archived</span>';
-  return '<span class="badge b-draft">Generated</span>';
+  return '<span class="badge b-arch">Unpublished and archived</span>';
 }
 
-function renderGeneralPanel() {
-  const pub = publishedResult();
-  const draft = draftResult();
+function renderStatus() {
+  const pub = publishedVersion();
+  const draft = draftVersion();
+  const record = group.record;
 
-  const status = $("genStatus");
-  status.className = "notice " + (pub ? "ok" : "info");
+  $("idBox").classList.toggle("hidden", !record);
+  if (record) $("annualId").textContent = record.annual_result_id;
+
+  const box = $("statusBox");
+  box.className = "notice " + (pub ? "ok" : "info");
 
   if (pub) {
-    status.textContent = `A general result is published and locked (version ${pub.version_number}, published ${dateText(pub.published_at)}). Students can access it with the Class ID and their Student ID.`;
+    box.textContent = `Published and locked (version ${pub.version_number}, ${dateText(pub.published_at)}). Students can open it with the Annual Result ID and their Student ID.`;
   } else if (draft) {
-    status.textContent = `A draft exists (version ${draft.version_number}, generated ${dateText(draft.generated_at)}). Review it, then publish and lock it.`;
+    box.textContent = `A draft exists (version ${draft.version_number}, generated ${dateText(draft.generated_at)}). Review it, then publish and lock it.`;
   } else {
-    status.textContent = "No general result yet. Generate a draft to review it before publishing.";
-  }
-
-  if (overview.unassigned_students > 0) {
-    status.textContent += ` Warning: ${overview.unassigned_students} active student(s) are not assigned to any examination and will be left out of the result. Assign them on the Class Examination page (Examinations tab, Students button).`;
+    box.textContent = "No annual result yet. Tick the terms above and generate a draft. The Annual Result ID is created automatically.";
   }
 
   $("genBtn").disabled = Boolean(pub);
-  $("genBtn").textContent = draft ? "Regenerate Draft" : "Generate Draft";
+  $("genBtn").textContent = draft ? "Regenerate Annual Draft" : "Generate Annual Draft";
   $("pubBtn").disabled = !draft || Boolean(pub);
   $("unpubBtn").disabled = !pub;
   $("printSheetBtn").disabled = !(pub || draft);
   $("printCardsBtn").disabled = !(pub || draft);
 
-  const general = (overview.results || []).filter(r => r.result_type === "general");
+  const versions = record?.versions || [];
 
-  $("genHistory").innerHTML = general.length
+  $("history").innerHTML = versions.length
     ? '<div class="table-wrap"><table><thead><tr><th>Version</th><th>Status</th><th>Generated</th><th>Published</th><th>Archived</th></tr></thead><tbody>' +
-      general.map(r => `<tr><td>${r.version_number}</td><td>${badge(r.status)}</td>
-        <td>${escapeHTML(dateText(r.generated_at))}</td>
-        <td>${r.published_at ? escapeHTML(dateText(r.published_at)) : "—"}</td>
-        <td>${r.archived_at ? escapeHTML(dateText(r.archived_at)) : "—"}</td></tr>`).join("") +
+      versions.map(v => `<tr><td>${v.version_number}</td><td>${badge(v.status)}</td>
+        <td>${escapeHTML(dateText(v.generated_at))}</td>
+        <td>${v.published_at ? escapeHTML(dateText(v.published_at)) : "—"}</td>
+        <td>${v.archived_at ? escapeHTML(dateText(v.archived_at)) : "—"}</td></tr>`).join("") +
       "</tbody></table></div>"
-    : "No general results yet.";
-
-  const current = pub || draft;
-  if (current) showGeneral(current.id);
-  else {
-    currentResult = null;
-    $("genOut").innerHTML = "";
-  }
+    : "No annual results yet.";
 }
 
-async function showGeneral(resultId) {
+async function refresh() {
+  await loadGroups(group.key);
+}
+
+/* ACTIONS */
+$("genBtn").addEventListener("click", async () => {
+  clearMsg("annualMsg");
+  const ids = selectedTerms();
+
+  if (ids.length < 2) {
+    msg("annualMsg", "Tick at least two published terms to combine.", "error");
+    return;
+  }
+
+  $("genBtn").disabled = true;
+
   try {
-    currentResult = await api("get_result", { result_id: resultId });
-    $("genOut").innerHTML = resultTable(currentResult);
-    $("genOut").querySelectorAll("[data-card]").forEach(b =>
-      b.addEventListener("click", () => printCards(currentResult, b.dataset.card)));
+    await api("annual_generate", { class_ids: ids });
+    await refresh();
+    msg("annualMsg", "Draft generated. Review it carefully before publishing.", "ok");
   } catch (error) {
-    msg("genMsg", error.message, "error");
+    msg("annualMsg", error.message, "error");
+    $("genBtn").disabled = false;
+  }
+});
+
+$("pubBtn").addEventListener("click", async () => {
+  const draft = draftVersion();
+  if (!draft) return;
+
+  const yes = await ask(
+    "Publish and lock this annual result?",
+    "Students will be able to open and print their own annual result with the Annual Result ID and their Student ID. It cannot be edited while published. Have you reviewed every student, subject, total, grade and position?",
+    "Publish and Lock"
+  );
+
+  if (!yes) return;
+
+  try {
+    const result = await api("annual_publish", { result_id: draft.id });
+    await refresh();
+    msg("annualMsg", result.message, "ok");
+  } catch (error) {
+    msg("annualMsg", error.message, "error");
+  }
+});
+
+$("unpubBtn").addEventListener("click", async () => {
+  const pub = publishedVersion();
+  if (!pub) return;
+
+  const yes = await ask(
+    "Unpublish and unlock this annual result?",
+    "Students will immediately lose access to it. It will be permanently archived: it cannot be edited, restored or republished, but you can still view and print it. To give students an annual result again you must generate, review and publish a new one.",
+    "Unpublish and Archive",
+    true
+  );
+
+  if (!yes) return;
+
+  try {
+    const result = await api("annual_unpublish", { result_id: pub.id, reason: "Unpublished by the teacher" });
+    await refresh();
+    msg("annualMsg", result.message, "ok");
+  } catch (error) {
+    msg("annualMsg", error.message, "error");
+  }
+});
+
+$("printSheetBtn").addEventListener("click", () => current && printSheet(current));
+$("printCardsBtn").addEventListener("click", () => current && printCards(current, null));
+
+/* RESULT TABLE */
+async function showResult(resultId) {
+  try {
+    current = await api("annual_get", { result_id: resultId });
+    $("resultOut").innerHTML = resultTable(current);
+    $("resultOut").querySelectorAll("[data-card]").forEach(b =>
+      b.addEventListener("click", () => printCards(current, b.dataset.card)));
+  } catch (error) {
+    msg("annualMsg", error.message, "error");
   }
 }
 
-function cellText(sc) {
-  if (!sc) return "—";
-  const extra = sc.ca_maximum > 0 ? `<small>${num(sc.exam_score)} + ${num(sc.ca_score)} CA</small>` : "";
-  const absent = sc.participation_status === "absent" ? '<small class="abs">Absent</small>' : "";
-  return `${num(sc.score)}${extra}${absent}`;
+function termsOf(res) {
+  return (res.result.term_classes || []).map(t => t.academic_period);
 }
 
-function examsOf(res) {
-  const seen = new Map();
-  res.students.forEach(s => s.scores.forEach(sc => {
-    if (!seen.has(sc.examination_id)) seen.set(sc.examination_id, sc.examination_title_snapshot);
-  }));
-  return [...seen.entries()].map(([id, title]) => ({ id, title }));
+function subjectsOf(res) {
+  const seen = new Set();
+  res.students.forEach(s => s.scores.forEach(sc => seen.add(sc.subject_name)));
+  return [...seen].sort((a, b) => a.localeCompare(b));
+}
+
+function breakdown(sc) {
+  return (sc.term_scores || [])
+    .map(t => t.status === "not_offered" ? "–" : num(t.score) + (t.status === "scored" ? "" : "*"))
+    .join(" + ");
 }
 
 function resultTable(res) {
-  const exams = examsOf(res);
+  const subjects = subjectsOf(res);
+  const head = subjects.map(s => `<th>${escapeHTML(s)}</th>`).join("");
 
-  const head = exams.map(e => `<th>${escapeHTML(e.title)}</th>`).join("");
   const body = res.students.map(s => {
-    const cells = exams.map(e => `<td>${cellText(s.scores.find(x => x.examination_id === e.id))}</td>`).join("");
-    const grade = s.result_snapshot?.average_grade || "—";
+    const cells = subjects.map(name => {
+      const sc = s.scores.find(x => x.subject_name === name);
+      return sc
+        ? `<td><strong>${num(sc.annual_score)}</strong><small>${escapeHTML(breakdown(sc))}</small></td>`
+        : "<td>—</td>";
+    }).join("");
 
-    return `<tr><td><strong>${s.class_position}</strong></td>
+    return `<tr><td><strong>${s.position}</strong></td>
       <td><strong>${escapeHTML(s.full_name_snapshot)}</strong><small>${escapeHTML(s.student_id_snapshot)}</small></td>
       ${cells}
       <td><strong>${num(s.total_score)}</strong><small>of ${num(s.total_possible)}</small></td>
-      <td>${num(s.average)}%</td><td><strong>${escapeHTML(grade)}</strong></td>
+      <td>${num(s.average)}%</td><td><strong>${escapeHTML(s.average_grade || "—")}</strong></td>
       <td><button class="btn btn-light btn-small" data-card="${s.school_student_id}" type="button">Card</button></td></tr>`;
   }).join("");
 
   return `<div class="table-wrap"><table>
     <thead><tr><th>Pos</th><th>Student</th>${head}<th>Total</th><th>Average</th><th>Grade</th><th></th></tr></thead>
     <tbody>${body}</tbody></table></div>
-    <p class="muted">Average is the total score as a percentage of the total possible. Students share a position when their totals are equal.</p>`;
+    <p class="muted">Each subject shows the annual total and, below it, the term scores added together (${escapeHTML(termsOf(res).join(", "))}).
+    A * means the student was absent, not in the class that term, or the subject was not examined; it counts as 0.</p>`;
 }
 
-$("genBtn").addEventListener("click", async () => {
-  clearMsg("genMsg");
-  $("genBtn").disabled = true;
-
-  try {
-    await api("generate_general", { class_id: $("classSelect").value });
-    await refreshOverview();
-    renderGeneralPanel();
-    msg("genMsg", "Draft generated. Review it carefully before publishing.", "ok");
-  } catch (error) {
-    msg("genMsg", error.message, "error");
-    $("genBtn").disabled = false;
-  }
-});
-
-$("pubBtn").addEventListener("click", async () => {
-  const draft = draftResult();
-  if (!draft) return;
-
-  const yes = await ask(
-    "Publish and lock this result?",
-    "Students will be able to open and print their own result with the Class ID and Student ID. The result cannot be edited while it is published. Have you reviewed every student, score, grade and position?",
-    "Publish and Lock"
-  );
-
-  if (!yes) return;
-  clearMsg("genMsg");
-
-  try {
-    const result = await api("publish", { result_id: draft.id });
-    await refreshOverview();
-    renderGeneralPanel();
-    await loadCa();
-    msg("genMsg", result.message, "ok");
-  } catch (error) {
-    msg("genMsg", error.message, "error");
-  }
-});
-
-$("unpubBtn").addEventListener("click", async () => {
-  const pub = publishedResult();
-  if (!pub) return;
-
-  const yes = await ask(
-    "Unpublish and unlock this result?",
-    "Students will immediately lose access to this result. It will be permanently archived: it cannot be edited, restored or republished, but you can still view and print it. To give students a result again you must generate, review and publish a new one.",
-    "Unpublish and Archive",
-    true
-  );
-
-  if (!yes) return;
-  clearMsg("genMsg");
-
-  try {
-    const result = await api("unpublish", { result_id: pub.id, reason: "Unpublished by the teacher" });
-    await refreshOverview();
-    renderGeneralPanel();
-    await loadCa();
-    msg("genMsg", result.message, "ok");
-  } catch (error) {
-    msg("genMsg", error.message, "error");
-  }
-});
-
-$("printSheetBtn").addEventListener("click", () => currentResult && printSheet(currentResult));
-$("printCardsBtn").addEventListener("click", () => currentResult && printCards(currentResult, null));
-
-/* =========================================================
-   EXAMINATION RESULT
-========================================================= */
-$("exGenBtn").addEventListener("click", async () => {
-  clearMsg("exMsg");
-  const examId = $("exExam").value;
-
-  if (!examId) {
-    msg("exMsg", "Select an examination first.", "error");
-    return;
-  }
-
-  const button = $("exGenBtn");
-  button.disabled = true;
-  button.textContent = "Generating...";
-
-  try {
-    const created = await api("generate_exam", {
-      class_id: $("classSelect").value,
-      examination_id: Number(examId)
-    });
-
-    examResult = await api("get_result", { result_id: created.result_id });
-    $("exOut").innerHTML = examTable(examResult);
-    await refreshOverview();
-  } catch (error) {
-    msg("exMsg", error.message, "error");
-  } finally {
-    button.disabled = false;
-    button.textContent = "Generate Result Sheet";
-  }
-});
-
-function examTable(res) {
-  const body = res.students.map(s => {
-    const sc = s.scores[0];
-    const status = sc?.participation_status === "absent" ? '<small class="abs">Absent</small>' : "Scored";
-
-    return `<tr><td><strong>${s.class_position}</strong></td>
-      <td><strong>${escapeHTML(s.full_name_snapshot)}</strong><small>${escapeHTML(s.student_id_snapshot)}</small></td>
-      <td>${sc ? num(sc.exam_score) : "—"}</td><td>${sc ? num(sc.ca_score) : "—"}</td>
-      <td><strong>${sc ? num(sc.score) : "—"}</strong></td><td>${sc ? num(sc.maximum_score) : "—"}</td>
-      <td>${num(s.average)}%</td><td><strong>${escapeHTML(sc?.grade || "—")}</strong></td><td>${status}</td></tr>`;
-  }).join("");
-
-  return `<div class="table-wrap"><table>
-    <thead><tr><th>Pos</th><th>Student</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>%</th><th>Grade</th><th>Status</th></tr></thead>
-    <tbody>${body}</tbody></table></div>`;
-}
-
-$("exPrintBtn").addEventListener("click", () => {
-  if (!examResult) {
-    msg("exMsg", "Generate the result sheet first.", "error");
-    return;
-  }
-  printExamSheet(examResult);
-});
-
-/* =========================================================
-   GRADING SCALE
-========================================================= */
-async function loadScale() {
-  clearMsg("scaleMsg");
-
-  try {
-    const data = await api("get_grading_scale");
-    scaleRows = data.scale.map(r => ({ ...r }));
-    renderScale();
-    if (data.is_default) msg("scaleMsg", "You are using the default scale. Edit it and save to use your own.", "info");
-  } catch (error) {
-    msg("scaleMsg", error.message, "error");
-  }
-}
-
-function renderScale() {
-  $("scaleRows").innerHTML = scaleRows.map((r, i) => `
-    <tr>
-      <td><input data-i="${i}" data-f="grade" value="${escapeHTML(r.grade)}" maxlength="10"></td>
-      <td><input data-i="${i}" data-f="min_percent" type="number" min="0" max="100" step="0.01" value="${r.min_percent}"></td>
-      <td><input data-i="${i}" data-f="description" value="${escapeHTML(r.description || "")}" maxlength="60"></td>
-      <td><button class="btn btn-red btn-small" data-remove="${i}" type="button">Remove</button></td>
-    </tr>`).join("");
-
-  $("scaleRows").querySelectorAll("input").forEach(input =>
-    input.addEventListener("input", () => { scaleRows[input.dataset.i][input.dataset.f] = input.value; }));
-
-  $("scaleRows").querySelectorAll("[data-remove]").forEach(b =>
-    b.addEventListener("click", () => { scaleRows.splice(Number(b.dataset.remove), 1); renderScale(); }));
-}
-
-$("scaleAdd").addEventListener("click", () => {
-  scaleRows.push({ grade: "", min_percent: 0, description: "" });
-  renderScale();
-});
-
-$("scaleSave").addEventListener("click", async () => {
-  clearMsg("scaleMsg");
-
-  try {
-    const result = await api("save_grading_scale", {
-      scale: scaleRows.map(r => ({ grade: r.grade, min_percent: Number(r.min_percent), description: r.description }))
-    });
-    await loadScale();
-    msg("scaleMsg", result.message, "ok");
-  } catch (error) {
-    msg("scaleMsg", error.message, "error");
-  }
-});
-
-$("scaleReset").addEventListener("click", async () => {
-  const yes = await ask("Use the default scale?", "Your own grading scale will be removed. Published results keep their grades.", "Use Default");
-  if (!yes) return;
-
-  try {
-    const result = await api("reset_grading_scale");
-    await loadScale();
-    msg("scaleMsg", result.message, "ok");
-  } catch (error) {
-    msg("scaleMsg", error.message, "error");
-  }
-});
-
-/* =========================================================
-   PRINTING
-========================================================= */
+/* PRINTING */
 const PRINT_CSS = `
   body{font-family:Arial,sans-serif;color:#1e293b;margin:0;padding:24px}
   .head{text-align:center;border-bottom:3px solid #14243a;padding-bottom:10px;margin-bottom:14px}
@@ -817,7 +575,7 @@ const PRINT_CSS = `
   .sign{flex:1;font-size:12px}
   .foot{text-align:center;margin-top:24px;font-size:10px;color:#64748b}
   .draft{text-align:center;color:#b42318;font-weight:bold;font-size:12px}
-  .card{page-break-after:always;box-shadow:none;border:0;margin:0;padding:0}
+  .card{page-break-after:always}
   .card:last-child{page-break-after:auto}
   @media print{body{padding:8px}}
 `;
@@ -845,74 +603,74 @@ function schoolHead(c) {
   return `<div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>${contact ? `<p>${contact}</p>` : ""}</div>`;
 }
 
+const BLANK = '<span style="display:inline-block;min-width:190px;border-bottom:1px solid #64748b">&nbsp;</span>';
+
+function signatures(c) {
+  return `<div class="signs">
+    <div class="sign"><strong>CLASS TEACHER</strong><br>Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : BLANK}<br><br>Signature: ${BLANK}</div>
+    <div class="sign"><strong>PRINCIPAL</strong><br>Name: ${c.principal_name ? escapeHTML(c.principal_name) : BLANK}<br><br>Signature: ${BLANK}</div>
+  </div>`;
+}
+
 function draftNote(res) {
   return res.result.status === "draft" ? '<div class="draft">DRAFT — NOT PUBLISHED</div>' : "";
 }
 
-const BLANK = '<span style="display:inline-block;min-width:190px;border-bottom:1px solid #64748b">&nbsp;</span>';
-
-function signatures(c) {
-  return `
-    <div class="signs">
-      <div class="sign"><strong>CLASS TEACHER</strong><br>Name: ${c.class_teacher_name ? escapeHTML(c.class_teacher_name) : BLANK}<br><br>Signature: ${BLANK}</div>
-      <div class="sign"><strong>PRINCIPAL</strong><br>Name: ${c.principal_name ? escapeHTML(c.principal_name) : BLANK}<br><br>Signature: ${BLANK}</div>
-    </div>`;
-}
-
-function classLine(c) {
-  return `${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")} · ${escapeHTML(c.academic_session || "")} · ${escapeHTML(c.academic_period || "")}`;
-}
-
 function printSheet(res) {
-  const c = res.result.class_snapshot || {};
-  const exams = examsOf(res);
+  const c = res.result.school_snapshot || {};
+  const subjects = subjectsOf(res);
+  const head = subjects.map(s => `<th>${escapeHTML(s)}</th>`).join("");
 
-  const head = exams.map(e => `<th>${escapeHTML(e.title)}</th>`).join("");
   const rows = res.students.map(s => {
-    const cells = exams.map(e => {
-      const sc = s.scores.find(x => x.examination_id === e.id);
-      if (!sc) return "<td>—</td>";
-      const extra = sc.ca_maximum > 0 ? `<small>${num(sc.exam_score)} + ${num(sc.ca_score)} CA</small>` : "";
-      return `<td>${num(sc.score)}${extra}${sc.participation_status === "absent" ? "<small>Absent</small>" : ""}</td>`;
+    const cells = subjects.map(name => {
+      const sc = s.scores.find(x => x.subject_name === name);
+      return sc ? `<td>${num(sc.annual_score)}<small>${escapeHTML(breakdown(sc))}</small></td>` : "<td>—</td>";
     }).join("");
 
-    return `<tr><td>${s.class_position}</td><td>${escapeHTML(s.full_name_snapshot)}<small>${escapeHTML(s.student_id_snapshot)}</small></td>
+    return `<tr><td>${s.position}</td><td>${escapeHTML(s.full_name_snapshot)}<small>${escapeHTML(s.student_id_snapshot)}</small></td>
       ${cells}<td>${num(s.total_score)}<small>of ${num(s.total_possible)}</small></td>
-      <td>${num(s.average)}%</td><td>${escapeHTML(s.result_snapshot?.average_grade || "—")}</td></tr>`;
+      <td>${num(s.average)}%</td><td>${escapeHTML(s.average_grade || "—")}</td></tr>`;
   }).join("");
 
-  openPrint("Class Result Sheet", `
+  openPrint("Annual Result Sheet", `
     ${schoolHead(c)}${draftNote(res)}
-    <h2>CLASS RESULT SHEET</h2>
-    <p style="text-align:center;font-size:12px">${classLine(c)} · Class ID ${escapeHTML(c.class_id || "")}</p>
+    <h2>ANNUAL RESULT SHEET</h2>
+    <p style="text-align:center;font-size:12px">${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")} · ${escapeHTML(c.academic_session || "")} · Annual Result ID ${escapeHTML(res.annual_result_id)}</p>
     <table><thead><tr><th>Pos</th><th>Student</th>${head}<th>Total</th><th>Average</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="font-size:10px">Each subject shows the annual total and the term scores added together (${escapeHTML(termsOf(res).join(", "))}). * means absent, not in the class that term, or not examined; counted as 0.</p>
     <p style="font-size:11px">Number of students: ${res.students.length}</p>
     ${signatures(c)}
     <div class="foot">Powered by SAINTIG EXAMS</div>`, true);
 }
 
 function cardHtml(res, s) {
-  const c = res.result.class_snapshot || {};
+  const c = res.result.school_snapshot || {};
+  const terms = termsOf(res);
 
-  const rows = s.scores.map(sc => `
-    <tr><td>${escapeHTML(sc.subject_name_snapshot || sc.examination_title_snapshot)}<small>${escapeHTML(sc.examination_title_snapshot)}</small></td>
-    <td>${sc.participation_status === "absent" ? "—" : num(sc.exam_score)}</td><td>${num(sc.ca_score)}</td>
-    <td>${num(sc.score)}</td><td>${num(sc.maximum_score)}</td><td>${escapeHTML(sc.grade || "—")}</td>
-    <td>${sc.participation_status === "absent" ? "Absent" : "Scored"}</td></tr>`).join("");
+  const rows = s.scores.map(sc => {
+    const cells = terms.map((term, i) => {
+      const t = (sc.term_scores || [])[i];
+      return `<td>${t ? (t.status === "not_offered" ? "–" : num(t.score) + (t.status === "scored" ? "" : "*")) : "—"}</td>`;
+    }).join("");
+
+    return `<tr><td>${escapeHTML(sc.subject_name)}</td>${cells}
+      <td>${num(sc.annual_score)}</td><td>${num(sc.annual_maximum)}</td><td>${escapeHTML(sc.grade || "—")}</td></tr>`;
+  }).join("");
 
   return `<div class="card">
     ${schoolHead(c)}${draftNote(res)}
-    <h2>ACADEMIC REPORT</h2>
+    <h2>ANNUAL ACADEMIC REPORT</h2>
     <table class="info">
       <tr><td><strong>Student:</strong> ${escapeHTML(s.full_name_snapshot)}</td><td><strong>Student ID:</strong> ${escapeHTML(s.student_id_snapshot)}</td></tr>
-      <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td><td><strong>Class ID:</strong> ${escapeHTML(c.class_id || "")}</td></tr>
-      <tr><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td><td><strong>Academic Period:</strong> ${escapeHTML(c.academic_period || "")}</td></tr>
+      <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td></tr>
+      <tr><td colspan="2"><strong>Annual Result ID:</strong> ${escapeHTML(res.annual_result_id)}</td></tr>
     </table>
-    <table><thead><tr><th>Subject / Examination</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>Grade</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
+    <table><thead><tr><th>Subject</th>${terms.map(t => `<th>${escapeHTML(t)}</th>`).join("")}<th>Annual Total</th><th>Out of</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="font-size:9px">* absent, not in the class that term, or not examined; counted as 0.</p>
     <table class="info"><tr>
       <td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
-      <td><strong>Average:</strong> ${num(s.average)}% (${escapeHTML(s.result_snapshot?.average_grade || "—")})</td>
-      <td><strong>Position:</strong> ${s.class_position} of ${res.students.length}</td></tr></table>
+      <td><strong>Average:</strong> ${num(s.average)}% (${escapeHTML(s.average_grade || "—")})</td>
+      <td><strong>Position:</strong> ${s.position} of ${res.students.length}</td></tr></table>
     <div class="remark"><strong>Class Teacher's Remark:</strong><div class="line"></div></div>
     <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
     ${signatures(c)}
@@ -931,31 +689,7 @@ function printCards(res, studentId) {
     return;
   }
 
-  openPrint("Report Cards", list.map(s => cardHtml(res, s)).join(""), false);
-}
-
-function printExamSheet(res) {
-  const c = res.result.class_snapshot || {};
-  const title = res.students[0]?.scores[0]?.examination_title_snapshot || "Examination";
-
-  const rows = res.students.map(s => {
-    const sc = s.scores[0];
-
-    return `<tr><td>${s.class_position}</td><td>${escapeHTML(s.full_name_snapshot)}<small>${escapeHTML(s.student_id_snapshot)}</small></td>
-      <td>${sc ? num(sc.exam_score) : "—"}</td><td>${sc ? num(sc.ca_score) : "—"}</td>
-      <td>${sc ? num(sc.score) : "—"}</td><td>${sc ? num(sc.maximum_score) : "—"}</td>
-      <td>${num(s.average)}%</td><td>${escapeHTML(sc?.grade || "—")}</td>
-      <td>${sc?.participation_status === "absent" ? "Absent" : "Scored"}</td></tr>`;
-  }).join("");
-
-  openPrint("Examination Result Sheet", `
-    ${schoolHead(c)}
-    <h2>EXAMINATION RESULT SHEET</h2>
-    <p style="text-align:center;font-size:12px"><strong>${escapeHTML(title)}</strong><br>${classLine(c)}</p>
-    <table><thead><tr><th>Pos</th><th>Student</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>%</th><th>Grade</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
-    <p style="font-size:11px">Number of students: ${res.students.length}</p>
-    ${signatures(c)}
-    <div class="foot">Powered by SAINTIG EXAMS</div>`, false);
+  openPrint("Annual Report Cards", list.map(s => cardHtml(res, s)).join(""), false);
 }
 
 init();
