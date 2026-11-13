@@ -409,7 +409,7 @@ async function loadCa() {
     $("caMax").value = data.ca_maximum || "";
 
     if (!data.students.length) {
-      $("caRows").innerHTML = '<tr><td colspan="4" class="muted">No active students in this class.</td></tr>';
+      $("caRows").innerHTML = '<tr><td colspan="4" class="muted">No students are registered for this examination yet. Add them on the Class Examination page (Examinations tab, Students button).</td></tr>';
       return;
     }
 
@@ -503,6 +503,10 @@ function renderGeneralPanel() {
     status.textContent = `A draft exists (version ${draft.version_number}, generated ${dateText(draft.generated_at)}). Review it, then publish and lock it.`;
   } else {
     status.textContent = "No general result yet. Generate a draft to review it before publishing.";
+  }
+
+  if (overview.unassigned_students > 0) {
+    status.textContent += ` Warning: ${overview.unassigned_students} active student(s) are not assigned to any examination and will be left out of the result. Assign them on the Class Examination page (Examinations tab, Students button).`;
   }
 
   $("genBtn").disabled = Boolean(pub);
