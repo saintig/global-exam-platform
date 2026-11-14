@@ -1691,7 +1691,6 @@ function regOpen(classId, view, studentId) {
 }
 async function regLoad() {
   REG.classId = document.getElementById("regClass").value;
-  REG.only = REG.only && REG.data && REG.data.classItem && String(REG.data.classItem.id) === String(REG.classId) ? REG.only : REG.only;
   document.getElementById("regBody").innerHTML = '<div class="loading">Loading the register...</div>';
   try {
     REG.limit = (await getLimits())[REG.classId] || null;
@@ -1901,7 +1900,7 @@ function regShare(kind, id) {
   const d = REG.data; if (!d) return;
   const c = d.classItem || {};
   const head = `SAINTIG EXAMS\n${c.school_name ? c.school_name + "\n" : ""}${classLabel(c)} · ${c.academic_session || ""} · ${c.academic_period || ""}\nClass ID: ${c.class_id || ""}\n`;
-  const how = `\nTo take an examination, open ${new URL("index.html", location.href).href} and use the "Take Your School Exam" box with the Examination ID and your Student ID.`;
+  const how = `\n\nTo take an examination, open ${new URL("index.html", location.href).href} and use the "Take Your School Exam" box with the Examination ID and your Student ID.`;
   const examBlock = e => `${e.title}${e.subject ? " (" + e.subject + ")" : ""}\nExamination ID: ${e.code}\n` +
     (e.students.length ? e.students.map((s, i) => `${i + 1}. ${s.name} — ${s.code}`).join("\n") : "No students registered.");
   if (kind === "exam") {
@@ -1911,7 +1910,7 @@ function regShare(kind, id) {
   if (kind === "student") {
     const s = d.students.find(x => x.id === id); if (!s) return;
     return shareText("Student examinations", head + `\nStudent: ${s.name}\nStudent ID: ${s.code}\n\nEXAMINATIONS\n` +
-      (s.exams.length ? s.exams.map((e, i) => `${i + 1}. ${e.title}${e.subject ? " (" + e.subject + ")" : ""} — Examination ID: ${e.id && e.code}`).join("\n") : "None yet.") + how);
+      (s.exams.length ? s.exams.map((e, i) => `${i + 1}. ${e.title}${e.subject ? " (" + e.subject + ")" : ""} — Examination ID: ${e.code}`).join("\n") : "None yet.") + how);
   }
   if (REG.view === "exam") {
     return shareText("Class examination register", head + "\nEXAMINATIONS\n" + d.exams.map((e, i) => `${i + 1}. ${e.title} — ${e.code} — ${e.students.length} student(s)`).join("\n") +
