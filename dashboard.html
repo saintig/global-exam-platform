@@ -3306,6 +3306,69 @@ async function initializeDashboard() {
 initializeDashboard();
 
 </script>
+<script type="module">
+import { supabase } from "./auth.js";
+(function(){
+  const form=document.getElementById("passwordForm");
+  if(!form)return;
+  const msg=document.getElementById("passwordMessage");
+  const newPw=document.getElementById("newPassword");
+  const confirmPw=document.getElementById("confirmPassword");
 
+  const group=document.createElement("div");
+  group.className="form-group";
+  group.innerHTML=
+    '<label for="currentPassword">Current password</label>'+
+    '<input id="currentPassword" type="password" autocomplete="current-password" '+
+    'placeholder="Enter your current password" required>';
+  newPw.closest(".form-group").before(group);
+  const oldPw=document.getElementById("currentPassword");
+
+  const show=(text,type)=>{
+    msg.textContent=text;
+    msg.className="status-message"+(type?" "+type:"");
+  };
+
+  document.addEventListener("submit",async event=>{
+    if(event.target!==form)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const current=oldPw.value,pw=newPw.value,again=confirmPw.value;
+    const btn=form.querySelector('button[type="submit"]');
+
+    if(!current){show("Enter your current password.","error");return}
+    if(pw.length<8){show("Use at least 8 characters for the new password.","error");return}
+    if(pw!==again){show("The new passwords do not match.","error");return}
+    if(pw===current){show("The new password must be different from the current password.","error");return}
+
+    btn.disabled=true;btn.textContent="Updating…";
+
+    try{
+      const {data:u,error:ue}=await supabase.auth.getUser();
+      if(ue||!u?.user?.email)throw new Error("Your account email could not be read. Please sign in again.");
+
+      const {error:se}=await supabase.auth.signInWithPassword({email:u.user.email,password:current});
+      if(se){
+        throw new Error(/invalid|credentials/i.test(se.message||"")
+          ?"The current password is incorrect."
+          :(se.message||"Could not verify your current password."));
+      }
+
+      const {error}=await supabase.auth.updateUser({password:pw});
+      if(error)throw error;
+
+      form.reset();
+      show("Password updated successfully.","success");
+    }catch(err){
+      console.error("Password change:",err);
+      show(err.message||"Could not update password.","error");
+    }finally{
+      btn.disabled=false;btn.textContent="Update Password";
+    }
+  },true);
+})();
+</script>
+  
 </body>
 </html>
