@@ -884,5 +884,30 @@ $("shareCode").addEventListener("click",async()=>{
   }catch(e){console.error(e);say("pageMsg",e.message||"Could not load this page.","err")}
 })();
 </script>
+  <script type="module">
+import {supabase} from "./auth.js";
+(async()=>{
+  const sel=document.getElementById("attempts");
+  if(!sel)return;
+  try{
+    const {data,error}=await supabase.functions.invoke("school-exam-management",{body:{action:"list_subjects"}});
+    if(error)throw error;
+    const p=data?.package||data?.data?.package;
+    const cap=Number(p?.max_attempts_per_exam);
+    if(!Number.isSafeInteger(cap)||cap<1)return;
+    const top=Math.min(cap,5);
+    const d=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,"value");
+    const prev=Number(d.get.call(sel))||2;
+    sel.innerHTML=Array.from({length:top},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' attempt'+(i?'s':'')+'</option>').join("");
+    Object.defineProperty(sel,"value",{configurable:true,
+      get(){return d.get.call(this)},
+      set(v){d.set.call(this,String(Math.max(1,Math.min(Number(v)||1,top))))}});
+    sel.value=prev;
+    const help=document.createElement("small");
+    help.textContent=(p.package_name||"Your")+" package: up to "+top+" attempt"+(top===1?"":"s")+" per student.";
+    sel.parentNode.appendChild(help);
+  }catch(e){console.error("Attempts limit not applied:",e)}
+})();
+</script>
 </body>
 </html>
