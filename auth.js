@@ -110,3 +110,45 @@ export async function requestPasswordReset(email) {
     }
   );
 }
+/* ---- Signed-out / suspended account handling ---- */
+(function () {
+  if (window.__saintigGuard) return;
+  window.__saintigGuard = true;
+
+  let manual = false, shown = false;
+  const origSignOut = supabase.auth.signOut.bind(supabase.auth);
+  supabase.auth.signOut = (...args) => { manual = true; return origSignOut(...args); };
+
+  function loginPage() {
+    const p = location.pathname.toLowerCase();
+    if (p.includes("school") || p.includes("register-examination")) return "school-login.html?mode=login";
+    if (/admin|registered-users|paid-subscribers|settings-security|archived-records|countries|education-levels|subjects\.html|question-bank\.html|register-exam\.html|results-reports|visitor-analytics|ai-question/.test(p)) return "admin-login.html";
+    return "student-login.html?mode=login";
+  }
+
+  function ended() {
+    if (shown || manual || /login/.test(location.pathname.toLowerCase())) return;
+    shown = true;
+    const box = document.createElement("div");
+    box.style.cssText = "position:fixed;inset:0;z-index:99999;background:#000a;display:flex;align-items:center;justify-content:center;padding:20px";
+    box.innerHTML = '<div style="background:#fff;color:#263449;max-width:420px;border-radius:12px;padding:24px;text-align:center;font:17px/1.5 Arial,sans-serif"><b style="font-size:20px">You have been signed out</b><p style="margin:10px 0 0">Your session has ended or your account has been suspended. Please contact the administrator if you think this is a mistake.</p></div>';
+    document.body.appendChild(box);
+    setTimeout(() => location.replace(loginPage()), 4000);
+  }
+
+  supabase.auth.onAuthStateChange(event => { if (event === "SIGNED_OUT") ended(); });
+
+  async function check() {
+    if (shown || manual || document.visibilityState === "hidden") return;
+    const { data } = await supabase.auth.getSession();
+    if (!data || !data.session) return;
+    const { error } = await supabase.auth.getUser();
+    if (error && (error.status === 401 || error.status === 403)) {
+      try { await origSignOut({ scope: "local" }); } catch (e) {}
+      ended();
+    }
+  }
+
+  setInterval(check, 60000);
+  document.addEventListener("visibilitychange", check);
+})();
