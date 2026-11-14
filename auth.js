@@ -116,7 +116,7 @@ export async function requestPasswordReset(email) {
   if (window.__saintigGuard) return;
   window.__saintigGuard = true;
 
-  let manual = false, shown = false, had = false;
+  let manual = false, shown = false;
   const origSignOut = supabase.auth.signOut.bind(supabase.auth);
   supabase.auth.signOut = (...a) => { manual = true; return origSignOut(...a); };
 
@@ -142,10 +142,14 @@ export async function requestPasswordReset(email) {
   async function check() {
     if (shown || manual || document.visibilityState === "hidden") return;
     const { data } = await supabase.auth.getSession();
-    if (data && data.session) had = true;
-    else { if (had) ended(); return; }
-    const { error } = await supabase.auth.getUser();
-    if (error && (error.status === 401 || error.status === 403)) {
+    if (!data || !data.session) return;
+    const { data: st } = await supabase.rpc("my_access_status");
+    let stop = !!(st && st.blocked);
+    if (!stop) {
+      const { error } = await supabase.auth.getUser();
+      stop = !!(error && (error.status === 401 || error.status === 403));
+    }
+    if (stop) {
       try { await origSignOut({ scope: "local" }); } catch (e) {}
       ended();
     }
