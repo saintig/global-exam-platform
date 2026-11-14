@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
+<title>Help &amp; Support | SAINTIG EXAMS</title>
+<style>
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--gold2:#a98220;--bg:#f4f6fa;--text:#1f2b40;--muted:#58677d;--line:#dfe4ec;--ok:#16834b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font:18px/1.55 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:1000px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.brand{font-weight:800;font-size:20px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.role{font-size:14px;color:#cbd3e0}
+.menu-btn{margin-left:auto;background:none;color:#fff;border:1px solid #ffffff66;border-radius:9px;padding:9px 16px;min-height:48px;font-size:17px}
+.menu{display:none;background:var(--navy2);border-top:1px solid #ffffff22;max-height:calc(100vh - 70px);overflow-y:auto}
+.menu.open{display:block}
+.menu-in{max-width:1000px;margin:auto;padding:8px 14px 14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px}
+.menu a,.menu button{display:block;width:100%;text-align:left;background:none;border:0;color:#e9edf5;text-decoration:none;padding:14px 12px;border-radius:8px;font-size:18px}
+.menu a:hover,.menu a.on,.menu button:hover{background:#ffffff14;color:var(--gold)}
+.wrap{max-width:1000px;margin:auto;padding:16px 14px 70px}
+h1{font-size:28px;line-height:1.2;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);font-size:17px;margin-bottom:14px}
+.sections{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+.sections a{flex:0 0 auto;padding:12px 18px;border:1px solid var(--line);background:#fff;border-radius:999px;color:var(--navy);text-decoration:none;font-weight:bold;font-size:17px;min-height:48px;display:flex;align-items:center;gap:8px}
+.sections a b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#e9edf4;font-size:15px}
+.sections a.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.sections a.on b{background:var(--gold);color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:18px}
+.card h2{font-size:23px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:17px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:17px;margin-bottom:7px;color:#2d3a52}
+input,select,textarea{width:100%;padding:13px 14px;border:1px solid #c5cdd9;border-radius:9px;background:#fff;color:var(--text);min-height:54px;font-size:18px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #d4af3799;outline-offset:1px}
+small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
+.btn{border:0;border-radius:10px;padding:13px 20px;font-weight:bold;font-size:17px;min-height:54px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #bfc8d6;color:var(--navy)}
+.danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
+.good{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.msg{display:none;padding:14px 16px;border-radius:10px;margin:14px 0;font-size:17px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.count{color:var(--muted);font-size:16px;margin:6px 0 12px}
+.item{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
+.item.muted{border-left-color:#aab3c2;background:#fafbfc}
+.item-title{font-size:21px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere;line-height:1.35}
+.item-meta{color:var(--muted);font-size:17px;margin-top:4px;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:15px;font-weight:bold;vertical-align:middle}
+.badge.on{background:#eaf7ef;color:#176b3d}
+.badge.off{background:#fff6df;color:#85620d}
+.badge.arch{background:#e8ebf0;color:#4b5563}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.acts .btn{min-height:50px;padding:10px 18px;font-size:17px}
+.empty{padding:26px 10px;text-align:center;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.opt{padding:9px 11px;background:#f8fafc;border:1px solid #edf0f4;border-radius:8px;overflow-wrap:anywhere;font-size:17px}
+.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
+.sum{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.9;overflow-wrap:anywhere}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.pager span{color:var(--muted);font-size:16px}
+.modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:680px;margin:auto}
+.modal-box h2{font-size:23px;color:var(--navy);margin-bottom:14px}
+[hidden]{display:none!important}
+@media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
+@media(max-width:640px){.grid,.bar,.opts{grid-template-columns:1fr}.row .btn,.pager .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
+
+.hero{background:var(--navy);color:#fff;border-radius:14px;padding:22px;margin-bottom:16px}
+.hero h1{color:#fff;font-size:28px}
+.hero p{color:#dfe6f1;font-size:18px;margin-top:6px}
+.search{margin-top:16px}
+.part{margin:26px 0 8px;padding-top:6px}
+.part h2{font-size:25px;color:var(--navy);margin-bottom:4px}
+.part .lead{color:var(--muted);font-size:18px;margin-bottom:14px}
+details.step{background:#fff;border:1px solid var(--line);border-radius:13px;margin-bottom:12px;scroll-margin-top:90px}
+details.step>summary{padding:16px;font-weight:bold;font-size:20px;color:var(--navy);cursor:pointer;list-style:none;display:flex;gap:12px;align-items:center;min-height:60px}
+details.step>summary::-webkit-details-marker{display:none}
+details.step>summary::after{content:"+";margin-left:auto;font-size:28px;color:var(--gold2);line-height:1}
+details.step[open]>summary::after{content:"–"}
+details.step[open]{border-color:var(--gold)}
+.num{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--gold);color:var(--navy);font-size:17px}
+.sbody{padding:0 18px 18px;font-size:18px;line-height:1.7}
+.sbody p{margin:8px 0}
+.sbody ol,.sbody ul{padding-left:26px;margin:8px 0}
+.sbody li{margin-bottom:8px}
+.sbody h4{margin:14px 0 4px;color:var(--navy);font-size:19px}
+.tip,.note,.warn{padding:13px 15px;border-radius:10px;margin:12px 0;font-size:17px;line-height:1.6}
+.tip{background:#fff8e8;border-left:5px solid var(--gold);color:#5f4608}
+.note{background:#eef4fc;border-left:5px solid #5b8bd0;color:#24456f}
+.warn{background:#fdecea;border-left:5px solid var(--bad);color:#8c2218}
+pre{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:15px;line-height:1.6;overflow-x:auto;white-space:pre-wrap;margin:8px 0}
+code{background:#eef1f6;padding:1px 6px;border-radius:5px;font-size:16px}
+.check{list-style:none;padding:0;margin:10px 0 0;counter-reset:c}
+.check li{counter-increment:c;display:flex;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:11px;margin-bottom:9px;background:#fff;font-size:18px}
+.check li::before{content:counter(c);flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;font-weight:bold;font-size:16px}
+.check a{color:var(--navy);font-weight:bold}
+.ids{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.id{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:17px}
+.id b{display:block;color:var(--navy);font-size:19px;margin-bottom:4px}
+.menu-list{display:grid;gap:10px}
+.menu-list div{background:#fff;border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:17px}
+.menu-list b{color:var(--navy)}
+.contact{background:#fff;border:2px solid var(--gold);border-radius:14px;padding:20px;margin-top:22px}
+.contact .row .btn{flex:1 1 220px}
+.noresult{display:none;text-align:center;color:var(--muted);padding:20px}
+@media(max-width:480px){.role{display:none}.brand{white-space:nowrap}}
+@media(max-width:640px){.ids{grid-template-columns:1fr}.hero h1{font-size:25px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
+    <span class="role">Teacher / School</span>
+    <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
+  </div>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-class-examinations.html">Class examination</a><a href="school-class-results.html">Class results</a><a href="school-annual-results.html">Annual results</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="school-help-support.html" class="on">Help &amp; support</a><a href="index.html">Home</a></div></nav>
+</header>
+
+<main class="wrap">
+
+<section class="hero" id="top">
+  <h1>Help &amp; Support</h1>
+  <p>Everything you need to run examinations and results on SAINTIG EXAMS, step by step.</p>
+  <div class="search"><label for="find" style="color:#fff">Search this guide</label><input id="find" type="search" placeholder="Type a word, e.g. publish, Class ID, upload"></div>
+</section>
+
+<nav class="sections" aria-label="Guide sections">
+  <a href="#start">Start here</a>
+  <a href="#part1">Part 1: Exams</a>
+  <a href="#part2">Part 2: Classes &amp; results</a>
+  <a href="#students">For students</a>
+  <a href="#menu-guide">Menu guide</a>
+  <a href="#packages">Packages</a>
+  <a href="#fix">Problems?</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<!-- ================= START HERE ================= -->
+<section class="part" id="start">
+  <h2>Start here</h2>
+  <p class="lead">Follow these ten steps in order. Tap any step to jump to its guide.</p>
+  <ol class="check">
+    <li><span>Set up your school profile, then add your <a href="#s-subjects">subjects</a> and <a href="#s-students">students</a>.</span></li>
+    <li><span><a href="#s-register">Register an examination</a> and <a href="#s-files">add its questions</a>.</span></li>
+    <li><span><a href="#s-publish">Publish it and share the Exam ID</a> with your students.</span></li>
+    <li><span><a href="#c-create">Create a class</a> for the term.</span></li>
+    <li><span><a href="#c-attach">Attach examinations and choose which students take each one</a>. Check the <a href="#c-register">examination register</a> and set a <a href="#c-limit">limit</a> if you need one.</span></li>
+    <li><span><a href="#c-ca">Enter CA scores</a> (optional).</span></li>
+    <li><span><a href="#c-draft">Generate the draft result</a> and check it carefully.</span></li>
+    <li><span><a href="#c-publish">Publish and lock it</a>, then <a href="#c-share">share the Class ID</a>.</span></li>
+    <li><span>Repeat for each term.</span></li>
+    <li><span>At the end of the year, <a href="#c-annual">combine the terms into an Annual Result</a>.</span></li>
+  </ol>
+
+  <div class="tip"><b>CA is optional.</b> If your school does not use Continuous Assessment (CA), skip the CA step. Results then come from the examination scores only. If a page asks for the CA maximum, enter 0.</div>
+
+  <h3 style="margin:18px 0 6px;color:var(--navy);font-size:21px">The four IDs you will use</h3>
+  <div class="ids">
+    <div class="id"><b>Exam ID</b>Created when you save an examination. Students use it to take the exam or check that exam's result.</div>
+    <div class="id"><b>Student ID</b>Belongs to one student. It is always entered together with one of the other IDs.</div>
+    <div class="id"><b>Class ID</b>Created with each class. Students use it to see their published class result.</div>
+    <div class="id"><b>Annual Result ID</b>Created when you generate the annual result. Students use it to see their annual result.</div>
+  </div>
+  <p class="note" style="margin-top:12px">Students enter these IDs on the SAINTIG EXAMS homepage, in the <b>Take Your School Exam</b> box. Viewing and printing results is free for students.</p>
+</section>
+
+<!-- ================= PART 1 ================= -->
+<section class="part" id="part1">
+  <h2>Part 1: Subjects, students, examinations and questions</h2>
+  <p class="lead">How to register everything an examination needs.</p>
+
+  <details class="step" id="s-profile"><summary><span class="num">1</span>Prepare your school details</summary><div class="sbody">
+    <p>When you create a class (see <a href="#c-create">Part 2</a>) you enter the school name, phone, email, address, logo link, the class teacher's name and the principal's name.</p>
+    <p>These details are printed at the top of result sheets and report cards. If a name is left empty, a blank line is printed so it can be written by hand.</p>
+    <p class="note">Open <b>My Profile</b> to check your account details.</p>
+  </div></details>
+
+  <details class="step" id="s-subjects"><summary><span class="num">2</span>Register your subjects</summary><div class="sbody">
+    <ol>
+      <li>Open <b>School Subjects</b>.</li>
+      <li>Add each subject you teach.</li>
+      <li>Make sure each subject is <b>published</b>.</li>
+    </ol>
+    <p class="note">Only published, active subjects appear when you register an examination. Archived subjects are hidden.</p>
+  </div></details>
+
+  <details class="step" id="s-students"><summary><span class="num">3</span>Register your students</summary><div class="sbody">
+    <ol>
+      <li>Open <b>School Students</b>.</li>
+      <li>Add each student.</li>
+      <li>Every student has a <b>Student ID</b>. Give each student their own ID privately.</li>
+    </ol>
+    <p class="tip">Only active students can take exams and appear in classes. Archived students are hidden everywhere.</p>
+  </div></details>
+
+  <details class="step" id="s-register"><summary><span class="num">4</span>Register an examination</summary><div class="sbody">
+    <p>Open <b>Register Examination</b>. It has four steps shown at the top of the page: <b>Exam</b>, <b>Add questions</b>, <b>Review &amp; save</b> and <b>Publish</b>.</p>
+    <h4>Step 1: Exam details</h4>
+    <ul>
+      <li><b>Subject:</b> choose one of your published subjects.</li>
+      <li><b>Title:</b> for example "Government Examination".</li>
+      <li><b>Exam name and class</b> (optional): for example "Government SS1".</li>
+      <li><b>Instructions</b> (optional): shown to students.</li>
+      <li><b>Duration:</b> minutes allowed. Your package sets the maximum.</li>
+      <li><b>Questions each student answers:</b> how many questions every student receives. Your package sets the maximum.</li>
+      <li><b>Marks per question</b> and <b>Maximum attempts</b> (1 to 5). The total marks are worked out for you.</li>
+      <li><b>Start and end dates</b> (optional): tick the box only if students must take it in a set period.</li>
+    </ul>
+    <p>Tap <b>Save and continue</b>. The <b>Exam ID</b> is created.</p>
+    <h4>Step 2: Add questions</h4>
+    <p>Upload a file (PDF, Word, Text, CSV or Excel), or type one question at a time. See <a href="#s-files">Preparing your question file</a>.</p>
+    <h4>Step 3: Review and save</h4>
+    <p>Check the questions. Edit or delete any, then tap <b>Save all questions</b>.</p>
+    <h4>Step 4: Publish</h4>
+    <p>See <a href="#s-publish">Publish and share the Exam ID</a>.</p>
+    <p class="tip">You can leave and come back. Pick your unfinished examination from the list at the top of step 1.</p>
+  </div></details>
+
+  <details class="step" id="s-files"><summary><span class="num">5</span>Prepare your question file</summary><div class="sbody">
+    <p>Any normal file name works, for example <i>Government SS1 Questions.csv</i>, <i>First Term Exam 2026.xlsx</i> or <i>My Questions (Final).CSV</i>. Only the ending must be <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</p>
+    <h4>Word, Text and PDF</h4>
+    <p>Write one item per line, with a blank line between questions:</p>
+<pre>1. What is government?
+A. The study of plants
+B. The process of governing a country
+C. The study of animals
+D. The study of rocks
+Answer: B
+Explanation: Government is how a country is run.
+Marks: 1
+
+2. Who heads a state government?
+A. Governor
+B. Senator
+C. Chairman
+D. Principal
+Answer: A</pre>
+    <ul>
+      <li>Start each question with a number such as <code>1.</code> or <code>1)</code>.</li>
+      <li>Type the letters <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code> yourself. Word's automatic lists are not read.</li>
+      <li>Every question needs an <code>Answer:</code> line with one letter.</li>
+      <li><code>Explanation</code> and <code>Marks</code> are optional.</li>
+      <li>PDF files must contain real text. Scanned or photographed pages cannot be read.</li>
+    </ul>
+    <h4>CSV and Excel</h4>
+    <p>Put these column names in the first row. Their order does not matter:</p>
+<pre>question_text, option_a, option_b, option_c, option_d, correct_option, explanation, marks</pre>
+    <ul>
+      <li>Required: the question, the four options and the correct option. The rest are optional.</li>
+      <li>Excel is read from the first sheet. CSV can use commas or semicolons.</li>
+      <li>The page has a <b>Download CSV template</b> button and a <b>Download Word / Text sample</b> button.</li>
+    </ul>
+    <p class="tip">If some rows have problems, the good questions are still accepted. The problem rows are listed with their row or question number so you can fix them and read the file again.</p>
+  </div></details>
+
+  <details class="step" id="s-limit"><summary><span class="num">6</span>Your question limits</summary><div class="sbody">
+    <p>Your package sets three limits:</p>
+    <ul>
+      <li>The longest an examination can be (minutes).</li>
+      <li>The most questions one student can answer in an examination.</li>
+      <li>The total number of <b>active</b> questions you can keep.</li>
+    </ul>
+    <p><b>Example:</b> your package allows 20 active questions, and each student answers 10.</p>
+    <ul>
+      <li>You upload 50 questions to one examination. The first 20 are kept and the other 30 are discarded. You are told this on screen.</li>
+      <li>You publish it. Each student gets a different random 10 of the 20.</li>
+      <li>For your next examination you cannot add questions, because the 20 places are used. Delete or archive questions you no longer need to free places, or ask the admin to upgrade your package.</li>
+    </ul>
+    <p class="note">Archived questions do not count towards the limit. The page shows how many places you have left.</p>
+  </div></details>
+
+  <details class="step" id="s-publish"><summary><span class="num">7</span>Publish and share the Exam ID</summary><div class="sbody">
+    <ol>
+      <li>Go to step 4, <b>Publish</b>.</li>
+      <li>Publishing works when the saved questions are at least the number each student answers.</li>
+      <li>Tap <b>Publish examination</b>. The <b>Exam ID</b> is shown, with <b>Copy ID</b> and <b>Share ID</b> buttons.</li>
+      <li>Send the Exam ID to your students. Give each student their own Student ID privately.</li>
+    </ol>
+    <p class="warn">After publishing, questions can no longer be added or changed. Check everything first.</p>
+  </div></details>
+
+  <details class="step" id="s-take"><summary><span class="num">8</span>How students take the exam</summary><div class="sbody">
+    <ol>
+      <li>The student opens the SAINTIG EXAMS homepage.</li>
+      <li>In <b>Take Your School Exam</b>, they stay on the <b>Take Exam</b> tab and enter the <b>Exam ID</b> and their <b>Student ID</b>.</li>
+      <li>They check the exam details and tap <b>Start</b>.</li>
+    </ol>
+    <ul>
+      <li>Each student gets a <b>random</b> set of questions, in a random order. Answer options keep their order.</li>
+      <li>A timer runs. If a student leaves and comes back before time ends, they continue with the same questions.</li>
+      <li>Students can attempt the exam only as many times as you allowed.</li>
+    </ul>
+  </div></details>
+</section>
+
+<!-- ================= PART 2 ================= -->
+<section class="part" id="part2">
+  <h2>Part 2: Classes, examinations and results</h2>
+  <p class="lead">How to set up a class, share IDs and publish results.</p>
+
+  <details class="step" id="c-create"><summary><span class="num">1</span>Create a class</summary><div class="sbody">
+    <ol>
+      <li>Open <b>Class Examination</b>.</li>
+      <li>Tap <b>Create Class</b>.</li>
+      <li>Fill in the school details (name, phone, email, address, logo link), the <b>class name</b> (for example SS1), the <b>class arm</b> if you have one (for example A), the <b>academic session</b> (for example 2026/2027) and the <b>academic period</b> (term or semester). Add the class teacher's and principal's names.</li>
+      <li>Tap <b>Save Class</b>. The class gets a <b>Class ID</b>, shown in the list of classes.</li>
+    </ol>
+    <p class="tip">Create a separate class for each term, using the same name, arm and session. This is how the annual result later combines the terms.</p>
+    <p>The <b>Classes</b> tab lets you view, edit, deactivate or archive a class. Archived classes can be restored.</p>
+  </div></details>
+
+  <details class="step" id="c-students"><summary><span class="num">2</span>Add students to the class</summary><div class="sbody">
+    <ol>
+      <li>On <b>Class Examination</b>, tap <b>Add Students</b>.</li>
+      <li>Choose the class, then the student. Students already in that class are not listed.</li>
+      <li>Repeat for each student.</li>
+    </ol>
+    <p>Students must already be registered in <b>School Students</b>. The <b>Students</b> tab lists them, and you can deactivate or remove a student from the class without deleting the student.</p>
+  </div></details>
+
+  <details class="step" id="c-attach"><summary><span class="num">3</span>Attach examinations and choose who takes each one</summary><div class="sbody">
+    <ol>
+      <li>On <b>Class Examination</b>, tap <b>Attach Examination</b>.</li>
+      <li>Choose the class, then the examination. Examinations already attached to that class are not listed.</li>
+      <li>Open the <b>Examinations</b> tab. For each attached examination, tap its <b>Students</b> button.</li>
+      <li>By default, every student in the class is registered for a newly attached examination. Under <b>Registered</b>, select the students who do <b>not</b> take it and tap <b>Remove Selected</b>. The list then belongs to that examination only.</li>
+      <li>To add students again, use the <b>Add Students</b> tab and tap <b>Add Selected</b>.</li>
+    </ol>
+    <p>In the same window you can <b>print</b> or <b>download</b> that examination's student list.</p>
+    <p class="warn">A student who is in the class but registered for no examination is left out of the result. The Class Results page warns you when this happens.</p>
+  </div></details>
+
+  <details class="step" id="c-register"><summary><span class="num">4</span>The examination register: lists with IDs</summary><div class="sbody">
+    <p>Use the register to see, check and share who is registered for what in a class.</p>
+    <ol>
+      <li>On <b>Class Examination</b>, tap <b>Open Examination Register</b>, or tap <b>Register</b> on a class in the Classes tab.</li>
+      <li>Choose the class.</li>
+      <li><b>By examination:</b> every examination in the class with its <b>Examination ID</b>, and the students with their <b>Student IDs</b> under each one.</li>
+      <li><b>By student:</b> every student with the examinations they take, and each <b>Examination ID</b>.</li>
+    </ol>
+    <h4>What you can do</h4>
+    <ul>
+      <li><b>View:</b> tap "View students" or "View examinations" on any card. Use the search box to find an exam, student or ID.</li>
+      <li><b>Edit:</b> "Edit students" on an examination, or "Edit examinations" on a student, to change who takes what.</li>
+      <li><b>Print:</b> print the whole register, or just one examination or one student.</li>
+      <li><b>Download:</b> save a CSV file that opens in Excel, for everything or for one examination or student.</li>
+      <li><b>Share:</b> send the list by WhatsApp or any app, or copy it. Share a student's list with the student or parent. Share student IDs only with school staff or the student concerned.</li>
+    </ul>
+    <p class="tip">In the <b>Students</b> tab, the <b>Exams</b> button beside a student opens that student's examinations straight away.</p>
+  </div></details>
+
+  <details class="step" id="c-limit"><summary><span class="num">5</span>Maximum examinations per student</summary><div class="sbody">
+    <p>You can set the most examinations each student may take in a class, for example 8.</p>
+    <ol>
+      <li>Open the <b>Examination Register</b> and choose the class.</li>
+      <li>Under <b>Maximum examinations each student can take in this class</b>, type a number and tap <b>Save limit</b>. Tap <b>Remove limit</b> to have no limit.</li>
+    </ol>
+    <ul>
+      <li>When you add students to an examination, students who already take the maximum are skipped, and you are told who.</li>
+      <li>In the register, students over the limit are marked "over limit".</li>
+      <li>When you attach a new examination, every student is registered for it by default, so some students may go over the limit. A message tells you, and you can fix it by removing those students from the examination.</li>
+    </ul>
+    <p class="note">The limit is saved with your account, so it appears on every device you sign in with. It is set for each class separately.</p>
+  </div></details>
+
+  <details class="step" id="c-rule"><summary><span class="num">6</span>Examinations not attached to the class are not counted</summary><div class="sbody">
+    <p>A student can write any examination you publish, using the Exam ID and their Student ID, whether or not it is attached to the class.</p>
+    <p class="warn">Class results count only the examinations <b>attached to the class</b> and only the students <b>registered for each one</b>. An examination the student wrote but that is not attached to the class, or one the student is not registered for, is not included in the class result.</p>
+    <p>To include it: attach the examination to the class, then make sure the student is registered for it.</p>
+  </div></details>
+
+  <details class="step" id="c-ca"><summary><span class="num">7</span>Enter CA scores (optional)</summary><div class="sbody">
+    <p>CA means Continuous Assessment, such as tests and assignments. You can skip this step.</p>
+    <ol>
+      <li>Open <b>Class Results</b> and select the class.</li>
+      <li>On the <b>CA Scores</b> tab, choose an examination.</li>
+      <li>Enter the <b>CA maximum</b> for that examination, for example 30. Use 0 if there is no CA.</li>
+      <li>Type each student's CA score. A blank box counts as 0. A score cannot be above the maximum.</li>
+      <li>Tap <b>Save CA Scores</b>.</li>
+    </ol>
+    <p>Each student's total for an examination is their exam score plus their CA score. CA scores cannot be changed while a published result is locked.</p>
+  </div></details>
+
+  <details class="step" id="c-draft"><summary><span class="num">8</span>Generate and check the draft result</summary><div class="sbody">
+    <ol>
+      <li>On <b>Class Results</b>, open the <b>General Result</b> tab.</li>
+      <li>Tap <b>Generate Draft</b>.</li>
+      <li>Check every student, score, total, average, grade and position.</li>
+    </ol>
+    <ul>
+      <li>The result combines every examination attached to the class.</li>
+      <li>A student who missed an examination counts as 0 for it.</li>
+      <li>Students with equal totals share a position.</li>
+      <li>You can tap <b>Regenerate Draft</b> as often as you like before publishing.</li>
+      <li>The <b>Examination Result</b> tab shows the result of just one examination.</li>
+    </ul>
+    <p class="note">Students cannot see a draft. Printouts of a draft are marked "DRAFT — NOT PUBLISHED".</p>
+  </div></details>
+
+  <details class="step" id="c-publish"><summary><span class="num">9</span>Publish and lock the result</summary><div class="sbody">
+    <ol>
+      <li>When you are sure the draft is correct, tap <b>Publish and Lock Class Results</b> and confirm.</li>
+      <li>Students can now see and print their result.</li>
+    </ol>
+    <p class="warn">While a result is published, it is locked. It cannot be edited, and CA scores cannot be changed.</p>
+  </div></details>
+
+  <details class="step" id="c-share"><summary><span class="num">10</span>Share the Class ID</summary><div class="sbody">
+    <ol>
+      <li>The <b>Class ID</b> is shown on the <b>Class Results</b> page when you select the class.</li>
+      <li>Send it to your students. They also need their own Student ID.</li>
+      <li>Students open the homepage, choose the <b>Class Results</b> tab in the <b>Take Your School Exam</b> box, and enter the Class ID and Student ID.</li>
+    </ol>
+    <p>To share the result of a single examination, students use the <b>Exam Results</b> tab with the Exam ID and their Student ID.</p>
+  </div></details>
+
+  <details class="step" id="c-unpublish"><summary><span class="num">11</span>If you must unpublish a result</summary><div class="sbody">
+    <p>Tap <b>Unpublish and Unlock Class Results</b>. Students lose access straight away.</p>
+    <p class="warn">The unpublished result is permanently archived. It cannot be edited, restored or published again, but you can still view and print it. To give students a result again, generate a new draft, check it and publish it.</p>
+  </div></details>
+
+  <details class="step" id="c-scale"><summary><span class="num">12</span>Grading scale</summary><div class="sbody">
+    <p>On <b>Class Results</b>, the <b>Grading Scale</b> tab sets the grades. A score gets the highest grade whose minimum percentage it reaches.</p>
+    <ul>
+      <li>Edit, add or remove grades, then tap <b>Save Grading Scale</b>.</li>
+      <li><b>Use Default Scale</b> goes back to the standard scale.</li>
+      <li>Changes apply to results you generate from then on. Published results keep their grades.</li>
+    </ul>
+  </div></details>
+
+  <details class="step" id="c-print"><summary><span class="num">13</span>Print result sheets and report cards</summary><div class="sbody">
+    <ul>
+      <li><b>Print Class Result Sheet:</b> one sheet for the whole class.</li>
+      <li><b>Print All Report Cards:</b> one report card per student. Use the <b>Card</b> button beside a student to print just that card.</li>
+    </ul>
+    <p class="tip">If nothing opens, allow pop-ups for the site in your browser, then try again.</p>
+  </div></details>
+
+  <details class="step" id="c-annual"><summary><span class="num">14</span>Annual results</summary><div class="sbody">
+    <ol>
+      <li>Publish and lock the class result of each term first.</li>
+      <li>Open <b>Annual Results</b> and select the class and session.</li>
+      <li>Tick the terms to combine. A term can only be used when its class result is published and locked. Tick at least two.</li>
+      <li>Tap <b>Generate Annual Draft</b> and check it.</li>
+      <li>Tap <b>Publish and Lock Annual Results</b>.</li>
+      <li>Share the <b>Annual Result ID</b> (use <b>Copy ID</b> or <b>Share ID</b>). Students enter it with their Student ID in the <b>Annual Results</b> tab on the homepage.</li>
+    </ol>
+    <p>Annual results work like class results: the draft can be regenerated, and unpublishing permanently archives that version.</p>
+    <p class="note">Archived classes do not appear in the list, so archive a term's class only after you have finished with it.</p>
+  </div></details>
+</section>
+
+<!-- ================= STUDENTS ================= -->
+<section class="part" id="students">
+  <h2>For students: what to tell them</h2>
+  <p class="lead">You can copy this and send it to your students.</p>
+  <details class="step" open><summary><span class="num">?</span>Student instructions</summary><div class="sbody">
+    <ol>
+      <li>Open the SAINTIG EXAMS website and find the <b>Take Your School Exam</b> box.</li>
+      <li><b>To take an exam:</b> stay on <b>Take Exam</b>, enter the Exam ID and your Student ID, then tap <b>Take Exam</b>.</li>
+      <li><b>To see an exam result:</b> choose <b>Exam Results</b>, enter the Exam ID and your Student ID.</li>
+      <li><b>To see your class result:</b> choose <b>Class Results</b>, enter the Class ID and your Student ID.</li>
+      <li><b>To see your annual result:</b> choose <b>Annual Results</b>, enter the Annual Result ID and your Student ID.</li>
+    </ol>
+    <p>Results can be viewed and printed for free once your school has published them. Keep your Student ID private.</p>
+  </div></details>
+</section>
+
+<!-- ================= MENU GUIDE ================= -->
+<section class="part" id="menu-guide">
+  <h2>Dashboard menu guide</h2>
+  <p class="lead">What each page in the menu is for.</p>
+  <div class="menu-list">
+    <div><b>Dashboard:</b> your overview and shortcuts.</div>
+    <div><b>School Students:</b> register and manage your students and their Student IDs.</div>
+    <div><b>School Subjects:</b> register and publish your subjects.</div>
+    <div><b>Register Examination:</b> create an examination, add questions and publish it.</div>
+    <div><b>Question Bank:</b> view and manage the questions you have saved.</div>
+    <div><b>Class Examination:</b> create classes, add students, attach examinations, choose who takes each one, and open the examination register.</div>
+    <div><b>Class Results / Annual Results:</b> enter CA, generate, publish and print results.</div>
+    <div><b>Archive Management:</b> see archived records. Archived items are hidden from lists and selections.</div>
+    <div><b>Results &amp; Performance:</b> see how your students performed.</div>
+    <div><b>Subscription Plans:</b> see your package and how to upgrade.</div>
+    <div><b>Notifications:</b> messages about your account, such as upgrades.</div>
+    <div><b>My Profile:</b> your school's details, printed on results.</div>
+    <div><b>Help &amp; Support:</b> this guide.</div>
+  </div>
+</section>
+
+<!-- ================= PACKAGES ================= -->
+<section class="part" id="packages">
+  <h2>Packages and upgrades</h2>
+  <p class="lead">What your package controls and how to change it.</p>
+  <details class="step" open><summary><span class="num">?</span>About packages</summary><div class="sbody">
+    <ul>
+      <li>Packages are <b>Free</b>, <b>Silver</b>, <b>Gold</b> and <b>Custom</b>. Each sets limits on students, subjects, examinations, stored questions, questions per exam and exam length.</li>
+      <li>Open <b>Subscription Plans</b> to see your package and what each one allows.</li>
+      <li><b>To upgrade:</b> contact the admin and tell us the package you want. You can pay manually. Once your payment is confirmed, your new package goes live and you get a notification.</li>
+      <li><b>Custom package:</b> if Silver and Gold do not suit your school, ask for a Custom package built around your needs.</li>
+    </ul>
+  </div></details>
+</section>
+
+<!-- ================= PROBLEMS ================= -->
+<section class="part" id="fix">
+  <h2>Problems and quick answers</h2>
+  <p class="lead">Tap a problem to see the fix.</p>
+
+  <details class="step"><summary>My file will not upload, or some questions were skipped</summary><div class="sbody">
+    <ul>
+      <li>Read the list shown under <b>Read file</b>. It names the row or question and what is wrong, for example an empty option or a missing answer.</li>
+      <li>Fix those rows in your file and read it again. Questions that were fine are not lost.</li>
+      <li>Check the ending is <code>.pdf</code>, <code>.docx</code>, <code>.txt</code>, <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code>.</li>
+      <li>For Word and Text files, type the numbers and letters yourself. See <a href="#s-files">Prepare your question file</a>.</li>
+      <li>Word, PDF and Excel files need an internet connection to be read.</li>
+    </ul>
+  </div></details>
+
+  <details class="step"><summary>"You have reached your package's limit"</summary><div class="sbody">
+    <p>You have used all your active question places. Delete or archive questions you no longer need, or ask the admin to upgrade your package. See <a href="#s-limit">Your question limits</a>.</p>
+  </div></details>
+
+  <details class="step"><summary>I cannot publish my examination</summary><div class="sbody">
+    <ul>
+      <li>Saved questions must be at least the number each student answers. Save more questions, or lower "Questions each student answers" in step 1.</li>
+      <li>Questions still in the review list must be saved first.</li>
+      <li>A published examination cannot be published again.</li>
+    </ul>
+  </div></details>
+
+  <details class="step"><summary>A student says the exam is not found</summary><div class="sbody">
+    <ul>
+      <li>Check the Exam ID and Student ID are typed correctly.</li>
+      <li>Check the examination is published and not archived.</li>
+      <li>Check the student is active and not archived.</li>
+      <li>Check any start and end dates you set.</li>
+    </ul>
+  </div></details>
+
+  <details class="step"><summary>A student cannot start again</summary><div class="sbody">
+    <p>The student has used all the attempts you allowed. You can allow more attempts in the examination's settings if your page lets you change this.</p>
+  </div></details>
+
+  <details class="step"><summary>A student is missing from the result</summary><div class="sbody">
+    <p>Check the student is active, is in the class, and was chosen for the examinations with the <b>Students</b> button. See <a href="#c-attach">Attach examinations</a>.</p>
+  </div></details>
+
+  <details class="step"><summary>A student wrote an examination but it is missing from the class result</summary><div class="sbody">
+    <p>Class results count only examinations attached to the class and students registered for them. See <a href="#c-rule">Examinations not attached to the class are not counted</a>.</p>
+  </div></details>
+
+  <details class="step"><summary>A student could not be added to an examination</summary><div class="sbody">
+    <p>The student may already take the maximum number of examinations you set for the class. Check the <a href="#c-limit">limit</a>, then remove the student from another examination or raise the limit.</p>
+  </div></details>
+
+  <details class="step"><summary>Students cannot see their class or annual result</summary><div class="sbody">
+    <ul>
+      <li>The result must be <b>published and locked</b>. A draft is not visible to students.</li>
+      <li>Check they use the right ID: Class ID for class results, Annual Result ID for annual results.</li>
+    </ul>
+  </div></details>
+
+  <details class="step"><summary>A class, student, subject or examination is missing from a list</summary><div class="sbody">
+    <p>Archived items are hidden from lists and selection boxes. Check <b>Archive Management</b>.</p>
+  </div></details>
+
+  <details class="step"><summary>Printing does not open</summary><div class="sbody">
+    <p>Allow pop-ups for the site in your browser settings, then tap the print button again.</p>
+  </div></details>
+
+  <details class="step"><summary>I published a result by mistake</summary><div class="sbody">
+    <p>Unpublish it, then generate, check and publish a new one. Read <a href="#c-unpublish">If you must unpublish a result</a> first: the unpublished version is permanently archived.</p>
+  </div></details>
+
+  <div class="noresult" id="noresult">No matching help found. Try another word, or contact us below.</div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="contact" id="contact">
+  <h2 style="color:var(--navy);font-size:24px">Still need help?</h2>
+  <p class="hint" style="margin-top:6px">Our team is ready to help with your account, packages and payments.</p>
+  <div class="row">
+    <a class="btn gold" href="contact.html">Contact us</a>
+    <a class="btn ghost" href="#" data-wa-link>Chat on WhatsApp</a>
+    <a class="btn ghost" href="school-dashboard.html">Back to dashboard</a>
+  </div>
+</section>
+
+</main>
+
+<script>
+document.getElementById("menuBtn").addEventListener("click",()=>document.getElementById("menu").classList.toggle("open"));
+
+/* Open the step a link points to (for example school-help-support.html#c-attach). */
+function openFromHash(){
+  const id=decodeURIComponent(location.hash.slice(1));
+  if(!id)return;
+  const el=document.getElementById(id);
+  if(!el)return;
+  if(el.tagName==="DETAILS")el.open=true;
+  const parent=el.closest("details");if(parent)parent.open=true;
+  setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),50);
+}
+window.addEventListener("hashchange",openFromHash);
+openFromHash();
+/* Links inside the page that point to a step also open it. */
+document.addEventListener("click",e=>{
+  const a=e.target.closest('a[href^="#"]');if(!a||a.hasAttribute("data-wa-link"))return;
+  const el=document.getElementById(a.getAttribute("href").slice(1));
+  if(el&&el.tagName==="DETAILS")el.open=true;
+});
+
+/* Search */
+const find=document.getElementById("find");
+find.addEventListener("input",()=>{
+  const q=find.value.trim().toLowerCase();
+  const steps=[...document.querySelectorAll("details.step")];
+  let shown=0;
+  steps.forEach(d=>{
+    const hit=!q||d.textContent.toLowerCase().includes(q);
+    d.hidden=!hit;
+    if(q&&hit){d.open=true;shown++}
+  });
+  document.getElementById("noresult").style.display=(q&&!shown)?"block":"none";
+  document.querySelectorAll(".part").forEach(p=>{
+    const any=[...p.querySelectorAll("details.step,.ids,.check,.menu-list")].some(x=>!x.hidden);
+    p.hidden=q?!any:false;
+  });
+});
+</script>
+<!-- SHARED SETTINGS: CONTACT DETAILS (WhatsApp link) -->
+<script src="site-config.js"></script>
+</body>
+</html>
