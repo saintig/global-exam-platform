@@ -1163,7 +1163,7 @@ initializeDashboard();
   if(window.__saintigGuard||!window.supabase||!window.supabase.createClient)return;
   window.__saintigGuard=true;
   const sb=window.supabase.createClient("https://scuiswponnqyrbqjypkx.supabase.co","sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq",{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false}});
-  let shown=false,had=false;
+  let shown=false;
   function ended(){
     if(shown)return;shown=true;
     const b=document.createElement("div");
@@ -1175,9 +1175,11 @@ initializeDashboard();
   async function check(){
     if(shown||document.visibilityState==="hidden")return;
     const {data}=await sb.auth.getSession();
-    if(data&&data.session)had=true;else{if(had)ended();return}
-    const {error}=await sb.auth.getUser();
-    if(error&&(error.status===401||error.status===403))ended();
+    if(!data||!data.session)return;
+    const {data:st}=await sb.rpc("my_access_status");
+    let stop=!!(st&&st.blocked);
+    if(!stop){const {error}=await sb.auth.getUser();stop=!!(error&&(error.status===401||error.status===403))}
+    if(stop){try{await sb.auth.signOut({scope:"local"})}catch(e){}ended()}
   }
   setTimeout(check,3000);setInterval(check,15000);
   document.addEventListener("visibilitychange",check);
