@@ -168,6 +168,15 @@ input{width:100%;padding:12px;border:1px solid #cfd8e5;border-radius:8px;min-hei
       <div class="msg" id="acctMsg"></div>
       <div id="blockedList"></div>
     </section>
+
+    <section class="card panel">
+      <h2>Allowed accounts</h2>
+      <p class="hint">Stop everything above, then list the accounts that may still sign in. Resuming a switch is not needed for them. A stopped (suspended) account stays blocked even if it is listed here.</p>
+      <input id="allowEmail" type="email" placeholder="Account email address" autocomplete="off">
+      <div class="btns"><button class="btn green" id="allowBtn" type="button">Allow this account</button></div>
+      <div class="msg" id="allowMsg"></div>
+      <div id="allowList"></div>
+    </section>
   </main>
 </div>
 
@@ -276,6 +285,11 @@ function renderAccess(){
     ? "<h2 style='font-size:17px;margin:14px 0 4px'>Stopped accounts</h2>"+list.map(a=>`<div class="blocked-item"><div><b>${esc(a.email)}</b>${a.reason?"<br><span class='note'>"+esc(a.reason)+"</span>":""}</div><button class="btn ghost" type="button" data-resume="${esc(a.email)}">Resume</button></div>`).join("")
     : "";
 
+  const al=access?.exceptions||[];
+  $("allowList").innerHTML=al.length
+    ? "<h2 style='font-size:17px;margin:14px 0 4px'>Allowed to sign in</h2>"+al.map(a=>`<div class="blocked-item"><b>${esc(a.email)}</b><button class="btn ghost" type="button" data-unallow="${esc(a.email)}">Remove</button></div>`).join("")
+    : "";
+
   const ex=access?.expiring||{},st=Number(ex.students)||0,sc=Number(ex.schools)||0;
   $("attentionBody").innerHTML=(st||sc)
     ? `<a class="row" href="paid-subscribers.html" style="border:0"><span>${sc} Teacher/School package${sc===1?"":"s"} and ${st} Premium student plan${st===1?"":"s"} ending within 7 days.</span><b>View →</b></a>`
@@ -325,6 +339,25 @@ $("unblockBtn").addEventListener("click",()=>setAccountBlock($("acctEmail").valu
 $("blockedList").addEventListener("click",e=>{
   const b=e.target.closest("button[data-resume]");
   if(b)setAccountBlock(b.dataset.resume,false);
+});
+
+async function setException(email,allowed){
+  const msg=$("allowMsg");
+  email=String(email||"").trim();
+  if(!email){msg.className="msg err";msg.textContent="Enter the account email.";return}
+  msg.className="msg";msg.textContent="Saving…";
+  try{
+    const {error}=await supabase.rpc("admin_set_access_exception",{p_email:email,p_allowed:allowed});
+    if(error) throw error;
+    await loadAccess();
+    msg.className="msg ok";msg.textContent=allowed?"Account allowed.":"Account removed from the list.";
+    if(allowed)$("allowEmail").value="";
+  }catch(e){msg.className="msg err";msg.textContent=e.message||"Could not save."}
+}
+$("allowBtn").addEventListener("click",()=>setException($("allowEmail").value,true));
+$("allowList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-unallow]");
+  if(b)setException(b.dataset.unallow,false);
 });
 
 /* ---------- start ---------- */
