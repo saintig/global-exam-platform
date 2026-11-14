@@ -98,6 +98,25 @@ tbody tr:hover{background:#fbfcfe}
 .footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
 .archive-heading{margin-top:32px}
 .archive-note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
+.guide-banner{background:#fff;border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:12px;padding:18px;box-shadow:var(--shadow);margin-bottom:20px}
+.guide-banner h2{margin:0 0 6px;font-size:17px;color:var(--navy)}
+.guide-banner p{margin:0 0 12px;color:var(--muted);line-height:1.5}
+.guide-buttons{display:flex;flex-wrap:wrap;gap:9px}
+.guide-buttons a{text-decoration:none}
+.register-banner{background:linear-gradient(120deg,#1d3557,#2c5282);color:white;border-radius:12px;padding:21px;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;box-shadow:var(--shadow);margin-bottom:20px;border-left:5px solid var(--gold)}
+.register-banner h2{margin:0 0 7px;font-size:19px}
+.register-banner p{margin:0;color:#d8e1ed;line-height:1.5;max-width:640px}
+.reg-card{border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:10px;padding:14px;margin-bottom:12px;background:#fff}
+.reg-card.reg-over{border-left-color:var(--red);background:#fff8f8}
+.reg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.reg-card details{margin-top:10px}
+.reg-card summary{cursor:pointer;font-weight:bold;color:var(--navy);padding:6px 0}
+.limit-box{background:#f5f7fa;border:1px solid var(--border);border-radius:9px;padding:13px;margin-bottom:12px}
+.limit-box .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.limit-box input{width:90px;padding:9px;border:1px solid #d8dee7;border-radius:7px}
+.bad-text{color:var(--red);font-weight:bold}
+.reg-check{display:flex;gap:11px;align-items:flex-start;padding:11px;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;cursor:pointer}
+.reg-check input{margin-top:4px;width:18px;height:18px}
 @media(max-width:700px){
  .container{margin:17px auto;padding:0 11px}
  .create-grid{grid-template-columns:1fr}
@@ -140,6 +159,24 @@ tbody tr:hover{background:#fbfcfe}
       <p>Generate, review, publish, print and manage your class results.</p>
     </div>
     <a href="school-class-results.html" class="btn btn-gold">GENERATE CLASS RESULTS →</a>
+  </section>
+  <section class="guide-banner">
+    <h2>NEED HELP? STEP-BY-STEP GUIDES</h2>
+    <p>Open the guide that matches what you are doing.</p>
+    <div class="guide-buttons">
+      <a class="btn btn-navy btn-small" href="school-help-support.html#part2">📘 Class setup guide</a>
+      <a class="btn btn-light btn-small" href="school-help-support.html#c-attach">Add students and examinations</a>
+      <a class="btn btn-light btn-small" href="school-help-support.html#c-register">Examination register and limits</a>
+      <a class="btn btn-light btn-small" href="school-help-support.html#c-ca">CA and draft results</a>
+      <a class="btn btn-light btn-small" href="school-help-support.html#c-share">Share IDs</a>
+    </div>
+  </section>
+  <section class="register-banner">
+    <div>
+      <h2>CLASS EXAMINATION REGISTER</h2>
+      <p>See every examination in a class with its ID, and the students with IDs registered for each one. View, edit, share, print or download. Set the most examinations each student can take.</p>
+    </div>
+    <button class="btn btn-gold" onclick="regOpen()">OPEN EXAMINATION REGISTER →</button>
   </section>
 
   <section class="create-panel">
@@ -257,6 +294,49 @@ tbody tr:hover{background:#fbfcfe}
 <div class="footer">Powered by SAINTIG EXAMS</div>
 <div class="toast" id="toast"></div>
 
+<!-- CLASS EXAMINATION REGISTER -->
+<div class="modal" id="registerModal">
+  <div class="modal-box" style="max-width:920px">
+    <div class="modal-header"><h2>CLASS EXAMINATION REGISTER</h2><button class="close" onclick="closeModal('registerModal')">×</button></div>
+    <div class="field" style="margin-bottom:12px"><label>Class</label><select id="regClass" onchange="REG.only=null;regLoad()"></select></div>
+    <div class="notice" id="regSummary"></div>
+    <div class="notice" style="background:#eef4fc;color:#24456f">A student can write any examination you publish, but only the examinations the student is registered for in this class are counted in this class's results.</div>
+    <div class="limit-box">
+      <strong>Maximum examinations each student can take in this class</strong>
+      <div class="row">
+        <input id="regLimitInput" type="number" min="1" max="100" placeholder="e.g. 8">
+        <button class="btn btn-gold btn-small" onclick="regSaveLimit()">Save limit</button>
+        <button class="btn btn-light btn-small" onclick="regClearLimit()">Remove limit</button>
+      </div>
+      <div class="muted" id="regLimitStatus" style="margin-top:8px"></div>
+    </div>
+    <div class="toolbar" style="margin:0 0 12px">
+      <input id="regSearch" type="search" placeholder="Search examination, student or ID..." oninput="regSearch()">
+    </div>
+    <div class="actions" style="margin-bottom:12px">
+      <button class="btn btn-navy btn-small" id="regViewExam" onclick="regSetView('exam')">By examination</button>
+      <button class="btn btn-light btn-small" id="regViewStudent" onclick="regSetView('student')">By student</button>
+      <button class="btn btn-light btn-small" onclick="regPrint('all')">Print all</button>
+      <button class="btn btn-light btn-small" onclick="regCsv('all')">Download all</button>
+      <button class="btn btn-light btn-small" onclick="regShare('all')">Share all</button>
+    </div>
+    <div id="regBody"><div class="loading">Loading the register...</div></div>
+    <div class="modal-footer"><button class="btn btn-light" onclick="closeModal('registerModal')">Close</button></div>
+  </div>
+</div>
+<!-- ONE STUDENT'S EXAMINATIONS -->
+<div class="modal" id="regStudentModal">
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-header"><h2 id="regStudentTitle">STUDENT EXAMINATIONS</h2><button class="close" onclick="closeModal('regStudentModal')">×</button></div>
+    <div class="notice" id="regStudentInfo"></div>
+    <div id="regStudentList" style="max-height:340px;overflow:auto"></div>
+    <div class="muted" id="regStudentCount" style="margin-top:8px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-light" onclick="closeModal('regStudentModal')">Cancel</button>
+      <button class="btn btn-gold" id="regStudentSave" onclick="regStudentSave()">Save changes</button>
+    </div>
+  </div>
+</div>
 <!-- STUDENTS OF AN EXAMINATION -->
 <div class="modal" id="examStudentsModal">
   <div class="modal-box" style="max-width:780px">
@@ -425,7 +505,13 @@ function escapeHTML(value) {
   })[char]);
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+  if (id === "examStudentsModal" && typeof REG !== "undefined" && REG.refreshOnClose) {
+    REG.refreshOnClose = false;
+    if (document.getElementById("registerModal").classList.contains("show")) regLoad();
+  }
+}
 function openModal(id) { document.getElementById(id).classList.add("show"); }
 
 async function callFunction(functionName, payload) {
@@ -766,6 +852,7 @@ function renderTable() {
         <td>${Number(item.attached_examinations_count || 0)}</td>
         <td>${statusBadge(item.status)}</td>
         <td><div class="actions">
+          <button class="btn btn-gold btn-small" onclick="regOpen('${item.id}')">Register</button>
           <button class="btn btn-light btn-small" onclick="viewClass('${item.id}')">View</button>
           <button class="btn btn-light btn-small" onclick="editClass('${item.id}')">Edit</button>
           <button class="btn btn-light btn-small" onclick="changeClassStatus('${item.id}','${item.status === "active" ? "inactive" : "active"}')">${item.status === "active" ? "Deactivate" : "Activate"}</button>
@@ -788,6 +875,7 @@ function renderTable() {
         <td>${escapeHTML(item.class_name)}${item.class_arm ? " - " + escapeHTML(item.class_arm) : ""}</td>
         <td>${statusBadge(item.membership_status)}</td>
         <td><div class="actions">
+          <button class="btn btn-gold btn-small" onclick="regOpen('${item.class_database_id}','student','${item.school_student_id}')">Exams</button>
           <button class="btn btn-light btn-small" onclick="viewMembership('student','${item.class_database_id}','${item.school_student_id}')">View</button>
           <button class="btn btn-light btn-small" onclick="changeMembershipStatus('student','${item.class_database_id}','${item.school_student_id}',${!item.is_active})">${item.is_active ? "Deactivate" : "Activate"}</button>
           <button class="btn btn-red btn-small" onclick="removeMembership('student','${item.class_database_id}','${item.school_student_id}')">Remove</button>
@@ -1050,6 +1138,7 @@ document.getElementById("membershipForm").addEventListener("submit", async event
     toast(membershipType === "student" ? "Student added to class." : "Examination attached to class.");
     closeModal("membershipModal");
     await loadDashboard();
+    if (membershipType === "exam") warnOverLimit(classId);
   } catch (error) { toast(error.message); }
   finally {
     button.disabled = false;
@@ -1371,11 +1460,14 @@ async function esAddSelected() {
   button.disabled = true;
 
   try {
+    const cap = await capCheck(es.classId, [...es.selAdd]);
+    if (!cap.allowed.length) { toast(cap.message); return; }
+    if (cap.blocked.length && !confirm(cap.message)) return;
     const result = await callFunction(RESULTS_FUNCTION, {
       action: "add_exam_students",
       class_id: es.classId,
       examination_id: Number(es.examId),
-      student_ids: [...es.selAdd]
+      student_ids: cap.allowed
     });
 
     toast(result.message);
@@ -1473,6 +1565,417 @@ function esDownload() {
 }
 
 document.addEventListener("DOMContentLoaded", loadDashboard);
+
+/* =========================================================
+   CLASS EXAMINATION REGISTER
+   Every examination in a class with its ID, and the students with
+   IDs registered for each one. View, edit, share, print, download.
+   Also: the maximum number of examinations each student may take
+   in a class, set by the teacher.
+========================================================= */
+const LIMITS_KEY = "class_exam_limits";
+let REG = { classId:null, data:null, view:"exam", search:"", limit:null, only:null, edit:null, refreshOnClose:false };
+
+/* The limit is saved with the teacher's own account, so it follows
+   the teacher to every device. */
+async function getLimits() {
+  const { data } = await db.auth.getUser();
+  return data?.user?.user_metadata?.[LIMITS_KEY] || {};
+}
+async function setLimit(classId, value) {
+  const limits = { ...(await getLimits()) };
+  if (value) limits[classId] = value; else delete limits[classId];
+  const { error } = await db.auth.updateUser({ data: { [LIMITS_KEY]: limits } });
+  if (error) throw error;
+}
+const normStudent = s => ({
+  id: String(s.school_student_id),
+  name: s.full_name || "Student",
+  code: s.student_id || String(s.school_student_id)
+});
+const classLabel = c => `${c.class_name || "Class"}${c.class_arm ? " - " + c.class_arm : ""}`;
+const safeName = text => String(text || "").replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-") || "register";
+
+async function loadRegisterData(classId) {
+  const classItem = allClasses.find(x => String(x.id) === String(classId)) || {};
+  const attached = classMemberships.filter(m =>
+    String(m.class_database_id) === String(classId) && m.examination_id && m.is_attached);
+  const exams = [];
+  for (let i = 0; i < attached.length; i += 4) {
+    const part = await Promise.all(attached.slice(i, i + 4).map(async m => {
+      const d = await callFunction(RESULTS_FUNCTION, {
+        action: "exam_students",
+        class_id: classId,
+        examination_id: Number(m.examination_id)
+      });
+      return {
+        id: String(m.examination_id),
+        code: d.exam?.examination_code || m.examination_id,
+        title: d.exam?.title || "Examination",
+        subject: d.exam?.subject_name || "",
+        legacyAll: Boolean(d.legacy_all),
+        students: (d.registered || []).map(normStudent)
+      };
+    }));
+    exams.push(...part);
+  }
+  exams.sort((a, b) => a.title.localeCompare(b.title));
+
+  const roster = new Map();
+  classMemberships
+    .filter(m => String(m.class_database_id) === String(classId) && m.school_student_id && m.is_active)
+    .forEach(m => {
+      const s = allStudents.find(x => String(x.id) === String(m.school_student_id)) || {};
+      roster.set(String(m.school_student_id), {
+        id: String(m.school_student_id),
+        name: s.full_name || "Student",
+        code: s.student_id || String(m.school_student_id)
+      });
+    });
+  exams.forEach(e => e.students.forEach(s => { if (!roster.has(s.id)) roster.set(s.id, s); }));
+
+  const byStudent = new Map([...roster.keys()].map(k => [k, []]));
+  exams.forEach(e => e.students.forEach(s => {
+    if (!byStudent.has(s.id)) byStudent.set(s.id, []);
+    byStudent.get(s.id).push(e);
+  }));
+  const students = [...roster.values()]
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(s => ({ ...s, exams: byStudent.get(s.id) || [] }));
+
+  return { classItem, exams, students };
+}
+
+/* Used when students are added to an examination: students who already
+   take the maximum are skipped. */
+async function capCheck(classId, ids) {
+  const limit = (await getLimits())[classId] || null;
+  if (!limit) return { allowed: ids, blocked: [], message: "" };
+  const data = await loadRegisterData(classId);
+  const allowed = [], blocked = [];
+  ids.forEach(id => {
+    const s = data.students.find(x => x.id === String(id));
+    const n = s ? s.exams.length : 0;
+    if (n >= limit) blocked.push(s ? s.name : String(id)); else allowed.push(id);
+  });
+  const names = blocked.slice(0, 5).join(", ") + (blocked.length > 5 ? "…" : "");
+  const message = !blocked.length ? "" :
+    `${blocked.length} student(s) already take the maximum of ${limit} examination(s) in this class (${names}). ` +
+    (allowed.length ? `They will be skipped and the other ${allowed.length} will be added. Continue?`
+                    : "Nobody was added. Remove one of their examinations first, or raise the limit.");
+  return { allowed, blocked, message };
+}
+async function warnOverLimit(classId) {
+  try {
+    const limit = (await getLimits())[classId];
+    if (!limit) return;
+    const d = await loadRegisterData(classId);
+    const over = d.students.filter(s => s.exams.length > limit).length;
+    if (over) toast(`${over} student(s) now take more than ${limit} examination(s). Open the Examination Register to fix this.`);
+  } catch (error) { console.warn(error); }
+}
+
+/* ---------- opening and loading ---------- */
+function regOpen(classId, view, studentId) {
+  const active = allClasses.filter(x => !x.is_archived);
+  if (!active.length) return toast("Create a class first.");
+  document.getElementById("regClass").innerHTML = active.map(c =>
+    `<option value="${escapeHTML(c.id)}">${escapeHTML(classLabel(c))} (${escapeHTML(c.academic_session)} / ${escapeHTML(c.academic_period)})</option>`).join("");
+  document.getElementById("regClass").value = classId || active[0].id;
+  REG.view = view || "exam";
+  REG.only = studentId ? String(studentId) : null;
+  REG.search = "";
+  document.getElementById("regSearch").value = "";
+  openModal("registerModal");
+  regLoad();
+}
+async function regLoad() {
+  REG.classId = document.getElementById("regClass").value;
+  REG.only = REG.only && REG.data && REG.data.classItem && String(REG.data.classItem.id) === String(REG.classId) ? REG.only : REG.only;
+  document.getElementById("regBody").innerHTML = '<div class="loading">Loading the register...</div>';
+  try {
+    REG.limit = (await getLimits())[REG.classId] || null;
+    REG.data = await loadRegisterData(REG.classId);
+    document.getElementById("regLimitInput").value = REG.limit || "";
+    regRender();
+  } catch (error) {
+    document.getElementById("regBody").innerHTML =
+      `<div class="empty"><strong>Unable to load the register</strong>${escapeHTML(error.message)}</div>`;
+  }
+}
+function regSetView(view) { REG.view = view; REG.only = null; regRender(); }
+function regSearch() { REG.search = document.getElementById("regSearch").value; regRender(); }
+function regShowAll() { REG.only = null; regRender(); }
+
+/* ---------- display ---------- */
+function regRender() {
+  const d = REG.data;
+  if (!d) return;
+  const c = d.classItem || {};
+  const q = REG.search.toLowerCase().trim();
+  const over = REG.limit ? d.students.filter(s => s.exams.length > REG.limit).length : 0;
+
+  document.getElementById("regSummary").innerHTML =
+    `<strong>${escapeHTML(classLabel(c))}</strong> · ${escapeHTML(c.academic_session || "")} · ${escapeHTML(c.academic_period || "")} · Class ID ${escapeHTML(c.class_id || "")}<br>` +
+    `${d.exams.length} examination(s) · ${d.students.length} student(s)`;
+  document.getElementById("regLimitStatus").innerHTML = REG.limit
+    ? `Limit: <b>${REG.limit}</b> examination(s) per student. ` +
+      (over ? `<span class="bad-text">${over} student(s) are over the limit.</span>` : "No student is over the limit.")
+    : "No limit set. Students can be registered for any number of examinations.";
+  document.getElementById("regViewExam").className = "btn btn-small " + (REG.view === "exam" ? "btn-navy" : "btn-light");
+  document.getElementById("regViewStudent").className = "btn btn-small " + (REG.view === "student" ? "btn-navy" : "btn-light");
+
+  const body = document.getElementById("regBody");
+
+  if (REG.view === "exam") {
+    const list = d.exams.filter(e => !q || [e.title, e.code, e.subject, ...e.students.map(s => s.name + " " + s.code)]
+      .join(" ").toLowerCase().includes(q));
+    body.innerHTML = list.length ? list.map(e => `
+      <article class="reg-card">
+        <div class="reg-head">
+          <div><strong>${escapeHTML(e.title)}</strong>
+            ${e.subject ? `<div class="muted">${escapeHTML(e.subject)}</div>` : ""}
+            <div class="id-text">Examination ID: ${escapeHTML(e.code)}</div></div>
+          <span class="status status-active">${e.students.length} student(s)${e.legacyAll ? " (all, default)" : ""}</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-gold btn-small" data-act="exam-edit" data-id="${e.id}">Edit students</button>
+          <button class="btn btn-light btn-small" data-act="exam-print" data-id="${e.id}">Print</button>
+          <button class="btn btn-light btn-small" data-act="exam-csv" data-id="${e.id}">Download</button>
+          <button class="btn btn-light btn-small" data-act="exam-share" data-id="${e.id}">Share</button>
+        </div>
+        <details><summary>View students (${e.students.length})</summary>
+          <div class="table-wrap"><table style="min-width:340px"><thead><tr><th>S/N</th><th>STUDENT NAME</th><th>STUDENT ID</th></tr></thead><tbody>
+          ${e.students.length ? e.students.map((s, i) => `<tr><td>${i + 1}</td><td>${escapeHTML(s.name)}</td><td class="id-text">${escapeHTML(s.code)}</td></tr>`).join("")
+            : '<tr><td colspan="3" class="muted">No students registered.</td></tr>'}
+          </tbody></table></div></details>
+      </article>`).join("")
+      : '<div class="empty"><strong>No examinations found</strong>Attach examinations to this class first.</div>';
+    return;
+  }
+
+  let list = d.students.filter(s => !q || [s.name, s.code, ...s.exams.map(e => e.title + " " + e.code)]
+    .join(" ").toLowerCase().includes(q));
+  if (REG.only) list = d.students.filter(s => s.id === REG.only);
+  body.innerHTML = (REG.only ? '<div class="notice">Showing one student. <button class="btn btn-light btn-small" onclick="regShowAll()">Show all students</button></div>' : "") +
+    (list.length ? list.map(s => {
+      const n = s.exams.length, isOver = REG.limit && n > REG.limit;
+      return `
+      <article class="reg-card ${isOver ? "reg-over" : ""}">
+        <div class="reg-head">
+          <div><strong>${escapeHTML(s.name)}</strong><div class="id-text">Student ID: ${escapeHTML(s.code)}</div></div>
+          <span class="status ${isOver ? "status-inactive" : "status-active"}">${n} examination(s)${REG.limit ? " / " + REG.limit : ""}${isOver ? " · over limit" : ""}</span>
+        </div>
+        <div class="actions">
+          <button class="btn btn-gold btn-small" data-act="stu-edit" data-id="${s.id}">Edit examinations</button>
+          <button class="btn btn-light btn-small" data-act="stu-print" data-id="${s.id}">Print</button>
+          <button class="btn btn-light btn-small" data-act="stu-csv" data-id="${s.id}">Download</button>
+          <button class="btn btn-light btn-small" data-act="stu-share" data-id="${s.id}">Share</button>
+        </div>
+        <details ${REG.only ? "open" : ""}><summary>View examinations (${n})</summary>
+          <div class="table-wrap"><table style="min-width:340px"><thead><tr><th>S/N</th><th>EXAMINATION</th><th>SUBJECT</th><th>EXAMINATION ID</th></tr></thead><tbody>
+          ${n ? s.exams.map((e, i) => `<tr><td>${i + 1}</td><td>${escapeHTML(e.title)}</td><td>${escapeHTML(e.subject || "—")}</td><td class="id-text">${escapeHTML(e.code)}</td></tr>`).join("")
+            : '<tr><td colspan="4" class="muted">Not registered for any examination in this class.</td></tr>'}
+          </tbody></table></div></details>
+      </article>`;
+    }).join("") : '<div class="empty"><strong>No students found</strong>Add students to this class first.</div>');
+}
+
+/* ---------- limit ---------- */
+async function regSaveLimit() {
+  const n = parseInt(document.getElementById("regLimitInput").value, 10);
+  if (!Number.isInteger(n) || n < 1 || n > 100) return toast("Enter a whole number from 1 to 100.");
+  try {
+    await setLimit(REG.classId, n);
+    REG.limit = n;
+    regRender();
+    toast(`Limit saved: ${n} examination(s) per student.`);
+  } catch (error) { toast("Could not save the limit: " + error.message); }
+}
+async function regClearLimit() {
+  try {
+    await setLimit(REG.classId, null);
+    REG.limit = null;
+    document.getElementById("regLimitInput").value = "";
+    regRender();
+    toast("Limit removed.");
+  } catch (error) { toast("Could not remove the limit: " + error.message); }
+}
+
+/* ---------- printing, downloading, sharing ---------- */
+function printHtml(title, inner) {
+  const w = window.open("", "_blank");
+  if (!w) return toast("Please allow pop-ups to print.");
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
+    <style>
+      body{font-family:Arial,sans-serif;color:#1e293b;padding:24px}
+      h1{text-align:center;margin:0;font-size:22px;color:#14243a}
+      h2{text-align:center;font-size:16px;margin:10px 0}
+      h3{font-size:14px;margin:22px 0 4px;color:#14243a}
+      p{text-align:center;margin:3px 0;font-size:12px;color:#475569}
+      table{width:100%;border-collapse:collapse;margin-top:8px}
+      th,td{border:1px solid #94a3b8;padding:7px;font-size:12px;text-align:left}
+      th{background:#e8edf5}
+      .sec{break-inside:avoid}
+      .foot{text-align:center;margin-top:26px;font-size:11px;color:#64748b}
+    </style></head><body>${inner}<div class="foot">Powered by SAINTIG EXAMS</div></body></html>`);
+  w.document.close(); w.focus();
+  setTimeout(() => w.print(), 400);
+}
+function regHead(heading) {
+  const c = REG.data.classItem || {};
+  return `<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1><h2>${escapeHTML(heading)}</h2>
+    <p>${escapeHTML(classLabel(c))} · ${escapeHTML(c.academic_session || "")} · ${escapeHTML(c.academic_period || "")} · Class ID ${escapeHTML(c.class_id || "")}</p>`;
+}
+const examTableHtml = e => `<table><thead><tr><th>S/N</th><th>STUDENT NAME</th><th>STUDENT ID</th></tr></thead><tbody>${
+  e.students.length ? e.students.map((s, i) => `<tr><td>${i + 1}</td><td>${escapeHTML(s.name)}</td><td>${escapeHTML(s.code)}</td></tr>`).join("")
+  : '<tr><td colspan="3">No students registered.</td></tr>'}</tbody></table>`;
+const studentTableHtml = s => `<table><thead><tr><th>S/N</th><th>EXAMINATION</th><th>SUBJECT</th><th>EXAMINATION ID</th></tr></thead><tbody>${
+  s.exams.length ? s.exams.map((e, i) => `<tr><td>${i + 1}</td><td>${escapeHTML(e.title)}</td><td>${escapeHTML(e.subject || "")}</td><td>${escapeHTML(e.code)}</td></tr>`).join("")
+  : '<tr><td colspan="4">Not registered for any examination.</td></tr>'}</tbody></table>`;
+
+function regPrint(kind, id) {
+  const d = REG.data; if (!d) return;
+  if (kind === "exam") {
+    const e = d.exams.find(x => x.id === id); if (!e) return;
+    return printHtml("Examination Students", regHead("STUDENTS REGISTERED FOR " + e.title) +
+      `<p>Examination ID: ${escapeHTML(e.code)}${e.subject ? " · Subject: " + escapeHTML(e.subject) : ""}</p>` + examTableHtml(e));
+  }
+  if (kind === "student") {
+    const s = d.students.find(x => x.id === id); if (!s) return;
+    return printHtml("Student Examinations", regHead("EXAMINATIONS OF " + s.name) +
+      `<p>Student ID: ${escapeHTML(s.code)}</p>` + studentTableHtml(s));
+  }
+  if (REG.view === "exam") {
+    const index = `<table><thead><tr><th>S/N</th><th>EXAMINATION</th><th>SUBJECT</th><th>EXAMINATION ID</th><th>STUDENTS</th></tr></thead><tbody>${
+      d.exams.map((e, i) => `<tr><td>${i + 1}</td><td>${escapeHTML(e.title)}</td><td>${escapeHTML(e.subject || "")}</td><td>${escapeHTML(e.code)}</td><td>${e.students.length}</td></tr>`).join("")}</tbody></table>`;
+    return printHtml("Class Examination Register", regHead("CLASS EXAMINATION REGISTER") + index +
+      d.exams.map(e => `<div class="sec"><h3>${escapeHTML(e.title)} · Examination ID ${escapeHTML(e.code)}</h3>${examTableHtml(e)}</div>`).join(""));
+  }
+  printHtml("Class Student Examinations", regHead("EXAMINATIONS OF EACH STUDENT") +
+    d.students.map(s => `<div class="sec"><h3>${escapeHTML(s.name)} · Student ID ${escapeHTML(s.code)}</h3>${studentTableHtml(s)}</div>`).join(""));
+}
+
+const csvCell = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+function downloadCsv(name, rows) {
+  const csv = "\uFEFF" + rows.map(r => r.map(csvCell).join(",")).join("\r\n");
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  const a = document.createElement("a");
+  a.href = url; a.download = name + ".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function regCsv(kind, id) {
+  const d = REG.data; if (!d) return;
+  const c = d.classItem || {};
+  const base = [classLabel(c), c.class_id || "", c.academic_session || "", c.academic_period || ""];
+  const head = ["Class", "Class ID", "Session", "Period", "Examination", "Examination ID", "Subject", "Student", "Student ID"];
+  const rowsFor = e => e.students.length
+    ? e.students.map(s => [...base, e.title, e.code, e.subject, s.name, s.code])
+    : [[...base, e.title, e.code, e.subject, "", ""]];
+  if (kind === "exam") {
+    const e = d.exams.find(x => x.id === id); if (!e) return;
+    return downloadCsv(safeName("students-" + e.title), [head, ...rowsFor(e)]);
+  }
+  if (kind === "student") {
+    const s = d.students.find(x => x.id === id); if (!s) return;
+    const rows = s.exams.length ? s.exams.map(e => [...base, e.title, e.code, e.subject, s.name, s.code])
+                                : [[...base, "", "", "", s.name, s.code]];
+    return downloadCsv(safeName("examinations-" + s.name), [head, ...rows]);
+  }
+  downloadCsv(safeName("examination-register-" + classLabel(c)), [head, ...d.exams.flatMap(rowsFor)]);
+}
+
+async function shareText(title, text) {
+  try {
+    if (navigator.share) { await navigator.share({ title, text }); return; }
+    if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
+    else {
+      const t = document.createElement("textarea"); t.value = text; t.style.cssText = "position:fixed;opacity:0";
+      document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
+    }
+    toast("Sharing is not available here. The text was copied instead.");
+  } catch (error) { if (error.name !== "AbortError") toast("Unable to share."); }
+}
+function regShare(kind, id) {
+  const d = REG.data; if (!d) return;
+  const c = d.classItem || {};
+  const head = `SAINTIG EXAMS\n${c.school_name ? c.school_name + "\n" : ""}${classLabel(c)} · ${c.academic_session || ""} · ${c.academic_period || ""}\nClass ID: ${c.class_id || ""}\n`;
+  const how = `\nTo take an examination, open ${new URL("index.html", location.href).href} and use the "Take Your School Exam" box with the Examination ID and your Student ID.`;
+  const examBlock = e => `${e.title}${e.subject ? " (" + e.subject + ")" : ""}\nExamination ID: ${e.code}\n` +
+    (e.students.length ? e.students.map((s, i) => `${i + 1}. ${s.name} — ${s.code}`).join("\n") : "No students registered.");
+  if (kind === "exam") {
+    const e = d.exams.find(x => x.id === id); if (!e) return;
+    return shareText("Examination students", head + "\nSTUDENTS REGISTERED FOR\n" + examBlock(e) + "\n\nShare student IDs only with the school staff or the student concerned.");
+  }
+  if (kind === "student") {
+    const s = d.students.find(x => x.id === id); if (!s) return;
+    return shareText("Student examinations", head + `\nStudent: ${s.name}\nStudent ID: ${s.code}\n\nEXAMINATIONS\n` +
+      (s.exams.length ? s.exams.map((e, i) => `${i + 1}. ${e.title}${e.subject ? " (" + e.subject + ")" : ""} — Examination ID: ${e.id && e.code}`).join("\n") : "None yet.") + how);
+  }
+  if (REG.view === "exam") {
+    return shareText("Class examination register", head + "\nEXAMINATIONS\n" + d.exams.map((e, i) => `${i + 1}. ${e.title} — ${e.code} — ${e.students.length} student(s)`).join("\n") +
+      "\n\n" + d.exams.map(examBlock).join("\n\n") + "\n\nShare student IDs only with the school staff or the student concerned.");
+  }
+  shareText("Class student examinations", head + "\n" + d.students.map(s =>
+    `${s.name} — ${s.code}\n` + (s.exams.length ? s.exams.map((e, i) => `  ${i + 1}. ${e.title} — ${e.code}`).join("\n") : "  None yet.")).join("\n\n"));
+}
+
+/* ---------- buttons inside the register ---------- */
+document.getElementById("regBody").addEventListener("click", event => {
+  const b = event.target.closest("button[data-act]"); if (!b) return;
+  const [kind, action] = b.dataset.act.split("-"), id = b.dataset.id;
+  const type = kind === "exam" ? "exam" : "student";
+  if (action === "print") return regPrint(type, id);
+  if (action === "csv") return regCsv(type, id);
+  if (action === "share") return regShare(type, id);
+  if (action === "edit" && type === "exam") {
+    REG.refreshOnClose = true;
+    return openExamStudents(REG.classId, id);
+  }
+  if (action === "edit") return regStudentEdit(id);
+});
+
+/* ---------- edit one student's examinations ---------- */
+function regStudentEdit(studentId) {
+  const d = REG.data;
+  const s = d.students.find(x => x.id === String(studentId)); if (!s) return;
+  REG.edit = { studentId: s.id, initial: new Set(s.exams.map(e => e.id)) };
+  document.getElementById("regStudentTitle").textContent = "EXAMINATIONS OF " + s.name;
+  document.getElementById("regStudentInfo").textContent =
+    `Student ID ${s.code}. Tick the examinations this student takes in this class.` +
+    (REG.limit ? ` The limit is ${REG.limit}.` : "");
+  document.getElementById("regStudentList").innerHTML = d.exams.length ? d.exams.map(e => `
+    <label class="reg-check"><input type="checkbox" value="${e.id}" ${REG.edit.initial.has(e.id) ? "checked" : ""} onchange="regStudentCount()">
+      <span><strong>${escapeHTML(e.title)}</strong>${e.subject ? " · " + escapeHTML(e.subject) : ""}<br><small class="id-text">Examination ID: ${escapeHTML(e.code)}</small></span></label>`).join("")
+    : '<div class="empty">No examinations are attached to this class.</div>';
+  regStudentCount();
+  openModal("regStudentModal");
+}
+function regStudentCount() {
+  const n = document.querySelectorAll("#regStudentList input:checked").length;
+  document.getElementById("regStudentCount").textContent = `Selected: ${n}${REG.limit ? " of " + REG.limit : ""}`;
+}
+async function regStudentSave() {
+  const e = REG.edit; if (!e) return;
+  const sel = [...document.querySelectorAll("#regStudentList input:checked")].map(i => i.value);
+  const add = sel.filter(x => !e.initial.has(x));
+  const remove = [...e.initial].filter(x => !sel.includes(x));
+  if (!add.length && !remove.length) return closeModal("regStudentModal");
+  if (REG.limit && add.length && sel.length > REG.limit)
+    return toast(`This student can take at most ${REG.limit} examination(s) in this class. Untick some examinations first.`);
+  const button = document.getElementById("regStudentSave");
+  button.disabled = true;
+  try {
+    for (const id of remove) await callFunction(RESULTS_FUNCTION, { action: "remove_exam_students", class_id: REG.classId, examination_id: Number(id), student_ids: [Number(e.studentId)] });
+    for (const id of add) await callFunction(RESULTS_FUNCTION, { action: "add_exam_students", class_id: REG.classId, examination_id: Number(id), student_ids: [Number(e.studentId)] });
+    toast("Student's examinations updated.");
+    closeModal("regStudentModal");
+    await regLoad();
+  } catch (error) { toast(error.message); }
+  finally { button.disabled = false; }
+}
+
 </script>
 </body>
 </html>
