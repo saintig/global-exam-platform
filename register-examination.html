@@ -883,19 +883,50 @@ $("shareCode").addEventListener("click",async()=>{
     initStorage();
   }catch(e){console.error(e);say("pageMsg",e.message||"Could not load this page.","err")}
 })();
+  
 </script>
-  <script type="module">
+<script type="module">
 import {supabase} from "./auth.js";
 (async()=>{
   const sel=document.getElementById("attempts");
   if(!sel)return;
+  const note=document.createElement("small");
+  sel.parentNode.appendChild(note);
+
+  const valid=n=>Number.isSafeInteger(n)&&n>=1;
+
+  async function fromTables(){
+    const {data:u}=await supabase.auth.getUser();
+    const {data:acc}=await supabase.from("school_accounts").select("id").eq("user_id",u.user.id).maybeSingle();
+    const {data:a}=await supabase.from("school_account_packages")
+      .select("package_name,expires_at,custom_max_attempts_per_exam").eq("school_account_id",acc.id).maybeSingle();
+    let name=String(a?.package_name||"Free");
+    const exp=a?.expires_at?new Date(a.expires_at):null;
+    if(name.toLowerCase()!=="free"&&exp&&exp<=new Date())name="Free";
+    const free=name.toLowerCase()==="free";
+    const {data:rows}=await supabase.from("school_package_limits").select("package_name,max_attempts_per_exam");
+    const find=n=>(rows||[]).find(r=>String(r.package_name).toLowerCase()===n.toLowerCase());
+    const row=find(name)||find("Free");
+    const custom=free?null:a?.custom_max_attempts_per_exam;
+    const v=custom!==null&&custom!==undefined?custom:row?.max_attempts_per_exam;
+    return {cap:Number(v),name};
+  }
+
   try{
-    const {data,error}=await supabase.functions.invoke("school-exam-management",{body:{action:"list_subjects"}});
-    if(error)throw error;
-    const p=data?.package||data?.data?.package;
-    const cap=Number(p?.max_attempts_per_exam);
-    if(!Number.isSafeInteger(cap)||cap<1)return;
-    const top=Math.min(cap,5);
+    let cap=NaN,name="Your";
+    try{
+      const {data}=await supabase.functions.invoke("school-exam-management",{body:{action:"list_subjects"}});
+      const p=data?.package||data?.data?.package;
+      cap=Number(p?.max_attempts_per_exam);name=p?.package_name||name;
+    }catch(e){console.error(e)}
+    if(!valid(cap)){const t=await fromTables();cap=t.cap;name=t.name}
+
+    if(!valid(cap)){
+      note.textContent="No attempts limit is set for the "+name+" package. Set one in the admin package limits.";
+      return;
+    }
+
+    const top=Math.min(cap,20);
     const d=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,"value");
     const prev=Number(d.get.call(sel))||2;
     sel.innerHTML=Array.from({length:top},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' attempt'+(i?'s':'')+'</option>').join("");
@@ -903,11 +934,13 @@ import {supabase} from "./auth.js";
       get(){return d.get.call(this)},
       set(v){d.set.call(this,String(Math.max(1,Math.min(Number(v)||1,top))))}});
     sel.value=prev;
-    const help=document.createElement("small");
-    help.textContent=(p.package_name||"Your")+" package: up to "+top+" attempt"+(top===1?"":"s")+" per student.";
-    sel.parentNode.appendChild(help);
-  }catch(e){console.error("Attempts limit not applied:",e)}
+    note.textContent=name+" package: up to "+top+" attempt"+(top===1?"":"s")+" per student.";
+  }catch(e){
+    console.error(e);
+    note.textContent="The attempts limit could not be loaded.";
+  }
 })();
 </script>
+  
 </body>
 </html>
