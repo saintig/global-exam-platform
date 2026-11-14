@@ -392,6 +392,12 @@ value===null||value===undefined||value===""
 ?"—":String(value);
 }
 
+/* "Silver" -> "Silver Package"; "Custom Package" stays "Custom Package" */
+function packageLabel(name){
+const n=String(name||"Free").trim();
+return /package$/i.test(n)?n:n+" Package";
+}
+
 function displayName(name){
 const safeName=name||"Teacher/School";
 put("profileHeading",safeName);
@@ -599,7 +605,7 @@ const{data:assignment,error:packageError}=await supabaseClient
 
 if(packageError)throw packageError;
 
-put("subscriptionPlan",(assignment?.package_name||"Free")+" Package");
+put("subscriptionPlan",packageLabel(assignment?.package_name));
 
 }catch(error){
 console.error("Profile subscription:",error);
