@@ -1143,5 +1143,20 @@ document.addEventListener("visibilitychange",async()=>{
 initializeDashboard();
 </script>
 
+  <script>
+(function(){
+  var el=document.getElementById("packageName");
+  if(!el)return;
+  function fix(){
+    var t=el.textContent||"";
+    if(/package\s+package$/i.test(t)){
+      el.textContent=t.replace(/\s+package$/i,"");
+    }
+  }
+  new MutationObserver(fix).observe(el,{childList:true,characterData:true,subtree:true});
+  fix();
+})();
+</script>
+
 </body>
 </html>
