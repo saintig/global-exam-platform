@@ -110,14 +110,15 @@ export async function requestPasswordReset(email) {
     }
   );
 }
+
 /* ---- Signed-out / suspended account handling ---- */
 (function () {
   if (window.__saintigGuard) return;
   window.__saintigGuard = true;
 
-  let manual = false, shown = false;
+  let manual = false, shown = false, had = false;
   const origSignOut = supabase.auth.signOut.bind(supabase.auth);
-  supabase.auth.signOut = (...args) => { manual = true; return origSignOut(...args); };
+  supabase.auth.signOut = (...a) => { manual = true; return origSignOut(...a); };
 
   function loginPage() {
     const p = location.pathname.toLowerCase();
@@ -136,12 +137,13 @@ export async function requestPasswordReset(email) {
     setTimeout(() => location.replace(loginPage()), 4000);
   }
 
-  supabase.auth.onAuthStateChange(event => { if (event === "SIGNED_OUT") ended(); });
+  supabase.auth.onAuthStateChange(e => { if (e === "SIGNED_OUT") ended(); });
 
   async function check() {
     if (shown || manual || document.visibilityState === "hidden") return;
     const { data } = await supabase.auth.getSession();
-    if (!data || !data.session) return;
+    if (data && data.session) had = true;
+    else { if (had) ended(); return; }
     const { error } = await supabase.auth.getUser();
     if (error && (error.status === 401 || error.status === 403)) {
       try { await origSignOut({ scope: "local" }); } catch (e) {}
@@ -149,6 +151,7 @@ export async function requestPasswordReset(email) {
     }
   }
 
-  setInterval(check, 60000);
+  setTimeout(check, 3000);
+  setInterval(check, 15000);
   document.addEventListener("visibilitychange", check);
 })();
