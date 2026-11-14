@@ -68,8 +68,15 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
   box-shadow:0 7px 22px #14243a0b
 }
 .plan-card.top{border-top-color:var(--gold)}
+.plan-card.custom{border-top-color:#98751a}
 .plan-card.current{box-shadow:0 0 0 2px var(--gold)}
 .plan-card h3{font-size:26px;margin:0 0 4px;color:var(--navy)}
+.tag{
+  align-self:flex-start;font-size:13px;font-weight:800;letter-spacing:1.2px;
+  color:#795d0c;background:#fff8df;border:1px solid #f0df9f;
+  border-radius:20px;padding:2px 11px;margin-bottom:8px
+}
+.sub{color:var(--muted);margin:0 0 12px;font-size:17px}
 .price{font-size:23px;font-weight:800;color:var(--navy);margin:0 0 14px}
 .price small{font-size:17px;font-weight:400;color:var(--muted)}
 .features{list-style:none;padding:0;margin:0 0 18px}
@@ -171,6 +178,13 @@ const FIELDS=[
    text:n=>"Up to "+fmt(n)+" attempt"+(Number(n)===1?"":"s")+" per student per examination"}
 ];
 
+const CUSTOM_POINTS=[
+  "Limits set around your school's size",
+  "Custom students, subjects, examinations and questions",
+  "Custom examination duration",
+  "Agreed directly with our team"
+];
+
 const BILLING={
   week:"per week",month:"per month",term:"per term",
   year:"per year",one_time:"one-time"
@@ -185,6 +199,12 @@ function esc(value){
 function fmt(value){
   const n=Number(value);
   return Number.isFinite(n)?n.toLocaleString():"—";
+}
+
+/* "Silver" -> "Silver Package"; "Custom Package" stays "Custom Package" */
+function packageLabel(name){
+  const n=String(name||"Free").trim();
+  return /package$/i.test(n)?n:n+" Package";
 }
 
 function message(text,type="info"){
@@ -273,6 +293,7 @@ function render(assignment,limits,prices){
 
   const current=effectivePackage(assignment);
   const currentKey=current.name.toLowerCase();
+  const onCustom=currentKey.startsWith("custom");
 
   const ordered=[...limits].sort((a,b)=>
     Number(a.max_active_students)-Number(b.max_active_students)
@@ -300,8 +321,8 @@ function render(assignment,limits,prices){
 
   if(current.endedPackage){
     lines+=
-      '<p class="muted">Your '+esc(current.endedPackage)+
-      " package has ended and your account is on the Free package. Contact us to renew.</p>";
+      '<p class="muted">Your '+esc(packageLabel(current.endedPackage))+
+      " has ended and your account is on the Free package. Contact us to renew.</p>";
   }else if(isFree){
     lines+='<p class="muted">Your account is on the Free package.</p>';
   }else if(expiresAt){
@@ -310,7 +331,7 @@ function render(assignment,limits,prices){
       left+" day"+(left===1?"":"s")+" left)."+
       (soon?" Your package ends soon.":"")+"</p>";
   }else{
-    lines+='<p class="muted">Your '+esc(current.name)+" package has no end date.</p>";
+    lines+='<p class="muted">Your '+esc(packageLabel(current.name))+" has no end date.</p>";
   }
 
   if(hasCustomLimits){
@@ -323,7 +344,7 @@ function render(assignment,limits,prices){
 
   $("planSummary").innerHTML=
     '<span class="pill'+(soon||current.endedPackage?" warn":"")+'">'+
-    esc(current.name)+" Package</span>"+
+    esc(packageLabel(current.name))+"</span>"+
     lines+
     (needsRenewal
       ?'<div class="summary-actions"><a class="btn gold" href="contact.html">Contact Us to Renew</a></div>'
@@ -333,27 +354,25 @@ function render(assignment,limits,prices){
 
   const cards=[];
 
-  /* A package that is not one of the standard ones (for example Custom). */
+  const overrideItems=FIELDS.map(f=>{
+    const value=overrides[f.custom];
+    return hasValue(value)?"<li>"+esc(f.text(value))+"</li>":"";
+  }).join("");
 
-  if(!isStandard){
+  /* A package that is neither standard nor Custom (shown first). */
 
-    const items=FIELDS.map(f=>{
-      const value=overrides[f.custom];
-
-      return hasValue(value)
-        ?"<li>"+esc(f.text(value))+"</li>"
-        :"";
-    }).join("");
-
+  if(!isStandard&&!onCustom){
     cards.push(
       '<div class="plan-card top current">'+
-        "<h3>"+esc(current.name)+"</h3>"+
+        "<h3>"+esc(packageLabel(current.name))+"</h3>"+
         '<p class="price">Arranged with the administrator</p>'+
-        '<ul class="features">'+items+"</ul>"+
+        '<ul class="features">'+overrideItems+"</ul>"+
         '<div class="plan-action"><span class="pill ok">Your current plan</span></div>'+
       "</div>"
     );
   }
+
+  /* Free, Silver, Gold */
 
   ordered.forEach((plan,index)=>{
 
@@ -379,6 +398,8 @@ function render(assignment,limits,prices){
 
     if(isCurrent){
       action='<span class="pill ok">Your current plan</span>';
+    }else if(!planIsFree&&onCustom){
+      action='<a class="btn gold" href="contact.html">Contact Us to Switch</a>';
     }else if(!planIsFree&&(!isStandard||index>currentIndex)){
       action='<a class="btn gold" href="contact.html">Contact Us to Upgrade</a>';
     }
@@ -396,6 +417,34 @@ function render(assignment,limits,prices){
       "</div>"
     );
   });
+
+  /* Custom Package (always shown, like the public pricing page) */
+
+  const customRow=prices["custom package"]||prices["custom"];
+  const customExtras=benefitItems(customRow);
+
+  const customPrice=hasValue(customRow?.price_amount)
+    ?priceHtml("Custom Package",customRow)
+    :"Tailored to you";
+
+  const customItems=onCustom&&overrideItems
+    ?overrideItems
+    :CUSTOM_POINTS.map(t=>"<li>"+esc(t)+"</li>").join("");
+
+  const customAction=onCustom
+    ?'<span class="pill ok">Your current plan</span>'
+    :'<a class="btn gold" href="contact.html">Talk to Us About Custom</a>';
+
+  cards.push(
+    '<div class="plan-card custom'+(onCustom?" current":"")+'">'+
+      '<span class="tag">CUSTOM</span>'+
+      "<h3>Custom Package</h3>"+
+      '<p class="price">'+customPrice+"</p>"+
+      '<p class="sub">For schools that Silver or Gold do not suit.</p>'+
+      '<ul class="features">'+customItems+customExtras+"</ul>"+
+      '<div class="plan-action">'+customAction+"</div>"+
+    "</div>"
+  );
 
   $("planCards").innerHTML=cards.join("");
 }
