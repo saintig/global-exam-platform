@@ -960,5 +960,29 @@ function printExamSheet(res) {
 
 init();
 </script>
+<script>
+(function(){
+  if(!window.supabase||!window.supabase.createClient)return;
+  const sb=window.supabase.createClient("https://scuiswponnqyrbqjypkx.supabase.co","sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq",{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false}});
+  setTimeout(async()=>{
+    try{
+      const {data}=await sb.rpc("school_expiry_notice");
+      if(!data||!data.show)return;
+      const free=String(data.package).toLowerCase()==="free";
+      const d=new Date(data.archived_at).toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
+      const b=document.createElement("div");
+      b.style.cssText="background:#fff8e8;border:1px solid #f0dfb5;border-left:5px solid #d4af37;color:#5c4710;border-radius:10px;padding:14px 16px;margin:0 0 18px;font:17px/1.5 Arial,sans-serif";
+      b.innerHTML="<b>Your records are in Archive.</b> "+
+        (free?"Your package ended and on "+d+" your "+data.subjects+" subject(s), "+data.students+" student(s), "+data.examinations+" examination(s) and "+data.questions+" question(s) were moved to Archive. Subscribe again to restore them. ":
+              "Open Archive Management to restore your "+data.subjects+" subject(s), "+data.students+" student(s), "+data.examinations+" examination(s) and "+data.questions+" question(s). ")+
+        "Student and class results can still be viewed and printed. "+
+        '<a href="school-subscription-plans.html" style="color:#173b69;font-weight:bold">Subscription plans</a> · <a href="school-archive-management.html" style="color:#173b69;font-weight:bold">Archive Management</a>';
+      const host=document.querySelector(".content")||document.querySelector("main")||document.body;
+      host.insertBefore(b,host.firstChild);
+    }catch(e){console.error(e)}
+  },1500);
+})();
+</script>
+  
 </body>
 </html>
