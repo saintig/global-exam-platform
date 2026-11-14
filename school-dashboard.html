@@ -1158,5 +1158,31 @@ initializeDashboard();
 })();
 </script>
 
+<script>
+(function(){
+  if(window.__saintigGuard||!window.supabase||!window.supabase.createClient)return;
+  window.__saintigGuard=true;
+  const sb=window.supabase.createClient("https://scuiswponnqyrbqjypkx.supabase.co","sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq",{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false}});
+  let shown=false,had=false;
+  function ended(){
+    if(shown)return;shown=true;
+    const b=document.createElement("div");
+    b.style.cssText="position:fixed;inset:0;z-index:99999;background:#000a;display:flex;align-items:center;justify-content:center;padding:20px";
+    b.innerHTML='<div style="background:#fff;color:#263449;max-width:420px;border-radius:12px;padding:24px;text-align:center;font:17px/1.5 Arial,sans-serif"><b style="font-size:20px">You have been signed out</b><p style="margin:10px 0 0">Your session has ended or your account has been suspended. Please contact the administrator if you think this is a mistake.</p></div>';
+    document.body.appendChild(b);
+    setTimeout(()=>location.replace("school-login.html?mode=login"),4000);
+  }
+  async function check(){
+    if(shown||document.visibilityState==="hidden")return;
+    const {data}=await sb.auth.getSession();
+    if(data&&data.session)had=true;else{if(had)ended();return}
+    const {error}=await sb.auth.getUser();
+    if(error&&(error.status===401||error.status===403))ended();
+  }
+  setTimeout(check,3000);setInterval(check,15000);
+  document.addEventListener("visibilitychange",check);
+})();
+</script>
+  
 </body>
 </html>
