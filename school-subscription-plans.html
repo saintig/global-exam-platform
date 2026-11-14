@@ -94,6 +94,9 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 }
 .btn.gold{background:var(--gold);color:var(--navy)}
 .btn.gold:hover{background:#e6c65d}
+.btn.light{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+.btn.light:hover{background:#f5f7fa}
+.plan-action .btn+.btn{margin-top:10px}
 
 .how{border-left:5px solid var(--gold)}
 .how .btn{max-width:340px;margin-top:14px}
@@ -427,13 +430,12 @@ function render(assignment,limits,prices){
     ?priceHtml("Custom Package",customRow)
     :"Tailored to you";
 
-  const customItems=onCustom&&overrideItems
-    ?overrideItems
-    :CUSTOM_POINTS.map(t=>"<li>"+esc(t)+"</li>").join("");
+  const customItems=CUSTOM_POINTS.map(t=>"<li>"+esc(t)+"</li>").join("");
 
-  const customAction=onCustom
-    ?'<span class="pill ok">Your current plan</span>'
-    :'<a class="btn gold" href="contact.html">Talk to Us About Custom</a>';
+  const customAction=
+    (onCustom?'<p><span class="pill ok">Your current plan</span></p>':"")+
+    '<a class="btn gold" href="contact.html">Sign Up for Custom</a>'+
+    '<a class="btn light" href="contact.html">Talk to us first</a>';
 
   cards.push(
     '<div class="plan-card custom'+(onCustom?" current":"")+'">'+
