@@ -1,1872 +1,239 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#14243a">
-<title>School Subjects | SAINTIG EXAMS</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<title>My Subjects | SAINTIG EXAMS</title>
 <style>
-:root{
-  --navy:#14243a;
-  --navy2:#1d3554;
-  --gold:#d4af37;
-  --paper:#f5f7fa;
-  --ink:#1e293b;
-  --muted:#64748b;
-  --line:#e5e9ef;
-  --green:#16834a;
-  --red:#b42318;
-}
-
+:root{--navy:#14243a;--gold:#d4af37;--bg:#f5f7fa;--ink:#1e293b;--muted:#64748b;--line:#e5e9ef;--green:#16834a;--red:#b42318}
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font:16px/1.6 Arial,sans-serif;
-}
-
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Arial,sans-serif}
 button,input{font:inherit}
-button{cursor:pointer}
-
-.app{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:250px 1fr;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-  background:var(--navy);
-  color:white;
-  padding:22px 15px;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:5px 8px 22px;
-  border-bottom:1px solid #ffffff20;
-}
-
-.mark{
-  width:44px;
-  height:44px;
-  border-radius:11px;
-  background:var(--gold);
-  color:var(--navy);
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  font-size:17px;
-}
-
-.brand b{font-size:17px}
-.brand small{
-  display:block;
-  color:#bdc8d5;
-  font-size:12px;
-  letter-spacing:1.1px;
-}
-
-.navlabel{
-  font-size:12px;
-  color:#9eacbd;
-  letter-spacing:1.3px;
-  font-weight:bold;
-  padding:23px 10px 9px;
-}
-
-.sidebar a{
-  display:block;
-  text-decoration:none;
-  color:#dce4ed;
-  padding:12px 11px;
-  border-radius:8px;
-  margin-bottom:4px;
-  font-size:15px;
-}
-
-.sidebar a:hover,
-.sidebar a.active{
-  background:var(--navy2);
-  color:white;
-}
-
-.sidebar a.active{
-  box-shadow:inset 3px 0 var(--gold);
-}
-
-.sidebottom{
-  margin-top:auto;
-  border-top:1px solid #ffffff20;
-  padding:16px 5px 5px;
-}
-
-.accountname{
-  font-size:14px;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-}
-
-.accounttype{
-  font-size:13px;
-  color:#bdc8d5;
-}
-
-/* MAIN */
-
-.main{min-width:0}
-
-.topbar{
-  min-height:74px;
-  background:white;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 30px;
-  position:sticky;
-  top:0;
-  z-index:5;
-}
-
-.top-title{
-  color:var(--navy);
-  font-weight:bold;
-  font-size:17px;
-}
-
-.topright{
-  color:var(--muted);
-  font-size:15px;
-}
-
-.menu{
-  display:none;
-  border:1px solid var(--line);
-  background:white;
-  border-radius:7px;
-  padding:8px 12px;
-  color:var(--navy);
-  margin-right:10px;
-  font-size:17px;
-}
-
-.content{
-  max-width:1450px;
-  margin:auto;
-  padding:32px;
-}
-
-/* PAGE HEADER */
-
-.pagehead{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:15px;
-  margin-bottom:25px;
-}
-
-h1{
-  margin:0 0 6px;
-  color:var(--navy);
-  font-size:30px;
-  line-height:1.3;
-}
-
-.subtitle{
-  color:var(--muted);
-  font-size:15px;
-}
-
-.primary{
-  border:0;
-  background:var(--navy);
-  color:white;
-  padding:12px 18px;
-  border-radius:8px;
-  font-weight:bold;
-  font-size:15px;
-}
-
-.primary:hover{background:var(--navy2)}
-.primary:disabled{opacity:.55;cursor:not-allowed}
-
-.secondary{
-  background:white;
-  border:1px solid var(--line);
-  color:var(--navy);
-  padding:11px 15px;
-  border-radius:8px;
-  font-size:14px;
-}
-
-.secondary:hover{border-color:var(--gold)}
-
-.danger{
-  background:#fff0ef;
-  color:var(--red);
-  border:1px solid #ffd2ce;
-  padding:10px 13px;
-  border-radius:7px;
-  font-size:14px;
-}
-
-.success{
-  background:#edf9f1;
-  color:var(--green);
-  border:1px solid #ccebd7;
-  padding:10px 13px;
-  border-radius:7px;
-  font-size:14px;
-}
-
-/* STATUS */
-
-.status{
-  display:none;
-  padding:13px 15px;
-  border-radius:8px;
-  margin-bottom:19px;
-  font-size:15px;
-  overflow-wrap:anywhere;
-}
-
-.status.info{
-  display:block;
-  background:#eef6ff;
-  border:1px solid #d5e8fa;
-  color:#31577b;
-}
-
-.status.error{
-  display:block;
-  background:#fff0ef;
-  border:1px solid #ffd2ce;
-  color:var(--red);
-}
-
-.status.success{
-  display:block;
-  background:#edf9f1;
-  border:1px solid #ccebd7;
-  color:var(--green);
-}
-
-/* SUMMARY */
-
-.summary{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:17px;
-  margin-bottom:25px;
-}
-
-.summary-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:21px 22px;
-  box-shadow:0 5px 18px #14243a08;
-}
-
-.summary-label{
-  color:var(--muted);
-  font-size:15px;
-}
-
-.summary-number{
-  color:var(--navy);
-  font-size:33px;
-  font-weight:800;
-  margin-top:5px;
-}
-
-/* TOOLBAR */
-
-.toolbar{
-  display:flex;
-  gap:13px;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  margin-bottom:19px;
-}
-
-.search{
-  flex:1;
-  min-width:200px;
-  max-width:420px;
-}
-
-.search input{
-  width:100%;
-  padding:13px 15px;
-  border:1px solid var(--line);
-  border-radius:8px;
-  background:white;
-  outline:none;
-  font-size:15px;
-}
-
-.search input:focus,
-.form-field input:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px #d4af3720;
-}
-
-.tabs{
-  display:flex;
-  gap:8px;
-}
-
-.tab{
-  padding:11px 15px;
-  border:1px solid var(--line);
-  background:white;
-  color:var(--muted);
-  border-radius:8px;
-  font-size:14px;
-}
-
-.tab.active{
-  background:var(--navy);
-  color:white;
-  border-color:var(--navy);
-}
-
-/* SUBJECT CARDS */
-
-.subject-list{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:17px;
-}
-
-.subject-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:22px;
-  box-shadow:0 5px 18px #14243a08;
-  min-width:0;
-}
-
-.subject-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:12px;
-}
-
-.subject-name{
-  color:var(--navy);
-  font-size:20px;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-}
-
-.subject-date{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-}
-
-.badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-  white-space:nowrap;
-}
-
-.badge.published{
-  background:#e9f8ef;
-  color:#147a43;
-}
-
-.badge.unpublished{
-  background:#fff4df;
-  color:#87610a;
-}
-
-.badge.archived{
-  background:#eef0f3;
-  color:#566273;
-}
-
-.subject-stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  padding:17px 0;
-  margin-top:14px;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-}
-
-.subject-stat{
-  font-size:14px;
-  color:var(--muted);
-}
-
-.subject-stat b{
-  display:block;
-  color:var(--navy);
-  font-size:22px;
-  margin-top:4px;
-}
-
-.actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:17px;
-}
-
-.action-btn{
-  padding:9px 11px;
-  border:1px solid var(--line);
-  background:white;
-  color:var(--navy);
-  border-radius:7px;
-  font-size:13px;
-}
-
-.action-btn:hover{
-  border-color:var(--gold);
-  background:#fffcf2;
-}
-
-.action-btn:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-}
-
-.empty{
-  grid-column:1/-1;
-  background:white;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:38px 16px;
-  text-align:center;
-  color:var(--muted);
-  font-size:15px;
-}
-
-/* MODAL */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:30;
-  background:#0008;
-  padding:18px;
-  overflow-y:auto;
-  align-items:center;
-  justify-content:center;
-}
-
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top b{font-size:19px}.top b span{color:var(--gold)}
+.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:10px 14px}
+.tag{display:inline-block;background:#e4c96f33;color:#e4c96f;border-radius:20px;padding:3px 12px;font-size:13px;margin-left:8px}
+.wrap{max-width:1150px;margin:auto;padding:24px 16px 50px}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+h1{margin:0 0 5px;font-size:28px;color:var(--navy)}.sub{margin:0;color:var(--muted)}
+.btn{border:0;border-radius:8px;padding:12px 16px;font-weight:bold;cursor:pointer;min-height:46px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.navy{background:var(--navy);color:#fff}.light{background:#fff;border:1px solid var(--line);color:var(--navy)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px}
+.stat small{color:var(--muted)}.stat strong{display:block;font-size:30px;color:var(--navy)}
+.bar{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.search{flex:1;min-width:200px;max-width:420px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:46px}
+.tabs{display:flex;gap:8px}
+.tab{padding:11px 15px;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;cursor:pointer}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.ct{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.name{font-size:20px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere}
+.date{font-size:13px;color:var(--muted);margin-top:4px}
+.bd{display:inline-block;padding:5px 10px;border-radius:20px;font-size:12px;font-weight:bold;white-space:nowrap}
+.bd.p{background:#e9f8ef;color:#147a43}.bd.u{background:#fff4df;color:#87610a}.bd.a{background:#eef0f3;color:#566273}
+.cnt{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:15px 0;margin-top:12px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;color:var(--muted)}
+.cnt b{display:block;font-size:22px;color:var(--navy)}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.acts button{padding:9px 11px;border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:7px;font-size:13px;cursor:pointer}
+.acts button:hover{border-color:var(--gold);background:#fffcf2}
+.empty{grid-column:1/-1;background:#fff;border:1px solid var(--line);border-radius:12px;padding:36px 16px;text-align:center;color:var(--muted)}
+#msg{display:none;padding:13px 15px;border-radius:8px;margin-bottom:16px;overflow-wrap:anywhere}
+#msg.show{display:block}#msg.ok{background:#edf9f1;border:1px solid #ccebd7;color:var(--green)}
+#msg.err{background:#fff0ef;border:1px solid #ffd2ce;color:var(--red)}#msg.info{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+.modal{position:fixed;inset:0;background:#0008;z-index:50;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .modal.show{display:flex}
-
-.modal-box{
-  width:100%;
-  max-width:490px;
-  background:white;
-  border-radius:13px;
-  padding:26px;
-  box-shadow:0 15px 50px #0003;
-}
-
-.modal-box.wide{max-width:680px}
-
-.modal-title{
-  color:var(--navy);
-  font-size:23px;
-  font-weight:bold;
-  margin:0 0 6px;
-}
-
-.modal-subtitle{
-  color:var(--muted);
-  font-size:14px;
-  margin-bottom:21px;
-}
-
-.form-field{margin-bottom:18px}
-
-.form-field label{
-  display:block;
-  font-size:15px;
-  font-weight:bold;
-  color:var(--navy);
-  margin-bottom:8px;
-}
-
-.form-field input{
-  width:100%;
-  padding:13px;
-  border:1px solid var(--line);
-  border-radius:8px;
-  outline:none;
-  font-size:15px;
-}
-
-.form-buttons{
-  display:flex;
-  gap:10px;
-  justify-content:flex-end;
-  flex-wrap:wrap;
-  margin-top:21px;
-}
-
-.modal-note{
-  background:#fffaf0;
-  border:1px solid #f0df9f;
-  color:#72570d;
-  padding:12px;
-  border-radius:8px;
-  font-size:14px;
-  margin-top:16px;
-}
-
-.exam-row{
-  padding:15px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.exam-row:last-child{border-bottom:0}
-
-.exam-title{
-  color:var(--navy);
-  font-weight:bold;
-  font-size:16px;
-  overflow-wrap:anywhere;
-}
-
-.exam-meta{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:5px;
-  line-height:1.6;
-}
-
-.footer{
-  text-align:center;
-  color:#8995a3;
-  font-size:13px;
-  padding:36px 8px 16px;
-}
-
-/* MOBILE */
-
-.overlay{
-  display:none;
-}
-
-@media(max-width:950px){
-  .subject-list{grid-template-columns:1fr}
-}
-
-@media(max-width:720px){
-
-  .app{display:block}
-
-  .sidebar{
-    position:fixed;
-    z-index:22;
-    inset:0 auto 0 0;
-    width:280px;
-    height:100dvh;
-    min-height:0;
-    overflow-y:auto;
-    transform:translateX(-105%);
-    transition:transform .2s ease;
-    box-shadow:10px 0 25px #0002;
-  }
-
-  .sidebar.open{transform:translateX(0)}
-
-  .overlay{
-    display:block;
-    position:fixed;
-    inset:0;
-    z-index:21;
-    background:#0007;
-    opacity:0;
-    visibility:hidden;
-  }
-
-  .overlay.show{
-    opacity:1;
-    visibility:visible;
-  }
-
-  .menu{display:inline-block}
-
-  .topbar{
-    min-height:66px;
-    padding:0 14px;
-  }
-
-  .topright{display:none}
-
-  .content{padding:24px 16px}
-
-  .pagehead{display:block}
-
-  .pagehead .primary{
-    margin-top:16px;
-  }
-
-  h1{font-size:27px}
-
-  .subtitle{font-size:14px}
-
-  .toolbar{align-items:stretch}
-
-  .search{
-    max-width:none;
-    min-width:100%;
-  }
-
-  .tabs{width:100%}
-
-  .tab{
-    flex:1;
-    padding:11px 8px;
-    font-size:13px;
-  }
-
-  .summary{gap:11px}
-
-  .summary-card{padding:17px}
-
-  .summary-label{font-size:14px}
-
-  .summary-number{font-size:27px}
-
-  .subject-card{padding:19px}
-
-  .subject-name{font-size:19px}
-
-  .subject-stat{font-size:13px}
-
-  .subject-stat b{font-size:21px}
-
-  .action-btn{
-    font-size:13px;
-    padding:10px 11px;
-  }
-
-  .modal-box{padding:22px}
-}
-
-@media(max-width:380px){
-
-  .content{padding:20px 12px}
-
-  .subject-card{padding:16px}
-
-  .actions{gap:6px}
-
-  .action-btn{font-size:12px}
-
-  .summary-card{padding:14px}
-}
+.box{background:#fff;border-radius:13px;padding:24px;width:100%;max-width:500px}
+.box.wide{max-width:660px}
+.box h2{margin:0 0 6px;color:var(--navy);font-size:22px}.box .sub{margin-bottom:18px;font-size:14px}
+.f label{display:block;font-weight:bold;margin-bottom:7px;color:var(--navy)}
+.f input{width:100%;padding:13px;border:1px solid var(--line);border-radius:8px;min-height:48px}
+.foot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}
+.note{background:#fffaf0;border:1px solid #f0df9f;color:#72570d;padding:12px;border-radius:8px;font-size:14px;margin-top:16px}
+.er{padding:14px 0;border-bottom:1px solid var(--line)}.er:last-child{border:0}
+.er b{color:var(--navy);overflow-wrap:anywhere}.er div{color:var(--muted);font-size:13px;margin-top:4px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+@media(max-width:600px){.wrap{padding:16px 12px}h1{font-size:24px}.tabs{width:100%}.tab{flex:1;text-align:center}.search{max-width:none;min-width:100%}}
 </style>
 </head>
-
 <body>
+<div class="top"><div><b>SAINTIG <span>EXAMS</span></b><span class="tag">Teacher's Examination</span></div><a href="school-dashboard.html">Dashboard</a></div>
 
-<div class="app">
+<div class="wrap">
+  <div class="head">
+    <div><h1>My Subjects</h1><p class="sub">Create and manage your subjects. They are used when you register examinations.</p></div>
+    <button class="btn navy" id="addBtn" type="button">＋ Add Subject</button>
+  </div>
+  <div id="msg"></div>
 
-<aside class="sidebar" id="sidebar">
-
-  <div class="brand">
-    <div class="mark">SE</div>
-    <div>
-      <b>SAINTIG EXAMS</b>
-      <small>EXAMINATION PLATFORM</small>
-    </div>
+  <div class="stats">
+    <div class="stat"><small>Active Subjects</small><strong id="cActive">—</strong></div>
+    <div class="stat"><small>Archived Subjects</small><strong id="cArch">—</strong></div>
   </div>
 
-  <div class="navlabel">MAIN MENU</div>
-
-  <a href="school-dashboard.html">▦ &nbsp; Dashboard</a>
-  <a href="school-students.html">♙ &nbsp; School Students</a>
-  <a href="school-subjects.html" class="active">▤ &nbsp; School Subjects</a>
-  <a href="register-examination.html">＋ &nbsp; Register Examination</a>
-  <a href="school-question-bank.html">▣ &nbsp; Question Bank</a>
-  <a href="school-archive-management.html">▧ &nbsp; Archive Management</a>
-  <a href="school-results-performance.html">▥ &nbsp; Results &amp; Performance</a>
-
-  <div class="navlabel">ACCOUNT</div>
-
-  <a href="school-subscription-plans.html">◇ &nbsp; Subscription Plans</a>
-  <a href="school-notifications.html">♧ &nbsp; Notifications</a>
-  <a href="school-my-profile.html">⚙ &nbsp; School Profile</a>
-  <a href="school-help-support.html">? &nbsp; Help &amp; Support</a>
-
-  <div class="sidebottom">
-    <div class="accountname" id="sideName">Loading account…</div>
-    <div class="accounttype">Teacher/School Account</div>
+  <div class="bar">
+    <input class="search" id="q" type="search" placeholder="Search subjects" autocomplete="off">
+    <div class="tabs"><button class="tab on" id="tActive" type="button">Active</button><button class="tab" id="tArch" type="button">Archived</button></div>
   </div>
 
-</aside>
-
-<div class="overlay" id="overlay"></div>
-
-<main class="main">
-
-<header class="topbar">
-  <div>
-    <button class="menu" id="menuToggle" aria-label="Open menu">☰</button>
-    <span class="top-title">School Subjects</span>
-  </div>
-  <div class="topright" id="topAccount">Loading account…</div>
-</header>
-
-<section class="content">
-
-  <div id="statusMessage" class="status"></div>
-
-  <div class="pagehead">
-    <div>
-      <h1>School Subjects</h1>
-      <div class="subtitle">
-        Create and manage the subjects offered in your account.
-      </div>
-    </div>
-
-    <button class="primary" id="addSubjectBtn">
-      + Add Subject
-    </button>
-  </div>
-
-  <div class="summary">
-
-    <div class="summary-card">
-      <div class="summary-label">Active Subjects</div>
-      <div class="summary-number" id="activeCount">—</div>
-    </div>
-
-    <div class="summary-card">
-      <div class="summary-label">Archived Subjects</div>
-      <div class="summary-number" id="archivedCount">—</div>
-    </div>
-
-  </div>
-
-  <div class="toolbar">
-
-    <div class="search">
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Search subjects"
-        autocomplete="off"
-      >
-    </div>
-
-    <div class="tabs">
-      <button class="tab active" id="activeTab">Active Subjects</button>
-      <button class="tab" id="archivedTab">Archived Subjects</button>
-    </div>
-
-  </div>
-
-  <div class="subject-list" id="subjectList">
-    <div class="empty">Loading subjects…</div>
-  </div>
-
-  <div class="footer">
-    © <span id="year"></span> SAINTIG EXAMS · Building a better examination experience
-  </div>
-
-</section>
-</main>
+  <div class="grid" id="list"><div class="empty">Loading subjects…</div></div>
 </div>
 
-<!-- ADD / EDIT MODAL -->
-
-<div class="modal" id="subjectModal">
-
-  <div class="modal-box">
-
-    <h2 class="modal-title" id="formTitle">Add Subject</h2>
-
-    <div class="modal-subtitle">
-      Enter the subject name below.
-    </div>
-
-    <form id="subjectForm">
-
-      <div class="form-field">
-        <label for="subjectName">Subject Name</label>
-        <input
-          type="text"
-          id="subjectName"
-          maxlength="100"
-          placeholder="Enter subject name"
-          required
-        >
-      </div>
-
-      <div class="form-buttons">
-        <button type="button" class="secondary" id="cancelForm">
-          Cancel
-        </button>
-
-        <button type="submit" class="primary" id="saveSubjectBtn">
-          Save Subject
-        </button>
-      </div>
-
-    </form>
-
-    <div class="modal-note">
-      Newly created subjects are published automatically.
-    </div>
-
-  </div>
-</div>
-
-<!-- EXAMINATIONS MODAL -->
-
-<div class="modal" id="examsModal">
-
-  <div class="modal-box wide">
-
-    <h2 class="modal-title" id="examsModalTitle">
-      Linked Examinations
-    </h2>
-
-    <div class="modal-subtitle">
-      Examinations connected to this subject.
-    </div>
-
-    <div id="examList">
-      <div class="empty">Loading examinations…</div>
-    </div>
-
-    <div class="form-buttons">
-      <button class="secondary" id="closeExams">
-        Close
-      </button>
-    </div>
-
-  </div>
-</div>
-
-<script>
-/* SUPABASE CONFIGURATION */
-
-const SUPABASE_URL =
-  "https://scuiswponnqyrbqjypkx.supabase.co";
-
-const SUPABASE_ANON_KEY =
-  "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
-
-const LOGIN_PAGE = "school-login.html";
-
-const $ = id => document.getElementById(id);
-
-let supabaseClient;
-let accountId = null;
-let subjects = [];
-let subjectStatistics = new Map();
-let currentView = "active";
-let editingSubjectId = null;
-let busy = false;
-
-$("year").textContent = new Date().getFullYear();
-
-/* GENERAL HELPERS */
-
-function showMessage(text,type="info"){
-
-  const el=$("statusMessage");
-
-  el.textContent=text;
-  el.className="status "+type;
-
-}
-
-function clearMessage(){
-
-  $("statusMessage").className="status";
-  $("statusMessage").textContent="";
-
-}
-
-function escapeHTML(value){
-
-  return String(value??"").replace(/[&<>"']/g,char=>({
-
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-
-  })[char]);
-
-}
-
-function formatDate(value){
-
-  if(!value)return "—";
-
-  const date=new Date(value);
-
-  if(Number.isNaN(date.getTime()))return "—";
-
-  return date.toLocaleDateString("en-NG",{
-    day:"numeric",
-    month:"short",
-    year:"numeric"
-  });
-
-}
-
-function setBusy(value){
-
-  busy=value;
-
-  $("addSubjectBtn").disabled=value;
-  $("saveSubjectBtn").disabled=value;
-
-}
-
-/* AUTHENTICATION AND ACCOUNT */
-
-async function initializePage(){
-
-  if(!window.supabase?.createClient){
-
-    showMessage(
-      "Supabase could not load. Check your internet connection and refresh.",
-      "error"
-    );
-
-    return;
-  }
-
-  supabaseClient=window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
-    {
-      auth:{
-        persistSession:true,
-        autoRefreshToken:true,
-        detectSessionInUrl:true
-      }
-    }
-  );
-
-  const {
-    data:sessionData,
-    error:sessionError
-  }=await supabaseClient.auth.getSession();
-
-  if(sessionError || !sessionData.session){
-
-    location.replace(LOGIN_PAGE);
-    return;
-  }
-
-  const user=sessionData.session.user;
-
-  const {
-    data:account,
-    error
-  }=await supabaseClient
-    .from("school_accounts")
-    .select("id,user_id,account_name,status")
-    .eq("user_id",user.id)
-    .maybeSingle();
-
-  if(error){
-
-    console.error("Account lookup:",error);
-
-    showMessage(
-      "Unable to verify your Teacher/School account. Check your database permissions.",
-      "error"
-    );
-
-    return;
-  }
-
-  if(!account){
-
-    showMessage(
-      "No Teacher/School account is linked to this login.",
-      "error"
-    );
-
-    return;
-  }
-
-  if(account.status!=="active"){
-
-    await supabaseClient.auth.signOut();
-    location.replace(LOGIN_PAGE);
-    return;
-  }
-
-  accountId=account.id;
-
-  $("sideName").textContent=
-    account.account_name||"Teacher/School";
-
-  $("topAccount").textContent=
-    account.account_name||"Teacher/School";
-
-  await loadSubjects();
-
-}
-
-/* LOAD SUBJECT STATISTICS */
-
-async function loadSubjectStatistics(){
-
-  subjectStatistics.clear();
-
-  const {data,error}=await supabaseClient.rpc(
-    "get_school_subject_question_statistics",
-    {
-      p_school_account_id:accountId
-    }
-  );
-
-  if(error){
-
-    console.error("Subject statistics RPC:",error);
-
-    return {
-      success:false,
-      error
-    };
-  }
-
-  if(!Array.isArray(data)){
-
-    console.error(
-      "Subject statistics returned an unexpected response:",
-      data
-    );
-
-    return {
-      success:false,
-      error:new Error("Unexpected subject statistics response.")
-    };
-  }
-
-  data.forEach(row=>{
-
-    subjectStatistics.set(String(row.subject_id),{
-      examinations:Number(row.examination_count)||0,
-      questions:Number(row.question_count)||0
-    });
-
-  });
-
-  return {
-    success:true
-  };
-
-}
-
-/* LOAD SUBJECTS */
-
-async function loadSubjects(){
-
-  if(!accountId)return;
-
-  $("subjectList").innerHTML=
-    '<div class="empty">Loading subjects…</div>';
-
-  const {data,error}=await supabaseClient
-    .from("school_subjects")
-    .select("id,school_account_id,subject_name,is_published,is_archived,created_at")
-    .eq("school_account_id",accountId)
-    .order("created_at",{ascending:false});
-
-  if(error){
-
-    console.error("Load subjects:",error);
-
-    $("subjectList").innerHTML=
-      '<div class="empty">Unable to load subjects. Check the school_subjects table permissions.</div>';
-
-    showMessage(
-      "Unable to load subjects. Your database permissions may need to be configured.",
-      "error"
-    );
-
-    return;
-  }
-
+<div class="modal" id="formModal"><div class="box">
+  <h2 id="formTitle">Add Subject</h2><div class="sub">Enter the subject name.</div>
+  <form id="form">
+    <div class="f"><label for="name">Subject name</label><input id="name" maxlength="100" placeholder="e.g. Government" required></div>
+    <div class="foot"><button class="btn light" id="cancelBtn" type="button">Cancel</button><button class="btn navy" id="saveBtn" type="submit">Save Subject</button></div>
+  </form>
+  <div class="note">New subjects are published automatically.</div>
+</div></div>
+
+<div class="modal" id="examModal"><div class="box wide">
+  <h2 id="examTitle">Examinations</h2><div class="sub">Examinations linked to this subject.</div>
+  <div id="examList"></div>
+  <div class="foot"><button class="btn light" id="closeExam" type="button">Close</button></div>
+</div></div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const SPACE="teacher";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const day=v=>{const d=new Date(v);return v&&!Number.isNaN(d.getTime())?d.toLocaleDateString("en-NG",{day:"numeric",month:"short",year:"numeric"}):"—"};
+let acc=null,subjects=[],stats=new Map(),view="active",editId=null,busy=false;
+
+function say(t,k="info"){const b=$("msg");b.textContent=t;b.className="show "+k}
+function setBusy(v){busy=v;$("addBtn").disabled=v;$("saveBtn").disabled=v}
+
+async function load(){
+  $("list").innerHTML='<div class="empty">Loading subjects…</div>';
+  const {data,error}=await supabase.from("school_subjects").select("id,subject_name,is_published,is_archived,created_at")
+    .eq("school_account_id",acc).eq("space",SPACE).order("created_at",{ascending:false});
+  if(error){$("list").innerHTML='<div class="empty">Unable to load subjects.</div>';say("Unable to load subjects: "+error.message,"err");return}
   subjects=data||[];
+  $("cActive").textContent=subjects.filter(s=>!s.is_archived).length;
+  $("cArch").textContent=subjects.filter(s=>s.is_archived).length;
 
-  $("activeCount").textContent=
-    subjects.filter(s=>!s.is_archived).length;
-
-  $("archivedCount").textContent=
-    subjects.filter(s=>s.is_archived).length;
-
-  const statisticsResult=await loadSubjectStatistics();
-
-  if(!statisticsResult.success){
-
-    showMessage(
-      "Subjects loaded, but examination and question statistics could not be retrieved. Check the get_school_subject_question_statistics function permissions.",
-      "error"
-    );
-
-  }else{
-
-    clearMessage();
-
-  }
-
-  renderSubjects();
-
+  stats.clear();
+  const r=await supabase.rpc("get_school_subject_question_statistics",{p_school_account_id:acc});
+  if(r.error||!Array.isArray(r.data))say("Subjects loaded, but the examination and question counts could not be loaded.","err");
+  else{r.data.forEach(x=>stats.set(String(x.subject_id),{e:Number(x.examination_count)||0,q:Number(x.question_count)||0}));$("msg").className=""}
+  render();
 }
 
-/* GET COUNTS FROM THE LOADED RPC RESULTS */
-
-function getSubjectCounts(subject){
-
-  /*
-    The statistics RPC returns nonarchived subjects only.
-    Archived subjects therefore display unavailable statistics.
-  */
-
-  if(subject.is_archived){
-
-    return {
-      examinations:null,
-      questions:null
-    };
-
-  }
-
-  return subjectStatistics.get(String(subject.id))||{
-    examinations:null,
-    questions:null
-  };
-
+function render(){
+  const q=$("q").value.trim().toLowerCase();
+  const list=subjects.filter(s=>(view==="archived"?s.is_archived:!s.is_archived)&&String(s.subject_name||"").toLowerCase().includes(q));
+  if(!list.length){$("list").innerHTML=`<div class="empty">${view==="archived"?"No archived subjects.":"No subjects yet. Use Add Subject to create your first one."}</div>`;return}
+  $("list").innerHTML=list.map(s=>{
+    const c=s.is_archived?null:stats.get(String(s.id))||null;
+    const badge=s.is_archived?'<span class="bd a">Archived</span>':s.is_published?'<span class="bd p">Published</span>':'<span class="bd u">Unpublished</span>';
+    const acts=s.is_archived
+      ?`<button data-a="view" data-id="${s.id}">View</button><button data-a="exams" data-id="${s.id}">Linked Examinations</button><button data-a="restore" data-id="${s.id}">Restore</button><button data-a="delete" data-id="${s.id}">Delete</button>`
+      :`<button data-a="view" data-id="${s.id}">View</button><button data-a="edit" data-id="${s.id}">Edit</button><button data-a="${s.is_published?"unpublish":"publish"}" data-id="${s.id}">${s.is_published?"Unpublish":"Publish"}</button><button data-a="exams" data-id="${s.id}">Examinations</button><button data-a="archive" data-id="${s.id}">Archive</button><button data-a="delete" data-id="${s.id}">Delete</button>`;
+    return `<article class="card"><div class="ct"><div><div class="name">${esc(s.subject_name)}</div><div class="date">Created: ${day(s.created_at)}</div></div>${badge}</div>
+      <div class="cnt"><div>Examinations<b>${c?c.e:"—"}</b></div><div>Questions<b>${c?c.q:"—"}</b></div></div>
+      <div class="acts">${acts}</div></article>`}).join("");
 }
 
-/* RENDER SUBJECTS */
-
-function renderSubjects(){
-
-  const query=$("searchInput").value
-    .trim()
-    .toLowerCase();
-
-  const list=subjects.filter(subject=>{
-
-    const correctView=currentView==="archived"
-      ? subject.is_archived
-      : !subject.is_archived;
-
-    const matches=String(subject.subject_name||"")
-      .toLowerCase()
-      .includes(query);
-
-    return correctView&&matches;
-
-  });
-
-  if(!list.length){
-
-    $("subjectList").innerHTML=
-      currentView==="archived"
-        ? '<div class="empty">No archived subjects found.</div>'
-        : '<div class="empty">No active subjects found. Use Add Subject to create your first subject.</div>';
-
-    return;
-  }
-
-  $("subjectList").innerHTML="";
-
-  list.forEach(subject=>{
-
-    const counts=getSubjectCounts(subject);
-
-    const card=document.createElement("article");
-
-    card.className="subject-card";
-
-    const status=subject.is_archived
-      ? '<span class="badge archived">Archived</span>'
-      : subject.is_published
-        ? '<span class="badge published">Published</span>'
-        : '<span class="badge unpublished">Unpublished</span>';
-
-    const publicationAction=subject.is_published
-      ? '<button class="action-btn" data-action="unpublish">Unpublish</button>'
-      : '<button class="action-btn" data-action="publish">Publish</button>';
-
-    let actions="";
-
-    if(subject.is_archived){
-
-      actions=`
-        <button class="action-btn" data-action="view">View</button>
-        <button class="action-btn" data-action="exams">Linked Examinations</button>
-        <button class="action-btn" data-action="restore">Restore</button>
-        <button class="action-btn" data-action="delete">Delete</button>
-      `;
-
-    }else{
-
-      actions=`
-        <button class="action-btn" data-action="view">View</button>
-        <button class="action-btn" data-action="edit">Edit</button>
-        ${publicationAction}
-        <button class="action-btn" data-action="exams">Examinations</button>
-        <button class="action-btn" data-action="archive">Archive</button>
-        <button class="action-btn" data-action="delete">Delete</button>
-      `;
-
-    }
-
-    card.innerHTML=`
-
-      <div class="subject-top">
-
-        <div>
-          <div class="subject-name">
-            ${escapeHTML(subject.subject_name)}
-          </div>
-
-          <div class="subject-date">
-            Created: ${formatDate(subject.created_at)}
-          </div>
-        </div>
-
-        ${status}
-
-      </div>
-
-      <div class="subject-stats">
-
-        <div class="subject-stat">
-          Number of Examinations
-          <b>${counts.examinations===null?"—":counts.examinations}</b>
-        </div>
-
-        <div class="subject-stat">
-          Number of Questions
-          <b>${counts.questions===null?"—":counts.questions}</b>
-        </div>
-
-      </div>
-
-      <div class="actions">
-        ${actions}
-      </div>
-
-    `;
-
-    card.querySelectorAll("[data-action]").forEach(button=>{
-
-      button.addEventListener("click",()=>{
-
-        handleSubjectAction(
-          button.dataset.action,
-          subject
-        );
-
-      });
-
-    });
-
-    $("subjectList").appendChild(card);
-
-  });
-
+/* add / edit */
+function openForm(s){
+  if(busy)return;editId=s?s.id:null;
+  $("formTitle").textContent=s?"Edit Subject":"Add Subject";
+  $("saveBtn").textContent=s?"Save Changes":"Save Subject";
+  $("name").value=s?s.subject_name:"";
+  $("formModal").classList.add("show");$("name").focus();
 }
+function closeForm(){$("formModal").classList.remove("show");editId=null;$("form").reset()}
+$("addBtn").addEventListener("click",()=>openForm(null));
+$("cancelBtn").addEventListener("click",closeForm);
 
-/* ADD SUBJECT */
-
-function openAddModal(){
-
-  if(busy)return;
-
-  editingSubjectId=null;
-
-  $("formTitle").textContent="Add Subject";
-  $("subjectName").value="";
-  $("saveSubjectBtn").textContent="Save Subject";
-
-  $("subjectModal").classList.add("show");
-
-  $("subjectName").focus();
-
-}
-
-/* EDIT SUBJECT */
-
-function openEditModal(subject){
-
-  if(busy)return;
-
-  editingSubjectId=subject.id;
-
-  $("formTitle").textContent="Edit Subject";
-  $("subjectName").value=subject.subject_name;
-  $("saveSubjectBtn").textContent="Save Changes";
-
-  $("subjectModal").classList.add("show");
-
-  $("subjectName").focus();
-
-}
-
-function closeSubjectModal(){
-
-  $("subjectModal").classList.remove("show");
-
-  editingSubjectId=null;
-
-  $("subjectForm").reset();
-
-}
-
-/* SAVE SUBJECT */
-
-$("subjectForm").addEventListener("submit",async event=>{
-
-  event.preventDefault();
-
-  if(busy||!accountId)return;
-
-  const subjectName=$("subjectName").value.trim();
-
-  if(!subjectName){
-
-    showMessage("Enter a subject name.","error");
-    return;
-  }
-
-  if(subjectName.length>100){
-
-    showMessage(
-      "Subject name cannot exceed 100 characters.",
-      "error"
-    );
-
-    return;
-  }
-
+$("form").addEventListener("submit",async e=>{
+  e.preventDefault();if(busy||!acc)return;
+  const name=$("name").value.trim();
+  if(!name)return say("Enter a subject name.","err");
   setBusy(true);
-
-  $("saveSubjectBtn").textContent="Saving…";
-
   try{
-
-    if(editingSubjectId){
-
-      const {error}=await supabaseClient
-        .from("school_subjects")
-        .update({
-          subject_name:subjectName,
-          updated_at:new Date().toISOString()
-        })
-        .eq("id",editingSubjectId)
-        .eq("school_account_id",accountId)
-        .eq("is_archived",false);
-
-      if(error)throw error;
-
-      showMessage(
-        "Subject name updated successfully.",
-        "success"
-      );
-
-    }else{
-
-      const {error}=await supabaseClient
-        .from("school_subjects")
-        .insert({
-          school_account_id:accountId,
-          subject_name:subjectName,
-          is_published:true,
-          is_archived:false
-        });
-
-      if(error)throw error;
-
-      showMessage(
-        "Subject created and published successfully.",
-        "success"
-      );
-
-    }
-
-    closeSubjectModal();
-
-    await loadSubjects();
-
-  }catch(error){
-
-    console.error("Save subject:",error);
-
-    showMessage(
-      error.message||"Unable to save subject. Check database permissions and package limits.",
-      "error"
-    );
-
-  }finally{
-
-    setBusy(false);
-
-    $("saveSubjectBtn").textContent=
-      editingSubjectId
-        ? "Save Changes"
-        : "Save Subject";
-
-  }
-
+    const wasEdit=!!editId;
+    const r=wasEdit
+      ?await supabase.from("school_subjects").update({subject_name:name,updated_at:new Date().toISOString()}).eq("id",editId).eq("school_account_id",acc).eq("is_archived",false)
+      :await supabase.from("school_subjects").insert({school_account_id:acc,subject_name:name,is_published:true,is_archived:false,space:SPACE});
+    if(r.error)throw r.error;
+    closeForm();say(wasEdit?"Subject name updated.":"Subject created and published.","ok");await load();
+  }catch(err){say(err.message||"Unable to save the subject. Check your package limit.","err")}
+  finally{setBusy(false)}
 });
 
-/* SUBJECT ACTIONS */
-
-async function handleSubjectAction(action,subject){
-
-  if(busy)return;
-
-  if(action==="view"){
-
-    const counts=getSubjectCounts(subject);
-
-    alert(
-      "Subject: "+subject.subject_name+
-      "\nStatus: "+(subject.is_archived?"Archived":subject.is_published?"Published":"Unpublished")+
-      "\nExaminations: "+(counts.examinations??"Unavailable")+
-      "\nQuestions: "+(counts.questions??"Unavailable")+
-      "\nCreated: "+formatDate(subject.created_at)
-    );
-
-    return;
-  }
-
-  if(action==="edit"){
-
-    openEditModal(subject);
-    return;
-  }
-
-  if(action==="exams"){
-
-    await showLinkedExaminations(subject);
-    return;
-  }
-
-  if(action==="publish"){
-
-    await updateSubjectStatus(
-      subject,
-      {is_published:true},
-      "Subject published successfully."
-    );
-
-    return;
-  }
-
-  if(action==="unpublish"){
-
-    const confirmed=confirm(
-      "Unpublish "+subject.subject_name+"?\n\nExaminations under this subject must not be published while the subject is unpublished. Existing examination records will be preserved."
-    );
-
-    if(!confirmed)return;
-
-    await updateSubjectStatus(
-      subject,
-      {is_published:false},
-      "Subject unpublished successfully."
-    );
-
-    return;
-  }
-
-  if(action==="archive"){
-
-    const confirmed=confirm(
-      "Archive "+subject.subject_name+"?\n\nThe subject will be moved to Archived Subjects. Linked examinations, questions, attempts and results will be preserved."
-    );
-
-    if(!confirmed)return;
-
-    await updateSubjectStatus(
-      subject,
-      {is_archived:true},
-      "Subject archived. Linked examination history has not been deleted."
-    );
-
-    return;
-  }
-
-  if(action==="restore"){
-
-    const confirmed=confirm(
-      "Restore "+subject.subject_name+"?\n\nThe subject will return to Active Subjects."
-    );
-
-    if(!confirmed)return;
-
-    await updateSubjectStatus(
-      subject,
-      {is_archived:false},
-      "Subject restored successfully."
-    );
-
-    return;
-  }
-
-  if(action==="delete"){
-
-    await deleteSubject(subject);
-    return;
-  }
-
-}
-
-/* UPDATE SUBJECT STATUS */
-
-async function updateSubjectStatus(subject,changes,successText){
-
+/* change a subject */
+async function change(s,changes,okText){
   setBusy(true);
-
   try{
-
-    const {error}=await supabaseClient
-      .from("school_subjects")
-      .update({
-        ...changes,
-        updated_at:new Date().toISOString()
-      })
-      .eq("id",subject.id)
-      .eq("school_account_id",accountId);
-
+    const {error}=await supabase.from("school_subjects").update({...changes,updated_at:new Date().toISOString()}).eq("id",s.id).eq("school_account_id",acc);
     if(error)throw error;
-
-    showMessage(successText,"success");
-
-    await loadSubjects();
-
-  }catch(error){
-
-    console.error("Subject update:",error);
-
-    showMessage(
-      error.message||"Unable to update subject. Check database permissions.",
-      "error"
-    );
-
-  }finally{
-
-    setBusy(false);
-
-  }
-
+    say(okText,"ok");await load();
+  }catch(err){say(err.message||"Unable to update the subject.","err")}
+  finally{setBusy(false)}
 }
 
-/* SAFE SUBJECT DELETION */
-
-async function deleteSubject(subject){
-
-  if(busy)return;
-
-  const {data:linkedExams,error:lookupError}=await supabaseClient
-    .from("examinations")
-    .select("id")
-    .eq("school_account_id",accountId)
-    .eq("school_subject_id",subject.id)
-    .limit(1);
-
-  if(lookupError){
-
-    showMessage(
-      "Unable to verify linked examinations. Deletion has been stopped for safety.",
-      "error"
-    );
-
-    return;
-  }
-
-  if(linkedExams?.length){
-
-    showMessage(
-      "This subject has linked examinations. It cannot be permanently deleted. Archive it instead to preserve examination history.",
-      "error"
-    );
-
-    return;
-  }
-
-  const confirmed=confirm(
-    "Permanently delete "+subject.subject_name+"?\n\nThis is allowed only because no linked examinations were found. This action cannot be undone."
-  );
-
-  if(!confirmed)return;
-
+async function remove(s){
+  const {data,error}=await supabase.from("examinations").select("id").eq("school_account_id",acc).eq("school_subject_id",s.id).limit(1);
+  if(error)return say("Unable to check linked examinations. Deletion stopped for safety.","err");
+  if(data&&data.length)return say("This subject has linked examinations, so it cannot be deleted. Archive it instead.","err");
+  if(!confirm(`Permanently delete ${s.subject_name}?\n\nNo linked examinations were found. This cannot be undone.`))return;
   setBusy(true);
-
   try{
-
-    const {error}=await supabaseClient
-      .from("school_subjects")
-      .delete()
-      .eq("id",subject.id)
-      .eq("school_account_id",accountId);
-
-    if(error)throw error;
-
-    showMessage(
-      "Subject deleted successfully.",
-      "success"
-    );
-
-    await loadSubjects();
-
-  }catch(error){
-
-    console.error("Delete subject:",error);
-
-    showMessage(
-      "Deletion was blocked. A database relationship or permission may protect this subject.",
-      "error"
-    );
-
-  }finally{
-
-    setBusy(false);
-
-  }
-
+    const r=await supabase.from("school_subjects").delete().eq("id",s.id).eq("school_account_id",acc);
+    if(r.error)throw r.error;
+    say("Subject deleted.","ok");await load();
+  }catch(_){say("Deletion was blocked. A database relationship protects this subject.","err")}
+  finally{setBusy(false)}
 }
 
-/* VIEW LINKED EXAMINATIONS */
-
-async function showLinkedExaminations(subject){
-
-  $("examsModalTitle").textContent=
-    "Examinations: "+subject.subject_name;
-
-  $("examList").innerHTML=
-    '<div class="empty">Loading examinations…</div>';
-
-  $("examsModal").classList.add("show");
-
-  const {data:exams,error}=await supabaseClient
-    .from("examinations")
-    .select("id,title,is_published,is_archived,created_at,duration_minutes")
-    .eq("school_account_id",accountId)
-    .eq("school_subject_id",subject.id)
-    .order("created_at",{ascending:false});
-
-  if(error){
-
-    console.error("Linked examinations:",error);
-
-    $("examList").innerHTML=
-      '<div class="empty">Unable to load linked examinations.</div>';
-
-    return;
-  }
-
-  if(!exams?.length){
-
-    $("examList").innerHTML=
-      '<div class="empty">No examinations are linked to this subject yet.</div>';
-
-    return;
-  }
-
-  $("examList").innerHTML="";
-
-  exams.forEach(exam=>{
-
-    const row=document.createElement("div");
-
-    row.className="exam-row";
-
-    const status=exam.is_archived
-      ? "Archived"
-      : exam.is_published
-        ? "Published"
-        : "Unpublished";
-
-    row.innerHTML=`
-
-      <div class="exam-title">
-        ${escapeHTML(exam.title)}
-      </div>
-
-      <div class="exam-meta">
-        Status: ${status}
-        · Duration: ${escapeHTML(exam.duration_minutes)} minutes
-        · Created: ${formatDate(exam.created_at)}
-      </div>
-
-    `;
-
-    $("examList").appendChild(row);
-
-  });
-
+async function exams(s){
+  $("examTitle").textContent="Examinations: "+s.subject_name;
+  $("examList").innerHTML='<div class="empty" style="border:0">Loading…</div>';
+  $("examModal").classList.add("show");
+  const {data,error}=await supabase.from("examinations").select("title,examination_code,is_published,is_archived,created_at,duration_minutes")
+    .eq("school_account_id",acc).eq("school_subject_id",s.id).order("created_at",{ascending:false});
+  if(error)return $("examList").innerHTML='<div class="empty" style="border:0">Unable to load examinations.</div>';
+  $("examList").innerHTML=data.length?data.map(x=>`<div class="er"><b>${esc(x.title)}</b><div>Exam ID: ${esc(x.examination_code||"—")} · ${x.is_archived?"Archived":x.is_published?"Published":"Unpublished"} · ${esc(x.duration_minutes)} minutes · ${day(x.created_at)}</div></div>`).join("")
+    :'<div class="empty" style="border:0">No examinations are linked to this subject yet.</div>';
 }
+$("closeExam").addEventListener("click",()=>$("examModal").classList.remove("show"));
 
-/* SEARCH */
-
-$("searchInput").addEventListener("input",()=>{
-
-  renderSubjects();
-
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b||busy)return;
+  const s=subjects.find(x=>String(x.id)===String(b.dataset.id));if(!s)return;
+  const a=b.dataset.a,c=s.is_archived?null:stats.get(String(s.id));
+  if(a==="view")return alert(`Subject: ${s.subject_name}\nStatus: ${s.is_archived?"Archived":s.is_published?"Published":"Unpublished"}\nExaminations: ${c?c.e:"Unavailable"}\nQuestions: ${c?c.q:"Unavailable"}\nCreated: ${day(s.created_at)}`);
+  if(a==="edit")return openForm(s);
+  if(a==="exams")return exams(s);
+  if(a==="delete")return remove(s);
+  if(a==="publish")return change(s,{is_published:true},"Subject published.");
+  if(a==="unpublish"&&confirm(`Unpublish ${s.subject_name}?\n\nExaminations under it must not be published while it is unpublished. Existing records are kept.`))return change(s,{is_published:false},"Subject unpublished.");
+  if(a==="archive"&&confirm(`Archive ${s.subject_name}?\n\nLinked examinations, questions, attempts and results are kept.`))return change(s,{is_archived:true},"Subject archived. Its examination history is kept.");
+  if(a==="restore"&&confirm(`Restore ${s.subject_name}?`))return change(s,{is_archived:false},"Subject restored.");
 });
 
-/* TABS */
+$("q").addEventListener("input",render);
+function tab(v){view=v;$("tActive").classList.toggle("on",v==="active");$("tArch").classList.toggle("on",v==="archived");$("q").value="";render()}
+$("tActive").addEventListener("click",()=>tab("active"));$("tArch").addEventListener("click",()=>tab("archived"));
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"))});
 
-function switchView(view){
-
-  currentView=view;
-
-  $("activeTab").classList.toggle(
-    "active",
-    view==="active"
-  );
-
-  $("archivedTab").classList.toggle(
-    "active",
-    view==="archived"
-  );
-
-  $("searchInput").value="";
-
-  renderSubjects();
-
-}
-
-$("activeTab").addEventListener("click",()=>{
-
-  switchView("active");
-
-});
-
-$("archivedTab").addEventListener("click",()=>{
-
-  switchView("archived");
-
-});
-
-/* MODAL CONTROLS */
-
-$("addSubjectBtn").addEventListener("click",openAddModal);
-
-$("cancelForm").addEventListener("click",closeSubjectModal);
-
-$("closeExams").addEventListener("click",()=>{
-
-  $("examsModal").classList.remove("show");
-
-});
-
-$("subjectModal").addEventListener("click",event=>{
-
-  if(event.target===$("subjectModal")){
-    closeSubjectModal();
-  }
-
-});
-
-$("examsModal").addEventListener("click",event=>{
-
-  if(event.target===$("examsModal")){
-    $("examsModal").classList.remove("show");
-  }
-
-});
-
-/* MOBILE MENU */
-
-function closeSidebar(){
-
-  $("sidebar").classList.remove("open");
-  $("overlay").classList.remove("show");
-
-}
-
-$("menuToggle").addEventListener("click",()=>{
-
-  $("sidebar").classList.toggle("open");
-  $("overlay").classList.toggle("show");
-
-});
-
-$("overlay").addEventListener("click",closeSidebar);
-
-document.addEventListener("keydown",event=>{
-
-  if(event.key==="Escape"){
-
-    closeSidebar();
-
-    $("subjectModal").classList.remove("show");
-    $("examsModal").classList.remove("show");
-
-  }
-
-});
-
-/* SESSION MONITOR */
-
-document.addEventListener("visibilitychange",async()=>{
-
-  if(
-    document.visibilityState==="visible" &&
-    supabaseClient
-  ){
-
-    const {data}=await supabaseClient.auth.getSession();
-
-    if(!data.session){
-
-      location.replace(LOGIN_PAGE);
-
-    }
-
-  }
-
-});
-
-/* START */
-
-initializePage();
-
+(async()=>{
+  const s=await getCurrentSession();
+  if(!s){location.replace("school-login.html");return}
+  const user=s.user||s;
+  const {data,error}=await supabase.from("school_accounts").select("id,status").eq("user_id",user.id).maybeSingle();
+  if(error||!data){say("No Teacher/School account is linked to this login.","err");return}
+  if(data.status!=="active"){await supabase.auth.signOut();location.replace("school-login.html");return}
+  acc=data.id;await load();
+})();
 </script>
-
 </body>
 </html>
