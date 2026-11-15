@@ -1209,6 +1209,78 @@ initializeDashboard();
   },1500);
 })();
 </script>
+
+<script>
+(function(){
+  if(!window.supabase||!window.supabase.createClient)return;
+  const sb=window.supabase.createClient("https://scuiswponnqyrbqjypkx.supabase.co","sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq",{auth:{persistSession:true,autoRefreshToken:false,detectSessionInUrl:false}});
+  const $=id=>document.getElementById(id);
+  let space=localStorage.getItem("saintig_space")==="class"?"class":"teacher",acc=null;
+  const MENU={
+    teacher:[["▦ Dashboard","school-dashboard.html"],["♙ My Students","school-students.html"],["▤ My Subjects","school-subjects.html"],["＋ Register Examination","register-examination.html"],["▣ Question Bank","school-question-bank.html"],["▧ Archive Management","school-archive-management.html"],["▥ Results & Performance","school-results-performance.html"]],
+    class:[["▦ Dashboard","school-dashboard.html"],["🏫 Classes & Terms","school-class-examinations.html"],["▥ Class Results","school-class-results.html"],["▧ Archive Management","school-archive-management.html"]]
+  };
+  const content=document.querySelector(".content"),nav=document.querySelector(".sidebar nav");
+  if(!content||!nav)return;
+
+  const bar=document.createElement("div");
+  bar.style.cssText="display:flex;gap:10px;margin:0 0 22px;flex-wrap:wrap";
+  bar.innerHTML=
+   '<button type="button" data-s="teacher" style="flex:1;min-width:200px;padding:15px;border-radius:12px;font-weight:bold;font-size:17px;cursor:pointer">Teacher\'s Examination</button>'+
+   '<button type="button" data-s="class" style="flex:1;min-width:200px;padding:15px;border-radius:12px;font-weight:bold;font-size:17px;cursor:pointer">School Class Examinations</button>';
+  const note=document.createElement("div");
+  note.style.cssText="background:#eef6ff;border:1px solid #d5e8fa;color:#31577b;border-radius:10px;padding:13px 15px;margin:0 0 20px;font-size:16px;display:none";
+  content.insertBefore(note,content.firstChild);
+  content.insertBefore(bar,content.firstChild);
+
+  function paint(){
+    bar.querySelectorAll("button").forEach(b=>{
+      const on=b.dataset.s===space;
+      b.style.background=on?"#14243a":"#fff";b.style.color=on?"#fff":"#14243a";
+      b.style.border="2px solid "+(on?"#d4af37":"#e5e9ef");
+    });
+    nav.innerHTML=MENU[space].map((m,i)=>'<button type="button" data-u="'+m[1]+'"'+(i===0?' class="active"':'')+'>'+m[0]+'</button>').join("");
+    nav.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>location.href=b.dataset.u));
+    const cf=document.querySelector(".class-feature");
+    if(cf)cf.style.display=space==="class"?"":"none";
+    note.style.display=space==="class"?"block":"none";
+    note.textContent="School Class Examinations: classes with their terms. Students, subjects and examinations here belong to a class and are separate from Teacher's Examination. Your existing classes are marked Legacy and still work.";
+    counts();
+  }
+
+  async function counts(){
+    try{
+      if(!acc){
+        const {data:u}=await sb.auth.getUser();
+        const {data:a}=await sb.from("school_accounts").select("id").eq("user_id",u.user.id).maybeSingle();
+        acc=a&&a.id;
+      }
+      if(!acc)return;
+      const base=t=>sb.from(t).select("id",{count:"exact",head:true}).eq("school_account_id",acc).eq("space",space).eq("is_archived",false);
+      const [st,su,ex,pub,ids]=await Promise.all([
+        base("school_students").eq("is_active",true),base("school_subjects"),base("examinations"),
+        base("examinations").eq("is_published",true),
+        sb.from("examinations").select("id").eq("school_account_id",acc).eq("space",space).eq("is_archived",false)
+      ]);
+      if(st.error||su.error||pub.error||ids.error)return;
+      let q=0;const list=(ids.data||[]).map(r=>r.id);
+      for(let i=0;i<list.length;i+=100){
+        const r=await sb.from("exam_questions").select("id",{count:"exact",head:true}).in("examination_id",list.slice(i,i+100)).eq("is_archived",false);
+        if(r.error)return;q+=r.count||0;
+      }
+      const set=(id,v)=>{const e=$(id);if(e)e.textContent=Number(v||0).toLocaleString()};
+      set("activeStudents",st.count);set("activeSubjects",su.count);set("publishedExams",pub.count);set("questionCount",q);
+    }catch(e){console.error(e)}
+  }
+
+  bar.addEventListener("click",e=>{
+    const b=e.target.closest("button[data-s]");if(!b)return;
+    space=b.dataset.s;localStorage.setItem("saintig_space",space);paint();
+  });
+  paint();
+  setTimeout(counts,3000);setTimeout(counts,7000);
+})();
+</script>
   
 </body>
 </html>
