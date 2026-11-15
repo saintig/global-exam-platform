@@ -115,6 +115,12 @@ tbody tr:hover{background:#fbfcfe}
 .limit-box .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
 .limit-box input{width:90px;padding:9px;border:1px solid #d8dee7;border-radius:7px}
 .bad-text{color:var(--red);font-weight:bold}
+.multi-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.multi-list{max-height:280px;overflow:auto;border:1px solid var(--border);border-radius:9px;background:#fff}
+.multi-row{display:flex;gap:11px;align-items:flex-start;padding:10px 12px;border-bottom:1px solid var(--border);cursor:pointer}
+.multi-row:last-child{border-bottom:0}
+.multi-row input{margin-top:3px;width:18px;height:18px;flex:0 0 auto}
+.multi-empty{padding:18px;text-align:center;color:var(--muted)}
 .reg-check{display:flex;gap:11px;align-items:flex-start;padding:11px;border:1px solid var(--border);border-radius:9px;margin-bottom:8px;cursor:pointer}
 .reg-check input{margin-top:4px;width:18px;height:18px}
 @media(max-width:700px){
@@ -324,17 +330,50 @@ tbody tr:hover{background:#fbfcfe}
     <div class="modal-footer"><button class="btn btn-light" onclick="closeModal('registerModal')">Close</button></div>
   </div>
 </div>
-<!-- ONE STUDENT'S EXAMINATIONS -->
-<div class="modal" id="regStudentModal">
-  <div class="modal-box" style="max-width:560px">
-    <div class="modal-header"><h2 id="regStudentTitle">STUDENT EXAMINATIONS</h2><button class="close" onclick="closeModal('regStudentModal')">×</button></div>
-    <div class="notice" id="regStudentInfo"></div>
-    <div id="regStudentList" style="max-height:340px;overflow:auto"></div>
-    <div class="muted" id="regStudentCount" style="margin-top:8px"></div>
-    <div class="modal-footer">
-      <button class="btn btn-light" onclick="closeModal('regStudentModal')">Cancel</button>
-      <button class="btn btn-gold" id="regStudentSave" onclick="regStudentSave()">Save changes</button>
+<!-- EXAMINATIONS OF ONE STUDENT -->
+<div class="modal" id="studentExamsModal">
+  <div class="modal-box" style="max-width:780px">
+    <div class="modal-header">
+      <h2 id="seTitle">STUDENT EXAMINATIONS</h2>
+      <button class="close" onclick="closeModal('studentExamsModal')">×</button>
     </div>
+    <div class="notice" id="seInfo">Loading...</div>
+    <div class="actions" style="margin-bottom:12px">
+      <button class="btn btn-navy btn-small" id="seTabReg" onclick="seTab('reg')">Registered (0)</button>
+      <button class="btn btn-light btn-small" id="seTabAdd" onclick="seTab('add')">Add Examinations (0)</button>
+    </div>
+    <div id="seReg">
+      <div class="toolbar" style="margin:0 0 10px"><input id="seRegSearch" type="search" placeholder="Search registered examinations..." oninput="seRenderReg()"></div>
+      <div class="actions" style="margin-bottom:10px">
+        <button class="btn btn-light btn-small" onclick="regPrint('student', se.studentId)">Print</button>
+        <button class="btn btn-light btn-small" onclick="regCsv('student', se.studentId)">Download</button>
+        <button class="btn btn-light btn-small" onclick="regShare('student', se.studentId)">Share</button>
+        <button class="btn btn-light btn-small" onclick="seToggleAll('reg', true)">Select All</button>
+        <button class="btn btn-light btn-small" onclick="seToggleAll('reg', false)">Clear</button>
+        <button class="btn btn-red btn-small" id="seRemoveBtn" onclick="seRemove()">Remove Selected</button>
+      </div>
+      <div class="table-wrap" style="max-height:340px;overflow:auto">
+        <table style="min-width:440px">
+          <thead><tr><th style="width:40px"></th><th>S/N</th><th>EXAMINATION</th><th>SUBJECT</th><th>EXAMINATION ID</th></tr></thead>
+          <tbody id="seRegRows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="seAdd" style="display:none">
+      <div class="toolbar" style="margin:0 0 10px"><input id="seAddSearch" type="search" placeholder="Search examinations to add..." oninput="seRenderAdd()"></div>
+      <div class="actions" style="margin-bottom:10px">
+        <button class="btn btn-light btn-small" onclick="seToggleAll('add', true)">Select All</button>
+        <button class="btn btn-light btn-small" onclick="seToggleAll('add', false)">Clear</button>
+        <button class="btn btn-gold btn-small" id="seAddBtn" onclick="seAddSelected()">Add Selected (0)</button>
+      </div>
+      <div class="table-wrap" style="max-height:340px;overflow:auto">
+        <table style="min-width:440px">
+          <thead><tr><th style="width:40px"></th><th>EXAMINATION</th><th>SUBJECT</th><th>EXAMINATION ID</th></tr></thead>
+          <tbody id="seAddRows"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn btn-light" onclick="closeModal('studentExamsModal')">Close</button></div>
   </div>
 </div>
 <!-- STUDENTS OF AN EXAMINATION -->
@@ -458,8 +497,14 @@ tbody tr:hover{background:#fbfcfe}
           <select id="membershipClass" required><option value="">Select a class</option></select>
         </div>
         <div class="field full">
-          <label id="membershipRecordLabel">Select record *</label>
-          <select id="membershipRecord" required><option value="">Select a class first</option></select>
+          <label id="membershipRecordLabel">Select students *</label>
+          <input type="search" id="membershipSearch" placeholder="Search by name or ID..." oninput="renderMembershipList()">
+          <div class="multi-bar">
+            <button type="button" class="btn btn-light btn-small" onclick="membershipSelectAll(true)">Select all shown</button>
+            <button type="button" class="btn btn-light btn-small" onclick="membershipSelectAll(false)">Clear</button>
+            <span class="muted" id="membershipCount">0 selected</span>
+          </div>
+          <div class="multi-list" id="membershipList"><div class="multi-empty">Select a class first.</div></div>
         </div>
       </div>
       <div class="modal-footer">
@@ -507,7 +552,7 @@ function escapeHTML(value) {
 
 function closeModal(id) {
   document.getElementById(id).classList.remove("show");
-  if (id === "examStudentsModal" && typeof REG !== "undefined" && REG.refreshOnClose) {
+  if ((id === "examStudentsModal" || id === "studentExamsModal") && typeof REG !== "undefined" && REG.refreshOnClose) {
     REG.refreshOnClose = false;
     if (document.getElementById("registerModal").classList.contains("show")) regLoad();
   }
@@ -875,7 +920,7 @@ function renderTable() {
         <td>${escapeHTML(item.class_name)}${item.class_arm ? " - " + escapeHTML(item.class_arm) : ""}</td>
         <td>${statusBadge(item.membership_status)}</td>
         <td><div class="actions">
-          <button class="btn btn-gold btn-small" onclick="regOpen('${item.class_database_id}','student','${item.school_student_id}')">Exams</button>
+          <button class="btn btn-gold btn-small" onclick="openStudentExams('${item.class_database_id}','${item.school_student_id}')">Exams</button>
           <button class="btn btn-light btn-small" onclick="viewMembership('student','${item.class_database_id}','${item.school_student_id}')">View</button>
           <button class="btn btn-light btn-small" onclick="changeMembershipStatus('student','${item.class_database_id}','${item.school_student_id}',${!item.is_active})">${item.is_active ? "Deactivate" : "Activate"}</button>
           <button class="btn btn-red btn-small" onclick="removeMembership('student','${item.class_database_id}','${item.school_student_id}')">Remove</button>
@@ -1051,34 +1096,31 @@ async function restoreClass(id) {
  * already in the selected class. They still appear for other classes
  * they have not been added to.
  */
+let memberRecords = [];
+let memberSel = new Set();
 function openMembershipModal(type) {
   membershipType = type;
   document.getElementById("membershipForm").reset();
-
+  memberSel = new Set();
   document.getElementById("membershipTitle").textContent =
-    type === "student" ? "ADD EXISTING STUDENTS" : "ATTACH EXISTING EXAMINATION";
+    type === "student" ? "ADD EXISTING STUDENTS" : "ATTACH EXISTING EXAMINATIONS";
   document.getElementById("membershipRecordLabel").textContent =
-    type === "student" ? "Select Student *" : "Select Examination *";
-
+    type === "student" ? "Select students * (tick as many as you want)" : "Select examinations * (tick as many as you want)";
+  document.getElementById("membershipSearch").placeholder =
+    type === "student" ? "Search students by name or ID..." : "Search examinations by title or ID...";
   document.getElementById("membershipNotice").textContent =
     type === "student"
-      ? "Select an existing registered student. This adds class membership; it does not create a new student account. Students already in the selected class are not listed."
-      : "Select an existing examination. This attaches it to the selected class without creating a duplicate examination. Examinations already attached to the selected class are not listed.";
-
+      ? "Choose a class, then tick one or many existing students. This adds class membership; it does not create new student accounts. Students already in the selected class are not listed."
+      : "Choose a class, then tick one or many existing examinations. This attaches them to the class without creating duplicates. Examinations already attached to the selected class are not listed.";
   populateMembershipRecords();
   openModal("membershipModal");
 }
-
 function populateMembershipRecords() {
   const type = membershipType;
   const classId = document.getElementById("membershipClass").value;
-  const recordSelect = document.getElementById("membershipRecord");
-
-  if (!classId) {
-    recordSelect.innerHTML = '<option value="">Select a class first</option>';
-    return;
-  }
-
+  memberSel = new Set();
+  document.getElementById("membershipSearch").value = "";
+  if (!classId) { memberRecords = []; renderMembershipList(); return; }
   /* Records already linked to this class (active or not). */
   const taken = new Set(
     classMemberships
@@ -1086,66 +1128,85 @@ function populateMembershipRecords() {
       .map(m => String(type === "student" ? m.school_student_id : m.examination_id))
       .filter(id => id && id !== "undefined" && id !== "null")
   );
-
-  const records = (type === "student" ? allStudents : allExams)
-    .filter(item => !taken.has(String(item.id)));
-
-  if (!records.length) {
-    recordSelect.innerHTML = type === "student"
-      ? '<option value="">All your students are already in this class</option>'
-      : '<option value="">All your examinations are already attached to this class</option>';
-    return;
-  }
-
-  recordSelect.innerHTML = '<option value="">Select a record</option>' +
-    records.map(item => {
-      const name = type === "student" ? item.full_name : item.title;
-      const code = type === "student" ? item.student_id : item.examination_code;
-
-      return `<option value="${escapeHTML(item.id)}">
-        ${escapeHTML(name || "Record")} — ${escapeHTML(code || item.id)}
-      </option>`;
-    }).join("");
+  memberRecords = (type === "student" ? allStudents : allExams)
+    .filter(item => !taken.has(String(item.id)))
+    .map(item => ({
+      id: String(item.id),
+      name: (type === "student" ? item.full_name : item.title) || "Record",
+      code: (type === "student" ? item.student_id : item.examination_code) || String(item.id)
+    }));
+  renderMembershipList();
 }
-
+function renderMembershipList() {
+  const box = document.getElementById("membershipList");
+  const classId = document.getElementById("membershipClass").value;
+  const q = document.getElementById("membershipSearch").value.toLowerCase().trim();
+  if (!classId) {
+    box.innerHTML = '<div class="multi-empty">Select a class first.</div>';
+  } else if (!memberRecords.length) {
+    box.innerHTML = '<div class="multi-empty">' + (membershipType === "student"
+      ? "All your students are already in this class."
+      : "All your examinations are already attached to this class.") + "</div>";
+  } else {
+    const list = memberRecords.filter(r => !q || (r.name + " " + r.code).toLowerCase().includes(q));
+    box.innerHTML = list.length ? list.map(r => `
+      <label class="multi-row">
+        <input type="checkbox" value="${escapeHTML(r.id)}" ${memberSel.has(r.id) ? "checked" : ""}
+          onchange="membershipCheck(this.value, this.checked)">
+        <span><strong>${escapeHTML(r.name)}</strong><br><small class="id-text">${escapeHTML(r.code)}</small></span>
+      </label>`).join("") : '<div class="multi-empty">No match for your search.</div>';
+  }
+  document.getElementById("membershipCount").textContent = memberSel.size + " selected";
+}
+function membershipCheck(id, on) {
+  if (on) memberSel.add(id); else memberSel.delete(id);
+  document.getElementById("membershipCount").textContent = memberSel.size + " selected";
+}
+function membershipSelectAll(on) {
+  if (!on) memberSel.clear();
+  else {
+    const q = document.getElementById("membershipSearch").value.toLowerCase().trim();
+    memberRecords.filter(r => !q || (r.name + " " + r.code).toLowerCase().includes(q)).forEach(r => memberSel.add(r.id));
+  }
+  renderMembershipList();
+}
 document.getElementById("membershipClass").addEventListener("change", populateMembershipRecords);
 
 document.getElementById("membershipForm").addEventListener("submit", async event => {
   event.preventDefault();
   const classId = document.getElementById("membershipClass").value;
-  const recordId = document.getElementById("membershipRecord").value;
-  if (!classId || !recordId) return toast("Select both required records.");
-
+  const ids = memberRecords.filter(r => memberSel.has(r.id)).map(r => r.id);
+  if (!classId) return toast("Select a class first.");
+  if (!ids.length) return toast(membershipType === "student" ? "Tick at least one student." : "Tick at least one examination.");
   const button = document.getElementById("membershipSave");
   button.disabled = true;
-  button.textContent = "Processing...";
-
+  let done = 0;
+  const failed = [];
   try {
-    if (membershipType === "student") {
-      await callFunction(CLASS_FUNCTION,{
-        action:"add_student_to_class",
-        class_id:classId,
-        school_student_id:recordId
-      });
-    } else {
-      await callFunction(CLASS_FUNCTION,{
-        action:"attach_examination",
-        class_id:classId,
-        examination_id:recordId
+    for (let i = 0; i < ids.length; i += 4) {
+      const batch = ids.slice(i, i + 4);
+      button.textContent = `Processing ${Math.min(i + 4, ids.length)} of ${ids.length}...`;
+      const results = await Promise.allSettled(batch.map(id => membershipType === "student"
+        ? callFunction(CLASS_FUNCTION, { action: "add_student_to_class", class_id: classId, school_student_id: id })
+        : callFunction(CLASS_FUNCTION, { action: "attach_examination", class_id: classId, examination_id: id })));
+      results.forEach((r, k) => {
+        if (r.status === "fulfilled") done++;
+        else failed.push((memberRecords.find(x => x.id === batch[k]) || {}).name + ": " + (r.reason && r.reason.message || "failed"));
       });
     }
-
-    toast(membershipType === "student" ? "Student added to class." : "Examination attached to class.");
+    const noun = membershipType === "student" ? "student(s) added to the class" : "examination(s) attached to the class";
+    toast(failed.length
+      ? `${done} ${noun}. ${failed.length} failed. ${failed[0]}`
+      : `${done} ${noun}.`);
     closeModal("membershipModal");
     await loadDashboard();
-    if (membershipType === "exam") warnOverLimit(classId);
+    if (membershipType === "exam" && done) warnOverLimit(classId);
   } catch (error) { toast(error.message); }
   finally {
     button.disabled = false;
     button.textContent = "Continue";
   }
 });
-
 function viewMembership(type,classId,recordId) {
   const classItem = allClasses.find(x => x.id === classId);
   const record = type === "student"
@@ -1932,49 +1993,115 @@ document.getElementById("regBody").addEventListener("click", event => {
     REG.refreshOnClose = true;
     return openExamStudents(REG.classId, id);
   }
-  if (action === "edit") return regStudentEdit(id);
+  if (action === "edit") return openStudentExams(REG.classId, id, true);
 });
 
-/* ---------- edit one student's examinations ---------- */
-function regStudentEdit(studentId) {
-  const d = REG.data;
-  const s = d.students.find(x => x.id === String(studentId)); if (!s) return;
-  REG.edit = { studentId: s.id, initial: new Set(s.exams.map(e => e.id)) };
-  document.getElementById("regStudentTitle").textContent = "EXAMINATIONS OF " + s.name;
-  document.getElementById("regStudentInfo").textContent =
-    `Student ID ${s.code}. Tick the examinations this student takes in this class.` +
-    (REG.limit ? ` The limit is ${REG.limit}.` : "");
-  document.getElementById("regStudentList").innerHTML = d.exams.length ? d.exams.map(e => `
-    <label class="reg-check"><input type="checkbox" value="${e.id}" ${REG.edit.initial.has(e.id) ? "checked" : ""} onchange="regStudentCount()">
-      <span><strong>${escapeHTML(e.title)}</strong>${e.subject ? " · " + escapeHTML(e.subject) : ""}<br><small class="id-text">Examination ID: ${escapeHTML(e.code)}</small></span></label>`).join("")
-    : '<div class="empty">No examinations are attached to this class.</div>';
-  regStudentCount();
-  openModal("regStudentModal");
-}
-function regStudentCount() {
-  const n = document.querySelectorAll("#regStudentList input:checked").length;
-  document.getElementById("regStudentCount").textContent = `Selected: ${n}${REG.limit ? " of " + REG.limit : ""}`;
-}
-async function regStudentSave() {
-  const e = REG.edit; if (!e) return;
-  const sel = [...document.querySelectorAll("#regStudentList input:checked")].map(i => i.value);
-  const add = sel.filter(x => !e.initial.has(x));
-  const remove = [...e.initial].filter(x => !sel.includes(x));
-  if (!add.length && !remove.length) return closeModal("regStudentModal");
-  if (REG.limit && add.length && sel.length > REG.limit)
-    return toast(`This student can take at most ${REG.limit} examination(s) in this class. Untick some examinations first.`);
-  const button = document.getElementById("regStudentSave");
-  button.disabled = true;
-  try {
-    for (const id of remove) await callFunction(RESULTS_FUNCTION, { action: "remove_exam_students", class_id: REG.classId, examination_id: Number(id), student_ids: [Number(e.studentId)] });
-    for (const id of add) await callFunction(RESULTS_FUNCTION, { action: "add_exam_students", class_id: REG.classId, examination_id: Number(id), student_ids: [Number(e.studentId)] });
-    toast("Student's examinations updated.");
-    closeModal("regStudentModal");
-    await regLoad();
-  } catch (error) { toast(error.message); }
-  finally { button.disabled = false; }
-}
+/* ---------- choose the examinations of one student (Registered / Add) ---------- */
+let se = { classId: null, studentId: null, data: null, student: null, selReg: new Set(), selAdd: new Set() };
 
-</script>
-</body>
-</html>
+async function openStudentExams(classId, studentId, fromRegister) {
+  se = { classId: String(classId), studentId: String(studentId), data: null, student: null, selReg: new Set(), selAdd: new Set() };
+  REG.refreshOnClose = Boolean(fromRegister);
+  document.getElementById("seInfo").textContent = "Loading...";
+  document.getElementById("seRegRows").innerHTML = "";
+  document.getElementById("seAddRows").innerHTML = "";
+  document.getElementById("seRegSearch").value = "";
+  document.getElementById("seAddSearch").value = "";
+  seTab("reg");
+  openModal("studentExamsModal");
+  await loadStudentExams();
+}
+async function loadStudentExams() {
+  try {
+    const data = await loadRegisterData(se.classId);
+    se.data = data;
+    se.student = data.students.find(x => x.id === se.studentId);
+    if (!se.student) {
+      const s = allStudents.find(x => String(x.id) === se.studentId) || {};
+      se.student = { id: se.studentId, name: s.full_name || "Student", code: s.student_id || se.studentId, exams: [] };
+    }
+    /* so Print, Download and Share work */
+    REG.classId = se.classId;
+    REG.data = data;
+    REG.limit = (await getLimits())[se.classId] || null;
+    se.selReg.clear(); se.selAdd.clear();
+    seRender();
+  } catch (error) {
+    closeModal("studentExamsModal");
+    toast(error.message);
+  }
+}
+const seAvailable = () => {
+  const have = new Set(se.student.exams.map(e => e.id));
+  return se.data.exams.filter(e => !have.has(e.id));
+};
+function seRender() {
+  const c = se.data.classItem || {};
+  const n = se.student.exams.length;
+  document.getElementById("seTitle").textContent = "EXAMINATIONS OF " + se.student.name;
+  document.getElementById("seInfo").textContent =
+    `Student ID ${se.student.code} · ${classLabel(c)} · ${c.academic_session || ""} · ${c.academic_period || ""}. ` +
+    `Registered for ${n} examination(s)${REG.limit ? " of the maximum " + REG.limit : ""}. ` +
+    "Under Registered you can see, print, download or share them. Use Add Examinations to register this student for more, or select some and tap Remove Selected. Only registered examinations are counted in this class's results.";
+  document.getElementById("seTabReg").textContent = `Registered (${n})`;
+  document.getElementById("seTabAdd").textContent = `Add Examinations (${seAvailable().length})`;
+  seRenderReg();
+  seRenderAdd();
+}
+function seTab(name) {
+  document.getElementById("seReg").style.display = name === "reg" ? "" : "none";
+  document.getElementById("seAdd").style.display = name === "add" ? "" : "none";
+  document.getElementById("seTabReg").className = "btn btn-small " + (name === "reg" ? "btn-navy" : "btn-light");
+  document.getElementById("seTabAdd").className = "btn btn-small " + (name === "add" ? "btn-navy" : "btn-light");
+}
+function seFilter(list, searchId) {
+  const q = document.getElementById(searchId).value.toLowerCase().trim();
+  return !q ? list : list.filter(e => (e.title + " " + e.code + " " + (e.subject || "")).toLowerCase().includes(q));
+}
+function seRenderReg() {
+  if (!se.student) return;
+  const list = seFilter(se.student.exams, "seRegSearch");
+  document.getElementById("seRegRows").innerHTML = list.length
+    ? list.map((e, i) => `<tr>
+        <td><input type="checkbox" ${se.selReg.has(e.id) ? "checked" : ""} onchange="seCheck('reg','${e.id}',this.checked)"></td>
+        <td>${i + 1}</td><td><strong>${escapeHTML(e.title)}</strong></td>
+        <td>${escapeHTML(e.subject || "—")}</td><td class="id-text">${escapeHTML(e.code)}</td></tr>`).join("")
+    : '<tr><td colspan="5" class="muted" style="text-align:center;padding:20px">Not registered for any examination in this class.</td></tr>';
+  document.getElementById("seRemoveBtn").textContent = `Remove Selected (${se.selReg.size})`;
+}
+function seRenderAdd() {
+  if (!se.student) return;
+  const list = seFilter(seAvailable(), "seAddSearch");
+  document.getElementById("seAddRows").innerHTML = list.length
+    ? list.map(e => `<tr>
+        <td><input type="checkbox" ${se.selAdd.has(e.id) ? "checked" : ""} onchange="seCheck('add','${e.id}',this.checked)"></td>
+        <td><strong>${escapeHTML(e.title)}</strong></td>
+        <td>${escapeHTML(e.subject || "—")}</td><td class="id-text">${escapeHTML(e.code)}</td></tr>`).join("")
+    : '<tr><td colspan="4" class="muted" style="text-align:center;padding:20px">This student is registered for every examination attached to the class.</td></tr>';
+  document.getElementById("seAddBtn").textContent = `Add Selected (${se.selAdd.size})`;
+}
+function seCheck(kind, id, on) {
+  const set = kind === "reg" ? se.selReg : se.selAdd;
+  if (on) set.add(id); else set.delete(id);
+  if (kind === "reg") seRenderReg(); else seRenderAdd();
+}
+function seToggleAll(kind, on) {
+  const set = kind === "reg" ? se.selReg : se.selAdd;
+  if (!on) set.clear();
+  else (kind === "reg" ? seFilter(se.student.exams, "seRegSearch") : seFilter(seAvailable(), "seAddSearch")).forEach(e => set.add(e.id));
+  if (kind === "reg") seRenderReg(); else seRenderAdd();
+}
+async function seApply(action, ids) {
+  const sid = Number(se.studentId);
+  let done = 0; const failed = [];
+  for (let i = 0; i < ids.length; i += 4) {
+    const batch = ids.slice(i, i + 4);
+    const results = await Promise.allSettled(batch.map(id => callFunction(RESULTS_FUNCTION, {
+      action, class_id: se.classId, examination_id: Number(id), student_ids: [sid]
+    })));
+    results.forEach(r => { if (r.status === "fulfilled") done++; else failed.push(r.reason && r.reason.message || "failed"); });
+  }
+  return { done, failed };
+}
+async function seAddSelected() {
+  const ids = seAvailable().filter(e => se.selAdd.has(e.id)).m
