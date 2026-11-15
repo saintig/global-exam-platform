@@ -121,11 +121,11 @@ input{width:100%;padding:12px;border:1px solid #cfd8e5;border-radius:8px;min-hei
       <a class="card" href="registered-users.html"><div class="sn">Registered Users</div><div class="sv" id="usersCount">—</div><div class="note">All registered accounts</div></a>
       <a class="card" href="settings-security.html"><div class="sn">Total Administrators</div><div class="sv" id="adminsCount">—</div><div class="note">Administrator accounts</div></a>
       <a class="card" href="paid-subscribers.html"><div class="sn">Paid Subscribers</div><div class="sv" id="subscribersCount">—</div><div class="note" id="subscribersNote">Active paid accounts</div></a>
-      <a class="card" href="register-exam.html"><div class="sn">Total Examinations</div><div class="sv" id="totalExamsCount">—</div><div class="note">All examination records</div></a>
-      <a class="card" href="register-exam.html"><div class="sn">Published Examinations</div><div class="sv" id="examsCount">—</div><div class="note">Published, non-archived</div></a>
-      <a class="card" href="question-bank.html"><div class="sn">Published Questions</div><div class="sv" id="questionsCount">—</div><div class="note">In available examinations</div></a>
-      <a class="card" href="archived-records.html"><div class="sn">Archived Examinations</div><div class="sv" id="archivedExamsCount">—</div><div class="note">Moved to archive</div></a>
-      <a class="card" href="archived-records.html"><div class="sn">Archived Questions</div><div class="sv" id="archivedQuestionsCount">—</div><div class="note">Moved to archive</div></a>
+      <a class="card" href="question-bank.html"><div class="sn">Total Examinations</div><div class="sv" id="totalExamsCount">—</div><div class="note">Admin examinations only</div></a>
+      <a class="card" href="question-bank.html"><div class="sn">Published Examinations</div><div class="sv" id="examsCount">—</div><div class="note">Admin, published, non-archived</div></a>
+      <a class="card" href="question-bank.html"><div class="sn">Published Questions</div><div class="sv" id="questionsCount">—</div><div class="note">In admin examinations</div></a>
+      <a class="card" href="archived-records.html"><div class="sn">Archived Examinations</div><div class="sv" id="archivedExamsCount">—</div><div class="note">Admin examinations only</div></a>
+      <a class="card" href="archived-records.html"><div class="sn">Archived Questions</div><div class="sv" id="archivedQuestionsCount">—</div><div class="note">Admin questions only</div></a>
       <a class="card" href="visitor-analytics.html"><div class="sn">Today's Views</div><div class="sv" id="viewsCount">—</div><div class="note" id="viewsNote">Today's page views</div></a>
       <a class="card wide" href="results-reports.html">
         <div class="sn">Attempts Overview</div>
@@ -208,17 +208,66 @@ async function verifyAdministrator(){
   return true;
 }
 
-/* ---------- statistics ---------- */
+/* ---------- statistics ----------
+   Every count here is ADMIN data only. Examinations created by a
+   Teacher/School account have a school_account_id, so they are left out.
+   Questions are counted only when they belong to an admin examination. */
 function displayCount(id,count,error){
   const el=$(id);if(!el)return;
   el.textContent=!error&&count!==null&&count!==undefined?Number(count).toLocaleString():"—";
 }
+
+/* Admin examinations only. */
+function adminExams(filters){
+  let q=supabase.from("examinations").select("id",{count:"exact",head:true}).is("school_account_id",null);
+  if(filters.published!==undefined)q=q.eq("is_published",filters.published);
+  if(filters.archived!==undefined)q=q.eq("is_archived",filters.archived);
+  return q;
+}
+
+/* Questions of admin examinations only. If the database cannot join the
+   two tables in one request, the count is done through the examination IDs. */
+async function adminQuestions(f){
+  let q=supabase.from("exam_questions")
+    .select("id, examinations!inner(school_account_id)",{count:"exact",head:true})
+    .is("examinations.school_account_id",null);
+  if(f.examPublished!==undefined)q=q.eq("examinations.is_published",f.examPublished);
+  if(f.examArchived!==undefined)q=q.eq("examinations.is_archived",f.examArchived);
+  if(f.published!==undefined)q=q.eq("is_published",f.published);
+  if(f.archived!==undefined)q=q.eq("is_archived",f.archived);
+  const first=await q;
+  if(!first.error)return first;
+
+  /* Fallback: find the admin examinations, then count their questions in groups. */
+  const ids=[];
+  for(let from=0;;from+=1000){
+    let e=supabase.from("examinations").select("id").is("school_account_id",null).range(from,from+999);
+    if(f.examPublished!==undefined)e=e.eq("is_published",f.examPublished);
+    if(f.examArchived!==undefined)e=e.eq("is_archived",f.examArchived);
+    const {data,error}=await e;
+    if(error)return {count:null,error};
+    ids.push(...(data||[]).map(x=>x.id));
+    if(!data||data.length<1000)break;
+  }
+  let total=0;
+  for(let i=0;i<ids.length;i+=150){
+    let c=supabase.from("exam_questions").select("id",{count:"exact",head:true}).in("examination_id",ids.slice(i,i+150));
+    if(f.published!==undefined)c=c.eq("is_published",f.published);
+    if(f.archived!==undefined)c=c.eq("is_archived",f.archived);
+    const r=await c;
+    if(r.error)return {count:null,error:r.error};
+    total+=r.count||0;
+  }
+  return {count:total,error:null};
+}
+
 async function loadStatistics(){
-  const [totalExams,publishedExams,archivedExams,archivedQuestions,adminCount,userCount] = await Promise.all([
-    supabase.from("examinations").select("*",{count:"exact",head:true}),
-    supabase.from("examinations").select("id",{count:"exact"}).eq("is_published",true).eq("is_archived",false),
-    supabase.from("examinations").select("*",{count:"exact",head:true}).eq("is_archived",true),
-    supabase.from("exam_questions").select("*",{count:"exact",head:true}).eq("is_archived",true),
+  const [totalExams,publishedExams,archivedExams,publishedQuestions,archivedQuestions,adminCount,userCount] = await Promise.all([
+    adminExams({}),
+    adminExams({published:true,archived:false}),
+    adminExams({archived:true}),
+    adminQuestions({examPublished:true,examArchived:false,published:true,archived:false}),
+    adminQuestions({archived:true}),
     supabase.from("admin_users").select("*",{count:"exact",head:true}),
     supabase.functions.invoke("admin-user-count",{body:{}})
   ]);
@@ -227,15 +276,8 @@ async function loadStatistics(){
   displayCount("totalExamsCount",totalExams.count,totalExams.error);
   displayCount("examsCount",publishedExams.count,publishedExams.error);
   displayCount("archivedExamsCount",archivedExams.count,archivedExams.error);
+  displayCount("questionsCount",publishedQuestions.count,publishedQuestions.error);
   displayCount("archivedQuestionsCount",archivedQuestions.count,archivedQuestions.error);
-  if(!publishedExams.error){
-    const ids=(publishedExams.data||[]).map(e=>e.id);
-    if(!ids.length){$("questionsCount").textContent="0"}
-    else{
-      const {count,error}=await supabase.from("exam_questions").select("*",{count:"exact",head:true}).in("examination_id",ids).eq("is_published",true).eq("is_archived",false);
-      displayCount("questionsCount",count,error);
-    }
-  }else $("questionsCount").textContent="—";
 }
 async function loadSummary(){
   const {data,error}=await supabase.rpc("admin_dashboard_summary");
