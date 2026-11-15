@@ -93,14 +93,13 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 .codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
 .sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
 @media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
-
 </style>
 </head>
 <body>
 <header class="top">
   <div class="top-in">
     <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
-    <span class="role">Teacher / School</span>
+    <span class="role">Teacher's Examination</span>
     <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
   <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html" class="on">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="index.html">Home</a></div></nav>
@@ -138,7 +137,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
         <div><label for="duration">Duration (minutes)</label><input id="duration" type="number" min="1" step="1"><small id="durationHelp">Loading your package limit…</small></div>
         <div><label for="qCountField">Questions each student answers</label><input id="qCountField" type="number" min="1" step="1"><small id="countHelp">Loading your package limit…</small></div>
         <div><label for="marksPer">Marks per question</label><input id="marksPer" type="number" min="0.01" step="0.01" value="1"></div>
-        <div><label for="attempts">Maximum attempts</label><select id="attempts"><option value="1">1 attempt</option><option value="2" selected>2 attempts</option><option value="3">3 attempts</option><option value="4">4 attempts</option><option value="5">5 attempts</option></select></div>
+        <div><label for="attempts">Maximum attempts</label><select id="attempts"><option value="1">1 attempt</option><option value="2" selected>2 attempts</option><option value="3">3 attempts</option><option value="4">4 attempts</option><option value="5">5 attempts</option></select><small id="attemptsHelp">Loading your package limit…</small></div>
       </div>
       <div class="sum" style="margin-top:14px">Total marks: <b id="totalMarks">0</b> <small style="display:inline">(questions each student answers × marks per question)</small></div>
       <label style="display:flex;gap:10px;align-items:center;margin-top:14px;font-weight:normal"><input type="checkbox" id="useSchedule" style="width:20px;height:20px;min-height:0"> Set a start and end date</label>
@@ -274,7 +273,6 @@ const FUNCTION_NAME="school-exam-management";
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const keyOf=t=>String(t||"").trim().toLowerCase().replace(/\s+/g," ");
-const baseName=n=>String(n||"").split(/[\\/]/).pop().trim();
 function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
 function hush(id){const e=$(id);e.textContent="";e.className="msg"}
 async function withRetry(fn){try{return await fn()}catch(e){await new Promise(r=>setTimeout(r,1200));return await fn()}}
@@ -298,7 +296,7 @@ const fileExt=name=>{const s=String(name||"").trim(),i=s.lastIndexOf(".");return
 async function readText(file){
   const buf=await file.arrayBuffer();
   try{return new TextDecoder("utf-8",{fatal:true}).decode(buf).replace(/^\uFEFF/,"")}
-  catch{return new TextDecoder("windows-1252").decode(buf)}   /* Excel "CSV" saved in the old Windows encoding */
+  catch{return new TextDecoder("windows-1252").decode(buf)}
 }
 function detectDelimiter(text){
   const first=text.split(/\r?\n/).find(l=>l.trim())||"";
@@ -535,7 +533,6 @@ $("eSave").addEventListener("click",()=>{
 $("clearAll").addEventListener("click",()=>{if(queue.length&&confirm("Remove all "+queue.length+" question(s) from the review list? Saved questions are not affected.")){queue=[];renderQueue()}});
 $("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 
-
 /* ================= state ================= */
 let exam=null,exams=[],subjects=[],pkg=null,savedCount=0,maxOrder=0,existing=new Set(),busy=false;
 let storedLimit=null,storedTotal=0,storage="loading";   /* storage: loading | ready | unavailable */
@@ -543,7 +540,7 @@ const RULES=()=>({defaultMarks:Number($("marksPer").value)||1,integerMarks:false
 
 /* ================= server calls ================= */
 async function api(action,payload={}){
-  const {data,error}=await supabase.functions.invoke(FUNCTION_NAME,{body:{action,...payload}});
+  const {data,error}=await supabase.functions.invoke(FUNCTION_NAME,{body:{space:"teacher",action,...payload}});
   if(error){
     let msg=error.message||"Unable to contact the examination service.";
     try{if(error.context&&typeof error.context.json==="function"){const b=await error.context.json();if(b&&(b.error||b.message))msg=b.error||b.message}}catch(_){}
@@ -592,15 +589,34 @@ function onQueueChange(){
 window.addEventListener("beforeunload",e=>{if(queue.length){e.preventDefault();e.returnValue=""}});
 
 /* ================= package limits ================= */
+const ATTEMPT_MENU_MAX=20;
+
+function buildAttempts(cap){
+  const sel=$("attempts"),prev=Number(sel.value)||2,top=Math.min(cap,ATTEMPT_MENU_MAX);
+  sel.innerHTML=Array.from({length:top},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+" attempt"+(i?"s":"")+"</option>").join("");
+  sel.value=String(Math.min(prev,top));
+}
 function applyPackage(info){
   if(!info||typeof info!=="object")throw new Error("Your package information was not returned by the server. Refresh the page or contact the administrator.");
   const name=String(info.package_name||"").trim();
   const dur=Number(info.max_exam_duration_minutes),cnt=Number(info.max_questions_per_exam);
   if(!name||!Number.isSafeInteger(dur)||dur<1||!Number.isSafeInteger(cnt)||cnt<1)throw new Error("Your package limits are missing or invalid. Please contact the administrator.");
-  pkg={package_name:name,max_exam_duration_minutes:dur,max_questions_per_exam:cnt};
+
+  /* Attempts per student per examination: the package cap, or 5 when none is set. */
+  const att=Number(info.max_attempts_per_exam);
+  const cap=Number.isSafeInteger(att)&&att>=1?att:5;
+
+  /* Stored questions allowed in the whole question bank, from the server. */
+  const stored=Number(info.max_stored_questions);
+
+  pkg={package_name:name,max_exam_duration_minutes:dur,max_questions_per_exam:cnt,max_attempts:cap,
+       max_stored:Number.isSafeInteger(stored)&&stored>=1?stored:null};
+
   $("duration").max=dur;$("qCountField").max=cnt;
   $("durationHelp").textContent=name+" package: up to "+dur+" minutes.";
   $("countHelp").textContent=name+" package: up to "+cnt+" questions per student. You can store more questions in your bank.";
+  $("attemptsHelp").textContent=name+" package: up to "+cap+" attempt"+(cap===1?"":"s")+" per student.";
+  buildAttempts(cap);
   if(!exam){$("duration").value=dur;$("qCountField").value=cnt}
   updateTotal();
 }
@@ -612,7 +628,6 @@ $("qCountField").addEventListener("input",updateTotal);$("marksPer").addEventLis
 $("useSchedule").addEventListener("change",e=>{$("schedule").hidden=!e.target.checked});
 
 /* ================= stored-question limit ================= */
-const has=v=>v!==null&&v!==undefined&&v!=="";
 function room(){return storage==="ready"?Math.max(0,storedLimit-storedTotal-queue.length):Infinity}
 function limitText(){
   return "You have reached your package's limit of "+storedLimit+" active questions. Delete or archive some questions you no longer need, then try again, or contact the admin to upgrade your package.";
@@ -631,20 +646,10 @@ function updateLimitMsg(){
 async function initStorage(){
   storage="loading";updateLimitMsg();
   try{
-    const {data:u,error:ue}=await supabase.auth.getUser();
-    if(ue||!u?.user)throw ue||new Error("No signed-in user.");
-    const {data:acc,error:ae}=await supabase.from("school_accounts").select("id").eq("user_id",u.user.id).maybeSingle();
-    if(ae||!acc)throw ae||new Error("No school account found.");
-    const [as,lim]=await Promise.all([
-      supabase.from("school_account_packages").select("package_name,custom_max_stored_questions").eq("school_account_id",acc.id).maybeSingle(),
-      supabase.from("school_package_limits").select("package_name,max_stored_questions")
-    ]);
-    if(as.error)throw as.error;if(lim.error)throw lim.error;
-    const name=String(as.data?.package_name||pkg?.package_name||"").toLowerCase();
-    const row=(lim.data||[]).find(p=>String(p.package_name).toLowerCase()===name);
-    const custom=as.data?.custom_max_stored_questions;
-    const limit=Number(has(custom)?custom:row?.max_stored_questions);
-    if(!Number.isSafeInteger(limit)||limit<1)throw new Error("The stored-question limit is missing for this package.");
+    /* The limit comes from the server, which already applies the Free,
+       expired-package and Custom Package rules. */
+    const limit=Number(pkg?.max_stored);
+    if(!Number.isSafeInteger(limit)||limit<1)throw new Error("The stored-question limit was not returned by the server.");
     let total=0;
     for(let i=0;i<exams.length;i+=5){
       const res=await Promise.all(exams.slice(i,i+5).map(x=>api("list_questions",{examination_id:x.id})));
@@ -677,12 +682,14 @@ async function loadExams(selectId){
   if(selectId)$("existing").value=String(selectId);
 }
 const localDT=v=>{if(!v)return"";const d=new Date(v);if(!Number.isFinite(d.getTime()))return"";const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())};
+function attemptsCap(){return pkg?.max_attempts||5}
 function fillForm(e){
   $("subject").value=e.school_subject_id??"";$("title").value=e.title||"";$("nameClass").value=e.name_class||"";$("description").value=e.description||"";
   $("duration").value=e.duration_minutes??pkg?.max_exam_duration_minutes??"";
   $("qCountField").value=e.student_question_count??pkg?.max_questions_per_exam??"";
   $("marksPer").value=e.marks_per_question??1;
-  const a=Number(e.max_attempts);$("attempts").value=Number.isInteger(a)&&a>=1&&a<=5?String(a):"2";
+  const a=Number(e.max_attempts),cap=Math.min(attemptsCap(),ATTEMPT_MENU_MAX);
+  $("attempts").value=Number.isInteger(a)&&a>=1?String(Math.min(a,cap)):String(Math.min(2,cap));
   const sch=!!(e.starts_at||e.ends_at);$("useSchedule").checked=sch;$("schedule").hidden=!sch;
   $("startsAt").value=localDT(e.starts_at);$("endsAt").value=localDT(e.ends_at);
   updateTotal();
@@ -690,7 +697,8 @@ function fillForm(e){
 function clearForm(){
   ["title","nameClass","description"].forEach(i=>$(i).value="");$("subject").value="";
   $("duration").value=pkg?.max_exam_duration_minutes??"";$("qCountField").value=pkg?.max_questions_per_exam??"";
-  $("marksPer").value=1;$("attempts").value="2";$("useSchedule").checked=false;$("schedule").hidden=true;$("startsAt").value="";$("endsAt").value="";
+  $("marksPer").value=1;$("attempts").value=String(Math.min(2,attemptsCap(),ATTEMPT_MENU_MAX));
+  $("useSchedule").checked=false;$("schedule").hidden=true;$("startsAt").value="";$("endsAt").value="";
   updateTotal();
 }
 async function refreshSaved(){
@@ -730,7 +738,8 @@ function collect(){
   if(duration>pkg.max_exam_duration_minutes)throw new Error("Your "+pkg.package_name+" package allows up to "+pkg.max_exam_duration_minutes+" minutes.");
   if(count>pkg.max_questions_per_exam)throw new Error("Your "+pkg.package_name+" package allows up to "+pkg.max_questions_per_exam+" questions per student.");
   const marks=Number($("marksPer").value);if(!Number.isFinite(marks)||marks<=0)throw new Error("Marks per question must be above zero.");
-  const attempts=whole($("attempts").value,"Maximum attempts");if(attempts>5)throw new Error("Maximum attempts is 5.");
+  const attempts=whole($("attempts").value,"Maximum attempts"),capA=attemptsCap();
+  if(attempts>capA)throw new Error("Your "+pkg.package_name+" package allows up to "+capA+" attempt"+(capA===1?"":"s")+" per student per examination.");
   let startsAt=null,endsAt=null;
   if($("useSchedule").checked){
     const a=$("startsAt").value,b=$("endsAt").value;
@@ -883,64 +892,7 @@ $("shareCode").addEventListener("click",async()=>{
     initStorage();
   }catch(e){console.error(e);say("pageMsg",e.message||"Could not load this page.","err")}
 })();
-  
+
 </script>
-<script type="module">
-import {supabase} from "./auth.js";
-(async()=>{
-  const sel=document.getElementById("attempts");
-  if(!sel)return;
-  const note=document.createElement("small");
-  sel.parentNode.appendChild(note);
-
-  const valid=n=>Number.isSafeInteger(n)&&n>=1;
-
-  async function fromTables(){
-    const {data:u}=await supabase.auth.getUser();
-    const {data:acc}=await supabase.from("school_accounts").select("id").eq("user_id",u.user.id).maybeSingle();
-    const {data:a}=await supabase.from("school_account_packages")
-      .select("package_name,expires_at,custom_max_attempts_per_exam").eq("school_account_id",acc.id).maybeSingle();
-    let name=String(a?.package_name||"Free");
-    const exp=a?.expires_at?new Date(a.expires_at):null;
-    if(name.toLowerCase()!=="free"&&exp&&exp<=new Date())name="Free";
-    const free=name.toLowerCase()==="free";
-    const {data:rows}=await supabase.from("school_package_limits").select("package_name,max_attempts_per_exam");
-    const find=n=>(rows||[]).find(r=>String(r.package_name).toLowerCase()===n.toLowerCase());
-    const row=find(name)||find("Free");
-    const custom=free?null:a?.custom_max_attempts_per_exam;
-    const v=custom!==null&&custom!==undefined?custom:row?.max_attempts_per_exam;
-    return {cap:Number(v),name};
-  }
-
-  try{
-    let cap=NaN,name="Your";
-    try{
-      const {data}=await supabase.functions.invoke("school-exam-management",{body:{action:"list_subjects"}});
-      const p=data?.package||data?.data?.package;
-      cap=Number(p?.max_attempts_per_exam);name=p?.package_name||name;
-    }catch(e){console.error(e)}
-    if(!valid(cap)){const t=await fromTables();cap=t.cap;name=t.name}
-
-    if(!valid(cap)){
-      note.textContent="No attempts limit is set for the "+name+" package. Set one in the admin package limits.";
-      return;
-    }
-
-    const top=Math.min(cap,20);
-    const d=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,"value");
-    const prev=Number(d.get.call(sel))||2;
-    sel.innerHTML=Array.from({length:top},(_,i)=>'<option value="'+(i+1)+'">'+(i+1)+' attempt'+(i?'s':'')+'</option>').join("");
-    Object.defineProperty(sel,"value",{configurable:true,
-      get(){return d.get.call(this)},
-      set(v){d.set.call(this,String(Math.max(1,Math.min(Number(v)||1,top))))}});
-    sel.value=prev;
-    note.textContent=name+" package: up to "+top+" attempt"+(top===1?"":"s")+" per student.";
-  }catch(e){
-    console.error(e);
-    note.textContent="The attempts limit could not be loaded.";
-  }
-})();
-</script>
-  
 </body>
 </html>
