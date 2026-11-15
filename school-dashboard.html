@@ -1281,6 +1281,19 @@ initializeDashboard();
   setTimeout(counts,3000);setTimeout(counts,7000);
 })();
 </script>
+
+<script>
+(function(){
+  var NEW="school-classes.html",OLD=/school-class-examinations\.html/;
+  /* "Create and manage classes" button */
+  if(typeof PAGE_LINKS!=="undefined")PAGE_LINKS["School Class Examination"]=NEW;
+  /* "Classes & Terms" menu button, including after switching tabs */
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("button[data-u]");
+    if(b&&OLD.test(b.dataset.u))b.dataset.u=NEW;
+  },true);
+})();
+</script>
   
 </body>
 </html>
