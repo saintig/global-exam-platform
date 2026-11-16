@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Attach Students &amp; Examinations | SAINTIG EXAMS</title>
+<style>
+:root{--navy:#14243a;--gold:#d4af37;--bg:#f3f5f8;--ink:#263447;--muted:#64748b;--line:#e1e6ed;--green:#16834a;--red:#c43d45}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}
+button,input,select{font:inherit}
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top b{font-size:19px}.top b span{color:var(--gold)}
+.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:10px 14px}
+.tag{display:inline-block;background:#e4c96f33;color:#e4c96f;border-radius:20px;padding:3px 12px;font-size:13px;margin-left:8px}
+.wrap{max-width:1100px;margin:auto;padding:22px 16px 50px}
+h1{margin:0 0 5px;font-size:27px;color:var(--navy)}.sub{color:var(--muted);margin:0 0 16px}
+.help{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:18px}
+.help h2{margin:0 0 4px;font-size:16px;color:var(--navy)}.help p{margin:0 0 10px;color:var(--muted);font-size:15px}
+.hb{display:flex;flex-wrap:wrap;gap:8px}
+.hb a{text-decoration:none;border-radius:7px;padding:8px 11px;font-size:13px;font-weight:bold;background:#edf1f6;color:var(--navy)}
+.hb a:first-child{background:var(--navy);color:#fff}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.pf label{display:block;font-weight:bold;font-size:14px;margin-bottom:6px;color:var(--navy)}
+.pf select,.pf input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:46px}
+.box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px;margin-bottom:14px}
+.lim{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.lim input{width:100px;padding:10px;border:1px solid var(--line);border-radius:8px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:bold;cursor:pointer;min-height:42px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.gold{background:var(--gold);color:var(--navy)}.navy{background:var(--navy);color:#fff}.light{background:#edf1f6;color:var(--navy)}.bad{background:#fdebec;color:var(--red)}
+.s{padding:7px 10px;min-height:34px;font-size:13px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{flex:1;padding:13px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:bold;color:var(--navy);cursor:pointer}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.bar input{flex:1;min-width:200px;padding:11px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tw{overflow-x:auto;background:#fff;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th,td{padding:12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px;vertical-align:middle}
+th{background:#f1f4f8;color:var(--navy);font-size:12px}
+.id{font-weight:bold;color:var(--navy);white-space:nowrap}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.empty{text-align:center;padding:28px 12px;color:var(--muted)}
+.msg{display:none;padding:12px 14px;border-radius:9px;margin:0 0 14px;overflow-wrap:anywhere}
+.msg.show{display:block}.msg.err{background:#fff0ef;color:#b42318;border:1px solid #ffd2ce}
+.msg.ok{background:#e8f7ee;color:#176b3a;border:1px solid #c8ebd2}.msg.info{background:#eef6ff;color:#31577b;border:1px solid #d5e8fa}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;padding:16px;overflow-y:auto}
+.modal.show{display:flex;align-items:flex-start;justify-content:center}
+.mb{background:#fff;border-radius:12px;padding:20px;width:100%;max-width:640px;margin:auto}
+.mb h2{margin:0 0 6px;color:var(--navy);font-size:20px}
+.ml{max-height:330px;overflow:auto;border:1px solid var(--line);border-radius:9px;margin-top:10px}
+.mr{display:flex;gap:11px;align-items:flex-start;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.mr:last-child{border:0}.mr input{width:18px;height:18px;margin-top:3px;flex:0 0 auto}
+.mr small{display:block;color:var(--muted)}
+.foot{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+.sel{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+@media(max-width:640px){.pick{grid-template-columns:1fr}h1{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="top"><div><b>SAINTIG <span>EXAMS</span></b><span class="tag">School Class Examinations</span></div><a href="school-dashboard.html">Dashboard</a></div>
+
+<div class="wrap">
+  <h1>Attach Students &amp; Examinations</h1>
+  <p class="sub">A student writes only the examinations attached to them, and an examination opens only for the students attached to it.</p>
+
+  <section class="help">
+    <h2>NEED HELP? STEP-BY-STEP GUIDES</h2>
+    <p>Open the guide that matches what you are doing.</p>
+    <div class="hb">
+      <a href="school-help-support.html#part2">📘 Class setup guide</a>
+      <a href="school-help-support.html#c-attach">Add students and examinations</a>
+      <a href="school-help-support.html#c-register">Examination register and limits</a>
+      <a href="school-help-support.html#c-ca">CA and draft results, attach examinations to students or students to examinations</a>
+      <a href="school-help-support.html#c-share">Share IDs</a>
+    </div>
+  </section>
+
+  <div class="pick">
+    <div class="pf"><label for="pClass">Class</label><select id="pClass"><option value="">Loading…</option></select></div>
+    <div class="pf"><label for="pTerm">Term</label><select id="pTerm"><option>1st Term</option><option>2nd Term</option><option>3rd Term</option></select></div>
+  </div>
+
+  <div class="box">
+    <b>Most examinations each student can write in this term</b>
+    <div class="lim"><input id="limIn" type="number" min="1" max="100" placeholder="e.g. 8"><button class="btn gold s" id="limSave" type="button">Save limit</button><button class="btn light s" id="limClear" type="button">Remove limit</button></div>
+    <div class="meta" id="limInfo" style="color:#64748b;margin-top:8px"></div>
+  </div>
+
+  <div class="msg" id="msg"></div>
+
+  <div class="tabs"><button class="tab on" id="tStudents" type="button">Students</button><button class="tab" id="tExams" type="button">Examinations</button></div>
+  <div class="bar">
+    <input id="q" type="search" placeholder="Search by name, ID or examination">
+    <button class="btn light s" id="printAll" type="button">Print all</button>
+    <button class="btn light s" id="csvAll" type="button">Download all</button>
+    <button class="btn light s" id="shareAll" type="button">Share all</button>
+  </div>
+  <div class="tw" id="area"><div class="empty">Loading…</div></div>
+</div>
+
+<div class="modal" id="modal"><div class="mb">
+  <h2 id="mTitle"></h2><div id="mSub" style="color:#64748b;font-size:14px"></div>
+  <input id="mSearch" type="search" placeholder="Search…" style="width:100%;padding:11px;border:1px solid #e1e6ed;border-radius:8px;margin-top:10px">
+  <div class="sel"><button class="btn light s" id="mAll" type="button">Select all shown</button><button class="btn light s" id="mNone" type="button">Clear</button><span id="mCount" style="color:#64748b"></span></div>
+  <div class="ml" id="mList"></div>
+  <div class="foot"><button class="btn light" id="mCancel" type="button">Cancel</button><button class="btn gold" id="mOk" type="button">Continue</button></div>
+</div></div>
+
+<div class="modal" id="vModal"><div class="mb">
+  <h2 id="vTitle"></h2><div id="vBody"></div>
+  <div class="foot"><button class="btn light" id="vClose" type="button">Close</button></div>
+</div></div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const CF="school-class-manager-",RF="school-class-results",EF="school-exam-management";
+const CTX="saintig_class_ctx",TERMS=["1st Term","2nd Term","3rd Term"];
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+let cls=null,firstId=null,clsLabel="",classRows=[],levelMap={},limit=null,tab="students",busy=false;
+let students=[],exams=[];   /* students: {id,sid,name,exams:[]} · exams: {id,code,title,subject,students:[]} */
+
+function say(t,k="info"){const b=$("msg");b.textContent=t;b.className="msg show "+k;clearTimeout(say.t);if(k==="ok")say.t=setTimeout(()=>b.className="msg",6000)}
+async function fn(name,body){
+  const {data,error}=await supabase.functions.invoke(name,{body});
+  if(error){let m=error.message||"Request failed.";try{const r=await error.context.json();m=r.message||r.error||m}catch(_){}throw new Error(m)}
+  if(data&&data.success===false)throw new Error(data.message||data.error||"The request could not be completed.");
+  return data;
+}
+
+/* ---------- class and term ---------- */
+async function initPicker(){
+  const lv=await supabase.from("class_levels").select("code,name,alt_name");
+  (lv.data||[]).forEach(l=>levelMap[l.code]=l.name+" — "+l.alt_name);
+  const r=await supabase.functions.invoke(CF,{body:{action:"list_classes",archived:false}});
+  classRows=((r.data&&r.data.classes)||[]).filter(c=>c.class_group_id&&!c.is_legacy&&!c.is_graduated&&!c.is_archived);
+  const groups=new Map();classRows.forEach(c=>{if(!groups.has(c.class_group_id))groups.set(c.class_group_id,c)});
+  const saved=JSON.parse(localStorage.getItem(CTX)||"null")||{};
+  $("pClass").innerHTML=groups.size?[...groups.entries()].map(([g,c])=>`<option value="${g}">${esc((levelMap[c.level_code]||c.class_name)+(c.class_arm?" · "+c.class_arm:"")+" ("+c.academic_session+")")}</option>`).join(""):'<option value="">No classes yet</option>';
+  if(saved.g&&groups.has(saved.g))$("pClass").value=saved.g;
+  if(TERMS.includes(saved.t))$("pTerm").value=saved.t;
+  const g=$("pClass").value,t=$("pTerm").value;
+  const row=classRows.find(c=>c.class_group_id===g&&c.academic_period===t);
+  cls=row?row.id:null;
+  const first=classRows.filter(c=>c.class_group_id===g).sort((a,b)=>TERMS.indexOf(a.academic_period)-TERMS.indexOf(b.academic_period))[0];
+  firstId=first?first.id:null;
+  clsLabel=$("pClass").selectedOptions[0]?$("pClass").selectedOptions[0].textContent+" · "+t:"";
+  limit=row&&row.max_exams_per_student?Number(row.max_exams_per_student):null;
+  const change=()=>{localStorage.setItem(CTX,JSON.stringify({g:$("pClass").value,t:$("pTerm").value}));location.reload()};
+  $("pClass").addEventListener("change",change);$("pTerm").addEventListener("change",change);
+}
+function showLimit(){
+  $("limIn").value=limit||"";
+  $("limInfo").textContent=limit?`Each student can write up to ${limit} examination(s) in this term, or fewer.`:"No limit set. A student can write any number of the examinations attached to them.";
+}
+$("limSave").addEventListener("click",async()=>{
+  const n=parseInt($("limIn").value,10);
+  if(!Number.isInteger(n)||n<1||n>100)return say("Enter a whole number from 1 to 100.","err");
+  const {error}=await supabase.rpc("school_set_exam_limit",{p_class_id:cls,p_limit:n});
+  if(error)return say(error.message,"err");
+  limit=n;showLimit();render();say(`Limit saved: ${n} examination(s) per student.`,"ok");
+});
+$("limClear").addEventListener("click",async()=>{
+  const {error}=await supabase.rpc("school_set_exam_limit",{p_class_id:cls,p_limit:null});
+  if(error)return say(error.message,"err");
+  limit=null;showLimit();render();say("Limit removed.","ok");
+});
+
+/* ---------- load ---------- */
+async function load(){
+  $("area").innerHTML='<div class="empty">Loading…</div>';
+  try{
+    const [gc,le,ls]=await Promise.all([
+      fn(CF,{action:"get_class",class_id:cls}),
+      fn(EF,{action:"list_exams",space:"class",school_class_id:cls}),
+      fn(EF,{action:"list_students",space:"class",school_class_id:firstId,include_archived:false})
+    ]);
+    const active=new Set((gc.students||[]).filter(m=>m.is_active).map(m=>Number(m.school_student_id)));
+    const attached=new Set((gc.examinations||[]).filter(m=>m.is_attached).map(m=>Number(m.examination_id)));
+    const list=(le.examinations||[]).filter(e=>!e.is_archived);
+
+    /* every class examination of this term is attached to the term automatically */
+    for(const e of list){
+      if(!attached.has(Number(e.id))){
+        try{await fn(CF,{action:"attach_examination",class_id:cls,examination_id:String(e.id)})}catch(_){}
+      }
+    }
+
+    students=(ls.students||[]).filter(s=>!s.is_archived&&s.is_active&&active.has(Number(s.id)))
+      .map(s=>({id:Number(s.id),sid:s.student_id,name:s.full_name,exams:[]}));
+    const byId=new Map(students.map(s=>[s.id,s]));
+    exams=list.map(e=>({id:Number(e.id),code:e.examination_code||String(e.id),title:e.title||"Examination",subject:"",students:[]}));
+
+    for(let i=0;i<exams.length;i+=4){
+      await Promise.all(exams.slice(i,i+4).map(async x=>{
+        try{
+          const d=await fn(RF,{action:"exam_students",class_id:cls,examination_id:x.id});
+          x.subject=(d.exam&&d.exam.subject_name)||"";
+          (d.registered||[]).forEach(r=>{const s=byId.get(Number(r.school_student_id));if(s){x.students.push(s);s.exams.push(x)}});
+        }catch(_){}
+      }));
+    }
+    students.sort((a,b)=>a.name.localeCompare(b.name));exams.sort((a,b)=>a.title.localeCompare(b.title));
+    render();
+  }catch(e){$("area").innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
+}
+
+/* ---------- display ---------- */
+function setTab(t){tab=t;$("tStudents").classList.toggle("on",t==="students");$("tExams").classList.toggle("on",t==="exams");render()}
+$("tStudents").addEventListener("click",()=>setTab("students"));$("tExams").addEventListener("click",()=>setTab("exams"));
+$("q").addEventListener("input",render);
+
+function render(){
+  const q=$("q").value.trim().toLowerCase();
+  if(tab==="students"){
+    const l=students.filter(s=>!q||(s.name+" "+s.sid+" "+s.exams.map(e=>e.title+" "+e.code).join(" ")).toLowerCase().includes(q));
+    $("area").innerHTML=l.length?`<table><thead><tr><th>STUDENT ID</th><th>NAME</th><th>EXAMINATIONS</th><th>ACTIONS</th></tr></thead><tbody>${l.map(s=>`<tr>
+      <td class="id">${esc(s.sid)}</td><td><b>${esc(s.name)}</b></td><td>${s.exams.length}${limit?" / "+limit:""}</td>
+      <td><div class="acts"><button class="btn gold s" data-a="sAdd" data-id="${s.id}">Attach exams</button><button class="btn bad s" data-a="sRem" data-id="${s.id}">Remove</button>
+      <button class="btn light s" data-a="sView" data-id="${s.id}">View</button><button class="btn light s" data-a="sPrint" data-id="${s.id}">Print</button><button class="btn light s" data-a="sCsv" data-id="${s.id}">Download</button></div></td></tr>`).join("")}</tbody></table>`
+      :'<div class="empty">No students found. Register students in Class Students first.</div>';
+  }else{
+    const l=exams.filter(e=>!q||(e.title+" "+e.code+" "+e.subject+" "+e.students.map(s=>s.name+" "+s.sid).join(" ")).toLowerCase().includes(q));
+    $("area").innerHTML=l.length?`<table><thead><tr><th>EXAM ID</th><th>EXAMINATION</th><th>STUDENTS</th><th>ACTIONS</th></tr></thead><tbody>${l.map(e=>`<tr>
+      <td class="id">${esc(e.code)}</td><td><b>${esc(e.title)}</b>${e.subject?`<div style="color:#64748b;font-size:13px">${esc(e.subject)}</div>`:""}</td><td>${e.students.length}</td>
+      <td><div class="acts"><button class="btn gold s" data-a="eAdd" data-id="${e.id}">Attach students</button><button class="btn bad s" data-a="eRem" data-id="${e.id}">Remove</button>
+      <button class="btn light s" data-a="eView" data-id="${e.id}">View</button><button class="btn light s" data-a="ePrint" data-id="${e.id}">Print</button><button class="btn light s" data-a="eCsv" data-id="${e.id}">Download</button></div></td></tr>`).join("")}</tbody></table>`
+      :'<div class="empty">No examinations found. Register examinations in Class Examinations first.</div>';
+  }
+}
+
+/* ---------- multi-select window ---------- */
+let pk=null;
+function pick({title,sub,items,ok,run}){
+  pk={items,sel:new Set(),run};
+  $("mTitle").textContent=title;$("mSub").textContent=sub||"";$("mOk").textContent=ok;$("mSearch").value="";
+  drawPick();$("modal").classList.add("show");
+}
+function drawPick(){
+  const q=$("mSearch").value.trim().toLowerCase();
+  const l=pk.items.filter(i=>!q||(i.label+" "+i.sub).toLowerCase().includes(q));
+  $("mList").innerHTML=l.length?l.map(i=>`<label class="mr"><input type="checkbox" value="${i.id}" ${pk.sel.has(i.id)?"checked":""}><span><b>${esc(i.label)}</b><small>${esc(i.sub)}</small></span></label>`).join(""):'<div class="empty">Nothing to show.</div>';
+  $("mCount").textContent=pk.sel.size+" selected";
+}
+$("mList").addEventListener("change",e=>{if(e.target.type==="checkbox"){const v=Number(e.target.value);if(e.target.checked)pk.sel.add(v);else pk.sel.delete(v);$("mCount").textContent=pk.sel.size+" selected"}});
+$("mSearch").addEventListener("input",()=>{if(pk)drawPick()});
+$("mAll").addEventListener("click",()=>{const q=$("mSearch").value.trim().toLowerCase();pk.items.filter(i=>!q||(i.label+" "+i.sub).toLowerCase().includes(q)).forEach(i=>pk.sel.add(i.id));drawPick()});
+$("mNone").addEventListener("click",()=>{pk.sel.clear();drawPick()});
+$("mCancel").addEventListener("click",()=>$("modal").classList.remove("show"));
+$("mOk").addEventListener("click",async()=>{
+  if(!pk.sel.size)return say("Select at least one.","err");
+  if(busy)return;busy=true;$("mOk").disabled=true;
+  try{$("modal").classList.remove("show");await pk.run([...pk.sel])}catch(e){say(e.message,"err")}
+  finally{busy=false;$("mOk").disabled=false;await load()}
+});
+
+/* ---------- attach and remove ---------- */
+async function batch(jobs){
+  let done=0;const failed=[];
+  for(let i=0;i<jobs.length;i+=4){
+    const r=await Promise.allSettled(jobs.slice(i,i+4).map(j=>j()));
+    r.forEach(x=>{if(x.status==="fulfilled")done++;else failed.push(x.reason&&x.reason.message||"failed")});
+  }
+  return{done,failed};
+}
+const result=(done,failed,word)=>say(failed.length?`${done} ${word}. ${failed.length} not done: ${failed[0]}`:`${done} ${word}.`,failed.length?"err":"ok");
+
+function studentAdd(s){
+  const have=new Set(s.exams.map(e=>e.id));
+  const items=exams.filter(e=>!have.has(e.id)).map(e=>({id:e.id,label:e.title,sub:e.code+(e.subject?" · "+e.subject:"")}));
+  if(!items.length)return say("This student is already attached to every examination of this term.","info");
+  const room=limit?limit-s.exams.length:Infinity;
+  if(room<=0)return say(`${s.name} already takes the maximum of ${limit} examination(s). Remove one first, or raise the limit.`,"err");
+  pick({title:"Attach examinations to "+s.name,sub:limit?`Can take ${room} more (maximum ${limit}).`:"Select the examinations this student will write.",items,ok:"Attach selected",
+    run:async ids=>{
+      if(ids.length>room){if(!confirm(`Only ${room} more can be attached. The first ${room} you selected will be attached and the rest skipped. Continue?`))return;ids=ids.slice(0,room)}
+      const r=await batch(ids.map(id=>()=>fn(RF,{action:"add_exam_students",class_id:cls,examination_id:id,student_ids:[s.id]})));
+      result(r.done,r.failed,"examination(s) attached");
+    }});
+}
+function studentRem(s){
+  if(!s.exams.length)return say("This student has no attached examinations.","info");
+  pick({title:"Remove examinations from "+s.name,sub:"Select the examinations to remove.",items:s.exams.map(e=>({id:e.id,label:e.title,sub:e.code})),ok:"Remove selected",
+    run:async ids=>{if(!confirm(`Remove ${ids.length} examination(s) from ${s.name}?`))return;
+      const r=await batch(ids.map(id=>()=>fn(RF,{action:"remove_exam_students",class_id:cls,examination_id:id,student_ids:[s.id]})));
+      result(r.done,r.failed,"examination(s) removed")}});
+}
+function examAdd(e){
+  const have=new Set(e.students.map(s=>s.id));
+  const items=students.filter(s=>!have.has(s.id)).map(s=>({id:s.id,label:s.name,sub:s.sid+(limit?` · ${s.exams.length}/${limit} exams`:"")}));
+  if(!items.length)return say("Every student of this class is already attached to this examination.","info");
+  pick({title:"Attach students to "+e.title,sub:"Select the students who will write this examination.",items,ok:"Attach selected",
+    run:async ids=>{const d=await fn(RF,{action:"add_exam_students",class_id:cls,examination_id:e.id,student_ids:ids});say(d.message||"Students attached.","ok")}});
+}
+function examRem(e){
+  if(!e.students.length)return say("No students are attached to this examination.","info");
+  pick({title:"Remove students from "+e.title,sub:"Select the students to remove.",items:e.students.map(s=>({id:s.id,label:s.name,sub:s.sid})),ok:"Remove selected",
+    run:async ids=>{if(!confirm(`Remove ${ids.length} student(s) from this examination?`))return;
+      const d=await fn(RF,{action:"remove_exam_students",class_id:cls,examination_id:e.id,student_ids:ids});say(d.message||"Students removed.","ok")}});
+}
+
+/* ---------- view, print, download, share ---------- */
+function viewBox(title,rows,cols){
+  $("vTitle").textContent=title;
+  $("vBody").innerHTML=rows.length?`<div class="tw"><table style="min-width:0"><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`:'<div class="empty">Nothing attached yet.</div>';
+  $("vModal").classList.add("show");
+}
+$("vClose").addEventListener("click",()=>$("vModal").classList.remove("show"));
+
+const sRows=s=>s.exams.map(e=>[e.title,e.subject||"—",e.code]);
+const eRows=e=>e.students.map(s=>[s.name,s.sid]);
+const sCols=["S/N","EXAMINATION","SUBJECT","EXAM ID"],eCols=["S/N","STUDENT","STUDENT ID"];
+const tbl=(cols,rows)=>`<table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.length?rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join(""):`<tr><td colspan="${cols.length}">Nothing attached.</td></tr>`}</tbody></table>`;
+
+function printDoc(title,body){
+  const w=window.open("","_blank");if(!w)return say("Allow pop-ups to print.","err");
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${esc(title)}</title><style>body{font-family:Arial,sans-serif;padding:24px;color:#1e293b}h1{text-align:center;color:#14243a;font-size:21px;margin:0}h2{text-align:center;font-size:15px;margin:8px 0}h3{margin:20px 0 4px;font-size:14px}p{text-align:center;font-size:12px;color:#475569;margin:3px 0}table{width:100%;border-collapse:collapse;margin-top:8px}th,td{border:1px solid #94a3b8;padding:7px;font-size:12px;text-align:left}th{background:#e8edf5}.f{text-align:center;margin-top:24px;font-size:11px;color:#64748b}</style></head><body><h1>SAINTIG EXAMS</h1><p>${esc(clsLabel)}</p>${body}<div class="f">Powered by SAINTIG EXAMS</div></body></html>`);
+  w.document.close();w.focus();setTimeout(()=>w.print(),400);
+}
+function csv(name,rows){
+  const c=v=>'"'+String(v??"").replace(/"/g,'""')+'"';
+  const url=URL.createObjectURL(new Blob(["\uFEFF"+rows.map(r=>r.map(c).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"}));
+  const a=document.createElement("a");a.href=url;a.download=name+".csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function share(text,title){
+  try{if(navigator.share){await navigator.share({title,text});return}
+    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
+    say("Sharing is not available here. The text was copied instead.","info")}catch(e){if(e.name!=="AbortError")say("Unable to share.","err")}
+}
+const sTxt=s=>`${s.name} (${s.sid})\n`+(s.exams.length?s.exams.map((e,i)=>`  ${i+1}. ${e.title} - ${e.code}`).join("\n"):"  None yet.");
+const eTxt=e=>`${e.title} - ${e.code}\n`+(e.students.length?e.students.map((s,i)=>`  ${i+1}. ${s.name} - ${s.sid}`).join("\n"):"  No students yet.");
+
+$("printAll").addEventListener("click",()=>tab==="students"
+  ?printDoc("Students and examinations",`<h2>EXAMINATIONS OF EACH STUDENT</h2>`+students.map(s=>`<h3>${esc(s.name)} · ${esc(s.sid)}</h3>`+tbl(sCols,sRows(s))).join(""))
+  :printDoc("Examinations and students",`<h2>STUDENTS OF EACH EXAMINATION</h2>`+exams.map(e=>`<h3>${esc(e.title)} · ${esc(e.code)}</h3>`+tbl(eCols,eRows(e))).join("")));
+$("csvAll").addEventListener("click",()=>{
+  const rows=[["Class","Student","Student ID","Examination","Exam ID"]];
+  students.forEach(s=>{if(s.exams.length)s.exams.forEach(e=>rows.push([clsLabel,s.name,s.sid,e.title,e.code]));else rows.push([clsLabel,s.name,s.sid,"",""])});
+  csv("attached-students-and-examinations",rows);
+});
+$("shareAll").addEventListener("click",()=>share(`SAINTIG EXAMS\n${clsLabel}\n\n`+(tab==="students"?students.map(sTxt):exams.map(eTxt)).join("\n\n"),"Class register"));
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b||busy)return;
+  const a=b.dataset.a,id=Number(b.dataset.id);
+  const s=a[0]==="s"?students.find(x=>x.id===id):null,x=a[0]==="e"?exams.find(y=>y.id===id):null;
+  if(s){
+    if(a==="sAdd")return studentAdd(s);if(a==="sRem")return studentRem(s);
+    if(a==="sView")return viewBox(s.name+" · "+s.sid,sRows(s),sCols);
+    if(a==="sPrint")return printDoc("Student examinations",`<h2>EXAMINATIONS OF ${esc(s.name)}</h2><p>Student ID: ${esc(s.sid)}</p>`+tbl(sCols,sRows(s)));
+    if(a==="sCsv")return csv("examinations-"+s.sid,[["Student","Student ID","Examination","Exam ID"],...(s.exams.length?s.exams.map(e=>[s.name,s.sid,e.title,e.code]):[[s.name,s.sid,"",""]])]);
+  }
+  if(x){
+    if(a==="eAdd")return examAdd(x);if(a==="eRem")return examRem(x);
+    if(a==="eView")return viewBox(x.title+" · "+x.code,eRows(x),eCols);
+    if(a==="ePrint")return printDoc("Examination students",`<h2>STUDENTS OF ${esc(x.title)}</h2><p>Examination ID: ${esc(x.code)}</p>`+tbl(eCols,eRows(x)));
+    if(a==="eCsv")return csv("students-"+x.code,[["Examination","Exam ID","Student","Student ID"],...(x.students.length?x.students.map(s=>[x.title,x.code,s.name,s.sid]):[[x.title,x.code,"",""]])]);
+  }
+});
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"))});
+
+(async()=>{
+  try{
+    const s=await getCurrentSession();
+    if(!s){location.replace("school-login.html");return}
+    await initPicker();
+    if(!cls){$("area").innerHTML='<div class="empty">Create a class in Classes &amp; Terms first, then choose it above.</div>';return}
+    const p=new URLSearchParams(location.search);
+    if(p.get("tab")==="exams")setTab("exams");
+    if(p.get("q"))$("q").value=p.get("q");
+    showLimit();await load();
+  }catch(e){say(e.message||"Unable to start this page.","err")}
+})();
+</script>
+</body>
+</html>
