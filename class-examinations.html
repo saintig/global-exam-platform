@@ -243,6 +243,7 @@ Marks: 1 (optional)
       <p class="hint">Publish when the exam has enough saved questions.</p>
       <div class="sum" id="pubInfo"></div>
       <div class="msg" id="pubMsg"></div>
+      <div class="row"><a class="btn gold" id="attachLink" href="class-attach.html?tab=exams" style="text-decoration:none;display:inline-flex;align-items:center">Attach Students to this Examination</a></div>
       <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
       <div class="codebox" id="codeBox" hidden><small>EXAMINATION ID</small><span id="codeText"></span>
         <div class="row" style="justify-content:center"><button class="btn gold" id="copyCode" type="button">Copy ID</button><button class="btn ghost" id="shareCode" type="button" style="color:var(--navy)">Share ID</button></div>
@@ -742,6 +743,7 @@ async function refreshSaved(){
 function showCode(){
   const c=exam&&exam.examination_code;
   $("codeBox").hidden=!c;if(c)$("codeText").textContent=c;
+  $("attachLink").href="class-attach.html?tab=exams&q="+encodeURIComponent(c||"");
 }
 async function chooseExam(id){
   if(queue.length&&!confirm("You have questions waiting in the review list. They will be lost if you switch. Continue?")){$("existing").value=exam?String(exam.id):"";return}
