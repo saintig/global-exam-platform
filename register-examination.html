@@ -650,11 +650,13 @@ async function initStorage(){
        expired-package and Custom Package rules. */
     const limit=Number(pkg?.max_stored);
     if(!Number.isSafeInteger(limit)||limit<1)throw new Error("The stored-question limit was not returned by the server.");
-    let total=0;
-    for(let i=0;i<exams.length;i+=5){
-      const res=await Promise.all(exams.slice(i,i+5).map(x=>api("list_questions",{examination_id:x.id})));
-      for(const r of res)total+=arr(r,"questions","exam_questions","items").filter(q=>q.is_archived!==true).length;
-    }
+    /* Whole-account count, both tabs together, archived records excluded. */
+    const {data:au}=await supabase.auth.getUser();
+    const {data:ac}=await supabase.from("school_accounts").select("id").eq("user_id",au.user.id).maybeSingle();
+    const sr=await supabase.rpc("get_school_question_storage_summary",{p_school_account_id:ac.id});
+    const sm=Array.isArray(sr.data)?sr.data[0]:sr.data;
+    if(sr.error||!sm)throw new Error("The stored-question count was not returned.");
+    const total=Number(sm.active_stored_questions);
     storedLimit=limit;storedTotal=total;storage="ready";
   }catch(e){console.error("Stored-question limit check failed:",e);storage="unavailable"}
   updateLimitMsg();
