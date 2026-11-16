@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#14243a">
+<title>Class Question Bank | SAINTIG EXAMS</title>
+<style>
+:root{--navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;--ink:#25334a;--muted:#718096;--line:#dfe5ee;--green:#16834a;--red:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top b{font-size:19px}.top b span{color:var(--gold)}
+.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:10px 14px}
+.tag{display:inline-block;background:#e4c96f33;color:#e4c96f;border-radius:20px;padding:3px 12px;font-size:13px;margin-left:8px}
+.wrap{max-width:1100px;margin:auto;padding:22px 16px 50px}
+h1{margin:0 0 5px;font-size:27px;color:var(--navy)}.sub{color:var(--muted);margin:0 0 18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;margin-bottom:18px}
+.card h2{margin:0 0 14px;font-size:18px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.f{margin-bottom:12px;min-width:0}.f label{display:block;font-weight:bold;font-size:13px;margin-bottom:6px}
+select,input,textarea{width:100%;padding:11px;border:1px solid #cbd4e1;border-radius:6px;background:#fff;color:var(--ink);min-height:44px}
+textarea{min-height:80px;resize:vertical}
+select:focus,input:focus,textarea:focus{outline:2px solid #c9d9f5;border-color:var(--blue)}
+.btn{border:0;border-radius:6px;padding:9px 12px;cursor:pointer;font-weight:bold;font-size:13px;min-height:38px}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.pr{background:var(--blue);color:#fff}.gd{background:var(--gold);color:var(--navy)}.ok{background:var(--green);color:#fff}.bad{background:var(--red);color:#fff}
+.lt{background:#e9edf4;color:var(--navy)}.wn{background:#f6ad55;color:#442000}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.stat small{color:var(--muted);text-transform:uppercase;font-weight:bold;font-size:12px}.stat strong{display:block;font-size:28px;color:var(--navy)}
+.stat span{font-size:12px;color:var(--muted)}
+.msg{display:none;padding:11px 13px;border-radius:6px;font-size:14px;margin:0 0 14px;overflow-wrap:anywhere}
+.msg.show{display:block}.msg.ok{background:#e8f7ee;color:#17683b}.msg.err{background:#fdecea;color:#a5281c}.msg.info{background:#edf3ff;color:#214e91}
+.ex{border:1px solid var(--line);border-radius:9px;margin-bottom:14px;overflow:hidden;background:#fff}
+.eh{padding:14px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.em{flex:1;min-width:220px}.et{font-weight:bold;color:var(--navy);font-size:16px;margin-bottom:6px;overflow-wrap:anywhere}
+.ed{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted)}.ed b{color:var(--ink)}
+.ec{display:flex;flex-wrap:wrap;gap:7px}
+.qa{border-top:1px solid var(--line);padding:14px;background:#fafbfd;display:none}.qa.open{display:block}
+.q{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px;margin-bottom:12px}
+.qt{font-weight:bold;color:var(--navy);margin-bottom:8px}.qx{white-space:pre-wrap;overflow-wrap:anywhere;margin-bottom:10px}
+.op{font-size:14px;line-height:1.8;margin-bottom:8px}.qm{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 16px;margin:8px 0}
+.bd{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold}
+.bd.p{background:#e5f6eb;color:#17683b}.bd.u{background:#fff3d8;color:#8a5a00}.bd.a{background:#edf0f4;color:#52606d}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+.modal{position:fixed;inset:0;background:#0a142899;z-index:60;display:none;align-items:flex-start;justify-content:center;padding:18px;overflow-y:auto}
+.modal.show{display:flex}
+.box{background:#fff;border-radius:10px;padding:22px;width:100%;max-width:720px;margin:auto}
+.mh{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+.mh h2{margin:0;font-size:19px;color:var(--navy)}.x{background:#edf0f4;color:var(--navy);font-size:20px;border:0;border-radius:6px;padding:4px 11px;cursor:pointer}
+.foot{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;border-top:1px solid var(--line);padding-top:14px;margin-top:10px}
+.note{background:#eef4ff;border-left:4px solid var(--blue);padding:10px 12px;font-size:13px;margin-bottom:14px}
+small.h{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+@media(max-width:650px){.grid,.stats{grid-template-columns:1fr}.wrap{padding:14px}}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+@media(max-width:650px){.pick{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top"><div><b>SAINTIG <span>EXAMS</span></b><span class="tag">School Class Examinations</span></div><a href="school-dashboard.html">Dashboard</a></div>
+
+<div class="wrap">
+  <h1>Class Question Bank</h1>
+  <p class="sub">View and manage your examinations and their questions. New questions are added in Class Examinations.</p>
+
+  <div class="stats">
+    <div class="stat"><small>Questions in this class term</small><strong id="cTotal">0</strong><span>Active questions in the chosen class and term.</span></div>
+    <div class="stat"><small>Remaining Question Bank capacity</small><strong id="cLeft">—</strong><span id="cHelp">Your package capacity, both tabs together.</span></div>
+  </div>
+
+  <div class="pick"><div class="f"><label for="pClass">Class</label><select id="pClass"><option value="">Loading…</option></select></div>
+    <div class="f"><label for="pTerm">Term</label><select id="pTerm"><option>1st Term</option><option>2nd Term</option><option>3rd Term</option></select></div></div>
+
+  <section class="card">
+    <h2>Find questions</h2>
+    <div class="grid">
+      <div class="f"><label for="fSubject">Subject</label><select id="fSubject"><option value="">All subjects</option></select></div>
+      <div class="f"><label for="fExam">Examination</label><select id="fExam"><option value="">All examinations</option></select></div>
+    </div>
+    <div class="f"><label for="fSearch">Search questions</label><input id="fSearch" type="search" placeholder="Search question text"></div>
+  </section>
+
+  <div class="msg" id="msg"></div>
+  <section class="card"><h2>Examinations</h2><div id="list"><div class="empty">Loading…</div></div></section>
+</div>
+
+<div class="modal" id="modal"><div class="box"><div class="mh"><h2 id="mTitle"></h2><button class="x" id="mClose" type="button">&times;</button></div><div id="mBody"></div></div></div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const SPACE="class",FN="school-exam-management";
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+/* class and term picker */
+const CTX="saintig_class_ctx",TERMS=["1st Term","2nd Term","3rd Term"];
+let cls=null,term="",classRows=[],levelMap={};
+async function initPicker(){
+  const lv=await supabase.from("class_levels").select("code,name,alt_name");
+  (lv.data||[]).forEach(l=>levelMap[l.code]=l.name+" — "+l.alt_name);
+  const r=await supabase.functions.invoke("school-class-manager-",{body:{action:"list_classes",archived:false}});
+  classRows=((r.data&&r.data.classes)||[]).filter(c=>c.class_group_id&&!c.is_legacy&&!c.is_graduated&&!c.is_archived);
+  const groups=new Map();classRows.forEach(c=>{if(!groups.has(c.class_group_id))groups.set(c.class_group_id,c)});
+  const saved=JSON.parse(localStorage.getItem(CTX)||"null")||{};
+  $("pClass").innerHTML=groups.size?[...groups.entries()].map(([g,c])=>`<option value="${g}">${esc((levelMap[c.level_code]||c.class_name)+(c.class_arm?" · "+c.class_arm:"")+" ("+c.academic_session+")")}</option>`).join(""):'<option value="">No classes yet</option>';
+  if(saved.g&&groups.has(saved.g))$("pClass").value=saved.g;
+  if(TERMS.includes(saved.t))$("pTerm").value=saved.t;
+  const g=$("pClass").value,t=$("pTerm").value;
+  const row=classRows.find(c=>c.class_group_id===g&&c.academic_period===t);
+  cls=row?row.id:null;term=t;
+  const change=()=>{localStorage.setItem(CTX,JSON.stringify({g:$("pClass").value,t:$("pTerm").value}));location.reload()};
+  $("pClass").addEventListener("change",change);$("pTerm").addEventListener("change",change);
+}
+let subjects=[],exams=[],qs=new Map(),pkg={},acct=null,open=new Set();
+
+function say(t,k="info"){const b=$("msg");b.textContent=t;b.className="msg show "+k}
+
+async function call(body){
+  const {data,error}=await supabase.functions.invoke(FN,{body:{space:SPACE,school_class_id:cls,...body}});
+  if(error){
+    let m=error.message||"Unable to reach the server.";
+    try{const r=await error.context.json();if(r?.error)m=r.error}catch(_){}
+    throw new Error(m);
+  }
+  if(!data?.success)throw new Error(data?.error||"The request could not be completed.");
+  return data;
+}
+
+const findExam=id=>exams.find(e=>String(e.id)===String(id));
+const subjName=id=>(subjects.find(s=>String(s.id)===String(id))||{}).subject_name||"Unknown subject";
+const status=o=>o.is_archived?'<span class="bd a">Archived</span>':o.is_published?'<span class="bd p">Published</span>':'<span class="bd u">Unpublished</span>';
+
+async function loadQuestions(id,force){
+  const k=String(id);
+  if(!force&&qs.has(k))return qs.get(k);
+  const r=await call({action:"list_questions",examination_id:Number(id)});
+  const list=(r.questions||[]).filter(q=>q.is_archived!==true);
+  qs.set(k,list);return list;
+}
+
+async function refresh(){
+  qs.clear();
+  const [s,e]=await Promise.all([call({action:"list_subjects"}),call({action:"list_exams"})]);
+  subjects=s.subjects||[];exams=(e.examinations||[]).filter(x=>x.is_archived!==true);
+  pkg=e.package||s.package||pkg;
+  $("fSubject").innerHTML='<option value="">All subjects</option>'+subjects.map(x=>`<option value="${x.id}">${esc(x.subject_name)}</option>`).join("");
+  fillExams();
+  let total=0;
+  for(let i=0;i<exams.length;i+=5){
+    const part=await Promise.all(exams.slice(i,i+5).map(x=>loadQuestions(x.id).catch(()=>[])));
+    part.forEach(l=>total+=l.length);
+  }
+  $("cTotal").textContent=total.toLocaleString();
+  await capacity();
+  render();
+}
+
+function fillExams(){
+  const sub=$("fSubject").value,cur=$("fExam").value;
+  const list=exams.filter(e=>!sub||String(e.school_subject_id)===sub);
+  $("fExam").innerHTML='<option value="">All examinations</option>'+list.map(e=>`<option value="${e.id}">${esc(e.title)}</option>`).join("");
+  if(list.some(e=>String(e.id)===cur))$("fExam").value=cur;
+}
+
+async function capacity(){
+  const lim=Number(pkg.max_stored_questions);
+  if(!Number.isFinite(lim)){$("cLeft").textContent="Custom";return}
+  let used=null;
+  if(acct){
+    const r=await supabase.rpc("get_school_question_storage_summary",{p_school_account_id:acct});
+    const d=Array.isArray(r.data)?r.data[0]:r.data;
+    if(!r.error&&d)used=Number(d.active_stored_questions);
+  }
+  $("cLeft").textContent=used===null?"—":Math.max(0,lim-used).toLocaleString();
+  $("cHelp").textContent=`${pkg.package_name||"Free"} package: ${lim.toLocaleString()} stored questions in total.`;
+}
+
+function render(){
+  const sub=$("fSubject").value,ex=$("fExam").value,q=$("fSearch").value.trim().toLowerCase();
+  const list=exams.filter(e=>(!sub||String(e.school_subject_id)===sub)&&(!ex||String(e.id)===ex));
+  if(!list.length){$("list").innerHTML='<div class="empty">No examinations found.</div>';return}
+  $("list").innerHTML=list.map(e=>{
+    const all=qs.get(String(e.id))||[],shown=q?all.filter(x=>String(x.question_text||"").toLowerCase().includes(q)):all;
+    return `<div class="ex"><div class="eh"><div class="em"><div class="et">${esc(e.title)}</div>
+      <div class="ed"><span><b>Exam ID:</b> ${esc(e.examination_code||"—")}</span><span><b>Subject:</b> ${esc(subjName(e.school_subject_id))}</span><span><b>Questions:</b> ${all.length}</span><span>${status(e)}</span></div></div>
+      <div class="ec"><button class="btn lt" data-a="toggle" data-id="${e.id}">${open.has(String(e.id))?"Hide":"View"} Questions</button>
+        <button class="btn pr" data-a="editx" data-id="${e.id}">Edit</button>
+        ${e.is_published?`<button class="btn wn" data-a="unpubx" data-id="${e.id}">Unpublish</button>`:`<button class="btn ok" data-a="pubx" data-id="${e.id}">Publish</button>`}
+        <button class="btn lt" data-a="arcx" data-id="${e.id}">Archive</button><button class="btn bad" data-a="delx" data-id="${e.id}">Delete</button></div></div>
+      <div class="qa ${open.has(String(e.id))?"open":""}">${all.length?(shown.length?shown.map(x=>qcard(x)).join(""):'<div class="empty">No questions match your search.</div>'):'<div class="empty">No questions registered for this examination.</div>'}</div></div>`}).join("");
+}
+
+function qcard(x){
+  return `<div class="q"><div class="qt">Question ${esc(x.question_order??"")}</div><div class="qx">${esc(x.question_text)}</div>
+    <div class="op"><b>A:</b> ${esc(x.option_a)}<br><b>B:</b> ${esc(x.option_b)}<br><b>C:</b> ${esc(x.option_c)}<br><b>D:</b> ${esc(x.option_d)}</div>
+    <div class="qm"><span><b>Correct:</b> ${esc(x.correct_option)}</span><span><b>Marks:</b> ${esc(x.marks)}</span><span>${status(x)}</span>${x.image_path?"<span>Image attached</span>":""}</div>
+    ${x.explanation?`<div class="qm"><span><b>Explanation:</b> ${esc(x.explanation)}</span></div>`:""}
+    <div class="acts"><button class="btn lt" data-a="viewq" data-id="${x.id}">View</button><button class="btn pr" data-a="editq" data-id="${x.id}">Edit</button>
+      ${x.is_published?`<button class="btn wn" data-a="unpubq" data-id="${x.id}">Unpublish</button>`:`<button class="btn ok" data-a="pubq" data-id="${x.id}">Publish</button>`}
+      <button class="btn lt" data-a="arcq" data-id="${x.id}">Archive</button><button class="btn bad" data-a="delq" data-id="${x.id}">Delete</button></div></div>`;
+}
+
+function findQ(id){for(const [k,l] of qs){const q=l.find(x=>String(x.id)===String(id));if(q)return{q,exam:findExam(k)}}return null}
+
+/* modal */
+function showModal(t,html){$("mTitle").textContent=t;$("mBody").innerHTML=html;$("modal").classList.add("show");document.body.style.overflow="hidden"}
+function hideModal(){$("modal").classList.remove("show");$("mBody").innerHTML="";document.body.style.overflow=""}
+$("mClose").addEventListener("click",hideModal);
+$("modal").addEventListener("click",e=>{if(e.target===$("modal"))hideModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideModal()});
+
+const fld=(n,l,v,t="text",x="")=>`<div class="f"><label>${l}</label><input name="${n}" type="${t}" value="${esc(v??"")}" ${x}></div>`;
+const toLocal=v=>{if(!v)return"";const d=new Date(v);if(Number.isNaN(d.getTime()))return"";const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())};
+const iso=v=>{if(!v)return null;const d=new Date(v);if(Number.isNaN(d.getTime()))throw new Error("Enter a valid date and time.");return d.toISOString()};
+const pos=(f,n,l)=>{const v=Number(f.elements[n].value);if(!Number.isFinite(v)||v<1)throw new Error(l+" must be at least 1.");return v};
+
+function editExam(e){
+  if(e.is_published)throw new Error("Unpublish this examination before editing it.");
+  const d=Number(pkg.max_exam_duration_minutes),c=Number(pkg.max_questions_per_exam),a=Number(pkg.max_attempts_per_exam);
+  const cap=Number.isFinite(a)&&a>=1?a:5;
+  showModal("Edit Examination",`<div class="note">The Examination ID cannot be changed. Your package limits apply.</div>
+   <form id="fx">
+    ${fld("_c","Examination ID",e.examination_code||"","text","readonly")}
+    ${fld("title","Examination name",e.title,"text","required")}
+    <div class="grid">${fld("name_class","Class / level",e.name_class||"","text","required")}
+      <div class="f"><label>Subject</label><select name="school_subject_id" required>${subjects.map(s=>`<option value="${s.id}" ${String(s.id)===String(e.school_subject_id)?"selected":""}>${esc(s.subject_name)}</option>`).join("")}</select></div></div>
+    <div class="f"><label>Description</label><textarea name="description">${esc(e.description||"")}</textarea></div>
+    <div class="grid">
+      <div class="f"><label>Duration (minutes)</label><input name="duration_minutes" type="number" min="1" ${Number.isFinite(d)?`max="${d}"`:""} value="${esc(e.duration_minutes)}" required>${Number.isFinite(d)?`<small class="h">Package maximum: ${d} minutes.</small>`:""}</div>
+      <div class="f"><label>Questions each student answers</label><input name="student_question_count" type="number" min="1" ${Number.isFinite(c)?`max="${c}"`:""} value="${esc(e.student_question_count)}" required>${Number.isFinite(c)?`<small class="h">Package maximum: ${c}.</small>`:""}</div>
+      <div class="f"><label>Maximum attempts</label><input name="max_attempts" type="number" min="1" max="${cap}" value="${esc(Math.min(Number(e.max_attempts)||1,cap))}" required><small class="h">Package maximum: ${cap}.</small></div>
+      ${fld("marks_per_question","Marks per question",e.marks_per_question||1,"number",'min="1" step="any" required')}
+      ${fld("starts_at","Start",toLocal(e.starts_at),"datetime-local")}${fld("ends_at","End",toLocal(e.ends_at),"datetime-local")}
+    </div>
+    <div class="foot"><button class="btn lt" type="button" id="cx">Cancel</button><button class="btn pr" type="submit" id="sx">Update Examination</button></div></form>`);
+  $("cx").addEventListener("click",hideModal);
+  $("fx").addEventListener("submit",async ev=>{
+    ev.preventDefault();const f=ev.target,btn=$("sx");btn.disabled=true;
+    try{
+      const s=iso(f.elements.starts_at.value),en=iso(f.elements.ends_at.value);
+      if(s&&en&&new Date(en)<=new Date(s))throw new Error("The end must be later than the start.");
+      const body={action:"update_exam",examination_id:Number(e.id),title:f.elements.title.value.trim(),name_class:f.elements.name_class.value.trim(),
+        description:f.elements.description.value.trim()||null,school_subject_id:Number(f.elements.school_subject_id.value),
+        duration_minutes:pos(f,"duration_minutes","Duration"),student_question_count:pos(f,"student_question_count","Questions"),
+        max_attempts:pos(f,"max_attempts","Maximum attempts"),marks_per_question:pos(f,"marks_per_question","Marks"),starts_at:s,ends_at:en};
+      if(!body.title||!body.name_class)throw new Error("Name and class cannot be empty.");
+      const r=await call(body);hideModal();say(r.message||"Examination updated.","ok");await refresh();
+    }catch(err){say(err.message,"err")}finally{btn.disabled=false}
+  });
+}
+
+function editQuestion(q,e){
+  if(e.is_published)throw new Error("Unpublish the examination before editing its questions.");
+  const co=String(q.correct_option||"A").toUpperCase();
+  showModal("Edit Question",`<div class="note">Any existing question image is kept.</div><form id="fq">
+    <div class="f"><label>Question text</label><textarea name="question_text" required>${esc(q.question_text||"")}</textarea></div>
+    <div class="grid">${fld("option_a","Option A",q.option_a)}${fld("option_b","Option B",q.option_b)}${fld("option_c","Option C",q.option_c)}${fld("option_d","Option D",q.option_d)}
+      <div class="f"><label>Correct option</label><select name="correct_option">${["A","B","C","D"].map(o=>`<option ${o===co?"selected":""}>${o}</option>`).join("")}</select></div>
+      ${fld("marks","Marks",q.marks||1,"number",'min="1" step="any" required')}${fld("question_order","Question order",q.question_order||1,"number",'min="1" step="1" required')}</div>
+    <div class="f"><label>Explanation (optional)</label><textarea name="explanation">${esc(q.explanation||"")}</textarea></div>
+    <div class="foot"><button class="btn lt" type="button" id="cq">Cancel</button><button class="btn pr" type="submit" id="sq">Update Question</button></div></form>`);
+  $("cq").addEventListener("click",hideModal);
+  $("fq").addEventListener("submit",async ev=>{
+    ev.preventDefault();const f=ev.target,btn=$("sq");btn.disabled=true;
+    try{
+      const text=f.elements.question_text.value.trim();if(!text)throw new Error("Question text cannot be empty.");
+      const order=pos(f,"question_order","Question order");if(!Number.isInteger(order))throw new Error("Question order must be a whole number.");
+      const r=await call({action:"update_question",question_id:Number(q.id),question:{question_text:text,
+        option_a:f.elements.option_a.value.trim(),option_b:f.elements.option_b.value.trim(),option_c:f.elements.option_c.value.trim(),option_d:f.elements.option_d.value.trim(),
+        correct_option:f.elements.correct_option.value,marks:pos(f,"marks","Marks"),question_order:order,explanation:f.elements.explanation.value.trim()||null}});
+      hideModal();say(r.message||"Question updated.","ok");await refresh();
+    }catch(err){say(err.message,"err")}finally{btn.disabled=false}
+  });
+}
+
+function viewQuestion(q,e){
+  const o=(l,v)=>`<div style="padding:9px;background:#f4f6fa;border-radius:5px;margin-bottom:7px"><b>Option ${l}:</b> ${esc(v||"Not provided")}</div>`;
+  showModal("Question Details",`<div class="f"><label>Examination</label>${esc(e.title)}</div>
+   <div class="f"><label>Question number</label>${esc(q.question_order??"")}</div>
+   <div class="f"><label>Question</label><div style="white-space:pre-wrap">${esc(q.question_text)}</div></div>
+   <div class="f"><label>Options</label>${o("A",q.option_a)}${o("B",q.option_b)}${o("C",q.option_c)}${o("D",q.option_d)}</div>
+   <div class="f"><label>Correct answer</label><b>${esc(q.correct_option)}</b> · Marks: ${esc(q.marks)} · ${status(q)}</div>
+   <div class="f"><label>Explanation</label><div style="white-space:pre-wrap">${esc(q.explanation||"No explanation provided.")}</div></div>
+   <div class="foot"><button class="btn lt" id="cv" type="button">Close</button></div>`);
+  $("cv").addEventListener("click",hideModal);
+}
+
+async function doAct(action,body,confirmText){
+  if(confirmText&&!confirm(confirmText))return;
+  const r=await call({action,...body});
+  say(r.message||"Done.","ok");await refresh();
+}
+
+document.addEventListener("click",async ev=>{
+  const b=ev.target.closest("button[data-a]");if(!b||b.disabled)return;
+  const a=b.dataset.a,id=b.dataset.id;b.disabled=true;
+  try{
+    if(a==="toggle"){
+      if(open.has(id))open.delete(id);else{open.add(id);await loadQuestions(id,true)}
+      render();return;
+    }
+    if(a.endsWith("x")){
+      const e=findExam(id);if(!e)throw new Error("Examination not found.");
+      if(a==="editx")return editExam(e);
+      if(a==="pubx")return await doAct("publish_exam",{examination_id:Number(id)},"Publish this examination?\n\nStudents may access it according to its settings.");
+      if(a==="unpubx")return await doAct("unpublish_exam",{examination_id:Number(id)},"Unpublish this examination?\n\nStudents can no longer start it.");
+      if(a==="arcx")return await doAct("archive_exam",{examination_id:Number(id)},"Archive this examination?\n\nIt leaves your active list. Results are kept.");
+      if(a==="delx"){if(e.is_published)throw new Error("Unpublish this examination before deleting it.");
+        return await doAct("delete_exam",{examination_id:Number(id)},"Delete this examination?\n\nIf it has attempts or protected records, it is archived instead.")}
+    }
+    const f=findQ(id);if(!f)throw new Error("Question not found. Refresh the page.");
+    if(a==="viewq")return viewQuestion(f.q,f.exam);
+    if(f.exam.is_published)throw new Error("Unpublish the examination before managing its questions.");
+    if(a==="editq")return editQuestion(f.q,f.exam);
+    if(a==="pubq")return await doAct("publish_question",{question_id:Number(id)},"Publish this question?");
+    if(a==="unpubq")return await doAct("unpublish_question",{question_id:Number(id)},"Unpublish this question?");
+    if(a==="arcq")return await doAct("archive_question",{question_id:Number(id)},"Archive this question?\n\nIt leaves the active list.");
+    if(a==="delq")return await doAct("delete_question",{question_id:Number(id)},"Delete this question?\n\nIf attempts depend on it, it is archived instead.");
+  }catch(err){say(err.message||"The action could not be completed.","err")}
+  finally{b.disabled=false}
+});
+
+$("fSubject").addEventListener("change",()=>{fillExams();render()});
+$("fExam").addEventListener("change",render);
+$("fSearch").addEventListener("input",render);
+
+(async()=>{
+  try{
+    const s=await getCurrentSession();
+    if(!s){location.replace("school-login.html");return}
+    const u=s.user||s;
+    const {data}=await supabase.from("school_accounts").select("id,status").eq("user_id",u.id).maybeSingle();
+    if(!data||data.status!=="active"){await supabase.auth.signOut();location.replace("school-login.html");return}
+    acct=data.id;await initPicker();
+    if(!cls){$("list").innerHTML='<div class="empty">Create a class in Classes &amp; Terms first, then choose it above.</div>';return}
+    await refresh();
+  }catch(e){$("list").innerHTML='<div class="empty">Unable to load the Question Bank.</div>';say(e.message||"Unable to load the Question Bank.","err")}
+})();
+</script>
+</body>
+</html>
