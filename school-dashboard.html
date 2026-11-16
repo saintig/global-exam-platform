@@ -87,6 +87,11 @@ td{padding:12px 9px;border-bottom:1px solid var(--line);color:#475569}
  .pill{display:inline-block;margin-top:12px}.stats{gap:11px}.stat{padding:16px}.value{font-size:28px}
 }
 @media(max-width:380px){.stats,.actions{grid-template-columns:1fr}}
+.helpbox{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:18px;margin:0 0 20px}
+.helpbox h2{margin:0 0 4px;font-size:17px;color:var(--navy)}.helpbox p{margin:0 0 12px;color:var(--muted)}
+.hb{display:flex;flex-wrap:wrap;gap:9px}
+.hb a{text-decoration:none;border-radius:8px;padding:9px 12px;font-size:14px;font-weight:bold;background:#edf1f6;color:var(--navy)}
+.hb a:first-child{background:var(--navy);color:#fff}
 </style>
 </head>
 <body>
@@ -126,6 +131,18 @@ td{padding:12px 9px;border-bottom:1px solid var(--line);color:#475569}
     <button class="tab" data-s="class" type="button">School Class Examinations</button>
   </div>
   <div class="spacenote" id="spaceNote"></div>
+
+  <section class="helpbox">
+    <h2>NEED HELP? STEP-BY-STEP GUIDES</h2>
+    <p>Open the guide that matches what you are doing.</p>
+    <div class="hb">
+      <a href="school-help-support.html#part2">📘 Class setup guide</a>
+      <a href="school-help-support.html#c-attach">Add students and examinations</a>
+      <a href="school-help-support.html#c-register">Examination register and limits</a>
+      <a href="school-help-support.html#c-ca">CA and draft results, attach examinations to students or students to examinations</a>
+      <a href="school-help-support.html#c-share">Share IDs</a>
+    </div>
+  </section>
 
   <div class="stats">
     <article class="stat"><div class="stathead">Active Students <span class="staticon">♙</span></div><div class="value" id="sStudents">—</div><div class="note">Active student records</div></article>
@@ -171,12 +188,12 @@ $("year").textContent=new Date().getFullYear();
 
 const MENU={
  teacher:[["▦ Dashboard","school-dashboard.html"],["♙ My Students","school-students.html"],["▤ My Subjects","school-subjects.html"],["＋ Register Examination","register-examination.html"],["▣ Question Bank","school-question-bank.html"],["▧ Archive Management","school-archive-management.html"],["▥ Results & Performance","school-results-performance.html"]],
- class:[["▦ Dashboard","school-dashboard.html"],["🏫 Classes & Terms","school-classes.html"],["♙ Class Students","class-students.html"],["▤ Class Subjects","class-subjects.html"],["＋ Class Examinations","class-examinations.html"],["▣ Class Question Bank","class-question-bank.html"],["▥ Class Results","school-class-results.html"],["▧ Archive Management","school-archive-management.html"]]
+ class:[["▦ Dashboard","school-dashboard.html"],["🏫 Classes & Terms","school-classes.html"],["▤ Class Subjects","class-subjects.html"],["♙ Class Students","class-students.html"],["＋ Class Examinations","class-examinations.html"],["▣ Class Question Bank","class-question-bank.html"],["🔗 Attach Students & Examinations","class-attach.html"],["▥ Class Results","school-class-results.html"],["▧ Archive Management","school-archive-management.html"]]
 };
 const ACCOUNT=[["◇ Subscription Plans","school-subscription-plans.html"],["♧ Notifications","school-notifications.html",1],["⚙ Teacher/School Profile","school-my-profile.html"],["? Help & Support","school-help-support.html"],["ⓘ About","about.html"],["✉ Contact","contact.html"]];
 const QUICK={
- teacher:[["＋ Add Student",1],["＋ Add Subject",2],["＋ Register Examination",3],["▣ Question Bank",4],["◇ Manage Subscription","school-subscription-plans.html"]],
- class:[["＋ Create Class","school-classes.html"],["♙ Class Students","class-students.html"],["▤ Class Subjects","class-subjects.html"],["＋ Class Examinations","class-examinations.html"],["◇ Manage Subscription","school-subscription-plans.html"]]
+ teacher:[["＋ Add Student",1],["＋ Add Subject",2],["＋ Register Examination",3],["▣ Question Bank",4],["◇ Manage Subscription","school-subscription-plans.html"],["? Help & Support","school-help-support.html"]],
+ class:[["＋ Create Class","school-classes.html"],["＋ Add Subject","class-subjects.html"],["＋ Add Students","class-students.html"],["＋ Create Examination & Questions","class-examinations.html"],["🔗 Attach Examinations & Students","class-attach.html"],["? Help & Support","school-help-support.html"]]
 };
 const NOTE={
  teacher:"Teacher's Examination: your own students, subjects, examinations and questions. Students here can write every examination in this tab.",
