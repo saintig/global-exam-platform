@@ -188,6 +188,7 @@ function render(){
     return `<div class="ex"><div class="eh"><div class="em"><div class="et">${esc(e.title)}</div>
       <div class="ed"><span><b>Exam ID:</b> ${esc(e.examination_code||"—")}</span><span><b>Subject:</b> ${esc(subjName(e.school_subject_id))}</span><span><b>Questions:</b> ${all.length}</span><span>${status(e)}</span></div></div>
       <div class="ec"><button class="btn lt" data-a="toggle" data-id="${e.id}">${open.has(String(e.id))?"Hide":"View"} Questions</button>
+        <a class="btn gd" style="text-decoration:none;display:inline-flex;align-items:center" href="class-attach.html?tab=exams&q=${encodeURIComponent(e.examination_code||"")}">Attach Students</a>
         <button class="btn pr" data-a="editx" data-id="${e.id}">Edit</button>
         ${e.is_published?`<button class="btn wn" data-a="unpubx" data-id="${e.id}">Unpublish</button>`:`<button class="btn ok" data-a="pubx" data-id="${e.id}">Publish</button>`}
         <button class="btn lt" data-a="arcx" data-id="${e.id}">Archive</button><button class="btn bad" data-a="delx" data-id="${e.id}">Delete</button></div></div>
