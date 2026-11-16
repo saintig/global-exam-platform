@@ -218,6 +218,7 @@ function render(){
     <td><span class="st ${s.is_active?"a":"i"}">${s.is_active?"Active":"Deactivated"}</span></td>
     <td><div class="row">
       <button class="btn light small" data-a="view" data-id="${s.id}">View</button>
+      <a class="btn gold small" style="text-decoration:none;display:inline-flex;align-items:center" href="class-attach.html?tab=students&q=${encodeURIComponent(s.student_id)}">Attach Exams</a>
       <button class="btn light small" data-a="edit" data-id="${s.id}">Edit</button>
       ${s.is_active?`<button class="btn warn small" data-a="deactivate" data-id="${s.id}">Deactivate</button>`:`<button class="btn ok small" data-a="activate" data-id="${s.id}">Activate</button>`}
       <button class="btn light small" data-a="archive" data-id="${s.id}">Archive</button>
