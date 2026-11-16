@@ -93,7 +93,6 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 .codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
 .sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
 @media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
-
 </style>
 </head>
 <body>
@@ -136,7 +135,8 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
         <div class="full"><label for="subject">Subject</label><select id="subject" disabled><option value="">Select education level first</option></select></div>
         <div><label for="examType">Category</label><select id="examType"><option value="free">Free examination</option><option value="paid">Premium examination</option></select><small>Premium is saved as "paid".</small></div>
         <div><label for="duration">Duration</label><input id="duration" value="45 minutes" readonly><small>Free: 45 minutes. Premium: 90 minutes.</small></div>
-        <div class="full"><label for="examTitle">Title</label><input id="examTitle" placeholder="e.g. Government - Free Practice"></div>
+        <div id="priceBox" hidden><label for="price">Price</label><input id="price" type="number" min="1" step="any" inputmode="decimal" placeholder="e.g. 2000"><small>Required for premium examinations. Free examinations are saved with a price of 0.</small></div>
+        <div class="full"><label for="examTitle">Title</label><input id="examTitle" placeholder="e.g. Mathematics - Free Practice"></div>
         <div class="full"><label for="description">Instructions for students (optional)</label><textarea id="description"></textarea></div>
       </div>
       <div class="msg" id="m1"></div>
@@ -150,7 +150,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 
     <div class="card" id="boxFile">
       <h2>Upload a file</h2>
-      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works.</p>
+      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works. The same file can be uploaded into different examinations.</p>
       <details class="guide"><summary>How to prepare your file</summary><div class="gb">
 <h4>Word (.docx), Text (.txt) and PDF</h4>
 <p>One item per line, with a blank line between questions:</p>
@@ -275,12 +275,6 @@ function download(name,text,type){
   const url=URL.createObjectURL(new Blob([text],{type}));
   const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-async function copyText(text){
-  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return}
-  const t=document.createElement("textarea");t.value=text;t.style.cssText="position:fixed;opacity:0";
-  document.body.appendChild(t);t.select();const ok=document.execCommand("copy");t.remove();
-  if(!ok)throw new Error("Copying is not supported by this browser.");
 }
 
 /* ================= file reading ================= */
@@ -528,13 +522,13 @@ $("eSave").addEventListener("click",()=>{
 $("clearAll").addEventListener("click",()=>{if(queue.length&&confirm("Remove all "+queue.length+" question(s) from the review list? Saved questions are not affected.")){queue=[];renderQueue()}});
 $("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 
-
 /* ================= state ================= */
 let exam=null,savedCount=0,maxOrder=0,existing=new Set(),busy=false,step=1;
 const isPaid=t=>t==="paid";
 const typeName=t=>isPaid(t)?"PREMIUM":"FREE";
 const needNow=()=>isPaid(exam?exam.access_type:$("examType").value)?MIN_PREMIUM:MIN_FREE;
 const RULES=()=>({defaultMarks:1,integerMarks:true});
+const money=n=>Number(n||0).toLocaleString(undefined,{maximumFractionDigits:2});
 
 /* ================= navigation ================= */
 function go(n){
@@ -557,7 +551,7 @@ $("tabOne").onclick=()=>{$("tabOne").classList.add("on");$("tabFile").classList.
 function refreshBar(){
   const b=$("bar");
   if(!exam)b.textContent="No examination selected yet. Choose one or create a new one in step 1.";
-  else b.innerHTML="<span><b>"+esc(exam.title)+"</b></span><span>"+typeName(exam.access_type)+"</span><span>"+(exam.is_published?"PUBLISHED":"DRAFT")+"</span><span>Saved: "+savedCount+"</span><span>To review: "+queue.length+"</span>";
+  else b.innerHTML="<span><b>"+esc(exam.title)+"</b></span><span>"+typeName(exam.access_type)+(isPaid(exam.access_type)?" ("+esc(money(exam.price))+")":"")+"</span><span>"+(exam.is_published?"PUBLISHED":"DRAFT")+"</span><span>Saved: "+savedCount+"</span><span>To review: "+queue.length+"</span>";
   document.querySelectorAll(".step").forEach(s=>{if(Number(s.dataset.step)>1)s.disabled=!exam});
   $("stSaved").textContent=savedCount;$("stNeed").textContent=needNow();
 }
@@ -599,7 +593,15 @@ async function loadSubjects(){
 }
 $("country").addEventListener("change",()=>loadLevels().catch(e=>say("m1",e.message,"err")));
 $("level").addEventListener("change",()=>loadSubjects().catch(e=>say("m1",e.message,"err")));
-$("examType").addEventListener("change",()=>{$("duration").value=(isPaid($("examType").value)?90:45)+" minutes"});
+
+/* Category change: update duration and show or hide the price box */
+function syncType(){
+  const p=isPaid($("examType").value);
+  $("duration").value=(p?90:45)+" minutes";
+  $("priceBox").hidden=!p;
+  if(!p)$("price").value="";
+}
+$("examType").addEventListener("change",syncType);
 
 /* ================= examinations ================= */
 async function loadExams(selectId){
@@ -611,7 +613,8 @@ async function loadExams(selectId){
 function clearForm(){
   $("country").value="";$("level").innerHTML='<option value="">Select country first</option>';$("level").disabled=true;
   $("subject").innerHTML='<option value="">Select education level first</option>';$("subject").disabled=true;
-  $("examTitle").value="";$("description").value="";$("examType").value="free";$("duration").value="45 minutes";
+  $("examTitle").value="";$("description").value="";$("examType").value="free";
+  $("price").value="";$("priceBox").hidden=true;$("duration").value="45 minutes";
 }
 async function fillForm(e){
   const {data,error}=await supabase.from("education_levels").select("id,education_system_id").eq("id",e.education_level_id).single();
@@ -621,6 +624,8 @@ async function fillForm(e){
   $("subject").value=e.subject_id;$("examType").value=e.access_type;
   $("examTitle").value=e.title||"";$("description").value=e.description||"";
   $("duration").value=(isPaid(e.access_type)?90:45)+" minutes";
+  $("priceBox").hidden=!isPaid(e.access_type);
+  $("price").value=isPaid(e.access_type)&&Number(e.price)>0?String(e.price):"";
 }
 async function refreshSaved(){
   const {data,error}=await supabase.from("exam_questions").select("question_text,question_order,is_archived").eq("examination_id",exam.id).range(0,4999);
@@ -634,7 +639,7 @@ async function chooseExam(id){
   if(queue.length&&!confirm("You have questions waiting in the review list. They will be lost if you switch. Continue?")){$("existing").value=exam?String(exam.id):"";return}
   queue=[];renderQueue();$("upResult").innerHTML="";hush("upMsg");hush("rvMsg");
   if(!id){exam=null;savedCount=0;maxOrder=0;existing=new Set();clearForm();refreshBar();hush("m1");return}
-  const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,duration_minutes,is_published").eq("id",id).single();
+  const {data,error}=await supabase.from("examinations").select("id,title,description,subject_id,education_level_id,access_type,price,duration_minutes,is_published").eq("id",id).single();
   if(error)throw error;
   exam=data;await fillForm(data);await refreshSaved();refreshBar();
   say("m1",exam.is_published?"This examination is published. Its questions can no longer be changed here.":"Loaded. Change the details if needed, then continue.","info");
@@ -648,9 +653,11 @@ $("saveExam").addEventListener("click",async()=>{
     hush("m1");
     const type=$("examType").value,title=$("examTitle").value.trim(),subject=$("subject").value,level=$("level").value;
     if(!title||!subject||!level)throw new Error("Choose the country, education level and subject, then enter the title.");
+    const price=isPaid(type)?Number($("price").value):0;
+    if(isPaid(type)&&!(price>0))throw new Error("Enter a price above zero for a premium examination.");
     if(exam&&exam.is_published)throw new Error("This examination is already published. Create a new one instead.");
     busy=true;$("saveExam").disabled=true;$("saveExam").textContent="Saving…";
-    const payload={subject_id:subject,education_level_id:level,title,description:$("description").value.trim(),duration_minutes:isPaid(type)?90:45,access_type:type,is_published:false};
+    const payload={subject_id:subject,education_level_id:level,title,description:$("description").value.trim(),duration_minutes:isPaid(type)?90:45,access_type:type,price,is_published:false};
     const r=exam?await supabase.from("examinations").update(payload).eq("id",exam.id).eq("is_published",false).select().single()
                 :await supabase.from("examinations").insert(payload).select().single();
     if(r.error)throw r.error;
@@ -661,6 +668,8 @@ $("saveExam").addEventListener("click",async()=>{
 });
 
 /* ================= adding questions ================= */
+/* Duplicates are checked only inside the selected examination (saved + review list),
+   so the same question can be uploaded into different examinations of the same subject. */
 function taken(){return new Set([...existing,...queue.map(q=>keyOf(q.question_text))])}
 function checkImage(f){
   if(!f.type.startsWith("image/"))throw new Error('"'+f.name+'" is not an image.');
@@ -752,7 +761,9 @@ async function refreshPublish(){
   try{await refreshSaved()}catch(e){say("pubMsg","Could not count saved questions: "+e.message,"err")}
   refreshBar();
   const need=needNow();
-  $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Category: "+typeName(exam.access_type)+"<br>Duration: "+exam.duration_minutes+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(exam.is_published?"Published to students":"Not published yet");
+  $("pubInfo").innerHTML="<b>"+esc(exam.title)+"</b><br>Category: "+typeName(exam.access_type)
+    +(isPaid(exam.access_type)?"<br>Price: "+esc(money(exam.price)):"")
+    +"<br>Duration: "+exam.duration_minutes+" minutes<br>Saved questions: "+savedCount+" (needed: "+need+")<br>Status: "+(exam.is_published?"Published to students":"Not published yet");
   let ready=!exam.is_published&&!busy;
   $("anotherRow").hidden=!exam.is_published;
   if(exam.is_published)say("pubMsg","This examination is published.","ok");
@@ -772,7 +783,7 @@ $("publishBtn").addEventListener("click",async()=>{
     if(queue.length)throw new Error("Save the questions in the review list first.");
     await refreshSaved();
     if(savedCount<needNow())throw new Error("This examination has "+savedCount+" saved question(s). At least "+needNow()+" are needed.");
-    if(!confirm('Publish "'+exam.title+'"?\n\nCategory: '+typeName(exam.access_type)+"\nQuestions: "+savedCount+"\nDuration: "+exam.duration_minutes+" minutes"))return;
+    if(!confirm('Publish "'+exam.title+'"?\n\nCategory: '+typeName(exam.access_type)+(isPaid(exam.access_type)?"\nPrice: "+money(exam.price):"")+"\nQuestions: "+savedCount+"\nDuration: "+exam.duration_minutes+" minutes"))return;
     busy=true;$("publishBtn").disabled=true;$("publishBtn").textContent="Publishing…";
     const {data,error}=await supabase.from("examinations").update({is_published:true}).eq("id",exam.id).eq("is_published",false).select().single();
     if(error)throw error;
@@ -790,6 +801,7 @@ $("publishBtn").addEventListener("click",async()=>{
     const {data,error}=await supabase.from("admin_users").select("user_id").eq("user_id",user.id).maybeSingle();
     if(error||!data){alert("Administrator access required.");await supabase.auth.signOut();location.replace("admin-login.html");return}
     await Promise.all([loadCountries(),loadExams()]);
+    syncType();
     renderQueue();refreshBar();
   }catch(e){console.error(e);say("m1","Could not load this page: "+(e.message||e),"err")}
 })();
