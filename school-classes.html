@@ -4,611 +4,359 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#14243a">
-<title>Classes and Terms | SAINTIG EXAMS</title>
+<title>Classes & Terms | SAINTIG EXAMS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--navy:#14243a;--gold:#d4af37;--bg:#f3f5f8;--ink:#263447;--muted:#64748b;--line:#e1e6ed;--red:#b42318;--green:#16834a}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}
 button,input,select{font:inherit}
-.top{background:var(--navy);color:#fff;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.top b{font-size:20px}.top b span{color:var(--gold)}
-.top nav{display:flex;gap:8px;flex-wrap:wrap}
-.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:10px 14px;min-height:46px;display:inline-flex;align-items:center}
-.top a:hover{background:#ffffff18}
-.wrap{max-width:1000px;margin:auto;padding:22px 16px 60px}
-h1{font-size:28px;color:var(--navy);margin:0 0 6px}
-.sub{color:var(--muted);margin:0 0 18px}
-.btn{border:0;border-radius:9px;padding:12px 18px;font-weight:bold;cursor:pointer;min-height:50px;font-size:17px}
-.gold{background:var(--gold);color:var(--navy)}.navy{background:var(--navy);color:#fff}.light{background:#edf1f6;color:var(--navy)}
-.red{background:#fdebea;color:var(--red);border:1px solid #f3c9c5}.green{background:#e8f7ee;color:#176b3a;border:1px solid #c8ebd2}
+.top{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top b{font-size:19px}.top b span{color:var(--gold)}
+.top a{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:10px 14px}
+.tag{display:inline-block;background:#e4c96f33;color:#e4c96f;border-radius:20px;padding:3px 12px;font-size:13px;margin-left:8px}
+.wrap{max-width:1050px;margin:auto;padding:22px 16px 50px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:27px;color:var(--navy);margin:0 0 4px}.sub{color:var(--muted);margin:0 0 16px}
+h2.sec{font-size:19px;color:var(--navy);margin:28px 0 12px}
+.btn{border:0;border-radius:8px;padding:11px 15px;font-weight:bold;cursor:pointer;min-height:44px}
 .btn:disabled{opacity:.55;cursor:not-allowed}
-.small{min-height:44px;padding:9px 14px;font-size:16px}
+.gold{background:var(--gold);color:var(--navy)}.navy{background:var(--navy);color:#fff}.light{background:#edf1f6;color:var(--navy)}
+.red{background:#fdebec;color:var(--red)}.green{background:#e5f5ed;color:#14794a}
+.s{padding:8px 11px;min-height:36px;font-size:13px}
 .msg{display:none;padding:13px 15px;border-radius:9px;margin:14px 0;overflow-wrap:anywhere}
 .msg.show{display:block}.msg.err{background:#fff0ef;color:var(--red);border:1px solid #ffd2ce}
-.msg.ok{background:#e8f7ee;color:#176b3a;border:1px solid #c8ebd2}.msg.info{background:#eef6ff;color:#31577b;border:1px solid #d5e8fa}.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:18px 0 14px;padding-bottom:4px}
-.tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:999px;padding:11px 18px;font-weight:bold;cursor:pointer;min-height:48px;font-size:16px}
-.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-.group{background:#fff;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:18px;margin:0 0 16px}
-.group.grad{border-left-color:var(--green)}.group.hist{border-left-color:#94a3b8}.group.arch{border-left-color:#cbd5e1}
-.ghead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
-.gtitle{font-size:22px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere}
-.meta{color:var(--muted);font-size:16px}
-.terms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-.term{background:#f5f7fa;border:1px solid var(--line);border-radius:10px;padding:13px}
-.term b{display:block;color:var(--navy);margin-bottom:4px;font-size:18px}
-.term small{display:block;color:var(--muted);font-size:15px;margin-bottom:3px}
-.term .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.pill{display:inline-block;border-radius:20px;padding:3px 11px;font-size:14px;font-weight:bold;background:#e8f7ee;color:var(--green)}
-.pill.off{background:#fff6df;color:#85620d}.pill.gr{background:#e4f5eb;color:#137748}
-.gacts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
-.empty{background:#fff;border:1px solid var(--line);border-radius:12px;padding:34px 16px;text-align:center;color:var(--muted)}
-.note{background:#fffaf0;border:1px solid #f0df9f;color:#72570d;border-radius:10px;padding:13px 15px;margin:14px 0;font-size:16px}
-.help{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;font-size:16px}
-.help a{color:var(--navy);font-weight:bold}
-.modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;padding:14px;overflow-y:auto}
+.msg.ok{background:#e8f7ee;color:#176b3a;border:1px solid #c8ebd2}.msg.info{background:#eef6ff;color:#31577b;border:1px solid #d5e8fa}
+.group{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:18px;margin:0 0 16px}
+.group.grad{border-left-color:var(--green)}.group.arch{border-left-color:#94a3b8}
+.gh{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.gt{font-size:20px;font-weight:bold;color:var(--navy)}
+.meta{color:var(--muted);font-size:15px}
+.terms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.term{background:#f5f7fa;border:1px solid var(--line);border-radius:10px;padding:12px}
+.term b{display:block;color:var(--navy);margin-bottom:3px}.term small{display:block;color:var(--muted);font-size:13px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.open{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px;align-items:center}
+.open span{font-size:13px;color:var(--muted);font-weight:bold}
+.empty{background:#fff;border:1px solid var(--line);border-radius:12px;padding:30px 16px;text-align:center;color:var(--muted)}
+.modal{display:none;position:fixed;inset:0;background:#0009;z-index:50;padding:16px;overflow-y:auto}
 .modal.show{display:flex;align-items:flex-start;justify-content:center}
-.box{background:#fff;border-radius:13px;padding:22px;width:100%;max-width:600px;margin:auto}
-.box.wide{max-width:760px}
-.box h2{margin:0 0 4px;color:var(--navy);font-size:24px}
-.f{margin-top:14px}.f label{display:block;font-weight:bold;font-size:16px;margin-bottom:6px;color:var(--navy)}
-.f input,.f select{width:100%;padding:13px;border:1px solid #d5dce8;border-radius:8px;background:#fff;min-height:50px}
+.box{background:#fff;border-radius:13px;padding:22px;width:100%;max-width:580px;margin:auto}
+.box h2{margin:0 0 4px;color:var(--navy);font-size:22px}
+.f{margin-top:14px}.f label{display:block;font-weight:bold;font-size:15px;margin-bottom:6px;color:var(--navy)}
+.f input,.f select{width:100%;padding:13px;border:1px solid #d5dce8;border-radius:8px;background:#fff;min-height:48px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .foot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:20px}
 details{margin-top:14px}summary{cursor:pointer;font-weight:bold;color:var(--navy)}
-.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:10px;cursor:pointer}
-.opt input{width:20px;height:20px;margin-top:3px}
-.row{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.row input{width:20px;height:20px;margin-top:3px;flex:0 0 auto}
-.list{border:1px solid var(--line);border-radius:10px;max-height:340px;overflow:auto;margin-top:10px}
-.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-@media(max-width:700px){.terms{grid-template-columns:1fr}.two{grid-template-columns:1fr}h1{font-size:24px}.gacts .btn{flex:1 1 calc(50% - 10px)}}
+.opt{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:13px;margin-top:10px;cursor:pointer}
+.opt input{width:19px;height:19px;margin-top:2px}.opt small{display:block;color:var(--muted)}
+.note{background:#fffaf0;border:1px solid #f0df9f;color:#72570d;border-radius:10px;padding:12px 14px;margin-top:14px;font-size:14px}
+.det{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.det div{background:#f5f7fa;border-radius:8px;padding:11px;overflow-wrap:anywhere}.det small{display:block;color:var(--muted);margin-bottom:3px}
+@media(max-width:640px){.terms,.two,.det{grid-template-columns:1fr}h1{font-size:23px}}
 </style>
 </head>
 <body>
-<header class="top">
-  <b>SAINTIG <span>EXAMS</span></b>
-  <nav>
-    <a href="school-help-support.html#part2">Help and Support</a>
-    <a href="school-dashboard.html">Dashboard</a>
-  </nav>
-</header>
+<div class="top"><div><b>SAINTIG <span>EXAMS</span></b><span class="tag">School Class Examinations</span></div><a href="school-dashboard.html">Dashboard</a></div>
 
-<main class="wrap">
-  <h1>Classes and Terms</h1>
-  <p class="sub">School Class Examinations: each class has three terms, which are created automatically.</p>
-
-  <button class="btn gold" id="newBtn" type="button">＋ Create Class</button>
+<div class="wrap">
+  <div class="head">
+    <div><h1>Classes &amp; Terms</h1><p class="sub">Each class has three terms, created automatically.</p></div>
+    <button class="btn gold" id="newBtn" type="button">＋ Create Class</button>
+  </div>
   <div class="msg" id="msg"></div>
 
-  <div class="tabs" role="tablist" aria-label="Class sections">
-    <button class="tab on" data-tab="active" type="button">Active Classes</button>
-    <button class="tab" data-tab="graduated" type="button">Graduated</button>
-    <button class="tab" data-tab="history" type="button">Previous Levels</button>
-    <button class="tab" data-tab="archived" type="button">Archived</button>
-  </div>
+  <h2 class="sec" style="margin-top:6px">Active classes</h2>
+  <div id="active"><div class="empty">Loading classes…</div></div>
 
-  <div class="note" id="tabNote"></div>
-  <div id="list"><div class="empty">Loading classes…</div></div>
+  <h2 class="sec">Graduated classes</h2>
+  <div id="graduated"></div>
 
-  <div class="help">
-    Need help with classes, terms, promotion or graduation?
-    <a href="school-help-support.html#part2">Open the Help and Support guide →</a>
-  </div>
-</main>
+  <h2 class="sec">Archived classes</h2>
+  <div id="archived"></div>
 
-<!-- CREATE / EDIT CLASS -->
-<div class="modal" id="modal">
-  <div class="box">
-    <h2 id="formTitle">Create Class</h2>
-    <p class="meta" id="formSub">The 1st, 2nd and 3rd Terms are created for you.</p>
-    <form id="form">
-      <div class="f"><label for="level">Class</label><select id="level" required><option value="">Loading…</option></select></div>
-      <div class="two">
-        <div class="f"><label for="arm">Arm (optional)</label><input id="arm" maxlength="80" placeholder="e.g. A"></div>
-        <div class="f"><label for="session">Academic session</label><input id="session" maxlength="40" placeholder="e.g. 2026/2027" required></div>
-      </div>
-      <div class="f"><label for="school">School or institution name</label><input id="school" maxlength="160" required></div>
-      <div class="two">
-        <div class="f"><label for="teacher">Class teacher's name</label><input id="teacher" maxlength="160"></div>
-        <div class="f"><label for="principal">Principal's name</label><input id="principal" maxlength="160"></div>
-      </div>
-      <details><summary>School contact details (optional)</summary>
-        <div class="f"><label for="phone">School phone</label><input id="phone" maxlength="40"></div>
-        <div class="f"><label for="email">School email</label><input id="email" type="email" maxlength="160"></div>
-        <div class="f"><label for="address">School address</label><input id="address" maxlength="300"></div>
-        <div class="f"><label for="logo">School logo link (optional)</label><input id="logo" maxlength="1000" placeholder="https://..."></div>
-      </details>
-      <div class="foot">
-        <button class="btn light" id="cancelBtn" type="button">Cancel</button>
-        <button class="btn gold" id="saveBtn" type="submit">Create Class and Terms</button>
-      </div>
-    </form>
-  </div>
+  <h2 class="sec">Previous classes (promoted)</h2>
+  <div id="promoted"></div>
 </div>
 
-<!-- PROMOTE OR GRADUATE -->
-<div class="modal" id="promoteModal">
-  <div class="box">
-    <h2 id="pmTitle">Promote Class</h2>
-    <p class="meta" id="pmInfo"></p>
-    <div id="pmOptions"></div>
-    <div id="pmFields">
-      <div class="two">
-        <div class="f"><label for="pmSession">New academic session</label><input id="pmSession" maxlength="40" placeholder="e.g. 2027/2028"></div>
-        <div class="f"><label for="pmArm">Arm (optional)</label><input id="pmArm" maxlength="80"></div>
-      </div>
-      <div class="two">
-        <div class="f"><label for="pmTeacher">Class teacher's name</label><input id="pmTeacher" maxlength="160"></div>
-        <div class="f"><label for="pmPrincipal">Principal's name</label><input id="pmPrincipal" maxlength="160"></div>
-      </div>
+<!-- create / edit -->
+<div class="modal" id="formModal"><div class="box">
+  <h2 id="fTitle">Create Class</h2><p class="meta" id="fSub">The 1st, 2nd and 3rd Term are created for you.</p>
+  <form id="form">
+    <div class="f"><label for="level">Class</label><select id="level" required><option value="">Loading…</option></select></div>
+    <div class="two">
+      <div class="f"><label for="arm">Arm (optional)</label><input id="arm" maxlength="80" placeholder="e.g. A"></div>
+      <div class="f"><label for="session">Academic session</label><input id="session" maxlength="40" placeholder="e.g. 2026/2027" required></div>
     </div>
-    <div class="note" id="pmNote"></div>
-    <div class="foot">
-      <button class="btn light" id="pmCancel" type="button">Cancel</button>
-      <button class="btn gold" id="pmConfirm" type="button">Confirm</button>
+    <div class="f"><label for="school">School / institution name</label><input id="school" maxlength="160" required></div>
+    <div class="two">
+      <div class="f"><label for="teacher">Class teacher's name</label><input id="teacher" maxlength="160"></div>
+      <div class="f"><label for="principal">Principal's name</label><input id="principal" maxlength="160"></div>
     </div>
-  </div>
-</div>
+    <details><summary>School contact details (optional)</summary>
+      <div class="f"><label for="phone">School phone</label><input id="phone" maxlength="40"></div>
+      <div class="f"><label for="email">School email</label><input id="email" type="email" maxlength="160"></div>
+      <div class="f"><label for="address">School address</label><input id="address" maxlength="300"></div>
+      <div class="f"><label for="logo">School logo link (optional)</label><input id="logo" maxlength="1000" placeholder="https://..."></div>
+    </details>
+    <div class="foot"><button class="btn light" id="fCancel" type="button">Cancel</button><button class="btn gold" id="fSave" type="submit">Create Class and Terms</button></div>
+  </form>
+</div></div>
 
-<!-- STUDENTS AND EXAMINATIONS OF A TERM -->
-<div class="modal" id="manageModal">
-  <div class="box wide">
-    <h2 id="mgTitle">Students and Examinations</h2>
-    <p class="meta" id="mgInfo"></p>
-    <div class="bar" id="mgTerms"></div>
-    <div class="bar">
-      <button class="btn small navy" id="mgTabS" type="button">Students</button>
-      <button class="btn small light" id="mgTabE" type="button">Examinations</button>
+<!-- promote / graduate -->
+<div class="modal" id="pModal"><div class="box">
+  <h2 id="pTitle">Promote</h2><p class="meta" id="pSub"></p>
+  <form id="pForm">
+    <div id="pOpts"></div>
+    <div id="pFields">
+      <div class="two">
+        <div class="f"><label for="pSession">New academic session</label><input id="pSession" maxlength="40" placeholder="e.g. 2027/2028"></div>
+        <div class="f"><label for="pArm">Arm (optional)</label><input id="pArm" maxlength="80"></div>
+      </div>
+      <div class="two">
+        <div class="f"><label for="pTeacher">Class teacher's name</label><input id="pTeacher" maxlength="160"></div>
+        <div class="f"><label for="pPrincipal">Principal's name</label><input id="pPrincipal" maxlength="160"></div>
+      </div>
     </div>
-    <div class="list" id="mgList"></div>
-    <div class="bar" id="mgBar">
-      <button class="btn small light" id="mgAll" type="button">Select all</button>
-      <button class="btn small light" id="mgNone" type="button">Clear</button>
-      <button class="btn small red" id="mgRemove" type="button">Remove selected</button>
-    </div>
-    <div class="note" id="mgNote">Adding students and examinations inside a term will be available in the next update.</div>
-    <div class="foot"><button class="btn light" id="mgClose" type="button">Close</button></div>
-  </div>
-</div>
+    <div class="note" id="pNote"></div>
+    <div class="foot"><button class="btn light" id="pCancel" type="button">Cancel</button><button class="btn gold" id="pSave" type="submit">Continue</button></div>
+  </form>
+</div></div>
+
+<!-- view -->
+<div class="modal" id="vModal"><div class="box">
+  <h2 id="vTitle"></h2><div id="vBody" style="margin-top:12px"></div>
+  <div class="foot"><button class="btn light" id="vClose" type="button">Close</button></div>
+</div></div>
 
 <script>
 const URL_="https://scuiswponnqyrbqjypkx.supabase.co",KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
-const FN="school-class-manager-",STUDENT_FN="school-exam-management",TERMS=["1st Term","2nd Term","3rd Term"];
+const CF="school-class-manager-",TERMS=["1st Term","2nd Term","3rd Term"],CTX="saintig_class_ctx";
 const sb=window.supabase.createClient(URL_,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+let levels=[],rows=[],accountName="",editing=null,promoting=null,busy=false;
 
-let levels=[],classes=[],archivedRows=[],accountName="",tab="active",busy=false,formMode="create",editGroup=null;
-let promoGroup=null,studentNames=null;
-const mg={group:null,mode:"active",termId:null,tab:"students",data:null,selS:new Set(),selE:new Set()};
-
-function say(t,k="info"){const e=$("msg");e.textContent=t;e.className="msg show "+k;e.scrollIntoView({behavior:"smooth",block:"nearest"})}
+const lvl=code=>levels.find(l=>l.code===code);
+const lvlName=code=>{const l=lvl(code);return l?l.name+" — "+l.alt_name:"Class"};
+function say(t,k="info"){const e=$("msg");e.textContent=t;e.className="msg show "+k;window.scrollTo({top:0,behavior:"smooth"})}
 function hush(){$("msg").className="msg"}
 
-/* ---------- server calls ---------- */
-async function call(fn,payload){
-  const {data,error}=await sb.functions.invoke(fn,{body:payload});
-  if(error){
-    let m=error.message||"Request failed.",d=null;
-    try{if(error.context&&typeof error.context.json==="function"){d=await error.context.json();m=d.message||d.error||m}}catch(_){}
-    const e=new Error(m);e.details=d;throw e;
-  }
-  if(data&&data.success===false){const e=new Error(data.message||"The request could not be completed.");e.details=data;throw e}
+async function call(payload){
+  const {data,error}=await sb.functions.invoke(CF,{body:payload});
+  if(error){let m=error.message||"Request failed.";try{if(error.context&&typeof error.context.json==="function"){const b=await error.context.json();m=b.message||b.error||m}}catch(_){}throw new Error(m)}
+  if(data&&data.success===false)throw new Error(data.message||"The request could not be completed.");
   return data;
 }
-async function rpc(name,args){
-  const {data,error}=await sb.rpc(name,args);
-  if(error){
-    if(error.code==="PGRST202"||/could not find the function|does not exist/i.test(error.message||""))
-      throw new Error("This action is not installed in your database yet. Run the promotion SQL first.");
-    throw new Error(error.message||"The request could not be completed.");
-  }
-  return data;
-}
-async function batches(items,fn,size=4){
-  let done=0;const failed=[];
-  for(let i=0;i<items.length;i+=size){
-    const r=await Promise.allSettled(items.slice(i,i+size).map(fn));
-    r.forEach(x=>{if(x.status==="fulfilled")done++;else failed.push(x.reason&&x.reason.message||"failed")});
-  }
-  return {done,failed};
-}
+async function rpc(name,args){const {data,error}=await sb.rpc(name,args);if(error)throw new Error(error.message);return data}
 
-/* ---------- levels and groups ---------- */
-const label=l=>l.name+" — "+l.alt_name;
-const lv=code=>levels.find(l=>l.code===code);
-const nextLevel=l=>levels.filter(x=>Number(x.sort_order)>Number(l.sort_order)).sort((a,b)=>a.sort_order-b.sort_order)[0]||null;
-const isBasic6=l=>/^basic\s*6$/i.test(String(l.name).trim());
-const isLegacy=c=>c.is_legacy===true||!c.class_group_id;
-const isHistory=c=>c.is_promoted===true||c.status==="promoted";
-const termOrder=c=>{const i=TERMS.indexOf(c.academic_period);return i<0?9:i};
-
-function groupsOf(rows){
-  const m=new Map();
-  rows.forEach(r=>{if(!m.has(r.class_group_id))m.set(r.class_group_id,[]);m.get(r.class_group_id).push(r)});
-  return [...m.entries()].map(([key,list])=>{
-    list.sort((a,b)=>termOrder(a)-termOrder(b));
-    return {key,rows:list,first:list[0],level:lv(list[0].level_code)};
-  }).sort((a,b)=>(a.level?Number(a.level.sort_order):99)-(b.level?Number(b.level.sort_order):99)||String(b.first.academic_session).localeCompare(String(a.first.academic_session)));
-}
-function sections(){
-  const base=classes.filter(c=>!c.is_archived&&!isLegacy(c));
-  return {
-    active:groupsOf(base.filter(c=>!c.is_graduated&&!isHistory(c))),
-    graduated:groupsOf(base.filter(c=>c.is_graduated)),
-    history:groupsOf(base.filter(c=>!c.is_graduated&&isHistory(c))),
-    archived:groupsOf(archivedRows.filter(c=>!isLegacy(c)))
-  };
-}
-const groupTitle=g=>(g.level?label(g.level):g.first.class_name)+(g.first.class_arm?" · "+g.first.class_arm:"");
-
-/* ---------- loading ---------- */
+/* ---------- load ---------- */
 async function load(){
   const {data:s}=await sb.auth.getSession();
   if(!s.session){location.replace("school-login.html");return}
   const {data:acc}=await sb.from("school_accounts").select("account_name,status").eq("user_id",s.session.user.id).maybeSingle();
   if(!acc||acc.status!=="active"){location.replace("school-login.html");return}
   accountName=acc.account_name||"";
-  if(!levels.length){
-    const {data:lvl,error}=await sb.from("class_levels").select("*").order("sort_order");
-    if(error){$("list").innerHTML='<div class="empty">Class levels are not available. Run the step 1 SQL first.</div>';return}
-    levels=lvl||[];
-    $("level").innerHTML='<option value="">Select a class</option>'+levels.map(l=>`<option value="${esc(l.code)}">${esc(label(l))}</option>`).join("");
-  }
+
+  const lv=await sb.from("class_levels").select("*").order("sort_order");
+  if(lv.error){$("active").innerHTML='<div class="empty">Class levels are not available. Run the earlier setup SQL first.</div>';return}
+  levels=lv.data||[];
+  $("level").innerHTML='<option value="">Select a class</option>'+levels.map(l=>`<option value="${l.code}">${esc(l.name+" — "+l.alt_name)}</option>`).join("");
+
   try{
-    const [a,r]=await Promise.all([call(FN,{action:"list_classes",archived:false}),call(FN,{action:"list_classes",archived:true})]);
-    classes=a.classes||[];archivedRows=r.classes||[];
+    const [a,b]=await Promise.all([call({action:"list_classes",archived:false}),call({action:"list_classes",archived:true})]);
+    rows=[...(a.classes||[]),...(b.classes||[])].filter(c=>c.class_group_id&&!c.is_legacy);
     render();
-  }catch(e){$("list").innerHTML='<div class="empty">'+esc(e.message)+"</div>"}
+  }catch(e){$("active").innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
 }
 
-/* ---------- display ---------- */
-const NOTES={
-  active:"These are the classes you are working with now. Use Promote when a class moves up to the next level.",
-  graduated:"Graduated classes keep their full history and cannot be edited. Use Move Back to return one to its last level.",
-  history:"These are the earlier levels of classes that were promoted. They are kept as read-only history.",
-  archived:"Archived classes are hidden from your daily work. Restore one to use it again, or delete it permanently."
-};
-function render(){
-  $("tabNote").textContent=NOTES[tab];
-  const sec=sections(),list=sec[tab];
-  document.querySelectorAll(".tab").forEach(t=>{
-    t.classList.toggle("on",t.dataset.tab===tab);
-    t.textContent={active:"Active Classes",graduated:"Graduated",history:"Previous Levels",archived:"Archived"}[t.dataset.tab]+" ("+sec[t.dataset.tab].length+")";
-  });
-  if(!list.length){
-    $("list").innerHTML={
-      active:'<div class="empty"><b>No active classes yet</b><br>Use Create Class to add your first class with its three terms.</div>',
-      graduated:'<div class="empty">No graduated classes yet.</div>',
-      history:'<div class="empty">No previous levels yet. They appear here after a class is promoted.</div>',
-      archived:'<div class="empty">No archived classes.</div>'
-    }[tab];
-    return;
-  }
-  $("list").innerHTML=list.map(g=>card(g,tab)).join("");
+function groups(filter){
+  const m=new Map();
+  rows.filter(filter).forEach(c=>{if(!m.has(c.class_group_id))m.set(c.class_group_id,[]);m.get(c.class_group_id).push(c)});
+  return [...m.values()].map(g=>g.sort((a,b)=>TERMS.indexOf(a.academic_period)-TERMS.indexOf(b.academic_period)));
 }
-function card(g,mode){
-  const f=g.first;
-  const termsHtml=TERMS.map(t=>{
-    const r=g.rows.find(x=>x.academic_period===t);
-    if(!r)return `<div class="term"><b>${t}</b><small>Not yet created</small>${mode==="active"?`<div class="acts"><button class="btn small light" data-act="addterm" data-key="${esc(g.key)}" data-term="${t}" type="button">Add term</button></div>`:""}</div>`;
-    const on=(r.status||"active")==="active";
-    return `<div class="term"><b>${t}</b><small>Class ID: ${esc(r.class_id||"—")}</small>
-      <small>${Number(r.registered_students_count||0)} student(s) · ${Number(r.attached_examinations_count||0)} examination(s)</small>
-      <span class="pill ${on?"":"off"}">${on?"Active":"Inactive"}</span>
-      <div class="acts">
-        <button class="btn small light" data-act="manage" data-key="${esc(g.key)}" data-term="${esc(r.id)}" type="button">${mode==="active"?"Manage":"View"}</button>
-        ${mode==="active"?`<button class="btn small light" data-act="status" data-key="${esc(g.key)}" data-term="${esc(r.id)}" type="button">${on?"Deactivate":"Activate"}</button>
-        <button class="btn small red" data-act="rmterm" data-key="${esc(g.key)}" data-term="${esc(r.id)}" type="button">Remove term</button>`:""}
-      </div></div>`;
+const gid=g=>g[0].class_group_id;
+
+function card(g,kind){
+  const f=g[0],l=lvl(f.level_code);
+  const terms=TERMS.map(t=>{
+    const r=g.find(x=>x.academic_period===t);
+    return r?`<div class="term"><b>${t}</b><small>Class ID: ${esc(r.class_id||"—")}</small><small>${Number(r.registered_students_count||0)} student(s) · ${Number(r.attached_examinations_count||0)} exam(s)</small></div>`:`<div class="term"><b>${t}</b><small>Not created</small></div>`;
   }).join("");
-
-  let actions="";
-  if(mode==="active")actions=`
-    <button class="btn navy" data-act="promote" data-key="${esc(g.key)}" type="button">Promote ▸</button>
-    <button class="btn light" data-act="edit" data-key="${esc(g.key)}" type="button">Edit class</button>
-    <button class="btn light" data-act="archive" data-key="${esc(g.key)}" type="button">Archive</button>
-    <button class="btn red" data-act="delete" data-key="${esc(g.key)}" type="button">Delete</button>`;
-  if(mode==="graduated"){
-    const l=g.level;
-    actions=`<button class="btn navy" data-act="demote" data-key="${esc(g.key)}" type="button">Move back to ${esc(l?l.name:"previous level")}</button>`;
+  let acts="";
+  if(kind==="active"){
+    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>
+      <button class="btn light s" data-a="edit" data-g="${gid(g)}">Edit</button>
+      ${l&&(l.next_code||l.can_graduate)?`<button class="btn gold s" data-a="promote" data-g="${gid(g)}">${l.next_code&&l.can_graduate?"Promote / Graduate":l.next_code?"Promote":"Graduate"}</button>`:""}
+      <button class="btn red s" data-a="archive" data-g="${gid(g)}">Archive</button>
+      <button class="btn red s" data-a="delete" data-g="${gid(g)}">Delete</button>`;
+  }else if(kind==="grad"){
+    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>
+      <button class="btn green s" data-a="ungrad" data-g="${gid(g)}">Move back to ${esc(l?l.name:"class")}</button>`;
+  }else if(kind==="arch"){
+    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>
+      <button class="btn green s" data-a="restore" data-g="${gid(g)}">Restore</button>
+      <button class="btn red s" data-a="delete" data-g="${gid(g)}">Delete</button>`;
+  }else{
+    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>`;
   }
-  if(mode==="archived")actions=`
-    <button class="btn green" data-act="restore" data-key="${esc(g.key)}" type="button">Restore</button>
-    <button class="btn red" data-act="delete" data-key="${esc(g.key)}" type="button">Delete permanently</button>`;
-
-  const badge=mode==="graduated"?' <span class="pill gr">Graduated</span>':"";
-  return `<div class="group ${{graduated:"grad",history:"hist",archived:"arch"}[mode]||""}">
-    <div class="ghead">
-      <div><div class="gtitle">${esc(groupTitle(g))}${badge}</div><div class="meta">Session ${esc(f.academic_session)}</div></div>
-      <div class="meta">Class teacher: ${esc(f.class_teacher_name||"—")}<br>Principal: ${esc(f.principal_name||"—")}</div>
-    </div>
-    <div class="terms">${termsHtml}</div>
-    ${actions?`<div class="gacts">${actions}</div>`:""}
-  </div>`;
-}
-function findGroup(key,mode){return sections()[mode].find(g=>String(g.key)===String(key))}
-
-/* ---------- tabs and button clicks ---------- */
-document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{tab=t.dataset.tab;hush();render()}));
-$("list").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-act]");if(!b||busy)return;
-  const g=findGroup(b.dataset.key,tab);if(!g)return;
-  const a=b.dataset.act,term=b.dataset.term;
-  if(a==="manage")return openManage(g,tab,term);
-  if(a==="status")return setStatus(g,term);
-  if(a==="rmterm")return removeTerm(g,term);
-  if(a==="addterm")return addTerm(g,term);
-  if(a==="promote")return openPromote(g);
-  if(a==="edit")return openEdit(g);
-  if(a==="archive")return archiveGroup(g);
-  if(a==="restore")return restoreGroup(g);
-  if(a==="delete")return deleteGroup(g);
-  if(a==="demote")return demoteGroup(g);
-});
-async function run(fn){
-  if(busy)return;busy=true;hush();
-  try{await fn()}catch(e){say(e.message,"err")}
-  finally{busy=false}
+  const open=kind==="active"?`<div class="open"><span>Open:</span>
+    <button class="btn light s" data-a="go" data-to="class-subjects.html" data-g="${gid(g)}">Subjects</button>
+    <button class="btn light s" data-a="go" data-to="class-students.html" data-g="${gid(g)}">Students</button>
+    <button class="btn light s" data-a="go" data-to="class-examinations.html" data-g="${gid(g)}">Examinations</button>
+    <button class="btn light s" data-a="go" data-to="class-attach.html" data-g="${gid(g)}">Attach</button></div>`:"";
+  const extra=kind==="grad"&&f.graduated_at?` · Graduated ${new Date(f.graduated_at).toLocaleDateString()}`:kind==="prom"&&f.promoted_at?` · Promoted ${new Date(f.promoted_at).toLocaleDateString()}`:"";
+  return `<div class="group ${kind==="grad"?"grad":kind==="arch"?"arch":""}">
+    <div class="gh"><div><div class="gt">${esc(lvlName(f.level_code))}${f.class_arm?" · "+esc(f.class_arm):""}</div><div class="meta">Session ${esc(f.academic_session)}${extra}</div></div>
+    <div class="meta">Teacher: ${esc(f.class_teacher_name||"—")} · Principal: ${esc(f.principal_name||"—")}</div></div>
+    <div class="terms">${terms}</div>${open}<div class="acts">${acts}</div></div>`;
 }
 
-/* ---------- create and edit a class ---------- */
-const classPayload=()=>({
-  school_name:$("school").value.trim(),school_phone:$("phone").value.trim(),school_email:$("email").value.trim(),
-  school_address:$("address").value.trim(),school_logo_url:$("logo").value.trim(),
-  class_arm:$("arm").value.trim(),academic_session:$("session").value.trim(),
-  class_teacher_name:$("teacher").value.trim(),principal_name:$("principal").value.trim()
-});
-function openCreate(){
-  formMode="create";editGroup=null;hush();$("form").reset();
-  $("formTitle").textContent="Create Class";$("formSub").textContent="The 1st, 2nd and 3rd Terms are created for you.";
-  $("level").disabled=false;$("school").value=accountName;
-  $("saveBtn").textContent="Create Class and Terms";$("modal").classList.add("show");
+function render(){
+  const fill=(id,list,kind,empty)=>$(id).innerHTML=list.length?list.map(g=>card(g,kind)).join(""):`<div class="empty">${empty}</div>`;
+  fill("active",groups(c=>!c.is_archived&&!c.is_graduated&&!c.promoted_to_group),"active","No active classes yet. Use Create Class to add your first class with its three terms.");
+  fill("graduated",groups(c=>c.is_graduated&&!c.promoted_to_group),"grad","No graduated classes.");
+  fill("archived",groups(c=>c.is_archived&&!c.is_graduated&&!c.promoted_to_group),"arch","No archived classes.");
+  fill("promoted",groups(c=>c.promoted_to_group),"prom","No promoted classes yet. When you promote a class, its earlier record stays here with all its results.");
 }
-function openEdit(g){
-  formMode="edit";editGroup=g;hush();$("form").reset();
-  const f=g.first;
-  $("formTitle").textContent="Edit Class";$("formSub").textContent="Changes apply to all terms of this class.";
-  $("level").value=f.level_code;$("level").disabled=true;
-  $("arm").value=f.class_arm||"";$("session").value=f.academic_session||"";$("school").value=f.school_name||accountName;
-  $("teacher").value=f.class_teacher_name||"";$("principal").value=f.principal_name||"";
-  $("phone").value=f.school_phone||"";$("email").value=f.school_email||"";$("address").value=f.school_address||"";$("logo").value=f.school_logo_url||"";
-  $("saveBtn").textContent="Save Changes";$("modal").classList.add("show");
+
+/* ---------- create and edit ---------- */
+function openForm(g){
+  hush();$("form").reset();editing=g||null;
+  $("fTitle").textContent=g?"Edit Class":"Create Class";
+  $("fSub").textContent=g?"Changes apply to all three terms. The class level cannot be changed here. Use Promote.":"The 1st, 2nd and 3rd Term are created for you.";
+  $("fSave").textContent=g?"Save Changes":"Create Class and Terms";
+  $("level").disabled=!!g;
+  if(g){
+    const f=g[0];
+    $("level").value=f.level_code;$("arm").value=f.class_arm||"";$("session").value=f.academic_session||"";$("school").value=f.school_name||"";
+    $("teacher").value=f.class_teacher_name||"";$("principal").value=f.principal_name||"";$("phone").value=f.school_phone||"";
+    $("email").value=f.school_email||"";$("address").value=f.school_address||"";$("logo").value=f.school_logo_url||"";
+  }else $("school").value=(rows[0]&&rows[0].school_name)||accountName;
+  $("formModal").classList.add("show");
 }
-const closeForm=()=>$("modal").classList.remove("show");
-$("newBtn").addEventListener("click",openCreate);
-$("cancelBtn").addEventListener("click",closeForm);
-$("modal").addEventListener("click",e=>{if(e.target===$("modal"))closeForm()});
+$("newBtn").addEventListener("click",()=>openForm(null));
+$("fCancel").addEventListener("click",()=>$("formModal").classList.remove("show"));
+
+function exists(code,arm,session,ignoreGroup){
+  return rows.some(c=>c.level_code===code&&(c.class_arm||"")===arm&&c.academic_session===session&&!c.promoted_to_group&&c.class_group_id!==ignoreGroup);
+}
+async function makeGroup(code,p){
+  const created=[];
+  for(const term of TERMS){
+    const d=await call({action:"create_class",school_name:p.school,school_phone:p.phone,school_email:p.email,school_address:p.address,school_logo_url:p.logo,
+      class_name:lvl(code).name,class_arm:p.arm,academic_session:p.session,academic_period:term,class_teacher_name:p.teacher,principal_name:p.principal});
+    const id=d&&d.class&&d.class.id;
+    if(!id)throw new Error("A term was created but its ID was not returned.");
+    created.push(id);
+  }
+  return await rpc("school_group_new_class",{p_class_ids:created,p_level:code});
+}
 
 $("form").addEventListener("submit",async e=>{
-  e.preventDefault();
-  if(busy)return;
-  const p=classPayload();
-  const btn=$("saveBtn");
-
-  if(formMode==="edit"){
-    busy=true;btn.disabled=true;btn.textContent="Saving…";
-    try{
-      const r=await batches(editGroup.rows,row=>call(FN,{action:"update_class",class_id:row.id,class_name:row.class_name,academic_period:row.academic_period,...p}),3);
-      closeForm();
-      say(r.failed.length?`${r.done} term(s) updated. ${r.failed.length} failed: ${r.failed[0]}`:"Class updated.",r.failed.length?"warn":"ok");
-      busy=false;await load();
-    }catch(err){say(err.message,"err")}
-    finally{busy=false;btn.disabled=false;btn.textContent="Save Changes"}
-    return;
-  }
-
-  const l=lv($("level").value);
-  if(!l)return say("Choose a class.","err");
-  if(classes.some(c=>!isLegacy(c)&&!c.is_archived&&c.level_code===l.code&&(c.class_arm||"")===p.class_arm&&c.academic_session===p.academic_session))
-    return say("This class already exists for that session"+(p.class_arm?" and arm":"")+".","err");
-
-  busy=true;btn.disabled=true;btn.textContent="Creating…";
-  const created=[];
+  e.preventDefault();if(busy)return;
+  const p={school:$("school").value.trim(),phone:$("phone").value.trim(),email:$("email").value.trim(),address:$("address").value.trim(),logo:$("logo").value.trim(),
+    arm:$("arm").value.trim(),session:$("session").value.trim(),teacher:$("teacher").value.trim(),principal:$("principal").value.trim()};
+  busy=true;$("fSave").disabled=true;
   try{
-    for(const term of TERMS){
-      const d=await call(FN,{action:"create_class",class_name:l.name,academic_period:term,...p});
-      const id=d&&d.class&&d.class.id;
-      if(!id)throw new Error("The class was created, but its ID was not returned.");
-      created.push(id);
-    }
-    await rpc("school_group_new_class",{p_class_ids:created,p_level:l.code});
-    closeForm();say(label(l)+" was created with its three terms.","ok");
-    busy=false;await load();
-  }catch(err){
-    say((created.length?created.length+" term(s) were created before the error occurred. ":"")+err.message,"err");
-    busy=false;await load();
-  }finally{busy=false;btn.disabled=false;btn.textContent="Create Class and Terms"}
-});
-
-/* ---------- term actions ---------- */
-const rowOf=(g,id)=>g.rows.find(r=>String(r.id)===String(id));
-function setStatus(g,id){return run(async()=>{
-  const r=rowOf(g,id);if(!r)return;
-  const to=(r.status||"active")==="active"?"inactive":"active";
-  if(!confirm(`${to==="active"?"Activate":"Deactivate"} the ${r.academic_period} of ${groupTitle(g)}?`))return;
-  await call(FN,{action:"set_class_status",class_id:r.id,status:to});
-  busy=false;await load();say(`${r.academic_period} ${to==="active"?"activated":"deactivated"}.`,"ok");
-})}
-async function archiveRow(id,force){
-  try{await call(FN,{action:"archive_class",class_id:id,...(force?{confirm_without_published_results:true}:{})});return "ok"}
-  catch(e){
-    if(!force&&(e.details?.confirmation_required||e.details?.requires_confirmation))return {ask:e.details.message||e.message};
-    throw e;
-  }
-}
-function removeTerm(g,id){return run(async()=>{
-  const r=rowOf(g,id);if(!r)return;
-  if(!confirm(`Remove the ${r.academic_period} of ${groupTitle(g)}?\n\nIt is archived, so its records are kept. You can add the term again later.`))return;
-  let res=await archiveRow(r.id,false);
-  if(res&&res.ask){if(!confirm(res.ask))return;res=await archiveRow(r.id,true)}
-  busy=false;await load();say(`${r.academic_period} removed (archived).`,"ok");
-})}
-function addTerm(g,term){return run(async()=>{
-  if(!confirm(`Add the ${term} to ${groupTitle(g)}?`))return;
-  const f=g.first;
-  const d=await call(FN,{action:"create_class",class_name:f.class_name,academic_period:term,
-    school_name:f.school_name||accountName,school_phone:f.school_phone||"",school_email:f.school_email||"",school_address:f.school_address||"",school_logo_url:f.school_logo_url||"",
-    class_arm:f.class_arm||"",academic_session:f.academic_session,class_teacher_name:f.class_teacher_name||"",principal_name:f.principal_name||""});
-  const id=d&&d.class&&d.class.id;
-  if(!id)throw new Error("The term was created, but its ID was not returned.");
-  await rpc("school_group_add_class",{p_class_group_id:f.class_group_id,p_class_id:id});
-  busy=false;await load();say(`${term} added.`,"ok");
-})}
-
-/* ---------- archive, restore, delete ---------- */
-function archiveGroup(g){return run(async()=>{
-  if(!confirm(`Archive ${groupTitle(g)} (${g.first.academic_session})?\n\nIts students, examinations and results are kept. Nothing is published, unpublished or unlocked.`))return;
-  let force=false,count=0;
-  for(const r of g.rows){
-    let res=await archiveRow(r.id,force);
-    if(res&&res.ask){if(!confirm(res.ask))break;force=true;res=await archiveRow(r.id,true)}
-    count++;
-  }
-  busy=false;await load();say(count===g.rows.length?"Class archived.":`${count} of ${g.rows.length} term(s) archived.`,count===g.rows.length?"ok":"warn");
-})}
-function restoreGroup(g){return run(async()=>{
-  if(!confirm(`Restore ${groupTitle(g)} to your active classes?`))return;
-  const r=await batches(g.rows,row=>call(FN,{action:"restore_class",class_id:row.id}),3);
-  busy=false;await load();tab="active";render();
-  say(r.failed.length?`${r.done} term(s) restored. ${r.failed.length} failed: ${r.failed[0]}`:"Class restored.",r.failed.length?"warn":"ok");
-})}
-function deleteGroup(g){return run(async()=>{
-  const name=groupTitle(g)+" ("+g.first.academic_session+")";
-  if(!confirm(`Delete ${name} permanently?\n\nThis removes the class, its three terms and their student and examination links. It cannot be undone. A class with published results cannot be deleted; archive it instead.`))return;
-  if(!confirm("Please confirm once more: permanently delete "+name+"?"))return;
-  await rpc("school_delete_class_group",{p_class_group_id:g.first.class_group_id});
-  busy=false;await load();say("Class deleted.","ok");
-})}
-
-/* ---------- promote, graduate, move back ---------- */
-function openPromote(g){
-  promoGroup=g;hush();
-  const l=g.level;
-  if(!l)return say("This class has no level set, so it cannot be promoted.","err");
-  const nxt=nextLevel(l),opts=[];
-  if(nxt)opts.push({v:"promote",t:"Promote to "+label(nxt),d:"The class moves up with all its students."});
-  if(!nxt||isBasic6(l))opts.push({v:"graduate",t:"Graduate",d:"The class and its students move to the Graduated section."});
-  $("pmTitle").textContent=(opts.length===1&&opts[0].v==="graduate")?"Graduate Class":"Promote Class";
-  $("pmInfo").textContent=`${groupTitle(g)} · Session ${g.first.academic_session}`;
-  $("pmOptions").innerHTML=opts.map((o,i)=>`<label class="opt"><input type="radio" name="pmChoice" value="${o.v}" ${i===0?"checked":""}><span><b>${esc(o.t)}</b><br><span class="meta">${esc(o.d)}</span></span></label>`).join("");
-  $("pmArm").value=g.first.class_arm||"";$("pmTeacher").value=g.first.class_teacher_name||"";$("pmPrincipal").value=g.first.principal_name||"";$("pmSession").value="";
-  document.querySelectorAll("input[name=pmChoice]").forEach(r=>r.addEventListener("change",pmSync));
-  pmSync();$("promoteModal").classList.add("show");
-}
-const pmChoice=()=>(document.querySelector("input[name=pmChoice]:checked")||{}).value;
-function pmSync(){
-  const grad=pmChoice()==="graduate",nxt=promoGroup.level?nextLevel(promoGroup.level):null;
-  $("pmFields").style.display=grad?"none":"";
-  $("pmNote").textContent=grad
-    ? "The class and its students move to the Graduated section. Their full history stays intact and read-only. You can move the class back later if needed."
-    : `The class moves up to ${nxt?label(nxt):"the next level"} with all its students. Student IDs stay the same. The current level and its three terms are kept as read-only history. You will then create new subjects and examinations for the new level.`;
-  $("pmConfirm").textContent=grad?"Graduate Class":"Promote Class";
-}
-const closePromote=()=>$("promoteModal").classList.remove("show");
-$("pmCancel").addEventListener("click",closePromote);
-$("promoteModal").addEventListener("click",e=>{if(e.target===$("promoteModal"))closePromote()});
-$("pmConfirm").addEventListener("click",()=>run(async()=>{
-  const g=promoGroup,grad=pmChoice()==="graduate",gid=g.first.class_group_id;
-  if(grad){
-    if(!confirm(`Graduate ${groupTitle(g)}?`))return;
-    await rpc("school_graduate_class_group",{p_class_group_id:gid});
-    closePromote();busy=false;await load();say("Class graduated.","ok");return;
-  }
-  const session=$("pmSession").value.trim(),arm=$("pmArm").value.trim(),nxt=nextLevel(g.level);
-  if(!session)throw new Error("Enter the new academic session.");
-  if(session===g.first.academic_session)throw new Error("The new session must be different from the current session.");
-  if(classes.some(c=>!isLegacy(c)&&!c.is_archived&&c.level_code===nxt.code&&(c.class_arm||"")===arm&&c.academic_session===session))
-    throw new Error(`${label(nxt)} already exists for ${session}${arm?" and arm "+arm:""}. Choose a different session or arm.`);
-  if(!confirm(`Promote ${groupTitle(g)} to ${label(nxt)} for ${session}?`))return;
-  await rpc("school_promote_class_group",{p_class_group_id:gid,p_new_session:session,p_arm:arm,p_teacher:$("pmTeacher").value.trim(),p_principal:$("pmPrincipal").value.trim()});
-  closePromote();busy=false;await load();say(`Class promoted to ${label(nxt)}. Create its new subjects and examinations next.`,"ok");
-}));
-function demoteGroup(g){return run(async()=>{
-  if(!confirm(`Move ${groupTitle(g)} back to ${g.level?g.level.name:"its last level"}?\n\nIt will return to your active classes and can be edited again.`))return;
-  await rpc("school_demote_class_group",{p_class_group_id:g.first.class_group_id});
-  busy=false;tab="active";await load();say("Class moved back to its last level.","ok");
-})}
-
-/* ---------- students and examinations of a term ---------- */
-async function namesMap(){
-  if(studentNames)return studentNames;
-  studentNames=new Map();
-  try{
-    const d=await call(STUDENT_FN,{action:"list_students"});
-    (d.students||[]).forEach(s=>studentNames.set(String(s.id),{name:s.full_name,code:s.student_id}));
-  }catch(_){}
-  return studentNames;
-}
-async function openManage(g,mode,termId){
-  Object.assign(mg,{group:g,mode,termId:termId||g.rows[0].id,tab:"students"});
-  mg.selS.clear();mg.selE.clear();
-  $("mgTitle").textContent=(mode==="active"?"Students and Examinations":"Students and Examinations (read-only)");
-  $("mgInfo").textContent=`${groupTitle(g)} · Session ${g.first.academic_session}`;
-  $("mgList").innerHTML='<div class="empty">Loading…</div>';
-  $("manageModal").classList.add("show");
-  await mgLoad();
-}
-async function mgLoad(){
-  $("mgTerms").innerHTML=mg.group.rows.map(r=>`<button class="btn small ${String(r.id)===String(mg.termId)?"navy":"light"}" data-term="${esc(r.id)}" type="button">${esc(r.academic_period)}</button>`).join("");
-  try{
-    mg.data=await call(FN,{action:"get_class",class_id:mg.termId});
-    await namesMap();
-  }catch(e){$("mgList").innerHTML='<div class="empty">'+esc(e.message)+"</div>";return}
-  mgRender();
-}
-function mgRender(){
-  const ro=mg.mode!=="active",st=mg.tab==="students";
-  $("mgTabS").className="btn small "+(st?"navy":"light");$("mgTabE").className="btn small "+(st?"light":"navy");
-  $("mgBar").style.display=ro?"none":"";$("mgNote").style.display=ro?"none":"";
-  const sel=st?mg.selS:mg.selE;
-  const items=st?(mg.data.students||[]):(mg.data.examinations||[]);
-  $("mgRemove").textContent=`Remove selected (${sel.size})`;
-  if(!items.length){$("mgList").innerHTML=`<div class="empty">No ${st?"students":"examinations"} in this term.</div>`;return}
-  $("mgList").innerHTML=items.map(x=>{
-    const id=String(st?x.school_student_id:x.examination_id);
-    let title,code,active;
-    if(st){
-      const n=studentNames.get(id)||{};
-      title=x.full_name||x.student_name||n.name||("Student #"+id);code=x.student_id||x.student_code||n.code||"—";active=x.is_active!==false;
+    if(editing){
+      if(exists(editing[0].level_code,p.arm,p.session,gid(editing)))throw new Error("A class with that level, arm and session already exists.");
+      await rpc("school_class_group_edit",{p_group:gid(editing),p_arm:p.arm,p_session:p.session,p_school:p.school,p_phone:p.phone,p_email:p.email,p_address:p.address,p_logo:p.logo,p_teacher:p.teacher,p_principal:p.principal});
+      $("formModal").classList.remove("show");say("Class updated for all three terms.","ok");
     }else{
-      title=x.title||x.examination_title||"Examination";code=x.examination_code||x.examination_id;active=x.is_attached!==false;
+      const code=$("level").value;if(!lvl(code))throw new Error("Choose a class.");
+      if(exists(code,p.arm,p.session,null))throw new Error("This class already exists for that session"+(p.arm?" and arm":"")+".");
+      await makeGroup(code,p);
+      $("formModal").classList.remove("show");say(lvlName(code)+" created with its three terms.","ok");
     }
-    return `<label class="row">${ro?"":`<input type="checkbox" value="${esc(id)}" ${sel.has(id)?"checked":""}>`}
-      <span><b>${esc(title)}</b><br><span class="meta">${st?"Student ID":"Examination ID"}: ${esc(code)}${active?"":" · inactive"}</span></span></label>`;
-  }).join("");
+    await load();
+  }catch(err){say(err.message,"err");await load()}
+  finally{busy=false;$("fSave").disabled=false}
+});
+
+/* ---------- promote and graduate ---------- */
+function openPromote(g){
+  const f=g[0],l=lvl(f.level_code),nxt=l&&l.next_code?lvl(l.next_code):null;
+  promoting=g;hush();$("pForm").reset();
+  $("pTitle").textContent=(nxt&&l.can_graduate)?"Promote or Graduate":nxt?"Promote Class":"Graduate Class";
+  $("pSub").textContent=lvlName(f.level_code)+(f.class_arm?" · "+f.class_arm:"")+" ("+f.academic_session+")";
+  let o="";
+  if(nxt)o+=`<label class="opt"><input type="radio" name="pw" value="promote" checked><span><b>Promote to ${esc(nxt.name+" — "+nxt.alt_name)}</b><small>The students move to the new class. You then create its subjects and examinations again.</small></span></label>`;
+  if(l.can_graduate)o+=`<label class="opt"><input type="radio" name="pw" value="graduate" ${nxt?"":"checked"}><span><b>Graduate</b><small>The class moves to Graduated classes with all its history. It cannot be edited unless moved back.</small></span></label>`;
+  $("pOpts").innerHTML=o;
+  $("pArm").value=f.class_arm||"";$("pTeacher").value=f.class_teacher_name||"";$("pPrincipal").value=f.principal_name||"";
+  syncPromote();$("pModal").classList.add("show");
 }
-$("mgTerms").addEventListener("click",e=>{const b=e.target.closest("button[data-term]");if(b){mg.termId=b.dataset.term;mg.selS.clear();mg.selE.clear();mgLoad()}});
-$("mgTabS").addEventListener("click",()=>{mg.tab="students";mgRender()});
-$("mgTabE").addEventListener("click",()=>{mg.tab="exams";mgRender()});
-$("mgList").addEventListener("change",e=>{
-  const c=e.target.closest("input[type=checkbox]");if(!c)return;
-  const set=mg.tab==="students"?mg.selS:mg.selE;
-  c.checked?set.add(c.value):set.delete(c.value);
-  $("mgRemove").textContent=`Remove selected (${set.size})`;
+function syncPromote(){
+  const w=(document.querySelector('input[name="pw"]:checked')||{}).value;
+  $("pFields").style.display=w==="promote"?"":"none";
+  const l=lvl(promoting[0].level_code),nxt=l&&l.next_code?lvl(l.next_code):null;
+  $("pNote").textContent=w==="promote"
+    ?`A new ${nxt?nxt.name:"class"} is created with its three terms and the students move into it. The earlier class, with its subjects, examinations and results, stays under Previous classes. If you already have a ${nxt?nxt.name:"class"}, promote it first, or use a different session so they stay apart.`
+    :"The class and everything in it stay exactly as they are. Results can still be viewed and printed.";
+  $("pSave").textContent=w==="promote"?"Promote Class":"Graduate Class";
+}
+$("pOpts").addEventListener("change",syncPromote);
+$("pCancel").addEventListener("click",()=>$("pModal").classList.remove("show"));
+
+$("pForm").addEventListener("submit",async e=>{
+  e.preventDefault();if(busy)return;
+  const g=promoting,f=g[0],l=lvl(f.level_code),w=(document.querySelector('input[name="pw"]:checked')||{}).value;
+  busy=true;$("pSave").disabled=true;
+  try{
+    if(w==="graduate"){
+      if(!confirm("Graduate this class? It moves to Graduated classes and cannot be edited unless you move it back."))throw new Error("Cancelled.");
+      await rpc("school_class_graduate",{p_group:gid(g),p_graduate:true});
+      $("pModal").classList.remove("show");say("Class graduated. Its history is kept.","ok");
+    }else{
+      const p={school:f.school_name,phone:f.school_phone||"",email:f.school_email||"",address:f.school_address||"",logo:f.school_logo_url||"",
+        arm:$("pArm").value.trim(),session:$("pSession").value.trim(),teacher:$("pTeacher").value.trim(),principal:$("pPrincipal").value.trim()};
+      if(!p.session)throw new Error("Enter the new academic session.");
+      if(p.session===f.academic_session&&(p.arm===(f.class_arm||"")))throw new Error("Use a different session so the new class is kept apart from the old one.");
+      if(exists(l.next_code,p.arm,p.session,null))throw new Error("A class with that level, arm and session already exists.");
+      if(!confirm("Promote this class and move its students into the new class?"))throw new Error("Cancelled.");
+      const ng=await makeGroup(l.next_code,p);
+      const n=await rpc("school_class_finish_promotion",{p_old:gid(g),p_new:ng});
+      $("pModal").classList.remove("show");say(`Class promoted. ${n} student(s) moved. Create the new subjects and examinations next.`,"ok");
+    }
+    await load();
+  }catch(err){if(err.message!=="Cancelled.")say(err.message,"err");await load()}
+  finally{busy=false;$("pSave").disabled=false}
 });
-$("mgAll").addEventListener("click",()=>{
-  const set=mg.tab==="students"?mg.selS:mg.selE;
-  (mg.tab==="students"?mg.data.students:mg.data.examinations||[]).forEach(x=>set.add(String(mg.tab==="students"?x.school_student_id:x.examination_id)));mgRender();
+
+/* ---------- view ---------- */
+function openView(g){
+  const f=g[0];
+  $("vTitle").textContent=lvlName(f.level_code)+(f.class_arm?" · "+f.class_arm:"");
+  const item=(a,b)=>`<div><small>${a}</small><b>${esc(b||"Not provided")}</b></div>`;
+  $("vBody").innerHTML=`<div class="det">${item("Academic session",f.academic_session)}${item("School",f.school_name)}${item("Class teacher",f.class_teacher_name)}${item("Principal",f.principal_name)}${item("School phone",f.school_phone)}${item("School email",f.school_email)}${item("School address",f.school_address)}${item("Examinations per student",f.max_exams_per_student?"Up to "+f.max_exams_per_student:"No limit")}</div>
+    <div class="terms" style="margin-top:14px">${g.map(r=>`<div class="term"><b>${esc(r.academic_period)}</b><small>Class ID: ${esc(r.class_id||"—")}</small><small>${Number(r.registered_students_count||0)} student(s)</small><small>${Number(r.attached_examinations_count||0)} examination(s)</small></div>`).join("")}</div>`;
+  $("vModal").classList.add("show");
+}
+$("vClose").addEventListener("click",()=>$("vModal").classList.remove("show"));
+
+/* ---------- buttons ---------- */
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("button[data-a]");if(!b||busy)return;
+  const a=b.dataset.a,g=groups(c=>true).find(x=>gid(x)===b.dataset.g);if(!g)return;
+  try{
+    if(a==="view")return openView(g);
+    if(a==="edit")return openForm(g);
+    if(a==="promote")return openPromote(g);
+    if(a==="go"){localStorage.setItem(CTX,JSON.stringify({...(JSON.parse(localStorage.getItem(CTX)||"null")||{}),g:gid(g)}));location.href=b.dataset.to;return}
+    if(a==="archive"){if(!confirm("Archive this class? Its three terms and all its records are kept. You can restore it later."))return;
+      await rpc("school_class_group_archive",{p_group:gid(g),p_archive:true});say("Class archived.","ok")}
+    if(a==="restore"){if(!confirm("Restore this class to Active classes?"))return;
+      await rpc("school_class_group_archive",{p_group:gid(g),p_archive:false});say("Class restored.","ok")}
+    if(a==="delete"){if(!confirm("Permanently delete this class and its three terms?\n\nThis works only when the class holds no students, subjects or examinations. This cannot be undone."))return;
+      await rpc("school_class_group_delete",{p_group:gid(g)});say("Class deleted.","ok")}
+    if(a==="ungrad"){if(!confirm("Move this class back to Active classes? It can then be edited again."))return;
+      await rpc("school_class_graduate",{p_group:gid(g),p_graduate:false});say("Class moved back to Active classes.","ok")}
+    await load();
+  }catch(err){say(err.message,"err")}
 });
-$("mgNone").addEventListener("click",()=>{(mg.tab==="students"?mg.selS:mg.selE).clear();mgRender()});
-$("mgClose").addEventListener("click",()=>{$("manageModal").classList.remove("show");load()});
-$("manageModal").addEventListener("click",e=>{if(e.target===$("manageModal")){$("manageModal").classList.remove("show");load()}});
-$("mgRemove").addEventListener("click",async()=>{
-  const st=mg.tab==="students",ids=[...(st?mg.selS:mg.selE)];
-  if(!ids.length)return say("Tick at least one "+(st?"student":"examination")+" to remove.","err");
-  if(!confirm(st?`Remove ${ids.length} student(s) from this term? Their student accounts and IDs are not deleted.`
-                :`Detach ${ids.length} examination(s) from this term? The examinations themselves are not deleted.`))return;
-  $("mgRemove").disabled=true;
-  const r=await batches(ids,id=>call(FN,st?{action:"remove_student_from_class",class_id:mg.termId,school_student_id:id}
-                                           :{action:"detach_examination",class_id:mg.termId,examination_id:id}));
-  $("mgRemove").disabled=false;
-  say(r.failed.length?`${r.done} removed, ${r.failed.length} failed: ${r.failed[0]}`:`${r.done} ${st?"student(s)":"examination(s)"} removed.`,r.failed.length?"warn":"ok");
-  (st?mg.selS:mg.selE).clear();await mgLoad();
-});
+document.querySelectorAll(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"))});
 
 load();
 </script>
