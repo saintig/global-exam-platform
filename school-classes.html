@@ -198,7 +198,8 @@ function card(g,kind){
       <button class="btn green s" data-a="restore" data-g="${gid(g)}">Restore</button>
       <button class="btn red s" data-a="delete" data-g="${gid(g)}">Delete</button>`;
   }else{
-    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>`;
+    acts=`<button class="btn light s" data-a="view" data-g="${gid(g)}">View</button>
+      <button class="btn green s" data-a="demote" data-g="${gid(g)}">Demote back to ${esc(l?l.name:"class")}</button>`;
   }
   const open=kind==="active"?`<div class="open"><span>Open:</span>
     <button class="btn light s" data-a="go" data-to="class-subjects.html" data-g="${gid(g)}">Subjects</button>
@@ -350,6 +351,8 @@ document.addEventListener("click",async e=>{
       await rpc("school_class_group_archive",{p_group:gid(g),p_archive:false});say("Class restored.","ok")}
     if(a==="delete"){if(!confirm("Permanently delete this class and its three terms?\n\nThis works only when the class holds no students, subjects or examinations. This cannot be undone."))return;
       await rpc("school_class_group_delete",{p_group:gid(g)});say("Class deleted.","ok")}
+    if(a==="demote"){if(!confirm("Demote this class back to Active classes?\n\nThe students return to this class. The class it was promoted to is removed. This works only if that new class has no subjects, examinations or results yet."))return;
+      const n=await rpc("school_class_demote",{p_old:gid(g)});say(`Class demoted back. ${n} student(s) returned.`,"ok")}
     if(a==="ungrad"){if(!confirm("Move this class back to Active classes? It can then be edited again."))return;
       await rpc("school_class_graduate",{p_group:gid(g),p_graduate:false});say("Class moved back to Active classes.","ok")}
     await load();
