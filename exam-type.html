@@ -603,7 +603,7 @@
       if (plan === "premium") {
         planBanner.className = "plan-banner premium";
         planBanner.textContent =
-          "⭐ Premium plan: unlimited attempts while your subscription is active.";
+          "⭐ Premium plan: you can take both the Free and the Premium examinations, with unlimited attempts, while your subscription is active.";
         return;
       }
 
@@ -636,6 +636,12 @@
     }
 
     function renderFreeNote() {
+      if (plan === "premium") {
+        $("freeNote").textContent =
+          "Unlimited attempts while your Premium subscription is active.";
+        return;
+      }
+
       const limit = Number(allowance?.limit) || 1;
 
       $("freeNote").textContent =
@@ -670,12 +676,10 @@
         return;
       }
 
-      // Free card
-      if (premium) {
-        setButton(freeButton, "Use the Premium examination", true);
-      } else if (!freeExam) {
+      // Free card (an active Premium student may take it too)
+      if (!freeExam) {
         setButton(freeButton, "No free examination yet", true);
-      } else if (limitReached()) {
+      } else if (!premium && limitReached()) {
         setButton(freeButton, "Daily limit reached", true);
       } else {
         setButton(freeButton, "Start Free Exam", false);
@@ -891,9 +895,9 @@
           showAvailability(
             "No published examination is currently available for this subject. You cannot start until an examination is published."
           );
-        } else if (plan === "premium" && !premiumExam) {
+        } else if (plan === "premium" && !premiumExam && freeExam) {
           showAvailability(
-            "There is no published Premium examination for this subject yet."
+            "There is no Premium examination for this subject yet. You can take the Free examination."
           );
         } else if (plan !== "premium" && !freeExam && premiumLocked) {
           showAvailability(
