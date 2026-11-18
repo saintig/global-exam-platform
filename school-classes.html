@@ -54,6 +54,9 @@ details{margin-top:14px}summary{cursor:pointer;font-weight:bold;color:var(--navy
 .det{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .det div{background:#f5f7fa;border-radius:8px;padding:11px;overflow-wrap:anywhere}.det small{display:block;color:var(--muted);margin-bottom:3px}
 @media(max-width:640px){.terms,.two,.det{grid-template-columns:1fr}h1{font-size:23px}}
+.toast{display:none;position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:200;width:min(92vw,640px);padding:14px 40px 14px 16px;border-radius:10px;box-shadow:0 8px 28px #0003;font-size:15px;line-height:1.5;cursor:pointer}
+.toast.show{display:block}.toast::after{content:"×";position:absolute;right:14px;top:8px;font-size:22px}
+.toast.ok{background:#e8f7ee;color:#176b3a;border:1px solid #9fd8b6}.toast.err{background:#fff0ef;color:#b42318;border:1px solid #f1b8b1}.toast.info{background:#eef6ff;color:#31577b;border:1px solid #b9d7f3}
 </style>
 </head>
 <body>
@@ -64,7 +67,7 @@ details{margin-top:14px}summary{cursor:pointer;font-weight:bold;color:var(--navy
     <div><h1>Classes &amp; Terms</h1><p class="sub">Each class has three terms, created automatically.</p></div>
     <button class="btn gold" id="newBtn" type="button">＋ Create Class</button>
   </div>
-  <div class="msg" id="msg"></div>
+  <div class="toast" id="toast"></div>
 
   <h2 class="sec" style="margin-top:6px">Active classes</h2>
   <div id="active"><div class="empty">Loading classes…</div></div>
@@ -139,8 +142,9 @@ let levels=[],rows=[],accountName="",editing=null,promoting=null,busy=false;
 
 const lvl=code=>levels.find(l=>l.code===code);
 const lvlName=code=>{const l=lvl(code);return l?l.name+" — "+l.alt_name:"Class"};
-function say(t,k="info"){const e=$("msg");e.textContent=t;e.className="msg show "+k;window.scrollTo({top:0,behavior:"smooth"})}
-function hush(){$("msg").className="msg"}
+function say(t,k="info"){const e=$("toast");e.textContent=t;e.className="toast show "+k;clearTimeout(say.t);say.t=setTimeout(()=>e.className="toast",k==="err"?14000:11000)}
+function hush(){$("toast").className="toast"}
+$("toast").addEventListener("click",hush);
 
 async function call(payload){
   const {data,error}=await sb.functions.invoke(CF,{body:payload});
@@ -345,10 +349,12 @@ document.addEventListener("click",async e=>{
     if(a==="edit")return openForm(g);
     if(a==="promote")return openPromote(g);
     if(a==="go"){localStorage.setItem(CTX,JSON.stringify({...(JSON.parse(localStorage.getItem(CTX)||"null")||{}),g:gid(g)}));location.href=b.dataset.to;return}
-    if(a==="archive"){if(!confirm("Archive this class? Its three terms and all its records are kept. You can restore it later."))return;
-      await rpc("school_class_group_archive",{p_group:gid(g),p_archive:true});say("Class archived.","ok")}
-    if(a==="restore"){if(!confirm("Restore this class to Active classes?"))return;
-      await rpc("school_class_group_archive",{p_group:gid(g),p_archive:false});say("Class restored.","ok")}
+    if(a==="archive"){if(!confirm("Archive this class?\n\nEverything under it is archived too, even if it is published: its students, subjects, examinations and questions. Archived records are not counted in your statistics or package capacity.\n\nThey stay archived until you restore the class. Then you restore the content one by one in Archive Management."))return;
+      const r=await rpc("school_class_group_archive",{p_group:gid(g),p_archive:true});
+      say(`Class archived. Archived with it: ${r.students} student(s), ${r.subjects} subject(s), ${r.examinations} examination(s) and ${r.questions} question(s). To bring them back, restore the class first, then restore them in Archive Management.`,"ok")}
+    if(a==="restore"){if(!confirm("Restore this class to Active classes?\n\nOnly the class comes back. Its students, subjects, examinations and questions stay archived. Restore them next in Archive Management, starting with the subjects."))return;
+      await rpc("school_class_group_archive",{p_group:gid(g),p_archive:false});
+      say("Class restored. Its students, subjects, examinations and questions are still archived. Open Archive Management to restore them, starting with the subjects.","ok")}
     if(a==="delete"){if(!confirm("Permanently delete this class and its three terms?\n\nThis works only when the class holds no students, subjects or examinations. This cannot be undone."))return;
       await rpc("school_class_group_delete",{p_group:gid(g)});say("Class deleted.","ok")}
     if(a==="demote"){if(!confirm("Demote this class back to Active classes?\n\nThe students return to this class. The class it was promoted to is removed. This works only if that new class has no subjects, examinations or results yet."))return;
