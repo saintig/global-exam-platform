@@ -1327,5 +1327,32 @@ async function refreshPageData() {
 initializePage();
 </script>
 
+<script>
+(function(){
+  /* Fix: the Students category had no parameter for archive and restore */
+  CATEGORY_CONFIG.students.archiveParam="p_student_id";
+  CATEGORY_CONFIG.students.restoreParam="p_student_id";
+
+  /* Visible notification, fixed at the top of the screen */
+  const t=document.createElement("div");
+  t.style.cssText="display:none;position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;width:min(92vw,640px);padding:14px 40px 14px 16px;border-radius:10px;box-shadow:0 8px 28px #0003;font:15px/1.5 Arial,sans-serif;cursor:pointer";
+  t.title="Tap to close";
+  document.body.appendChild(t);
+  let timer;
+  function hide(){t.style.display="none"}
+  t.addEventListener("click",hide);
+  window.showMessage=function(message,type){
+    const bad=type==="error";
+    t.textContent=message;
+    t.style.background=bad?"#fff0ef":"#e8f7ee";
+    t.style.color=bad?"#b42318":"#176b3a";
+    t.style.border="1px solid "+(bad?"#f1b8b1":"#9fd8b6");
+    t.style.display="block";
+    clearTimeout(timer);timer=setTimeout(hide,bad?14000:11000);
+  };
+  window.clearMessage=hide;
+})();
+</script>
+  
 </body>
 </html>
