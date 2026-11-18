@@ -165,6 +165,13 @@
       margin:0 0 18px;
     }
 
+    .exam-name {
+      color:var(--muted);
+      font-size:15px;
+      margin:-8px 0 16px;
+      overflow-wrap:anywhere;
+    }
+
     button {
       width:100%;
       margin-top:auto;
@@ -322,8 +329,9 @@
 
         <p class="description">
           Practise your knowledge with the free examination.
-          Premium students can take it too.
         </p>
+
+        <div class="exam-name" id="freeExamName"></div>
 
         <div class="stats">
           <div class="stat">
@@ -351,6 +359,8 @@
         <p class="description">
           Access the extended examination with more questions and more time.
         </p>
+
+        <div class="exam-name" id="premiumExamName"></div>
 
         <div class="stats">
           <div class="stat">
@@ -410,6 +420,7 @@
     // The examinations offered for this subject and level.
     let freeExam = null;
     let premiumExam = null;
+    let premiumLocked = false;
 
     // "free" or "premium". The server decides again when you start.
     let plan = "free";
@@ -495,21 +506,11 @@
     }
 
     function updateSettingsDisplay() {
-      if (examSettings.free_student_question_limit === null) return;
+      $("freeQuestionCount").textContent =
+        examSettings.free_student_question_limit;
 
-      const premium = plan === "premium";
-
-      // A Premium student who takes the Free examination gets the
-      // Premium question count and time, so show those numbers.
-      $("freeQuestionCount").textContent = premium
-        ? examSettings.premium_student_question_limit
-        : examSettings.free_student_question_limit;
-
-      $("freeDuration").textContent = formatMinutes(
-        premium
-          ? examSettings.premium_student_duration_minutes
-          : examSettings.free_student_duration_minutes
-      );
+      $("freeDuration").textContent =
+        formatMinutes(examSettings.free_student_duration_minutes);
 
       $("premiumQuestionCount").textContent =
         examSettings.premium_student_question_limit;
@@ -602,7 +603,7 @@
       if (plan === "premium") {
         planBanner.className = "plan-banner premium";
         planBanner.textContent =
-          "⭐ Premium plan: unlimited attempts on Free and Premium examinations while your subscription is active.";
+          "⭐ Premium plan: unlimited attempts while your subscription is active.";
         return;
       }
 
@@ -635,12 +636,6 @@
     }
 
     function renderFreeNote() {
-      if (plan === "premium") {
-        $("freeNote").textContent =
-          "Unlimited attempts while your paid subscription is active, with your Premium question count and time.";
-        return;
-      }
-
       const limit = Number(allowance?.limit) || 1;
 
       $("freeNote").textContent =
@@ -675,24 +670,28 @@
         return;
       }
 
-      // Free card: paid Premium students can take the Free examination too.
-      if (!freeExam) {
+      // Free card
+      if (premium) {
+        setButton(freeButton, "Use the Premium examination", true);
+      } else if (!freeExam) {
         setButton(freeButton, "No free examination yet", true);
-      } else if (premium) {
-        setButton(freeButton, "Start Free Exam", false);
       } else if (limitReached()) {
         setButton(freeButton, "Daily limit reached", true);
       } else {
         setButton(freeButton, "Start Free Exam", false);
       }
 
-      // Premium card: only students with an active paid subscription can start it.
-      if (!premiumExam) {
-        setButton(premiumButton, "Exam not available yet", true);
-      } else if (!premium) {
+      // Premium card
+      if (premium) {
+        if (premiumExam) {
+          setButton(premiumButton, "Start Premium Exam", false);
+        } else {
+          setButton(premiumButton, "Exam not available yet", true);
+        }
+      } else if (premiumLocked) {
         setButton(premiumButton, "Upgrade to Premium", false);
       } else {
-        setButton(premiumButton, "Start Premium Exam", false);
+        setButton(premiumButton, "Exam not available yet", true);
       }
     }
 
@@ -763,6 +762,29 @@
 
     /* ---------- page ---------- */
 
+    /* The server tells each student which examinations they may see.
+       A Free student is told that a Premium examination exists (locked),
+       but receives none of its details. */
+
+    function readOptions(rows) {
+      const list = Array.isArray(rows) ? rows : [];
+
+      const free = list.find(row => row.kind === "free" && row.exam_id) || null;
+      const premium = list.find(row => row.kind === "premium") || null;
+
+      return {
+        freeExam: free
+          ? { id: free.exam_id, title: free.title }
+          : null,
+
+        premiumExam: premium && premium.exam_id && !premium.locked
+          ? { id: premium.exam_id, title: premium.title }
+          : null,
+
+        premiumLocked: !!(premium && premium.locked)
+      };
+    }
+
     async function loadPage() {
       try {
         validateIds();
@@ -792,9 +814,6 @@
 
         // Settings set by the administrator, and the student's plan.
         await Promise.all([loadExamSettings(), detectPlan()]);
-
-        // Show the right numbers now that the student's plan is known.
-        updateSettingsDisplay();
 
         // Verify the selected education level.
         const {
@@ -839,42 +858,44 @@
         subjectName.textContent = assignment.subjects.name;
         levelName.textContent = level.level_name;
 
-        // Find the latest published public examinations.
+        // Ask the server which examinations this student may see.
         const {
-          data: exams,
-          error: examError
-        } = await supabase
-          .from("examinations")
-          .select(
-            "id,title,subject_id,education_level_id,is_published,access_type,created_at"
-          )
-          .eq("subject_id", Number(subjectId))
-          .eq("education_level_id", Number(levelId))
-          .eq("is_published", true)
-          .eq("is_archived", false)
-          .is("school_account_id", null)
-          .order("created_at", { ascending: false })
-          .limit(20);
+          data: options,
+          error: optionsError
+        } = await supabase.rpc("student_exam_options", {
+          p_subject_id: Number(subjectId),
+          p_level_id: Number(levelId)
+        });
 
-        if (examError) throw examError;
+        if (optionsError) throw optionsError;
 
-        const list = exams || [];
+        const found = readOptions(options);
 
-        freeExam = list.find(exam => exam.access_type === "free") || null;
-
-        const paidExam = list.find(exam => exam.access_type !== "free") || null;
-
-        // Premium students use the Premium examination when there is
-        // one, and otherwise the free examination with Premium limits.
-        premiumExam = paidExam || freeExam;
+        freeExam = found.freeExam;
+        premiumExam = found.premiumExam;
+        premiumLocked = found.premiumLocked;
 
         loaded = true;
 
-        if (!freeExam && !premiumExam) {
+        $("freeExamName").textContent = freeExam
+          ? "Examination: " + (freeExam.title || "Untitled") + " (#" + freeExam.id + ")"
+          : "No Free examination for this subject yet.";
+
+        $("premiumExamName").textContent = premiumExam
+          ? "Examination: " + (premiumExam.title || "Untitled") + " (#" + premiumExam.id + ")"
+          : premiumLocked
+            ? "A Premium examination is available for this subject."
+            : "No Premium examination for this subject yet.";
+
+        if (!freeExam && !premiumExam && !premiumLocked) {
           showAvailability(
             "No published examination is currently available for this subject. You cannot start until an examination is published."
           );
-        } else if (!freeExam && plan !== "premium") {
+        } else if (plan === "premium" && !premiumExam) {
+          showAvailability(
+            "There is no published Premium examination for this subject yet."
+          );
+        } else if (plan !== "premium" && !freeExam && premiumLocked) {
           showAvailability(
             "This subject has a Premium examination only. Upgrade to Premium to take it."
           );
@@ -892,6 +913,7 @@
         failed = true;
         freeExam = null;
         premiumExam = null;
+        premiumLocked = false;
 
         applyUi();
 
@@ -1021,7 +1043,7 @@
     premiumButton.addEventListener("click", () => {
       if (plan === "premium") {
         startExam("premium");
-      } else if (premiumExam) {
+      } else if (premiumLocked) {
         location.href = "contact.html";
       }
     });
