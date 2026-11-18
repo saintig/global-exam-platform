@@ -1176,8 +1176,38 @@ function printAnnualResult(d) {
   if (readSession()) $("resumeCard").classList.remove("hidden");
 
   /* A shared link such as ?tab=annual opens the Annual Results tab. */
-  const tab = new URLSearchParams(location.search).get("tab");
+  const params = new URLSearchParams(location.search);
+  const tab = params.get("tab");
   if (["exam", "examResult", "classResult", "annual"].includes(tab)) setTab(tab);
+
+  /* IDs typed on the homepage arrive in the link. Fill the form and continue. */
+  const FORMS = {
+    exam:        { fields: { exam_id: "examCode", student_id: "studentCode" }, form: "examForm" },
+    examResult:  { fields: { exam_id: "erExamCode", student_id: "erStudentCode" }, form: "examResultForm" },
+    classResult: { fields: { class_id: "crClassCode", student_id: "crStudentCode" }, form: "classResultForm" },
+    annual:      { fields: { annual_id: "arAnnualCode", student_id: "arStudentCode" }, form: "annualResultForm" }
+  };
+
+  const target = FORMS[tab];
+
+  if (target) {
+    let filled = 0;
+    let complete = true;
+
+    Object.entries(target.fields).forEach(([param, inputId]) => {
+      const value = (params.get(param) || "").trim();
+      if (value) { $(inputId).value = value; filled++; } else { complete = false; }
+    });
+
+    if (filled) {
+      /* Keep the IDs out of the address bar and browser history. */
+      history.replaceState(null, "", location.pathname + "?tab=" + tab);
+    }
+
+    if (filled && complete) {
+      setTimeout(() => $(target.form).requestSubmit(), 250);
+    }
+  }
 })();
 </script>
 
