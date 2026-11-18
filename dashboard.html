@@ -23,6 +23,8 @@
 
 *{box-sizing:border-box}
 
+[hidden]{display:none !important}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -97,8 +99,6 @@ button,a{-webkit-tap-highlight-color:transparent}
   text-align:center
 }
 
-.bell-count[hidden],.nav-badge[hidden]{display:none}
-
 .layout{
   display:flex;
   min-height:calc(100vh - var(--topbar-h))
@@ -158,10 +158,34 @@ button,a{-webkit-tap-highlight-color:transparent}
   vertical-align:middle
 }
 
+.plan-badge{
+  display:inline-block;
+  margin-left:8px;
+  padding:1px 10px;
+  border-radius:12px;
+  font-size:14px;
+  font-weight:700;
+  background:#edf1f7;
+  color:var(--primary);
+  vertical-align:middle
+}
+
+.plan-badge.premium{
+  background:#fdf3d0;
+  color:#7a5b00
+}
+
 main{
   flex:1;
   min-width:0;
   padding:24px
+}
+
+.backbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:0 0 16px
 }
 
 .welcome{margin-bottom:22px}
@@ -486,6 +510,34 @@ th{
 
 .pricing-note p{margin:6px 0 12px;font-size:17px}
 
+/* PACKAGE STATUS */
+
+.plan-status{border-left:6px solid var(--accent)}
+.plan-status.free{border-left-color:var(--primary)}
+
+.plan-status-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:6px
+}
+
+.plan-status-top strong{font-size:19px}
+
+.plan-status-text{
+  font-size:17px;
+  line-height:1.6
+}
+
+.plan-status-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+
 /* PLANS */
 
 .plan-summary{
@@ -728,7 +780,7 @@ th{
   </button>
 
   <button class="nav-link" data-section="account" type="button">
-    👤 My Account
+    👤 My Account <span class="plan-badge" id="navPlanBadge" hidden></span>
   </button>
 
   <a class="nav-link" href="./about.html">
@@ -749,6 +801,16 @@ th{
 
 <main>
 
+<div class="backbar" id="backBar" hidden>
+  <button class="button secondary small" id="backButton" type="button">
+    ← Back
+  </button>
+
+  <button class="button secondary small" id="homeButton" type="button">
+    🏠 Dashboard
+  </button>
+</div>
+
 <div class="welcome">
   <h1 id="welcomeTitle">Welcome to SAINTIG EXAMS</h1>
   <p id="welcomeSubtitle">Your learning and examination dashboard.</p>
@@ -756,6 +818,33 @@ th{
 </div>
 
 <section class="section active" id="home">
+
+  <div class="card plan-status free" id="planStatusCard">
+
+    <div class="plan-status-top">
+      <strong>Your package</strong>
+      <span class="pill" id="psPill">…</span>
+    </div>
+
+    <div class="plan-status-text" id="psText">Checking your package…</div>
+
+    <div class="plan-status-actions">
+
+      <button class="button secondary small" type="button" data-go="pricing">
+        View plans
+      </button>
+
+      <a class="button gold small" id="psUpgrade" href="./contact.html" hidden>
+        Upgrade to Premium
+      </a>
+
+      <a class="button gold small" id="psRenew" href="./contact.html" hidden>
+        Contact Us to Renew
+      </a>
+
+    </div>
+
+  </div>
 
   <div class="stats-grid">
 
@@ -1042,8 +1131,35 @@ th{
   <h2 class="section-heading">My Account</h2>
 
   <p class="section-description">
-    Update your name and password.
+    Your package, name and password.
   </p>
+
+  <div class="card plan-status">
+
+    <div class="plan-status-top">
+      <strong>Your package</strong>
+      <span class="pill" id="apPill">…</span>
+    </div>
+
+    <div class="plan-status-text" id="apText">Checking your package…</div>
+
+    <div class="plan-status-actions">
+
+      <button class="button secondary small" type="button" data-go="pricing">
+        View plans
+      </button>
+
+      <a class="button gold small" id="apUpgrade" href="./contact.html" hidden>
+        Upgrade to Premium
+      </a>
+
+      <a class="button gold small" id="apRenew" href="./contact.html" hidden>
+        Contact Us to Renew
+      </a>
+
+    </div>
+
+  </div>
 
   <div class="card">
 
@@ -1476,6 +1592,9 @@ async function verifyStudentAccount(user) {
 
 /* =========================================
    NAVIGATION
+   Every page of the dashboard is added to the
+   browser history, so the on-screen Back button
+   and the phone's back button work the same way.
 ========================================= */
 
 function closeMenu() {
@@ -1489,7 +1608,10 @@ function closeMenu() {
   );
 }
 
-function openSection(sectionId) {
+const navStack = ["home"];
+let currentSection = "home";
+
+function showSection(sectionId) {
 
   const targetSection = $(sectionId);
 
@@ -1512,6 +1634,8 @@ function openSection(sectionId) {
 
     });
 
+  $("backBar").hidden = sectionId === "home";
+
   closeMenu();
 
   window.scrollTo({
@@ -1519,6 +1643,68 @@ function openSection(sectionId) {
     behavior:"smooth"
   });
 }
+
+function openSection(sectionId) {
+
+  if (!$(sectionId)) return;
+
+  if (sectionId !== currentSection) {
+
+    navStack.push(sectionId);
+
+    history.pushState(
+      {section:sectionId},
+      "",
+      "#" + sectionId
+    );
+
+    currentSection = sectionId;
+
+  }
+
+  showSection(sectionId);
+}
+
+window.addEventListener("popstate",event => {
+
+  const target = (event.state && event.state.section) || "home";
+
+  const at = navStack.lastIndexOf(target);
+
+  if (at >= 0) {
+    navStack.length = at + 1;
+  } else {
+    navStack.length = 0;
+    navStack.push(target);
+  }
+
+  currentSection = target;
+
+  showSection(target);
+
+});
+
+history.replaceState(
+  {section:"home"},
+  "",
+  location.pathname + location.search
+);
+
+$("backButton").addEventListener("click",() => {
+
+  if (navStack.length > 1) {
+    history.back();
+  } else {
+    openSection("home");
+  }
+
+});
+
+$("homeButton").addEventListener("click",() => {
+
+  openSection("home");
+
+});
 
 $("menuButton").addEventListener("click",() => {
 
@@ -1769,6 +1955,111 @@ $("passwordForm").addEventListener("submit",async event => {
 });
 
 /* =========================================
+   PACKAGE STATUS (HOME, MY ACCOUNT, MENU)
+========================================= */
+
+function planStatusParts() {
+
+  const state = subscription.state;
+
+  const left = subscription.expiresAt
+    ? daysLeftFrom(subscription.expiresAt)
+    : null;
+
+  const soon = state === "premium" && left !== null && left <= 7;
+
+  if (state === "premium") {
+
+    return {
+      pill:"⭐ Premium",
+      pillClass:"gold",
+      badge:"Premium",
+      badgeClass:"premium",
+      kind:"premium",
+      upgrade:false,
+      renew:soon,
+      html:subscription.expiresAt
+        ? "Active until <strong>" +
+          escapeHtml(formatDay(subscription.expiresAt)) +
+          "</strong> (" + left + " day" + (left === 1 ? "" : "s") + " left)." +
+          (soon ? " Your Premium package ends soon." : "")
+        : "Your Premium package is active."
+    };
+
+  }
+
+  if (state === "free") {
+
+    return {
+      pill:"Free",
+      pillClass:"",
+      badge:"Free",
+      badgeClass:"",
+      kind:"free",
+      upgrade:true,
+      renew:false,
+      html:"You are on the Free package. Upgrade to Premium for more questions, more time and unlimited attempts."
+    };
+
+  }
+
+  if (state === "error") {
+
+    return {
+      pill:"Unavailable",
+      pillClass:"",
+      badge:"",
+      badgeClass:"",
+      kind:"free",
+      upgrade:false,
+      renew:false,
+      html:"Your package status could not be loaded. Please refresh the page."
+    };
+
+  }
+
+  return {
+    pill:"…",
+    pillClass:"",
+    badge:"",
+    badgeClass:"",
+    kind:"free",
+    upgrade:false,
+    renew:false,
+    html:"Checking your package…"
+  };
+
+}
+
+function renderPlanStatus() {
+
+  const p = planStatusParts();
+
+  ["ps","ap"].forEach(prefix => {
+
+    const pill = $(prefix + "Pill");
+
+    pill.textContent = p.pill;
+    pill.className = "pill" + (p.pillClass ? " " + p.pillClass : "");
+
+    $(prefix + "Text").innerHTML = p.html;
+
+    $(prefix + "Upgrade").hidden = !p.upgrade;
+    $(prefix + "Renew").hidden = !p.renew;
+
+  });
+
+  $("planStatusCard").className = "card plan-status " + p.kind;
+
+  const badge = $("navPlanBadge");
+
+  badge.textContent = p.badge;
+  badge.className = "plan-badge" + (p.badgeClass ? " " + p.badgeClass : "");
+  badge.hidden = !p.badge;
+
+}
+
+/* =========================================
    SUBSCRIPTION (FREE / PREMIUM)
 ========================================= */
 
@@ -1875,6 +2166,8 @@ function renderPricing() {
   }).join("");
 
   $("planCards").innerHTML = cards;
+
+  renderPlanStatus();
 
 }
 
@@ -3303,72 +3596,11 @@ async function initializeDashboard() {
 
 }
 
+renderPlanStatus();
+
 initializeDashboard();
 
 </script>
-<script type="module">
-import { supabase } from "./auth.js";
-(function(){
-  const form=document.getElementById("passwordForm");
-  if(!form)return;
-  const msg=document.getElementById("passwordMessage");
-  const newPw=document.getElementById("newPassword");
-  const confirmPw=document.getElementById("confirmPassword");
 
-  const group=document.createElement("div");
-  group.className="form-group";
-  group.innerHTML=
-    '<label for="currentPassword">Current password</label>'+
-    '<input id="currentPassword" type="password" autocomplete="current-password" '+
-    'placeholder="Enter your current password" required>';
-  newPw.closest(".form-group").before(group);
-  const oldPw=document.getElementById("currentPassword");
-
-  const show=(text,type)=>{
-    msg.textContent=text;
-    msg.className="status-message"+(type?" "+type:"");
-  };
-
-  document.addEventListener("submit",async event=>{
-    if(event.target!==form)return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    const current=oldPw.value,pw=newPw.value,again=confirmPw.value;
-    const btn=form.querySelector('button[type="submit"]');
-
-    if(!current){show("Enter your current password.","error");return}
-    if(pw.length<8){show("Use at least 8 characters for the new password.","error");return}
-    if(pw!==again){show("The new passwords do not match.","error");return}
-    if(pw===current){show("The new password must be different from the current password.","error");return}
-
-    btn.disabled=true;btn.textContent="Updating…";
-
-    try{
-      const {data:u,error:ue}=await supabase.auth.getUser();
-      if(ue||!u?.user?.email)throw new Error("Your account email could not be read. Please sign in again.");
-
-      const {error:se}=await supabase.auth.signInWithPassword({email:u.user.email,password:current});
-      if(se){
-        throw new Error(/invalid|credentials/i.test(se.message||"")
-          ?"The current password is incorrect."
-          :(se.message||"Could not verify your current password."));
-      }
-
-      const {error}=await supabase.auth.updateUser({password:pw});
-      if(error)throw error;
-
-      form.reset();
-      show("Password updated successfully.","success");
-    }catch(err){
-      console.error("Password change:",err);
-      show(err.message||"Could not update password.","error");
-    }finally{
-      btn.disabled=false;btn.textContent="Update Password";
-    }
-  },true);
-})();
-</script>
-  
 </body>
 </html>
