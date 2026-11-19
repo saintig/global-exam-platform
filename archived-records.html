@@ -44,6 +44,9 @@ input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
 .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:15px;font-weight:700;background:#edf1f7;color:var(--navy)}
 .pill.premium{background:#fdf3d0;color:#7a5b00}
 .warn{color:var(--amber);font-weight:700;font-size:16px;margin:6px 0}
+.button.danger{background:#fdebea;color:var(--red);border:1px solid #f3c9c5}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.hist{color:var(--muted);font-size:15px;margin-top:6px}
 .empty{text-align:center;color:var(--muted);padding:22px;background:#f8faff;border-radius:8px}
 .pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
 .notice{background:#fff8e5;border:1px solid #f0dfa8;padding:14px;border-radius:8px;font-size:16px;line-height:1.6}
@@ -83,7 +86,9 @@ input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
 
   <div class="notice">
     This page covers public students only. Teacher/School records (their classes, students, subjects and examinations) are managed by each school and are not shown here.
-    Permanent deletion is not available here, to protect results and history. An item can only be restored when everything above it is active. For example, restore a country before its education levels.
+    An item can only be restored when everything above it is active. For example, restore a country before its education levels.
+    Restoring a country, education level or subject also brings back the items that were archived together with it.
+    A Super Administrator can delete an archived item permanently, only when nothing depends on it. Items with attempts or results are always kept.
   </div>
 
 </div>
@@ -124,6 +129,7 @@ let total = 0;
 let rows = [];
 let token = 0;
 let busy = false;
+let isSuper = false;
 
 /* ---------- helpers ---------- */
 
@@ -175,7 +181,7 @@ async function verifyAdmin() {
 
   const { data: admin, error } = await supabase
     .from("admin_users")
-    .select("user_id, is_suspended")
+    .select("user_id, role, is_suspended")
     .eq("user_id", session.user.id)
     .maybeSingle();
 
@@ -186,6 +192,8 @@ async function verifyAdmin() {
     location.replace("admin-login.html");
     return false;
   }
+
+  isSuper = admin.role === "super_admin";
 
   return true;
 }
@@ -271,6 +279,42 @@ function blockedText(row) {
   return "";
 }
 
+/* Why an item cannot be deleted (empty text means it can). */
+
+function deleteBlock(row) {
+  const x = row.extra || {};
+
+  if (category === "countries" && num(x.levels) > 0) {
+    return "It still has " + num(x.levels) + " education level(s).";
+  }
+
+  if (category === "levels" && num(x.exams) > 0) {
+    return "It still has " + num(x.exams) + " examination(s).";
+  }
+
+  if (category === "subjects" && num(x.exams) > 0) {
+    return "It is used by " + num(x.exams) + " examination(s).";
+  }
+
+  if (category === "examinations" && num(x.attempts) > 0) {
+    return "It has " + num(x.attempts) + " attempt(s), so its results are kept.";
+  }
+
+  if (category === "questions" && num(x.used) > 0) {
+    return "It was used in " + num(x.used) + " attempt(s), so it is kept.";
+  }
+
+  return "";
+}
+
+function restoredText(row) {
+  const r = row.extra && row.extra.last_restored;
+
+  if (!r || !r.at) return "";
+
+  return "Last restored by " + (r.by || "an administrator") + " on " + fmtDate(r.at) + ".";
+}
+
 function renderList() {
   const list = $("list");
 
@@ -285,6 +329,8 @@ function renderList() {
     const premium = String(r.owner || "").toLowerCase().startsWith("premium");
     const blocked = blockedText(r);
     const detail = detailLine(r);
+    const history = restoredText(r);
+    const noDelete = isSuper ? deleteBlock(r) : "";
 
     return `
       <div class="item">
@@ -296,10 +342,15 @@ function renderList() {
           <span>Created ${esc(fmtDate(r.created_at))}</span>
         </div>
         ${detail ? `<div class="sub2">${esc(detail)}</div>` : ""}
+        ${history ? `<div class="hist">${esc(history)}</div>` : ""}
         ${blocked ? `<div class="warn">${esc(blocked)}</div>` : ""}
-        <div style="margin-top:10px">
+        <div class="actions">
           <button class="button small" data-restore="${i}" type="button"${blocked ? " disabled" : ""}>Restore</button>
+          ${isSuper && !noDelete
+            ? `<button class="button small danger" data-delete="${i}" type="button">Delete permanently</button>`
+            : ""}
         </div>
+        ${isSuper && noDelete ? `<div class="hist">Cannot be deleted: ${esc(noDelete)}</div>` : ""}
       </div>`;
   }).join("");
 
@@ -402,6 +453,51 @@ $("list").addEventListener("click", async event => {
   } catch (error) {
     console.error("Restore error:", error);
     setStatus("Could not restore: " + error.message, "error");
+    button.disabled = false;
+
+  } finally {
+    busy = false;
+  }
+});
+
+/* ---------- delete permanently (Super Administrator only) ---------- */
+
+$("list").addEventListener("click", async event => {
+  const button = event.target.closest("[data-delete]");
+  if (!button || busy || !isSuper) return;
+
+  const row = rows[Number(button.dataset.delete)];
+  if (!row) return;
+
+  const name = row.title || SINGULAR[category];
+
+  if (!confirm(
+    "Delete this " + SINGULAR[category] + " permanently?\n\n" + name +
+    "\n\nThis cannot be undone."
+  )) return;
+
+  if (!confirm("Please confirm once more: permanently delete \"" + name + "\"?")) return;
+
+  busy = true;
+  button.disabled = true;
+  setStatus("Deleting…");
+
+  try {
+    await rpc("admin_delete_archived", { p_category: category, p_id: row.item_id });
+
+    rows = rows.filter(r => r !== row);
+    total = Math.max(0, total - 1);
+    offset = Math.max(0, offset - 1);
+    counts[category] = Math.max(0, num(counts[category]) - 1);
+
+    renderTabs();
+    renderList();
+
+    setStatus("Deleted permanently: " + name + ".", "success");
+
+  } catch (error) {
+    console.error("Delete error:", error);
+    setStatus("Could not delete: " + error.message, "error");
     button.disabled = false;
 
   } finally {
