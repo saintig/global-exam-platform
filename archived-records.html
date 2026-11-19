@@ -13,40 +13,40 @@
   --green:#16794b;--red:#b42318;--amber:#9a6200;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;font-size:16px;background:var(--bg);color:var(--text);line-height:1.5}
+body{margin:0;font-family:Arial,sans-serif;font-size:17px;background:var(--bg);color:var(--text);line-height:1.55}
 a{color:inherit;text-decoration:none}
 .topbar{background:var(--navy);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{font-size:19px;font-weight:800}
 .brand span{color:var(--gold)}
-.topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:15px}
 .container{max-width:950px;margin:auto;padding:22px 16px 40px}
 h1{margin:0 0 6px;color:var(--navy);font-size:27px}
 .sub{margin:0 0 18px;color:var(--muted)}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
-.tab{flex:1;min-width:150px;min-height:46px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:15px;font-weight:700;cursor:pointer;padding:6px 10px}
+.tab{flex:1;min-width:140px;min-height:48px;border:1px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;padding:6px 10px}
 .tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
 .card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px}
-.form-group label{display:block;font-weight:700;font-size:15px;margin-bottom:6px}
-input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:16px}
+.form-group label{display:block;font-weight:700;font-size:16px;margin-bottom:6px}
+input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;font:inherit;font-size:17px}
 input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
-.button{display:inline-block;padding:12px 17px;min-height:46px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.button{display:inline-block;padding:12px 17px;min-height:48px;border:0;border-radius:8px;background:var(--navy);color:#fff;font:inherit;font-size:17px;font-weight:700;cursor:pointer}
 .button.secondary{background:#edf1f7;color:var(--navy)}
-.button.small{min-height:42px;padding:9px 14px;font-size:15px}
+.button.small{min-height:44px;padding:9px 14px;font-size:16px}
 .button:disabled{opacity:.6;cursor:not-allowed}
-.status{margin-top:12px;font-size:15px;color:var(--muted);overflow-wrap:anywhere}
+.status{margin-top:12px;font-size:16px;color:var(--muted);overflow-wrap:anywhere}
 .status.success{color:var(--green)}
 .status.error{color:var(--red)}
 .list{display:grid;gap:12px;margin-top:14px}
 .item{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fff}
-.item strong{display:block;font-size:17px;color:var(--navy);overflow-wrap:anywhere}
-.sub2{color:var(--muted);font-size:15px;overflow-wrap:anywhere;margin-top:2px}
-.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--muted);margin:8px 0}
-.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:14px;font-weight:700;background:#edf1f7;color:var(--navy)}
-.pill.school{background:#fdf3d0;color:#7a5b00}
-.warn{color:var(--amber);font-weight:700;font-size:15px;margin:6px 0}
+.item strong{display:block;font-size:18px;color:var(--navy);overflow-wrap:anywhere}
+.sub2{color:var(--muted);font-size:16px;overflow-wrap:anywhere;margin-top:2px}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:15px;color:var(--muted);margin:8px 0}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:15px;font-weight:700;background:#edf1f7;color:var(--navy)}
+.pill.premium{background:#fdf3d0;color:#7a5b00}
+.warn{color:var(--amber);font-weight:700;font-size:16px;margin:6px 0}
 .empty{text-align:center;color:var(--muted);padding:22px;background:#f8faff;border-radius:8px}
 .pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
-.notice{background:#fff8e5;border:1px solid #f0dfa8;padding:13px;border-radius:8px;font-size:15px;line-height:1.6}
+.notice{background:#fff8e5;border:1px solid #f0dfa8;padding:14px;border-radius:8px;font-size:16px;line-height:1.6}
 @media(max-width:560px){.container{padding:16px 11px 36px}.card{padding:15px}}
 </style>
 </head>
@@ -61,14 +61,14 @@ input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
 <div class="container">
 
   <h1>Archived Records</h1>
-  <p class="sub">Everything that has been archived, by category. Restoring a record puts it back where it was.</p>
+  <p class="sub">What you set up for public students: countries, education levels, subjects, examinations and questions. Restoring an item puts it back where it was.</p>
 
   <div class="tabs" id="tabs"></div>
 
   <section class="card">
     <div class="form-group">
       <label for="searchBox">Search</label>
-      <input id="searchBox" type="search" maxlength="100" placeholder="Search by name, title or account" autocomplete="off">
+      <input id="searchBox" type="search" maxlength="100" placeholder="Search by name or title" autocomplete="off">
     </div>
 
     <div class="list" id="list"><div class="empty">Loading…</div></div>
@@ -82,8 +82,8 @@ input:focus{outline:2px solid #2457a733;border-color:var(--blue)}
   </section>
 
   <div class="notice">
-    Permanent deletion is not available here, to protect results and history. Restore a record to use it again.
-    Restoring a Teacher/School record can take that school over its package limits. The school's dashboard shows its usage.
+    This page covers public students only. Teacher/School records (their classes, students, subjects and examinations) are managed by each school and are not shown here.
+    Permanent deletion is not available here, to protect results and history. An item can only be restored when everything above it is active. For example, restore a country before its education levels.
   </div>
 
 </div>
@@ -94,19 +94,26 @@ import { supabase } from "./auth.js";
 const $ = id => document.getElementById(id);
 
 const PAGE = 20;
-const PUBLIC_OWNER = "Public (platform)";
 
 const CATEGORIES = [
+  ["countries", "Countries"],
+  ["levels", "Education Levels"],
+  ["subjects", "Subjects"],
   ["examinations", "Examinations"],
-  ["questions", "Questions"],
-  ["classes", "School Classes"],
-  ["students", "School Students"],
-  ["subjects", "School Subjects"]
+  ["questions", "Questions"]
 ];
 
 const SINGULAR = {
-  examinations: "examination", questions: "question",
-  classes: "class", students: "student", subjects: "subject"
+  countries: "country", levels: "education level", subjects: "subject",
+  examinations: "examination", questions: "question"
+};
+
+const WHAT_COMES_BACK = {
+  countries: "It becomes available to students again.",
+  levels: "It becomes available to students again.",
+  subjects: "It becomes available to students again.",
+  examinations: "The questions that were archived with it come back too.",
+  questions: ""
 };
 
 let counts = {};
@@ -124,6 +131,10 @@ function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, c => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
   })[c]);
+}
+
+function num(value) {
+  return Number(value) || 0;
 }
 
 function fmtDate(value) {
@@ -185,7 +196,7 @@ function renderTabs() {
   $("tabs").innerHTML = CATEGORIES
     .filter(([key]) => counts[key] !== undefined)
     .map(([key, label]) =>
-      `<button class="tab${key === category ? " active" : ""}" data-cat="${key}" type="button">${esc(label)} (${Number(counts[key]) || 0})</button>`
+      `<button class="tab${key === category ? " active" : ""}" data-cat="${key}" type="button">${esc(label)} (${num(counts[key])})</button>`
     ).join("");
 }
 
@@ -205,10 +216,22 @@ $("tabs").addEventListener("click", event => {
 function detailLine(row) {
   const x = row.extra || {};
 
+  if (category === "countries") {
+    return num(x.levels) + " education level(s) · " + num(x.exams) + " examination(s)";
+  }
+
+  if (category === "levels") {
+    return num(x.exams) + " examination(s) · " + num(x.subjects) + " subject(s)";
+  }
+
+  if (category === "subjects") {
+    return "Used in " + num(x.levels) + " education level(s) · " + num(x.exams) + " examination(s)";
+  }
+
   if (category === "examinations") {
     return [
-      "Questions: " + (Number(x.questions) || 0),
-      "Attempts: " + (Number(x.attempts) || 0),
+      "Questions: " + num(x.questions),
+      "Attempts: " + num(x.attempts),
       x.published ? "Was published" : "Was a draft"
     ].join(" · ");
   }
@@ -217,8 +240,32 @@ function detailLine(row) {
     return x.answer ? "Correct option: " + x.answer : "";
   }
 
-  if (category === "students") {
-    return x.active === false ? "Account inactive" : "Account active";
+  return "";
+}
+
+function archivedText(row) {
+  const x = row.extra || {};
+
+  if (row.archived_at) {
+    return (x.mode === "inactive" ? "Hidden since " : "Archived ") + fmtDate(row.archived_at);
+  }
+
+  return x.mode === "inactive" ? "Hidden from students (inactive)" : "Archived";
+}
+
+function blockedText(row) {
+  const x = row.extra || {};
+
+  if (category === "levels" && x.country_blocked === true) {
+    return "Its country is archived. Restore the country first.";
+  }
+
+  if (category === "examinations" && x.blocked_by) {
+    return "Its " + x.blocked_by + " is archived. Restore the " + x.blocked_by + " first.";
+  }
+
+  if (category === "questions" && x.exam_archived === true) {
+    return "Its examination is archived. Restore the examination first.";
   }
 
   return "";
@@ -235,8 +282,8 @@ function renderList() {
   }
 
   list.innerHTML = rows.map((r, i) => {
-    const school = r.owner && r.owner !== PUBLIC_OWNER;
-    const blocked = category === "questions" && r.extra && r.extra.exam_archived === true;
+    const premium = String(r.owner || "").toLowerCase().startsWith("premium");
+    const blocked = blockedText(r);
     const detail = detailLine(r);
 
     return `
@@ -244,12 +291,12 @@ function renderList() {
         <strong>${esc(r.title || "(no title)")}</strong>
         ${r.subtitle ? `<div class="sub2">${esc(r.subtitle)}</div>` : ""}
         <div class="meta">
-          <span class="pill${school ? " school" : ""}">${esc(r.owner || "—")}</span>
-          <span>Archived ${esc(fmtDate(r.archived_at))}</span>
+          ${r.owner ? `<span class="pill${premium ? " premium" : ""}">${esc(r.owner)}</span>` : ""}
+          <span>${esc(archivedText(r))}</span>
           <span>Created ${esc(fmtDate(r.created_at))}</span>
         </div>
         ${detail ? `<div class="sub2">${esc(detail)}</div>` : ""}
-        ${blocked ? '<div class="warn">Its examination is archived. Restore the examination first.</div>' : ""}
+        ${blocked ? `<div class="warn">${esc(blocked)}</div>` : ""}
         <div style="margin-top:10px">
           <button class="button small" data-restore="${i}" type="button"${blocked ? " disabled" : ""}>Restore</button>
         </div>
@@ -282,7 +329,7 @@ async function loadList(reset = true) {
 
     if (mine !== token) return;
 
-    if (data.length) total = Number(data[0].total_count) || 0;
+    if (data.length) total = num(data[0].total_count);
 
     rows = rows.concat(data);
     offset += data.length;
@@ -296,7 +343,7 @@ async function loadList(reset = true) {
 
     $("list").innerHTML =
       '<div class="empty">Could not load records: ' + esc(error.message) +
-      " (If it mentions a missing function, run the Stage 6b SQL.)</div>";
+      " (If it mentions a missing function, run the archive SQL.)</div>";
 
   } finally {
     $("moreBtn").disabled = false;
@@ -329,11 +376,9 @@ $("list").addEventListener("click", async event => {
   const row = rows[Number(button.dataset.restore)];
   if (!row) return;
 
-  const school = row.owner && row.owner !== PUBLIC_OWNER;
-
   const question =
     "Restore this " + SINGULAR[category] + "?\n\n" + (row.title || "") +
-    (school ? "\n\nIt belongs to " + row.owner + ". Restoring it may take that school over its package limits." : "");
+    (WHAT_COMES_BACK[category] ? "\n\n" + WHAT_COMES_BACK[category] : "");
 
   if (!confirm(question)) return;
 
@@ -347,7 +392,7 @@ $("list").addEventListener("click", async event => {
     rows = rows.filter(r => r !== row);
     total = Math.max(0, total - 1);
     offset = Math.max(0, offset - 1);
-    counts[category] = Math.max(0, (Number(counts[category]) || 0) - 1);
+    counts[category] = Math.max(0, num(counts[category]) - 1);
 
     renderTabs();
     renderList();
