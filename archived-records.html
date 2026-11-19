@@ -284,8 +284,8 @@ function blockedText(row) {
 function deleteBlock(row) {
   const x = row.extra || {};
 
-  if (category === "countries" && num(x.levels) > 0) {
-    return "It still has " + num(x.levels) + " education level(s).";
+  if (category === "countries" && num(x.exams) > 0) {
+    return "It has " + num(x.exams) + " examination(s) under its education levels.";
   }
 
   if (category === "levels" && num(x.exams) > 0) {
