@@ -110,9 +110,22 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
   <div class="row"><button class="btn gold" id="viewBtn" type="button">View examination</button><button class="btn ghost" id="clearBtn" type="button">Clear</button></div>
 </div>
 
+<div class="card" id="browse">
+  <h2>Examinations</h2>
+  <p class="hint">Every examination for public students. The boxes above narrow this list.</p>
+  <div class="grid">
+    <div><label for="listSearch">Search</label><input id="listSearch" type="search" placeholder="Title, subject or exam ID"></div>
+    <div><label for="listStatus">Show</label><select id="listStatus"><option value="active">Active</option><option value="published">Published only</option><option value="unpublished">Unpublished only</option><option value="archived">Archived</option></select></div>
+  </div>
+  <div class="msg" id="listMsg"></div>
+  <p class="count" id="listCount"></p>
+  <div id="examList"><p class="empty">Loading…</p></div>
+  <div class="pager"><button class="btn ghost" id="listPrev" type="button">← Previous</button><span id="listInfo"></span><button class="btn ghost" id="listNext" type="button">Next →</button></div>
+</div>
+
 <div id="view" hidden>
   <div class="card">
-    <button class="btn ghost" id="backBtn" type="button" style="margin-bottom:14px">← Choose another examination</button>
+    <button class="btn ghost" id="backBtn" type="button" style="margin-bottom:14px">← Back to examinations</button>
     <h2 id="examTitle">Examination</h2>
     <div class="sum" id="examInfo" style="margin-top:10px"></div>
     <div class="acts" style="margin-top:14px">
@@ -171,6 +184,7 @@ const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 function say(id,text,type="info"){const e=$(id);e.textContent=text;e.className="msg show "+type}
 function hush(id){const e=$(id);e.textContent="";e.className="msg"}
+const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
 const goHome=()=>location.replace("admin-login.html");
 $("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 $("signOut").addEventListener("click",async()=>{await supabase.auth.signOut();goHome()});
@@ -188,7 +202,9 @@ async function requirePermission(permission){
   return true;
 }
 
-let exam=null,questions=[],page=1,editQ=null,busy=false;
+let exam=null,questions=[],page=1,editQ=null,busy=false,editTarget=null;
+let list=[],listPage=1,listTotal=0,listTok=0;
+const LIST_PER=10;
 const isPub=q=>q.is_published!==false;
 
 function setOptions(sel,rows,vf,lf,ph){
@@ -196,7 +212,11 @@ function setOptions(sel,rows,vf,lf,ph){
   sel.disabled=!rows.length;
 }
 function resetSelect(sel,ph){sel.innerHTML='<option value="">'+esc(ph)+"</option>";sel.disabled=true}
-function showPick(){exam=null;questions=[];$("view").hidden=true;$("pick").hidden=false;hush("pageMsg")}
+function showPick(){
+  exam=null;questions=[];$("view").hidden=true;$("pick").hidden=false;$("browse").hidden=false;hush("pageMsg");
+  loadExamList();
+}
+function showView(){$("pick").hidden=true;$("browse").hidden=true;$("view").hidden=false;window.scrollTo({top:0})}
 
 async function checkAdmin(){
   const s=await getCurrentSession();
@@ -243,13 +263,27 @@ async function loadExams(){
   sel.innerHTML='<option value="">Choose examination</option>'+(data||[]).map(x=>`<option value="${esc(x.id)}">${esc(x.title)} — ${x.access_type==="paid"?"PREMIUM":"FREE"} — ${x.is_published?"Published":"Unpublished"} — ${x.is_archived?"ARCHIVED":"Active"}</option>`).join("");
   sel.disabled=!(data||[]).length;
 }
+async function reloadExamSelect(){
+  const keep=$("examSelect").value;
+  await loadExams();
+  if(keep)$("examSelect").value=keep;
+}
 const guard=(id,fn)=>async()=>{try{await fn();hush(id)}catch(e){say(id,e.message,"err")}};
-$("countrySelect").addEventListener("change",guard("pickMsg",loadLevels));
-$("levelSelect").addEventListener("change",guard("pickMsg",loadSubjects));
-$("subjectSelect").addEventListener("change",guard("pickMsg",loadExams));
-$("clearBtn").addEventListener("click",()=>{$("countrySelect").value="";resetSelect($("levelSelect"),"Choose country first");resetSelect($("subjectSelect"),"Choose education level first");resetSelect($("examSelect"),"Choose subject first");hush("pickMsg")});
+$("countrySelect").addEventListener("change",guard("pickMsg",async()=>{await loadLevels();listPage=1;await loadExamList()}));
+$("levelSelect").addEventListener("change",guard("pickMsg",async()=>{await loadSubjects();listPage=1;await loadExamList()}));
+$("subjectSelect").addEventListener("change",guard("pickMsg",async()=>{await loadExams();listPage=1;await loadExamList()}));
+$("clearBtn").addEventListener("click",()=>{
+  $("countrySelect").value="";resetSelect($("levelSelect"),"Choose country first");resetSelect($("subjectSelect"),"Choose education level first");resetSelect($("examSelect"),"Choose subject first");
+  hush("pickMsg");listPage=1;loadExamList();
+});
 $("backBtn").addEventListener("click",showPick);
 
+async function openExamById(id){
+  const {data,error}=await supabase.from("examinations").select("*").eq("id",id).single();
+  if(error){say("listMsg",error.message,"err");return}
+  exam=data;page=1;$("qSearch").value="";
+  showView();renderExam();await loadQuestions();
+}
 $("viewBtn").addEventListener("click",async()=>{
   const id=$("examSelect").value;
   if(!$("countrySelect").value||!$("levelSelect").value||!$("subjectSelect").value||!id){say("pickMsg","Choose the country, education level, subject and examination.","err");return}
@@ -257,11 +291,134 @@ $("viewBtn").addEventListener("click",async()=>{
   const {data,error}=await supabase.from("examinations").select("*").eq("id",id).eq("education_level_id",$("levelSelect").value).eq("subject_id",$("subjectSelect").value).single();
   if(error){say("pickMsg",error.message,"err");return}
   exam=data;page=1;$("qSearch").value="";
-  $("pick").hidden=true;$("view").hidden=false;window.scrollTo({top:0});
-  renderExam();await loadQuestions();
+  showView();renderExam();await loadQuestions();
 });
 
-/* ---------- the examination ---------- */
+/* ---------- the list of examinations ---------- */
+async function loadExamList(){
+  const tok=++listTok;
+  $("examList").innerHTML='<p class="empty">Loading…</p>';
+  const num=v=>v?Number(v):null;
+  try{
+    const {data,error}=await supabase.rpc("admin_exam_list",{
+      p_country:num($("countrySelect").value),p_level:num($("levelSelect").value),p_subject:num($("subjectSelect").value),
+      p_search:$("listSearch").value.trim()||null,p_status:$("listStatus").value,
+      p_limit:LIST_PER,p_offset:(listPage-1)*LIST_PER
+    });
+    if(error)throw error;
+    if(tok!==listTok)return;
+    list=data||[];
+    listTotal=list.length?Number(list[0].total_count)||0:0;
+    if(!list.length&&listPage>1){listPage=1;return loadExamList()}
+    renderExamList();
+  }catch(e){
+    if(tok!==listTok)return;
+    console.error(e);
+    list=[];listTotal=0;
+    $("examList").innerHTML="";$("listCount").textContent="";$("listInfo").textContent="";
+    $("listPrev").disabled=true;$("listNext").disabled=true;
+    say("listMsg","Could not load the examinations: "+e.message+" (If it mentions a missing function, run the examination list SQL.)","err");
+  }
+}
+function renderExamList(){
+  hush("listMsg");
+  const pages=Math.max(1,Math.ceil(listTotal/LIST_PER));
+  $("listCount").textContent=listTotal+" examination(s) found.";
+  $("listInfo").textContent="Page "+listPage+" of "+pages;
+  $("listPrev").disabled=listPage<=1;$("listNext").disabled=listPage>=pages;
+  if(!list.length){$("examList").innerHTML='<p class="empty">No examinations found.</p>';return}
+  $("examList").innerHTML=list.map((x,i)=>{
+    const arch=!!x.is_archived,pub=!!x.is_published,premium=String(x.access_type||"").toLowerCase()!=="free";
+    const code=x.exam_code?esc(x.exam_code):"#"+esc(x.exam_id);
+    const status=arch?'<span class="badge arch">Archived</span>':`<span class="badge ${pub?"on":"off"}">${pub?"Published":"Unpublished"}</span>`;
+    const buttons=arch
+      ?`<button class="btn primary" type="button" data-l="view" data-i="${i}">View Questions</button><button class="btn good" type="button" data-l="archive" data-i="${i}">Restore</button>`
+      :`<button class="btn primary" type="button" data-l="view" data-i="${i}">View Questions</button>
+        <button class="btn gold" type="button" data-l="edit" data-i="${i}">Edit</button>
+        <button class="btn ${pub?"danger":"good"}" type="button" data-l="publish" data-i="${i}">${pub?"Unpublish":"Publish"}</button>
+        <button class="btn ghost" type="button" data-l="archive" data-i="${i}">Archive</button>
+        <button class="btn danger" type="button" data-l="delete" data-i="${i}">Delete</button>`;
+    return `<article class="item ${arch?"muted":""}">
+      <div><div class="item-title">${esc(x.title||"Untitled")} <span class="badge ${premium?"off":"on"}">${premium?"PREMIUM":"FREE"}</span></div>
+        <div class="item-meta"><b>Exam ID:</b> ${code}<br><b>Subject:</b> ${esc(x.subject_name)} · <b>Level:</b> ${esc(x.level_name)}${x.country_name?" · <b>Country:</b> "+esc(x.country_name):""}<br>
+        <b>Questions:</b> ${Number(x.question_count)||0} (${Number(x.published_count)||0} published) &nbsp;${status}</div></div>
+      <div class="acts">${buttons}</div></article>`;
+  }).join("");
+}
+$("listPrev").addEventListener("click",()=>{if(listPage>1){listPage--;loadExamList()}});
+$("listNext").addEventListener("click",()=>{listPage++;loadExamList()});
+$("listSearch").addEventListener("input",debounce(()=>{listPage=1;loadExamList()},400));
+$("listStatus").addEventListener("change",()=>{listPage=1;loadExamList()});
+
+/* ---------- actions on one examination (from the list or the open examination) ---------- */
+async function setPublished(ex,to){
+  const {error}=await supabase.from("examinations").update({is_published:to}).eq("id",ex.id);
+  if(error)throw error;
+  const {error:qe}=await supabase.from("exam_questions").update({is_published:to}).eq("examination_id",ex.id).eq("is_archived",false);
+  if(qe)throw new Error("The examination status changed, but its questions could not be updated. "+qe.message);
+}
+/* The database moves the questions with the examination, and brings back only the ones archived with it. */
+async function setArchived(ex,to){
+  const {error}=await supabase.from("examinations").update({is_archived:to}).eq("id",ex.id);
+  if(error)throw error;
+}
+async function removeExam(ex){
+  const {data,error}=await supabase.from("exam_attempts").select("id").eq("examination_id",ex.id).limit(1);
+  if(error)throw error;
+  if((data||[]).length){
+    const {error:e1}=await supabase.from("examinations").update({is_archived:true}).eq("id",ex.id);
+    if(e1)throw e1;
+    return "archived";
+  }
+  const {error:e2}=await supabase.from("exam_questions").delete().eq("examination_id",ex.id);
+  if(e2)throw e2;
+  const {error:e3}=await supabase.from("examinations").delete().eq("id",ex.id);
+  if(e3)throw e3;
+  return "deleted";
+}
+async function openEditModal(ex){
+  const {data,error}=await supabase.from("examinations").select("*").eq("id",ex.id).single();
+  if(error)throw error;
+  editTarget=data;
+  $("eTitle").value=data.title||"";$("eDesc").value=data.description||"";$("eDur").value=data.duration_minutes||"";
+  $("eType").value=data.access_type==="paid"?"Premium":"Free";hush("examMsg");$("examModal").classList.add("show");
+}
+async function examAction(fn,msgId="pageMsg"){if(busy)return;busy=true;try{await fn()}catch(e){say(msgId,e.message,"err")}finally{busy=false}}
+
+$("examList").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-l]");if(!b)return;
+  const x=list[Number(b.dataset.i)];if(!x)return;
+  const ex={id:x.exam_id,title:x.title,is_published:x.is_published,is_archived:x.is_archived};
+  const act=b.dataset.l;
+  if(act==="view"){examAction(()=>openExamById(ex.id),"listMsg");return}
+  examAction(async()=>{
+    if(act==="edit"){await openEditModal(ex);return}
+    if(act==="publish"){
+      const to=!ex.is_published;
+      if(!confirm("Are you sure you want to "+(to?"publish":"unpublish")+' "'+ex.title+'" and ALL its questions?'))return;
+      await setPublished(ex,to);
+      await Promise.all([loadExamList(),reloadExamSelect()]);
+      say("listMsg","The examination and all its questions are now "+(to?"published":"unpublished")+".","ok");
+      return;
+    }
+    if(act==="archive"){
+      const to=!ex.is_archived;
+      if(!confirm(to?'Archive "'+ex.title+'" and all its questions? Student history is kept.':'Restore "'+ex.title+'"? The questions archived with it come back too.'))return;
+      await setArchived(ex,to);
+      await Promise.all([loadExamList(),reloadExamSelect()]);
+      say("listMsg",to?"Archived. Student history is kept.":"Restored.","ok");
+      return;
+    }
+    if(act==="delete"){
+      if(!confirm('Check student history for "'+ex.title+'" and delete or archive it safely?'))return;
+      const result=await removeExam(ex);
+      await Promise.all([loadExamList(),reloadExamSelect()]);
+      say("listMsg",result==="archived"?"This examination has student history, so it was archived instead of deleted.":"Examination permanently deleted.",result==="archived"?"warn":"ok");
+    }
+  },"listMsg");
+});
+
+/* ---------- the open examination ---------- */
 function renderExam(){
   const pub=!!exam.is_published,arch=!!exam.is_archived;
   $("examTitle").textContent=exam.title;
@@ -274,64 +431,49 @@ function renderExam(){
   $("archBtn").textContent=arch?"Restore examination":"Archive examination";
   $("archBtn").className="btn "+(arch?"good":"ghost");
 }
-async function refreshExamList(){const keep=exam.id;await loadExams();$("examSelect").value=String(keep)}
-async function examAction(fn){if(busy)return;busy=true;try{await fn()}catch(e){say("pageMsg",e.message,"err")}finally{busy=false}}
 
 $("pubBtn").addEventListener("click",()=>examAction(async()=>{
   if(!exam||exam.is_archived)return;
   const to=!exam.is_published,act=to?"publish":"unpublish";
   if(!confirm("Are you sure you want to "+act+" this examination and ALL its questions?"))return;
-  const {error}=await supabase.from("examinations").update({is_published:to}).eq("id",exam.id);
-  if(error)throw error;
-  const {error:qe}=await supabase.from("exam_questions").update({is_published:to}).eq("examination_id",exam.id);
-  if(qe)throw new Error("The examination status changed, but its questions could not be updated. "+qe.message);
-  exam.is_published=to;questions.forEach(q=>{q.is_published=to});
-  renderExam();renderQuestions();await refreshExamList();
+  await setPublished(exam,to);
+  exam.is_published=to;questions.forEach(q=>{if(!q.is_archived)q.is_published=to});
+  renderExam();renderQuestions();await reloadExamSelect();
   say("pageMsg","The examination and all its questions are now "+(to?"published":"unpublished")+".","ok");
 }));
-$("editExamBtn").addEventListener("click",()=>{
+$("editExamBtn").addEventListener("click",()=>examAction(async()=>{
   if(!exam||exam.is_archived)return;
-  $("eTitle").value=exam.title||"";$("eDesc").value=exam.description||"";$("eDur").value=exam.duration_minutes||"";
-  $("eType").value=exam.access_type==="paid"?"Premium":"Free";hush("examMsg");$("examModal").classList.add("show");
-});
-$("closeExamBtn").addEventListener("click",()=>$("examModal").classList.remove("show"));
+  await openEditModal(exam);
+}));
+$("closeExamBtn").addEventListener("click",()=>{$("examModal").classList.remove("show");editTarget=null});
 $("saveExamBtn").addEventListener("click",()=>examAction(async()=>{
-  if(!exam||exam.is_archived)return;
+  if(!editTarget||editTarget.is_archived)return;
   const title=$("eTitle").value.trim(),dur=Number($("eDur").value);
   if(!title||!Number.isFinite(dur)||dur<=0){say("examMsg","Enter a title and a duration above zero.","err");return}
   const updates={title,description:$("eDesc").value.trim(),duration_minutes:dur};
-  const {error}=await supabase.from("examinations").update(updates).eq("id",exam.id).eq("is_archived",false);
+  const {error}=await supabase.from("examinations").update(updates).eq("id",editTarget.id).eq("is_archived",false);
   if(error){say("examMsg",error.message,"err");return}
-  exam={...exam,...updates};$("examModal").classList.remove("show");
-  renderExam();await refreshExamList();say("pageMsg","Examination updated.","ok");
+  const id=editTarget.id;
+  $("examModal").classList.remove("show");editTarget=null;
+  if(exam&&exam.id===id){exam={...exam,...updates};renderExam();say("pageMsg","Examination updated.","ok")}
+  else say("listMsg","Examination updated.","ok");
+  await Promise.all([loadExamList(),reloadExamSelect()]);
 }));
 $("archBtn").addEventListener("click",()=>examAction(async()=>{
   if(!exam)return;
   const to=!exam.is_archived;
-  if(!confirm(to?"Archive this examination and all its questions? Student history is kept.":"Restore this examination and all its questions?"))return;
-  const {error}=await supabase.from("examinations").update({is_archived:to}).eq("id",exam.id);
-  if(error)throw error;
-  const {error:qe}=await supabase.from("exam_questions").update({is_archived:to}).eq("examination_id",exam.id);
-  if(qe)throw new Error("The examination was updated, but its questions could not be. Please check the database. "+qe.message);
-  exam.is_archived=to;questions.forEach(q=>{q.is_archived=to});
-  renderExam();renderQuestions();await refreshExamList();
+  if(!confirm(to?"Archive this examination and all its questions? Student history is kept.":"Restore this examination? The questions archived with it come back too."))return;
+  await setArchived(exam,to);
+  exam.is_archived=to;
+  renderExam();await loadQuestions();await reloadExamSelect();
   say("pageMsg",to?"Archived. Student history is kept.":"Restored.","ok");
 }));
 $("delExamBtn").addEventListener("click",()=>examAction(async()=>{
   if(!exam||exam.is_archived)return;
   if(!confirm('Check student history for "'+exam.title+'" and delete or archive it safely?'))return;
-  const {data,error}=await supabase.from("exam_attempts").select("id").eq("examination_id",exam.id).limit(1);
-  if(error)throw error;
-  if((data||[]).length){
-    const {error:e1}=await supabase.from("examinations").update({is_archived:true}).eq("id",exam.id);if(e1)throw e1;
-    const {error:e2}=await supabase.from("exam_questions").update({is_archived:true}).eq("examination_id",exam.id);
-    if(e2)throw new Error("The examination was archived, but some questions could not be. "+e2.message);
-    showPick();await loadExams();
-    say("pickMsg","This examination has student history, so it was archived instead of deleted.","warn");
-  }else{
-    const {error:e3}=await supabase.from("examinations").delete().eq("id",exam.id);if(e3)throw e3;
-    showPick();await loadExams();say("pickMsg","Examination permanently deleted.","ok");
-  }
+  const result=await removeExam(exam);
+  showPick();await reloadExamSelect();
+  say("listMsg",result==="archived"?"This examination has student history, so it was archived instead of deleted.":"Examination permanently deleted.",result==="archived"?"warn":"ok");
 }));
 
 /* ---------- questions ---------- */
@@ -432,7 +574,12 @@ $("saveQBtn").addEventListener("click",()=>examAction(async()=>{
 }));
 
 (async()=>{
-  try{if(!await checkAdmin())return;await loadCountries()}
+  try{
+    if(!await checkAdmin())return;
+    if(!await requirePermission("manage_questions"))return;
+    await loadCountries();
+    await loadExamList();
+  }
   catch(e){console.error(e);say("pickMsg",e.message||"Unable to load the Question Bank.","err")}
 })();
 
