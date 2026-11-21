@@ -299,7 +299,7 @@ async function loadUsage(){
       const pc=m>0&&u!==null?Math.min(100,u/m*100):0;
       return `<div><div class="uhead"><span>${n}</span><b>${u===null?"—":num(u)} / ${num(m)}</b></div><div class="bar"><span style="width:${pc}%;${u>m?"background:#dc5b52":""}"></span></div></div>`}).join("");
     const left=(m,u)=>num(Math.max(0,m-(u||0)));
-    $("packageNotice").textContent=`Remaining capacity: ${left(p.students,st.count)} students, ${left(p.subjects,su.count)} subjects, ${left(p.exams,ex.count)} examinations and ${left(p.questions,q)} questions. Maximum examination duration: ${num(p.minutes)} minutes. Maximum questions per examination: ${num(p.perExam)}.`;
+    $("packageNotice").textContent=`Remaining capacity: ${left(p.students,st.count)} students, ${left(p.subjects,su.count)} subjects, ${left(p.exams,ex.count)} examinations and ${left(p.questions,q)} questions. Maximum examination duration: ${num(p.minutes)} minutes. Maximum questions per examination: ${num(p.perExam)}.${p.attempts===null?"":" Maximum attempts per student per exam: "+num(p.attempts)+"."}.`;
   }catch(e){
     console.error(e);$("packageName").textContent="Package unavailable";
     $("packageNotice").textContent="Package information could not be loaded: "+(e.message||e);
