@@ -271,7 +271,7 @@ async function loadRecent(){
 
 /* ---------- package and usage (both tabs together) ---------- */
 async function loadPackage(){
-  const a=await sb.from("school_account_packages").select("package_name,expires_at,custom_max_active_students,custom_max_subjects,custom_max_stored_questions,custom_max_examinations,custom_max_exam_duration_minutes,custom_max_questions_per_exam").eq("school_account_id",acc.id).maybeSingle();
+  const a=await sb.from("school_account_packages").select("package_name,expires_at,custom_max_active_students,custom_max_subjects,custom_max_stored_questions,custom_max_examinations,custom_max_exam_duration_minutes,custom_max_questions_per_exam,custom_max_attempts_per_exam").eq("school_account_id",acc.id).maybeSingle();
   if(a.error)throw a.error;
   let name=String(a.data?.package_name||"Free"),over=a.data;
   const exp=a.data?.expires_at?new Date(a.data.expires_at):null;
