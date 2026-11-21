@@ -284,7 +284,8 @@ async function loadPackage(){
   const r=(c,s)=>{const v=over&&over[c]!==null&&over[c]!==undefined?Number(over[c]):Number(l.data[s]);if(!Number.isFinite(v)||v<0)throw new Error("Invalid limit: "+s);return v};
   return{name,students:r("custom_max_active_students","max_active_students"),subjects:r("custom_max_subjects","max_subjects"),
     questions:r("custom_max_stored_questions","max_stored_questions"),exams:r("custom_max_examinations","max_examinations"),
-    minutes:r("custom_max_exam_duration_minutes","max_exam_duration_minutes"),perExam:r("custom_max_questions_per_exam","max_questions_per_exam")};
+    minutes:r("custom_max_exam_duration_minutes","max_exam_duration_minutes"),perExam:r("custom_max_questions_per_exam","max_questions_per_exam"),
+    attempts:(()=>{const v=over&&over.custom_max_attempts_per_exam!==null&&over.custom_max_attempts_per_exam!==undefined?over.custom_max_attempts_per_exam:l.data.max_attempts_per_exam;return v===null||v===undefined?null:Number(v)})()};
 }
 async function loadUsage(){
   try{
