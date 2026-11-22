@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,622 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#10294b">
 <title>Archive Management | SAINTIG EXAMS</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
-:root {
-  --navy: #10294b;
-  --navy2: #183b65;
-  --gold: #c49a42;
-  --gold-light: #f6edda;
-  --bg: #f5f7fa;
-  --white: #fff;
-  --text: #243449;
-  --muted: #718096;
-  --border: #e1e7ef;
-  --green: #16834b;
-  --red: #c43e43;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
-
-button, input, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-.topbar {
-  background: var(--navy);
-  color: white;
-  padding: 17px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  border-bottom: 3px solid var(--gold);
-}
-
-.brand {
-  font-size: 19px;
-  font-weight: bold;
-  letter-spacing: .3px;
-}
-
-.brand span {
-  color: #e2bd70;
-}
-
-.topbar small {
-  display: block;
-  color: #d4dce8;
-  font-size: 11px;
-  margin-top: 4px;
-}
-
-.back-btn {
-  border: 1px solid #ffffff66;
-  background: transparent;
-  color: white;
-  padding: 9px 13px;
-  border-radius: 7px;
-  font-size: 12px;
-}
-
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 22px 16px 45px;
-}
-
-.page-heading {
-  margin-bottom: 20px;
-}
-
-.page-heading h1 {
-  color: var(--navy);
-  font-size: 23px;
-  margin-bottom: 7px;
-}
-
-.page-heading p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.section-title {
-  color: var(--navy);
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 13px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 27px;
-}
-
-.stat-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 15px;
-  box-shadow: 0 2px 7px #10294b08;
-  min-width: 0;
-}
-
-.stat-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 13px;
-}
-
-.stat-name {
-  color: var(--navy);
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.stat-icon {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: var(--gold-light);
-  color: var(--navy);
-  font-size: 17px;
-}
-
-.stat-total {
-  color: var(--navy);
-  font-size: 27px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.stat-details {
-  display: flex;
-  justify-content: space-between;
-  gap: 5px;
-  flex-wrap: wrap;
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.active-number {
-  color: var(--green);
-  font-weight: bold;
-}
-
-.archived-number {
-  color: var(--gold);
-  font-weight: bold;
-}
-
-.category-heading {
-  margin-top: 7px;
-  margin-bottom: 14px;
-}
-
-.category-heading h2 {
-  font-size: 17px;
-  color: var(--navy);
-  margin-bottom: 5px;
-}
-
-.category-heading p {
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.category-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 16px 13px;
-  text-align: left;
-  transition: .2s;
-  min-height: 110px;
-  color: var(--text);
-}
-
-.category-card:hover,
-.category-card.selected {
-  border-color: var(--gold);
-  box-shadow: 0 3px 12px #c49a4220;
-  background: #fffdf8;
-}
-
-.category-card.selected {
-  border-width: 2px;
-}
-
-.category-card .category-icon {
-  font-size: 23px;
-  margin-bottom: 9px;
-}
-
-.category-card strong {
-  display: block;
-  color: var(--navy);
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.category-card small {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.workspace {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 17px;
-  display: none;
-}
-
-.workspace.show {
-  display: block;
-}
-
-.workspace-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 15px;
-}
-
-.workspace-title h2 {
-  color: var(--navy);
-  font-size: 18px;
-}
-
-.close-workspace {
-  background: #edf1f6;
-  border: 0;
-  padding: 7px 10px;
-  border-radius: 6px;
-  color: var(--navy);
-}
-
-.view-tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.tab {
-  border: 1px solid var(--border);
-  background: white;
-  color: var(--muted);
-  border-radius: 7px;
-  padding: 9px 13px;
-  font-size: 12px;
-}
-
-.tab.active {
-  background: var(--navy);
-  border-color: var(--navy);
-  color: white;
-}
-
-.filters {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-  margin-bottom: 14px;
-}
-
-.field {
-  width: 100%;
-  padding: 11px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  background: white;
-  color: var(--text);
-  outline: none;
-  font-size: 12px;
-  min-width: 0;
-}
-
-.field:focus {
-  border-color: var(--gold);
-}
-
-.record-summary {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-  color: var(--muted);
-  font-size: 12px;
-  margin: 12px 0;
-}
-
-.record-list {
-  display: grid;
-  gap: 10px;
-}
-
-.record-card {
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 13px;
-}
-
-.record-card h3 {
-  color: var(--navy);
-  font-size: 14px;
-  margin-bottom: 7px;
-  overflow-wrap: anywhere;
-}
-
-.record-meta {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.8;
-  overflow-wrap: anywhere;
-}
-
-.record-actions {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-
-.action-btn {
-  border: 0;
-  padding: 8px 11px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.view-btn {
-  background: #edf2f8;
-  color: var(--navy);
-}
-
-.archive-btn {
-  background: #fff3dc;
-  color: #805d16;
-}
-
-.restore-btn {
-  background: #e5f5eb;
-  color: var(--green);
-}
-
-.delete-btn {
-  background: #fdebed;
-  color: var(--red);
-}
-
-.empty-state {
-  padding: 30px 12px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 13px;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  line-height: 1.6;
-}
-
-.loading {
-  text-align: center;
-  padding: 22px;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.status-message {
-  display: none;
-  padding: 12px;
-  border-radius: 7px;
-  font-size: 12px;
-  margin-bottom: 14px;
-  line-height: 1.5;
-  overflow-wrap: anywhere;
-}
-
-.status-message.error {
-  display: block;
-  background: #fff0f0;
-  color: var(--red);
-}
-
-.status-message.success {
-  display: block;
-  background: #eaf7ef;
-  color: var(--green);
-}
-
-.footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 25px 10px;
-}
-
-@media (min-width: 700px) {
-  .stats-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .category-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .filters {
-    grid-template-columns: 2fr 1fr;
-  }
-
-  .container {
-    padding-top: 30px;
-  }
-}
-
-@media (max-width: 370px) {
-  .stat-details {
-    display: grid;
-    gap: 5px;
-  }
-
-  .category-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+:root{--navy:#10294b;--navy2:#183b65;--gold:#c49a42;--gold-light:#f6edda;--bg:#f5f7fa;--white:#fff;--text:#243449;--muted:#718096;--border:#e1e7ef;--green:#16834b;--red:#c43e43}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.topbar{background:var(--navy);color:#fff;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--gold)}
+.brand{font-size:19px;font-weight:bold;letter-spacing:.3px}
+.brand span{color:#e2bd70}
+.topbar small{display:block;color:#d4dce8;font-size:11px;margin-top:4px}
+.back-btn{border:1px solid #ffffff66;background:transparent;color:#fff;padding:9px 13px;border-radius:7px;font-size:12px}
+.container{max-width:1100px;margin:auto;padding:22px 16px 45px}
+.page-heading{margin-bottom:18px}
+.page-heading h1{color:var(--navy);font-size:23px;margin-bottom:7px}
+.page-heading p{color:var(--muted);font-size:13px;line-height:1.5}
+.space-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.space-tab{flex:1;min-width:190px;padding:14px;border-radius:12px;font-weight:bold;font-size:15px;border:2px solid var(--border);background:#fff;color:var(--navy)}
+.space-tab.on{background:var(--navy);color:#fff;border-color:var(--gold)}
+.space-note{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b;border-radius:10px;padding:12px 14px;margin-bottom:22px;font-size:13px;line-height:1.5}
+.section-title{color:var(--navy);font-size:16px;font-weight:bold;margin-bottom:13px}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:27px}
+.stat-card{background:var(--white);border:1px solid var(--border);border-radius:11px;padding:15px;box-shadow:0 2px 7px #10294b08;min-width:0}
+.stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}
+.stat-name{color:var(--navy);font-size:13px;font-weight:bold}
+.stat-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:9px;background:var(--gold-light);color:var(--navy);font-size:17px}
+.stat-total{color:var(--navy);font-size:27px;font-weight:bold;margin-bottom:10px}
+.stat-details{display:flex;justify-content:space-between;gap:5px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.active-number{color:var(--green);font-weight:bold}
+.archived-number{color:var(--gold);font-weight:bold}
+.category-heading{margin-top:7px;margin-bottom:14px}
+.category-heading h2{font-size:17px;color:var(--navy);margin-bottom:5px}
+.category-heading p{color:var(--muted);font-size:12px}
+.category-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:25px}
+.category-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:16px 13px;text-align:left;transition:.2s;min-height:110px;color:var(--text)}
+.category-card:hover,.category-card.selected{border-color:var(--gold);box-shadow:0 3px 12px #c49a4220;background:#fffdf8}
+.category-card.selected{border-width:2px}
+.category-card .category-icon{font-size:23px;margin-bottom:9px}
+.category-card strong{display:block;color:var(--navy);font-size:14px;margin-bottom:5px}
+.category-card small{color:var(--muted);font-size:11px}
+.workspace{background:#fff;border:1px solid var(--border);border-radius:12px;padding:17px;display:none}
+.workspace.show{display:block}
+.workspace-title{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.workspace-title h2{color:var(--navy);font-size:18px}
+.close-workspace{background:#edf1f6;border:0;padding:7px 10px;border-radius:6px;color:var(--navy)}
+.view-tabs{display:flex;gap:8px;margin-bottom:15px}
+.tab{border:1px solid var(--border);background:#fff;color:var(--muted);border-radius:7px;padding:9px 13px;font-size:12px}
+.tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.field{width:100%;padding:11px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--text);outline:none;font-size:12px;min-width:0}
+.field:focus{border-color:var(--gold)}
+.record-summary{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin:12px 0}
+.record-list{display:grid;gap:10px}
+.record-card{border:1px solid var(--border);border-radius:9px;padding:13px}
+.record-card h3{color:var(--navy);font-size:14px;margin-bottom:7px;overflow-wrap:anywhere}
+.record-meta{color:var(--muted);font-size:11px;line-height:1.8;overflow-wrap:anywhere}
+.record-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.action-btn{border:0;padding:8px 11px;border-radius:6px;font-size:11px;font-weight:bold;text-decoration:none;display:inline-block}
+.view-btn{background:#edf2f8;color:var(--navy)}
+.archive-btn{background:#fff3dc;color:#805d16}
+.restore-btn{background:#e5f5eb;color:var(--green)}
+.delete-btn{background:#fdebed;color:var(--red)}
+.more-btn{display:block;margin:14px auto 0;background:#edf1f6;border:0;color:var(--navy);padding:10px 18px;border-radius:7px;font-weight:bold;font-size:12px}
+.empty-state{padding:30px 12px;text-align:center;color:var(--muted);font-size:13px;border:1px dashed var(--border);border-radius:8px;line-height:1.6}
+.loading{text-align:center;padding:22px;color:var(--muted);font-size:12px}
+.footer{text-align:center;color:var(--muted);font-size:11px;padding:25px 10px}
+.modal{position:fixed;inset:0;background:#0a15288c;z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:12px;padding:18px;width:100%;max-width:520px;max-height:85vh;overflow-y:auto}
+.modal-box h3{color:var(--navy);margin-bottom:10px;font-size:16px}
+.detail-row{display:flex;gap:8px;font-size:12px;padding:7px 0;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.detail-row b{flex:0 0 140px;color:var(--navy)}
+.modal-box .close-workspace{margin-top:14px;width:100%;padding:11px}
+@media(min-width:700px){
+  .stats-grid{grid-template-columns:repeat(4,1fr)}
+  .stats-grid.six{grid-template-columns:repeat(3,1fr)}
+  .category-grid{grid-template-columns:repeat(4,1fr)}
+  .category-grid.six{grid-template-columns:repeat(3,1fr)}
+  .filters{grid-template-columns:2fr 1fr}
+  .container{padding-top:30px}
+}
+@media(max-width:370px){.stat-details{display:grid;gap:5px}}
 </style>
 </head>
-
 <body>
 
 <header class="topbar">
-  <div class="brand">
-    SAINTIG <span>EXAMS</span>
-    <small>Teacher / School Management</small>
-  </div>
-
-  <button class="back-btn" onclick="goBack()">
-    ← Dashboard
-  </button>
+  <div class="brand">SAINTIG <span>EXAMS</span><small>Teacher / School Management</small></div>
+  <button class="back-btn" id="backBtn" type="button">← Dashboard</button>
 </header>
 
 <main class="container">
 
   <div class="page-heading">
     <h1>Archive Management</h1>
-    <p>
-      Manage archived and active students, subjects, examinations
-      and questions. Restore records when needed while preserving
-      examination history.
-    </p>
+    <p>Manage archived and active records. Choose a tab to see the records of Teacher's Examination or School Class Examinations. Restore records when needed while examination history is preserved.</p>
   </div>
 
-  <div id="message" class="status-message" role="status"></div>
+  <div class="space-tabs">
+    <button class="space-tab" data-s="teacher" type="button">Teacher's Examination</button>
+    <button class="space-tab" data-s="class" type="button">School Class Examinations</button>
+  </div>
+  <div class="space-note" id="spaceNote"></div>
 
   <h2 class="section-title">Statistics Overview</h2>
-
-  <section class="stats-grid">
-
-    <div class="stat-card">
-      <div class="stat-top">
-        <span class="stat-name">Students</span>
-        <span class="stat-icon">♟</span>
-      </div>
-      <div class="stat-total" id="studentsTotal">—</div>
-      <div class="stat-details">
-        <span>Active: <b class="active-number" id="studentsActive">—</b></span>
-        <span>Archived: <b class="archived-number" id="studentsArchived">—</b></span>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-top">
-        <span class="stat-name">Subjects</span>
-        <span class="stat-icon">▤</span>
-      </div>
-      <div class="stat-total" id="subjectsTotal">—</div>
-      <div class="stat-details">
-        <span>Active: <b class="active-number" id="subjectsActive">—</b></span>
-        <span>Archived: <b class="archived-number" id="subjectsArchived">—</b></span>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-top">
-        <span class="stat-name">Examinations</span>
-        <span class="stat-icon">▣</span>
-      </div>
-      <div class="stat-total" id="examsTotal">—</div>
-      <div class="stat-details">
-        <span>Active: <b class="active-number" id="examsActive">—</b></span>
-        <span>Archived: <b class="archived-number" id="examsArchived">—</b></span>
-      </div>
-    </div>
-
-    <div class="stat-card">
-      <div class="stat-top">
-        <span class="stat-name">Questions</span>
-        <span class="stat-icon">☷</span>
-      </div>
-      <div class="stat-total" id="questionsTotal">—</div>
-      <div class="stat-details">
-        <span>Active: <b class="active-number" id="questionsActive">—</b></span>
-        <span>Archived: <b class="archived-number" id="questionsArchived">—</b></span>
-      </div>
-    </div>
-
-  </section>
+  <section class="stats-grid" id="statsGrid"></section>
 
   <div class="category-heading">
     <h2>Manage Archived Records</h2>
     <p>Select a category to view, archive, restore or manage records.</p>
   </div>
-
-  <section class="category-grid">
-
-    <button class="category-card"
-      onclick="openCategory('students',this)">
-      <div class="category-icon">♟</div>
-      <strong>Students</strong>
-      <small>Manage student records</small>
-    </button>
-
-    <button class="category-card"
-      onclick="openCategory('subjects',this)">
-      <div class="category-icon">▤</div>
-      <strong>Subjects</strong>
-      <small>Manage school subjects</small>
-    </button>
-
-    <button class="category-card"
-      onclick="openCategory('exams',this)">
-      <div class="category-icon">▣</div>
-      <strong>Examinations</strong>
-      <small>Manage examinations</small>
-    </button>
-
-    <button class="category-card"
-      onclick="openCategory('questions',this)">
-      <div class="category-icon">☷</div>
-      <strong>Questions</strong>
-      <small>Manage question bank</small>
-    </button>
-
-  </section>
+  <section class="category-grid" id="categoryGrid"></section>
 
   <section class="workspace" id="workspace">
-
     <div class="workspace-title">
       <h2 id="workspaceHeading">Students</h2>
-      <button class="close-workspace" onclick="closeWorkspace()">
-        Close ✕
-      </button>
+      <button class="close-workspace" id="closeWs" type="button">Close ✕</button>
     </div>
 
     <div class="view-tabs">
-      <button class="tab active" id="activeTab"
-        onclick="changeView('active')">
-        Active Records
-      </button>
-
-      <button class="tab" id="archivedTab"
-        onclick="changeView('archived')">
-        Archived Records
-      </button>
+      <button class="tab active" id="activeTab" type="button">Active Records</button>
+      <button class="tab" id="archivedTab" type="button">Archived Records</button>
     </div>
 
     <div class="filters">
-      <input
-        class="field"
-        id="searchInput"
-        type="search"
-        placeholder="Search records..."
-        oninput="filterRecords()"
-      >
-
-      <select class="field" id="filterSelect"
-        onchange="filterRecords()">
-        <option value="all">All Records</option>
-      </select>
+      <input class="field" id="searchInput" type="search" placeholder="Search records...">
+      <select class="field" id="filterSelect"><option value="all">All Records</option></select>
     </div>
 
     <div class="record-summary">
@@ -629,730 +140,559 @@ button:disabled {
       <span id="viewLabel">Active records</span>
     </div>
 
-    <div class="record-list" id="recordList">
-      <div class="empty-state">
-        Select a category to load its records.
-      </div>
-    </div>
-
+    <div class="record-list" id="recordList"><div class="empty-state">Select a category to load its records.</div></div>
   </section>
 
 </main>
 
-<footer class="footer">
-  SAINTIG EXAMS · Teacher / School Management
-</footer>
+<footer class="footer">SAINTIG EXAMS · Teacher / School Management</footer>
+
+<div class="modal" id="detailModal"><div class="modal-box">
+  <h3 id="detailTitle">Details</h3>
+  <div id="detailBody"></div>
+  <button class="close-workspace" id="detailClose" type="button">Close</button>
+</div></div>
 
 <script>
 "use strict";
 
-const SUPABASE_URL =
-  "https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_URL = "https://scuiswponnqyrbqjypkx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 
-const SUPABASE_KEY =
-  "sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true }
+});
 
-const EDGE_FUNCTION = "school-exam-management";
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+const fmtDate = v => { if (!v) return "—"; const d = new Date(v); return Number.isNaN(d.getTime()) ? "—" : d.toLocaleDateString(); };
 
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
+/* A record is active when is_archived is false OR not set (null). */
+const ACTIVE = "is_archived.is.false,is_archived.is.null";
+const PAGE = 50;
 
-let currentCategory = "students";
-let currentView = "active";
+let space = localStorage.getItem("saintig_space") === "class" ? "class" : "teacher";
+let acc = null;
+let category = null;
+let view = "active";
 let records = [];
-let currentUser = null;
-let loading = false;
-let operationInProgress = false;
-let pageInitialized = false;
+let shown = PAGE;
+let cache = {};
+let levelMap = {};
+let statToken = 0, listToken = 0;
+let busy = false, loadingList = false;
 
-const CATEGORY_CONFIG = {
-  students: {
-    title: "Students",
-    searchFields: ["full_name", "student_id"],
-    archiveRpc: "school_archive_student",
-    restoreRpc: "school_restore_student",
-    deleteRpc: "school_delete_student",
-    deleteParam: "p_student_id"
-  },
-
-  subjects: {
-    title: "Subjects",
-    searchFields: ["subject_name"],
-    archiveRpc: "school_archive_subject",
-    archiveParam: "p_subject_id",
-    restoreRpc: "school_restore_subject",
-    restoreParam: "p_subject_id",
-    deleteRpc: "school_delete_subject",
-    deleteParam: "p_subject_id"
-  },
-
-  exams: {
-    title: "Examinations",
-    searchFields: ["title", "name_class", "examination_code"],
-    archiveRpc: "school_archive_exam",
-    archiveParam: "p_exam_id",
-    restoreRpc: "school_restore_exam",
-    restoreParam: "p_exam_id",
-    deleteRpc: "school_delete_exam",
-    deleteParam: "p_exam_id"
-  },
-
-  questions: {
-    title: "Questions",
-    searchFields: ["question_text", "examination_title"],
-    archiveRpc: "school_archive_question",
-    archiveParam: "p_question_id",
-    restoreRpc: "school_restore_question",
-    restoreParam: "p_question_id",
-    deleteRpc: "school_delete_question",
-    deleteParam: "p_question_id"
-  }
+/* =====================================
+   CATEGORIES
+===================================== */
+const CATS = {
+  students: { title: "Students", icon: "♟", hint: "Manage student records",
+    rpc: { archive: "school_archive_student", restore: "school_restore_student", del: "school_delete_student", param: "p_student_id" },
+    search: ["full_name", "student_id"],
+    filters: [["active", "Active students", r => r.is_active !== false], ["inactive", "Inactive students", r => r.is_active === false]] },
+  subjects: { title: "Subjects", icon: "▤", hint: "Manage school subjects",
+    rpc: { archive: "school_archive_subject", restore: "school_restore_subject", del: "school_delete_subject", param: "p_subject_id" },
+    search: ["subject_name"],
+    filters: [["pub", "Published", r => r.is_published === true], ["unpub", "Unpublished", r => r.is_published !== true]] },
+  exams: { title: "Examinations", icon: "▣", hint: "Manage examinations",
+    rpc: { archive: "school_archive_exam", restore: "school_restore_exam", del: "school_delete_exam", param: "p_exam_id" },
+    search: ["title", "name_class", "examination_code"],
+    filters: [["pub", "Published", r => r.is_published === true], ["unpub", "Unpublished", r => r.is_published !== true]] },
+  questions: { title: "Questions", icon: "☷", hint: "Manage question bank",
+    rpc: { archive: "school_archive_question", restore: "school_restore_question", del: "school_delete_question", param: "p_question_id" },
+    search: ["question_text", "examination_title"],
+    filters: [["pub", "Published", r => r.is_published === true], ["unpub", "Unpublished", r => r.is_published !== true]] },
+  classes: { title: "Classes", icon: "▦", hint: "Class records (view only)", readOnly: true,
+    search: ["title", "academic_session"], filters: [] },
+  terms: { title: "Terms", icon: "◷", hint: "Class terms (view only)", readOnly: true,
+    search: ["title", "academic_session", "academic_period"],
+    filters: [["1st Term", "1st Term", r => r.academic_period === "1st Term"], ["2nd Term", "2nd Term", r => r.academic_period === "2nd Term"], ["3rd Term", "3rd Term", r => r.academic_period === "3rd Term"]] }
 };
 
-function goBack() {
-  window.location.href = "school-dashboard.html";
-}
+const ORDER = {
+  teacher: ["students", "subjects", "exams", "questions"],
+  class: ["students", "subjects", "exams", "questions", "classes", "terms"]
+};
 
-function showMessage(message, type = "success") {
-  const box = document.getElementById("message");
+const NOTE = {
+  teacher: "Teacher's Examination: archived and active records of your own students, subjects, examinations and questions. The numbers below count this tab only.",
+  class: "School Class Examinations: archived and active records of classes, terms, and the students, subjects, examinations and questions that belong to them. The numbers below count this tab only."
+};
 
-  box.className = "status-message " + type;
-  box.textContent = message;
-  box.style.display = "block";
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
-
-function clearMessage() {
-  const box = document.getElementById("message");
-
-  box.style.display = "none";
-  box.textContent = "";
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[char]);
+/* =====================================
+   MESSAGES (toast at the top of the screen)
+===================================== */
+const toastEl = document.createElement("div");
+toastEl.style.cssText = "display:none;position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;width:min(92vw,640px);padding:14px 40px 14px 16px;border-radius:10px;box-shadow:0 8px 28px #0003;font:15px/1.5 Arial,sans-serif;cursor:pointer";
+toastEl.title = "Tap to close";
+document.body.appendChild(toastEl);
+let toastTimer;
+toastEl.addEventListener("click", () => toastEl.style.display = "none");
+function showMessage(message, type) {
+  const bad = type === "error";
+  toastEl.textContent = message;
+  toastEl.style.background = bad ? "#fff0ef" : "#e8f7ee";
+  toastEl.style.color = bad ? "#b42318" : "#176b3a";
+  toastEl.style.border = "1px solid " + (bad ? "#f1b8b1" : "#9fd8b6");
+  toastEl.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.style.display = "none", bad ? 14000 : 9000);
 }
 
 /* =====================================
-   AUTHENTICATION
+   DATA HELPERS
 ===================================== */
-
 async function getSession() {
   const { data, error } = await db.auth.getSession();
-
-  if (error || !data.session) {
-    window.location.replace("school-login.html");
-    return null;
-  }
-
+  if (error || !data.session) { location.replace("school-login.html"); return null; }
   return data.session;
 }
 
-async function callEdge(action, extra = {}) {
-  const session = await getSession();
-
-  if (!session) {
-    throw new Error("Please sign in again.");
-  }
-
-  const response = await fetch(
-    SUPABASE_URL + "/functions/v1/" + EDGE_FUNCTION,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + session.access_token
-      },
-      body: JSON.stringify({
-        action,
-        ...extra
-      })
-    }
-  );
-
-  let result;
-
-  try {
-    result = await response.json();
-  } catch {
-    throw new Error("The server returned an invalid response.");
-  }
-
-  if (!response.ok || result.success === false || result.error) {
-    throw new Error(
-      result.error ||
-      result.message ||
-      "The request could not be completed."
-    );
-  }
-
-  return result;
-}
-
-/*
-  Authenticated database RPC helper.
-  Every archive SQL function checks auth.uid()
-  and verifies account ownership on the server.
-*/
-async function callRpc(functionName, parameters = {}) {
-  const session = await getSession();
-
-  if (!session) {
-    throw new Error("Please sign in again.");
-  }
-
-  const { data, error } = await db.rpc(
-    functionName,
-    parameters
-  );
-
-  if (error) {
-    throw new Error(error.message || "Database request failed.");
-  }
-
-  if (data && data.success === false) {
-    throw new Error(data.message || "The operation failed.");
-  }
-
+async function callRpc(name, params) {
+  if (!(await getSession())) throw new Error("Please sign in again.");
+  const { data, error } = await db.rpc(name, params);
+  if (error) throw new Error(error.message || "Database request failed.");
+  if (data && data.success === false) throw new Error(data.message || "The operation failed.");
   return data;
 }
 
-/* =====================================
-   INITIALIZE
-===================================== */
-
-async function initializePage() {
-  if (pageInitialized) return;
-
-  pageInitialized = true;
-
-  try {
-    const session = await getSession();
-
-    if (!session) return;
-
-    currentUser = session.user;
-
-    await loadStatistics();
-
-  } catch (error) {
-    showMessage(error.message, "error");
+async function fetchAll(make) {
+  const out = [];
+  for (let from = 0; ; from += 1000) {
+    const r = await make().range(from, from + 999);
+    if (r.error) throw r.error;
+    const rows = r.data || [];
+    out.push(...rows);
+    if (rows.length < 1000) break;
   }
+  return out;
 }
 
-/* =====================================
-   STATISTICS
-===================================== */
+async function cnt(query) {
+  const r = await query;
+  if (r.error) throw r.error;
+  return r.count || 0;
+}
 
-async function loadStatistics() {
-  const stats = await callRpc(
-    "school_archive_statistics"
-  );
+const scoped = (table, sp) => db.from(table).select("id", { count: "exact", head: true }).eq("school_account_id", acc.id).eq("space", sp);
 
-  if (!stats) {
-    throw new Error("Archive statistics could not be loaded.");
+async function simpleStat(table, sp) {
+  const [total, archived] = await Promise.all([cnt(scoped(table, sp)), cnt(scoped(table, sp).eq("is_archived", true))]);
+  return { total, archived, active: total - archived };
+}
+
+/* All examinations of this tab, archived and active (cached). */
+async function allExams(sp) {
+  const key = "exams_" + sp;
+  if (cache[key]) return cache[key];
+  cache[key] = await fetchAll(() => db.from("examinations")
+    .select("id,title,name_class,term,examination_code,is_published,is_archived,created_at")
+    .eq("school_account_id", acc.id).eq("space", sp).order("id", { ascending: false }));
+  return cache[key];
+}
+
+async function questionStat(sp) {
+  const ids = (await allExams(sp)).map(e => e.id);
+  let total = 0, archived = 0;
+  for (let i = 0; i < ids.length; i += 100) {
+    const part = ids.slice(i, i + 100);
+    const q = () => db.from("exam_questions").select("id", { count: "exact", head: true }).in("examination_id", part);
+    const [t, a] = await Promise.all([cnt(q()), cnt(q().eq("is_archived", true))]);
+    total += t; archived += a;
   }
-
-  setStat("students", stats.students);
-  setStat("subjects", stats.subjects);
-  setStat("exams", stats.exams);
-  setStat("questions", stats.questions);
+  return { total, archived, active: total - archived };
 }
 
-function setStat(prefix, item = {}) {
-  document.getElementById(prefix + "Total").textContent =
-    Number(item.total ?? 0);
+/* Classes and terms (School Class Examinations tab only). */
+async function classRows() {
+  if (cache.classes) return cache.classes;
+  const [rows, lv] = await Promise.all([
+    fetchAll(() => db.from("school_classes")
+      .select("id,class_group_id,class_name,class_arm,level_code,academic_session,academic_period,is_archived,is_graduated,created_at")
+      .eq("school_account_id", acc.id).not("class_group_id", "is", null).order("id", { ascending: false })),
+    db.from("class_levels").select("code,name,alt_name")
+  ]);
+  (lv.data || []).forEach(l => levelMap[l.code] = l.name + (l.alt_name ? " — " + l.alt_name : ""));
+  cache.classes = rows;
+  return rows;
+}
 
-  document.getElementById(prefix + "Active").textContent =
-    Number(item.active ?? 0);
+const classLabel = r => (levelMap[r.level_code] || r.class_name || "Class") + (r.class_arm ? " · " + r.class_arm : "");
 
-  document.getElementById(prefix + "Archived").textContent =
-    Number(item.archived ?? 0);
+function groupsOf(rows) {
+  const map = new Map();
+  rows.forEach(r => {
+    let g = map.get(r.class_group_id);
+    if (!g) {
+      g = { id: r.class_group_id, title: classLabel(r), academic_session: r.academic_session, created_at: r.created_at, terms: [] };
+      map.set(r.class_group_id, g);
+    }
+    g.terms.push(r);
+  });
+  return [...map.values()].map(g => ({ ...g, is_archived: g.terms.every(t => t.is_archived === true) }));
+}
+
+async function classStats() {
+  const rows = await classRows();
+  const groups = groupsOf(rows);
+  const ga = groups.filter(g => g.is_archived).length;
+  const ta = rows.filter(r => r.is_archived === true).length;
+  return {
+    classes: { total: groups.length, archived: ga, active: groups.length - ga },
+    terms: { total: rows.length, archived: ta, active: rows.length - ta }
+  };
 }
 
 /* =====================================
-   CATEGORY NAVIGATION
+   RENDER SHELL AND STATISTICS
 ===================================== */
+function paintShell() {
+  document.querySelectorAll(".space-tab").forEach(b => b.classList.toggle("on", b.dataset.s === space));
+  $("spaceNote").textContent = NOTE[space];
+  const keys = ORDER[space];
+  const six = keys.length === 6;
 
-function openCategory(category, element) {
-  if (!CATEGORY_CONFIG[category] || operationInProgress) return;
+  $("statsGrid").className = "stats-grid" + (six ? " six" : "");
+  $("statsGrid").innerHTML = keys.map(k => `
+    <div class="stat-card">
+      <div class="stat-top"><span class="stat-name">${CATS[k].title}</span><span class="stat-icon">${CATS[k].icon}</span></div>
+      <div class="stat-total" id="t-${k}">—</div>
+      <div class="stat-details">
+        <span>Active: <b class="active-number" id="a-${k}">—</b></span>
+        <span>Archived: <b class="archived-number" id="r-${k}">—</b></span>
+      </div>
+    </div>`).join("");
 
-  clearMessage();
+  $("categoryGrid").className = "category-grid" + (six ? " six" : "");
+  $("categoryGrid").innerHTML = keys.map(k => `
+    <button class="category-card" data-cat="${k}" type="button">
+      <div class="category-icon">${CATS[k].icon}</div>
+      <strong>${CATS[k].title}</strong><small>${CATS[k].hint}</small>
+    </button>`).join("");
+}
 
-  currentCategory = category;
-  currentView = "active";
+function setStat(k, s) {
+  const set = (id, v) => { const e = $(id); if (e) e.textContent = v === null ? "—" : Number(v).toLocaleString(); };
+  set("t-" + k, s ? s.total : null);
+  set("a-" + k, s ? s.active : null);
+  set("r-" + k, s ? s.archived : null);
+}
 
-  document.querySelectorAll(".category-card").forEach(card => {
-    card.classList.remove("selected");
+async function loadStats() {
+  const mine = ++statToken, sp = space;
+  const keys = ORDER[sp];
+  keys.forEach(k => setStat(k, null));
+  const live = () => mine === statToken;
+
+  const jobs = [
+    ["students", () => simpleStat("school_students", sp)],
+    ["subjects", () => simpleStat("school_subjects", sp)],
+    ["exams", () => simpleStat("examinations", sp)],
+    ["questions", () => questionStat(sp)]
+  ].map(async ([k, fn]) => {
+    try { const s = await fn(); if (live()) setStat(k, s); }
+    catch (e) { console.error("Statistic failed:", k, e); if (live()) setStat(k, null); }
   });
 
-  element.classList.add("selected");
-
-  document.getElementById("workspaceHeading").textContent =
-    CATEGORY_CONFIG[category].title;
-
-  document.getElementById("workspace").classList.add("show");
-
-  document.getElementById("searchInput").value = "";
-
-  document.getElementById("filterSelect").innerHTML =
-    '<option value="all">All Records</option>';
-
-  updateTabs();
-  loadRecords();
-
-  document.getElementById("workspace").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  if (sp === "class") {
+    jobs.push((async () => {
+      try { const c = await classStats(); if (live()) { setStat("classes", c.classes); setStat("terms", c.terms); } }
+      catch (e) { console.error("Class statistics failed:", e); if (live()) { setStat("classes", null); setStat("terms", null); } }
+    })());
+  }
+  await Promise.all(jobs);
 }
 
+/* =====================================
+   TABS AND CATEGORIES
+===================================== */
 function closeWorkspace() {
-  document.getElementById("workspace").classList.remove("show");
-
-  document.querySelectorAll(".category-card").forEach(card => {
-    card.classList.remove("selected");
-  });
+  $("workspace").classList.remove("show");
+  document.querySelectorAll(".category-card").forEach(c => c.classList.remove("selected"));
+  category = null;
 }
 
-function changeView(view) {
-  if (operationInProgress || loading) return;
+function switchSpace(s) {
+  if (busy || s === space) return;
+  space = s;
+  localStorage.setItem("saintig_space", s);
+  closeWorkspace();
+  paintShell();
+  loadStats();
+}
 
-  currentView = view;
-
-  updateTabs();
+function openCategory(k) {
+  if (!CATS[k] || busy) return;
+  category = k;
+  view = "active";
+  document.querySelectorAll(".category-card").forEach(c => c.classList.toggle("selected", c.dataset.cat === k));
+  $("workspaceHeading").textContent = CATS[k].title + (space === "class" ? " — School Class Examinations" : " — Teacher's Examination");
+  $("workspace").classList.add("show");
+  $("searchInput").value = "";
+  $("filterSelect").innerHTML = '<option value="all">All Records</option>' +
+    CATS[k].filters.map(f => `<option value="${esc(f[0])}">${esc(f[1])}</option>`).join("");
+  updateViewTabs();
   loadRecords();
+  $("workspace").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function updateTabs() {
-  document.getElementById("activeTab").classList.toggle(
-    "active",
-    currentView === "active"
-  );
+function updateViewTabs() {
+  $("activeTab").classList.toggle("active", view === "active");
+  $("archivedTab").classList.toggle("active", view === "archived");
+  $("viewLabel").textContent = view === "active" ? "Active records" : "Archived records";
+}
 
-  document.getElementById("archivedTab").classList.toggle(
-    "active",
-    currentView === "archived"
-  );
-
-  document.getElementById("viewLabel").textContent =
-    currentView === "active"
-      ? "Active records"
-      : "Archived records";
+function changeView(v) {
+  if (busy || loadingList || !category) return;
+  view = v;
+  updateViewTabs();
+  loadRecords();
 }
 
 /* =====================================
    LOAD RECORDS
 ===================================== */
+const viewFilter = q => view === "archived" ? q.eq("is_archived", true) : q.or(ACTIVE);
+
+async function fetchRecords() {
+  const sp = space;
+  const archivedView = view === "archived";
+
+  if (category === "students") {
+    return fetchAll(() => viewFilter(db.from("school_students")
+      .select("id,full_name,student_id,is_active,is_archived,created_at")
+      .eq("school_account_id", acc.id).eq("space", sp)).order("id", { ascending: false }));
+  }
+
+  if (category === "subjects") {
+    return fetchAll(() => viewFilter(db.from("school_subjects")
+      .select("id,subject_name,is_published,is_archived,created_at")
+      .eq("school_account_id", acc.id).eq("space", sp)).order("id", { ascending: false }));
+  }
+
+  if (category === "exams") {
+    return (await allExams(sp)).filter(e => archivedView ? e.is_archived === true : e.is_archived !== true);
+  }
+
+  if (category === "questions") {
+    const exams = await allExams(sp);
+    const titles = new Map(exams.map(e => [e.id, e.title]));
+    const ids = exams.map(e => e.id);
+    const out = [];
+    for (let i = 0; i < ids.length; i += 100) {
+      const part = ids.slice(i, i + 100);
+      const rows = await fetchAll(() => viewFilter(db.from("exam_questions")
+        .select("id,question_text,examination_id,is_published,is_archived,created_at")
+        .in("examination_id", part)).order("id", { ascending: false }));
+      rows.forEach(r => out.push({ ...r, examination_title: titles.get(r.examination_id) || "" }));
+    }
+    return out;
+  }
+
+  if (category === "classes") {
+    return groupsOf(await classRows()).filter(g => archivedView ? g.is_archived : !g.is_archived)
+      .map(g => ({ ...g, terms_text: g.terms.map(t => t.academic_period).sort().join(", ") }));
+  }
+
+  if (category === "terms") {
+    return (await classRows()).filter(r => archivedView ? r.is_archived === true : r.is_archived !== true)
+      .map(r => ({ ...r, title: classLabel(r) + " · " + r.academic_period }));
+  }
+
+  return [];
+}
 
 async function loadRecords() {
-  if (loading) return;
-
-  loading = true;
-
-  const list = document.getElementById("recordList");
-
-  list.innerHTML =
-    '<div class="loading">Loading records...</div>';
+  if (loadingList || !category) return;
+  loadingList = true;
+  const mine = ++listToken;
+  $("recordList").innerHTML = '<div class="loading">Loading records...</div>';
 
   try {
-    const result = await callRpc(
-      "school_archive_list_records",
-      {
-        p_category: currentCategory,
-        p_archived: currentView === "archived",
-        p_search: null
-      }
-    );
-
-    records = Array.isArray(result) ? result : [];
-
+    const rows = await fetchRecords();
+    if (mine !== listToken) return;
+    records = rows.map(r => ({ ...r, is_archived: r.is_archived === true }));
+    shown = PAGE;
     filterRecords();
-
   } catch (error) {
+    console.error(error);
     records = [];
-
-    list.innerHTML = `
-      <div class="empty-state">
-        Unable to load these records.<br><br>
-        ${escapeHTML(error.message)}
-      </div>
-    `;
-
-    document.getElementById("recordCount").textContent =
-      "0 records";
-
+    $("recordList").innerHTML = `<div class="empty-state">Unable to load these records.<br><br>${esc(error.message || error)}</div>`;
+    $("recordCount").textContent = "0 records";
   } finally {
-    loading = false;
+    loadingList = false;
   }
 }
 
 /* =====================================
-   SEARCH
+   SEARCH AND FILTER
 ===================================== */
-
 function filterRecords() {
-  const search = document.getElementById("searchInput")
-    .value.trim().toLowerCase();
+  if (!category) return;
+  const cfg = CATS[category];
+  const search = $("searchInput").value.trim().toLowerCase();
+  const sel = $("filterSelect").value;
+  const flt = cfg.filters.find(f => f[0] === sel);
 
-  const selectedFilter =
-    document.getElementById("filterSelect").value;
-
-  const config = CATEGORY_CONFIG[currentCategory];
-
-  const filtered = records.filter(record => {
-    const archived = record.is_archived === true;
-
-    if (currentView === "archived" && !archived) return false;
-    if (currentView === "active" && archived) return false;
-
-    const searchText = config.searchFields
-      .map(field => record[field] ?? "")
-      .join(" ")
-      .toLowerCase();
-
-    if (search && !searchText.includes(search)) return false;
-
-    if (selectedFilter !== "all") {
-      const status = String(record.status || "").toLowerCase();
-
-      if (status !== selectedFilter) return false;
+  const list = records.filter(r => {
+    if (search) {
+      const text = cfg.search.map(f => r[f] ?? "").join(" ").toLowerCase();
+      if (!text.includes(search)) return false;
     }
-
+    if (sel !== "all" && flt && !flt[2](r)) return false;
     return true;
   });
 
-  document.getElementById("recordCount").textContent =
-    filtered.length +
-    (filtered.length === 1 ? " record" : " records");
-
-  renderRecords(filtered);
+  $("recordCount").textContent = list.length + (list.length === 1 ? " record" : " records");
+  renderRecords(list);
 }
 
 /* =====================================
    RECORD DISPLAY
 ===================================== */
-
-function getRecordId(record) {
-  return record.id;
-}
-
-function getRecordTitle(record) {
-  switch (currentCategory) {
-    case "students":
-      return record.full_name || "Unnamed student";
-
-    case "subjects":
-      return record.subject_name || "Unnamed subject";
-
-    case "exams":
-      return record.title || "Untitled examination";
-
-    case "questions":
-      return record.question_text || "Question";
-
-    default:
-      return "Record";
+function titleOf(r) {
+  switch (category) {
+    case "students": return r.full_name || "Unnamed student";
+    case "subjects": return r.subject_name || "Unnamed subject";
+    case "exams": return r.title || "Untitled examination";
+    case "questions": return r.question_text || "Question";
+    case "classes": case "terms": return r.title || "Class";
+    default: return "Record";
   }
 }
 
-function getRecordDescription(record) {
-  switch (currentCategory) {
-    case "students":
-      return [
-        "Student ID: " + (record.student_id || "—"),
-        "Status: " + (record.is_active ? "Active" : "Inactive"),
-        "Created: " + formatDate(record.created_at)
-      ].join(" · ");
-
-    case "subjects":
-      return [
-        "Subject ID: " + (record.id || "—"),
-        "Publication: " +
-          (record.is_published ? "Published" : "Unpublished"),
-        "Created: " + formatDate(record.created_at)
-      ].join(" · ");
-
-    case "exams":
-      return [
-        "Examination ID: " +
-          (record.examination_code || record.id || "—"),
-        "Class: " + (record.name_class || "—"),
-        "Publication: " +
-          (record.is_published ? "Published" : "Unpublished"),
-        "Created: " + formatDate(record.created_at)
-      ].join(" · ");
-
-    case "questions":
-      return [
-        "Question ID: " + (record.id || "—"),
-        "Examination: " +
-          (record.examination_title || record.examination_id || "—"),
-        "Publication: " +
-          (record.is_published ? "Published" : "Unpublished"),
-        "Created: " + formatDate(record.created_at)
-      ].join(" · ");
-
-    default:
-      return "";
+function descOf(r) {
+  const pub = r.is_published ? "Published" : "Unpublished";
+  switch (category) {
+    case "students": return ["Student ID: " + (r.student_id || "—"), "Status: " + (r.is_active === false ? "Inactive" : "Active"), "Created: " + fmtDate(r.created_at)].join(" · ");
+    case "subjects": return ["Subject ID: " + r.id, "Publication: " + pub, "Created: " + fmtDate(r.created_at)].join(" · ");
+    case "exams": return ["Examination ID: " + (r.examination_code || r.id), "Class: " + (r.name_class || "—"), "Publication: " + pub, "Created: " + fmtDate(r.created_at)].join(" · ");
+    case "questions": return ["Question ID: " + r.id, "Examination: " + (r.examination_title || r.examination_id || "—"), "Publication: " + pub, "Created: " + fmtDate(r.created_at)].join(" · ");
+    case "classes": return ["Session: " + (r.academic_session || "—"), "Terms: " + (r.terms_text || "—"), "Created: " + fmtDate(r.created_at)].join(" · ");
+    case "terms": return ["Session: " + (r.academic_session || "—"), "Term: " + (r.academic_period || "—"), r.is_graduated ? "Graduated" : "", "Created: " + fmtDate(r.created_at)].filter(Boolean).join(" · ");
+    default: return "";
   }
-}
-
-function formatDate(value) {
-  if (!value) return "—";
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return "—";
-
-  return date.toLocaleDateString();
 }
 
 function renderRecords(items) {
-  const list = document.getElementById("recordList");
+  const list = $("recordList");
+  const cfg = CATS[category];
 
   if (!items.length) {
-    list.innerHTML = `
-      <div class="empty-state">
-        No ${currentView}
-        ${CATEGORY_CONFIG[currentCategory].title.toLowerCase()}
-        found.
-      </div>
-    `;
-
+    list.innerHTML = `<div class="empty-state">No ${view} ${esc(cfg.title.toLowerCase())} found.</div>`;
     return;
   }
 
-  list.innerHTML = items.map(record => {
-    const id = getRecordId(record);
-    const archived = record.is_archived === true;
+  const slice = items.slice(0, shown);
+  list.innerHTML = slice.map(r => {
+    const id = esc(String(r.id));
+    let actions = `<button class="action-btn view-btn" data-act="view" data-id="${id}" type="button">View</button>`;
 
-    return `
-      <article class="record-card">
+    if (cfg.readOnly) {
+      actions += `<a class="action-btn archive-btn" href="school-classes.html">Manage in Classes &amp; Terms</a>`;
+    } else {
+      actions += r.is_archived
+        ? `<button class="action-btn restore-btn" data-act="restore" data-id="${id}" type="button">Restore</button>`
+        : `<button class="action-btn archive-btn" data-act="archive" data-id="${id}" type="button">Archive</button>`;
+      actions += `<button class="action-btn delete-btn" data-act="delete" data-id="${id}" type="button">Delete</button>`;
+    }
 
-        <h3>${escapeHTML(getRecordTitle(record))}</h3>
+    return `<article class="record-card">
+      <h3>${esc(titleOf(r))}</h3>
+      <div class="record-meta">${esc(descOf(r))}</div>
+      <div class="record-actions">${actions}</div>
+    </article>`;
+  }).join("") +
+  (items.length > shown ? `<button class="more-btn" id="moreBtn" type="button">Show more (${items.length - shown} left)</button>` : "");
 
-        <div class="record-meta">
-          ${escapeHTML(getRecordDescription(record))}
-        </div>
-
-        <div class="record-actions">
-
-          <button class="action-btn view-btn"
-            onclick="viewRecord('${escapeHTML(String(id))}')">
-            View
-          </button>
-
-          ${
-            archived
-              ? `
-                <button class="action-btn restore-btn"
-                  onclick="restoreRecord('${escapeHTML(String(id))}')">
-                  Restore
-                </button>
-              `
-              : `
-                <button class="action-btn archive-btn"
-                  onclick="archiveRecord('${escapeHTML(String(id))}')">
-                  Archive
-                </button>
-              `
-          }
-
-          <button class="action-btn delete-btn"
-            onclick="deleteRecord('${escapeHTML(String(id))}')">
-            Delete
-          </button>
-
-        </div>
-
-      </article>
-    `;
-  }).join("");
+  const more = $("moreBtn");
+  if (more) more.addEventListener("click", () => { shown += PAGE; filterRecords(); });
 }
 
-function findRecord(id) {
-  return records.find(
-    record => String(getRecordId(record)) === String(id)
-  );
-}
+const findRecord = id => records.find(r => String(r.id) === String(id));
 
 function viewRecord(id) {
-  const record = findRecord(id);
-
-  if (!record) return;
-
-  const details = [];
-
-  for (const [key, value] of Object.entries(record)) {
-    if (value !== null && typeof value !== "object") {
-      details.push(key + ": " + value);
-    }
-  }
-
-  alert(details.join("\n"));
+  const r = findRecord(id);
+  if (!r) return;
+  const skip = new Set(["terms"]);
+  $("detailTitle").textContent = titleOf(r);
+  $("detailBody").innerHTML = Object.entries(r)
+    .filter(([k, v]) => v !== null && v !== "" && typeof v !== "object" && !skip.has(k))
+    .map(([k, v]) => `<div class="detail-row"><b>${esc(k.replace(/_/g, " "))}</b><span>${esc(v)}</span></div>`).join("");
+  $("detailModal").classList.add("show");
 }
 
 /* =====================================
-   OPERATION HELPER
+   ARCHIVE, RESTORE, DELETE
 ===================================== */
-
-async function runOperation(callback) {
-  if (operationInProgress) return;
-
-  operationInProgress = true;
-
-  try {
-    await callback();
-
-  } catch (error) {
-    showMessage(error.message, "error");
-
-  } finally {
-    operationInProgress = false;
-  }
+async function runOperation(fn) {
+  if (busy) return;
+  busy = true;
+  try { await fn(); }
+  catch (error) { showMessage(error.message || String(error), "error"); }
+  finally { busy = false; }
 }
-
-/* =====================================
-   ARCHIVE
-===================================== */
-
-async function archiveRecord(id) {
-  const config = CATEGORY_CONFIG[currentCategory];
-
-  const confirmed = confirm(
-    "Archive this " +
-    config.title.toLowerCase().replace(/s$/, "") +
-    " record?\n\nIts examination history will be preserved."
-  );
-
-  if (!confirmed) return;
-
-  await runOperation(async () => {
-    await callRpc(
-      config.archiveRpc,
-      {
-        [config.archiveParam]: Number(id)
-      }
-    );
-
-    await refreshPageData();
-
-    showMessage("Record archived successfully.");
-  });
-}
-
-/* =====================================
-   RESTORE
-===================================== */
-
-async function restoreRecord(id) {
-  const config = CATEGORY_CONFIG[currentCategory];
-
-  const confirmed = confirm(
-    "Restore this record?\n\n" +
-    "Its previous publication settings will be preserved."
-  );
-
-  if (!confirmed) return;
-
-  await runOperation(async () => {
-    await callRpc(
-      config.restoreRpc,
-      {
-        [config.restoreParam]: Number(id)
-      }
-    );
-
-    await refreshPageData();
-
-    showMessage("Record restored successfully.");
-  });
-}
-
-/* =====================================
-   PERMANENT DELETE
-===================================== */
-
-async function deleteRecord(id) {
-  const config = CATEGORY_CONFIG[currentCategory];
-
-  const confirmed = confirm(
-    "PERMANENT DELETE WARNING\n\n" +
-    "This action cannot be undone.\n\n" +
-    "The database will check for protected examination attempts, " +
-    "answers and historical records.\n\n" +
-    "Records with protected history cannot be deleted.\n\n" +
-    "Continue?"
-  );
-
-  if (!confirmed) return;
-
-  await runOperation(async () => {
-    await callRpc(
-      config.deleteRpc,
-      {
-        [config.deleteParam]: Number(id)
-      }
-    );
-
-    await refreshPageData();
-
-    showMessage("Record permanently deleted.");
-  });
-}
-
-/* =====================================
-   REFRESH
-===================================== */
 
 async function refreshPageData() {
-  await loadStatistics();
-  await loadRecords();
+  cache = {};
+  await Promise.all([loadStats(), loadRecords()]);
 }
 
-initializePage();
-</script>
+function act(kind, id) {
+  const cfg = CATS[category];
+  if (!cfg || cfg.readOnly) return;
+  const one = cfg.title.toLowerCase().replace(/s$/, "");
 
-<script>
-(function(){
-  /* Fix: the Students category had no parameter for archive and restore */
-  CATEGORY_CONFIG.students.archiveParam="p_student_id";
-  CATEGORY_CONFIG.students.restoreParam="p_student_id";
+  const texts = {
+    archive: ["Archive this " + one + " record?\n\nIts examination history will be preserved.", cfg.rpc.archive, "Record archived successfully."],
+    restore: ["Restore this " + one + " record?\n\nIts previous publication settings will be preserved.", cfg.rpc.restore, "Record restored successfully."],
+    delete: ["PERMANENT DELETE WARNING\n\nThis action cannot be undone.\n\nThe database will check for protected examination attempts, answers and historical records.\n\nRecords with protected history cannot be deleted.\n\nContinue?", cfg.rpc.del, "Record permanently deleted."]
+  }[kind];
 
-  /* Visible notification, fixed at the top of the screen */
-  const t=document.createElement("div");
-  t.style.cssText="display:none;position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;width:min(92vw,640px);padding:14px 40px 14px 16px;border-radius:10px;box-shadow:0 8px 28px #0003;font:15px/1.5 Arial,sans-serif;cursor:pointer";
-  t.title="Tap to close";
-  document.body.appendChild(t);
-  let timer;
-  function hide(){t.style.display="none"}
-  t.addEventListener("click",hide);
-  window.showMessage=function(message,type){
-    const bad=type==="error";
-    t.textContent=message;
-    t.style.background=bad?"#fff0ef":"#e8f7ee";
-    t.style.color=bad?"#b42318":"#176b3a";
-    t.style.border="1px solid "+(bad?"#f1b8b1":"#9fd8b6");
-    t.style.display="block";
-    clearTimeout(timer);timer=setTimeout(hide,bad?14000:11000);
-  };
-  window.clearMessage=hide;
+  if (!confirm(texts[0])) return;
+
+  runOperation(async () => {
+    await callRpc(texts[1], { [cfg.rpc.param]: Number(id) });
+    await refreshPageData();
+    showMessage(texts[2], "success");
+  });
+}
+
+/* =====================================
+   EVENTS AND START
+===================================== */
+$("backBtn").addEventListener("click", () => location.href = "school-dashboard.html");
+document.querySelectorAll(".space-tab").forEach(b => b.addEventListener("click", () => switchSpace(b.dataset.s)));
+$("categoryGrid").addEventListener("click", e => { const b = e.target.closest("[data-cat]"); if (b) openCategory(b.dataset.cat); });
+$("closeWs").addEventListener("click", closeWorkspace);
+$("activeTab").addEventListener("click", () => changeView("active"));
+$("archivedTab").addEventListener("click", () => changeView("archived"));
+$("searchInput").addEventListener("input", () => { shown = PAGE; filterRecords(); });
+$("filterSelect").addEventListener("change", () => { shown = PAGE; filterRecords(); });
+$("detailClose").addEventListener("click", () => $("detailModal").classList.remove("show"));
+$("detailModal").addEventListener("click", e => { if (e.target === $("detailModal")) $("detailModal").classList.remove("show"); });
+$("recordList").addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]");
+  if (!b) return;
+  if (b.dataset.act === "view") viewRecord(b.dataset.id);
+  else act(b.dataset.act, b.dataset.id);
+});
+
+(async function init() {
+  try {
+    const session = await getSession();
+    if (!session) return;
+    const { data, error } = await db.from("school_accounts").select("id,status").eq("user_id", session.user.id).maybeSingle();
+    if (error) throw error;
+    if (!data) throw new Error("No Teacher/School account is linked to this login.");
+    acc = data;
+    paintShell();
+    await loadStats();
+  } catch (error) {
+    console.error(error);
+    showMessage("Could not load this page: " + (error.message || error), "error");
+  }
 })();
 </script>
-  
 </body>
 </html>
