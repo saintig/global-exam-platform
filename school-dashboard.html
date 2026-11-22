@@ -236,32 +236,60 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
 const ACTIVE="is_archived.is.false,is_archived.is.null";
 let spaceToken=0;
 
-/* Ids of this account's non-archived examinations in one tab (all pages). */
-async function examIdsFor(sp){
-  const ids=[];
+/* Examinations of one tab (active only), with their class id when available. */
+async function examsFor(sp){
+  const out=[];
   for(let from=0;;from+=1000){
-    const r=await sb.from("examinations").select("id")
+    const build=cols=>sb.from("examinations").select(cols)
       .eq("school_account_id",acc.id).eq("space",sp).or(ACTIVE)
       .order("id").range(from,from+999);
+    let r=await build("id,school_class_id");
+    if(r.error)r=await build("id");          /* the class column may not exist */
     if(r.error)throw r.error;
     const rows=r.data||[];
-    rows.forEach(x=>ids.push(x.id));
+    out.push(...rows);
     if(rows.length<1000)break;
   }
-  return ids;
+  return out;
+}
+
+/* Questions of an examination through the examination service. The service
+   is the same one the examination pages use, so it can read questions that
+   a direct table query is not allowed to see. */
+async function questionsViaService(sp,ex){
+  const {data,error}=await sb.functions.invoke("school-exam-management",
+    {body:{space:sp,school_class_id:ex.school_class_id??undefined,action:"list_questions",examination_id:ex.id}});
+  if(error||!data||data.success===false)return null;
+  const d=data;
+  const rows=Array.isArray(d.questions)?d.questions:Array.isArray(d.exam_questions)?d.exam_questions:
+    Array.isArray(d.items)?d.items:Array.isArray(d.data?.questions)?d.data.questions:Array.isArray(d.data)?d.data:[];
+  return rows;
 }
 
 /* Question Bank card: active questions of this tab's active examinations. */
 async function countQuestions(sp){
-  const ids=await examIdsFor(sp);
-  let total=0;
+  const exams=await examsFor(sp);
+  if(!exams.length)return 0;
+  const ids=exams.map(e=>e.id);
+
+  /* 1) Direct count (works when the table allows it). */
+  let total=0,directOk=true;
   for(let i=0;i<ids.length;i+=100){
     const r=await sb.from("exam_questions").select("id",{count:"exact",head:true})
       .in("examination_id",ids.slice(i,i+100)).or(ACTIVE);
-    if(r.error)throw r.error;
+    if(r.error){directOk=false;break}
     total+=r.count||0;
   }
-  return total;
+  if(directOk&&total>0)return total;
+
+  /* 2) Through the examination service, one examination at a time. */
+  let counted=0,anyOk=false;
+  for(let i=0;i<exams.length;i+=5){
+    const rows=await Promise.all(exams.slice(i,i+5).map(ex=>questionsViaService(sp,ex)));
+    rows.forEach(list=>{if(list!==null){anyOk=true;counted+=list.filter(q=>q.is_archived!==true).length}});
+  }
+  if(!anyOk)throw new Error("Questions could not be counted.");
+  return counted;
 }
 
 async function loadSpace(){
