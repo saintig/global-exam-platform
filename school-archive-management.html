@@ -285,10 +285,32 @@ async function simpleStat(table, sp) {
 async function allExams(sp) {
   const key = "exams_" + sp;
   if (cache[key]) return cache[key];
-  cache[key] = await fetchAll(() => db.from("examinations")
-    .select("id,title,name_class,term,examination_code,is_published,is_archived,created_at")
+  const base = "id,title,name_class,term,examination_code,is_published,is_archived,created_at";
+  const load = cols => fetchAll(() => db.from("examinations").select(cols)
     .eq("school_account_id", acc.id).eq("space", sp).order("id", { ascending: false }));
+  try { cache[key] = await load(base + ",school_class_id"); }
+  catch (e) { cache[key] = await load(base); }       /* the class column may not exist */
   return cache[key];
+}
+
+/* Questions through the examination service (the same one the examination
+   pages use), for tables that a direct query is not allowed to read. */
+async function allQuestionsViaService(sp) {
+  const exams = await allExams(sp);
+  const rows = []; let ok = false;
+  for (let i = 0; i < exams.length; i += 5) {
+    const part = exams.slice(i, i + 5);
+    const res = await Promise.all(part.map(async ex => {
+      const { data, error } = await db.functions.invoke("school-exam-management",
+        { body: { space: sp, school_class_id: ex.school_class_id ?? undefined, action: "list_questions", examination_id: ex.id } });
+      if (error || !data || data.success === false) return null;
+      const list = Array.isArray(data.questions) ? data.questions : Array.isArray(data.exam_questions) ? data.exam_questions :
+        Array.isArray(data.items) ? data.items : Array.isArray(data.data?.questions) ? data.data.questions : Array.isArray(data.data) ? data.data : [];
+      return list.map(q => ({ ...q, examination_id: ex.id, examination_title: ex.title || "" }));
+    }));
+    res.forEach(list => { if (list !== null) { ok = true; rows.push(...list); } });
+  }
+  return { rows, ok };
 }
 
 async function questionStat(sp) {
@@ -299,6 +321,10 @@ async function questionStat(sp) {
     const q = () => db.from("exam_questions").select("id", { count: "exact", head: true }).in("examination_id", part);
     const [t, a] = await Promise.all([cnt(q()), cnt(q().eq("is_archived", true))]);
     total += t; archived += a;
+  }
+  if (total === 0 && ids.length) {
+    const r = await allQuestionsViaService(sp);
+    if (r.ok) { total = r.rows.length; archived = r.rows.filter(q => q.is_archived === true).length; }
   }
   return { total, archived, active: total - archived };
 }
@@ -485,6 +511,10 @@ async function fetchRecords() {
         .select("id,question_text,examination_id,is_published,is_archived,created_at")
         .in("examination_id", part)).order("id", { ascending: false }));
       rows.forEach(r => out.push({ ...r, examination_title: titles.get(r.examination_id) || "" }));
+    }
+    if (!out.length && ids.length) {
+      const r = await allQuestionsViaService(sp);
+      return r.rows.filter(q => archivedView ? q.is_archived === true : q.is_archived !== true);
     }
     return out;
   }
