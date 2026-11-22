@@ -64,7 +64,8 @@ td small{display:block;color:var(--muted);font-size:11px}
 .b-draft{background:#fff2db;color:#98640a}
 .b-pub{background:#e4f5eb;color:#137748}
 .b-arch{background:#edf0f4;color:#657184}
-.footer{text-align:center;color:var(--muted);padding:26px 10px;font-size:12px}
+.footer{text-align:center;margin:26px 14px;padding:13px 15px;border-radius:8px;background:var(--navy);color:var(--gold);font-size:17px;font-weight:bold;letter-spacing:.3px}
+.footer strong{color:#fff}
 .modal{position:fixed;inset:0;background:rgba(8,18,32,.65);z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px}
 .modal-box{background:#fff;border-radius:12px;max-width:480px;width:100%;padding:22px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:8px;z-index:2000;display:none;max-width:90%}
@@ -130,7 +131,7 @@ td small{display:block;color:var(--muted);font-size:11px}
   </section>
 </main>
 
-<div class="footer">Powered by SAINTIG EXAMS</div>
+<div class="footer">Powered by <strong>Saintigexams.com</strong></div>
 <div class="toast" id="toast"></div>
 
 <div class="modal hidden" id="dialog">
@@ -580,7 +581,8 @@ const PRINT_CSS = `
   .line{border-bottom:1px solid #64748b;height:22px;margin-top:5px}
   .signs{display:flex;gap:40px;margin-top:28px}
   .sign{flex:1;font-size:12px}
-  .foot{text-align:center;margin-top:24px;font-size:10px;color:#64748b}
+  .foot{text-align:center;margin-top:24px;padding:11px 12px;border-radius:7px;background:#14243a;color:#d5a83b;font-size:14px;font-weight:bold;letter-spacing:.3px;break-inside:avoid}
+  .foot strong{color:#fff}
   .draft{text-align:center;color:#b42318;font-weight:bold;font-size:12px}
   .card{page-break-after:always}
   .card:last-child{page-break-after:auto}
@@ -647,7 +649,7 @@ function printSheet(res) {
     <p style="font-size:10px">Each subject shows the annual total and the term scores added together (${escapeHTML(termsOf(res).join(", "))}). * means absent, not in the class that term, or not examined; counted as 0.</p>
     <p style="font-size:11px">Number of students: ${res.students.length}</p>
     ${signatures(c)}
-    <div class="foot">Powered by SAINTIG EXAMS · Saintigexams.com</div>`, true);
+    <div class="foot">Powered by <strong>Saintigexams.com</strong></div>`, true);
 }
 
 function cardHtml(res, s) {
@@ -682,7 +684,7 @@ function cardHtml(res, s) {
     <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
     ${signatures(c)}
     <p style="font-size:11px;margin-top:14px">Report date: ${escapeHTML(dateText(res.result.published_at || res.result.generated_at))}</p>
-    <div class="foot">Powered by SAINTIG EXAMS · Saintigexams.com</div>
+    <div class="foot">Powered by <strong>Saintigexams.com</strong></div>
   </div>`;
 }
 
