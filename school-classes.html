@@ -154,6 +154,33 @@ async function call(payload){
 }
 async function rpc(name,args){const {data,error}=await sb.rpc(name,args);if(error)throw new Error(error.message);return data}
 
+/* Archived students are not counted in the student number of a term.
+   The server count is kept, and the archived students of each term are taken off it. */
+async function excludeArchivedStudents(list){
+  const ids=list.map(c=>c.id).filter(v=>v!==null&&v!==undefined);
+  if(!ids.length)return;
+  for(const col of ["school_class_id","class_id"]){
+    try{
+      const archived=new Map();
+      for(let i=0;i<ids.length;i+=100){
+        const chunk=ids.slice(i,i+100);
+        for(let from=0;;from+=1000){
+          const r=await sb.from("school_students").select("id,"+col).in(col,chunk).eq("is_archived",true).order("id").range(from,from+999);
+          if(r.error)throw r.error;
+          const data=r.data||[];
+          data.forEach(s=>archived.set(s[col],(archived.get(s[col])||0)+1));
+          if(data.length<1000)break;
+        }
+      }
+      list.forEach(c=>{
+        const n=archived.get(c.id)||0;
+        if(n)c.registered_students_count=Math.max(0,Number(c.registered_students_count||0)-n);
+      });
+      return;
+    }catch(e){console.warn("Archived-student adjustment using "+col+" failed:",e.message||e)}
+  }
+}
+
 /* ---------- load ---------- */
 async function load(){
   const {data:s}=await sb.auth.getSession();
@@ -170,6 +197,7 @@ async function load(){
   try{
     const [a,b]=await Promise.all([call({action:"list_classes",archived:false}),call({action:"list_classes",archived:true})]);
     rows=[...(a.classes||[]),...(b.classes||[])].filter(c=>c.class_group_id&&!c.is_legacy);
+    await excludeArchivedStudents(rows);
     render();
   }catch(e){$("active").innerHTML='<div class="empty">'+esc(e.message)+'</div>'}
 }
