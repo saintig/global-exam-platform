@@ -17,15 +17,36 @@
       color: #172033;
     }
 
-    header {
-      background: #102b50;
-      color: white;
-      padding: 18px 20px;
+    /* SAINTIG EXAMS BRAND: TOP-LEFT, SCREEN AND PAPER */
+    .sg-brand {
+      display: block;
+      text-align: left;
+      line-height: 1.1;
+      margin: 0 0 14px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
-    header h2 {
-      margin: 0;
-      font-size: 21px;
+    .sg-brand b {
+      display: block;
+      font: 800 26px Arial, Helvetica, sans-serif;
+      letter-spacing: .6px;
+      color: #102b50;
+    }
+
+    .sg-brand b span {
+      color: #d4af37;
+    }
+
+    .sg-brand i {
+      display: inline-block;
+      font: bold 13px Arial, Helvetica, sans-serif;
+      font-style: normal;
+      letter-spacing: .8px;
+      color: #16834a;
+      margin-top: 4px;
+      padding-top: 3px;
+      border-top: 2px solid #d4af37;
     }
 
     main {
@@ -214,11 +235,6 @@
         font-family: Arial, sans-serif;
       }
 
-      /* The top banner is not printed on the result paper */
-      header {
-        display: none !important;
-      }
-
       main {
         max-width: 100%;
         margin: 0;
@@ -291,11 +307,10 @@
 
 <body>
 
-<header>
-  <h2>SAINTIG EXAMS</h2>
-</header>
-
 <main>
+
+  <!-- BRAND: TOP-LEFT. VISIBLE ON SCREEN AND PRINTED ON THE RESULT PAPER -->
+  <div class="sg-brand"><b>SAINTIG <span>EXAMS</span></b><i>Saintigexams.com</i></div>
 
   <div id="loading">
     <h3>Loading your examination result...</h3>
@@ -304,7 +319,7 @@
 
   <div id="resultArea" hidden>
 
-    <!-- THIS SECTION IS THE ONLY CONTENT TO BE PRINTED -->
+    <!-- THIS SECTION IS THE ONLY CONTENT TO BE PRINTED (WITH THE BRAND ABOVE) -->
     <div id="printableSummary">
 
       <section class="card score-card">
