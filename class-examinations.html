@@ -104,7 +104,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
     <span class="role">School Class Examinations</span>
     <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
-  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html" class="on">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="index.html">Home</a></div></nav>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">▦ Dashboard</a><a href="school-classes.html">🏫 Classes &amp; Terms</a><a href="class-subjects.html">▤ Class Subjects</a><a href="class-students.html">♙ Class Students</a><a href="class-examinations.html" class="on">＋ Class Examinations</a><a href="class-question-bank.html">▣ Class Question Bank</a><a href="class-attach.html">🔗 Attach Students &amp; Examinations</a><a href="school-class-results.html">▥ Class Results</a><a href="school-archive-management.html">▧ Archive Management</a><a href="school-subscription-plans.html">◇ Subscription Plans</a><a href="school-notifications.html">♧ Notifications</a><a href="school-my-profile.html">⚙ Teacher/School Profile</a><a href="school-help-support.html">? Help &amp; Support</a><a href="index.html">Home</a></div></nav>
 </header>
 
 <main class="wrap">
@@ -136,8 +136,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
       <h2>Exam details</h2>
       <div class="grid" style="margin-top:12px">
         <div class="full"><label for="subject">Subject</label><select id="subject"><option value="">Loading subjects…</option></select><small>Only the published subjects of this class and term appear here.</small></div>
-        <div><label for="title">Title</label><input id="title" maxlength="200" placeholder="e.g. Government Examination"></div>
-        <div><label for="nameClass">Exam name and class (optional)</label><input id="nameClass" maxlength="200" placeholder="e.g. Government SS1"></div>
+        <div class="full"><label for="title">Title</label><input id="title" maxlength="200" placeholder="e.g. Government Examination"></div>
         <div class="full"><label for="description">Instructions for students (optional)</label><textarea id="description" maxlength="5000"></textarea></div>
         <div><label for="duration">Duration (minutes)</label><input id="duration" type="number" min="1" step="1"><small id="durationHelp">Loading your package limit…</small></div>
         <div><label for="qCountField">Questions each student answers</label><input id="qCountField" type="number" min="1" step="1"><small id="countHelp">Loading your package limit…</small></div>
@@ -714,7 +713,7 @@ async function loadExams(selectId){
 const localDT=v=>{if(!v)return"";const d=new Date(v);if(!Number.isFinite(d.getTime()))return"";const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes())};
 function attemptsCap(){return pkg?.max_attempts||5}
 function fillForm(e){
-  $("subject").value=e.school_subject_id??"";$("title").value=e.title||"";$("nameClass").value=e.name_class||"";$("description").value=e.description||"";
+  $("subject").value=e.school_subject_id??"";$("title").value=e.title||"";$("description").value=e.description||"";
   $("duration").value=e.duration_minutes??pkg?.max_exam_duration_minutes??"";
   $("qCountField").value=e.student_question_count??pkg?.max_questions_per_exam??"";
   $("marksPer").value=e.marks_per_question??1;
@@ -725,7 +724,7 @@ function fillForm(e){
   updateTotal();
 }
 function clearForm(){
-  ["title","nameClass","description"].forEach(i=>$(i).value="");$("subject").value="";
+  ["title","description"].forEach(i=>$(i).value="");$("subject").value="";
   $("duration").value=pkg?.max_exam_duration_minutes??"";$("qCountField").value=pkg?.max_questions_per_exam??"";
   $("marksPer").value=1;$("attempts").value=String(Math.min(2,attemptsCap(),ATTEMPT_MENU_MAX));
   $("useSchedule").checked=false;$("schedule").hidden=true;$("startsAt").value="";$("endsAt").value="";
@@ -780,7 +779,7 @@ function collect(){
     if(db<=da)throw new Error("The end must be after the start.");
     startsAt=da.toISOString();endsAt=db.toISOString();
   }
-  return{title,name_class:$("nameClass").value.trim()||clsLabel||null,description:$("description").value.trim()||null,school_subject_id:subject,duration_minutes:duration,student_question_count:count,marks_per_question:marks,starts_at:startsAt,ends_at:endsAt,max_attempts:attempts};
+  return{title,name_class:clsLabel||null,description:$("description").value.trim()||null,school_subject_id:subject,duration_minutes:duration,student_question_count:count,marks_per_question:marks,starts_at:startsAt,ends_at:endsAt,max_attempts:attempts};
 }
 $("saveExam").addEventListener("click",async()=>{
   if(busy)return;
