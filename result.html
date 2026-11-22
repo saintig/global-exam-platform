@@ -147,6 +147,24 @@
       background: #16834a;
     }
 
+    /* POWERED BY LINE: SHOWN BELOW THE RESULT, ON SCREEN AND ON PAPER */
+    .powered {
+      text-align: center;
+      padding: 13px 15px;
+      margin-top: 4px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      background: #102b50;
+      color: #d4af37;
+      font-size: 17px;
+      font-weight: bold;
+      letter-spacing: .3px;
+    }
+
+    .powered strong {
+      color: #ffffff;
+    }
+
     /* ACTION BUTTONS (BEFORE ANSWER REVIEW AND AT THE BOTTOM) */
     .action-buttons {
       text-align: center;
@@ -196,20 +214,14 @@
         font-family: Arial, sans-serif;
       }
 
+      /* The top banner is not printed on the result paper */
       header {
-        background: white !important;
-        color: #102b50 !important;
-        border-bottom: 2px solid #d4af37;
-        padding: 10px 0;
-      }
-
-      header h2 {
-        font-size: 22px;
+        display: none !important;
       }
 
       main {
         max-width: 100%;
-        margin: 15px 0;
+        margin: 0;
         padding: 0;
       }
 
@@ -257,6 +269,16 @@
       .detail {
         background: #f4f6f8 !important;
         border: 1px solid #e5e7eb;
+      }
+
+      .powered {
+        background: #102b50 !important;
+        color: #d4af37 !important;
+        break-inside: avoid;
+      }
+
+      .powered strong {
+        color: #ffffff !important;
       }
 
       * {
@@ -331,6 +353,9 @@
           </div>
         </div>
       </section>
+
+      <!-- BELOW THE RESULT PAPER -->
+      <div class="powered">Powered by <strong>Saintigexams.com</strong></div>
 
     </div>
 
