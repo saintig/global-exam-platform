@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#14243a">
 <title>Generate Class Results | SAINTIG EXAMS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="result-brand.js"></script>
 
 <style>
 :root{
@@ -200,6 +201,12 @@ const LOGIN_PAGE = "school-login.html";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = id => document.getElementById(id);
+
+/* Brand block (from result-brand.js). Safe fallbacks if that file is missing. */
+const BRAND_CSS = window.SAINTIG_BRAND_CSS || "";
+const brandHTML = () => (typeof window.saintigBrandHTML === "function"
+  ? window.saintigBrandHTML()
+  : '<div style="text-align:left;line-height:1.1;margin-bottom:12px"><b style="display:block;font:800 24px Arial;color:#14243a">SAINTIG <span style="color:#d5a83b">EXAMS</span></b><i style="font:bold 12px Arial;font-style:normal;color:#168653">Saintigexams.com</i></div>');
 
 let overview = null;      /* current class overview */
 let currentResult = null; /* result shown in the General tab */
@@ -800,7 +807,7 @@ $("scaleReset").addEventListener("click", async () => {
    PRINTING
 ========================================================= */
 const PRINT_CSS = `
-  body{font-family:Arial,sans-serif;color:#1e293b;margin:0;padding:24px}
+  body{font-family:Arial,sans-serif;color:#1e293b;margin:0;padding:24px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .head{text-align:center;border-bottom:3px solid #14243a;padding-bottom:10px;margin-bottom:14px}
   .head img{max-height:70px;margin-bottom:6px}
   .head h1{margin:0;font-size:22px;color:#14243a}
@@ -831,7 +838,7 @@ function openPrint(title, body, landscape) {
   }
 
   w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title>
-    <style>${PRINT_CSS}${landscape ? "@page{size:landscape}" : ""}</style></head><body>${body}</body></html>`);
+    <style>${PRINT_CSS}${BRAND_CSS}${landscape ? "@page{size:landscape}" : ""}</style></head><body>${body}</body></html>`);
   w.document.close();
   w.focus();
   setTimeout(() => w.print(), 400);
@@ -842,7 +849,7 @@ function schoolHead(c) {
     ? `<img src="${escapeHTML(c.school_logo_url)}" alt=""><br>` : "";
   const contact = [c.school_address, c.school_phone, c.school_email].filter(Boolean).map(escapeHTML).join(" · ");
 
-  return `<div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>${contact ? `<p>${contact}</p>` : ""}</div>`;
+  return `${brandHTML()}<div class="head">${logo}<h1>${escapeHTML(c.school_name || "SAINTIG EXAMS")}</h1>${contact ? `<p>${contact}</p>` : ""}</div>`;
 }
 
 function draftNote(res) {
@@ -888,7 +895,7 @@ function printSheet(res) {
     <table><thead><tr><th>Pos</th><th>Student</th>${head}<th>Total</th><th>Average</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>
     <p style="font-size:11px">Number of students: ${res.students.length}</p>
     ${signatures(c)}
-    <div class="foot">Powered by SAINTIG EXAMS</div>`, true);
+    <div class="foot">Powered by SAINTIG EXAMS · Saintigexams.com</div>`, true);
 }
 
 function cardHtml(res, s) {
@@ -917,7 +924,7 @@ function cardHtml(res, s) {
     <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
     ${signatures(c)}
     <p style="font-size:11px;margin-top:14px">Report date: ${escapeHTML(dateText(res.result.published_at || res.result.generated_at))}</p>
-    <div class="foot">Powered by SAINTIG EXAMS</div>
+    <div class="foot">Powered by SAINTIG EXAMS · Saintigexams.com</div>
   </div>`;
 }
 
@@ -955,7 +962,7 @@ function printExamSheet(res) {
     <table><thead><tr><th>Pos</th><th>Student</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>%</th><th>Grade</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
     <p style="font-size:11px">Number of students: ${res.students.length}</p>
     ${signatures(c)}
-    <div class="foot">Powered by SAINTIG EXAMS</div>`, false);
+    <div class="foot">Powered by SAINTIG EXAMS · Saintigexams.com</div>`, false);
 }
 
 init();
@@ -983,6 +990,6 @@ init();
   },1500);
 })();
 </script>
-  
+
 </body>
 </html>
