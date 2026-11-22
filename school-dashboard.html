@@ -148,7 +148,7 @@ td{padding:12px 9px;border-bottom:1px solid var(--line);color:#475569}
     <article class="stat"><div class="stathead">Active Students <span class="staticon">♙</span></div><div class="value" id="sStudents">—</div><div class="note">Active student records</div></article>
     <article class="stat"><div class="stathead">Active Subjects <span class="staticon">▤</span></div><div class="value" id="sSubjects">—</div><div class="note">Subjects in this tab</div></article>
     <article class="stat"><div class="stathead">Published Examinations <span class="staticon">▣</span></div><div class="value" id="sExams">—</div><div class="note">Published examinations</div></article>
-    <article class="stat"><div class="stathead">Question Bank <span class="staticon">▤</span></div><div class="value" id="sQuestions">—</div><div class="note">Stored questions, excluding archived</div></article>
+    <article class="stat"><div class="stathead">Question Bank <span class="staticon">▤</span></div><div class="value" id="sQuestions">—</div><div class="note">Stored questions in this tab, excluding archived</div></article>
     <article class="stat wide" id="classStat" hidden><div class="stathead">Classes <span class="staticon">▦</span></div><div class="value" id="sClasses">—</div><div class="note">Active classes, each with three terms</div></article>
   </div>
 
@@ -232,29 +232,60 @@ $("overlay").addEventListener("click",closeMenu);
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
 
 /* ---------- counts for the chosen tab ---------- */
+/* A record counts as active when is_archived is false OR not set (null). */
+const ACTIVE="is_archived.is.false,is_archived.is.null";
+let spaceToken=0;
+
+/* Ids of this account's non-archived examinations in one tab (all pages). */
+async function examIdsFor(sp){
+  const ids=[];
+  for(let from=0;;from+=1000){
+    const r=await sb.from("examinations").select("id")
+      .eq("school_account_id",acc.id).eq("space",sp).or(ACTIVE)
+      .order("id").range(from,from+999);
+    if(r.error)throw r.error;
+    const rows=r.data||[];
+    rows.forEach(x=>ids.push(x.id));
+    if(rows.length<1000)break;
+  }
+  return ids;
+}
+
+/* Question Bank card: active questions of this tab's active examinations. */
+async function countQuestions(sp){
+  const ids=await examIdsFor(sp);
+  let total=0;
+  for(let i=0;i<ids.length;i+=100){
+    const r=await sb.from("exam_questions").select("id",{count:"exact",head:true})
+      .in("examination_id",ids.slice(i,i+100)).or(ACTIVE);
+    if(r.error)throw r.error;
+    total+=r.count||0;
+  }
+  return total;
+}
+
 async function loadSpace(){
-  const base=t=>sb.from(t).select("id",{count:"exact",head:true}).eq("school_account_id",acc.id).eq("space",space).eq("is_archived",false);
-  const set=(id,v)=>$(id).textContent=v===null?"—":num(v);
+  const mine=++spaceToken,sp=space;
+  const base=t=>sb.from(t).select("id",{count:"exact",head:true}).eq("school_account_id",acc.id).eq("space",sp).eq("is_archived",false);
+  const set=(id,v)=>{if(mine===spaceToken)$(id).textContent=v===null?"—":num(v)};
+  $("sQuestions").textContent="—";
   try{
-    const [st,su,pub,ids]=await Promise.all([
+    const [st,su,pub]=await Promise.all([
       base("school_students").eq("is_active",true),base("school_subjects"),
-      base("examinations").eq("is_published",true),
-      sb.from("examinations").select("id").eq("school_account_id",acc.id).eq("space",space).eq("is_archived",false)
+      base("examinations").eq("is_published",true)
     ]);
     set("sStudents",st.error?null:st.count);set("sSubjects",su.error?null:su.count);set("sExams",pub.error?null:pub.count);
-    let q=0,ok=!ids.error;
-    const list=(ids.data||[]).map(r=>r.id);
-    for(let i=0;ok&&i<list.length;i+=100){
-      const r=await sb.from("exam_questions").select("id",{count:"exact",head:true}).in("examination_id",list.slice(i,i+100)).eq("is_archived",false);
-      if(r.error)ok=false;else q+=r.count||0;
-    }
-    set("sQuestions",ok?q:null);
-    if(space==="class"){
+
+    let q=null;
+    try{q=await countQuestions(sp)}catch(e){console.error("Question count failed:",e)}
+    set("sQuestions",q);
+
+    if(sp==="class"){
       const c=await sb.from("school_classes").select("class_group_id").eq("school_account_id",acc.id).eq("is_archived",false).eq("is_graduated",false).not("class_group_id","is",null);
       set("sClasses",c.error?null:new Set((c.data||[]).map(r=>r.class_group_id)).size);
     }
   }catch(e){console.error(e);showError("Some numbers could not be loaded.")}
-  loadRecent();
+  if(mine===spaceToken)loadRecent();
 }
 
 async function loadRecent(){
