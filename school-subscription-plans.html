@@ -96,13 +96,14 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 .btn.gold:hover{background:#e6c65d}
 .btn.light{background:#fff;color:var(--navy);border:1px solid var(--navy)}
 .btn.light:hover{background:#f5f7fa}
-.plan-action .btn+.btn{margin-top:10px}
+.plan-action .pill+.btn{margin-top:12px}
 
 .how{border-left:5px solid var(--gold)}
 .how .btn{max-width:340px;margin-top:14px}
 
 .summary-actions{margin-top:14px}
-.summary-actions .btn{max-width:340px}
+.summary-actions .btn{display:flex;max-width:340px}
+.summary-actions .btn+.btn{margin-top:10px}
 
 footer{text-align:center;color:#8995a3;font-size:17px;padding:30px 10px 26px}
 footer a{color:var(--navy);font-weight:bold;margin:0 8px}
@@ -136,13 +137,13 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
   <div class="plan-grid" id="planCards"></div>
 
   <section class="card how">
-    <h2>How to upgrade or renew</h2>
+    <h2>Subscribe manually</h2>
     <p class="muted">
-      Contact us to upgrade or renew your package. Once your payment is confirmed,
-      your package is activated and you will receive a notification.
-      Online payment will be available soon.
+      To subscribe manually, or to get the Custom Package, please contact the
+      administrator. Once your payment is confirmed, your package is activated
+      and you will receive a notification.
     </p>
-    <a class="btn gold" href="contact.html">Contact Us</a>
+    <a class="btn gold" href="contact.html">Contact the Administrator</a>
   </section>
 
 </main>
@@ -160,6 +161,17 @@ const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const LOGIN_PAGE="school-login.html";
 const DASHBOARD="school-dashboard.html";
 
+/*
+ * ONLINE PAYMENT LINKS
+ * Paste the hosted payment page link (it must start with https://) for each
+ * package between the quotation marks. While a link is empty, the Pay Now
+ * button tells the teacher to contact the administrator instead.
+ */
+const PAYMENT_LINKS={
+  silver:"",
+  gold:""
+};
+
 const $=id=>document.getElementById(id);
 
 const DAY_MS=86400000;
@@ -176,9 +188,7 @@ const FIELDS=[
   {limit:"max_questions_per_exam",custom:"custom_max_questions_per_exam",
    text:n=>"Up to "+fmt(n)+" questions per examination"},
   {limit:"max_exam_duration_minutes",custom:"custom_max_exam_duration_minutes",
-   text:n=>"Up to "+fmt(n)+" minutes per examination"},
-  {limit:"max_attempts_per_exam",custom:"custom_max_attempts_per_exam",
-   text:n=>"Up to "+fmt(n)+" attempt"+(Number(n)===1?"":"s")+" per student per examination"}
+   text:n=>"Up to "+fmt(n)+" minutes per examination"}
 ];
 
 const CUSTOM_POINTS=[
@@ -214,6 +224,7 @@ function message(text,type="info"){
   const el=$("statusMessage");
   el.textContent=text;
   el.className="status "+type;
+  el.scrollIntoView({behavior:"smooth",block:"center"});
 }
 
 function hasValue(v){
@@ -292,6 +303,37 @@ function benefitItems(row){
     .join("");
 }
 
+/* ---------- payment ---------- */
+
+function startPayment(planName){
+  const link=PAYMENT_LINKS[String(planName).toLowerCase()]||"";
+
+  if(/^https:\/\//i.test(link)){
+    window.open(link,"_blank","noopener");
+
+    message(
+      "The payment page for the "+planName+" package has opened. After you pay, "+
+      "your package is activated once the administrator confirms your payment, "+
+      "and you will receive a notification.",
+      "info"
+    );
+
+    return;
+  }
+
+  message(
+    "Online payment is not available yet. To subscribe to the "+planName+
+    " package now, please contact the administrator.",
+    "info"
+  );
+}
+
+document.addEventListener("click",event=>{
+  const button=event.target.closest("[data-pay]");
+
+  if(button)startPayment(button.dataset.pay);
+});
+
 function render(assignment,limits,prices){
 
   const current=effectivePackage(assignment);
@@ -325,7 +367,7 @@ function render(assignment,limits,prices){
   if(current.endedPackage){
     lines+=
       '<p class="muted">Your '+esc(packageLabel(current.endedPackage))+
-      " has ended and your account is on the Free package. Contact us to renew.</p>";
+      " has ended and your account is on the Free package. Renew it to continue.</p>";
   }else if(isFree){
     lines+='<p class="muted">Your account is on the Free package.</p>';
   }else if(expiresAt){
@@ -345,12 +387,21 @@ function render(assignment,limits,prices){
   const needsRenewal=
     !!current.endedPackage||(!isFree&&left!==null&&left<=14);
 
+  /* Silver and Gold can be renewed online; any other package is renewed through the administrator. */
+  const renewName=current.endedPackage||current.name;
+  const canPayOnline=["silver","gold"].includes(String(renewName).toLowerCase());
+
   $("planSummary").innerHTML=
     '<span class="pill'+(soon||current.endedPackage?" warn":"")+'">'+
     esc(packageLabel(current.name))+"</span>"+
     lines+
     (needsRenewal
-      ?'<div class="summary-actions"><a class="btn gold" href="contact.html">Contact Us to Renew</a></div>'
+      ?'<div class="summary-actions">'+
+         (canPayOnline
+           ?'<button class="btn gold" data-pay="'+esc(renewName)+'" type="button">Renew Now</button>'
+           :"")+
+         '<a class="btn '+(canPayOnline?"light":"gold")+'" href="contact.html">Contact the Administrator</a>'+
+       "</div>"
       :"");
 
   /* ---------- cards ---------- */
@@ -397,14 +448,21 @@ function render(assignment,limits,prices){
 
     const extras=benefitItems(prices[name.toLowerCase()]);
 
+    /* Pay Now: Silver and Gold, except a step down from the current plan. */
+    const canPay=
+      !planIsFree&&(isCurrent||onCustom||!isStandard||index>currentIndex);
+
     let action="";
 
     if(isCurrent){
-      action='<span class="pill ok">Your current plan</span>';
-    }else if(!planIsFree&&onCustom){
-      action='<a class="btn gold" href="contact.html">Contact Us to Switch</a>';
-    }else if(!planIsFree&&(!isStandard||index>currentIndex)){
-      action='<a class="btn gold" href="contact.html">Contact Us to Upgrade</a>';
+      action=
+        '<span class="pill ok">Your current plan</span>'+
+        (canPay
+          ?'<button class="btn gold" data-pay="'+esc(name)+'" type="button">Renew Now</button>'
+          :"");
+    }else if(canPay){
+      action=
+        '<button class="btn gold" data-pay="'+esc(name)+'" type="button">Pay Now</button>';
     }
 
     const classes="plan-card"+
@@ -421,7 +479,7 @@ function render(assignment,limits,prices){
     );
   });
 
-  /* Custom Package (always shown, like the public pricing page) */
+  /* Custom Package: arranged manually with the administrator */
 
   const customRow=prices["custom package"]||prices["custom"];
   const customExtras=benefitItems(customRow);
@@ -433,9 +491,8 @@ function render(assignment,limits,prices){
   const customItems=CUSTOM_POINTS.map(t=>"<li>"+esc(t)+"</li>").join("");
 
   const customAction=
-    (onCustom?'<p><span class="pill ok">Your current plan</span></p>':"")+
-    '<a class="btn gold" href="contact.html">Sign Up for Custom</a>'+
-    '<a class="btn light" href="contact.html">Talk to us first</a>';
+    (onCustom?'<span class="pill ok">Your current plan</span>':"")+
+    '<a class="btn gold" href="contact.html">Contact the Administrator</a>';
 
   cards.push(
     '<div class="plan-card custom'+(onCustom?" current":"")+'">'+
@@ -503,8 +560,7 @@ async function init(){
         custom_max_stored_questions,
         custom_max_examinations,
         custom_max_exam_duration_minutes,
-        custom_max_questions_per_exam,
-        custom_max_attempts_per_exam
+        custom_max_questions_per_exam
       `)
       .eq("school_account_id",account.id)
       .maybeSingle(),
@@ -569,6 +625,6 @@ init();
   document.addEventListener("visibilitychange",check);
 })();
 </script>
-  
+
 </body>
 </html>
