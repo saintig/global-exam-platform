@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#173b69">
-<title>Student Dashboard | SAINT IG EXAMS</title>
+<title>Student Dashboard | SAINTIG EXAMS</title>
 
 <style>
 :root {
@@ -712,6 +712,9 @@ th{
   .results-actions .button{width:100%}
 }
 
+.receipt{margin-top:14px;padding:12px 14px;border-radius:9px;background:#f8faff;border:1px solid var(--border);font-size:16px;color:var(--muted);overflow-wrap:anywhere}
+.receipt strong{color:var(--primary)}
+
 /* ONLINE PAYMENT WINDOW */
 
 .modal{display:none;position:fixed;inset:0;background:#000a;z-index:60;padding:16px;overflow-y:auto}
@@ -1094,6 +1097,8 @@ th{
     <div id="planSummary" class="plan-summary">
       Loading your plan…
     </div>
+
+    <div class="receipt" id="receiptLine" hidden></div>
   </div>
 
   <div class="plan-grid" id="planCards"></div>
@@ -1214,18 +1219,10 @@ th{
     <h3>Change Password</h3>
 
     <p class="muted">
-      Enter your current password first, then choose a new password for your account.
+      Choose a new password for your account.
     </p>
 
     <form id="passwordForm">
-
-      <div class="form-group">
-        <label for="currentPassword">Current password</label>
-
-        <input id="currentPassword" type="password"
-          autocomplete="current-password"
-          placeholder="Enter your current password" required>
-      </div>
 
       <div class="form-group">
         <label for="newPassword">New password</label>
@@ -1926,15 +1923,11 @@ $("profileForm").addEventListener("submit",async event => {
 
 /* =========================================
    PASSWORD
-   The current password must be entered and
-   confirmed before a new password is accepted.
 ========================================= */
 
 $("passwordForm").addEventListener("submit",async event => {
 
   event.preventDefault();
-
-  const currentPassword = $("currentPassword").value;
 
   const password = $("newPassword").value;
 
@@ -1942,17 +1935,6 @@ $("passwordForm").addEventListener("submit",async event => {
 
   const button = $("passwordForm")
     .querySelector('button[type="submit"]');
-
-  if (!currentPassword) {
-
-    showMessage(
-      $("passwordMessage"),
-      "Enter your current password.",
-      "error"
-    );
-
-    return;
-  }
 
   if (password.length < 8) {
 
@@ -1976,44 +1958,10 @@ $("passwordForm").addEventListener("submit",async event => {
     return;
   }
 
-  if (password === currentPassword) {
-
-    showMessage(
-      $("passwordMessage"),
-      "The new password must be different from your current password.",
-      "error"
-    );
-
-    return;
-  }
-
   button.disabled = true;
   button.textContent = "Updating…";
 
   try {
-
-    /* Step 1: confirm the current password. */
-
-    const {error:verifyError} = await supabase.auth.signInWithPassword({
-      email:currentUser.email,
-      password:currentPassword
-    });
-
-    if (verifyError) {
-
-      const wrong =
-        verifyError.status === 400 ||
-        /invalid login credentials/i.test(verifyError.message || "");
-
-      throw new Error(
-        wrong
-          ? "Your current password is incorrect."
-          : (verifyError.message || "Could not confirm your current password.")
-      );
-
-    }
-
-    /* Step 2: save the new password. */
 
     const {error} = await supabase.auth.updateUser({
       password
@@ -3789,6 +3737,52 @@ document.addEventListener("click",event => {
 
 });
 
+/* The last confirmed online payment of this student. */
+
+async function loadReceipt() {
+
+  const box = $("receiptLine");
+
+  try {
+
+    const {data:rows,error} = await supabase
+      .from("payments")
+      .select("reference,plan,days,amount_kobo,currency,paid_at")
+      .eq("user_id",currentUser.id)
+      .eq("activated",true)
+      .order("paid_at",{ascending:false})
+      .limit(1);
+
+    if (error || !rows || !rows.length) {
+
+      box.hidden = true;
+
+      return;
+
+    }
+
+    const payment = rows[0];
+
+    box.innerHTML =
+      "Last payment: <strong>" +
+      escapeHtml(moneyText(Number(payment.amount_kobo) / 100,payment.currency)) +
+      "</strong> for " + escapeHtml(payment.plan) +
+      " (" + escapeHtml(payment.days) + " days) on " +
+      escapeHtml(formatDay(payment.paid_at)) +
+      ". Reference: <strong>" + escapeHtml(payment.reference) + "</strong>";
+
+    box.hidden = false;
+
+  } catch(error) {
+
+    console.error("Receipt:",error);
+
+    box.hidden = true;
+
+  }
+
+}
+
 /* When the student comes back from Paystack. */
 
 async function confirmPaymentReturn() {
@@ -3812,6 +3806,8 @@ async function confirmPaymentReturn() {
       if (result.state === "success") {
 
         await loadSubscription();
+
+        await loadReceipt();
 
         showMessage(
           $("payStatus"),
@@ -3990,6 +3986,8 @@ async function initializeDashboard() {
     subscribeToNotifications();
 
     /* If the student has just come back from Paystack, confirm the payment. */
+
+    loadReceipt();
 
     confirmPaymentReturn();
 
