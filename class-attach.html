@@ -21,6 +21,9 @@ h1{margin:0 0 5px;font-size:27px;color:var(--navy)}.sub{color:var(--muted);margi
 .hb{display:flex;flex-wrap:wrap;gap:8px}
 .hb a{text-decoration:none;border-radius:7px;padding:8px 11px;font-size:13px;font-weight:bold;background:#edf1f6;color:var(--navy)}
 .hb a:first-child{background:var(--navy);color:#fff}
+.hl{display:inline-block;margin-top:8px;font-size:14px;font-weight:bold;color:var(--navy)}
+.warnbar{background:#fff8e8;border-left:5px solid var(--gold);border-radius:9px;padding:11px 14px;margin:0 0 12px;font-size:14px;color:#5f4608}
+.warnbar a{color:var(--navy);font-weight:bold}
 .pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .pf label{display:block;font-weight:bold;font-size:14px;margin-bottom:6px;color:var(--navy)}
 .pf select,.pf input{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;min-height:46px}
@@ -67,14 +70,15 @@ th{background:#f1f4f8;color:var(--navy);font-size:12px}
   <p class="sub">A student writes only the examinations attached to them, and an examination opens only for the students attached to it.</p>
 
   <section class="help">
-    <h2>NEED HELP? STEP-BY-STEP GUIDES</h2>
-    <p>Open the guide that matches what you are doing.</p>
+    <h2>NEED HELP? ATTACHING STUDENTS &amp; EXAMINATIONS</h2>
+    <p>A student can only write the examinations attached to them.</p>
     <div class="hb">
-      <a href="school-help-support.html#part2">📘 Class setup guide</a>
-      <a href="school-help-support.html#c-attach">Add students and examinations</a>
-      <a href="school-help-support.html#c-register">Examination register and limits</a>
-      <a href="school-help-support.html#c-ca">CA and draft results, attach examinations to students or students to examinations</a>
-      <a href="school-help-support.html#c-share">Share IDs</a>
+      <a href="school-help-support.html#c-attach" target="saintig-help">📘 How to attach (step by step)</a>
+      <a href="school-help-support.html#c-rule" target="saintig-help">Who can write which exam</a>
+      <a href="school-help-support.html#c-limit" target="saintig-help">Limit per student</a>
+      <a href="school-help-support.html#c-register" target="saintig-help">Print, download &amp; share IDs</a>
+      <a href="school-help-support.html#c-ca" target="saintig-help">Next: CA &amp; results</a>
+      <a href="school-help-support.html#fix" target="saintig-help">Student can't open exam?</a>
     </div>
   </section>
 
@@ -87,9 +91,12 @@ th{background:#f1f4f8;color:var(--navy);font-size:12px}
     <b>Most examinations each student can write in this term</b>
     <div class="lim"><input id="limIn" type="number" min="1" max="100" placeholder="e.g. 8"><button class="btn gold s" id="limSave" type="button">Save limit</button><button class="btn light s" id="limClear" type="button">Remove limit</button></div>
     <div class="meta" id="limInfo" style="color:#64748b;margin-top:8px"></div>
+    <a class="hl" href="school-help-support.html#c-limit" target="saintig-help">How does the limit work? →</a>
   </div>
 
   <div class="msg" id="msg"></div>
+
+  <div class="warnbar">⚠ A student attached to <b>no</b> examination is left out of the class result. <a href="school-help-support.html#c-attach" target="saintig-help">Why? →</a></div>
 
   <div class="tabs"><button class="tab on" id="tStudents" type="button">Students</button><button class="tab" id="tExams" type="button">Examinations</button></div>
   <div class="bar">
@@ -99,6 +106,8 @@ th{background:#f1f4f8;color:var(--navy);font-size:12px}
     <button class="btn light s" id="shareAll" type="button">Share all</button>
   </div>
   <div class="tw" id="area"><div class="empty">Loading…</div></div>
+
+  <div class="warnbar" style="margin-top:14px">✅ Done attaching? Next: <a href="school-help-support.html#c-ca" target="saintig-help">enter CA scores and generate the draft result →</a></div>
 </div>
 
 <div class="modal" id="modal"><div class="mb">
