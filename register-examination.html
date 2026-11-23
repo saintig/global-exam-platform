@@ -93,6 +93,12 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 .codebox small{color:#d8dfeb;font-weight:normal;font-size:12px;margin-bottom:6px}
 .sum{background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:13px;line-height:1.8;overflow-wrap:anywhere}
 @media(max-width:640px){.grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.row .btn,.nav .btn{flex:1 1 100%}.step{font-size:11.5px}.card{padding:15px}}
+.help{background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:16px;margin:14px 0}
+.help h2{margin:0 0 4px;font-size:16px;color:var(--navy)}.help p{margin:0 0 10px;color:var(--muted);font-size:14px}
+.hb{display:flex;flex-wrap:wrap;gap:8px}
+.hb a{text-decoration:none;border-radius:7px;padding:10px 12px;font-size:13px;font-weight:bold;background:#edf1f6;color:var(--navy);min-height:42px;display:inline-flex;align-items:center}
+.hb a:first-child{background:var(--navy);color:#fff}
+.hl{display:inline-block;margin-top:10px;font-size:14px;font-weight:bold;color:var(--navy)}
 </style>
 </head>
 <body>
@@ -102,12 +108,24 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
     <span class="role">Teacher's Examination</span>
     <button class="menu-btn" id="menuBtn" type="button">☰ Menu</button>
   </div>
-  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html" class="on">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="index.html">Home</a></div></nav>
+  <nav class="menu" id="menu"><div class="menu-in"><a href="school-dashboard.html">Dashboard</a><a href="school-students.html">School students</a><a href="school-subjects.html">School subjects</a><a href="register-examination.html" class="on">Register examination</a><a href="school-question-bank.html">Question bank</a><a href="school-archive-management.html">Archive management</a><a href="school-results-performance.html">Results &amp; performance</a><a href="school-subscription-plans.html">Subscription plans</a><a href="school-notifications.html">Notifications</a><a href="school-my-profile.html">My profile</a><a href="school-help-support.html" target="saintig-help">Help &amp; Support</a><a href="index.html">Home</a></div></nav>
 </header>
 
 <main class="wrap">
   <h1>Register examination</h1>
   <p class="sub">Four steps: exam details, add questions, review and save, publish.</p>
+
+  <section class="help">
+    <h2>NEED HELP? REGISTERING AN EXAMINATION</h2>
+    <p>Tap the step you are on.</p>
+    <div class="hb">
+      <a href="school-help-support.html#t-exam" target="saintig-help">📘 How to register an exam (step by step)</a>
+      <a href="school-help-support.html#t-files" target="saintig-help">Question file format</a>
+      <a href="school-help-support.html#t-limits" target="saintig-help">Package limits (attempts, questions)</a>
+      <a href="school-help-support.html#t-publish" target="saintig-help">Publish &amp; share the Exam ID</a>
+      <a href="school-help-support.html#fix" target="saintig-help">Something not working?</a>
+    </div>
+  </section>
 
   <nav class="steps" id="steps" aria-label="Steps">
     <button class="step on" data-step="1" type="button"><b>1</b>Exam</button>
@@ -157,7 +175,7 @@ details.guide summary{cursor:pointer;padding:13px 14px;font-weight:bold;color:va
 
     <div class="card" id="boxFile">
       <h2>Upload a file</h2>
-      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works.</p>
+      <p class="hint">PDF, Word, Text, CSV or Excel. Any file name works. <a href="school-help-support.html#t-files" target="saintig-help" style="color:var(--navy);font-weight:bold">Full guide →</a></p>
       <details class="guide"><summary>How to prepare your file</summary><div class="gb">
 <h4>Word (.docx), Text (.txt) and PDF</h4>
 <p>One item per line, with a blank line between questions:</p>
@@ -236,6 +254,7 @@ Marks: 1 (optional)
     <div class="card">
       <h2>Publish to students</h2>
       <p class="hint">Publish when the exam has enough saved questions.</p>
+      <div class="msg show warn" style="margin-top:0">After publishing, questions cannot be added or changed. Check everything first. <a href="school-help-support.html#t-publish" target="saintig-help" style="color:var(--navy);font-weight:bold">How publishing works →</a></div>
       <div class="sum" id="pubInfo"></div>
       <div class="msg" id="pubMsg"></div>
       <div class="row"><button class="btn gold" id="publishBtn" type="button" disabled>Publish examination</button><button class="btn ghost" id="refreshBtn" type="button">Refresh details</button></div>
@@ -589,7 +608,10 @@ function onQueueChange(){
 window.addEventListener("beforeunload",e=>{if(queue.length){e.preventDefault();e.returnValue=""}});
 
 /* ================= package limits ================= */
-const ATTEMPT_MENU_MAX=20;
+const ATTEMPT_MENU_MAX=100;
+/* Attempts limit read straight from the package tables (same way the dashboard reads limits).
+   When it is set, it replaces the value returned by the examination service. */
+let attemptsOverride=null;
 
 function buildAttempts(cap){
   const sel=$("attempts"),prev=Number(sel.value)||2,top=Math.min(cap,ATTEMPT_MENU_MAX);
@@ -602,9 +624,10 @@ function applyPackage(info){
   const dur=Number(info.max_exam_duration_minutes),cnt=Number(info.max_questions_per_exam);
   if(!name||!Number.isSafeInteger(dur)||dur<1||!Number.isSafeInteger(cnt)||cnt<1)throw new Error("Your package limits are missing or invalid. Please contact the administrator.");
 
-  /* Attempts per student per examination: the package cap, or 5 when none is set. */
+  /* Attempts per student per examination: the limit read from the package tables,
+     otherwise the value from the server, otherwise 5 when none is set. */
   const att=Number(info.max_attempts_per_exam);
-  const cap=Number.isSafeInteger(att)&&att>=1?att:5;
+  const cap=attemptsOverride!==null?attemptsOverride:(Number.isSafeInteger(att)&&att>=1?att:5);
 
   /* Stored questions allowed in the whole question bank, from the server. */
   const stored=Number(info.max_stored_questions);
@@ -619,6 +642,37 @@ function applyPackage(info){
   buildAttempts(cap);
   if(!exam){$("duration").value=dur;$("qCountField").value=cnt}
   updateTotal();
+}
+/* Reads the attempts limit the same way the dashboard reads package limits:
+   the account's custom value first, then the package's value. Silver, Gold,
+   Custom and Free are all handled, and an expired paid package counts as Free. */
+async function syncAttempts(){
+  try{
+    const {data:au}=await supabase.auth.getUser();
+    const {data:ac}=await supabase.from("school_accounts").select("id").eq("user_id",au.user.id).maybeSingle();
+    if(!ac)return;
+    const a=await supabase.from("school_account_packages").select("package_name,expires_at,custom_max_attempts_per_exam").eq("school_account_id",ac.id).maybeSingle();
+    if(a.error)return;
+    let name=String(a.data?.package_name||"Free"),over=a.data;
+    const exp=a.data?.expires_at?new Date(a.data.expires_at):null;
+    if(name.toLowerCase()!=="free"&&exp&&exp<=new Date())name="Free";
+    if(name.toLowerCase()==="free")over=null;
+    let v=over?over.custom_max_attempts_per_exam:null;
+    if(v===null||v===undefined){
+      const l=await supabase.from("school_package_limits").select("max_attempts_per_exam").eq("package_name",name).maybeSingle();
+      if(l.error)return;
+      v=l.data?l.data.max_attempts_per_exam:null;
+    }
+    if(v===null||v===undefined)return;
+    v=Number(v);
+    if(!Number.isSafeInteger(v)||v<1)return;
+    attemptsOverride=v;
+    if(pkg){
+      pkg.max_attempts=v;
+      $("attemptsHelp").textContent=pkg.package_name+" package: up to "+v+" attempt"+(v===1?"":"s")+" per student.";
+      buildAttempts(v);
+    }
+  }catch(e){console.error("Attempts check failed:",e)}
 }
 function updateTotal(){
   const t=Number($("qCountField").value)*Number($("marksPer").value);
@@ -890,6 +944,7 @@ $("shareCode").addEventListener("click",async()=>{
     await loadSubjects();
     if(!pkg)throw new Error("Your package limits could not be loaded, so the form cannot continue safely.");
     await loadExams();
+    await syncAttempts();
     updateTotal();renderQueue();refreshBar();
     initStorage();
   }catch(e){console.error(e);say("pageMsg",e.message||"Could not load this page.","err")}
