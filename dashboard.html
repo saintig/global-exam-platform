@@ -711,6 +711,20 @@ th{
   .recent-attempts-preview.expanded{max-height:360px}
   .results-actions .button{width:100%}
 }
+
+/* ONLINE PAYMENT WINDOW */
+
+.modal{display:none;position:fixed;inset:0;background:#000a;z-index:60;padding:16px;overflow-y:auto}
+.modal.show{display:flex;align-items:flex-start;justify-content:center}
+.modal-box{background:#fff;border-radius:13px;padding:22px;width:100%;max-width:480px;margin:auto}
+.modal-box h2{margin:0 0 4px;font-size:24px}
+.modal-box label{display:block;font-weight:700;margin:16px 0 6px}
+.modal-box select{width:100%;padding:13px;border:1px solid #cfd8e5;border-radius:8px;background:#fff;min-height:52px;font-size:17px}
+.pay-total{margin:16px 0 0;padding:14px;border-radius:10px;background:#f8faff;border:1px solid var(--border)}
+.pay-total b{color:var(--primary);font-size:24px}
+.pay-note{margin:12px 0 0;padding:12px 14px;border-radius:9px;background:#fff8e8;border-left:5px solid var(--accent);font-size:16px;color:#5f4608}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.modal-actions .button{flex:1 1 180px}
 </style>
 </head>
 
@@ -1072,6 +1086,8 @@ th{
     Choose the plan that fits how you practise.
   </p>
 
+  <div class="status-message" id="payStatus" role="status"></div>
+
   <div class="card">
     <h3>Your Plan</h3>
 
@@ -1087,12 +1103,17 @@ th{
     <strong>How to upgrade to Premium</strong>
 
     <p class="muted">
-      Contact us to upgrade your account. Once your payment is confirmed,
-      your Premium plan is activated. Online payment will be available soon.
+      Pay online with Paystack. Choose 30 days, 60 days and so on. Premium is
+      activated as soon as the payment is confirmed. If you pay while Premium
+      is still active, the new days are added after your current end date.
     </p>
 
-    <a class="button gold" href="./contact.html">
-      Contact Us to Upgrade
+    <button class="button gold" id="payPremiumBtn" type="button">
+      Pay for Premium
+    </button>
+
+    <a class="button secondary" href="./contact.html">
+      Contact Us
     </a>
 
   </div>
@@ -1236,6 +1257,22 @@ th{
 </footer>
 
 </main>
+</div>
+
+<!-- ONLINE PAYMENT WINDOW -->
+<div class="modal" id="payModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <h2>Pay for Premium</h2>
+    <div class="muted" id="payPlanLine"></div>
+    <label for="payMonths">How long?</label>
+    <select id="payMonths"></select>
+    <div class="pay-total">Total to pay: <b id="payTotal">—</b></div>
+    <div class="pay-note" id="payNote"></div>
+    <div class="modal-actions">
+      <button class="button gold" id="payGo" type="button">Pay with Paystack</button>
+      <button class="button secondary" id="payCancel" type="button">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script type="module">
@@ -2127,8 +2164,8 @@ function renderPricing() {
       action = `
         <span class="pill success">Your current plan</span>
         ${
-          key === "premium" && endingSoon
-          ? '<a class="button gold full" style="margin-top:12px" href="./contact.html">Contact Us to Renew</a>'
+          key === "premium" && subscription.expiresAt
+          ? '<button class="button gold full" style="margin-top:12px" type="button" data-pay="premium">Add More Days</button>'
           : ""
         }
       `;
@@ -2136,9 +2173,9 @@ function renderPricing() {
     } else if (key === "premium" && state !== "premium") {
 
       action = `
-        <a class="button gold full" href="./contact.html">
-          Upgrade to Premium
-        </a>
+        <button class="button gold full" type="button" data-pay="premium">
+          Pay Now
+        </button>
       `;
 
     }
@@ -3458,6 +3495,320 @@ window.addEventListener("pagehide",() => {
 });
 
 /* =========================================
+   ONLINE PAYMENT (PAYSTACK)
+   Students pay for Premium in blocks of 30 days
+   (12 months = 365 days). The price is the admin's
+   monthly Premium price x the months chosen. The
+   amount is always calculated by the server.
+========================================= */
+
+const payDaysFor = m => m === 12 ? 365 : m * 30;
+let payBusy = false;
+
+function moneyText(amount,currency) {
+
+  try {
+
+    return new Intl.NumberFormat("en-NG",{
+      style:"currency",
+      currency:currency || "NGN",
+      maximumFractionDigits:amount % 1 === 0 ? 0 : 2
+    }).format(amount);
+
+  } catch(error) {
+
+    return (currency || "NGN") + " " + amount.toLocaleString();
+
+  }
+
+}
+
+function premiumPrice() {
+
+  const row = planPrices.premium;
+
+  if (!row) return null;
+
+  const amount = Number(row.price_amount);
+
+  return Number.isFinite(amount) && amount > 0 && row.billing_period === "month"
+    ? {amount,currency:row.currency || "NGN"}
+    : null;
+
+}
+
+/* Online payment needs a monthly price, a loaded plan, and an end date
+   (a Premium plan with no end date is managed by the administrator). */
+
+function canPayOnline() {
+
+  return (
+    !!premiumPrice() &&
+    ["free","premium"].includes(subscription.state) &&
+    !(subscription.state === "premium" && !subscription.expiresAt)
+  );
+
+}
+
+async function invokePay(name,body) {
+
+  const {data,error} = await supabase.functions.invoke(name,{body});
+
+  if (error) {
+
+    let message = error.message || "Request failed.";
+
+    try {
+
+      const result = await error.context.json();
+
+      message = result.message || result.error || message;
+
+    } catch(innerError) {}
+
+    throw new Error(message);
+
+  }
+
+  if (data && data.success === false) {
+
+    throw new Error(
+      data.message || "The request could not be completed."
+    );
+
+  }
+
+  return data;
+
+}
+
+function updatePayTotal() {
+
+  const price = premiumPrice();
+
+  if (!price) return;
+
+  $("payTotal").textContent = moneyText(
+    price.amount * (Number($("payMonths").value) || 1),
+    price.currency
+  );
+
+}
+
+function openPay() {
+
+  const price = premiumPrice();
+
+  if (!price) return;
+
+  $("payPlanLine").textContent =
+    moneyText(price.amount,price.currency) + " per 30 days";
+
+  $("payMonths").innerHTML = Array.from({length:12},(_,index) => {
+
+    const months = index + 1;
+
+    const days = payDaysFor(months);
+
+    const label = months === 12
+      ? "12 months (365 days)"
+      : days + " days (" + months + " month" + (months === 1 ? "" : "s") + ")";
+
+    return (
+      '<option value="' + months + '">' +
+      escapeHtml(label + " — " + moneyText(price.amount * months,price.currency)) +
+      "</option>"
+    );
+
+  }).join("");
+
+  $("payNote").textContent = subscription.state === "premium"
+    ? "Your Premium is active until " + formatDay(subscription.expiresAt) +
+      ". The days you pay for are added after that date."
+    : "Your Premium plan starts as soon as the payment is confirmed.";
+
+  updatePayTotal();
+
+  $("payGo").disabled = false;
+  $("payGo").textContent = "Pay with Paystack";
+
+  $("payModal").classList.add("show");
+
+}
+
+function closePay() {
+
+  if (!payBusy) {
+    $("payModal").classList.remove("show");
+  }
+
+}
+
+$("payMonths").addEventListener("change",updatePayTotal);
+
+$("payCancel").addEventListener("click",closePay);
+
+$("payModal").addEventListener("click",event => {
+
+  if (event.target === $("payModal")) closePay();
+
+});
+
+$("payGo").addEventListener("click",async () => {
+
+  if (payBusy) return;
+
+  payBusy = true;
+
+  $("payGo").disabled = true;
+  $("payGo").textContent = "Opening Paystack…";
+
+  try {
+
+    const result = await invokePay("paystack-init",{
+      plan:"premium",
+      months:Number($("payMonths").value)
+    });
+
+    if (
+      !result ||
+      !/^https:\/\//i.test(result.authorization_url || "")
+    ) {
+      throw new Error("Paystack did not return a payment page.");
+    }
+
+    window.location.href = result.authorization_url;
+
+  } catch(error) {
+
+    payBusy = false;
+
+    $("payModal").classList.remove("show");
+
+    openSection("pricing");
+
+    showMessage(
+      $("payStatus"),
+      error.message || "Could not start the payment.",
+      "error"
+    );
+
+  }
+
+});
+
+/* Every Pay / Renew / Upgrade control opens the payment window.
+   If online payment is not available, links fall back to the contact page. */
+
+document.addEventListener("click",event => {
+
+  const trigger = event.target.closest(
+    "[data-pay], #psUpgrade, #psRenew, #apUpgrade, #apRenew, #payPremiumBtn"
+  );
+
+  if (!trigger) return;
+
+  if (!canPayOnline()) {
+
+    if (!trigger.matches("a")) {
+
+      openSection("pricing");
+
+      showMessage(
+        $("payStatus"),
+        "Online payment is not available right now. Please contact us.",
+        "error"
+      );
+
+    }
+
+    return;
+
+  }
+
+  event.preventDefault();
+
+  openPay();
+
+});
+
+/* When the student comes back from Paystack. */
+
+async function confirmPaymentReturn() {
+
+  const reference = new URLSearchParams(location.search).get("reference");
+
+  if (!reference) return;
+
+  history.replaceState({section:"home"},"",location.pathname);
+
+  openSection("pricing");
+
+  showMessage($("payStatus"),"Confirming your payment. Please wait…");
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+
+    try {
+
+      const result = await invokePay("paystack-verify",{reference});
+
+      if (result.state === "success") {
+
+        await loadSubscription();
+
+        showMessage(
+          $("payStatus"),
+          "Payment confirmed. Your Premium plan is active until " +
+            formatDay(result.expires_at) + ".",
+          "success"
+        );
+
+        return;
+
+      }
+
+      if (result.state === "failed") {
+
+        showMessage(
+          $("payStatus"),
+          "The payment was not completed. You can try again.",
+          "error"
+        );
+
+        return;
+
+      }
+
+      if (result.state === "review") {
+
+        showMessage(
+          $("payStatus"),
+          "Payment received but needs the administrator. Quote this reference: " + reference,
+          "error"
+        );
+
+        return;
+
+      }
+
+    } catch(error) {
+
+      console.error("Payment verify:",error);
+
+    }
+
+    await new Promise(resolve => setTimeout(resolve,4000));
+
+  }
+
+  showMessage(
+    $("payStatus"),
+    "Not confirmed yet. If you were charged, Premium activates automatically within minutes. Reference: " + reference
+  );
+
+}
+
+/* =========================================
    INITIALIZATION
 ========================================= */
 
@@ -3580,6 +3931,10 @@ async function initializeDashboard() {
     subscribeToEducationChanges();
 
     subscribeToNotifications();
+
+    /* If the student has just come back from Paystack, confirm the payment. */
+
+    confirmPaymentReturn();
 
   } catch(error) {
 
