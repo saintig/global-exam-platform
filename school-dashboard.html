@@ -132,17 +132,7 @@ td{padding:12px 9px;border-bottom:1px solid var(--line);color:#475569}
   </div>
   <div class="spacenote" id="spaceNote"></div>
 
-  <section class="helpbox">
-    <h2>NEED HELP? STEP-BY-STEP GUIDES</h2>
-    <p>Open the guide that matches what you are doing.</p>
-    <div class="hb">
-      <a href="school-help-support.html#part2">📘 Class setup guide</a>
-      <a href="school-help-support.html#c-attach">Add students and examinations</a>
-      <a href="school-help-support.html#c-register">Examination register and limits</a>
-      <a href="school-help-support.html#c-ca">CA and draft results, attach examinations to students or students to examinations</a>
-      <a href="school-help-support.html#c-share">Share IDs</a>
-    </div>
-  </section>
+  <section class="helpbox" id="helpbox"></section>
 
   <div class="stats">
     <article class="stat"><div class="stathead">Active Students <span class="staticon">♙</span></div><div class="value" id="sStudents">—</div><div class="note">Active student records</div></article>
@@ -200,12 +190,32 @@ const NOTE={
  class:"School Class Examinations: classes with three terms each. Students, subjects, examinations and questions here belong to a class and term, separate from Teacher's Examination."
 };
 
+/* ---------- help guide links (change with the chosen tab) ---------- */
+const HELPFILE="school-help-support.html";
+const HELP={
+ teacher:{t:"NEED HELP? TEACHER'S EXAMINATION",p:"Tap the step you are on, or the one confusing you.",l:[
+  ["📘 First time? Start here","#part1"],["Add students (get Student IDs)","#t-students"],
+  ["Register exam & add questions","#t-exam"],["Question file format","#t-files"],
+  ["Publish & share the Exam ID","#t-publish"],["How students take the exam","#t-take"],
+  ["Package limits","#t-limits"],["Something not working?","#fix"]]},
+ class:{t:"NEED HELP? SCHOOL CLASS EXAMINATIONS",p:"Follow the steps in order. Tap any step to open its guide.",l:[
+  ["📘 Class setup guide (8 steps)","#start"],["Create a class & terms","#c-create"],
+  ["Attach students & examinations","#c-attach"],["Limit exams per student","#c-limit"],
+  ["CA scores & draft result","#c-ca"],["Publish result & share Class ID","#c-publish"],
+  ["Promote / graduate at year end","#c-year"],["Something not working?","#fix"]]}
+};
+function paintHelp(){
+  const h=HELP[space];
+  $("helpbox").innerHTML=`<h2>${h.t}</h2><p>${h.p}</p><div class="hb">${h.l.map(a=>`<a href="${HELPFILE}${a[1]}" target="saintig-help">${a[0]}</a>`).join("")}</div>`;
+}
+
 let space=localStorage.getItem("saintig_space")==="class"?"class":"teacher",user=null,acc=null,chan=null;
 
 function showError(t){const e=$("statusMessage");e.textContent=t;e.className="status error"}
 
 /* ---------- menus and tabs ---------- */
 function paint(){
+  paintHelp();
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.s===space));
   $("menuLabel").textContent=space==="class"?"SCHOOL CLASS EXAMINATIONS":"TEACHER'S EXAMINATION";
   $("mainNav").innerHTML=MENU[space].map((m,i)=>`<button type="button" data-u="${m[1]}"${i===0?' class="active"':""}>${m[0]}</button>`).join("");
@@ -358,7 +368,7 @@ async function loadUsage(){
       const pc=m>0&&u!==null?Math.min(100,u/m*100):0;
       return `<div><div class="uhead"><span>${n}</span><b>${u===null?"—":num(u)} / ${num(m)}</b></div><div class="bar"><span style="width:${pc}%;${u>m?"background:#dc5b52":""}"></span></div></div>`}).join("");
     const left=(m,u)=>num(Math.max(0,m-(u||0)));
-    $("packageNotice").textContent=`Remaining capacity: ${left(p.students,st.count)} students, ${left(p.subjects,su.count)} subjects, ${left(p.exams,ex.count)} examinations and ${left(p.questions,q)} questions. Maximum examination duration: ${num(p.minutes)} minutes. Maximum questions per examination: ${num(p.perExam)}.${p.attempts===null?"":" Maximum attempts per student per exam: "+num(p.attempts)+"."}.`;
+    $("packageNotice").textContent=`Remaining capacity: ${left(p.students,st.count)} students, ${left(p.subjects,su.count)} subjects, ${left(p.exams,ex.count)} examinations and ${left(p.questions,q)} questions. Maximum examination duration: ${num(p.minutes)} minutes. Maximum questions per examination: ${num(p.perExam)}.${p.attempts===null?"":" Maximum attempts per student per exam: "+num(p.attempts)+"."}`;
   }catch(e){
     console.error(e);$("packageName").textContent="Package unavailable";
     $("packageNotice").textContent="Package information could not be loaded: "+(e.message||e);
@@ -433,6 +443,7 @@ async function init(){
   setTimeout(guard,3000);setInterval(guard,15000);
   document.addEventListener("visibilitychange",()=>{guard();if(document.visibilityState==="visible")unread()});
 }
+paintHelp();
 init();
 </script>
 </body>
