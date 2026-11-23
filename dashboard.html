@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#173b69">
-<title>Student Dashboard | SAINTIG EXAMS</title>
+<title>Student Dashboard | SAINT IG EXAMS</title>
 
 <style>
 :root {
@@ -1214,10 +1214,18 @@ th{
     <h3>Change Password</h3>
 
     <p class="muted">
-      Choose a new password for your account.
+      Enter your current password first, then choose a new password for your account.
     </p>
 
     <form id="passwordForm">
+
+      <div class="form-group">
+        <label for="currentPassword">Current password</label>
+
+        <input id="currentPassword" type="password"
+          autocomplete="current-password"
+          placeholder="Enter your current password" required>
+      </div>
 
       <div class="form-group">
         <label for="newPassword">New password</label>
@@ -1918,11 +1926,15 @@ $("profileForm").addEventListener("submit",async event => {
 
 /* =========================================
    PASSWORD
+   The current password must be entered and
+   confirmed before a new password is accepted.
 ========================================= */
 
 $("passwordForm").addEventListener("submit",async event => {
 
   event.preventDefault();
+
+  const currentPassword = $("currentPassword").value;
 
   const password = $("newPassword").value;
 
@@ -1930,6 +1942,17 @@ $("passwordForm").addEventListener("submit",async event => {
 
   const button = $("passwordForm")
     .querySelector('button[type="submit"]');
+
+  if (!currentPassword) {
+
+    showMessage(
+      $("passwordMessage"),
+      "Enter your current password.",
+      "error"
+    );
+
+    return;
+  }
 
   if (password.length < 8) {
 
@@ -1953,10 +1976,44 @@ $("passwordForm").addEventListener("submit",async event => {
     return;
   }
 
+  if (password === currentPassword) {
+
+    showMessage(
+      $("passwordMessage"),
+      "The new password must be different from your current password.",
+      "error"
+    );
+
+    return;
+  }
+
   button.disabled = true;
   button.textContent = "Updating…";
 
   try {
+
+    /* Step 1: confirm the current password. */
+
+    const {error:verifyError} = await supabase.auth.signInWithPassword({
+      email:currentUser.email,
+      password:currentPassword
+    });
+
+    if (verifyError) {
+
+      const wrong =
+        verifyError.status === 400 ||
+        /invalid login credentials/i.test(verifyError.message || "");
+
+      throw new Error(
+        wrong
+          ? "Your current password is incorrect."
+          : (verifyError.message || "Could not confirm your current password.")
+      );
+
+    }
+
+    /* Step 2: save the new password. */
 
     const {error} = await supabase.auth.updateUser({
       password
