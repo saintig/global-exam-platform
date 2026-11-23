@@ -22,7 +22,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 Arial,sans-serif}
 a{text-decoration:none;color:inherit}
-button,a{-webkit-tap-highlight-color:transparent}
+button,a,select{-webkit-tap-highlight-color:transparent;font:inherit}
 
 header{
   background:var(--navy);color:#fff;padding:12px 18px;
@@ -33,16 +33,17 @@ header{
 .brand span{color:var(--gold)}
 .back{
   border:1px solid #ffffff55;background:none;color:#fff;border-radius:8px;
-  padding:10px 14px;min-height:44px;cursor:pointer;font:inherit;font-size:18px
+  padding:10px 14px;min-height:44px;cursor:pointer;font-size:18px
 }
 
 main{max-width:1100px;margin:auto;padding:26px 16px 10px}
 h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 .muted{color:var(--muted)}
 
-.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:17px}
+.status{display:none;padding:13px 15px;border-radius:8px;margin:16px 0;font-size:17px;overflow-wrap:anywhere}
 .status.error{display:block;background:#fff0ef;border:1px solid #ffd2ce;color:#b42318}
 .status.info{display:block;background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+.status.success{display:block;background:#e8f7ee;border:1px solid #c8ebd2;color:#176b3a}
 
 .card{
   background:#fff;border:1px solid var(--line);border-radius:13px;
@@ -92,6 +93,7 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
   min-height:54px;padding:13px 16px;border-radius:9px;font-weight:bold;
   font-size:18px;border:0;cursor:pointer
 }
+.btn:disabled{opacity:.6;cursor:not-allowed}
 .btn.gold{background:var(--gold);color:var(--navy)}
 .btn.gold:hover{background:#e6c65d}
 .btn.light{background:#fff;color:var(--navy);border:1px solid var(--navy)}
@@ -104,6 +106,34 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 .summary-actions{margin-top:14px}
 .summary-actions .btn{display:flex;max-width:340px}
 .summary-actions .btn+.btn{margin-top:10px}
+
+/* payment window */
+.modal{
+  display:none;position:fixed;inset:0;background:#000a;z-index:50;
+  padding:16px;overflow-y:auto
+}
+.modal.show{display:flex;align-items:flex-start;justify-content:center}
+.modal-box{
+  background:#fff;border-radius:13px;padding:22px;width:100%;
+  max-width:480px;margin:auto
+}
+.modal-box h2{margin:0 0 4px;font-size:24px;color:var(--navy)}
+.modal-box label{display:block;font-weight:bold;margin:16px 0 6px}
+.modal-box select{
+  width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:8px;
+  background:#fff;min-height:52px;font-size:17px
+}
+.pay-total{
+  margin:16px 0 0;padding:14px;border-radius:10px;background:#f8faff;
+  border:1px solid var(--line);font-size:18px
+}
+.pay-total b{color:var(--navy);font-size:24px}
+.pay-note{
+  margin:12px 0 0;padding:12px 14px;border-radius:9px;background:#fff8e8;
+  border-left:5px solid var(--gold);font-size:16px;color:#5f4608
+}
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.modal-actions .btn{flex:1 1 180px}
 
 footer{text-align:center;color:#8995a3;font-size:17px;padding:30px 10px 26px}
 footer a{color:var(--navy);font-weight:bold;margin:0 8px}
@@ -137,11 +167,16 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
   <div class="plan-grid" id="planCards"></div>
 
   <section class="card how">
-    <h2>Subscribe manually</h2>
+    <h2>How to subscribe</h2>
     <p class="muted">
-      To subscribe manually, or to get the Custom Package, please contact the
-      administrator. Once your payment is confirmed, your package is activated
-      and you will receive a notification.
+      Silver and Gold can be paid for online with Paystack. Choose how many
+      days you want (30 days, 60 days and so on) and your package is activated
+      as soon as the payment is confirmed. If you pay while your package is
+      still active, the new days are added after your current end date.
+    </p>
+    <p class="muted">
+      The Custom Package is arranged with the administrator and activated by
+      the administrator only.
     </p>
     <a class="btn gold" href="contact.html">Contact the Administrator</a>
   </section>
@@ -155,26 +190,38 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
   <a href="school-dashboard.html">Dashboard</a>
 </footer>
 
+<!-- PAYMENT WINDOW -->
+<div class="modal" id="payModal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+  <div class="modal-box">
+    <h2 id="payTitle">Pay for a package</h2>
+    <div class="muted" id="payPlanLine"></div>
+
+    <label for="payMonths">How long?</label>
+    <select id="payMonths"></select>
+
+    <div class="pay-total">Total to pay: <b id="payTotal">—</b></div>
+    <div class="pay-note" id="payNote"></div>
+
+    <div class="modal-actions">
+      <button class="btn gold" id="payGo" type="button">Pay with Paystack</button>
+      <button class="btn light" id="payCancel" type="button">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SUPABASE_URL="https://scuiswponnqyrbqjypkx.supabase.co";
 const SUPABASE_ANON_KEY="sb_publishable_3fT0c2Ggy8sYKINoMkMpkA_Qlaj5oZq";
 const LOGIN_PAGE="school-login.html";
 const DASHBOARD="school-dashboard.html";
 
-/*
- * ONLINE PAYMENT LINKS
- * Paste the hosted payment page link (it must start with https://) for each
- * package between the quotation marks. While a link is empty, the Pay Now
- * button tells the teacher to contact the administrator instead.
- */
-const PAYMENT_LINKS={
-  silver:"",
-  gold:""
-};
-
 const $=id=>document.getElementById(id);
 
 const DAY_MS=86400000;
+
+/* Online payment: the price is the admin's monthly price x months.
+   Months 1 to 11 are 30 days each. 12 months is 365 days. */
+const daysFor=m=>m===12?365:m*30;
 
 const FIELDS=[
   {limit:"max_active_students",custom:"custom_max_active_students",
@@ -203,6 +250,11 @@ const BILLING={
   year:"per year",one_time:"one-time"
 };
 
+let sb=null;
+let data={assignment:null,limits:[],prices:{}};
+let payPlan=null;
+let paying=false;
+
 function esc(value){
   return String(value??"").replace(/[&<>"']/g,c=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
@@ -214,7 +266,6 @@ function fmt(value){
   return Number.isFinite(n)?n.toLocaleString():"—";
 }
 
-/* "Silver" -> "Silver Package"; "Custom Package" stays "Custom Package" */
 function packageLabel(name){
   const n=String(name||"Free").trim();
   return /package$/i.test(n)?n:n+" Package";
@@ -247,6 +298,18 @@ function daysLeft(value){
   return Math.max(0,Math.ceil((d.getTime()-Date.now())/DAY_MS));
 }
 
+function money(amount,currency){
+  try{
+    return new Intl.NumberFormat("en-NG",{
+      style:"currency",
+      currency:currency||"NGN",
+      maximumFractionDigits:amount%1===0?0:2
+    }).format(amount);
+  }catch{
+    return (currency||"NGN")+" "+Number(amount).toLocaleString();
+  }
+}
+
 function priceHtml(planName,row){
   if(!row||!hasValue(row.price_amount)){
     return planName.toLowerCase()==="free"
@@ -258,21 +321,22 @@ function priceHtml(planName,row){
 
   if(amount===0)return "Free";
 
-  let money;
-
-  try{
-    money=new Intl.NumberFormat("en-NG",{
-      style:"currency",
-      currency:row.currency||"NGN",
-      maximumFractionDigits:amount%1===0?0:2
-    }).format(amount);
-  }catch{
-    money=(row.currency||"NGN")+" "+amount.toLocaleString();
-  }
-
   const period=BILLING[row.billing_period]||"";
 
-  return esc(money)+(period?" <small>"+esc(period)+"</small>":"");
+  return esc(money(amount,row.currency))+(period?" <small>"+esc(period)+"</small>":"");
+}
+
+/* Online payment needs a price per month set by the administrator. */
+function onlinePrice(planName){
+  const row=data.prices[String(planName).toLowerCase()];
+
+  if(!row||!hasValue(row.price_amount))return null;
+
+  const amount=Number(row.price_amount);
+
+  if(!Number.isFinite(amount)||amount<=0||row.billing_period!=="month")return null;
+
+  return{amount,currency:row.currency||"NGN"};
 }
 
 /* The package that applies today. A paid package past its end date
@@ -303,36 +367,180 @@ function benefitItems(row){
     .join("");
 }
 
-/* ---------- payment ---------- */
+/* ---------- payment window ---------- */
 
-function startPayment(planName){
-  const link=PAYMENT_LINKS[String(planName).toLowerCase()]||"";
+function openPay(planName){
+  const price=onlinePrice(planName);
 
-  if(/^https:\/\//i.test(link)){
-    window.open(link,"_blank","noopener");
-
+  if(!price){
     message(
-      "The payment page for the "+planName+" package has opened. After you pay, "+
-      "your package is activated once the administrator confirms your payment, "+
-      "and you will receive a notification.",
+      "Online payment is not available for the "+planName+
+      " package yet. Please contact the administrator.",
       "info"
     );
-
     return;
   }
 
-  message(
-    "Online payment is not available yet. To subscribe to the "+planName+
-    " package now, please contact the administrator.",
-    "info"
-  );
+  payPlan={name:planName,price};
+
+  const current=effectivePackage(data.assignment);
+  const sameActive=
+    current.name.toLowerCase()===String(planName).toLowerCase()&&
+    current.assignment?.expires_at;
+
+  $("payTitle").textContent="Pay for "+packageLabel(planName);
+  $("payPlanLine").textContent=money(price.amount,price.currency)+" per 30 days";
+
+  $("payMonths").innerHTML=Array.from({length:12},(_,i)=>{
+    const m=i+1;
+    const total=money(price.amount*m,price.currency);
+    const d=daysFor(m);
+    const label=m===12?"12 months (365 days)":d+" days ("+m+" month"+(m===1?"":"s")+")";
+    return '<option value="'+m+'">'+esc(label+" — "+total)+"</option>";
+  }).join("");
+
+  const isPaid=current.name.toLowerCase()!=="free";
+
+  $("payNote").textContent=
+    sameActive
+      ?"Your "+packageLabel(planName)+" is active until "+dateText(current.assignment.expires_at)+
+       ". The days you pay for are added after that date."
+      :isPaid
+        ?"Your "+packageLabel(current.name)+" will be replaced by "+packageLabel(planName)+
+         ". It starts today and the days left on your current package are not carried over."
+        :"Your "+packageLabel(planName)+" starts as soon as the payment is confirmed.";
+
+  updatePayTotal();
+  $("payGo").disabled=false;
+  $("payGo").textContent="Pay with Paystack";
+  $("payModal").classList.add("show");
 }
+
+function updatePayTotal(){
+  if(!payPlan)return;
+  const m=Number($("payMonths").value)||1;
+  $("payTotal").textContent=money(payPlan.price.amount*m,payPlan.price.currency);
+}
+
+function closePay(){
+  if(paying)return;
+  $("payModal").classList.remove("show");
+  payPlan=null;
+}
+
+async function invokeFn(name,body){
+  const {data:res,error}=await sb.functions.invoke(name,{body});
+
+  if(error){
+    let m=error.message||"Request failed.";
+    try{const r=await error.context.json();m=r.message||r.error||m}catch(_){}
+    throw new Error(m);
+  }
+
+  if(res&&res.success===false){
+    throw new Error(res.message||"The request could not be completed.");
+  }
+
+  return res;
+}
+
+async function startPayment(){
+  if(!payPlan||paying)return;
+
+  paying=true;
+  $("payGo").disabled=true;
+  $("payGo").textContent="Opening Paystack…";
+
+  try{
+    const res=await invokeFn("paystack-init",{
+      plan:payPlan.name,
+      months:Number($("payMonths").value)
+    });
+
+    if(!res||!/^https:\/\//i.test(res.authorization_url||"")){
+      throw new Error("Paystack did not return a payment page. Please try again.");
+    }
+
+    location.href=res.authorization_url;
+  }catch(e){
+    paying=false;
+    $("payGo").disabled=false;
+    $("payGo").textContent="Pay with Paystack";
+    $("payModal").classList.remove("show");
+    payPlan=null;
+    message(e.message||"Could not start the payment.","error");
+  }
+}
+
+$("payMonths").addEventListener("change",updatePayTotal);
+$("payGo").addEventListener("click",startPayment);
+$("payCancel").addEventListener("click",closePay);
+$("payModal").addEventListener("click",e=>{if(e.target===$("payModal"))closePay()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePay()});
 
 document.addEventListener("click",event=>{
   const button=event.target.closest("[data-pay]");
 
-  if(button)startPayment(button.dataset.pay);
+  if(button)openPay(button.dataset.pay);
 });
+
+/* ---------- coming back from Paystack ---------- */
+
+async function confirmReturn(){
+  const params=new URLSearchParams(location.search);
+  const reference=params.get("reference")||params.get("trxref");
+
+  if(!reference)return false;
+
+  history.replaceState(null,"",location.pathname);
+
+  message("Confirming your payment. Please wait…","info");
+
+  for(let attempt=0;attempt<5;attempt++){
+    try{
+      const res=await invokeFn("paystack-verify",{reference});
+
+      if(res.state==="success"){
+        await loadAndRender();
+        message(
+          "Payment confirmed. Your "+packageLabel(res.plan)+" is active until "+
+          dateText(res.expires_at)+".",
+          "success"
+        );
+        return true;
+      }
+
+      if(res.state==="failed"){
+        message("The payment was not completed, so nothing was charged to your plan. You can try again.","error");
+        return true;
+      }
+
+      if(res.state==="review"){
+        message(
+          "Your payment was received but needs the administrator to confirm it. "+
+          "Please contact the administrator and quote this reference: "+reference,
+          "error"
+        );
+        return true;
+      }
+    }catch(e){
+      console.error("Verify:",e);
+    }
+
+    await new Promise(r=>setTimeout(r,4000));
+  }
+
+  message(
+    "We have not received confirmation yet. If you were charged, your package "+
+    "will be activated automatically within a few minutes. Refresh this page "+
+    "shortly, or contact the administrator with this reference: "+reference,
+    "info"
+  );
+
+  return true;
+}
+
+/* ---------- display ---------- */
 
 function render(assignment,limits,prices){
 
@@ -387,9 +595,12 @@ function render(assignment,limits,prices){
   const needsRenewal=
     !!current.endedPackage||(!isFree&&left!==null&&left<=14);
 
-  /* Silver and Gold can be renewed online; any other package is renewed through the administrator. */
+  /* Silver and Gold can be renewed online. Custom and other
+     arranged packages are renewed through the administrator. */
   const renewName=current.endedPackage||current.name;
-  const canPayOnline=["silver","gold"].includes(String(renewName).toLowerCase());
+  const canPayOnline=
+    ["silver","gold"].includes(String(renewName).toLowerCase())&&
+    !!onlinePrice(renewName);
 
   $("planSummary").innerHTML=
     '<span class="pill'+(soon||current.endedPackage?" warn":"")+'">'+
@@ -448,9 +659,11 @@ function render(assignment,limits,prices){
 
     const extras=benefitItems(prices[name.toLowerCase()]);
 
-    /* Pay Now: Silver and Gold, except a step down from the current plan. */
+    /* Pay online: renew the current package, or move up to a higher one.
+       Never from Custom or an arranged package, and never a step down. */
     const canPay=
-      !planIsFree&&(isCurrent||onCustom||!isStandard||index>currentIndex);
+      !planIsFree&&
+      (isCurrent||(isStandard&&index>currentIndex));
 
     let action="";
 
@@ -458,7 +671,8 @@ function render(assignment,limits,prices){
       action=
         '<span class="pill ok">Your current plan</span>'+
         (canPay
-          ?'<button class="btn gold" data-pay="'+esc(name)+'" type="button">Renew Now</button>'
+          ?'<button class="btn gold" data-pay="'+esc(name)+'" type="button">'+
+             (isFree?"":"Renew / Add Days")+"</button>"
           :"");
     }else if(canPay){
       action=
@@ -479,7 +693,7 @@ function render(assignment,limits,prices){
     );
   });
 
-  /* Custom Package: arranged manually with the administrator */
+  /* Custom Package: arranged and activated by the administrator only */
 
   const customRow=prices["custom package"]||prices["custom"];
   const customExtras=benefitItems(customRow);
@@ -508,43 +722,20 @@ function render(assignment,limits,prices){
   $("planCards").innerHTML=cards.join("");
 }
 
-async function init(){
+async function loadAndRender(){
 
-  if(!window.supabase?.createClient){
-    message("Supabase library did not load. Check your internet connection and refresh.","error");
-    return;
-  }
+  const {data:sessionData}=await sb.auth.getSession();
 
-  const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
-    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
-  });
-
-  const {data:sessionData,error:sessionError}=await sb.auth.getSession();
-
-  if(sessionError||!sessionData.session){
-    location.replace(LOGIN_PAGE);
-    return;
-  }
+  const userId=sessionData?.session?.user?.id;
 
   const {data:account,error:accountError}=await sb
     .from("school_accounts")
     .select("id,account_name,status")
-    .eq("user_id",sessionData.session.user.id)
+    .eq("user_id",userId)
     .maybeSingle();
 
-  if(accountError){
-    message("Unable to load your account: "+accountError.message,"error");
-    return;
-  }
-
-  if(!account){
-    message("No Teacher/School account is linked to this login.","error");
-    return;
-  }
-
-  if(account.status!=="active"){
-    await sb.auth.signOut();
-    location.replace(LOGIN_PAGE);
+  if(accountError||!account){
+    message("Unable to load your account.","error");
     return;
   }
 
@@ -590,7 +781,54 @@ async function init(){
     });
   }
 
-  render(assignRes.data,limitsRes.data||[],prices);
+  data={assignment:assignRes.data,limits:limitsRes.data||[],prices};
+
+  render(data.assignment,data.limits,data.prices);
+}
+
+async function init(){
+
+  if(!window.supabase?.createClient){
+    message("Supabase library did not load. Check your internet connection and refresh.","error");
+    return;
+  }
+
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+  });
+
+  const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+
+  if(sessionError||!sessionData.session){
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  const {data:account,error:accountError}=await sb
+    .from("school_accounts")
+    .select("id,account_name,status")
+    .eq("user_id",sessionData.session.user.id)
+    .maybeSingle();
+
+  if(accountError){
+    message("Unable to load your account: "+accountError.message,"error");
+    return;
+  }
+
+  if(!account){
+    message("No Teacher/School account is linked to this login.","error");
+    return;
+  }
+
+  if(account.status!=="active"){
+    await sb.auth.signOut();
+    location.replace(LOGIN_PAGE);
+    return;
+  }
+
+  await loadAndRender();
+
+  await confirmReturn();
 }
 
 $("backBtn").addEventListener("click",()=>{location.href=DASHBOARD;});
