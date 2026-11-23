@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payments | SAINTIG EXAMS Admin</title>
+<style>
+:root{--navy:#142b52;--blue:#2457a7;--gold:#d4af37;--bg:#f4f6fa;--text:#263449;--muted:#657287;--border:#e5eaf1;--bad:#b42318;--ok:#16794b;--warn:#8a680e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:17px/1.5 Arial,sans-serif;background:var(--bg);color:var(--text)}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit}
+header{height:65px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;position:sticky;top:0;z-index:100}
+.brand{font-size:20px;font-weight:bold}.brand span{color:var(--gold)}
+.top-r{display:flex;align-items:center;gap:8px}
+.hbtn{border:1px solid #ffffff66;background:transparent;color:#fff;border-radius:8px;min-height:44px;padding:0 13px;cursor:pointer;font-size:16px}
+.layout{display:flex;min-height:calc(100vh - 65px)}
+.sidebar{width:275px;background:var(--navy);color:#fff;padding:14px 12px;flex-shrink:0;transition:left .25s}
+.sidebar h3{font-size:13px;letter-spacing:1.2px;color:#9fb0cc;margin:16px 10px 6px}
+.sidebar h3:first-child{margin-top:4px}
+.sidebar a{display:block;color:#e8edf6;padding:12px 14px;margin-bottom:3px;border-radius:7px;font-size:16px}
+.sidebar a:hover,.sidebar a.active{background:#ffffff18;box-shadow:inset 4px 0 var(--gold);color:#fff}
+.main{flex:1;min-width:0;padding:24px}
+h1{color:var(--navy);font-size:27px;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:16px}
+.alert{display:none;padding:13px 15px;border-radius:9px;margin-bottom:16px;overflow-wrap:anywhere}
+.alert.show{display:block}
+.alert.err{background:#fff0ee;border:1px solid #f0c7c2;color:var(--bad)}
+.alert.ok{background:#e8f7ee;border:1px solid #c8ebd2;color:#176b3a}
+.alert.info{background:#eef6ff;border:1px solid #d5e8fa;color:#31577b}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;box-shadow:0 3px 12px #142b5208}
+.sn{font-size:15px;color:var(--muted);margin-bottom:8px}
+.sv{font-size:28px;font-weight:bold;color:var(--navy);overflow-wrap:anywhere}
+.sv.red{color:var(--bad)}
+.note{font-size:14px;color:var(--muted);margin-top:6px}
+.filters{display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:10px;margin-bottom:14px}
+select,input{width:100%;padding:12px;border:1px solid #cfd8e5;border-radius:8px;min-height:48px;background:#fff}
+.btn{border:0;border-radius:8px;padding:11px 16px;min-height:46px;font-weight:bold;cursor:pointer;background:var(--navy);color:#fff}
+.btn.ghost{background:#edf1f7;color:var(--navy)}
+.btn.small{min-height:38px;padding:7px 12px;font-size:15px}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.tw{overflow-x:auto;background:#fff;border:1px solid var(--border);border-radius:11px}
+table{width:100%;border-collapse:collapse;min-width:980px}
+th,td{padding:12px;border-bottom:1px solid var(--border);text-align:left;font-size:15px;vertical-align:top}
+th{background:#f3f6fb;color:var(--navy);font-size:13px;letter-spacing:.4px;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.who b{display:block;color:var(--navy)}
+.who span{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.pill{display:inline-block;border-radius:20px;padding:3px 11px;font-size:14px;font-weight:bold;white-space:nowrap}
+.pill.ok{background:#e6f6ee;color:var(--ok)}
+.pill.bad{background:#fdebea;color:var(--bad)}
+.pill.wait{background:#fff5d9;color:var(--warn)}
+.pill.off{background:#edf1f7;color:var(--muted)}
+.pill.type{background:#eaf0f9;color:var(--navy);font-weight:normal;margin-top:4px}
+.err-text{display:block;margin-top:6px;font-size:13px;color:var(--bad);overflow-wrap:anywhere;max-width:260px}
+.ref{font-family:Consolas,monospace;font-size:13px;overflow-wrap:anywhere;max-width:190px;display:block}
+.empty{text-align:center;color:var(--muted);padding:30px 12px}
+.pager{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:14px}
+.legend{margin-top:18px;font-size:15px;color:var(--muted);line-height:1.7}
+.legend b{color:var(--navy)}
+.overlay{display:none}
+@media(max-width:900px){
+ .sidebar{position:fixed;top:65px;bottom:0;left:-295px;z-index:90;overflow-y:auto}
+ .sidebar.open{left:0}
+ .overlay.show{display:block;position:fixed;inset:65px 0 0;background:#0006;z-index:80}
+ .main{padding:16px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .filters{grid-template-columns:1fr}
+}
+@media(max-width:380px){.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">SAINTIG <span>EXAMS</span></div>
+  <div class="top-r">
+    <a class="hbtn" href="admin.html" style="display:flex;align-items:center">Dashboard</a>
+    <button class="hbtn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <h3>OVERVIEW</h3>
+    <a href="admin.html">Dashboard Overview</a>
+    <h3>CONTENT</h3>
+    <a href="countries.html">Countries</a>
+    <a href="education-levels.html">Education Levels</a>
+    <a href="subjects.html">Subjects</a>
+    <a href="question-bank.html">Question Bank</a>
+    <a href="register-exam.html">Register Examination</a>
+    <a href="ai-question-generator.html">AI Question Generator</a>
+    <h3>PEOPLE AND MONEY</h3>
+    <a href="registered-users.html">Registered Users</a>
+    <a href="paid-subscribers.html">Paid Subscribers</a>
+    <a href="admin-payments.html" class="active">Payments</a>
+    <a href="admin-notifications.html">Send Notifications</a>
+    <h3>REPORTS</h3>
+    <a href="results-reports.html">Results &amp; Reports</a>
+    <a href="visitor-analytics.html">Visitor Analytics</a>
+    <h3>SYSTEM</h3>
+    <a href="settings-security.html">Settings &amp; Security</a>
+    <a href="archived-records.html">Archived Records</a>
+    <a href="admin-account-settings.html">Admin Account Settings</a>
+    <a href="index.html">View Public Website ↗</a>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+    <h1>Payments</h1>
+    <p class="sub">Every online payment made through Paystack, newest first.</p>
+
+    <div class="alert" id="alertBox"></div>
+
+    <div class="stats">
+      <div class="card"><div class="sn">Received (all time)</div><div class="sv" id="stReceived">—</div><div class="note">Confirmed and activated</div></div>
+      <div class="card"><div class="sn">Received this month</div><div class="sv" id="stMonth">—</div><div class="note">Nigeria time</div></div>
+      <div class="card"><div class="sn">Successful payments</div><div class="sv" id="stCount">—</div><div class="note" id="stPending">&nbsp;</div></div>
+      <div class="card"><div class="sn">Needs review</div><div class="sv" id="stReview">—</div><div class="note">Paid but not activated</div></div>
+    </div>
+
+    <div class="filters">
+      <select id="fStatus" aria-label="Filter by status">
+        <option value="all">All payments</option>
+        <option value="success">Successful</option>
+        <option value="review">Needs review</option>
+        <option value="pending">Pending</option>
+        <option value="failed">Not paid / failed</option>
+      </select>
+      <input id="fSearch" type="search" placeholder="Search name, email or reference" autocomplete="off">
+      <button class="btn ghost" id="refreshBtn" type="button">Refresh</button>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead>
+          <tr>
+            <th>DATE</th>
+            <th>PAID BY</th>
+            <th>PACKAGE</th>
+            <th>AMOUNT</th>
+            <th>STATUS</th>
+            <th>REFERENCE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody id="rows"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="pager">
+      <button class="btn ghost" id="moreBtn" type="button" style="display:none">Show 20 more</button>
+      <span class="note" id="countNote"></span>
+    </div>
+
+    <div class="legend">
+      <b>Paid:</b> Paystack confirmed the money and the package was activated.<br>
+      <b>Needs review:</b> money may have been taken but the package was not activated (for example the amount did not match). Use <b>Check with Paystack</b>, and if it stays here, look at the payment in your Paystack dashboard.<br>
+      <b>Pending:</b> the person opened Paystack but has not finished. Most of these are abandoned checkouts.<br>
+      <b>Not paid:</b> the payment was cancelled, declined or failed.
+    </div>
+  </main>
+</div>
+
+<script type="module">
+import { supabase, getCurrentSession } from "./auth.js";
+
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const PAGE = 20;
+
+let offset = 0, total = 0, busy = false, searchTimer = null;
+
+/* ---------- menu ---------- */
+const sidebar = $("sidebar"), overlay = $("overlay"), menuBtn = $("menuBtn");
+function closeMenu(){sidebar.classList.remove("open");overlay.classList.remove("show");menuBtn.setAttribute("aria-expanded","false")}
+menuBtn.addEventListener("click",()=>{const o=sidebar.classList.toggle("open");overlay.classList.toggle("show",o);menuBtn.setAttribute("aria-expanded",String(o))});
+overlay.addEventListener("click",closeMenu);
+
+/* ---------- helpers ---------- */
+function say(text,type="info"){const b=$("alertBox");b.textContent=text;b.className=text?"alert show "+type:"alert"}
+
+function naira(kobo){
+  const n = Number(kobo || 0) / 100;
+  return new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",minimumFractionDigits:0,maximumFractionDigits:2}).format(n);
+}
+function when(v){
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleString(undefined,{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function day(v){
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? "—" : d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
+}
+
+/* ---------- access ---------- */
+async function verify(){
+  const session = await getCurrentSession();
+  if(!session){location.replace("admin-login.html");return false}
+  const user = session.user || session;
+  const {data,error} = await supabase.from("admin_users").select("user_id,is_suspended").eq("user_id",user.id).maybeSingle();
+  if(error) throw error;
+  if(!data || data.is_suspended){await supabase.auth.signOut();location.replace("admin-login.html");return false}
+  const {data:ok,error:pe} = await supabase.rpc("admin_payments_allowed");
+  if(pe) throw pe;
+  if(ok !== true){alert("You do not have permission to view payments.");location.replace("admin.html");return false}
+  return true;
+}
+
+/* ---------- cards ---------- */
+async function loadStats(){
+  const {data,error} = await supabase.rpc("admin_payment_stats");
+  if(error) throw error;
+  const s = data || {};
+  $("stReceived").textContent = naira(s.received_kobo);
+  $("stMonth").textContent = naira(s.month_kobo);
+  $("stCount").textContent = Number(s.success_count || 0).toLocaleString();
+  const p = Number(s.pending_count || 0);
+  $("stPending").textContent = p ? p + " pending in the last 24 hours" : "None pending";
+  const r = Number(s.review_count || 0);
+  $("stReview").textContent = r.toLocaleString();
+  $("stReview").classList.toggle("red", r > 0);
+}
+
+/* ---------- table ---------- */
+function statusCell(p){
+  if(p.activated){
+    return '<span class="pill ok">Paid</span>' +
+      (p.expires_at ? '<span class="note" style="display:block">Package until ' + esc(day(p.expires_at)) + "</span>" : "");
+  }
+  if(p.needs_review) return '<span class="pill bad">Needs review</span>' + (p.error ? '<span class="err-text">' + esc(p.error) + "</span>" : "");
+  if(p.status === "pending") return '<span class="pill wait">Pending</span>';
+  if(p.status === "failed") return '<span class="pill off">Not paid</span>' + (p.error ? '<span class="err-text" style="color:#657287">' + esc(p.error) + "</span>" : "");
+  return '<span class="pill off">' + esc(p.status) + "</span>";
+}
+
+function rowHtml(p){
+  const who = (p.name || "—");
+  const type = p.audience === "school" ? "Teacher/School" : "Student";
+  const action = p.activated ? '<span class="note">—</span>'
+    : '<button class="btn small gold" type="button" data-check="' + esc(p.reference) + '">Check with Paystack</button>';
+  return "<tr>" +
+    "<td>" + esc(when(p.paid_at || p.created_at)) + "</td>" +
+    '<td class="who"><b>' + esc(who) + "</b><span>" + esc(p.email || "") + '</span><br><span class="pill type">' + type + "</span></td>" +
+    "<td><b>" + esc(p.plan) + "</b><br><span class='note'>" + esc(p.days) + " days</span></td>" +
+    "<td><b>" + esc(naira(p.amount_kobo)) + "</b></td>" +
+    "<td>" + statusCell(p) + "</td>" +
+    '<td><span class="ref">' + esc(p.reference) + '</span><button class="btn small ghost" type="button" data-copy="' + esc(p.reference) + '" style="margin-top:6px">Copy</button></td>' +
+    "<td>" + action + "</td>" +
+  "</tr>";
+}
+
+async function load(reset){
+  if(busy) return;
+  busy = true;
+  $("refreshBtn").disabled = true;
+  $("moreBtn").disabled = true;
+
+  if(reset){offset = 0;total = 0;$("rows").innerHTML = '<tr><td colspan="7" class="empty">Loading…</td></tr>'}
+
+  try{
+    const {data,error} = await supabase.rpc("admin_list_payments",{
+      p_status: $("fStatus").value,
+      p_search: $("fSearch").value.trim() || null,
+      p_limit: PAGE,
+      p_offset: offset
+    });
+    if(error) throw error;
+
+    const list = data || [];
+    if(list.length) total = Number(list[0].total_count) || 0;
+
+    if(reset) $("rows").innerHTML = "";
+
+    if(reset && !list.length){
+      $("rows").innerHTML = '<tr><td colspan="7" class="empty">No payments found.</td></tr>';
+    }
+
+    $("rows").insertAdjacentHTML("beforeend", list.map(rowHtml).join(""));
+    offset += list.length;
+
+    $("moreBtn").style.display = offset < total ? "inline-block" : "none";
+    $("countNote").textContent = total ? "Showing " + offset + " of " + total + " payment" + (total === 1 ? "" : "s") : "";
+  }catch(e){
+    console.error("Payments:",e);
+    if(reset) $("rows").innerHTML = '<tr><td colspan="7" class="empty">Could not load payments.</td></tr>';
+    say("Could not load payments: " + (e.message || e) + " (Make sure the payments-admin SQL has been run.)","err");
+  }finally{
+    busy = false;
+    $("refreshBtn").disabled = false;
+    $("moreBtn").disabled = false;
+  }
+}
+
+/* ---------- actions ---------- */
+async function recheck(reference, button){
+  button.disabled = true;
+  const old = button.textContent;
+  button.textContent = "Checking…";
+  say("Asking Paystack about " + reference + "…");
+  try{
+    const {data,error} = await supabase.functions.invoke("admin-payment-recheck",{body:{reference}});
+    if(error){
+      let m = error.message || "Request failed.";
+      try{const r = await error.context.json(); m = r.message || r.error || m}catch(_){}
+      throw new Error(m);
+    }
+    if(data && data.success === false) throw new Error(data.message || "The check could not be completed.");
+
+    const type = data.state === "success" ? "ok" : (data.state === "pending" ? "info" : "err");
+    say(data.message || "Checked.", type);
+    await Promise.allSettled([load(true), loadStats()]);
+  }catch(e){
+    say(e.message || "The check failed.","err");
+    button.disabled = false;
+    button.textContent = old;
+  }
+}
+
+$("rows").addEventListener("click", async e => {
+  const c = e.target.closest("[data-check]");
+  if(c){recheck(c.dataset.check, c);return}
+  const k = e.target.closest("[data-copy]");
+  if(k){
+    try{await navigator.clipboard.writeText(k.dataset.copy);k.textContent = "Copied";setTimeout(()=>{k.textContent = "Copy"},1500)}
+    catch(_){say("Could not copy. Select the reference and copy it.","info")}
+  }
+});
+
+$("fStatus").addEventListener("change",()=>load(true));
+$("fSearch").addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer = setTimeout(()=>load(true),400)});
+$("refreshBtn").addEventListener("click",()=>{say("");Promise.allSettled([load(true),loadStats()])});
+$("moreBtn").addEventListener("click",()=>load(false));
+
+/* ---------- start ---------- */
+(async()=>{
+  try{
+    if(!await verify()) return;
+    const r = await Promise.allSettled([loadStats(), load(true)]);
+    if(r[0].status === "rejected"){
+      console.error("Stats:",r[0].reason);
+      say("The totals could not be loaded. Make sure the payments-admin SQL has been run.","err");
+    }
+  }catch(e){
+    console.error(e);
+    say("Unable to open this page. Check your connection and permissions.","err");
+  }
+})();
+</script>
+</body>
+</html>
