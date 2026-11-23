@@ -107,6 +107,12 @@ h1{font-size:33px;color:var(--navy);margin:0 0 6px}
 .summary-actions .btn{display:flex;max-width:340px}
 .summary-actions .btn+.btn{margin-top:10px}
 
+.receipt{
+  margin-top:14px;padding:12px 14px;border-radius:9px;background:#f8faff;
+  border:1px solid var(--line);font-size:16px;color:var(--muted);overflow-wrap:anywhere
+}
+.receipt strong{color:var(--navy)}
+
 /* payment window */
 .modal{
   display:none;position:fixed;inset:0;background:#000a;z-index:50;
@@ -162,6 +168,7 @@ footer a{color:var(--navy);font-weight:bold;margin:0 8px}
   <section class="card">
     <h2>Your Plan</h2>
     <div id="planSummary">Loading your plan…</div>
+    <div class="receipt" id="receiptLine" hidden></div>
   </section>
 
   <div class="plan-grid" id="planCards"></div>
@@ -502,6 +509,7 @@ async function confirmReturn(){
 
       if(res.state==="success"){
         await loadAndRender();
+        await loadReceipt();
         message(
           "Payment confirmed. Your "+packageLabel(res.plan)+" is active until "+
           dateText(res.expires_at)+".",
@@ -722,6 +730,50 @@ function render(assignment,limits,prices){
   $("planCards").innerHTML=cards.join("");
 }
 
+/* The last confirmed online payment of this account. */
+async function loadReceipt(){
+
+  const box=$("receiptLine");
+
+  try{
+
+    const {data:s}=await sb.auth.getSession();
+
+    const uid=s?.session?.user?.id;
+
+    if(!uid)return;
+
+    const {data:rows,error}=await sb
+      .from("payments")
+      .select("reference,plan,days,amount_kobo,currency,paid_at")
+      .eq("user_id",uid)
+      .eq("activated",true)
+      .order("paid_at",{ascending:false})
+      .limit(1);
+
+    if(error||!rows||!rows.length){
+      box.hidden=true;
+      return;
+    }
+
+    const p=rows[0];
+
+    box.innerHTML=
+      "Last payment: <strong>"+esc(money(Number(p.amount_kobo)/100,p.currency))+"</strong> for "+
+      esc(packageLabel(p.plan))+" ("+esc(p.days)+" days) on "+esc(dateText(p.paid_at))+
+      ". Reference: <strong>"+esc(p.reference)+"</strong>";
+
+    box.hidden=false;
+
+  }catch(e){
+
+    console.error("Receipt:",e);
+
+    box.hidden=true;
+
+  }
+}
+
 async function loadAndRender(){
 
   const {data:sessionData}=await sb.auth.getSession();
@@ -827,6 +879,8 @@ async function init(){
   }
 
   await loadAndRender();
+
+  loadReceipt();
 
   await confirmReturn();
 }
