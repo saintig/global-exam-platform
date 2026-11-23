@@ -8,10 +8,10 @@
   var SITE = {
     // WhatsApp number with country code, digits only.
     // No +, no spaces, no dashes. Example for Nigeria: 2348012345678
-    whatsappNumber: "2340000000000",
+    whatsappNumber: "2348152295700",
 
     // Your support email address
-    email: "youremail@example.com",
+    email: "saintigexams@gmail.com",
 
     // Message that appears ready-typed when someone taps WhatsApp
     whatsappMessage: "Hello SAINTIG EXAMS, I need some help."
