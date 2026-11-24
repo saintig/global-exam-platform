@@ -712,6 +712,9 @@ th{
   .results-actions .button{width:100%}
 }
 
+.show-password{display:flex;align-items:center;gap:10px;min-height:48px;margin:0 0 14px;font-size:17px;cursor:pointer}
+.show-password input{width:22px;height:22px;margin:0;flex:0 0 auto;accent-color:var(--primary)}
+
 .receipt{margin-top:14px;padding:12px 14px;border-radius:9px;background:#f8faff;border:1px solid var(--border);font-size:16px;color:var(--muted);overflow-wrap:anywhere}
 .receipt strong{color:var(--primary)}
 
@@ -1225,6 +1228,14 @@ th{
     <form id="passwordForm">
 
       <div class="form-group">
+        <label for="currentPassword">Current password</label>
+
+        <input id="currentPassword" type="password"
+          autocomplete="current-password"
+          placeholder="Enter your current password" required>
+      </div>
+
+      <div class="form-group">
         <label for="newPassword">New password</label>
 
         <input id="newPassword" type="password" minlength="8"
@@ -1239,6 +1250,11 @@ th{
           autocomplete="new-password"
           placeholder="Enter the new password again" required>
       </div>
+
+      <label class="show-password" for="showPasswords">
+        <input id="showPasswords" type="checkbox">
+        Show passwords
+      </label>
 
       <button class="button" type="submit">Update Password</button>
 
@@ -1925,6 +1941,26 @@ $("profileForm").addEventListener("submit",async event => {
    PASSWORD
 ========================================= */
 
+/* Show or hide the three password boxes together. */
+
+function setPasswordVisibility(show) {
+
+  ["currentPassword","newPassword","confirmPassword"].forEach(id => {
+
+    $(id).type = show ? "text" : "password";
+
+  });
+
+  $("showPasswords").checked = show;
+
+}
+
+$("showPasswords").addEventListener("change",() => {
+
+  setPasswordVisibility($("showPasswords").checked);
+
+});
+
 $("passwordForm").addEventListener("submit",async event => {
 
   event.preventDefault();
@@ -1932,6 +1968,8 @@ $("passwordForm").addEventListener("submit",async event => {
   const password = $("newPassword").value;
 
   const confirmation = $("confirmPassword").value;
+
+  const currentPassword = $("currentPassword").value;
 
   const button = $("passwordForm")
     .querySelector('button[type="submit"]');
@@ -1958,10 +1996,53 @@ $("passwordForm").addEventListener("submit",async event => {
     return;
   }
 
+  if (!currentPassword) {
+
+    showMessage(
+      $("passwordMessage"),
+      "Please enter your current password.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (password === currentPassword) {
+
+    showMessage(
+      $("passwordMessage"),
+      "Your new password must be different from your current password.",
+      "error"
+    );
+
+    return;
+  }
+
   button.disabled = true;
   button.textContent = "Updating…";
 
   try {
+
+    /* Confirm the current password first. */
+
+    const {error:currentError} = await supabase.auth.signInWithPassword({
+      email:currentUser.email,
+      password:currentPassword
+    });
+
+    if (currentError) {
+
+      const wrong = /invalid login credentials/i.test(
+        currentError.message || ""
+      );
+
+      throw new Error(
+        wrong
+          ? "Your current password is incorrect."
+          : (currentError.message || "Could not verify your current password.")
+      );
+
+    }
 
     const {error} = await supabase.auth.updateUser({
       password
@@ -1970,6 +2051,8 @@ $("passwordForm").addEventListener("submit",async event => {
     if (error) throw error;
 
     $("passwordForm").reset();
+
+    setPasswordVisibility(false);
 
     showMessage(
       $("passwordMessage"),
