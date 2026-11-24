@@ -1,0 +1,13 @@
+# SAINTIG EXAMS robots.txt
+# Upload to the main folder of your site so it opens at https://saintigexams.com/robots.txt
+# Private pages are kept out of Google with a "noindex" line inside each page,
+# so they are NOT blocked here (Google must be able to read that line).
+
+User-agent: *
+Allow: /
+
+# Keep crawlers away from files that are not pages
+Disallow: /supabase/
+Disallow: /*.sql$
+
+Sitemap: https://saintigexams.com/sitemap.xml
