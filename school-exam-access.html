@@ -999,7 +999,7 @@ function printExamResult(d) {
           <td><strong>Student ID:</strong> ${escapeHTML(d.student.student_id)}</td></tr>
       <tr><td><strong>Examination:</strong> ${escapeHTML(d.exam.title)}</td>
           <td><strong>Subject:</strong> ${escapeHTML(d.exam.subject_name || "—")}</td></tr>
-      <tr><td><strong>Class / Level:</strong> ${escapeHTML(d.exam.name_class || "—")}</td>
+      <tr><td><strong>Class:</strong> ${escapeHTML(d.exam.name_class || "—")}</td>
           <td><strong>Date:</strong> ${escapeHTML(dateText(b.submitted_at))}</td></tr>
     </table>
     <table>
