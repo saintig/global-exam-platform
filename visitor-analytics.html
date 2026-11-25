@@ -165,6 +165,11 @@ const SITE_URL = "https://" + SITE_HOST;
 const OWN_HOSTS = ["saintigexams.com"];
 const OLD_SITE_HOSTS = ["github.io"];
 
+/* Visits recorded on your earlier GitHub address include this folder name at
+   the start of the page path. Links to those pages are changed so that they
+   open the same page on saintigexams.com. */
+const OLD_SITE_PATH = "/global-exam-platform";
+
 const PERIODS = {
   day:   { chart: "Last 14 days",   cur: "Today",      prev: "yesterday",  prevFull: "Yesterday",  col: "Day" },
   week:  { chart: "Last 12 weeks",  cur: "This week",  prev: "last week",  prevFull: "Last week",  col: "Week starting" },
@@ -407,6 +412,21 @@ function renderRows(containerId, items, nameFn) {
     </div>`).join("");
 }
 
+/* The page address on saintigexams.com. Pages recorded on the earlier GitHub
+   address start with the old folder name, which is removed here so the link
+   opens the right page on the new website. */
+function newSitePath(path) {
+  let p = String(path || "");
+
+  if (p === OLD_SITE_PATH || p.startsWith(OLD_SITE_PATH + "/")) {
+    p = p.slice(OLD_SITE_PATH.length);
+  }
+
+  if (p === "" || p === "/index" || p === "/index.html") return "/";
+
+  return p;
+}
+
 /* Top pages: each page opens on saintigexams.com. */
 function renderPages(items) {
   const el = $("pages");
@@ -426,7 +446,7 @@ function renderPages(items) {
     const safe = /^\/(?!\/)[^\s]*$/.test(path);
 
     const name = safe
-      ? `<a href="${esc(SITE_URL + path)}" target="_blank" rel="noopener">${esc(label)}</a>`
+      ? `<a href="${esc(SITE_URL + newSitePath(path))}" target="_blank" rel="noopener">${esc(label)}</a>`
       : esc(label);
 
     return `
