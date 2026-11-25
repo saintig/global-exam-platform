@@ -452,7 +452,8 @@ function showAllowance(kind,text,withUpgrade) {
     const link = document.createElement("a");
 
     link.className = "upgrade";
-    link.href = "contact.html";
+    /* Opens the Premium payment pop-up on the student dashboard. */
+    link.href = "dashboard.html?pay=premium";
     link.textContent = "Upgrade to Premium";
 
     box.appendChild(link);
