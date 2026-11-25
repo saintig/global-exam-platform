@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#142b52">
+<meta name="robots" content="noindex, nofollow, noarchive">
 <title>Visitor Analytics | SAINTIG EXAMS</title>
 
 <style>
@@ -19,6 +20,7 @@ a{color:inherit;text-decoration:none}
 .brand{font-size:19px;font-weight:800}
 .brand span{color:var(--gold)}
 .topbar a{border:1px solid #ffffff55;padding:10px 14px;border-radius:7px;font-size:14px}
+.top-links{display:flex;gap:10px;flex-wrap:wrap}
 .container{max-width:1050px;margin:auto;padding:22px 16px 40px}
 h1{margin:0 0 6px;color:var(--navy);font-size:27px}
 .sub{margin:0 0 18px;color:var(--muted)}
@@ -46,6 +48,8 @@ h1{margin:0 0 6px;color:var(--navy);font-size:27px}
 .row-top{display:flex;justify-content:space-between;gap:10px;font-size:15px}
 .row-top span:first-child{overflow-wrap:anywhere}
 .row-top span:last-child{color:var(--muted);white-space:nowrap}
+.row-top a{color:var(--blue);font-weight:700}
+.row-top a:hover{text-decoration:underline}
 .bar{height:8px;background:#edf0f4;border-radius:6px;overflow:hidden;margin-top:4px}
 .bar b{display:block;height:100%;background:var(--gold);border-radius:6px}
 details{margin-top:16px}
@@ -67,13 +71,16 @@ th{background:#f3f6fb;color:var(--navy)}
 
 <header class="topbar">
   <div class="brand">SAINTIG <span>EXAMS</span></div>
-  <a href="admin.html">← Admin Dashboard</a>
+  <div class="top-links">
+    <a href="https://saintigexams.com" target="_blank" rel="noopener">saintigexams.com ↗</a>
+    <a href="admin.html">← Admin Dashboard</a>
+  </div>
 </header>
 
 <div class="container">
 
   <h1>Visitor Analytics</h1>
-  <p class="sub">Visits to your public pages. Days, weeks, months and years follow Nigeria time.</p>
+  <p class="sub">Visits to your public pages on saintigexams.com. Days, weeks, months and years follow Nigeria time.</p>
 
   <div class="tabs" id="tabs">
     <button class="tab active" data-period="day" type="button">Daily</button>
@@ -115,7 +122,7 @@ th{background:#f3f6fb;color:var(--navy)}
   <div class="grid2">
     <section class="card">
       <h2>Top pages</h2>
-      <div class="label">In the chart range above</div>
+      <div class="label">In the chart range above. Tap a page to open it on saintigexams.com.</div>
       <div id="pages"></div>
     </section>
 
@@ -128,7 +135,7 @@ th{background:#f3f6fb;color:var(--navy)}
 
   <section class="card" style="margin-top:16px">
     <h2>Where visitors come from</h2>
-    <div class="label">The website that sent them to you</div>
+    <div class="label">The website that sent them to you. Visits from saintigexams.com and your earlier website address are grouped together.</div>
     <div id="refs"></div>
   </section>
 
@@ -145,6 +152,19 @@ import { supabase } from "./auth.js";
 
 const $ = id => document.getElementById(id);
 
+/* ---------- your website address ---------- */
+
+const SITE_HOST = "saintigexams.com";
+const SITE_URL = "https://" + SITE_HOST;
+
+/* Visits that come from these addresses are your own website, so they are
+   grouped as "From other pages of saintigexams.com".
+   "github.io" covers your earlier GitHub address. If you want to match only
+   one old address, replace it with the full address, for example
+   "yourname.github.io". */
+const OWN_HOSTS = ["saintigexams.com"];
+const OLD_SITE_HOSTS = ["github.io"];
+
 const PERIODS = {
   day:   { chart: "Last 14 days",   cur: "Today",      prev: "yesterday",  prevFull: "Yesterday",  col: "Day" },
   week:  { chart: "Last 12 weeks",  cur: "This week",  prev: "last week",  prevFull: "Last week",  col: "Week starting" },
@@ -154,7 +174,7 @@ const PERIODS = {
 
 const SOURCE_NAMES = {
   direct: "Direct (typed, bookmarked or shared in an app)",
-  internal: "From other pages of this website"
+  internal: "From other pages of " + SITE_HOST
 };
 
 const DEVICE_NAMES = { mobile: "Mobile phone", tablet: "Tablet", desktop: "Computer", unknown: "Not known" };
@@ -217,6 +237,54 @@ function changeHtml(now, before, prevWord) {
 function perVisitor(views, visitors) {
   const v = Number(visitors) || 0;
   return v ? Math.round(((Number(views) || 0) / v) * 10) / 10 : 0;
+}
+
+/* ---------- your own website in the "where from" list ---------- */
+
+function cleanHost(source) {
+  let s = String(source || "").trim().toLowerCase();
+
+  s = s.replace(/^https?:\/\//, "").split("/")[0].split("?")[0].split(":")[0];
+
+  return s.replace(/^www\./, "");
+}
+
+function isOwnSite(source) {
+  const s = String(source || "").trim().toLowerCase();
+
+  if (s === "internal") return true;
+  if (s === "direct" || !s) return false;
+
+  const host = cleanHost(s);
+
+  if (!host) return false;
+
+  if (OWN_HOSTS.some(own => host === own)) return true;
+
+  return OLD_SITE_HOSTS.some(old => host === old || host.endsWith("." + old));
+}
+
+/* Groups every visit that came from your own website (the new address, the
+   old address and the site's own pages) into one row. */
+function groupOwnSite(list) {
+  const out = [];
+  let own = null;
+
+  list.forEach(item => {
+    if (isOwnSite(item.source)) {
+      if (!own) {
+        own = { source: "internal", views: 0, visitors: 0 };
+        out.push(own);
+      }
+
+      own.views += Number(item.views) || 0;
+      own.visitors += Number(item.visitors) || 0;
+    } else {
+      out.push({ ...item });
+    }
+  });
+
+  return out.sort((a, b) => (Number(b.views) || 0) - (Number(a.views) || 0));
 }
 
 /* ---------- admin check ---------- */
@@ -339,6 +407,39 @@ function renderRows(containerId, items, nameFn) {
     </div>`).join("");
 }
 
+/* Top pages: each page opens on saintigexams.com. */
+function renderPages(items) {
+  const el = $("pages");
+
+  if (!items.length) {
+    el.innerHTML = '<div class="empty" style="margin-top:10px">No data yet.</div>';
+    return;
+  }
+
+  const max = Math.max(1, ...items.map(i => Number(i.views) || 0));
+
+  el.innerHTML = items.map(item => {
+    const path = String(item.path || "");
+    const label = path === "/" ? "/ (Home page)" : path;
+
+    /* only links that stay on this website (start with one "/") */
+    const safe = /^\/(?!\/)[^\s]*$/.test(path);
+
+    const name = safe
+      ? `<a href="${esc(SITE_URL + path)}" target="_blank" rel="noopener">${esc(label)}</a>`
+      : esc(label);
+
+    return `
+    <div class="row">
+      <div class="row-top">
+        <span>${name}</span>
+        <span>${num(item.views)} views · ${num(item.visitors)} visitors</span>
+      </div>
+      <div class="bar"><b style="width:${Math.max(3, Math.round(((Number(item.views) || 0) / max) * 100))}%"></b></div>
+    </div>`;
+  }).join("");
+}
+
 function renderDevices(items) {
   const el = $("devices");
 
@@ -420,9 +521,9 @@ function render(data) {
       <td>${perVisitor(s.views, s.visitors)}</td>
     </tr>`).join("");
 
-  renderRows("pages", data.pages || [], i => i.path === "/" ? "/ (Home page)" : i.path);
+  renderPages(data.pages || []);
   renderDevices(data.devices || []);
-  renderRows("refs", data.referrers || [], i => SOURCE_NAMES[i.source] || i.source);
+  renderRows("refs", groupOwnSite(data.referrers || []), i => SOURCE_NAMES[i.source] || i.source);
 }
 
 /* ---------- load ---------- */
