@@ -247,7 +247,7 @@ td{padding:10px 8px;border-bottom:1px solid var(--line)}
   </section>
 
   <div class="footer">
-    © <span id="year"></span> SAINTIG EXAMS · SAINT IG DIGITAL<br><br>
+    © <span id="year"></span> SAINTIG EXAMS <br><br>
     <span id="footBackWrap" class="hidden"><a href="#" id="footBack">Go Back</a> · </span><a href="#" id="footHome">Home</a>
   </div>
 </main>
@@ -823,7 +823,7 @@ function renderExamResult(d) {
       <div class="facts">
         <div class="fact"><small>Student</small><strong>${escapeHTML(d.student.full_name)}</strong></div>
         <div class="fact"><small>Student ID</small><strong>${escapeHTML(d.student.student_id)}</strong></div>
-        <div class="fact"><small>School</small><strong>${escapeHTML(d.school_name || "—")}</strong></div>
+        <div class="fact"><small>Teacher/School</small><strong>${escapeHTML(d.school_name || "—")}</strong></div>
         <div class="fact"><small>Subject</small><strong>${escapeHTML(d.exam.subject_name || "—")}</strong></div>
       </div>
       <div class="table-wrap"><table>
