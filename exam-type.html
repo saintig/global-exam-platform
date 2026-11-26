@@ -444,7 +444,8 @@
       const link = document.createElement("a");
 
       link.className = "upgrade-link";
-      link.href = "contact.html";
+      // Opens the Premium payment pop-up on the dashboard
+      link.href = "dashboard.html?upgrade=1";
       link.textContent = "Upgrade to Premium";
 
       container.appendChild(document.createElement("br"));
@@ -1048,7 +1049,8 @@
       if (plan === "premium") {
         startExam("premium");
       } else if (premiumLocked) {
-        location.href = "contact.html";
+        // Opens the Premium payment pop-up on the dashboard
+        location.href = "dashboard.html?upgrade=1";
       }
     });
 
