@@ -169,6 +169,7 @@ input{width:100%;padding:12px;border:1px solid #cfd8e5;border-radius:8px;min-hei
       <a class="card" href="paid-subscribers.html"><div class="sn">Paid Subscribers</div><div class="sv" id="subscribersCount">—</div><div class="note" id="subscribersNote">Active paid accounts</div></a>
       <a class="card" href="question-bank.html"><div class="sn">Total Examinations</div><div class="sv" id="totalExamsCount">—</div><div class="note">Admin examinations only</div></a>
       <a class="card" href="question-bank.html"><div class="sn">Published Examinations</div><div class="sv" id="examsCount">—</div><div class="note">Admin, published, non-archived</div></a>
+      <a class="card" href="question-bank.html"><div class="sn">Unpublished Examinations</div><div class="sv" id="unpublishedExamsCount">—</div><div class="note">Admin, unpublished, non-archived</div></a>
       <a class="card" href="question-bank.html"><div class="sn">Published Questions</div><div class="sv" id="questionsCount">—</div><div class="note">In admin examinations</div></a>
       <a class="card" href="archived-records.html"><div class="sn">Archived Examinations</div><div class="sv" id="archivedExamsCount">—</div><div class="note">Admin examinations only</div></a>
       <a class="card" href="archived-records.html"><div class="sn">Archived Questions</div><div class="sv" id="archivedQuestionsCount">—</div><div class="note">Admin questions only</div></a>
@@ -308,19 +309,21 @@ async function adminQuestions(f){
 }
 
 async function loadStatistics(){
-  const [totalExams,publishedExams,archivedExams,publishedQuestions,archivedQuestions,adminCount,userCount] = await Promise.all([
+  const [totalExams,publishedExams,archivedExams,publishedQuestions,archivedQuestions,adminCount,userCount,unpublishedExams] = await Promise.all([
     adminExams({}),
     adminExams({published:true,archived:false}),
     adminExams({archived:true}),
     adminQuestions({examPublished:true,examArchived:false,published:true,archived:false}),
     adminQuestions({archived:true}),
     supabase.from("admin_users").select("*",{count:"exact",head:true}),
-    supabase.functions.invoke("admin-user-count",{body:{}})
+    supabase.functions.invoke("admin-user-count",{body:{}}),
+    adminExams({published:false,archived:false})
   ]);
   $("usersCount").textContent=!userCount.error&&userCount.data?.totalUsers!==undefined?Number(userCount.data.totalUsers).toLocaleString():"—";
   displayCount("adminsCount",adminCount.count,adminCount.error);
   displayCount("totalExamsCount",totalExams.count,totalExams.error);
   displayCount("examsCount",publishedExams.count,publishedExams.error);
+  displayCount("unpublishedExamsCount",unpublishedExams.count,unpublishedExams.error);
   displayCount("archivedExamsCount",archivedExams.count,archivedExams.error);
   displayCount("questionsCount",publishedQuestions.count,publishedQuestions.error);
   displayCount("archivedQuestionsCount",archivedQuestions.count,archivedQuestions.error);
