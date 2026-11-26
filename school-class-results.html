@@ -993,5 +993,493 @@ init();
 })();
 </script>
 
+<!-- ============================================================
+  SAINTIG ADD-ON: (1) per-student examination actions + multi-exam printing
+                  (2) "Include corrections" option when printing
+  PASTE THIS WHOLE BLOCK JUST BEFORE </body>, AFTER the last </script>.
+  Nothing else in the page is changed.
+============================================================ -->
+<script>
+(function(){
+  if (typeof $ !== "function" || typeof api !== "function") return;
+
+  /* ---------- styles ---------- */
+  const st = document.createElement("style");
+  st.textContent = `
+    .xchk{display:flex;align-items:center;gap:8px;font-weight:normal;margin:12px 0 0}
+    .xchk input{width:auto;padding:0}
+    .xact{display:flex;gap:6px;flex-wrap:nowrap}
+    .xbox{margin-top:26px;border-top:2px solid var(--border);padding-top:6px}
+    #xView .modal-box{max-width:760px;max-height:90vh;overflow:auto}
+  `;
+  document.head.appendChild(st);
+
+  /* ---------- injected UI ---------- */
+  const chk = id => `<label class="xchk"><input type="checkbox" id="${id}"> Include corrections (questions, options, correct answers and explanations)</label>`;
+  $("exPrintBtn").parentElement.insertAdjacentHTML("afterend", chk("corrExam"));
+  $("printCardsBtn").parentElement.insertAdjacentHTML("afterend", chk("corrGen"));
+
+  $("exOut").insertAdjacentHTML("afterend", `
+    <div class="xbox">
+      <h3 style="margin-top:14px">Print selected examinations for one student</h3>
+      <p class="muted">Choose a student, then tick one or more of the examinations he/she took. Each examination is reported on its own: no total, average or overall position is calculated.</p>
+      <div class="form-grid"><div><label for="mStudent">Student</label>
+        <select id="mStudent"><option value="">Select a student</option></select></div></div>
+      <div id="mExams" class="muted"></div>
+      <div class="row"><button class="btn btn-light btn-small" id="mAll" type="button">Select all</button></div>
+      ${chk("mCorr")}
+      <div class="row">
+        <button class="btn btn-navy" id="mView" type="button">View</button>
+        <button class="btn btn-gold" id="mPrint" type="button">Print</button>
+        <button class="btn btn-light" id="mDl" type="button">Download</button>
+      </div>
+      <div class="msg" id="mMsg"></div>
+    </div>`);
+
+  $("exOut").insertAdjacentHTML("afterend", `
+    <div class="xbox">
+      <h3 style="margin-top:14px">Student access to corrections</h3>
+      <p class="muted">Decide whether students may see the questions, correct answers and explanations of the examination chosen above. This is OFF by default. You can always view and print corrections yourself.</p>
+      <div class="notice info" id="accStatus"></div>
+      <div class="row"><button class="btn btn-gold" id="accBtn" type="button">Allow students to see corrections</button></div>
+      <div class="msg" id="accMsg"></div>
+    </div>`);
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <div class="modal hidden" id="xView"><div class="modal-box">
+      <div id="xViewBody"></div>
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn btn-light" id="xClose" type="button">Close</button>
+        <button class="btn btn-light" id="xPrint" type="button">Print</button>
+        <button class="btn btn-gold" id="xDl" type="button">Download</button>
+      </div></div></div>`);
+
+  /* ---------- helpers ---------- */
+  const activeExams = () => (overview?.exams || []).filter(e => !isArchivedItem(e));
+  const examTitleOf = id => {
+    const e = (overview?.exams || []).find(x => String(x.examination_id) === String(id));
+    return e ? e.title : "Examination";
+  };
+  const uniq = a => [...new Set(a.filter(x => x !== undefined && x !== null && x !== "").map(String))];
+
+  /* ---------- corrections ---------- */
+  const CORR_CSS = `<style>
+    .corr{page-break-before:always}
+    .corr h2{text-align:left;margin:18px 0 8px;font-size:15px;color:#14243a;border-bottom:2px solid #14243a;padding-bottom:4px}
+    .corr .q{margin:10px 0;font-size:12px;break-inside:avoid}
+    .corr .o{margin:2px 0 2px 18px}
+    .corr .o.ok{font-weight:bold;color:#168653}
+    .corr .a{margin:4px 0 0 18px;font-weight:bold}
+    .corr .x{margin:2px 0 0 18px;color:#475569}
+  </style>`;
+
+  function normQ(q) {
+    let opts = [];
+    const raw = q.options || q.choices;
+    if (Array.isArray(raw)) {
+      opts = raw.map((o, i) => (o && typeof o === "object")
+        ? { label: String(o.label || o.key || String.fromCharCode(65 + i)), text: String(o.text ?? o.option_text ?? o.value ?? ""), ok: o.is_correct === true || o.correct === true }
+        : { label: String.fromCharCode(65 + i), text: String(o), ok: false });
+    } else if (raw && typeof raw === "object") {
+      opts = Object.entries(raw).map(([k, v]) => ({ label: k.toUpperCase(), text: String(v), ok: false }));
+    } else {
+      ["a", "b", "c", "d", "e"].forEach(k => {
+        const v = q["option_" + k];
+        if (v !== undefined && v !== null && v !== "") opts.push({ label: k.toUpperCase(), text: String(v), ok: false });
+      });
+    }
+    const ansRaw = q.correct_answer ?? q.answer ?? q.correct_option ?? q.correct ?? "";
+    const ans = (Array.isArray(ansRaw) ? ansRaw : [ansRaw]).map(a => String(a).trim()).filter(Boolean);
+    opts.forEach(o => {
+      if (ans.some(a => a.toLowerCase() === o.label.toLowerCase() || a.toLowerCase() === o.text.trim().toLowerCase())) o.ok = true;
+    });
+    const okOpts = opts.filter(o => o.ok);
+    const shown = okOpts.length ? okOpts.map(o => `${o.label}. ${o.text}`).join(", ") : ans.join(", ");
+    return {
+      text: q.question_text ?? q.question ?? q.text ?? "",
+      opts, shown,
+      expl: q.explanation ?? q.explanations ?? q.answer_explanation ?? ""
+    };
+  }
+
+  function corrBlock(d, id) {
+    const title = d.title || d.examination_title || examTitleOf(id);
+    const qs = (d.questions || []).map(normQ);
+    const body = qs.length ? qs.map((q, i) => `
+      <div class="q"><strong>${i + 1}.</strong> ${escapeHTML(q.text)}
+        ${q.opts.map(o => `<div class="o${o.ok ? " ok" : ""}">${escapeHTML(o.label)}. ${escapeHTML(o.text)}${o.ok ? " ✓" : ""}</div>`).join("")}
+        <div class="a">Correct answer: ${escapeHTML(q.shown || "—")}</div>
+        ${q.expl ? `<div class="x"><strong>Explanation:</strong> ${escapeHTML(q.expl)}</div>` : ""}
+      </div>`).join("") : '<p style="font-size:12px">No questions found for this examination.</p>';
+    return `<h2>Corrections — ${escapeHTML(title)}</h2>${body}`;
+  }
+
+  async function correctionsHtml(ids) {
+    toast("Preparing corrections...");
+    const parts = [];
+    for (const id of uniq(ids)) {
+      const d = await api("get_corrections", { class_id: $("classSelect").value, examination_id: Number(id) });
+      parts.push(corrBlock(d, id));
+    }
+    return CORR_CSS + `<div class="corr">${parts.join("")}</div>`;
+  }
+
+  /* ---------- make existing print buttons honour the corrections option ---------- */
+  let extraPrintHtml = "";
+  const _openPrint = openPrint, _printSheet = printSheet, _printCards = printCards, _printExamSheet = printExamSheet;
+
+  openPrint = function (title, body, landscape) {
+    const extra = extraPrintHtml;
+    extraPrintHtml = "";
+    return _openPrint(title, body + extra, landscape);
+  };
+
+  async function withCorr(boxId, msgId, ids) {
+    extraPrintHtml = "";
+    const box = $(boxId);
+    if (!box || !box.checked) return true;
+    try {
+      extraPrintHtml = await correctionsHtml(ids);
+      return true;
+    } catch (e) {
+      msg(msgId, "Corrections could not be loaded: " + e.message, "error");
+      return false;
+    }
+  }
+
+  printSheet = async function (res) {
+    if (!(await withCorr("corrGen", "genMsg", examsOf(res).map(e => e.id)))) return;
+    _printSheet(res);
+  };
+
+  printCards = async function (res, studentId) {
+    const list = studentId ? res.students.filter(s => String(s.school_student_id) === String(studentId)) : res.students;
+    const ids = list.flatMap(s => s.scores.map(sc => sc.examination_id));
+    if (!(await withCorr("corrGen", "genMsg", ids))) return;
+    _printCards(res, studentId);
+  };
+
+  printExamSheet = async function (res) {
+    const ids = res.students.flatMap(s => s.scores.map(sc => sc.examination_id));
+    if (!(await withCorr("corrExam", "exMsg", ids))) return;
+    _printExamSheet(res);
+  };
+
+  /* ---------- single-student result slip (separate examinations only) ---------- */
+  function slipHtml(c, s, rows) {
+    const trs = rows.map(({ sc, pos }) => {
+      const mx = Number(sc.maximum_score) || 0;
+      const pct = mx > 0 ? Number(sc.score) / mx * 100 : 0;
+      const ab = sc.participation_status === "absent";
+      return `<tr><td>${escapeHTML(sc.subject_name_snapshot || sc.examination_title_snapshot)}<small>${escapeHTML(sc.examination_title_snapshot)}</small></td>
+        <td>${ab ? "—" : num(sc.exam_score)}</td><td>${num(sc.ca_score)}</td><td>${num(sc.score)}</td><td>${num(sc.maximum_score)}</td>
+        <td>${num(pct)}%</td><td>${escapeHTML(sc.grade || "—")}</td><td>${pos ?? "—"}</td><td>${ab ? "Absent" : "Scored"}</td></tr>`;
+    }).join("");
+
+    return `<div class="card">
+      ${schoolHead(c)}
+      <h2>EXAMINATION RESULT SLIP</h2>
+      <table class="info">
+        <tr><td><strong>Student:</strong> ${escapeHTML(s.full_name_snapshot)}</td><td><strong>Student ID:</strong> ${escapeHTML(s.student_id_snapshot)}</td></tr>
+        <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td><td><strong>Class ID:</strong> ${escapeHTML(c.class_id || "")}</td></tr>
+        <tr><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td><td><strong>Academic Period:</strong> ${escapeHTML(c.academic_period || "")}</td></tr>
+      </table>
+      <table><thead><tr><th>Subject / Examination</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>%</th><th>Grade</th><th>Position in exam</th><th>Status</th></tr></thead><tbody>${trs}</tbody></table>
+      <p style="font-size:11px">Each examination is reported on its own. No total, average or overall position is calculated.</p>
+      ${signatures(c)}
+      <p style="font-size:11px;margin-top:14px">Date: ${escapeHTML(dateText(new Date()))}</p>
+      <div class="foot">Powered by <strong>Saintigexams.com</strong></div>
+    </div>`;
+  }
+
+  function viewHtml(d) {
+    const trs = d.rows.map(({ sc, pos }) => {
+      const mx = Number(sc.maximum_score) || 0;
+      const pct = mx > 0 ? Number(sc.score) / mx * 100 : 0;
+      const ab = sc.participation_status === "absent";
+      return `<tr><td><strong>${escapeHTML(sc.examination_title_snapshot)}</strong><small>${escapeHTML(sc.subject_name_snapshot || "")}</small></td>
+        <td>${ab ? "—" : num(sc.exam_score)}</td><td>${num(sc.ca_score)}</td><td><strong>${num(sc.score)}</strong></td><td>${num(sc.maximum_score)}</td>
+        <td>${num(pct)}%</td><td><strong>${escapeHTML(sc.grade || "—")}</strong></td><td>${pos ?? "—"}</td>
+        <td>${ab ? '<small class="abs">Absent</small>' : "Scored"}</td></tr>`;
+    }).join("");
+    return `<h2>${escapeHTML(d.student.full_name_snapshot)}</h2>
+      <p class="muted">${escapeHTML(d.student.student_id_snapshot)} · ${classLine(d.c)}</p>
+      <div class="table-wrap"><table><thead><tr><th>Examination</th><th>Exam</th><th>CA</th><th>Total</th><th>Out of</th><th>%</th><th>Grade</th><th>Pos</th><th>Status</th></tr></thead><tbody>${trs}</tbody></table></div>`;
+  }
+
+  /* ---------- download (PDF, falls back to a saveable web page) ---------- */
+  function loadPdfLib() {
+    return new Promise((ok, fail) => {
+      if (window.html2pdf) return ok();
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+      s.onload = ok; s.onerror = fail;
+      document.head.appendChild(s);
+    });
+  }
+
+  async function downloadDoc(name, title, body) {
+    const safe = String(name).replace(/[^\w\-]+/g, "_").slice(0, 80) || "result";
+    try {
+      await loadPdfLib();
+      const wrap = document.createElement("div");
+      wrap.id = "pdfwrap";
+      wrap.style.cssText = "position:fixed;left:-10000px;top:0;width:780px;background:#fff";
+      wrap.innerHTML = `<style>${PRINT_CSS.replace(/\bbody\{/g, "#pdfwrap{")}${BRAND_CSS}</style>` + body;
+      document.body.appendChild(wrap);
+      try {
+        await html2pdf().set({
+          margin: 8, filename: safe + ".pdf",
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak: { mode: ["css", "legacy"] }
+        }).from(wrap).save();
+      } finally { wrap.remove(); }
+      toast("Download started.");
+    } catch (e) {
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${escapeHTML(title)}</title><style>${PRINT_CSS}${BRAND_CSS}</style></head><body>${body}</body></html>`;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      a.download = safe + ".html";
+      document.body.appendChild(a); a.click(); a.remove();
+      toast("PDF tool unavailable. Saved as a web page you can open and print.");
+    }
+  }
+
+  /* ---------- run an action: view / print / download ---------- */
+  let lastView = null;
+
+  async function doAction(act, d, withCorrections, msgId) {
+    if (act === "view") {
+      lastView = { d, withCorrections, msgId };
+      $("xViewBody").innerHTML = viewHtml(d);
+      $("xView").classList.remove("hidden");
+      return;
+    }
+    let body = slipHtml(d.c, d.student, d.rows);
+    if (withCorrections) {
+      try { body += await correctionsHtml(d.rows.map(r => r.sc.examination_id)); }
+      catch (e) { msg(msgId, "Corrections could not be loaded: " + e.message, "error"); return; }
+    }
+    const title = `${d.student.full_name_snapshot} - Examination Result`;
+    if (act === "print") openPrint(title, body, false);
+    else await downloadDoc(title, title, body);
+  }
+
+  $("xClose").addEventListener("click", () => $("xView").classList.add("hidden"));
+  ["xPrint", "xDl"].forEach(id => $(id).addEventListener("click", async () => {
+    if (!lastView) return;
+    $("xView").classList.add("hidden");
+    await doAction(id === "xPrint" ? "print" : "dl", lastView.d, lastView.withCorrections, lastView.msgId);
+  }));
+
+  /* ---------- (1a) action buttons on each row of the Examination Result table ---------- */
+  new MutationObserver(() => {
+    const t = $("exOut").querySelector("table");
+    if (!t || t.dataset.xaug || !examResult) return;
+    t.dataset.xaug = "1";
+    const hr = t.querySelector("thead tr");
+    if (hr) hr.insertAdjacentHTML("beforeend", "<th>Actions</th>");
+    t.querySelectorAll("tbody tr").forEach((tr, i) => {
+      tr.insertAdjacentHTML("beforeend", `<td><div class="xact">
+        <button class="btn btn-light btn-small" data-xa="view" data-i="${i}" type="button">View</button>
+        <button class="btn btn-gold btn-small" data-xa="print" data-i="${i}" type="button">Print</button>
+        <button class="btn btn-light btn-small" data-xa="dl" data-i="${i}" type="button">Download</button>
+        <button class="btn btn-navy btn-small" data-xa="multi" data-i="${i}" type="button">More exams</button>
+      </div></td>`);
+    });
+  }).observe($("exOut"), { childList: true });
+
+  $("exOut").addEventListener("click", async e => {
+    const b = e.target.closest("[data-xa]");
+    if (!b || !examResult) return;
+    const s = examResult.students[Number(b.dataset.i)];
+
+    if (!s || !s.scores[0]) {
+      msg("exMsg", "No score was found for this student in this examination.", "error");
+      return;
+    }
+
+    if (b.dataset.xa === "multi") {
+      await ensureMulti();
+      $("mStudent").value = String(s.school_student_id);
+      renderMultiExams();
+      $("mStudent").scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    b.disabled = true;
+    try {
+      await doAction(b.dataset.xa, {
+        c: examResult.result.class_snapshot || {},
+        student: s,
+        rows: [{ sc: s.scores[0], pos: s.class_position }]
+      }, $("corrExam").checked, "exMsg");
+    } finally { b.disabled = false; }
+  });
+
+  /* ---------- (1b) pick several examinations for one student ---------- */
+  let multiMap = new Map(), multiOverview = null, multiReady = Promise.resolve();
+
+  function resetMulti() {
+    multiOverview = null;
+    multiMap = new Map();
+    $("mStudent").innerHTML = '<option value="">Select a student</option>';
+    $("mExams").innerHTML = "";
+  }
+
+  function ensureMulti() {
+    if (!overview || !$("classSelect").value) return multiReady;
+    if (multiOverview === overview) return multiReady;
+    multiOverview = overview;
+    multiReady = loadMulti();
+    return multiReady;
+  }
+
+  async function loadMulti() {
+    const cid = $("classSelect").value;
+    const map = new Map();
+    $("mStudent").innerHTML = '<option value="">Loading students...</option>';
+    $("mExams").innerHTML = "";
+
+    try {
+      await Promise.all(activeExams().map(async e => {
+        const d = await api("get_ca", { class_id: cid, examination_id: Number(e.examination_id) });
+        (d.students || []).filter(s => !isArchivedItem(s)).forEach(s => {
+          const k = String(s.school_student_id);
+          if (!map.has(k)) map.set(k, { name: s.full_name, sid: s.student_id, ex: new Set() });
+          map.get(k).ex.add(String(e.examination_id));
+        });
+      }));
+    } catch (err) {
+      msg("mMsg", err.message, "error");
+    }
+
+    if (cid !== $("classSelect").value) return;
+    multiMap = map;
+
+    const list = [...map.entries()].sort((a, b) => String(a[1].name).localeCompare(String(b[1].name)));
+    $("mStudent").innerHTML = '<option value="">Select a student</option>' +
+      list.map(([k, v]) => `<option value="${escapeHTML(k)}">${escapeHTML(v.name)} (${escapeHTML(v.sid)})</option>`).join("");
+  }
+
+  function renderMultiExams() {
+    const rec = multiMap.get($("mStudent").value);
+    if (!rec) { $("mExams").innerHTML = ""; return; }
+    const mine = activeExams().filter(e => rec.ex.has(String(e.examination_id)));
+    $("mExams").innerHTML = mine.length
+      ? mine.map(e => `<label class="xchk"><input type="checkbox" data-mx="${e.examination_id}"> ${escapeHTML(e.title)}${e.subject_name ? " — " + escapeHTML(e.subject_name) : ""}</label>`).join("")
+      : "This student is not registered for any examination.";
+  }
+
+  $("mStudent").addEventListener("change", renderMultiExams);
+  $("mAll").addEventListener("click", () =>
+    document.querySelectorAll("#mExams input").forEach(i => { i.checked = true; }));
+
+  async function collectRows(studentKey, examIds) {
+    const rows = [];
+    let student = null, c = null;
+    for (const id of examIds) {
+      const created = await api("generate_exam", { class_id: $("classSelect").value, examination_id: Number(id) });
+      const res = await api("get_result", { result_id: created.result_id });
+      const s = res.students.find(x => String(x.school_student_id) === String(studentKey));
+      if (s && s.scores[0]) {
+        rows.push({ sc: s.scores[0], pos: s.class_position });
+        student = student || s;
+        c = c || res.result.class_snapshot || {};
+      }
+    }
+    return { rows, student, c };
+  }
+
+  async function runMulti(act) {
+    clearMsg("mMsg");
+    const key = $("mStudent").value;
+    const ids = [...document.querySelectorAll("#mExams input:checked")].map(i => i.dataset.mx);
+
+    if (!key) { msg("mMsg", "Select a student first.", "error"); return; }
+    if (!ids.length) { msg("mMsg", "Tick at least one examination.", "error"); return; }
+
+    const btns = ["mView", "mPrint", "mDl"].map($);
+    btns.forEach(b => b.disabled = true);
+    msg("mMsg", "Preparing...", "info");
+
+    try {
+      const d = await collectRows(key, ids);
+      if (!d.rows.length) throw new Error("No scores were found for this student in the selected examinations.");
+      clearMsg("mMsg");
+      await doAction(act, d, $("mCorr").checked, "mMsg");
+    } catch (err) {
+      msg("mMsg", err.message, "error");
+    } finally {
+      btns.forEach(b => b.disabled = false);
+    }
+  }
+
+  $("mView").addEventListener("click", () => runMulti("view"));
+  $("mPrint").addEventListener("click", () => runMulti("print"));
+  $("mDl").addEventListener("click", () => runMulti("dl"));
+
+  /* ---------- student access to corrections (default: not allowed) ---------- */
+  const examAllows = id => {
+    const e = (overview?.exams || []).find(x => String(x.examination_id) === String(id));
+    return Boolean(e && e.show_corrections === true);
+  };
+
+  function renderAccess() {
+    const id = $("exExam").value;
+    const box = $("accStatus");
+    if (!id) {
+      box.className = "notice info";
+      box.textContent = "Select an examination above.";
+      $("accBtn").disabled = true;
+      return;
+    }
+    const on = examAllows(id);
+    box.className = "notice " + (on ? "ok" : "info");
+    box.textContent = on
+      ? "Students CAN see the corrections for this examination when they check their result."
+      : "Students can NOT see the corrections for this examination.";
+    $("accBtn").disabled = false;
+    $("accBtn").textContent = on ? "Hide corrections from students" : "Allow students to see corrections";
+    $("accBtn").className = "btn " + (on ? "btn-red" : "btn-gold");
+  }
+
+  $("exExam").addEventListener("change", renderAccess);
+
+  $("accBtn").addEventListener("click", async () => {
+    const id = $("exExam").value;
+    if (!id) return;
+    const on = examAllows(id);
+    const yes = await ask(
+      on ? "Hide corrections from students?" : "Show corrections to students?",
+      on ? "Students will no longer see the questions, correct answers and explanations. You can still view and print them."
+         : "Students will be able to see and print the questions, correct answers and explanations for this examination when they check their result.",
+      on ? "Hide" : "Allow", on);
+    if (!yes) return;
+    clearMsg("accMsg");
+    try {
+      await api("set_corrections_access", { class_id: $("classSelect").value, examination_id: Number(id), allow: !on });
+      await refreshOverview();
+      renderAccess();
+      msg("accMsg", on ? "Corrections are now hidden from students." : "Students can now see the corrections.", "ok");
+    } catch (err) {
+      msg("accMsg", err.message, "error");
+    }
+  });
+
+  /* reload the student list when the class changes or the tab is opened */
+  new MutationObserver(() => {
+    resetMulti();
+    renderAccess();
+    if (!$("panel-exam").classList.contains("hidden")) ensureMulti();
+  }).observe($("classInfo"), { childList: true });
+
+  document.querySelector('.tab[data-tab="exam"]').addEventListener("click", () => { renderAccess(); ensureMulti(); });
+  renderAccess();
+})();
+</script>
+
+  
 </body>
 </html>
