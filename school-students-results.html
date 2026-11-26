@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101d35">
+<title>Students Results | SAINTIG EXAMS</title>
+<style>
+:root{--navy:#101d35;--navy2:#1b2d4d;--gold:#d4af37;--bg:#f4f6fa;--text:#253047;--muted:#65748b;--line:#e0e5ed;--ok:#16834b;--bad:#c0392b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:17px/1.55 Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.top{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;border-bottom:3px solid var(--gold)}
+.top-in{max-width:980px;margin:auto;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:19px;letter-spacing:.4px;color:#fff;text-decoration:none}
+.brand span{color:var(--gold)}
+.top-in nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.top-in nav a{color:#fff;text-decoration:none;border:1px solid #ffffff55;border-radius:8px;padding:10px 14px;min-height:46px;display:inline-flex;align-items:center;font-size:16px}
+.wrap{max-width:980px;margin:auto;padding:18px 14px 70px}
+h1{font-size:27px;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);margin-bottom:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;margin-bottom:16px}
+.card h2{font-size:20px;color:var(--navy);margin-bottom:4px}
+.hint{color:var(--muted);font-size:15.5px;margin-bottom:10px}
+.note{background:#fffaf0;border:1px solid #f0df9f;color:#72570d;border-radius:10px;padding:13px 15px;font-size:16px;margin-bottom:16px}
+.tabs{display:flex;gap:8px;margin:0 0 14px}
+.tab{flex:1;min-height:50px;border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:10px;font-weight:bold;font-size:17px}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+label{display:block;font-weight:bold;font-size:16px;margin-bottom:6px;color:#34415a}
+input,select{width:100%;padding:12px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;min-height:50px;font-size:17px}
+input[type=checkbox]{width:22px;height:22px;min-height:0;flex:0 0 auto}
+input:focus,select:focus,button:focus-visible{outline:2px solid #d4af3799;outline-offset:1px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.btn{border:0;border-radius:9px;padding:12px 16px;font-weight:bold;font-size:16px;min-height:48px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--navy);color:#fff}
+.gold{background:var(--gold);color:var(--navy)}
+.ghost{background:#fff;border:1px solid #cbd3df;color:var(--navy)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.msg{display:none;padding:13px 15px;border-radius:10px;margin:12px 0;font-size:16.5px;line-height:1.55;overflow-wrap:anywhere}
+.msg.show{display:block}
+.msg.ok{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
+.msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
+.msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
+.pick{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:11px 12px;margin-top:8px;background:#fff;cursor:pointer}
+.pick.on{border-color:var(--gold);background:#fffdf5}
+.pick b{display:block;color:var(--navy);overflow-wrap:anywhere}
+.pick small{display:block;color:var(--muted);font-size:14.5px}
+.pick .r{margin-left:auto;text-align:right;color:var(--navy);font-weight:bold;white-space:nowrap}
+.list{max-height:420px;overflow:auto;margin-top:6px}
+.empty{text-align:center;color:var(--muted);padding:20px;background:#f8faff;border-radius:9px}
+.small{font-size:15px;color:var(--muted)}
+[hidden]{display:none!important}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.wrap{padding:14px 11px 60px}.card{padding:15px}.row .btn{flex:1 1 100%}}
+
+/* ---------- the printed sheets ---------- */
+#sheets{display:none}
+.sheet{background:#fff;color:#111827;font:13px/1.45 Arial,Helvetica,sans-serif;padding:0}
+.sh-brand{display:inline-block}
+.sh-b1{font-size:22px;font-weight:800;letter-spacing:.4px;color:#101d35;border-bottom:2px solid #d4af37;padding-bottom:2px}
+.sh-b1 span{color:#d4af37}
+.sh-b2{font-size:12px;font-weight:bold;color:#16834b;margin-top:3px}
+.sh-school{text-align:center;font-size:20px;font-weight:800;color:#101d35;text-transform:uppercase;margin-top:6px}
+.sh-line{text-align:center;font-size:11.5px;color:#374151;margin-top:2px}
+.sh-rule{border-top:2px solid #101d35;margin:10px 0 8px}
+.sh-title{text-align:center;font-size:15px;font-weight:800;margin-bottom:10px;letter-spacing:.3px}
+.sh-info{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;margin-bottom:10px;font-size:12.5px}
+.sh-table{width:100%;border-collapse:collapse;font-size:12px}
+.sh-table th{background:#e6ebf5;border:1px solid #9aa7bd;padding:6px 7px;text-align:left}
+.sh-table td{border:1px solid #9aa7bd;padding:6px 7px;vertical-align:top}
+.sh-table .sub{font-size:10.5px;color:#4b5563}
+.sh-table thead{display:table-header-group}
+.sh-table tr{page-break-inside:avoid}
+.sh-note{font-size:11px;color:#4b5563;margin:10px 0 4px}
+.sh-sign{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;font-size:12.5px}
+.sh-sign .ln{display:inline-block;border-bottom:1px solid #111827;width:62%;height:14px;vertical-align:bottom}
+.sh-foot{margin-top:18px;background:#101d35;color:#fff;text-align:center;font-weight:bold;font-size:13px;padding:11px;border-radius:5px}
+.sh-foot span{color:#d4af37}
+.sh-big{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.sh-big div{border:1px solid #9aa7bd;border-radius:5px;padding:8px;text-align:center;font-size:11.5px;color:#4b5563}
+.sh-big b{display:block;font-size:20px;color:#101d35}
+@media print{
+  @page{size:A4;margin:12mm}
+  html,body{background:#fff}
+  #app{display:none!important}
+  #sheets{display:block}
+  .sheet{page-break-after:always;break-after:page}
+  .sheet:last-child{page-break-after:auto;break-after:auto}
+  .sh-table th,.sh-foot,.sh-rule{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top"><div class="top-in">
+  <a class="brand" href="school-dashboard.html">SAINTIG <span>EXAMS</span></a>
+  <nav><a href="school-dashboard.html">← Dashboard</a><a href="school-help-support.html#students-results">? Help &amp; Support</a></nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Students Results</h1>
+  <p class="sub">Teacher's Examination. Print the results of your students.</p>
+
+  <div class="note">Every examination is shown and printed <b>separately</b>. Marks of different examinations are never added together. If a student took an examination more than once, the <b>best score</b> is used. Results stay available even when records are archived.</div>
+
+  <div class="card">
+    <label for="lineInput">Line under the school name (optional)</label>
+    <input id="lineInput" maxlength="160" placeholder="e.g. P.O. Box 12, Enugu · 08012345678">
+    <div class="small" style="margin-top:6px" id="lineHint">Shown on every printed sheet. It is remembered on this phone.</div>
+    <div class="small" style="margin-top:8px" id="scaleNote"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tabStudent" type="button">By student</button>
+    <button class="tab" id="tabExam" type="button">By examination</button>
+  </div>
+
+  <div class="msg" id="msg" role="status" aria-live="polite"></div>
+
+  <!-- BY STUDENT -->
+  <section id="modeStudent">
+    <div class="card">
+      <h2>1. Choose students</h2>
+      <p class="hint">Students who have submitted at least one examination.</p>
+      <input id="sSearch" type="search" maxlength="100" placeholder="Search by name or Student ID" autocomplete="off">
+      <div class="row" style="margin-top:10px">
+        <button class="btn ghost" id="sSelAll" type="button">Select all shown</button>
+        <button class="btn ghost" id="sClear" type="button">Clear</button>
+        <span class="small" id="sSelCount">0 selected</span>
+      </div>
+      <div class="list" id="sList"><div class="empty">Loading…</div></div>
+      <div class="row"><button class="btn ghost" id="sMore" type="button" hidden>Show 50 more</button><span class="small" id="sCount"></span></div>
+    </div>
+
+    <div class="card" id="eBox" hidden>
+      <h2>2. Choose the examinations</h2>
+      <p class="hint">Examinations taken by the selected students.</p>
+      <div class="row" style="margin-top:0">
+        <button class="btn ghost" id="eSelAll" type="button">Select all</button>
+        <button class="btn ghost" id="eClear" type="button">Clear</button>
+        <span class="small" id="eSelCount"></span>
+      </div>
+      <div class="list" id="eList"></div>
+      <div class="row"><button class="btn gold" id="printStudents" type="button">Print results</button></div>
+    </div>
+  </section>
+
+  <!-- BY EXAMINATION -->
+  <section id="modeExam" hidden>
+    <div class="card">
+      <h2>1. Choose the examination</h2>
+      <div class="grid" style="margin-top:8px">
+        <div><label for="xSubject">Subject</label><select id="xSubject"><option value="">Loading…</option></select></div>
+        <div><label for="xExam">Examination</label><select id="xExam" disabled><option value="">Choose a subject first</option></select></div>
+      </div>
+    </div>
+
+    <div class="card" id="xBox" hidden>
+      <h2>2. Choose the students</h2>
+      <p class="hint" id="xInfo"></p>
+      <div class="row" style="margin-top:0">
+        <button class="btn ghost" id="xSelAll" type="button">Select all</button>
+        <button class="btn ghost" id="xClear" type="button">Clear</button>
+        <span class="small" id="xSelCount"></span>
+      </div>
+      <div class="list" id="xList"></div>
+      <div style="margin-top:14px"><label for="xLayout">Print as</label>
+        <select id="xLayout"><option value="rank">One result sheet (first to last)</option><option value="slips">One sheet for each student</option></select></div>
+      <div class="row"><button class="btn gold" id="printExam" type="button">Print results</button></div>
+    </div>
+  </section>
+
+  <div class="card" style="margin-top:6px">
+    <h2>Need help?</h2>
+    <p class="hint">Open the step-by-step guide for printing your students' results.</p>
+    <a class="btn ghost" href="school-help-support.html#students-results" style="text-decoration:none;display:inline-flex;align-items:center">? Open Help &amp; Support</a>
+  </div>
+</main>
+</div>
+
+<div id="sheets"></div>
+
+<script type="module">
+import {supabase} from "./auth.js";
+
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const PAGE=50;
+const LINE_KEY="saintig_results_line";
+
+let header={name:"Teacher/School",line:""};
+let scale=null,scaleSource="standard";
+let busy=false;
+
+function say(text,type="info"){const e=$("msg");e.textContent=text;e.className="msg show "+type;e.scrollIntoView({behavior:"smooth",block:"nearest"})}
+function hush(){$("msg").className="msg";$("msg").textContent=""}
+const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}};
+
+async function rpc(name,args){
+  const {data,error}=await supabase.rpc(name,args||{});
+  if(error){
+    if(/does not exist|could not find the function/i.test(error.message||""))
+      throw new Error("This page needs the results update to be installed first. Please contact support.");
+    throw new Error(error.message||"The request could not be completed.");
+  }
+  return data;
+}
+
+/* ================= grading ================= */
+const DEFAULT_SCALE=[
+  {min:70,grade:"A",remark:"Excellent"},{min:60,grade:"B",remark:"Very Good"},
+  {min:50,grade:"C",remark:"Good"},{min:45,grade:"D",remark:"Fair"},
+  {min:40,grade:"E",remark:"Pass"},{min:0,grade:"F",remark:"Fail"}
+];
+function readScale(rows){
+  if(!Array.isArray(rows)||!rows.length)return null;
+  const pick=(r,keys)=>{for(const k of keys){if(r[k]!==undefined&&r[k]!==null&&r[k]!=="")return r[k]}return null};
+  const list=[];
+  for(const r of rows){
+    if(!r||r.is_active===false)continue;
+    const g=pick(r,["grade","grade_name","grade_label","letter","label","name"]);
+    const min=Number(pick(r,["min_percentage","min_percent","min_score","minimum_score","min_mark","min_marks","from_mark","from_score","lower_bound","min"]));
+    const remark=pick(r,["remark","remarks","description","comment"]);
+    if(g===null||!Number.isFinite(min))continue;
+    list.push({min,grade:String(g),remark:remark===null?"":String(remark)});
+  }
+  if(list.length<2)return null;
+  return list.sort((a,b)=>b.min-a.min);
+}
+function gradeOf(pct){
+  for(const g of scale){if(pct>=g.min)return g}
+  return scale[scale.length-1];
+}
+function fmt(n){const x=Number(n);if(!Number.isFinite(x))return"—";return Number.isInteger(x)?String(x):String(Math.round(x*100)/100)}
+function calc(r){
+  const total=Number(r.total_marks)||0,score=Number(r.score)||0;
+  const pct=total>0?Math.round(score/total*1000)/10:0;
+  const g=gradeOf(pct);
+  return{score,total,pct,grade:g.grade,remark:g.remark||(pct>=50?"Pass":"Fail")};
+}
+function showScale(){
+  $("scaleNote").textContent="Grading used ("+(scaleSource==="school"?"your school's scale":"standard scale")+"): "+
+    scale.map(g=>g.grade+" "+g.min+"%+").join(" · ");
+}
+const fmtDate=v=>{if(!v)return"—";const d=new Date(v);return Number.isNaN(d.getTime())?"—":d.toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"})};
+const today=()=>new Date().toLocaleDateString(undefined,{day:"numeric",month:"long",year:"numeric"});
+
+/* ================= printed sheets ================= */
+function lineText(){
+  const typed=$("lineInput").value.trim();
+  return typed||header.line||"";
+}
+function sheetTop(title){
+  const line=lineText();
+  return `<div class="sh-brand"><div class="sh-b1">SAINTIG <span>EXAMS</span></div><div class="sh-b2">Saintigexams.com</div></div>
+    <div class="sh-school">${esc(header.name)}</div>${line?`<div class="sh-line">${esc(line)}</div>`:""}
+    <div class="sh-rule"></div><div class="sh-title">${esc(title)}</div>`;
+}
+const sheetFoot=()=>'<div class="sh-foot"><span>Powered by</span> Saintigexams.com</div>';
+const signRows=()=>'<div class="sh-sign"><div>Teacher\'s remark: <span class="ln"></span></div><div>Signature: <span class="ln"></span></div></div>';
+
+function studentSheet(stu,rows){
+  const trs=rows.map(r=>{
+    const c=calc(r);
+    return `<tr><td>${esc(r.exam_title)}<div class="sub">${esc(r.subject_name||"")}${r.exam_code?" · "+esc(r.exam_code):""}</div></td>
+      <td>${fmt(c.score)}</td><td>${fmt(c.total)}</td><td>${c.pct}%</td><td><b>${esc(c.grade)}</b></td><td>${esc(c.remark)}</td><td>${esc(fmtDate(r.submitted_at))}</td></tr>`;
+  }).join("");
+  return `<section class="sheet">${sheetTop("STUDENT EXAMINATION RESULTS")}
+    <div class="sh-info"><div><b>Student:</b> ${esc(stu.full_name)}</div><div><b>Student ID:</b> ${esc(stu.student_code)}</div><div><b>Date printed:</b> ${esc(today())}</div></div>
+    <table class="sh-table"><thead><tr><th>Examination / Subject</th><th>Score</th><th>Out of</th><th>%</th><th>Grade</th><th>Remark</th><th>Date</th></tr></thead><tbody>${trs}</tbody></table>
+    <div class="sh-note">Each examination is graded separately. Marks of different examinations are not added together.</div>
+    ${signRows()}${sheetFoot()}</section>`;
+}
+function rankSheet(info,rows,totalStudents){
+  const trs=rows.map(r=>{
+    const c=calc(r);
+    return `<tr><td>${esc(r.pos)}</td><td>${esc(r.full_name)}</td><td>${esc(r.student_code)}</td><td>${fmt(c.score)}</td><td>${fmt(c.total)}</td><td>${c.pct}%</td><td><b>${esc(c.grade)}</b></td><td>${esc(c.remark)}</td></tr>`;
+  }).join("");
+  return `<section class="sheet">${sheetTop("EXAMINATION RESULT SHEET")}
+    <div class="sh-info"><div><b>Examination:</b> ${esc(info.exam_title)}</div><div><b>Subject:</b> ${esc(info.subject_name||"—")}</div>
+      <div><b>Examination ID:</b> ${esc(info.exam_code||"—")}</div><div><b>Students:</b> ${rows.length}${rows.length!==totalStudents?" of "+totalStudents:""}</div><div><b>Date printed:</b> ${esc(today())}</div></div>
+    <table class="sh-table"><thead><tr><th>Pos.</th><th>Student</th><th>Student ID</th><th>Score</th><th>Out of</th><th>%</th><th>Grade</th><th>Remark</th></tr></thead><tbody>${trs}</tbody></table>
+    <div class="sh-note">Students are listed from first to last. Students with the same score share the same position.</div>
+    ${signRows()}${sheetFoot()}</section>`;
+}
+function slipSheet(info,r,totalStudents){
+  const c=calc(r);
+  return `<section class="sheet">${sheetTop("EXAMINATION RESULT")}
+    <div class="sh-info"><div><b>Student:</b> ${esc(r.full_name)}</div><div><b>Student ID:</b> ${esc(r.student_code)}</div>
+      <div><b>Examination:</b> ${esc(info.exam_title)}</div><div><b>Subject:</b> ${esc(info.subject_name||"—")}</div>
+      <div><b>Examination ID:</b> ${esc(info.exam_code||"—")}</div><div><b>Date taken:</b> ${esc(fmtDate(r.submitted_at))}</div></div>
+    <div class="sh-big"><div><b>${fmt(c.score)} / ${fmt(c.total)}</b>Score</div><div><b>${c.pct}%</b>Percentage</div><div><b>${esc(c.grade)}</b>Grade (${esc(c.remark)})</div><div><b>${esc(r.pos)} of ${totalStudents}</b>Position</div></div>
+    ${signRows()}${sheetFoot()}</section>`;
+}
+function printNow(html,count,what){
+  $("sheets").innerHTML=html;
+  say(count+" "+what+" ready. Your phone's print window will open. Choose Save as PDF or your printer.","ok");
+  setTimeout(()=>window.print(),200);
+}
+
+/* ================= BY STUDENT ================= */
+let sRows=[],sTotal=0,sOffset=0,sSearch="",sToken=0;
+const selStudents=new Map();           // key -> {full_name, student_code}
+let eRows=[],selExams=new Set(),eToken=0,eFirst=true;
+
+function updateSelCount(){
+  $("sSelCount").textContent=selStudents.size+" selected";
+  $("eBox").hidden=selStudents.size===0;
+}
+function renderStudents(){
+  if(!sRows.length){$("sList").innerHTML='<div class="empty">No students with submitted examinations were found.</div>';$("sCount").textContent="";$("sMore").hidden=true;return}
+  $("sList").innerHTML=sRows.map((s,i)=>`<label class="pick ${selStudents.has(s.student_key)?"on":""}">
+      <input type="checkbox" data-i="${i}" ${selStudents.has(s.student_key)?"checked":""}>
+      <span><b>${esc(s.full_name||"No name")}</b><small>${esc(s.student_code||"")}</small></span>
+      <span class="r">${Number(s.exams_taken)||0} exam${Number(s.exams_taken)===1?"":"s"}</span></label>`).join("");
+  $("sCount").textContent="Showing "+sRows.length+" of "+sTotal;
+  $("sMore").hidden=sOffset>=sTotal;
+}
+async function loadStudents(reset=true){
+  const mine=++sToken;
+  if(reset){sOffset=0;sRows=[];sTotal=0;$("sList").innerHTML='<div class="empty">Loading…</div>'}
+  try{
+    const data=await rpc("school_results_students",{p_search:sSearch||null,p_limit:PAGE,p_offset:sOffset})||[];
+    if(mine!==sToken)return;
+    if(data.length)sTotal=Number(data[0].total_count)||0;
+    sRows=sRows.concat(data);sOffset+=data.length;renderStudents();
+  }catch(e){if(mine!==sToken)return;$("sList").innerHTML='<div class="empty">'+esc(e.message)+"</div>"}
+}
+$("sMore").addEventListener("click",()=>loadStudents(false));
+$("sSearch").addEventListener("input",debounce(()=>{sSearch=$("sSearch").value.trim();loadStudents(true)},400));
+$("sList").addEventListener("change",e=>{
+  const c=e.target.closest("input[type=checkbox]");if(!c)return;
+  const s=sRows[Number(c.dataset.i)];if(!s)return;
+  if(c.checked)selStudents.set(s.student_key,{full_name:s.full_name,student_code:s.student_code});else selStudents.delete(s.student_key);
+  c.closest(".pick").classList.toggle("on",c.checked);
+  updateSelCount();loadExamOptions();
+});
+$("sSelAll").addEventListener("click",()=>{sRows.forEach(s=>selStudents.set(s.student_key,{full_name:s.full_name,student_code:s.student_code}));renderStudents();updateSelCount();loadExamOptions()});
+$("sClear").addEventListener("click",()=>{selStudents.clear();renderStudents();updateSelCount();eRows=[];selExams.clear();renderExamOptions()});
+
+function renderExamOptions(){
+  if(!eRows.length){$("eList").innerHTML='<div class="empty">The selected students have no submitted examinations.</div>';$("eSelCount").textContent="";return}
+  $("eList").innerHTML=eRows.map((x,i)=>`<label class="pick ${selExams.has(x.exam_id)?"on":""}">
+      <input type="checkbox" data-i="${i}" ${selExams.has(x.exam_id)?"checked":""}>
+      <span><b>${esc(x.title||"Untitled")}</b><small>${esc(x.subject_name||"")}${x.exam_code?" · "+esc(x.exam_code):""}</small></span>
+      <span class="r">${Number(x.students_count)||0} student${Number(x.students_count)===1?"":"s"}</span></label>`).join("");
+  $("eSelCount").textContent=selExams.size+" selected";
+}
+async function loadExamOptions(){
+  const mine=++eToken;
+  if(!selStudents.size){eRows=[];selExams.clear();renderExamOptions();return}
+  try{
+    const data=await rpc("school_results_exams_for_students",{p_student_ids:[...selStudents.keys()]})||[];
+    if(mine!==eToken)return;
+    const before=new Set(selExams);
+    eRows=data;selExams.clear();
+    data.forEach(x=>{if(eFirst||before.has(x.exam_id))selExams.add(x.exam_id)});
+    eFirst=false;
+    renderExamOptions();
+  }catch(e){if(mine!==eToken)return;say(e.message,"err")}
+}
+$("eList").addEventListener("change",e=>{
+  const c=e.target.closest("input[type=checkbox]");if(!c)return;
+  const x=eRows[Number(c.dataset.i)];if(!x)return;
+  if(c.checked)selExams.add(x.exam_id);else selExams.delete(x.exam_id);
+  c.closest(".pick").classList.toggle("on",c.checked);
+  $("eSelCount").textContent=selExams.size+" selected";
+});
+$("eSelAll").addEventListener("click",()=>{eRows.forEach(x=>selExams.add(x.exam_id));renderExamOptions()});
+$("eClear").addEventListener("click",()=>{selExams.clear();renderExamOptions()});
+
+$("printStudents").addEventListener("click",async()=>{
+  if(busy)return;hush();
+  if(!selStudents.size)return say("Choose at least one student.","err");
+  if(!selExams.size)return say("Choose at least one examination.","err");
+  busy=true;$("printStudents").disabled=true;
+  try{
+    const rows=await rpc("school_results_by_student",{p_student_ids:[...selStudents.keys()],p_exam_ids:[...selExams]})||[];
+    const groups=new Map();
+    rows.forEach(r=>{if(!groups.has(r.student_key))groups.set(r.student_key,{stu:{full_name:r.full_name,student_code:r.student_code},rows:[]});groups.get(r.student_key).rows.push(r)});
+    if(!groups.size)return say("The selected students did not take the selected examinations.","warn");
+    const html=[...groups.values()].map(g=>studentSheet(g.stu,g.rows)).join("");
+    printNow(html,groups.size,"result sheet"+(groups.size===1?"":"s"));
+  }catch(e){say(e.message,"err")}
+  finally{busy=false;$("printStudents").disabled=false}
+});
+
+/* ================= BY EXAMINATION ================= */
+let examList=[],xRows=[],xInfo=null,selX=new Set(),examLoaded=false;
+
+async function loadExamList(){
+  try{
+    examList=await rpc("school_results_exam_list")||[];
+    const subs=new Map();
+    examList.forEach(x=>{const k=x.subject_id||"none";if(!subs.has(k))subs.set(k,x.subject_name||"No subject")});
+    $("xSubject").innerHTML='<option value="">'+(subs.size?"Choose a subject":"No submitted examinations yet")+"</option>"+[...subs.entries()].map(([k,n])=>`<option value="${esc(k)}">${esc(n)}</option>`).join("");
+    examLoaded=true;
+  }catch(e){say(e.message,"err")}
+}
+$("xSubject").addEventListener("change",()=>{
+  const k=$("xSubject").value;
+  $("xBox").hidden=true;xRows=[];selX.clear();
+  const list=examList.filter(x=>(x.subject_id||"none")===k);
+  $("xExam").innerHTML='<option value="">'+(k?"Choose an examination":"Choose a subject first")+"</option>"+list.map(x=>`<option value="${esc(x.exam_id)}">${esc(x.title||"Untitled")}${x.exam_code?" — "+esc(x.exam_code):""} (${Number(x.students_count)||0})</option>`).join("");
+  $("xExam").disabled=!k;
+});
+function renderX(){
+  $("xList").innerHTML=xRows.map((r,i)=>{
+    const c=calc(r);
+    return `<label class="pick ${selX.has(r.student_key)?"on":""}"><input type="checkbox" data-i="${i}" ${selX.has(r.student_key)?"checked":""}>
+      <span><b>${esc(r.pos)}. ${esc(r.full_name||"No name")}</b><small>${esc(r.student_code||"")}</small></span>
+      <span class="r">${fmt(c.score)}/${fmt(c.total)} · ${c.pct}% · ${esc(c.grade)}</span></label>`}).join("");
+  $("xSelCount").textContent=selX.size+" of "+xRows.length+" selected";
+}
+$("xExam").addEventListener("change",async()=>{
+  const id=$("xExam").value;hush();
+  if(!id){$("xBox").hidden=true;return}
+  try{
+    const data=await rpc("school_results_by_exam",{p_exam_id:id})||[];
+    xRows=data;selX=new Set(data.map(r=>r.student_key));
+    xInfo=data.length?{exam_title:data[0].exam_title,subject_name:data[0].subject_name,exam_code:data[0].exam_code}:null;
+    $("xInfo").textContent=data.length?(xInfo.exam_title+" · "+data.length+" student(s), listed from first to last."):"No student has submitted this examination yet.";
+    $("xBox").hidden=!data.length;renderX();
+  }catch(e){say(e.message,"err")}
+});
+$("xList").addEventListener("change",e=>{
+  const c=e.target.closest("input[type=checkbox]");if(!c)return;
+  const r=xRows[Number(c.dataset.i)];if(!r)return;
+  if(c.checked)selX.add(r.student_key);else selX.delete(r.student_key);
+  c.closest(".pick").classList.toggle("on",c.checked);
+  $("xSelCount").textContent=selX.size+" of "+xRows.length+" selected";
+});
+$("xSelAll").addEventListener("click",()=>{selX=new Set(xRows.map(r=>r.student_key));renderX()});
+$("xClear").addEventListener("click",()=>{selX.clear();renderX()});
+$("printExam").addEventListener("click",()=>{
+  hush();
+  const rows=xRows.filter(r=>selX.has(r.student_key));
+  if(!rows.length)return say("Choose at least one student.","err");
+  const total=Number(xRows[0].total_students)||xRows.length;
+  if($("xLayout").value==="slips")printNow(rows.map(r=>slipSheet(xInfo,r,total)).join(""),rows.length,"result sheet"+(rows.length===1?"":"s"));
+  else printNow(rankSheet(xInfo,rows,xRows.length),1,"result sheet");
+});
+
+/* ================= tabs, line, start ================= */
+function mode(m){
+  const s=m==="student";
+  $("tabStudent").classList.toggle("on",s);$("tabExam").classList.toggle("on",!s);
+  $("modeStudent").hidden=!s;$("modeExam").hidden=s;hush();
+  if(!s&&!examLoaded)loadExamList();
+}
+$("tabStudent").addEventListener("click",()=>mode("student"));
+$("tabExam").addEventListener("click",()=>mode("exam"));
+try{$("lineInput").value=localStorage.getItem(LINE_KEY)||""}catch(_){}
+$("lineInput").addEventListener("input",()=>{try{localStorage.setItem(LINE_KEY,$("lineInput").value.trim())}catch(_){}});
+
+(async()=>{
+  scale=DEFAULT_SCALE;showScale();
+  try{
+    const {data,error}=await supabase.auth.getUser();
+    if(error||!data.user){await supabase.auth.signOut();location.replace("school-login.html");return}
+
+    try{
+      const h=await rpc("school_results_header");
+      header.name=h&&h.name?h.name:"Teacher/School";
+      header.line=[h&&h.address,h&&h.phone,h&&h.email].filter(Boolean).join(" · ");
+      if(header.line)$("lineInput").placeholder=header.line;
+    }catch(e){console.error("Header:",e)}
+
+    try{
+      const g=readScale(await rpc("school_results_grading"));
+      if(g){scale=g;scaleSource="school"}
+    }catch(e){console.error("Grading scale:",e)}
+    showScale();
+
+    await loadStudents(true);
+  }catch(e){console.error(e);say(e.message||"Could not load this page.","err")}
+})();
+</script>
+</body>
+</html>
