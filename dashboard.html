@@ -3989,6 +3989,36 @@ async function confirmPaymentReturn() {
 
 }
 
+/* When the student arrives from an "Upgrade to Premium" button on
+   another page (dashboard.html?upgrade=1), open the Premium payment
+   window straight away. */
+
+function openUpgradeFromLink() {
+
+  const params = new URLSearchParams(location.search);
+
+  if (params.get("upgrade") !== "1" || params.get("reference")) return;
+
+  history.replaceState({section:"home"},"",location.pathname);
+
+  openSection("pricing");
+
+  if (canPayOnline()) {
+
+    openPay();
+
+  } else {
+
+    showMessage(
+      $("payStatus"),
+      "Online payment is not available right now. Please contact us.",
+      "error"
+    );
+
+  }
+
+}
+
 /* =========================================
    INITIALIZATION
 ========================================= */
@@ -4118,6 +4148,10 @@ async function initializeDashboard() {
     loadReceipt();
 
     confirmPaymentReturn();
+
+    /* If the student came from an "Upgrade to Premium" button, open the payment window. */
+
+    openUpgradeFromLink();
 
   } catch(error) {
 
