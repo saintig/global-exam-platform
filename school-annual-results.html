@@ -652,19 +652,99 @@ function printSheet(res) {
     <div class="foot">Powered by <strong>Saintigexams.com</strong></div>`, true);
 }
 
+/* ---------- INDIVIDUAL REPORT CARDS ----------
+   A student's card lists only the subjects the student actually took,
+   just like the term report cards. A subject with no score in any term
+   (the student was not in it) is left out completely, so no "0" and no
+   "F" line appears for it. The total, average and grade are then worked
+   out from the subjects shown. */
+
+/* Subjects the student took: scored in at least one term. */
+function takenScores(s) {
+  return (s.scores || []).filter(sc => {
+    const terms = sc.term_scores;
+
+    return Array.isArray(terms) && terms.length
+      ? terms.some(t => t.status === "scored")
+      : (Number(sc.annual_score) || 0) > 0;
+  });
+}
+
+/* The usual grading scale. It is only used after checking that it matches
+   the grades already given to this class (see gradeForAverage). */
+const USUAL_SCALE = [[70, "A"], [60, "B"], [50, "C"], [45, "D"], [40, "E"], [0, "F"]];
+
+function usualGrade(percent) {
+  for (const [min, grade] of USUAL_SCALE) {
+    if (percent >= min) return grade;
+  }
+
+  return "F";
+}
+
+/* Grade for a percentage, taken from the same scale the system used for the
+   grades in this result. If the usual scale agrees with every grade in the
+   result it is used. If the school uses its own scale, the grade of the
+   nearest lower score in the result is used instead. */
+function gradeForAverage(res, percent) {
+  const pairs = [];
+
+  (res.students || []).forEach(st => {
+    if (st.average_grade && Number.isFinite(Number(st.average))) {
+      pairs.push([Number(st.average), st.average_grade]);
+    }
+
+    (st.scores || []).forEach(sc => {
+      const max = Number(sc.annual_maximum);
+
+      if (sc.grade && max > 0) {
+        pairs.push([(Number(sc.annual_score) * 100) / max, sc.grade]);
+      }
+    });
+  });
+
+  if (pairs.every(([p, g]) => usualGrade(p) === g)) return usualGrade(percent);
+
+  pairs.sort((a, b) => a[0] - b[0]);
+
+  let grade = pairs.length ? pairs[0][1] : usualGrade(percent);
+
+  for (const [p, g] of pairs) {
+    if (p <= percent) grade = g;
+    else break;
+  }
+
+  return grade;
+}
+
 function cardHtml(res, s) {
   const c = res.result.school_snapshot || {};
   const terms = termsOf(res);
 
-  const rows = s.scores.map(sc => {
+  const taken = takenScores(s);
+
+  let needsNote = false;
+
+  const rows = taken.map(sc => {
     const cells = terms.map((term, i) => {
       const t = (sc.term_scores || [])[i];
+
+      if (t && t.status !== "not_offered" && t.status !== "scored") needsNote = true;
+
       return `<td>${t ? (t.status === "not_offered" ? "–" : num(t.score) + (t.status === "scored" ? "" : "*")) : "—"}</td>`;
     }).join("");
 
     return `<tr><td>${escapeHTML(sc.subject_name)}</td>${cells}
       <td>${num(sc.annual_score)}</td><td>${num(sc.annual_maximum)}</td><td>${escapeHTML(sc.grade || "—")}</td></tr>`;
   }).join("");
+
+  /* Total, average and grade are worked out from the subjects shown. */
+  const total = taken.reduce((sum, sc) => sum + (Number(sc.annual_score) || 0), 0);
+  const possible = taken.reduce((sum, sc) => sum + (Number(sc.annual_maximum) || 0), 0);
+  const average = possible ? Math.round((total / possible) * 10000) / 100 : 0;
+  const averageGrade = possible ? gradeForAverage(res, average) : "";
+
+  const emptyRow = `<tr><td colspan="${terms.length + 4}">No examination scores recorded.</td></tr>`;
 
   return `<div class="card">
     ${schoolHead(c)}${draftNote(res)}
@@ -674,11 +754,11 @@ function cardHtml(res, s) {
       <tr><td><strong>Class:</strong> ${escapeHTML(c.class_name || "")} ${escapeHTML(c.class_arm || "")}</td><td><strong>Academic Session:</strong> ${escapeHTML(c.academic_session || "")}</td></tr>
       <tr><td colspan="2"><strong>Annual Result ID:</strong> ${escapeHTML(res.annual_result_id)}</td></tr>
     </table>
-    <table><thead><tr><th>Subject</th>${terms.map(t => `<th>${escapeHTML(t)}</th>`).join("")}<th>Annual Total</th><th>Out of</th><th>Grade</th></tr></thead><tbody>${rows}</tbody></table>
-    <p style="font-size:9px">* absent, not in the class that term, or not examined; counted as 0.</p>
+    <table><thead><tr><th>Subject</th>${terms.map(t => `<th>${escapeHTML(t)}</th>`).join("")}<th>Annual Total</th><th>Out of</th><th>Grade</th></tr></thead><tbody>${rows || emptyRow}</tbody></table>
+    ${needsNote ? '<p style="font-size:9px">* absent, not in the class that term, or not examined; counted as 0.</p>' : ""}
     <table class="info"><tr>
-      <td><strong>Total:</strong> ${num(s.total_score)} / ${num(s.total_possible)}</td>
-      <td><strong>Average:</strong> ${num(s.average)}% (${escapeHTML(s.average_grade || "—")})</td>
+      <td><strong>Total:</strong> ${num(total)} / ${num(possible)}</td>
+      <td><strong>Average:</strong> ${num(average)}% (${escapeHTML(averageGrade || "—")})</td>
       <td><strong>Position:</strong> ${s.position} of ${res.students.length}</td></tr></table>
     <div class="remark"><strong>Class Teacher's Remark:</strong><div class="line"></div></div>
     <div class="remark"><strong>Principal's Remark:</strong><div class="line"></div></div>
