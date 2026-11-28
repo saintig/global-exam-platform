@@ -316,10 +316,10 @@ async function loadStatistics(){
     adminQuestions({examPublished:true,examArchived:false,published:true,archived:false}),
     adminQuestions({archived:true}),
     supabase.from("admin_users").select("*",{count:"exact",head:true}),
-    supabase.functions.invoke("admin-user-count",{body:{}}),
+    supabase.rpc("admin_registered_user_count"),
     adminExams({published:false,archived:false})
   ]);
-  $("usersCount").textContent=!userCount.error&&userCount.data?.totalUsers!==undefined?Number(userCount.data.totalUsers).toLocaleString():"—";
+  $("usersCount").textContent=!userCount.error&&userCount.data?.total!==undefined?Number(userCount.data.total).toLocaleString():"—";
   displayCount("adminsCount",adminCount.count,adminCount.error);
   displayCount("totalExamsCount",totalExams.count,totalExams.error);
   displayCount("examsCount",publishedExams.count,publishedExams.error);
