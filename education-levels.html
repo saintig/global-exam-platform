@@ -48,6 +48,7 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
 .ghost{background:#fff;border:1px solid #bfc8d6;color:var(--navy)}
 .danger{background:#fff0ee;color:var(--bad);border:1px solid #f0c7c2}
 .good{background:#eaf7ef;color:#176b3d;border:1px solid #c5e8d2}
+.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
 .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
 .msg{display:none;padding:14px 16px;border-radius:10px;margin:14px 0;font-size:17px;line-height:1.55;overflow-wrap:anywhere}
 .msg.show{display:block}
@@ -55,7 +56,7 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
 .msg.err{background:#fff0ee;color:#a42d24;border:1px solid #f0c7c2}
 .msg.info{background:#eef4fc;color:#31547c;border:1px solid #d3e1f2}
 .msg.warn{background:#fff8e8;color:#77591a;border:1px solid #f0dfb5}
-.bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.bar{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:6px}
 .count{color:var(--muted);font-size:16px;margin:6px 0 12px}
 .item{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:12px;padding:16px;margin-bottom:12px;background:#fff}
 .item.muted{border-left-color:#aab3c2;background:#fafbfc}
@@ -68,20 +69,13 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
 .acts{display:flex;flex-wrap:wrap;gap:10px}
 .acts .btn{min-height:50px;padding:10px 18px;font-size:17px}
 .empty{padding:26px 10px;text-align:center;color:var(--muted)}
-.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
-.opt{padding:9px 11px;background:#f8fafc;border:1px solid #edf0f4;border-radius:8px;overflow-wrap:anywhere;font-size:17px}
-.opt.ok{background:#eaf7ef;border-color:#c5e8d2;color:#176b3d;font-weight:bold}
-.sum{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:14px;line-height:1.9;overflow-wrap:anywhere}
-.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
-.pager span{color:var(--muted);font-size:16px}
 .modal{position:fixed;inset:0;background:#08122399;z-index:100;display:none;align-items:flex-start;justify-content:center;padding:14px;overflow-y:auto}
 .modal.show{display:flex}
 .modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:680px;margin:auto}
 .modal-box h2{font-size:23px;color:var(--navy);margin-bottom:14px}
 [hidden]{display:none!important}
 @media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
-@media(max-width:640px){.grid,.bar,.opts{grid-template-columns:1fr}.row .btn,.pager .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
-
+@media(max-width:640px){.grid,.bar{grid-template-columns:1fr}.row .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
 </style>
 </head>
 <body>
@@ -111,6 +105,8 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
   <h2>Your education levels</h2>
   <div class="bar" style="margin-top:10px">
     <div><label for="countryFilter">Country</label><select id="countryFilter"><option value="">All countries</option></select></div>
+    <div id="viewBox"><label for="viewFilter">Show</label>
+      <select id="viewFilter"><option value="active">Active levels</option><option value="archived">Archived levels</option><option value="all">All levels</option></select></div>
     <div><label for="search">Search</label><input id="search" type="search" placeholder="Type a level or country"></div>
   </div>
   <p class="count" id="count"></p>
@@ -128,6 +124,15 @@ function hush(id){const e=$(id);e.textContent="";e.className="msg"}
 const goHome=()=>location.replace("admin-login.html");
 $("menuBtn").addEventListener("click",()=>$("menu").classList.toggle("open"));
 $("signOut").addEventListener("click",async()=>{await supabase.auth.signOut();goHome()});
+
+/* A database permission error is explained in plain words. */
+function explain(error){
+  const m=String(error&&error.message||error||"");
+  return /permission denied for function/i.test(m)
+    ? m+". The database must allow the signed-in administrator to run that function (see the SQL fix)."
+    : m;
+}
+
 /* Checks the signed-in administrator. With a permission name it also checks that permission. */
 async function requirePermission(permission){
   const {data:u,error}=await supabase.auth.getUser();
@@ -142,7 +147,7 @@ async function requirePermission(permission){
   return true;
 }
 
-let countries=[],levels=[],editId=null,busy=false;
+let countries=[],levels=[],editId=null,busy=false,archiveOk=true;
 const countryName=id=>{const c=countries.find(x=>String(x.id)===String(id));return c?c.country_name:"Unknown country"};
 
 async function loadCountries(){
@@ -153,25 +158,51 @@ async function loadCountries(){
   $("countrySelect").innerHTML='<option value="">Choose country</option>'+opts;
   $("countryFilter").innerHTML='<option value="">All countries</option>'+opts;
 }
+
+/* Loads the levels. If the table has no archive columns yet, the page still works
+   and the Archive buttons are hidden. */
 async function loadLevels(){
-  const {data,error}=await supabase.from("education_levels").select("id,education_system_id,level_name,description,is_active,created_at").order("level_name");
-  if(error){say("listMsg","Unable to load education levels: "+error.message,"err");return}
-  levels=data||[];hush("listMsg");render();
+  let r=await supabase.from("education_levels")
+    .select("id,education_system_id,level_name,description,is_active,is_archived,archived_at,created_at")
+    .order("level_name");
+  if(r.error&&/is_archived|archived_at/i.test(r.error.message||"")){
+    archiveOk=false;
+    r=await supabase.from("education_levels")
+      .select("id,education_system_id,level_name,description,is_active,created_at")
+      .order("level_name");
+  }
+  if(r.error){say("listMsg","Unable to load education levels: "+explain(r.error),"err");return}
+  levels=r.data||[];
+  $("viewBox").hidden=!archiveOk;
+  hush("listMsg");render();
 }
+
+const isArch=l=>archiveOk&&l.is_archived===true;
+
 function render(){
-  const cf=$("countryFilter").value,q=$("search").value.trim().toLowerCase();
-  const rows=levels.filter(l=>(!cf||String(l.education_system_id)===cf)&&(String(l.level_name).toLowerCase().includes(q)||countryName(l.education_system_id).toLowerCase().includes(q)));
+  const cf=$("countryFilter").value,q=$("search").value.trim().toLowerCase(),view=archiveOk?$("viewFilter").value:"all";
+  const rows=levels.filter(l=>
+    (!cf||String(l.education_system_id)===cf)&&
+    (view==="all"||(view==="archived")===isArch(l))&&
+    (String(l.level_name).toLowerCase().includes(q)||countryName(l.education_system_id).toLowerCase().includes(q)));
   $("count").textContent=rows.length+" education level(s) shown";
-  $("list").innerHTML=rows.length?rows.map(l=>`
-    <article class="item ${l.is_active?"":"muted"}">
-      <div><div class="item-title">${esc(l.level_name)}</div>
-        <div class="item-meta">${esc(countryName(l.education_system_id))} &nbsp;<span class="badge ${l.is_active?"on":"off"}">${l.is_active?"Published":"Unpublished"}</span></div></div>
-      <div class="acts">
-        <button class="btn ghost" type="button" data-a="edit" data-id="${esc(l.id)}">Edit</button>
+  $("list").innerHTML=rows.length?rows.map(l=>{
+    const arch=isArch(l);
+    const badge=arch?'<span class="badge arch">Archived</span>':`<span class="badge ${l.is_active?"on":"off"}">${l.is_active?"Published":"Unpublished"}</span>`;
+    const buttons=arch
+      ?`<button class="btn good" type="button" data-a="restore" data-id="${esc(l.id)}">Restore</button>
+        <button class="btn danger" type="button" data-a="del" data-id="${esc(l.id)}">Delete</button>`
+      :`<button class="btn ghost" type="button" data-a="edit" data-id="${esc(l.id)}">Edit</button>
         <button class="btn ghost" type="button" data-a="toggle" data-id="${esc(l.id)}">${l.is_active?"Unpublish":"Publish"}</button>
-        <button class="btn danger" type="button" data-a="del" data-id="${esc(l.id)}">Delete</button>
-      </div></article>`).join(""):'<p class="empty">No education levels found.</p>';
+        ${archiveOk?`<button class="btn warn" type="button" data-a="archive" data-id="${esc(l.id)}">Archive</button>`:""}
+        <button class="btn danger" type="button" data-a="del" data-id="${esc(l.id)}">Delete</button>`;
+    return `<article class="item ${l.is_active&&!arch?"":"muted"}">
+      <div><div class="item-title">${esc(l.level_name)}</div>
+        <div class="item-meta">${esc(countryName(l.education_system_id))} &nbsp;${badge}</div></div>
+      <div class="acts">${buttons}</div></article>`;
+  }).join(""):'<p class="empty">No education levels found.</p>';
 }
+
 function resetForm(){
   editId=null;$("countrySelect").value="";$("levelName").value="";$("formTitle").textContent="Add an education level";
   $("saveBtn").textContent="Add education level";$("cancelBtn").hidden=true;
@@ -191,37 +222,63 @@ $("saveBtn").addEventListener("click",async()=>{
     const edited=editId!==null;resetForm();
     say("formMsg",edited?"Education level updated.":"Education level added.","ok");
     await loadLevels();
-  }catch(e){say("formMsg","Could not save: "+e.message,"err")}
+  }catch(e){say("formMsg","Could not save: "+explain(e),"err")}
   finally{busy=false;$("saveBtn").disabled=false}
 });
+
+async function changeLevel(l,values,okText){
+  busy=true;
+  const {error}=await supabase.from("education_levels").update(values).eq("id",l.id);
+  busy=false;
+  if(error){say("listMsg","Could not complete the action: "+explain(error),"err");return}
+  await loadLevels();
+  say("listMsg",okText,"ok");
+}
+
 $("list").addEventListener("click",async e=>{
   const b=e.target.closest("button[data-a]");if(!b||busy)return;
   const l=levels.find(x=>String(x.id)===b.dataset.id);if(!l)return;
+
   if(b.dataset.a==="edit"){
     editId=l.id;$("countrySelect").value=l.education_system_id;$("levelName").value=l.level_name;
     $("formTitle").textContent="Edit education level";$("saveBtn").textContent="Save changes";$("cancelBtn").hidden=false;hush("formMsg");
     window.scrollTo({top:0,behavior:"smooth"});return;
   }
+
   if(b.dataset.a==="toggle"){
     const act=l.is_active?"unpublish":"publish";
     if(!confirm("Are you sure you want to "+act+' "'+l.level_name+'"?'))return;
-    busy=true;const {error}=await supabase.from("education_levels").update({is_active:!l.is_active}).eq("id",l.id);busy=false;
-    if(error){say("listMsg","Could not change the status: "+error.message,"err");return}
-    await loadLevels();return;
+    await changeLevel(l,{is_active:!l.is_active},"Education level "+act+"ed.");
+    return;
   }
+
+  if(b.dataset.a==="archive"){
+    if(!confirm('Archive "'+l.level_name+'" ('+countryName(l.education_system_id)+')?\n\nIt will be unpublished and hidden from students. Nothing is deleted, and you can restore it later.'))return;
+    if(String(editId)===String(l.id))resetForm();
+    await changeLevel(l,{is_archived:true,archived_at:new Date().toISOString(),is_active:false},"Education level archived.");
+    return;
+  }
+
+  if(b.dataset.a==="restore"){
+    if(!confirm('Restore "'+l.level_name+'"?\n\nIt returns to the active list as Unpublished. Publish it when you want students to see it.'))return;
+    await changeLevel(l,{is_archived:false,archived_at:null},"Education level restored. It is Unpublished until you publish it.");
+    return;
+  }
+
   if(b.dataset.a==="del"){
     if(!confirm('Delete "'+l.level_name+'" from '+countryName(l.education_system_id)+"?\n\nThis may affect its subjects and classes. Continue only if you are sure."))return;
     busy=true;const {error}=await supabase.from("education_levels").delete().eq("id",l.id);busy=false;
-    if(error){say("listMsg","Deleting was blocked: "+error.message+". Remove the records that depend on this level first.","err");return}
+    if(error){say("listMsg","Deleting was blocked: "+explain(error)+". Remove the records that depend on this level first, or archive it instead.","err");return}
     if(String(editId)===String(l.id))resetForm();
     await loadLevels();say("listMsg","Education level deleted.","ok");
   }
 });
 $("countryFilter").addEventListener("change",render);
+$("viewFilter").addEventListener("change",render);
 $("search").addEventListener("input",render);
 (async()=>{
   try{if(!await requirePermission("manage_education_levels"))return;await loadCountries();await loadLevels()}
-  catch(e){console.error(e);say("formMsg","Unable to start the page: "+e.message,"err")}
+  catch(e){console.error(e);say("formMsg","Unable to start the page: "+explain(e),"err")}
 })();
 
 </script>
