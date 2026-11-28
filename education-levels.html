@@ -76,6 +76,9 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
 [hidden]{display:none!important}
 @media(min-width:760px){.item{flex-direction:row;align-items:center;justify-content:space-between}.item>div:first-child{flex:1;min-width:0}}
 @media(max-width:640px){.grid,.bar{grid-template-columns:1fr}.row .btn{flex:1 1 100%}.acts .btn{flex:1 1 calc(50% - 10px)}h1{font-size:25px}}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.pager span{color:var(--muted);font-size:16px;text-align:center}
+.pager .pgbtn{flex:0 0 auto;min-height:50px;padding:10px 16px}
 </style>
 </head>
 <body>
@@ -113,6 +116,18 @@ small{display:block;color:var(--muted);font-size:15px;margin-top:6px}
   <div id="list"><p class="empty">Loading…</p></div>
   <div class="msg" id="listMsg"></div>
 </div>
+<div class="card" id="archCard" hidden>
+  <h2>Archived education levels</h2>
+  <p class="hint">Archived levels are hidden from students. Restore one to use it again, or delete it for good.</p>
+  <p class="count" id="archCount"></p>
+  <div id="archList"><p class="empty">Loading…</p></div>
+  <div class="pager" id="archPager" hidden>
+    <button class="btn ghost pgbtn" id="archPrev" type="button">← Previous</button>
+    <span id="archPage"></span>
+    <button class="btn ghost pgbtn" id="archNext" type="button">Next →</button>
+  </div>
+  <div class="msg" id="archMsg"></div>
+</div>
 
 </main>
 <script type="module">
@@ -147,7 +162,9 @@ async function requirePermission(permission){
   return true;
 }
 
-let countries=[],levels=[],editId=null,busy=false,archiveOk=true;
+let countries=[],levels=[],editId=null,busy=false,archiveOk=true,archPage=1;
+const PAGE=10;
+const fdate=v=>{const d=new Date(v);return isNaN(d.getTime())?"":d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})};
 const countryName=id=>{const c=countries.find(x=>String(x.id)===String(id));return c?c.country_name:"Unknown country"};
 
 async function loadCountries(){
@@ -174,7 +191,7 @@ async function loadLevels(){
   if(r.error){say("listMsg","Unable to load education levels: "+explain(r.error),"err");return}
   levels=r.data||[];
   $("viewBox").hidden=!archiveOk;
-  hush("listMsg");render();
+  hush("listMsg");render();renderArchived();
 }
 
 const isArch=l=>archiveOk&&l.is_archived===true;
@@ -203,6 +220,31 @@ function render(){
   }).join(""):'<p class="empty">No education levels found.</p>';
 }
 
+/* The Archived section, 10 levels per page. */
+function renderArchived(){
+  $("archCard").hidden=!archiveOk;
+  if(!archiveOk)return;
+  const rows=levels.filter(isArch);
+  const pages=Math.max(1,Math.ceil(rows.length/PAGE));
+  if(archPage>pages)archPage=pages;
+  const slice=rows.slice((archPage-1)*PAGE,archPage*PAGE);
+  $("archCount").textContent=rows.length+" archived education level"+(rows.length===1?"":"s");
+  $("archList").innerHTML=slice.length?slice.map(l=>`
+    <article class="item muted">
+      <div><div class="item-title">${esc(l.level_name)}</div>
+        <div class="item-meta">${esc(countryName(l.education_system_id))} &nbsp;<span class="badge arch">Archived</span>${l.archived_at?" &nbsp;"+esc(fdate(l.archived_at)):""}</div></div>
+      <div class="acts">
+        <button class="btn good" type="button" data-a="restore" data-id="${esc(l.id)}">Restore</button>
+        <button class="btn danger" type="button" data-a="del" data-id="${esc(l.id)}">Delete</button>
+      </div></article>`).join(""):'<p class="empty">No archived education levels.</p>';
+  $("archPager").hidden=rows.length<=PAGE;
+  $("archPage").textContent="Page "+archPage+" of "+pages;
+  $("archPrev").disabled=archPage<=1;
+  $("archNext").disabled=archPage>=pages;
+}
+$("archPrev").addEventListener("click",()=>{if(archPage>1){archPage--;renderArchived()}});
+$("archNext").addEventListener("click",()=>{archPage++;renderArchived()});
+
 function resetForm(){
   editId=null;$("countrySelect").value="";$("levelName").value="";$("formTitle").textContent="Add an education level";
   $("saveBtn").textContent="Add education level";$("cancelBtn").hidden=true;
@@ -226,18 +268,20 @@ $("saveBtn").addEventListener("click",async()=>{
   finally{busy=false;$("saveBtn").disabled=false}
 });
 
-async function changeLevel(l,values,okText){
+async function changeLevel(l,values,okText,box="listMsg"){
   busy=true;
   const {error}=await supabase.from("education_levels").update(values).eq("id",l.id);
   busy=false;
-  if(error){say("listMsg","Could not complete the action: "+explain(error),"err");return}
+  if(error){say(box,"Could not complete the action: "+explain(error),"err");return}
   await loadLevels();
-  say("listMsg",okText,"ok");
+  say(box,okText,"ok");
 }
 
-$("list").addEventListener("click",async e=>{
+async function onAction(e){
   const b=e.target.closest("button[data-a]");if(!b||busy)return;
   const l=levels.find(x=>String(x.id)===b.dataset.id);if(!l)return;
+  const box=b.closest("#archList")?"archMsg":"listMsg";
+  hush("archMsg");
 
   if(b.dataset.a==="edit"){
     editId=l.id;$("countrySelect").value=l.education_system_id;$("levelName").value=l.level_name;
@@ -261,18 +305,20 @@ $("list").addEventListener("click",async e=>{
 
   if(b.dataset.a==="restore"){
     if(!confirm('Restore "'+l.level_name+'"?\n\nIt returns to the active list as Unpublished. Publish it when you want students to see it.'))return;
-    await changeLevel(l,{is_archived:false,archived_at:null},"Education level restored. It is Unpublished until you publish it.");
+    await changeLevel(l,{is_archived:false,archived_at:null},"Education level restored. It is Unpublished until you publish it.",box);
     return;
   }
 
   if(b.dataset.a==="del"){
     if(!confirm('Delete "'+l.level_name+'" from '+countryName(l.education_system_id)+"?\n\nThis may affect its subjects and classes. Continue only if you are sure."))return;
     busy=true;const {error}=await supabase.from("education_levels").delete().eq("id",l.id);busy=false;
-    if(error){say("listMsg","Deleting was blocked: "+explain(error)+". Remove the records that depend on this level first, or archive it instead.","err");return}
+    if(error){say(box,"Deleting was blocked: "+explain(error)+". Remove the records that depend on this level first, or archive it instead.","err");return}
     if(String(editId)===String(l.id))resetForm();
-    await loadLevels();say("listMsg","Education level deleted.","ok");
+    await loadLevels();say(box,"Education level deleted.","ok");
   }
-});
+}
+$("list").addEventListener("click",onAction);
+$("archList").addEventListener("click",onAction);
 $("countryFilter").addEventListener("change",render);
 $("viewFilter").addEventListener("change",render);
 $("search").addEventListener("input",render);
