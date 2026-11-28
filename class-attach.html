@@ -230,7 +230,7 @@ function render(){
     $("area").innerHTML=l.length?`<table><thead><tr><th>STUDENT ID</th><th>NAME</th><th>EXAMINATIONS</th><th>ACTIONS</th></tr></thead><tbody>${l.map(s=>`<tr>
       <td class="id">${esc(s.sid)}</td><td><b>${esc(s.name)}</b></td><td>${s.exams.length}${limit?" / "+limit:""}</td>
       <td><div class="acts"><button class="btn gold s" data-a="sAdd" data-id="${s.id}">Attach exams</button><button class="btn bad s" data-a="sRem" data-id="${s.id}">Remove</button>
-      <button class="btn light s" data-a="sView" data-id="${s.id}">View</button><button class="btn light s" data-a="sPrint" data-id="${s.id}">Print</button><button class="btn light s" data-a="sCsv" data-id="${s.id}">Download</button></div></td></tr>`).join("")}</tbody></table>`
+      <button class="btn light s" data-a="sView" data-id="${s.id}">View</button><button class="btn light s" data-a="sPrint" data-id="${s.id}">Print</button><button class="btn light s" data-a="sCsv" data-id="${s.id}">Download</button><button class="btn light s" data-a="sShare" data-id="${s.id}">Share</button></div></td></tr>`).join("")}</tbody></table>`
       :'<div class="empty">No students found. Register students in Class Students first.</div>';
   }else{
     const l=exams.filter(e=>!q||(e.title+" "+e.code+" "+e.subject+" "+e.students.map(s=>s.name+" "+s.sid).join(" ")).toLowerCase().includes(q));
@@ -358,7 +358,7 @@ document.addEventListener("click",e=>{
   const a=b.dataset.a,id=Number(b.dataset.id);
   const s=a[0]==="s"?students.find(x=>x.id===id):null,x=a[0]==="e"?exams.find(y=>y.id===id):null;
   if(s){
-    if(a==="sAdd")return studentAdd(s);if(a==="sRem")return studentRem(s);
+    if(a==="sAdd")return studentAdd(s);if(a==="sRem")return studentRem(s);if(a==="sShare")return share("SAINTIG EXAMS\n"+clsLabel+"\n\n"+sTxt(s),"Examinations of "+s.name);
     if(a==="sView")return viewBox(s.name+" · "+s.sid,sRows(s),sCols);
     if(a==="sPrint")return printDoc("Student examinations",`<h2>EXAMINATIONS OF ${esc(s.name)}</h2><p>Student ID: ${esc(s.sid)}</p>`+tbl(sCols,sRows(s)));
     if(a==="sCsv")return csv("examinations-"+s.sid,[["Student","Student ID","Examination","Exam ID"],...(s.exams.length?s.exams.map(e=>[s.name,s.sid,e.title,e.code]):[[s.name,s.sid,"",""]])]);
@@ -384,6 +384,101 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelect
     if(p.get("q"))$("q").value=p.get("q");
     showLimit();await load();
   }catch(e){say(e.message||"Unable to start this page.","err")}
+})();
+</script>
+
+<!-- ============================================================
+  ADD-ON: pagination for the Students / Examinations lists
+  (default 20 per page, with a "rows per page" box and page numbers).
+  Print all / Download all / Share all still use the FULL list.
+============================================================ -->
+<script>
+(function(){
+  const area = document.getElementById("area");
+  if (!area) return;
+
+  const SIZES = [10, 20, 50, 100, 0];          /* 0 = All */
+  const SAVE = "saintig_attach_rows_per_page";
+  let perPage = 20, page = 1, lastKey = "";
+  try { const v = parseInt(localStorage.getItem(SAVE), 10); if (SIZES.includes(v)) perPage = v; } catch (_) {}
+
+  const st = document.createElement("style");
+  st.textContent = `
+    #area tr[hidden]{display:none!important}
+    #pgBar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between;margin-top:12px}
+    #pgBar[hidden]{display:none!important}
+    #pgBar .pg-info{color:#64748b;font-size:14px}
+    #pgBar .pg-size{display:flex;align-items:center;gap:8px;color:#64748b;font-size:14px}
+    #pgBar .pg-size select{padding:8px 10px;border:1px solid #e1e6ed;border-radius:8px;background:#fff;color:#263447;min-height:38px}
+    #pgBar .pg-btns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    #pgBar .pg-dots{color:#64748b;padding:0 4px}
+  `;
+  document.head.appendChild(st);
+
+  const bar = document.createElement("div");
+  bar.id = "pgBar"; bar.hidden = true;
+  area.insertAdjacentElement("afterend", bar);
+
+  const key = () =>
+    (document.getElementById("tStudents")?.classList.contains("on") ? "s" : "e") + "|" +
+    (document.getElementById("q")?.value || "");
+
+  function pageList(p, n) {
+    const keep = new Set([1, n, p - 1, p, p + 1]);
+    const nums = [...keep].filter(x => x >= 1 && x <= n).sort((a, b) => a - b);
+    const out = [];
+    nums.forEach((x, i) => { if (i && x - nums[i - 1] > 1) out.push("…"); out.push(x); });
+    return out;
+  }
+
+  function draw(total, start, end, pages) {
+    const btns = [`<button type="button" class="btn light s" data-pg="prev" ${page <= 1 ? "disabled" : ""}>‹ Prev</button>`]
+      .concat(pageList(page, pages).map(x => x === "…"
+        ? '<span class="pg-dots">…</span>'
+        : `<button type="button" class="btn ${x === page ? "navy" : "light"} s" data-pg="${x}">${x}</button>`))
+      .concat([`<button type="button" class="btn light s" data-pg="next" ${page >= pages ? "disabled" : ""}>Next ›</button>`]);
+    bar.innerHTML =
+      `<div class="pg-info">Showing ${start + 1}–${end} of ${total}</div>` +
+      `<label class="pg-size">Rows per page <select id="pgSize">${SIZES.map(s =>
+        `<option value="${s}" ${s === perPage ? "selected" : ""}>${s === 0 ? "All" : s}</option>`).join("")}</select></label>` +
+      (pages > 1 ? `<div class="pg-btns">${btns.join("")}</div>` : "");
+    bar.hidden = false;
+  }
+
+  function apply() {
+    const t = area.querySelector("table");
+    if (!t) { bar.hidden = true; return; }
+    const rows = [...t.querySelectorAll("tbody tr")];
+    const total = rows.length;
+    if (!total) { bar.hidden = true; return; }
+    const k = key();
+    if (k !== lastKey) { page = 1; lastKey = k; }      /* new tab or new search: back to page 1 */
+    const size = perPage || total;
+    const pages = Math.max(1, Math.ceil(total / size));
+    if (page > pages) page = pages;
+    const start = (page - 1) * size, end = Math.min(total, start + size);
+    rows.forEach((r, i) => { r.hidden = i < start || i >= end; });
+    draw(total, start, end, pages);
+  }
+
+  bar.addEventListener("click", e => {
+    const b = e.target.closest("button[data-pg]");
+    if (!b || b.disabled) return;
+    const v = b.dataset.pg;
+    page = v === "prev" ? page - 1 : v === "next" ? page + 1 : Number(v);
+    apply();
+    area.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+  bar.addEventListener("change", e => {
+    if (e.target.id !== "pgSize") return;
+    perPage = Number(e.target.value); page = 1;
+    try { localStorage.setItem(SAVE, String(perPage)); } catch (_) {}
+    apply();
+  });
+
+  /* the page redraws the table (search, tab, attach, remove): paginate it again */
+  new MutationObserver(apply).observe(area, { childList: true });
+  apply();
 })();
 </script>
 </body>
